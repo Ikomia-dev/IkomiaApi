@@ -1,0 +1,153 @@
+#ifndef COCVSEAMLESSCLONING_HPP
+#define COCVSEAMLESSCLONING_HPP
+
+#include "Core/CImageProcess2d.h"
+#include "IO/CImageProcessIO.h"
+
+//----------------------------//
+//----- COcvSeamlessCloningParam -----//
+//----------------------------//
+class COcvSeamlessCloningParam: public CProtocolTaskParam
+{
+    public:
+
+        COcvSeamlessCloningParam() : CProtocolTaskParam(){}
+
+        void        setParamMap(const UMapString& paramMap) override
+        {
+            m_flags = std::stoi(paramMap.at("flags"));
+        }
+
+        UMapString  getParamMap() const override
+        {
+            UMapString map;
+            map.insert(std::make_pair("flags", std::to_string(m_flags)));
+            return map;
+        }
+
+    public:
+        int m_flags = cv::NORMAL_CLONE;
+};
+
+//-----------------------//
+//----- COcvSeamlessCloning -----//
+//-----------------------//
+class COcvSeamlessCloning : public CImageProcess2d
+{
+    public:
+
+        COcvSeamlessCloning() : CImageProcess2d()
+        {
+            clearInputs();
+            addInput(std::make_shared<CImageProcessIO>());
+            addInput(std::make_shared<CGraphicsProcessInput>());
+            addInput(std::make_shared<CImageProcessIO>());
+            addInput(std::make_shared<CGraphicsProcessInput>());
+        }
+        COcvSeamlessCloning(const std::string name, const std::shared_ptr<COcvSeamlessCloningParam>& pParam) : CImageProcess2d(name)
+        {
+            clearInputs();
+            addInput(std::make_shared<CImageProcessIO>());
+            addInput(std::make_shared<CGraphicsProcessInput>());
+            addInput(std::make_shared<CImageProcessIO>());
+            addInput(std::make_shared<CGraphicsProcessInput>());
+            m_pParam = std::make_shared<COcvSeamlessCloningParam>(*pParam);
+        }
+
+        size_t     getProgressSteps() override
+        {
+            return 3;
+        }
+
+        void    run() override
+        {
+            beginTaskRun();
+            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pGraphics1 = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(2));
+            auto pGraphics2 = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(3));
+            auto pParam = std::dynamic_pointer_cast<COcvSeamlessCloningParam>(m_pParam);
+
+            if( pInput1 == nullptr || pGraphics1 == nullptr ||
+                pInput2 == nullptr || pGraphics2 == nullptr ||
+                pParam == nullptr)
+            {
+                throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
+            }
+
+            if(pInput1->isDataAvailable() == false || pInput2->isDataAvailable() == false)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
+
+            if(pGraphics1->isDataAvailable() == false || pGraphics2->isDataAvailable() == false)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Empty graphics", __func__, __FILE__, __LINE__);
+
+            CMat imgDst;
+            CMat img1 = pInput1->getImage();
+            CMat img2 = pInput2->getImage();
+
+            createGraphicsMask(img1.getNbCols(), img1.getNbRows(), pGraphics1);
+
+            auto items = pGraphics2->getItems();
+            QPointF center = items[0]->getBoundingRect().center();
+            cv::Point pt(center.x(), center.y());
+            emit m_signalHandler->doProgress();
+
+            if(img1.channels() != 3 || img2.channels() != 3)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Color image required", __func__, __FILE__, __LINE__);
+
+            try
+            {
+                auto mask = getGraphicsMask(0);
+                cv::seamlessClone(img1, img2, mask, pt, imgDst, pParam->m_flags);
+            }
+            catch(cv::Exception& e)
+            {
+                throw CException(CoreExCode::INVALID_PARAMETER, e, __func__, __FILE__, __LINE__);
+            }
+
+            endTaskRun();
+            emit m_signalHandler->doProgress();
+
+            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            if(pOutput)
+                pOutput->setImage(imgDst);
+
+            emit m_signalHandler->doProgress();
+        }
+};
+
+class COcvSeamlessCloningFactory : public CProcessFactory
+{
+    public:
+
+        COcvSeamlessCloningFactory()
+        {
+            m_info.m_name = QObject::tr("SeamlessCloning").toStdString();
+            m_info.m_description = QObject::tr("Image editing tasks concern either global changes (color/intensity corrections, filters, deformations) or local changes concerned to a selection. Here we are interested in achieving local changes, ones that are restricted to a region manually selected (ROI), in a seamless and effortless manner. The extent of the changes ranges from slight distortions to complete replacement by novel content.").toStdString();
+            m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography/Seamless cloning").toStdString();
+            m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();
+            m_info.m_keywords = "Poisson,Editing,Fusion,Blending";
+            m_info.m_authors = "Patrick Pérez, Michel Gangnet, and Andrew Blake";
+            m_info.m_article = "Poisson image editing";
+            m_info.m_journal = "ACM Transactions on Graphics, volume 22, pages 313–318";
+            m_info.m_year = 2003;
+            m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/da0/group__photo__clone.html#ga2bf426e4c93a6b1f21705513dfeca49d";
+        }
+
+        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        {
+            auto pSeamlessCloningParam = std::dynamic_pointer_cast<COcvSeamlessCloningParam>(pParam);
+            if(pSeamlessCloningParam != nullptr)
+                return std::make_shared<COcvSeamlessCloning>(m_info.m_name, pSeamlessCloningParam);
+            else
+                return create();
+        }
+        virtual ProtocolTaskPtr create() override
+        {
+            auto pSeamlessCloningParam = std::make_shared<COcvSeamlessCloningParam>();
+            assert(pSeamlessCloningParam != nullptr);
+            return std::make_shared<COcvSeamlessCloning>(m_info.m_name, pSeamlessCloningParam);
+        }
+};
+
+#endif // COCVSEAMLESSCLONING_HPP

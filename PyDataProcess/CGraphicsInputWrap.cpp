@@ -1,0 +1,67 @@
+#include "CGraphicsInputWrap.h"
+
+CGraphicsInputWrap::CGraphicsInputWrap() : CGraphicsProcessInput()
+{    
+}
+
+CGraphicsInputWrap::CGraphicsInputWrap(const CGraphicsProcessInput &io) : CGraphicsProcessInput(io)
+{
+}
+
+bool CGraphicsInputWrap::isDataAvailable() const
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        if(override isDataOver = this->get_override("isDataAvailable"))
+            return isDataOver();
+
+        return CGraphicsProcessInput::isDataAvailable();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+bool CGraphicsInputWrap::default_isDataAvailable() const
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        return this->CGraphicsProcessInput::isDataAvailable();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CGraphicsInputWrap::clearData()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        if(override clearDataOver = this->get_override("clearData"))
+            clearDataOver();
+        else
+            CGraphicsProcessInput::clearData();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CGraphicsInputWrap::default_clearData()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        this->CGraphicsProcessInput::clearData();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}

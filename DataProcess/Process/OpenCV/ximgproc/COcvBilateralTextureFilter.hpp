@@ -1,0 +1,134 @@
+#ifndef COCVBILATERALTEXTUREFILTER_HPP
+#define COCVBILATERALTEXTUREFILTER_HPP
+
+#include "Core/CImageProcess2d.h"
+#include "IO/CImageProcessIO.h"
+#include <opencv2/ximgproc.hpp>
+
+//------------------------------//
+//----- COcvBilateralTextureFilterParam -----//
+//------------------------------//
+class COcvBilateralTextureFilterParam: public CProtocolTaskParam
+{
+    public:
+
+        COcvBilateralTextureFilterParam() : CProtocolTaskParam(){}
+
+        void        setParamMap(const UMapString& paramMap) override
+        {
+            m_fr = std::stoi(paramMap.at("fr"));
+            m_numIter = std::stoi(paramMap.at("numIter"));
+            m_sigmaAlpha = std::stod(paramMap.at("sigmaAlpha"));
+            m_sigmaAvg = std::stod(paramMap.at("sigmaAvg"));
+        }
+
+        UMapString  getParamMap() const override
+        {
+            UMapString map;
+            map.insert(std::make_pair("fr", std::to_string(m_fr)));
+            map.insert(std::make_pair("numIter", std::to_string(m_numIter)));
+            map.insert(std::make_pair("sigmaAlpha", std::to_string(m_sigmaAlpha)));
+            map.insert(std::make_pair("sigmaAvg", std::to_string(m_sigmaAvg)));
+            return map;
+        }
+
+    public:
+
+        int     m_fr = 3;
+        int     m_numIter = 1;
+        double  m_sigmaAlpha = -1;
+        double  m_sigmaAvg = -1;
+};
+
+//-------------------------//
+//----- COcvBilateralTextureFilter -----//
+//-------------------------//
+class COcvBilateralTextureFilter : public CImageProcess2d
+{
+    public:
+
+        COcvBilateralTextureFilter() : CImageProcess2d()
+        {
+        }
+        COcvBilateralTextureFilter(const std::string name, const std::shared_ptr<COcvBilateralTextureFilterParam>& pParam) : CImageProcess2d(name)
+        {
+            m_pParam = std::make_shared<COcvBilateralTextureFilterParam>(*pParam);
+        }
+
+        size_t  getProgressSteps() override
+        {
+            return 3;
+        }
+
+        void run() override
+        {
+            beginTaskRun();
+            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pParam = std::dynamic_pointer_cast<COcvBilateralTextureFilterParam>(m_pParam);
+
+            if(pInput == nullptr || pParam == nullptr)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
+
+            if(pInput->isDataAvailable() == false)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
+
+            CMat imgDst;
+            CMat imgSrc = pInput->getImage();
+            createGraphicsMask(imgSrc.getNbCols(), imgSrc.getNbRows(), pGraphicsInput);
+            emit m_signalHandler->doProgress();
+
+            try
+            {
+                cv::ximgproc::bilateralTextureFilter(imgSrc, imgDst, pParam->m_fr, pParam->m_numIter, pParam->m_sigmaAlpha, pParam->m_sigmaAvg);
+            }
+            catch(cv::Exception& e)
+            {
+                throw CException(CoreExCode::INVALID_PARAMETER, e, __func__, __FILE__, __LINE__);
+            }
+
+            endTaskRun();
+            applyGraphicsMask(imgSrc, imgDst, 0);
+            emit m_signalHandler->doProgress();
+
+            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            if(pOutput)
+                pOutput->setImage(imgDst);
+
+            emit m_signalHandler->doProgress();
+        }
+};
+
+class COcvBilateralTextureFilterFactory : public CProcessFactory
+{
+    public:
+
+        COcvBilateralTextureFilterFactory()
+        {
+            m_info.m_name = QObject::tr("Bilateral texture filter").toStdString();
+            m_info.m_description = QObject::tr("Applies the bilateral texture filter to an image. It performs structure-preserving texture filter.").toStdString();
+            m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
+            m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();
+            m_info.m_keywords = "Smooth,Blur,Anisotropic,Filter,Gaussian,Edge-preserving";
+            m_info.m_authors = "Hojin Cho, Hyunjoon Lee, Henry Kang, and Seungyong Lee";
+            m_info.m_article = "Bilateral texture filtering";
+            m_info.m_journal = "ACM Transactions on Graphics, 33(4):128:1–128:8";
+            m_info.m_year = 2014;
+        }
+
+        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        {
+            auto pDerivedParam = std::dynamic_pointer_cast<COcvBilateralTextureFilterParam>(pParam);
+            if(pDerivedParam != nullptr)
+                return std::make_shared<COcvBilateralTextureFilter>(m_info.m_name, pDerivedParam);
+            else
+                return create();
+        }
+        virtual ProtocolTaskPtr create() override
+        {
+            auto pDerivedParam = std::make_shared<COcvBilateralTextureFilterParam>();
+            assert(pDerivedParam != nullptr);
+            return std::make_shared<COcvBilateralTextureFilter>(m_info.m_name, pDerivedParam);
+        }
+};
+#endif // COCVBILATERALTEXTUREFILTER_HPP

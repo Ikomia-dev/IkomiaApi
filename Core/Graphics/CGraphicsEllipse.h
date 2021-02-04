@@ -1,0 +1,127 @@
+#ifndef CGRAPHICSELLIPSE_H
+#define CGRAPHICSELLIPSE_H
+
+#include <QGraphicsEllipseItem>
+#include "CGraphicsItem.hpp"
+
+/** @cond INTERNAL */
+
+//-----------------------------------
+//- Class CProxyGraphicsEllipse
+//- Proxy class without Qt dependency
+//-----------------------------------
+class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
+{
+    public:
+
+        CProxyGraphicsEllipse();
+        CProxyGraphicsEllipse(float x, float y, float w, float h);
+        CProxyGraphicsEllipse(float x, float y, float w, float h, const GraphicsEllipseProperty& property);
+
+        //Accessors are for Python binding
+        void            setX(float x);
+        void            setY(float y);
+        void            setWidth(float w);
+        void            setHeight(float h);
+
+        float           getX() const;
+        float           getY() const;
+        float           getWidth() const;
+        float           getHeight() const;
+        QRectF          getBoundingRect() const override;
+
+        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+
+        std::shared_ptr<CProxyGraphicsItem> clone() const override;
+
+        void            toJson(QJsonObject& obj) const override;
+
+    public:
+
+        float                   m_x = 0.0;
+        float                   m_y = 0.0;
+        float                   m_width = 0.0;
+        float                   m_height = 0.0;
+        GraphicsEllipseProperty m_property;
+};
+
+//------------------------
+//- Class CGraphicsEllipse
+//------------------------
+class CORESHARED_EXPORT CGraphicsEllipse : public QGraphicsEllipseItem, public CGraphicsItem
+{
+    public:
+
+        enum { Type = UserType + static_cast<size_t>(GraphicsItem::ELLIPSE) };
+
+        CGraphicsEllipse(QGraphicsItem* pParent=nullptr);
+        CGraphicsEllipse(const GraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsEllipse(size_t id, const GraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsEllipse(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsEllipse> &proxyItem, QGraphicsItem *pParent=nullptr);
+        CGraphicsEllipse(const CGraphicsEllipse& ellipse);
+
+        CGraphicsEllipse&       operator=(const CGraphicsEllipse& ellipse);
+
+        QGraphicsItem*          clone() const override;
+
+        void                    setPenColor(QColor color) override;
+        void                    setBrushColor(QColor color) override;
+
+        int                     type() const override;
+        QRectF                  boundingRect() const override;
+        QPainterPath            shape() const override;
+        void                    paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+        void                    mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+        void                    mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
+        void                    hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
+
+        QByteArray              getJsonData(CGraphicsJSON &jsonMgr) const override;
+
+        ProxyGraphicsItemPtr    createProxyGraphicsItem() const override;
+
+        void                    buildFromJsonData(CGraphicsJSON& jsonMgr, QByteArray data) override;
+
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+
+    private:
+
+        void                    updateCursor(const QPointF &pos);
+        void                    updateBorder(qreal dx, qreal dy);
+
+        int                     hitVertex(const QPointF &pos);
+
+        void                    switchHitVertex(bool bHorizontal, bool bVertical);
+
+        void                    copy(const CGraphicsEllipse& ellipse);
+
+    private:
+
+        int             m_hitVertexIndex = -1;
+        QPointF         m_clickPt;
+};
+
+//----------------------------------------------------------------
+//- Class CGraphicsEllipseFactory
+//- Factory for dynamic CGraphicsEllipse instanciation (from type)
+//----------------------------------------------------------------
+class CGraphicsEllipseFactory: public CGraphicsFactory
+{
+    public:
+
+        CGraphicsEllipseFactory()
+        {
+            m_type = CGraphicsEllipse::UserType + static_cast<size_t>(GraphicsItem::ELLIPSE);
+        }
+
+        ~CGraphicsEllipseFactory(){}
+
+        QGraphicsItem*  create(QGraphicsItem* pParent) override
+        {
+            return new CGraphicsEllipse(pParent);
+        }
+};
+
+/** @endcond */
+
+#endif // CGRAPHICSELLIPSE_H

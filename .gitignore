@@ -1,0 +1,11 @@
+IkomiaApi.pro.user
+Build/
+LocalSettings.pri
+Doc/API/C++/html
+Doc/API/C++/latex
+Doc/API/Python/build
+Doc/API/Python/source/_build
+Doc/API/html
+Doc/API/latex
+Doc/Internal/html
+Doc/Internal/latex

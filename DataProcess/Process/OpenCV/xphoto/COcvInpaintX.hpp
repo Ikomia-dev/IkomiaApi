@@ -1,0 +1,100 @@
+#ifndef COCVINPAINTX_HPP
+#define COCVINPAINTX_HPP
+
+#include "opencv2/xphoto.hpp"
+#include "Core/CImageProcess2d.h"
+
+class COcvInpaintX : public CImageProcess2d
+{
+    public:
+
+        COcvInpaintX() : CImageProcess2d()
+        {
+        }
+        COcvInpaintX(const std::string name, const std::shared_ptr<CProtocolTaskParam>& pParam) : CImageProcess2d(name)
+        {
+            m_pParam = std::make_shared<CProtocolTaskParam>(*pParam);
+        }
+
+        size_t  getProgressSteps() override
+        {
+            return 3;
+        }
+
+        void run() override
+        {
+            beginTaskRun();
+            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+
+            if(pInput == nullptr)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Invalid input", __func__, __FILE__, __LINE__);
+
+            if(pInput->isDataAvailable() == false)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
+
+            CMat imgDst;
+            CMat imgSrc = pInput->getImage();
+            createGraphicsMask(imgSrc.getNbCols(), imgSrc.getNbRows(), pGraphicsInput);
+            emit m_signalHandler->doProgress();
+
+            auto mask = getGraphicsMask(0);
+            if(mask.data == nullptr)
+                throw CException(CoreExCode::NULL_POINTER, "Empty region of interest", __func__, __FILE__, __LINE__);
+
+            try
+            {
+                cv::bitwise_not(mask, mask);
+                if(imgSrc.channels() >= 3)
+                {
+                    CMat srcTmp;
+                    cv::cvtColor(imgSrc, srcTmp, CV_RGB2Lab);
+                    cv::xphoto::inpaint(srcTmp, mask, imgDst, cv::xphoto::INPAINT_SHIFTMAP);
+                    cv::cvtColor(imgDst, imgDst, CV_Lab2RGB);
+                }
+                else
+                    cv::xphoto::inpaint(imgSrc, mask, imgDst, cv::xphoto::INPAINT_SHIFTMAP);
+            }
+            catch(cv::Exception& e)
+            {
+                throw CException(CoreExCode::INVALID_PARAMETER, e, __func__, __FILE__, __LINE__);
+            }
+
+            endTaskRun();
+            emit m_signalHandler->doProgress();
+
+            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            if(pOutput)
+                pOutput->setImage(imgDst);
+
+            emit m_signalHandler->doProgress();
+        }
+};
+
+class COcvInpaintXFactory : public CProcessFactory
+{
+    public:
+
+        COcvInpaintXFactory()
+        {
+            m_info.m_name = QObject::tr("XPhoto Inpaint").toStdString();
+            m_info.m_description = QObject::tr("This process performs inpainting from region of interest drawn in original image.").toStdString();
+            m_info.m_path = QObject::tr("OpenCV/Extra modules/Additional photo processing algorithms").toStdString();
+            m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();
+            m_info.m_keywords = "inpainting,photo,deletion";
+            m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/daa/group__xphoto.html#gab4febba6be53e5fddc480b8cedf51eee";
+        }
+
+        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        {
+            return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
+        }
+        virtual ProtocolTaskPtr create() override
+        {
+            auto pParam = std::make_shared<CProtocolTaskParam>();
+            assert(pParam != nullptr);
+            return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
+        }
+};
+
+#endif // COCVINPAINTX_H

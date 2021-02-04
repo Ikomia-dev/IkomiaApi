@@ -1,0 +1,12 @@
+#ifndef DATAPLOT_GLOBAL_H
+#define DATAPLOT_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(DATAPLOT_LIBRARY)
+#  define DATAPLOTSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define DATAPLOTSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // DATAPLOT_GLOBAL_H

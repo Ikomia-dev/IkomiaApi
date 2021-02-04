@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Shaders/cylinderfshader.frag</file>
+        <file>Shaders/cylindervshader.vert</file>
+        <file>Shaders/spherefshader.frag</file>
+        <file>Shaders/spherevshader.vert</file>
+        <file>Shaders/texturefshader.frag</file>
+        <file>Shaders/texturevshader.vert</file>
+    </qresource>
+</RCC>

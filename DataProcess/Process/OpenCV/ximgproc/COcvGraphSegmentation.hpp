@@ -1,0 +1,141 @@
+#ifndef COCVGRAPHSEGMENTATION_HPP
+#define COCVGRAPHSEGMENTATION_HPP
+
+#include "Core/CImageProcess2d.h"
+#include "IO/CImageProcessIO.h"
+#include <opencv2/ximgproc.hpp>
+
+//--------------------------------------//
+//----- COcvGraphSegmentationParam -----//
+//--------------------------------------//
+class COcvGraphSegmentationParam: public CProtocolTaskParam
+{
+    public:
+
+        COcvGraphSegmentationParam() : CProtocolTaskParam(){}
+
+        void        setParamMap(const UMapString& paramMap) override
+        {
+            m_sigma = std::stod(paramMap.at("sigma"));
+            m_k = std::stod(paramMap.at("k"));
+            m_minSize = std::stoi(paramMap.at("minSize"));
+        }
+
+        UMapString  getParamMap() const override
+        {
+            UMapString map;
+            map.insert(std::make_pair("sigma", std::to_string(m_sigma)));
+            map.insert(std::make_pair("k", std::to_string(m_k)));
+            map.insert(std::make_pair("minSize", std::to_string(m_minSize)));
+            return map;
+        }
+
+    public:
+
+        double  m_sigma = 0.8;
+        double  m_k = 300;
+        int     m_minSize = 100;
+};
+
+//---------------------------------//
+//----- COcvGraphSegmentation -----//
+//---------------------------------//
+class COcvGraphSegmentation : public CImageProcess2d
+{
+    public:
+
+        COcvGraphSegmentation() : CImageProcess2d()
+        {
+            setOutputDataType(IODataType::IMAGE_LABEL, 0);
+            addOutput(std::make_shared<CImageProcessIO>());
+            setOutputColorMap(1, 0);
+        }
+        COcvGraphSegmentation(const std::string name, const std::shared_ptr<COcvGraphSegmentationParam>& pParam) : CImageProcess2d(name)
+        {
+            m_pParam = std::make_shared<COcvGraphSegmentationParam>(*pParam);
+            setOutputDataType(IODataType::IMAGE_LABEL, 0);
+            addOutput(std::make_shared<CImageProcessIO>());
+            setOutputColorMap(1, 0);
+        }
+
+        size_t  getProgressSteps() override
+        {
+            return 3;
+        }
+
+        void run() override
+        {
+            beginTaskRun();
+            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pParam = std::dynamic_pointer_cast<COcvGraphSegmentationParam>(m_pParam);
+
+            if(pInput == nullptr || pParam == nullptr)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
+
+            if(pInput->isDataAvailable() == false)
+                throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
+
+            CMat imgDst;
+            CMat imgSrc = pInput->getImage();
+            emit m_signalHandler->doProgress();
+
+            try
+            {
+                cv::Ptr<cv::ximgproc::segmentation::GraphSegmentation> gs = cv::ximgproc::segmentation::createGraphSegmentation();
+                gs->setSigma(pParam->m_sigma);
+                gs->setK(pParam->m_k);
+                gs->setMinSize(pParam->m_minSize);
+                gs->processImage(imgSrc, imgDst);
+            }
+            catch(cv::Exception& e)
+            {
+                throw CException(CoreExCode::INVALID_PARAMETER, e, __func__, __FILE__, __LINE__);
+            }
+
+            emit m_signalHandler->doProgress();
+            forwardInputImage(0, 1);
+
+            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            if(pOutput)
+                pOutput->setImage(imgDst);
+
+            endTaskRun();
+            emit m_signalHandler->doProgress();
+        }
+};
+
+class COcvGraphSegmentationFactory : public CProcessFactory
+{
+    public:
+
+        COcvGraphSegmentationFactory()
+        {
+            m_info.m_name = QObject::tr("Graph Segmentation").toStdString();
+            m_info.m_description = QObject::tr("This process performs a graph based segmentation.").toStdString();
+            m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Image segmentation").toStdString();
+            m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();
+            m_info.m_keywords = "segmentation,graph";
+            m_info.m_authors = "Pedro F Felzenszwalb and Daniel P Huttenlocher";
+            m_info.m_article = "Efficient graph-based image segmentation";
+            m_info.m_journal = "Springer, volume 59, pages 167–181";
+            m_info.m_year = 2004;
+            m_info.m_docLink = "https://docs.opencv.org/3.4.3/d5/df0/group__ximgproc__segmentation.html";
+        }
+
+        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        {
+            auto pDerivedParam = std::dynamic_pointer_cast<COcvGraphSegmentationParam>(pParam);
+            if(pDerivedParam != nullptr)
+                return std::make_shared<COcvGraphSegmentation>(m_info.m_name, pDerivedParam);
+            else
+                return create();
+        }
+        virtual ProtocolTaskPtr create() override
+        {
+            auto pDerivedParam = std::make_shared<COcvGraphSegmentationParam>();
+            assert(pDerivedParam != nullptr);
+            return std::make_shared<COcvGraphSegmentation>(m_info.m_name, pDerivedParam);
+        }
+};
+
+#endif // COCVGRAPHSEGMENTATION_HPP

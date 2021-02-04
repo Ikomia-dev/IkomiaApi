@@ -1,0 +1,249 @@
+#include "CProtocolTaskIO.h"
+#include "Main/CoreTools.hpp"
+
+CProtocolTaskIO::CProtocolTaskIO()
+{
+}
+
+CProtocolTaskIO::CProtocolTaskIO(IODataType dataType)
+{
+    m_dataType = dataType;
+}
+
+CProtocolTaskIO::CProtocolTaskIO(const CProtocolTaskIO& io)
+{
+    m_name = io.m_name;
+    m_description = io.m_description;
+    m_saveFolder = io.m_saveFolder;
+    m_saveBaseName = io.m_saveBaseName;
+    m_dataType = io.m_dataType;
+    m_saveFormat = io.m_saveFormat;
+    m_dimCount = io.m_dimCount;
+    m_bAutoSave = io.m_bAutoSave;
+}
+
+CProtocolTaskIO::CProtocolTaskIO(const CProtocolTaskIO&& io)
+{
+    m_name = std::move(io.m_name);
+    m_description = std::move(io.m_description);
+    m_saveFolder = std::move(io.m_saveFolder);
+    m_saveBaseName = std::move(io.m_saveBaseName);
+    m_dataType = std::move(io.m_dataType);
+    m_saveFormat = std::move(io.m_saveFormat);
+    m_dimCount = std::move(io.m_dimCount);
+    m_bAutoSave = std::move(io.m_bAutoSave);
+}
+
+CProtocolTaskIO &CProtocolTaskIO::operator=(const CProtocolTaskIO &io)
+{
+    m_name = io.m_name;
+    m_description = io.m_description;
+    m_saveFolder = io.m_saveFolder;
+    m_saveBaseName = io.m_saveBaseName;
+    m_dataType = io.m_dataType;
+    m_saveFormat = io.m_saveFormat;
+    m_dimCount = io.m_dimCount;
+    m_bAutoSave = io.m_bAutoSave;
+    return *this;
+}
+
+CProtocolTaskIO &CProtocolTaskIO::operator=(const CProtocolTaskIO&& io)
+{
+    m_name = std::move(io.m_name);
+    m_description = std::move(io.m_description);
+    m_saveFolder = std::move(io.m_saveFolder);
+    m_saveBaseName = std::move(io.m_saveBaseName);
+    m_dataType = std::move(io.m_dataType);
+    m_saveFormat = std::move(io.m_saveFormat);
+    m_dimCount = std::move(io.m_dimCount);
+    m_bAutoSave = std::move(io.m_bAutoSave);
+    return *this;
+}
+
+CProtocolTaskIO::~CProtocolTaskIO()
+{
+    deleteTemporaryFiles();
+}
+
+std::string CProtocolTaskIO::getName() const
+{
+    return m_name;
+}
+
+std::string CProtocolTaskIO::getDescription() const
+{
+    return m_description;
+}
+
+IODataType CProtocolTaskIO::getDataType() const
+{
+    return m_dataType;
+}
+
+DataFileFormat CProtocolTaskIO::getSaveFormat() const
+{
+    return m_saveFormat;
+}
+
+std::string CProtocolTaskIO::getSavePath() const
+{
+    return m_saveFolder + m_saveBaseName + Utils::Data::getFileFormatExtension(m_saveFormat);
+}
+
+size_t CProtocolTaskIO::getDimensionCount() const
+{
+    return m_dimCount;
+}
+
+size_t CProtocolTaskIO::getUnitElementCount() const
+{
+    return 1;
+}
+
+CDataInfoPtr CProtocolTaskIO::getDataInfo()
+{
+    return m_infoPtr;
+}
+
+bool CProtocolTaskIO::isDataAvailable() const
+{
+    return false;
+}
+
+bool CProtocolTaskIO::isAutoInput() const
+{
+    return false;
+}
+
+bool CProtocolTaskIO::isAutoSave() const
+{
+    return m_bAutoSave;
+}
+
+void CProtocolTaskIO::setDataType(IODataType type)
+{
+    m_dataType = type;
+}
+
+void CProtocolTaskIO::setDimensionCount(size_t nb)
+{
+    m_dimCount = nb;
+}
+
+void CProtocolTaskIO::setSaveInfo(const std::string &folder, const std::string &baseName)
+{
+    m_saveFolder = folder;
+    m_saveBaseName = baseName;
+}
+
+void CProtocolTaskIO::setDescription(const std::string &description)
+{
+    m_description = description;
+}
+
+void CProtocolTaskIO::setAutoSave(bool bEnable)
+{
+    m_bAutoSave = bEnable;
+}
+
+void CProtocolTaskIO::clearData()
+{
+}
+
+std::shared_ptr<CProtocolTaskIO> CProtocolTaskIO::clone() const
+{
+    return cloneImp();
+}
+
+void CProtocolTaskIO::copy(const std::shared_ptr<CProtocolTaskIO> &ioPtr)
+{
+    *this = *ioPtr;
+}
+
+void CProtocolTaskIO::copyStaticData(const std::shared_ptr<CProtocolTaskIO> &ioPtr)
+{
+    if(ioPtr)
+        m_dimCount = ioPtr->getDimensionCount();
+}
+
+void CProtocolTaskIO::addTemporaryFile(const std::string &path)
+{
+    m_tempFiles.insert(path);
+}
+
+void CProtocolTaskIO::save()
+{
+}
+
+void CProtocolTaskIO::save(const std::string &path)
+{
+    Q_UNUSED(path);
+}
+
+std::string CProtocolTaskIO::getName(IODataType ioDataType)
+{
+    switch(ioDataType)
+    {
+        case IODataType::NONE:
+            return "";
+
+        case IODataType::IMAGE:
+        case IODataType::IMAGE_BINARY:
+        case IODataType::IMAGE_LABEL:
+        case IODataType::VOLUME:
+        case IODataType::VOLUME_BINARY:
+        case IODataType::VOLUME_LABEL:
+        case IODataType::DESCRIPTORS:
+            return "CImageProcessIO";
+
+        case IODataType::VIDEO:
+        case IODataType::VIDEO_BINARY:
+        case IODataType::VIDEO_LABEL:
+        case IODataType::LIVE_STREAM:
+        case IODataType::LIVE_STREAM_BINARY:
+        case IODataType::LIVE_STREAM_LABEL:
+            return "CVideoProcessIO";
+
+        case IODataType::INPUT_GRAPHICS:
+            return "CGraphicsProcessInput";
+
+        case IODataType::OUTPUT_GRAPHICS:
+            return "CGraphicsProcessOutput";
+
+        case IODataType::BLOB_VALUES:
+            return "CMeasureProcessIO";
+
+        case IODataType::NUMERIC_VALUES:
+            return "CFeatureProcessIO";
+
+        case IODataType::WIDGET:
+            return "CWidgetOutput";
+
+        case IODataType::FOLDER_PATH:
+        case IODataType::FILE_PATH:
+            return "CPathIO";
+
+        default: return "";
+    }
+}
+
+std::shared_ptr<CProtocolTaskIO> CProtocolTaskIO::cloneImp() const
+{
+    return std::shared_ptr<CProtocolTaskIO>(new CProtocolTaskIO(*this));
+}
+
+void CProtocolTaskIO::deleteTemporaryFiles()
+{
+    for(auto it=m_tempFiles.begin(); it!=m_tempFiles.end(); ++it)
+    {
+        try
+        {
+            boost::filesystem::path path(*it);
+            boost::filesystem::remove(path);
+        }
+        catch (const boost::filesystem::filesystem_error& e)
+        {
+            qWarning() << QString::fromStdString(e.code().message());
+        }
+    }
+}

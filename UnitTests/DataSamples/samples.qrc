@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../Data/Images/Lena.png</file>
+        <file>../Data/Protocols/ProtocolTest1.pcl</file>
+        <file>../Data/Videos/video.avi</file>
+    </qresource>
+</RCC>
