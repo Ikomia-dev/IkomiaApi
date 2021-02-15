@@ -518,10 +518,6 @@ unix: LIBS += -lopencv_xphoto -lopencv_fuzzy -lopencv_hfs -lopencv_dnn -lopencv_
 unix: LIBS += -lopencv_bgsegm -lopencv_optflow -lopencv_bioinspired -lopencv_saliency -lopencv_superres -lopencv_text
 unix: LIBS += -lopencv_face -lopencv_features2d
 
-#FFTW
-win32: LIBS += -llibfftw3-3 -llibfftw3f-3
-else: LIBS += -lfftw3 -lfftw3f -lfftw3_threads
-
 #Dynamic link to gmic
 LIBS += -lgmic
 
