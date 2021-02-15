@@ -86,9 +86,6 @@ macx: INCLUDEPATH += /usr/local/include/opencv4
 unix: INCLUDEPATH += $$PWD/../../..
 win32: INCLUDEPATH += '$$(ProgramW6432)/NVIDIA GPU Computing Toolkit/CUDA/v$${CUDA_VERSION}/include'
 
-#FFTW
-win32: INCLUDEPATH += $$(ProgramW6432)/fftw-3.3.5-dll64
-
 #gmic
 win32: INCLUDEPATH += $$(ProgramW6432)/gmic/include
 unix: INCLUDEPATH += $$PWD/../gmic/src
@@ -135,9 +132,6 @@ unix:!macx: LIBS += -L/usr/local/cuda/lib64/ # centos 7
 
 # OpenGL
 win32: LIBS += -L'C:\Program Files(x86)\Windows Kits\10\Lib\10.0.17134.0\um\x64'
-
-# FFTW
-win32: LIBS += -L$$(ProgramW6432)/fftw-3.3.5-dll64
 
 # GDCM
 win32: LIBS += -L$$(ProgramW6432)/GDCM/bin
