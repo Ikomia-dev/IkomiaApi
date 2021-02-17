@@ -567,6 +567,8 @@ namespace Ikomia
                 QString goodStr = fileName;
                 //Remove spaces
                 goodStr.replace(' ', "");
+                //Remove ':' (forbidden on Windows)
+                goodStr.replace(':', "-");
                 return goodStr;
             }
 

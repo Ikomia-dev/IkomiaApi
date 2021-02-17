@@ -195,4 +195,19 @@ CBrowseFileWidget *CProtocolTaskWidget::addBrowseFile(const QString &title, cons
     return addBrowseFile(nextPos, title, path, tooltip);
 }
 
+CBrowseFileWidget *CProtocolTaskWidget::addBrowseFolder(int row, const QString &title, const QString &path, const QString &tooltip)
+{
+    auto pLabel = new QLabel(title);
+    auto pBrowseWidget = new CBrowseFileWidget(path, tooltip, QFileDialog::FileMode::Directory);
+    m_pLayout->addWidget(pLabel, row, 0);
+    m_pLayout->addWidget(pBrowseWidget, row, 1);
+    return pBrowseWidget;
+}
+
+CBrowseFileWidget *CProtocolTaskWidget::addBrowseFolder(const QString &title, const QString &path, const QString &tooltip)
+{
+    int nextPos = m_pLayout->rowCount();
+    return addBrowseFolder(nextPos, title, path, tooltip);
+}
+
 #include "moc_CProtocolTaskWidget.cpp"

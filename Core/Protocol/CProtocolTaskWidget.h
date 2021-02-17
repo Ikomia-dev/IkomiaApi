@@ -232,6 +232,24 @@ class CORESHARED_EXPORT CProtocolTaskWidget : public QWidget
          * @return Pointer to the newly created button.
          */
         CBrowseFileWidget*  addBrowseFile(const QString& title, const QString& path, const QString& tooltip);
+        /**
+         * @brief Tool method to add browse folder widget into the internal grid layout.
+         * @param row: zero based index to set where the button is placed.
+         * @param title: label associated with the widget.
+         * @param path: initial folder path.
+         * @param tootip: message shown in the browse button tooltip.
+         * @return Pointer to the newly created button.
+         */
+        CBrowseFileWidget*  addBrowseFolder(int row, const QString& title, const QString& path, const QString& tooltip);
+        /**
+         * @brief Tool method to add browse folder widget at the end of the internal grid layout.
+         * @param row: zero based index to set where the button is placed.
+         * @param title: label associated with the widget.
+         * @param path: initial folder path.
+         * @param tootip: message shown in the browse button tooltip.
+         * @return Pointer to the newly created button.
+         */
+        CBrowseFileWidget*  addBrowseFolder(const QString& title, const QString& path, const QString& tooltip);
 
     protected:
 
