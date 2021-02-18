@@ -15,9 +15,9 @@ The Python environment configuration may vary among your operating system:
 
 **Linux**
 
-- Version: *3.8*
+- Version: *3.7*
 - Path: *~/Ikomia/Python*
-- Installed packages: *pip, numpy, requests, PyQt5=5.11.2, sip, opencv=4.2.0*
+- Installed packages: *pip, numpy, requests, PyQt5=5.15.2, sip, opencv=4.5.0, MLflow=1.12.1*
 
 **Mac OS X**
 
