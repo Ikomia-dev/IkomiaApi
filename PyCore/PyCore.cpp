@@ -298,6 +298,7 @@ BOOST_PYTHON_MODULE(pycore)
         .def("getUnitElementCount", &CProtocolTaskIO::getUnitElementCount, &CProtocolTaskIOWrap::default_getUnitElementCount, _getUnitElementCountDocString, args("self"))
         .def("isDataAvailable", &CProtocolTaskIO::isDataAvailable, &CProtocolTaskIOWrap::default_isDataAvailable, _isDataAvailableDocString, args("self"))
         .def("isAutoInput", &CProtocolTaskIO::isAutoInput, &CProtocolTaskIOWrap::default_isAutoInput, _isAutoInputDocString, args("self"))
+        .def("setDisplayable", &CProtocolTaskIO::setDisplayable, _setDisplayableDocString, args("self", "displayable"))
         .def("clearData", &CProtocolTaskIO::clearData, &CProtocolTaskIOWrap::default_clearData, _clearDataDocString, args("self"))
         .def("copyStaticData", &CProtocolTaskIO::copyStaticData, &CProtocolTaskIOWrap::default_copyStaticData, _copyStaticDataDocString, args("self", "io"))
     ;

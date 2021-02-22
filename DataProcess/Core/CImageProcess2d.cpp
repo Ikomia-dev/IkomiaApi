@@ -22,6 +22,7 @@
 #include "IO/CVideoProcessIO.h"
 #include "Graphics/CGraphicsConversion.h"
 #include "Graphics/CGraphicsLayer.h"
+#include "IO/CConvertIO.h"
 
 CImageProcess2d::CImageProcess2d() : CProtocolTask()
 {
@@ -155,42 +156,17 @@ void CImageProcess2d::updateStaticOutputs()
 
         for(size_t i=0; i<getOutputCount(); ++i)
         {
-            auto dataType = getOutputDataType(i);
-            if((dataType == IODataType::IMAGE ||
-               dataType == IODataType::VIDEO ||
-               dataType == IODataType::LIVE_STREAM) && bOutputVolume == true)
+            if(bOutputVolume)
             {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::VOLUME), i);
+                auto convertedIO = CConvertIO::convertToVolumeIO(getOutput(i));
+                if(convertedIO)
+                    setOutput(convertedIO, i);
             }
-            else if((dataType == IODataType::IMAGE_BINARY ||
-                     dataType == IODataType::VIDEO_BINARY ||
-                     dataType == IODataType::LIVE_STREAM_BINARY) && bOutputVolume == true)
+            else
             {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::VOLUME_BINARY), i);
-            }
-            else if((dataType == IODataType::IMAGE_LABEL ||
-                     dataType == IODataType::VIDEO_LABEL ||
-                     dataType == IODataType::LIVE_STREAM_LABEL) && bOutputVolume == true)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::VOLUME_LABEL), i);
-            }
-            else if((dataType == IODataType::VOLUME ||
-                     dataType == IODataType::VIDEO ||
-                     dataType == IODataType::LIVE_STREAM) && bOutputVolume == false)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(), i);
-            }
-            else if((dataType == IODataType::VOLUME_BINARY ||
-                     dataType == IODataType::VIDEO_BINARY ||
-                     dataType == IODataType::LIVE_STREAM_BINARY) && bOutputVolume == false)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY), i);
-            }
-            else if((dataType == IODataType::VOLUME_LABEL ||
-                    dataType == IODataType::VIDEO_LABEL ||
-                    dataType == IODataType::LIVE_STREAM_LABEL) && bOutputVolume == false)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_LABEL), i);
+                auto convertedIO = CConvertIO::convertToImageIO(getOutput(i));
+                if(convertedIO)
+                    setOutput(convertedIO, i);
             }
         }
     }
@@ -200,25 +176,9 @@ void CImageProcess2d::updateStaticOutputs()
 
         for(size_t i=0; i<getOutputCount(); ++i)
         {
-            auto dataType = getOutputDataType(i);
-            if(dataType == IODataType::IMAGE ||
-                dataType == IODataType::LIVE_STREAM ||
-                dataType == IODataType::VOLUME)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(), i);
-            }
-            else if(dataType == IODataType::IMAGE_BINARY ||
-                     dataType == IODataType::LIVE_STREAM_BINARY ||
-                     dataType == IODataType::VOLUME_BINARY)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::VIDEO_BINARY), i);
-            }
-            else if(dataType == IODataType::IMAGE_LABEL ||
-                     dataType == IODataType::LIVE_STREAM_LABEL ||
-                     dataType == IODataType::VOLUME_LABEL)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::VIDEO_LABEL), i);
-            }
+            auto convertedIO = CConvertIO::convertToVideoIO(getOutput(i));
+            if(convertedIO)
+                setOutput(convertedIO, i);
         }
     }
     else if(bInputStream == true)
@@ -229,25 +189,9 @@ void CImageProcess2d::updateStaticOutputs()
         // If input data type is a video or image sequence
         for(size_t i=0; i<getOutputCount(); ++i)
         {
-            auto dataType = getOutputDataType(i);
-            if(dataType == IODataType::IMAGE ||
-               dataType == IODataType::VIDEO ||
-               dataType == IODataType::VOLUME)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM), i);
-            }
-            else if(dataType == IODataType::IMAGE_BINARY ||
-                    dataType == IODataType::VIDEO_BINARY ||
-                    dataType == IODataType::VOLUME_BINARY)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM_BINARY), i);
-            }
-            else if(dataType == IODataType::IMAGE_LABEL ||
-                    dataType == IODataType::VIDEO_LABEL ||
-                    dataType == IODataType::VOLUME_LABEL)
-            {
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM_LABEL), i);
-            }
+            auto convertedIO = CConvertIO::convertToStreamIO(getOutput(i));
+            if(convertedIO)
+                setOutput(convertedIO, i);
         }
     }
     else
@@ -262,24 +206,9 @@ void CImageProcess2d::updateStaticOutputs()
         // Restore correct IMAGE datatype
         for(size_t i=0; i<getOutputCount(); ++i)
         {
-            if(getOutputDataType(i) == IODataType::VOLUME ||
-               getOutputDataType(i) == IODataType::VIDEO ||
-               getOutputDataType(i) == IODataType::LIVE_STREAM)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(), i);
-            }
-            else if(getOutputDataType(i) == IODataType::VOLUME_BINARY ||
-                    getOutputDataType(i) == IODataType::VIDEO_BINARY ||
-                    getOutputDataType(i) == IODataType::LIVE_STREAM_BINARY)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY), i);
-            }
-            else if(getOutputDataType(i) == IODataType::VOLUME_LABEL ||
-                    getOutputDataType(i) == IODataType::VIDEO_LABEL ||
-                    getOutputDataType(i) == IODataType::LIVE_STREAM_LABEL)
-            {
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_LABEL), i);
-            }
+            auto convertedIO = CConvertIO::convertToImageIO(getOutput(i));
+            if(convertedIO)
+                setOutput(convertedIO, i);
         }
     }
 }

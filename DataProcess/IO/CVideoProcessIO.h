@@ -204,6 +204,8 @@ class DATAPROCESSSHARED_EXPORT CVideoProcessIO : public CImageProcessIO
         std::vector<CMat>   m_videoImgList;
 };
 
+using VideoProcessIOPtr = std::shared_ptr<CVideoProcessIO>;
+
 class DATAPROCESSSHARED_EXPORT CVideoProcessIOFactory: public CImageProcessIOFactory
 {
     public:

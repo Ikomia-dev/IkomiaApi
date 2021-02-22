@@ -39,6 +39,7 @@ CProtocolTaskIO::CProtocolTaskIO(const CProtocolTaskIO& io)
     m_saveFormat = io.m_saveFormat;
     m_dimCount = io.m_dimCount;
     m_bAutoSave = io.m_bAutoSave;
+    m_bDisplayable = io.m_bDisplayable;
 }
 
 CProtocolTaskIO::CProtocolTaskIO(const CProtocolTaskIO&& io)
@@ -51,6 +52,7 @@ CProtocolTaskIO::CProtocolTaskIO(const CProtocolTaskIO&& io)
     m_saveFormat = std::move(io.m_saveFormat);
     m_dimCount = std::move(io.m_dimCount);
     m_bAutoSave = std::move(io.m_bAutoSave);
+    m_bDisplayable = std::move(io.m_bDisplayable);
 }
 
 CProtocolTaskIO &CProtocolTaskIO::operator=(const CProtocolTaskIO &io)
@@ -63,6 +65,7 @@ CProtocolTaskIO &CProtocolTaskIO::operator=(const CProtocolTaskIO &io)
     m_saveFormat = io.m_saveFormat;
     m_dimCount = io.m_dimCount;
     m_bAutoSave = io.m_bAutoSave;
+    m_bDisplayable = io.m_bDisplayable;
     return *this;
 }
 
@@ -76,6 +79,7 @@ CProtocolTaskIO &CProtocolTaskIO::operator=(const CProtocolTaskIO&& io)
     m_saveFormat = std::move(io.m_saveFormat);
     m_dimCount = std::move(io.m_dimCount);
     m_bAutoSave = std::move(io.m_bAutoSave);
+    m_bDisplayable = std::move(io.m_bDisplayable);
     return *this;
 }
 
@@ -139,6 +143,11 @@ bool CProtocolTaskIO::isAutoSave() const
     return m_bAutoSave;
 }
 
+bool CProtocolTaskIO::isDisplayable() const
+{
+    return m_bDisplayable;
+}
+
 void CProtocolTaskIO::setDataType(IODataType type)
 {
     m_dataType = type;
@@ -163,6 +172,11 @@ void CProtocolTaskIO::setDescription(const std::string &description)
 void CProtocolTaskIO::setAutoSave(bool bEnable)
 {
     m_bAutoSave = bEnable;
+}
+
+void CProtocolTaskIO::setDisplayable(bool bEnable)
+{
+    m_bDisplayable = bEnable;
 }
 
 void CProtocolTaskIO::clearData()

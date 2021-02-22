@@ -193,6 +193,8 @@ class DATAPROCESSSHARED_EXPORT CImageProcessIO : public CProtocolTaskIO
         size_t          m_currentIndex = 0;
 };
 
+using ImageProcessIOPtr = std::shared_ptr<CImageProcessIO>;
+
 class DATAPROCESSSHARED_EXPORT CImageProcessIOFactory: public CProtocolTaskIOFactory
 {
     public:

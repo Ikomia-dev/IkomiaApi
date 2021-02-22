@@ -133,6 +133,11 @@ class CORESHARED_EXPORT CProtocolTaskIO
           * @return True or False.
           */
         bool                isAutoSave() const;
+        /**
+          * @brief Check whether output has to be displayed.
+          * @return True or False.
+          */
+        bool                isDisplayable() const;
 
         //Setters
         /**
@@ -162,6 +167,11 @@ class CORESHARED_EXPORT CProtocolTaskIO
          * @param bool.
          */
         void                setAutoSave(bool bEnable);
+        /**
+         * @brief Make output displayable or not
+         * @param bool.
+         */
+        void                setDisplayable(bool bEnable);
 
         /**
          * @brief Clears the data stored in the object.
@@ -234,6 +244,7 @@ class CORESHARED_EXPORT CProtocolTaskIO
         CDataInfoPtr            m_infoPtr = nullptr;
         bool                    m_bNewDataInfo = false;
         bool                    m_bAutoSave = false;
+        bool                    m_bDisplayable = true;
         mutable std::mutex      m_mutex;
         std::set<std::string>   m_tempFiles;
         friend class CObjectLocker<CProtocolTaskIO>;

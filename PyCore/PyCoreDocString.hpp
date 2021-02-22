@@ -532,6 +532,12 @@ constexpr auto _isAutoInputDocString =
         "Returns:\n"
         "   bool: True or False.\n\n";
 
+constexpr auto _setDisplayableDocString =
+        "Make the output displayable or not in Ikomia Studio. The output still appear in the workflow editor "
+        "and can be connected to compatible input.\n\n"
+        "Args\n"
+        "   displayable (boolean): True or False.\n\n";
+
 constexpr auto _clearDataDocString =
         "Clear the data stored in the object. Should be overriden for custom input or output.\n\n";
 
