@@ -38,6 +38,7 @@
 #include "CWidgetOutputWrap.h"
 #include "CDatasetIOWrap.h"
 #include "IO/CPathIO.h"
+#include "CArrayIOWrap.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL IKOMIA_ARRAY_API
@@ -332,6 +333,19 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("isDataAvailable", &CDatasetIO::isDataAvailable, &CDatasetIOWrap::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
         .def("clearData", &CDatasetIO::clearData, &CDatasetIOWrap::default_clearData, _clearDataDerivedDocString, args("self"))
         .def("save", &CDatasetIO::save, &CDatasetIOWrap::default_save, _saveDocStr)
+    ;
+
+    //--------------------//
+    //----- CArrayIO -----//
+    //--------------------//
+    class_<CArrayIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CArrayIOWrap>>("CArrayIO", _arrayIODocString, init<>("Default constructor"))
+        .def(init<const CMat&>(_ctor1ArrayIODocString)[incref_return_value_policy<>()])
+        .def(init<const CArrayIO&>("Copy constructor")[incref_return_value_policy<>()])
+        .def("setArray", &CArrayIO::setArray, _setArrayDocString, args("self", "array"))
+        .def("getArray", &CArrayIO::getArray, _getArrayDocString, args("self"))
+        .def("getUnitElementCount", &CArrayIO::getUnitElementCount, &CArrayIOWrap::default_getUnitElementCount, _getArrayUnitElementCountDocString, args("self"))
+        .def("isDataAvailable", &CArrayIO::isDataAvailable, &CArrayIOWrap::default_isDataAvailable, _isArrayDataAvailableDocString, args("self"))
+        .def("clearData", &CArrayIO::clearData, &CArrayIOWrap::default_clearData, _clearArrayDataDocString, args("self"))
     ;
 
     //---------------------------//

@@ -30,6 +30,7 @@ SOURCES += \
         Core/CMlflowTrainProcess.cpp \
         Core/CProtocol.cpp \
         Core/CRunTaskManager.cpp \
+        IO/CArrayIO.cpp \
         IO/CConvertIO.cpp \
         IO/CFolderInput.cpp \
         IO/CGraphicsProcessInput.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
         Core/CMlflowTrainProcess.h \
         Core/CProtocol.h \
         Core/CRunTaskManager.h \
+        IO/CArrayIO.h \
         IO/CConvertIO.h \
         IO/CDatasetIO.hpp \
         IO/CFeatureProcessIO.hpp \

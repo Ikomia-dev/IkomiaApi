@@ -25,6 +25,7 @@
 #include "CDatasetInfo.h"
 #include "CDataImageInfo.h"
 #include "CDataVideoInfo.h"
+#include "CDataArrayInfo.h"
 #include "CDataSubset.hpp"
 
 /** @cond INTERNAL */
@@ -346,8 +347,7 @@ class CDataset
                 case IODataType::VIDEO:
                     pInfo = std::make_shared<CDataVideoInfo>(fileName);
                     break;
-                default:
-                    break;
+                default: break;
             }
             return pInfo;
         }

@@ -271,7 +271,7 @@ void CDataImageInfo::updateImage(const CMat &image)
 
 void CDataImageInfo::computeMinMax(const CMat &image)
 {
-    //cv::minMaxLoc does not support multi-channels input
+    //cv::minMaxIdx does not support multi-channels input
     CMat srcImg;
     if(image.dims == 3)
         srcImg = image.getPlane(0);
@@ -281,10 +281,10 @@ void CDataImageInfo::computeMinMax(const CMat &image)
     if(image.channels() > 1)
     {
         auto tmpImg = srcImg.reshape(1, 0);
-        cv::minMaxLoc(tmpImg, &m_minValue, &m_maxValue);
+        cv::minMaxIdx(tmpImg, &m_minValue, &m_maxValue);
     }
     else
-        cv::minMaxLoc(srcImg, &m_minValue, &m_maxValue);
+        cv::minMaxIdx(srcImg, &m_minValue, &m_maxValue);
 }
 
 std::string CDataImageInfo::getTypeString() const
@@ -295,28 +295,37 @@ std::string CDataImageInfo::getTypeString() const
         case CV_8UC1:
         case CV_8UC3:
         case CV_8UC4:
+            type = "unsigned 8 bits integer";
+            break;
+
         case CV_16UC1:
         case CV_16UC3:
         case CV_16UC4:
-            type = "unsigned integer";
+            type = "unsigned 16 bits integer";
             break;
 
         case CV_16SC1:
         case CV_16SC3:
         case CV_16SC4:
+            type = "signed 16 bits integer";
+            break;
+
         case CV_32SC1:
         case CV_32SC3:
         case CV_32SC4:
-            type = "signed integer";
+            type = "signed 32 bits integer";
             break;
 
         case CV_32FC1:
         case CV_32FC3:
         case CV_32FC4:
+            type = "float";
+            break;
+
         case CV_64FC1:
         case CV_64FC3:
         case CV_64FC4:
-            type = "float";
+            type = "double";
             break;
     }
     return type;

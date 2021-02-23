@@ -288,6 +288,7 @@ BOOST_PYTHON_MODULE(pycore)
         .value("FOLDER_PATH", IODataType::FOLDER_PATH)
         .value("FILE_PATH", IODataType::FILE_PATH)
         .value("DNN_DATASET", IODataType::DNN_DATASET)
+        .value("ARRAY", IODataType::ARRAY)
     ;
 
     class_<CProtocolTaskIOWrap, std::shared_ptr<CProtocolTaskIOWrap>>("CProtocolTaskIO", _protocolTaskIODocString, init<>("Default constructor"))

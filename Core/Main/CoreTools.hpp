@@ -353,6 +353,8 @@ namespace Ikomia
                         return QObject::tr("file path");
                     case IODataType::DNN_DATASET:
                         return QObject::tr("deep learning dataset");
+                    case IODataType::ARRAY:
+                        return QObject::tr("multi-dimensional array");
                 }
                 return QString();
             }

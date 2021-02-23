@@ -27,7 +27,7 @@
 #include "Protocol/CProtocolTaskIO.h"
 
 /**
- * @ingroup groupCore
+ * @ingroup groupDataProcess
  * @brief The CImageProcessIO class defines an input or output for a workflow task dedicated to image management.
  * @details This class is designed to handle image as input or output of a workflow task.
  * A CImageProcessIO instance can be added as input or output to a CProtocolTask or derived object.

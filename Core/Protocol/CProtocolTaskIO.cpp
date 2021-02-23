@@ -256,6 +256,9 @@ std::string CProtocolTaskIO::getName(IODataType ioDataType)
         case IODataType::FILE_PATH:
             return "CPathIO";
 
+        case IODataType::ARRAY:
+            return "CArrayIO";
+
         default: return "";
     }
 }

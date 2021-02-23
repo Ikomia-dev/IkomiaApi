@@ -39,12 +39,15 @@ class CMat : public cv::Mat
         CMat(int rows, int cols, int type, const cv::Scalar& s) : Mat(rows, cols, type, s) {}
         CMat(cv::Size size, int type, const cv::Scalar& s) : Mat(size, type, s) {}
         CMat(int ndims, const int* sizes, int type) : Mat(ndims, sizes, type) {}
+        CMat(const std::vector<int>& sizes, int type) : Mat(sizes, type) {}
         CMat(int ndims, const int* sizes, int type, const cv::Scalar& s) : Mat(ndims, sizes, type, s) {}
+        CMat(const std::vector<int>& sizes, int type, const cv::Scalar& s) : Mat(sizes, type, s) {}
         CMat(const CMat& m) : Mat(m) {}
         CMat(const Mat& m) : Mat(m) {}
         CMat(int rows, int cols, int type, void* data, size_t step=AUTO_STEP) : Mat(rows, cols, type, data, step) {}
         CMat(cv::Size size, int type, void* data, size_t step=AUTO_STEP) : Mat(size, type, data, step) {}
         CMat(int ndims, const int* sizes, int type, void* data, const size_t* steps=0) : Mat(ndims, sizes, type, data, steps) {}
+        CMat(const std::vector<int>& sizes, int type, void* data, const size_t* steps=0) : Mat(sizes, type, data, steps) {}
         CMat(const CMat& m, const cv::Range& rowRange, const cv::Range& colRange=cv::Range::all()) : Mat(m, rowRange, colRange) {}
         CMat(const Mat& m, const cv::Range& rowRange, const cv::Range& colRange=cv::Range::all()) : Mat(m, rowRange, colRange) {}
         CMat(const CMat& m, const cv::Rect& roi) : Mat(m, roi) {}

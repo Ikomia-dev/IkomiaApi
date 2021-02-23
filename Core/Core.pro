@@ -13,6 +13,7 @@ VERSION = $$(IKOMIA_LIB_VERSION)
 DEFINES += CORE_LIBRARY BOOST_ALL_NO_LIB
 
 SOURCES += \
+        Data/CDataArrayInfo.cpp \
         Data/CDataConversion.cpp \
         Data/CDataImageInfo.cpp \
         Data/CDataInfo.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
         Protocol/CViewPropertyIO.cpp
 
 HEADERS += \
+        Data/CDataArrayInfo.h \
         Data/CDataConversion.h \
         Data/CDataImageInfo.h \
         Data/CDataset.hpp \

@@ -76,6 +76,7 @@ namespace Ikomia
         VIDEO_LABEL,            /**< Label video from file (AVI, MPEG...): single channel, 1 graylevel per connected component */
         LIVE_STREAM_BINARY,     /**< Binary video from stream (camera): 8bits single channel */
         LIVE_STREAM_LABEL,      /**< Label video from stream (camera): single channel, 1 graylevel per connected component */
+        ARRAY,                  /**< Multi-dimensional array */
         NONE                    /**< Unknown data type */
     };
 

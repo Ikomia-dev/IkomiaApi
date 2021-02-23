@@ -734,6 +734,46 @@ constexpr auto _saveDocStr =
         "Args:\n"
         "   str: file path\n";
 
+//--------------------//
+//----- CArrayIO -----//
+//--------------------//
+constexpr auto _arrayIODocString =
+        "Define multi-dimensional array as input or output of a task. "
+        "A CArrayIO instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object. "
+        "The internal image data structure is a numpy array.\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+
+constexpr auto _ctor1ArrayIODocString =
+        "Construct a CArrayIO instance with the given array. "
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (Numpy array): nd array\n";
+
+constexpr auto _clearArrayDataDocString =
+        "Clear array so that it becomes empty.\n";
+
+constexpr auto _getArrayDocString =
+        "Get the array data.\n\n"
+        "Returns:\n"
+        "   Numpy array: nd array\n";
+
+constexpr auto _getArrayUnitElementCountDocString =
+        "Get the number of unit elements when the data is processed. "
+        "The number of unit elements is used to calculate the number of progress steps needed to perform a task. "
+        "Ikomia Studio consider array as a whole entity.\n\n"
+        "Returns:\n"
+        "   int: number of unit element to process (always 1).\n";
+
+constexpr auto _isArrayDataAvailableDocString =
+        "Check whether the input/output has valid array.\n\n"
+        "Returns:\n"
+        "   bool: True if array is not empty, False otherwise.\n";
+
+constexpr auto _setArrayDocString =
+        "Set the array data\n\n"
+        "Args:\n"
+        "   array (Numpy array): nd array\n";
+
 //---------------------------//
 //----- CImageProcess2d -----//
 //---------------------------//

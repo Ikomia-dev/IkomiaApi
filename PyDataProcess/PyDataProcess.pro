@@ -19,6 +19,7 @@ DEFINES += PYDATAPROCESS_LIBRARY BOOST_ALL_NO_LIB
 
 SOURCES += \
         ../Core/Data/CvMatNumpyArrayConverter.cpp \
+        CArrayIOWrap.cpp \
         CDatasetIOWrap.cpp \
         CDnnTrainProcessParamWrap.cpp \
         CDnnTrainProcessWrap.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 
 HEADERS += \
         ../Core/Data/CvMatNumpyArrayConverter.h \
+        CArrayIOWrap.h \
         CDatasetIOWrap.h \
         CDnnTrainProcessParamWrap.h \
         CDnnTrainProcessWrap.h \
