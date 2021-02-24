@@ -28,7 +28,7 @@
 
 /** @cond INTERNAL */
 
-class CDataArrayInfo : public CDataInfo
+class CORESHARED_EXPORT CDataArrayInfo : public CDataInfo
 {
     public:
 
