@@ -33,7 +33,7 @@
  * A CArrayIO instance can be added as input or output to a CProtocolTask or derived object.
  * For Python, data structure is a numpy array.
  */
-class CArrayIO : public CProtocolTaskIO
+class DATAPROCESSSHARED_EXPORT CArrayIO : public CProtocolTaskIO
 {
     public:
 
