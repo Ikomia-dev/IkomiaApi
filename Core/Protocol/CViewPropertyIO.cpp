@@ -49,6 +49,11 @@ void CViewPropertyIO::setZoomPosition(int numScheduledScalings, const QPointF &t
     m_viewCenter = viewCenter;
 }
 
+void CViewPropertyIO::setViewMode(const CViewPropertyIO::ViewMode mode)
+{
+    m_viewMode = mode;
+}
+
 float CViewPropertyIO::getZoomScale() const
 {
     return m_zoomScale;
@@ -67,6 +72,11 @@ QPointF CViewPropertyIO::getZoomTargetPos() const
 QPointF CViewPropertyIO::getViewCenter() const
 {
     return m_viewCenter;
+}
+
+CViewPropertyIO::ViewMode CViewPropertyIO::getViewMode() const
+{
+    return m_viewMode;
 }
 
 bool CViewPropertyIO::isChanged() const

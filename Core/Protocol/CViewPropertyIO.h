@@ -30,35 +30,40 @@ class CORESHARED_EXPORT CViewPropertyIO
 {
     public:
 
+        enum class ViewMode { INPUT_OUTPUT, INPUT_ONLY, OUTPUT_ONLY };
+
         CViewPropertyIO();
 
-        void    setMaximized(bool bMaximized);
-        void    setZoomFit(bool bFit);
-        void    setZoomScale(float scale);
-        void    setZoomPosition(int numScheduledScalings, const QPointF& targetPos, const QPointF& viewCenter);
+        void        setMaximized(bool bMaximized);
+        void        setZoomFit(bool bFit);
+        void        setZoomScale(float scale);
+        void        setZoomPosition(int numScheduledScalings, const QPointF& targetPos, const QPointF& viewCenter);
+        void        setViewMode(const ViewMode mode);
 
-        float   getZoomScale() const;
-        int     getZoomNumScheduledScalings() const;
-        QPointF getZoomTargetPos() const;
-        QPointF getViewCenter() const;
+        float       getZoomScale() const;
+        int         getZoomNumScheduledScalings() const;
+        QPointF     getZoomTargetPos() const;
+        QPointF     getViewCenter() const;
+        ViewMode    getViewMode() const;
 
-        bool    isChanged() const;
-        bool    isMaximized() const;
-        bool    isZoomFit() const;
+        bool        isChanged() const;
+        bool        isMaximized() const;
+        bool        isZoomFit() const;
 
-        void    toggleMaximized();
+        void        toggleMaximized();
 
     private:
 
-        bool    m_bChanged = false;
-        bool    m_bMaximized = false;
+        bool        m_bChanged = false;
+        bool        m_bMaximized = false;
+        ViewMode    m_viewMode = ViewMode::INPUT_OUTPUT;
 
         //Zoom properties
-        bool    m_bZoomFit = false;
-        float   m_zoomScale = 1.0;
-        int     m_zoomNumScheduledScalings = 0;
-        QPointF m_zoomTargetPos;
-        QPointF m_viewCenter;
+        bool        m_bZoomFit = false;
+        float       m_zoomScale = 1.0;
+        int         m_zoomNumScheduledScalings = 0;
+        QPointF     m_zoomTargetPos;
+        QPointF     m_viewCenter;
 };
 
 using ViewPropertiesIO = std::vector<CViewPropertyIO>;
