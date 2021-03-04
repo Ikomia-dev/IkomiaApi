@@ -186,24 +186,11 @@ bool CDataVideoIO::isSameImageSequence(const std::string& fileRenamed, const std
     std::string extension = Utils::File::extension(fileName);
     if(isImageFormat(extension))
     {
-        auto newFileName = renameImageSequence(fileName);
-        return fileRenamed == newFileName;
+        auto ret = getImageSequenceInfo(fileName);
+        return fileRenamed == ret.first;
     }
     else
         return fileRenamed == fileName;
-}
-
-std::string CDataVideoIO::getFormattedSequenceName(const std::string &fileName)
-{
-    std::string sequenceFileName;
-    std::string extension = Utils::File::extension(fileName);
-
-    if(isImageFormat(extension))
-        sequenceFileName = renameImageSequence(fileName);
-    else
-        sequenceFileName = fileName;
-
-    return sequenceFileName;
 }
 
 void CDataVideoIO::allocateDataIOPtr(const std::string &fileName)
@@ -212,8 +199,8 @@ void CDataVideoIO::allocateDataIOPtr(const std::string &fileName)
 
     if(isImageFormat(extension))
     {
-        auto newFileName = renameImageSequence(fileName);
-        m_pVideoIO = std::make_unique<COpencvVideoIO>(newFileName);
+        auto ret = getImageSequenceInfo(fileName);
+        m_pVideoIO = std::make_unique<COpencvVideoIO>(ret.first, ret.second);
     }
     else
         m_pVideoIO = std::make_unique<COpencvVideoIO>(fileName);
@@ -224,8 +211,8 @@ CDataVideoIO::CVideoIOPtr CDataVideoIO::_allocateDataIOPtr(const std::string &fi
     std::string extension = Utils::File::extension(fileName);
     if(isImageFormat(extension))
     {
-        auto newFileName = renameImageSequence(fileName);
-        return std::make_unique<COpencvVideoIO>(newFileName);
+        auto ret = getImageSequenceInfo(fileName);
+        return std::make_unique<COpencvVideoIO>(ret.first, ret.second);
     }
     else
         return std::make_unique<COpencvVideoIO>(fileName);
@@ -251,13 +238,18 @@ bool CDataVideoIO::isImageFormat(const std::string &extension)
             extension == ".tiff" || extension == ".tif" || extension == ".exr" || extension == ".hdr" || extension == ".pic");
 }
 
-std::string CDataVideoIO::renameImageSequence(const std::string& fileName)
-{
+std::pair<std::string, int> CDataVideoIO::getImageSequenceInfo(const std::string& fileName)
+{    
     // full path
     boost::filesystem::path fullpath(fileName);
     // Extract filename with extension
     auto filename = fullpath.filename();
     auto filenameStr = filename.string();
+
+    // Check if fileName is already formatted (it is the case when saving)
+    if(filenameStr.find("%") != std::string::npos)
+        return std::make_pair(fileName, 1);
+
     // Use opencv glob function in order to get all files in current folder
     std::vector<cv::String> filenames;
     cv::String folderPath = fullpath.parent_path().string();
@@ -282,6 +274,9 @@ std::string CDataVideoIO::renameImageSequence(const std::string& fileName)
     auto pattern = "%"+std::to_string(numDigit)+"d";
     Utils::String::replace(filenameStr, digit, pattern);
 
-    return fullpath.parent_path().string() + "/" + filenameStr;
+    std::pair<std::string,int> ret;
+    ret.first = fullpath.parent_path().string() + "/" + filenameStr;
+    ret.second = filenames.size();
+    return ret;
 }
 

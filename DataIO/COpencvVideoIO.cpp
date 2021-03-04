@@ -39,6 +39,24 @@ COpencvVideoIO::COpencvVideoIO(const std::string &fileName) : CVirtualVideoIO(fi
     }
 }
 
+COpencvVideoIO::COpencvVideoIO(const std::string &fileName, int frameCount) : CVirtualVideoIO(fileName)
+{
+    m_pVideoBuffer = std::make_unique<CDataVideoBuffer>(fileName, frameCount);
+    if(m_pVideoBuffer->isReadMode())
+    {
+        // Default resolution of the frame is obtained.The default resolution is system dependent.
+        m_width = m_pVideoBuffer->getWidth();
+        m_height = m_pVideoBuffer->getHeight();
+        // Default frame per second rate
+        m_fps = m_pVideoBuffer->getFPS();
+        // Total frames
+        if(!m_fileName.empty())
+            m_frameCount = m_pVideoBuffer->getFrameCount();
+        // Default video compress mode format
+        m_fourcc = m_pVideoBuffer->getCodec();
+    }
+}
+
 COpencvVideoIO::~COpencvVideoIO()
 {
 }
@@ -246,10 +264,13 @@ Dimensions COpencvVideoIO::dimensions(const SubsetBounds &bounds)
 
 CDataInfoPtr COpencvVideoIO::dataInfo()
 {
+    assert(m_pVideoBuffer);
+
     // Lire image à faire
     std::shared_ptr<CDataVideoInfo> pInfo = std::make_shared<CDataVideoInfo>();
     pInfo->setFileName(m_fileName);
     pInfo->setCvType(m_imgCvType);
+    pInfo->m_sourceType = m_pVideoBuffer->getSourceType();
     pInfo->m_width = m_imgWidth;
     pInfo->m_height = m_imgHeight;
     pInfo->m_fps = m_fps;

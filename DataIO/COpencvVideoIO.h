@@ -31,6 +31,7 @@ class DATAIOSHARED_EXPORT COpencvVideoIO : public CVirtualVideoIO
     public:
 
         COpencvVideoIO(const std::string& fileName);
+        COpencvVideoIO(const std::string& fileName, int frameCount);
 
         virtual ~COpencvVideoIO();
 

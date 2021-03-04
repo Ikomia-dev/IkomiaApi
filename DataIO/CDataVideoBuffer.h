@@ -39,10 +39,11 @@ class DATAIOSHARED_EXPORT CDataVideoBuffer: public QObject
 
     public:
 
-        enum Type { VIDEO, OPENNI_STREAM, ID_STREAM, IP_STREAM, PATH_STREAM, IMAGE_SEQUENCE, GSTREAMER_PIPE };
+        enum Type { NONE, VIDEO, OPENNI_STREAM, ID_STREAM, IP_STREAM, PATH_STREAM, IMAGE_SEQUENCE, GSTREAMER_PIPE };
 
         CDataVideoBuffer();
         CDataVideoBuffer(const std::string& path);
+        CDataVideoBuffer(const std::string& path, int frameCount);
         ~CDataVideoBuffer();
 
         void            closeCamera();
@@ -103,16 +104,21 @@ class DATAIOSHARED_EXPORT CDataVideoBuffer: public QObject
         void            updateWrite();
         void            updateStreamWrite();
 
+        void            writeImageSequenceThread();
+        void            writeVideoThread();
+
         bool            isStreamSource() const;
         bool            isNumber(const std::string& s) const;
         void            isWritable();
+
+        void            checkFourcc();
 
     private:
 
         CQueue<CMat>            m_queueRead;
         CQueue<CMat>            m_queueWrite;
         cv::VideoCapture        m_reader;
-        cv::VideoWriter         m_writer;
+        //cv::VideoWriter         m_writer;
         std::string             m_path;
         size_t                  m_queueSize = 128;
         std::mutex              m_mutex;

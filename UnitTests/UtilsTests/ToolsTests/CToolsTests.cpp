@@ -94,6 +94,29 @@ void CToolsTests::geometryFunctions()
     QVERIFY(dist == 0);
 }
 
+void CToolsTests::fileFunctions()
+{
+    const std::string pathTest = "/home/user/images/image.png";
+
+    std::string ext = Utils::File::extension(pathTest);
+    QVERIFY(ext == ".png");
+
+    std::string nameNoExt = Utils::File::getFileNameWithoutExtension(pathTest);
+    QVERIFY(nameNoExt == "image");
+
+    std::string name = Utils::File::getFileName(pathTest);
+    QVERIFY(name == "image.png");
+
+    std::string parentPath = Utils::File::getParentPath(pathTest);
+    QVERIFY(parentPath == "/home/user/images");
+
+    const std::string pathPattern = "/home/user/images/frame_%4d.png";
+    std::string path = Utils::File::getPathFromPattern(pathPattern, 0);
+    QVERIFY(path != pathPattern && path == "/home/user/images/frame_0000.png");
+    path = Utils::File::getPathFromPattern(pathPattern, 11);
+    QVERIFY(path != pathPattern && path == "/home/user/images/frame_0011.png");
+}
+
 QSqlDatabase CToolsTests::createTestDB(int rows)
 {
     auto db =  Utils::Database::connect(":memory:", "UnitTestConnection");

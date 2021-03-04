@@ -51,6 +51,7 @@ class DATAMANAGEMENTSHARED_EXPORT CVideoDataManager : public CDataManager<CMat>
         void                setCurrentVideoIO(CDataset<CMat>& dataset);
 
         CDataVideoInfoPtr   getDataVideoInfoPtr();
+        CDataVideoBuffer::Type  getSourceType() const;
 
         CMat                playVideo(CDataset<CMat> &dataset);
         CMat                playVideo(CDataset<CMat> &dataset, const SubsetBounds& subsetBounds);

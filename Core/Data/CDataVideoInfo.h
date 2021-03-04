@@ -51,6 +51,7 @@ class CORESHARED_EXPORT CDataVideoInfo : public CDataImageInfo
 
     public:
 
+        int     m_sourceType = 0;
         int     m_fps = 0;
         int     m_frameCount = 0;
         int     m_currentPos = 0;

@@ -186,21 +186,25 @@ void CVideoDataManager::setCurrentVideoIO(CDataset<CMat> &dataset)
 
 CVideoIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
 {
-    auto sequenceName = CDataVideoIO::getFormattedSequenceName(fileName);
-    auto it = m_mapVideoIO.find(sequenceName);
+    std::string videoPath = fileName;
+    std::string extension = Utils::File::extension(fileName);
 
+    if(!CDataVideoIO::isVideoFormat(extension, true))
+        videoPath = CDataVideoIO::getImageSequenceInfo(fileName).first;
+
+    auto it = m_mapVideoIO.find(videoPath);
     if(it != m_mapVideoIO.end())
         return it->second;
     else
     {
         if(m_bLive)
         {
-            auto itNew = m_mapVideoIO.emplace(std::make_pair(sequenceName, std::make_shared<CVideoIO>(true, fileName)));
+            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoIO>(true, fileName)));
             return itNew.first->second;
         }
         else
         {
-            auto itNew = m_mapVideoIO.emplace(std::make_pair(sequenceName, std::make_shared<CVideoIO>(fileName)));
+            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoIO>(fileName)));
             return itNew.first->second;
         }
     }
@@ -212,6 +216,18 @@ CDataVideoInfoPtr CVideoDataManager::getDataVideoInfoPtr()
         return nullptr;
 
     return std::dynamic_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIO->dataInfo());
+}
+
+CDataVideoBuffer::Type CVideoDataManager::getSourceType() const
+{
+    if(!m_pCurrentVideoIO)
+        return CDataVideoBuffer::NONE;
+
+    auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIO->dataInfo());
+    if(!infoPtr)
+        return CDataVideoBuffer::NONE;
+
+    return static_cast<CDataVideoBuffer::Type>(infoPtr->m_sourceType);
 }
 
 CMat CVideoDataManager::playVideo(CDataset<CMat> &dataset)

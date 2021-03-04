@@ -24,6 +24,7 @@
 #include <future>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -44,6 +45,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <regex>
 
 //Avoid conflict with Qt slots keyword
 #undef slots
@@ -487,6 +489,29 @@ namespace Ikomia
             {
                 boost::filesystem::path path(filePath);
                 return path.parent_path().string();
+            }
+
+            inline std::string getPathFromPattern(const std::string& pathPattern, int index)
+            {
+                std::string path = pathPattern;
+                auto parent = getParentPath(pathPattern);
+                auto filePattern = getFileName(pathPattern);
+                const std::regex regex("(.+)%([0-9]+)d(\..+)");
+                std::smatch match;
+
+                if(std::regex_search(filePattern, match, regex))
+                {
+                    size_t matchCount = match.size();
+                    if(matchCount >= 4)
+                    {
+                        auto name = match.str(1);
+                        auto digits = std::stoi(match.str(2));
+                        auto extension = match.str(3);
+                        boost::format fmt = boost::format("%1%%2%%3%") % name % boost::io::group(std::setw(digits), std::setfill('0'), index) % extension;
+                        path = parent + "/" + fmt.str();
+                    }
+                }
+                return path;
             }
 
             inline bool isFileExist(const std::string& path)

@@ -70,7 +70,7 @@ class DATAIOSHARED_EXPORT CDataVideoIO
         static bool                     isVideoFormat(const std::string& extension, bool bVideoOnly);
         static bool                     isSameImageSequence(const std::string& fileRenamed, const std::string& fileName);
 
-        static std::string              getFormattedSequenceName(const std::string& fileName);
+        static std::pair<std::string, int>  getImageSequenceInfo(const std::string& fileName);
 
     private:
 
@@ -78,8 +78,6 @@ class DATAIOSHARED_EXPORT CDataVideoIO
         static CVideoIOPtr              _allocateDataIOPtr(const std::string& fileName);
 
         static bool                     isImageFormat(const std::string& extension);
-
-        static std::string              renameImageSequence(const std::string& fileName);
 
     private:
 

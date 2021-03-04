@@ -17,6 +17,7 @@ class CToolsTests : public QObject
         void            stringFunctions();
         void            databaseFunctions();
         void            geometryFunctions();
+        void            fileFunctions();
 
     private:
 

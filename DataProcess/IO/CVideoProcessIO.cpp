@@ -19,6 +19,8 @@
 
 #include "CVideoProcessIO.h"
 #include "Data/CDataVideoInfo.h"
+#include "CDataVideoIO.h"
+#include "UtilsTools.hpp"
 
 CVideoProcessIO::CVideoProcessIO() : CImageProcessIO(IODataType::VIDEO)
 {
@@ -70,7 +72,18 @@ CVideoProcessIO &CVideoProcessIO::operator=(const CVideoProcessIO&& io)
 
 void CVideoProcessIO::setVideoPath(const std::string& path)
 {
-    m_pVideoBuffer = std::make_unique<CDataVideoBuffer>(path);
+    std::string extension = Utils::File::extension(path);
+    if(CDataVideoIO::isVideoFormat(extension, true))
+    {
+        // Videos
+        m_pVideoBuffer = std::make_unique<CDataVideoBuffer>(path);
+    }
+    else
+    {
+        // Image sequence
+        auto ret = CDataVideoIO::getImageSequenceInfo(path);
+        m_pVideoBuffer = std::make_unique<CDataVideoBuffer>(ret.first, ret.second);
+    }
 }
 
 void CVideoProcessIO::setVideoPos(int pos)
@@ -161,8 +174,10 @@ std::vector<CMat> CVideoProcessIO::getVideoImages() const
 
 std::string CVideoProcessIO::getVideoPath() const
 {
-    assert(m_pVideoBuffer);
-    return m_pVideoBuffer->getCurrentPath();
+    if(!m_pVideoBuffer)
+        return "";
+    else
+        return m_pVideoBuffer->getCurrentPath();
 }
 
 CMat CVideoProcessIO::getSnapshot(int pos)
@@ -202,6 +217,7 @@ CDataInfoPtr CVideoProcessIO::getDataInfo()
         infoPtr->setFileName(m_pVideoBuffer->getCurrentPath());
         infoPtr->m_width = m_pVideoBuffer->getWidth();
         infoPtr->m_height = m_pVideoBuffer->getHeight();
+        infoPtr->m_sourceType = m_pVideoBuffer->getSourceType();
     }
     return m_infoPtr;
 }

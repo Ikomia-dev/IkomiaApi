@@ -58,6 +58,12 @@ CDataVideoBuffer::CDataVideoBuffer(const std::string &path)
     setVideoPath(path);
 }
 
+CDataVideoBuffer::CDataVideoBuffer(const std::string &path, int frameCount)
+{
+    setVideoPath(path);
+    m_nbFrames = frameCount;
+}
+
 CDataVideoBuffer::~CDataVideoBuffer()
 {
     stopRead();
@@ -100,9 +106,10 @@ void CDataVideoBuffer::openVideo()
         if(!m_reader.isOpened())
             throw CException(DataIOExCode::FILE_NOT_EXISTS, "Failed to open video file or camera", __func__, __FILE__, __LINE__);
 
-        // Param available ONLY for classic cameras
+        // Parameter not available for image sequence
         m_nbFrames = m_reader.get(cv::CAP_PROP_FRAME_COUNT);
         m_fps = m_reader.get(cv::CAP_PROP_FPS);
+
         if(m_fps <= 0)
             m_fps = 25;
 
@@ -311,8 +318,13 @@ bool CDataVideoBuffer::isReadOpened() const
 
 bool CDataVideoBuffer::isReadMode() const
 {
-    if(isStreamSource() || m_type == IMAGE_SEQUENCE)
+    if(isStreamSource())
         return true;
+    else if(m_type == IMAGE_SEQUENCE)
+    {
+        auto realPath = Utils::File::getPathFromPattern(m_path, 0);
+        return Utils::File::isFileExist(realPath);
+    }
     else if(m_type == VIDEO)
         return Utils::File::isFileExist(m_path);
     else
@@ -349,7 +361,9 @@ void CDataVideoBuffer::setQueueSize(size_t queueSize)
 
 void CDataVideoBuffer::setPosition(int pos)
 {
-    assert(pos <= m_nbFrames);
+    if(m_type != IMAGE_SEQUENCE && pos >= m_nbFrames)
+        throw CException(DataIOExCode::VIDEO_WRONG_IMG_NUMBERS, "Invalid frame number", __func__, __FILE__, __LINE__);
+
     m_mutex.lock();
     m_currentPos = pos;
     m_reader.set(cv::CAP_PROP_POS_FRAMES, pos);
@@ -503,48 +517,16 @@ void CDataVideoBuffer::updateRead()
 
 void CDataVideoBuffer::updateWrite()
 {
-    // Test codec (default is Motion JPEG)
-    if(m_fourcc == -1)
-        m_fourcc = cv::VideoWriter::fourcc('M','P','E','G');
-
-    //Default API backend is FFMPEG
-    cv::VideoWriter writer;
-    writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height));
-    if(!writer.isOpened())
-    {
-        qCritical().noquote() << "Failed to open video writer.";
-        return;
-    }
-
-    try
-    {
-        int count = 0;
-        while(m_bStopWrite == false && count < m_nbFrames)
-        {
-            cv::Mat img = m_queueWrite.pop();
-            if(!img.empty())
-            {
-                m_mutex.lock();
-                writer.write(img);
-                m_mutex.unlock();
-                count++;
-            }
-        }
-        writer.release();
-    }
-    catch(CQueue<CMat>::cancelled& /*e*/)
-    {
-        // Nothing more to process, we're done
-        writer.release();
-        qInfo().noquote() << "Write thread finished: no more images available";
-    }
+    if(m_type == CDataVideoBuffer::IMAGE_SEQUENCE)
+        writeImageSequenceThread();
+    else
+        writeVideoThread();
 }
 
 void CDataVideoBuffer::updateStreamWrite()
 {
     // Test codec (default is Motion JPEG)
-    if(m_fourcc == -1)
-        m_fourcc = cv::VideoWriter::fourcc('M','P','E','G');
+    checkFourcc();
 
     //Default API backend is FFMPEG
     cv::VideoWriter writer;
@@ -571,6 +553,68 @@ void CDataVideoBuffer::updateStreamWrite()
     catch(CQueue<CMat>::cancelled& /*e*/)
     {
         // Nothing more to process, we're done
+        qInfo().noquote() << "Write thread finished: no more images available";
+    }
+}
+
+void CDataVideoBuffer::writeImageSequenceThread()
+{
+    try
+    {
+        int count = 0;
+        while(m_bStopWrite == false && count < m_nbFrames)
+        {
+            cv::Mat img = m_queueWrite.pop();
+            if(!img.empty())
+            {
+                auto filename = Utils::File::getPathFromPattern(m_path, count);
+                cv::imwrite(filename, img);
+                count++;
+            }
+        }
+    }
+    catch(std::exception& e)
+    {
+        // Nothing more to process, we're done
+        qCritical().noquote() << QString::fromStdString(e.what());
+    }
+}
+
+void CDataVideoBuffer::writeVideoThread()
+{
+    // Test codec (default is Motion JPEG)
+    checkFourcc();
+
+    //Default API backend is FFMPEG
+    cv::VideoWriter writer;
+    writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height));
+
+    if(!writer.isOpened())
+    {
+        qCritical().noquote() << "Failed to open video writer.";
+        return;
+    }
+
+    try
+    {
+        int count = 0;
+        while(m_bStopWrite == false && count < m_nbFrames)
+        {
+            cv::Mat img = m_queueWrite.pop();
+            if(!img.empty())
+            {
+                m_mutex.lock();
+                writer.write(img);
+                m_mutex.unlock();
+                count++;
+            }
+        }
+        writer.release();
+    }
+    catch(CQueue<CMat>::cancelled& /*e*/)
+    {
+        // Nothing more to process, we're done
+        writer.release();
         qInfo().noquote() << "Write thread finished: no more images available";
     }
 }
@@ -679,9 +723,11 @@ void CDataVideoBuffer::init()
 
 void CDataVideoBuffer::isWritable()
 {
+    if(m_type == CDataVideoBuffer::IMAGE_SEQUENCE)
+        return;
+
     // Test codec (default is Motion JPEG)
-    if(m_fourcc == -1)
-        m_fourcc = cv::VideoWriter::fourcc('M','P','E','G');
+    checkFourcc();
 
     cv::VideoWriter writer;
     if(writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height)) == false)
@@ -689,6 +735,15 @@ void CDataVideoBuffer::isWritable()
         m_bStopWrite = true;
         throw CException(DataIOExCode::FILE_NOT_EXISTS, "Failed to open video writer.", __func__, __FILE__, __LINE__);
     }
+}
+
+void CDataVideoBuffer::checkFourcc()
+{
+    // Test codec (default is Motion JPEG)
+    if(m_type == CDataVideoBuffer::IMAGE_SEQUENCE)
+        m_fourcc = 0;
+    else if(m_fourcc == -1)
+        m_fourcc = cv::VideoWriter::fourcc('M','P','E','G');
 }
 
 #include "moc_CDataVideoBuffer.cpp"

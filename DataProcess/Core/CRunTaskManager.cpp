@@ -164,6 +164,7 @@ void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr)
 
 void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr)
 {
+    bool bImageSequence = false;
     const std::set<IODataType> videoTypes = {IODataType::VIDEO, IODataType::VIDEO_LABEL, IODataType::VIDEO_BINARY};
 
     //Get video inputs
@@ -179,6 +180,12 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr)
     for(size_t i=0; i<videoInputs.size(); ++i)
     {
         auto inputPtr = std::static_pointer_cast<CVideoProcessIO>(videoInputs[i]);
+
+        //Check source type
+        auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(inputPtr->getDataInfo());
+        if(infoPtr && infoPtr->m_sourceType == CDataVideoBuffer::IMAGE_SEQUENCE)
+            bImageSequence = true;
+
         // Set video position to the first image for processing all the video
         inputPtr->setVideoPos(0);
         // Start acquisition
@@ -188,12 +195,20 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr)
     auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(videoInputs[0]->getDataInfo());
     for(size_t i=0; i<videoOutputs.size(); ++i)
     {
+        // Set save path
+        std::string outPath;
         auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(videoOutputs[i]);
-        // Start video write
         Utils::File::createDirectory(taskPtr->getOutputFolder());
-        std::string outPath = taskPtr->getOutputFolder() + taskPtr->getName() + "_" + std::to_string(i+1) + ".avi";
+
+        if(bImageSequence)
+            outPath = taskPtr->getOutputFolder() + taskPtr->getName() + "_" + std::to_string(i+1) + "_%04d.png";
+        else
+            outPath = taskPtr->getOutputFolder() + taskPtr->getName() + "_" + std::to_string(i+1) + ".avi";
+
         outputPtr->addTemporaryFile(outPath);
         outputPtr->setVideoPath(outPath);
+
+        // Start video write
         outputPtr->startVideoWrite(infoPtr->m_width, infoPtr->m_height, infoPtr->m_frameCount, infoPtr->m_fps, infoPtr->m_fourcc);
     }
 
