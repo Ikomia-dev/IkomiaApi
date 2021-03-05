@@ -144,7 +144,7 @@ void CProtocol::setInput(const ProtocolTaskIOPtr &pInput, size_t index, bool bNe
     if(pActiveTask)
         pActiveTask->globalInputChanged(bNewSequence);
 
-    if(bNewSequence)
+    if(bNewSequence && !m_bForceBatchMode)
         checkBatchModeState();
 
     startIOAnalysis(m_root);
@@ -979,6 +979,7 @@ void CProtocol::clearAllOutputData()
 void CProtocol::forceBatchMode(bool bEnable)
 {
     m_bBatchMode = bEnable;
+    m_bForceBatchMode = bEnable;
     m_runMgr.setBatchMode(bEnable);
 }
 

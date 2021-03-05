@@ -42,7 +42,7 @@ namespace Ikomia
             }
 
             if(parentPath.dirName() == "Developpement")
-                return parentPath.absolutePath().toStdString() + "/Ikomia/UnitTests/Data";
+                return parentPath.absolutePath().toStdString() + "/IkomiaApi/UnitTests/Data";
             else
                 return path.absolutePath().toStdString() + "/UnitTests/Data";
         }

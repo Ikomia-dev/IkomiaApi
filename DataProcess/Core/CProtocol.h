@@ -247,6 +247,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         std::vector<bool>       m_inputBatchState;
         std::atomic<bool>       m_bStopped{false};
         bool                    m_bBatchMode = false;
+        bool                    m_bForceBatchMode = false;
         CTaskIORegistration*    m_pTaskIORegistration = nullptr;
         CRunTaskManager         m_runMgr;
 };
