@@ -80,6 +80,8 @@ void CDataVideoBuffer::openVideo()
 {
     switch(m_type)
     {
+        case NONE:
+            return;
         case OPENNI_STREAM:
             if(!m_reader.open(cv::CAP_OPENNI))
                 throw CException(DataIOExCode::FILE_NOT_EXISTS, "Failed to open video file or camera", __func__, __FILE__, __LINE__);
@@ -321,10 +323,7 @@ bool CDataVideoBuffer::isReadMode() const
     if(isStreamSource())
         return true;
     else if(m_type == IMAGE_SEQUENCE)
-    {
-        auto realPath = Utils::File::getPathFromPattern(m_path, 0);
-        return Utils::File::isFileExist(realPath);
-    }
+        return Utils::File::isFileSequenceExist(m_path);
     else if(m_type == VIDEO)
         return Utils::File::isFileExist(m_path);
     else
@@ -412,6 +411,9 @@ std::string CDataVideoBuffer::getSourceName() const
     std::string name;
     switch(m_type)
     {
+        case NONE:
+            name = "NoSource";
+            break;
         case OPENNI_STREAM:
             name = "OpenNI_stream";
             break;

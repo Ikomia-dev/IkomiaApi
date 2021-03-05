@@ -110,11 +110,22 @@ void CToolsTests::fileFunctions()
     std::string parentPath = Utils::File::getParentPath(pathTest);
     QVERIFY(parentPath == "/home/user/images");
 
-    const std::string pathPattern = "/home/user/images/frame_%4d.png";
+    std::string pathPattern = "/home/user/images/frame_%04d.png";
     std::string path = Utils::File::getPathFromPattern(pathPattern, 0);
     QVERIFY(path != pathPattern && path == "/home/user/images/frame_0000.png");
+    pathPattern = "/home/user/images/frame_%4d.png";
     path = Utils::File::getPathFromPattern(pathPattern, 11);
     QVERIFY(path != pathPattern && path == "/home/user/images/frame_0011.png");
+
+    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/frame_%04d.png";
+    bool bFind = Utils::File::isFileSequenceExist(pathPattern);
+    QVERIFY(bFind);
+    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/image_%04d.png";
+    bFind = Utils::File::isFileSequenceExist(pathPattern);
+    QVERIFY(!bFind);
+    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/frame%04d.jpg";
+    bFind = Utils::File::isFileSequenceExist(pathPattern);
+    QVERIFY(!bFind);
 }
 
 QSqlDatabase CToolsTests::createTestDB(int rows)

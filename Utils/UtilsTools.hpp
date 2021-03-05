@@ -496,7 +496,7 @@ namespace Ikomia
                 std::string path = pathPattern;
                 auto parent = getParentPath(pathPattern);
                 auto filePattern = getFileName(pathPattern);
-                const std::regex regex("(.+)%([0-9]+)d(\..+)");
+                const std::regex regex(R"((.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+))");
                 std::smatch match;
 
                 if(std::regex_search(filePattern, match, regex))
@@ -518,6 +518,42 @@ namespace Ikomia
             {
                 boost::filesystem::path file(path);
                 return boost::filesystem::exists(file);
+            }
+
+            inline bool isFileSequenceExist(const std::string& pathPattern)
+            {
+                // Search for file with pattern like {prefix}%(0)nd.{ext}'
+                boost::filesystem::path path(pathPattern);
+                boost::filesystem::path directory(path.parent_path().string());
+                auto filePattern = getFileName(pathPattern);
+
+                // Check pattern validity
+                std::smatch match;
+                const std::regex regexPattern(R"((.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+))");
+
+                if(!std::regex_search(filePattern, match, regexPattern))
+                    return false;
+
+                size_t matchCount = match.size();
+                if(matchCount < 4)
+                    return false;
+
+                // Extract pattern information
+                auto prefix = match.str(1);
+                auto digits = match.str(2);
+                auto extension = match.str(3);
+
+                // Regex to check file numbering validity
+                const std::string strRegexFile = prefix + ".*[0-9]{" + digits + "}" + extension;
+                const std::regex regexFile(strRegexFile);
+
+                for(const auto& entry : boost::filesystem::directory_iterator(directory))
+                {
+                    const auto filename = entry.path().filename().string();
+                    if(std::regex_search(filename, match, regexFile))
+                        return true;
+                }
+                return false;
             }
 
             inline void createDirectory(const std::string path)
