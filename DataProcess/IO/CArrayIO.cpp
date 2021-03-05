@@ -23,13 +23,11 @@
 
 CArrayIO::CArrayIO() : CProtocolTaskIO(IODataType::ARRAY)
 {
-    m_name = "CArrayIO";
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
 }
 
 CArrayIO::CArrayIO(const CMat &array) : CProtocolTaskIO(IODataType::ARRAY)
 {
-    m_name = "CArrayIO";
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
     m_array = array;
     m_bNewDataInfo = true;

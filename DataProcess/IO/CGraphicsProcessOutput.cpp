@@ -32,7 +32,6 @@
 
 CGraphicsProcessOutput::CGraphicsProcessOutput() : CProtocolTaskIO(IODataType::OUTPUT_GRAPHICS)
 {
-    m_name = "CGraphicsProcessOutput";
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects extracted from image.").toStdString();
     m_saveFormat = DataFileFormat::JSON;
@@ -52,7 +51,6 @@ CGraphicsProcessOutput::CGraphicsProcessOutput(CGraphicsProcessOutput&& out) : C
 
 CGraphicsProcessOutput::CGraphicsProcessOutput(const CGraphicsProcessInput &in) : CProtocolTaskIO(in)
 {
-    m_name = "CGraphicsProcessOutput";
     m_dataType = IODataType::OUTPUT_GRAPHICS;
     m_items = in.getItems();
 }
@@ -80,7 +78,6 @@ CGraphicsProcessOutput &CGraphicsProcessOutput::operator=(CGraphicsProcessOutput
 CGraphicsProcessOutput &CGraphicsProcessOutput::operator=(const CGraphicsProcessInput &in)
 {
     CProtocolTaskIO::operator=(in);
-    m_name = "CGraphicsProcessOutput";
     m_dataType = IODataType::OUTPUT_GRAPHICS;
     m_items = in.getItems();
     return *this;

@@ -23,7 +23,6 @@
 
 CGraphicsProcessInput::CGraphicsProcessInput() : CProtocolTaskIO(IODataType::INPUT_GRAPHICS)
 {
-    m_name = "CGraphicsProcessInput";
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects in image.\n"
                                 "Graphics can be created interactively by user.").toStdString();
@@ -32,7 +31,6 @@ CGraphicsProcessInput::CGraphicsProcessInput() : CProtocolTaskIO(IODataType::INP
 
 CGraphicsProcessInput::CGraphicsProcessInput(CGraphicsLayer *pLayer) : CProtocolTaskIO(IODataType::INPUT_GRAPHICS)
 {
-    m_name = "CGraphicsProcessInput";
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects in image.\n"
                                 "Graphics can be created interactively by user.").toStdString();
@@ -57,7 +55,6 @@ CGraphicsProcessInput::CGraphicsProcessInput(CGraphicsProcessInput &&in) : CProt
 
 CGraphicsProcessInput::CGraphicsProcessInput(const CGraphicsProcessOutput &out) : CProtocolTaskIO(out)
 {
-    m_name = "CGraphicsProcessInput";
     m_dataType = IODataType::INPUT_GRAPHICS;
     m_pLayer = nullptr;
     m_items = out.getItems();
@@ -89,7 +86,6 @@ CGraphicsProcessInput &CGraphicsProcessInput::operator=(CGraphicsProcessInput &&
 CGraphicsProcessInput &CGraphicsProcessInput::operator=(const CGraphicsProcessOutput &out)
 {
     CProtocolTaskIO::operator=(out);
-    m_name = "CGraphicsProcessInput";
     m_dataType = IODataType::INPUT_GRAPHICS;
     m_pLayer = nullptr;
     m_items = out.getItems();

@@ -1483,11 +1483,18 @@ void CProtocol::updateCompositeInputName()
             if(!m_compositeInputName.empty())
                 m_compositeInputName += "-";
 
-            CDataInfoPtr infoPtr = inputPtr->getDataInfo();
-            if(infoPtr)
+            // Input name
+            std::string name = inputPtr->getName();
+            if(!name.empty())
+                m_compositeInputName += name;
+            else
             {
-                std::string basePath = Utils::File::getPathFromPattern(infoPtr->getFileName(), 0);
-                m_compositeInputName += Utils::File::getFileNameWithoutExtension(basePath);
+                CDataInfoPtr infoPtr = inputPtr->getDataInfo();
+                if(infoPtr)
+                {
+                    std::string basePath = Utils::File::getPathFromPattern(infoPtr->getFileName(), 0);
+                    m_compositeInputName += Utils::File::getFileNameWithoutExtension(basePath);
+                }
             }
         }
     }

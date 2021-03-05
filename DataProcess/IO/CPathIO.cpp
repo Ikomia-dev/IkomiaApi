@@ -24,21 +24,18 @@
 
 CPathIO::CPathIO() : CProtocolTaskIO(IODataType::FILE_PATH)
 {
-    m_name = "CPathIO";
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
 CPathIO::CPathIO(IODataType data) : CProtocolTaskIO(data)
 {
-    m_name = "CPathIO";
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
 CPathIO::CPathIO(IODataType data, const std::string &path) : CProtocolTaskIO(data)
 {
-    m_name = "CPathIO";
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_path = path;
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
@@ -46,7 +43,6 @@ CPathIO::CPathIO(IODataType data, const std::string &path) : CProtocolTaskIO(dat
 
 CPathIO::CPathIO(const CFolderInput &in) : CProtocolTaskIO(in)
 {
-    m_name = "CPathIO";
     m_path = in.getPath();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }

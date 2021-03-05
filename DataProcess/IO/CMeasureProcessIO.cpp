@@ -49,7 +49,6 @@ CObjectMeasure::CObjectMeasure(CMeasure measure, std::initializer_list<double> v
 //-----------------------------------//
 CMeasureProcessIO::CMeasureProcessIO() : CProtocolTaskIO(IODataType::BLOB_VALUES)
 {
-    m_name = "MeasureProcessIO";
     m_description = QObject::tr("Predefined measures computed from connected components (Surface, perimeter...).").toStdString();
     m_saveFormat = DataFileFormat::CSV;
 }

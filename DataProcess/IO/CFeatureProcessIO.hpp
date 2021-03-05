@@ -60,7 +60,6 @@ class CFeatureProcessIOBase: public CProtocolTaskIO
 
         CFeatureProcessIOBase(): CProtocolTaskIO(IODataType::NUMERIC_VALUES)
         {
-            m_name = "CFeatureProcessIO";
         }
         CFeatureProcessIOBase(const CFeatureProcessIOBase& io) : CProtocolTaskIO(io)
         {

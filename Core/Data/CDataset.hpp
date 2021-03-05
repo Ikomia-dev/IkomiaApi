@@ -43,6 +43,12 @@ class CDataset
             m_type = type;
             m_currentIndex = 0;
         }
+        CDataset(const IODataType& type, const std::string& name)
+        {
+            m_type = type;
+            m_currentIndex = 0;
+            m_info.setName(name);
+        }
         CDataset(const CDataset& dataset)
         {
             m_type = dataset.m_type;

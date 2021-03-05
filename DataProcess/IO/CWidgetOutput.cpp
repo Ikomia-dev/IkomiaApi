@@ -23,14 +23,12 @@
 
 CWidgetOutput::CWidgetOutput() : CProtocolTaskIO(IODataType::WIDGET)
 {
-    m_name = "CWidgetOutput";
     m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
     m_saveFormat = DataFileFormat::JPG;
 }
 
 CWidgetOutput::CWidgetOutput(IODataType data): CProtocolTaskIO(data)
 {
-    m_name = "CWidgetOutput";
     m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
     m_saveFormat = DataFileFormat::JPG;
 }

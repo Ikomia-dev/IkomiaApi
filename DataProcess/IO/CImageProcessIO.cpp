@@ -23,7 +23,6 @@
 
 CImageProcessIO::CImageProcessIO() : CProtocolTaskIO(IODataType::IMAGE)
 {
-    m_name = "CImageProcessIO";
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
@@ -31,7 +30,6 @@ CImageProcessIO::CImageProcessIO() : CProtocolTaskIO(IODataType::IMAGE)
 
 CImageProcessIO::CImageProcessIO(const CMat &image) : CProtocolTaskIO(IODataType::IMAGE)
 {
-    m_name = "CImageProcessIO";
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
@@ -43,7 +41,6 @@ CImageProcessIO::CImageProcessIO(const CMat &image) : CProtocolTaskIO(IODataType
 
 CImageProcessIO::CImageProcessIO(IODataType data) : CProtocolTaskIO(data)
 {
-    m_name = "CImageProcessIO";
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
@@ -51,7 +48,6 @@ CImageProcessIO::CImageProcessIO(IODataType data) : CProtocolTaskIO(data)
 
 CImageProcessIO::CImageProcessIO(IODataType data, const CMat &image) : CProtocolTaskIO(data)
 {
-    m_name = "CImageProcessIO";
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;

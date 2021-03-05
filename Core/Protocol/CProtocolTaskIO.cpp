@@ -153,6 +153,11 @@ void CProtocolTaskIO::setDataType(IODataType type)
     m_dataType = type;
 }
 
+void CProtocolTaskIO::setName(const std::string &name)
+{
+    m_name = name;
+}
+
 void CProtocolTaskIO::setDimensionCount(size_t nb)
 {
     m_dimCount = nb;

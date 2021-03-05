@@ -146,6 +146,11 @@ class CORESHARED_EXPORT CProtocolTaskIO
          */
         void                setDataType(IODataType type);
         /**
+         * @brief Sets the name for input or output.
+         * @param name as std::string.
+         */
+        void                setName(const std::string& name);
+        /**
          * @brief Set the number of dimension.
          * @param nb : size_t
          */
@@ -234,7 +239,7 @@ class CORESHARED_EXPORT CProtocolTaskIO
 
     protected:
 
-        std::string             m_name = "default";
+        std::string             m_name = "";
         std::string             m_saveFolder;
         std::string             m_saveBaseName;
         std::string             m_description;
