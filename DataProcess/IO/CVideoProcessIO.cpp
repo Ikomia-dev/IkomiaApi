@@ -24,28 +24,24 @@
 
 CVideoProcessIO::CVideoProcessIO() : CImageProcessIO(IODataType::VIDEO)
 {
-    m_name = "CVideoProcessIO";
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
 CVideoProcessIO::CVideoProcessIO(CMat image) : CImageProcessIO(IODataType::VIDEO, image)
 {
-    m_name = "CVideoProcessIO";
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
 CVideoProcessIO::CVideoProcessIO(IODataType data) : CImageProcessIO(data)
 {
-    m_name = "CVideoProcessIO";
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
 CVideoProcessIO::CVideoProcessIO(IODataType data, const CMat& image) : CImageProcessIO(data, image)
 {
-    m_name = "CVideoProcessIO";
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }

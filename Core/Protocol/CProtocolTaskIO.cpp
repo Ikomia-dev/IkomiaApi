@@ -179,6 +179,11 @@ void CProtocolTaskIO::setAutoSave(bool bEnable)
     m_bAutoSave = bEnable;
 }
 
+void CProtocolTaskIO::setSaveFormat(DataFileFormat format)
+{
+    m_saveFormat = format;
+}
+
 void CProtocolTaskIO::setDisplayable(bool bEnable)
 {
     m_bDisplayable = bEnable;

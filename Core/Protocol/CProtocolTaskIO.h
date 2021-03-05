@@ -173,6 +173,11 @@ class CORESHARED_EXPORT CProtocolTaskIO
          */
         void                setAutoSave(bool bEnable);
         /**
+         * @brief Set default save format.
+         * @param format (DataFileFormat).
+         */
+        void                setSaveFormat(DataFileFormat format);
+        /**
          * @brief Make output displayable or not
          * @param bool.
          */

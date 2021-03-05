@@ -31,6 +31,7 @@ ImageProcessIOPtr CConvertIO::convertToImageIO(const ProtocolTaskIOPtr &ioFrom)
         auto imgIOPtr = std::make_shared<CImageProcessIO>();
         imgIOPtr->CProtocolTaskIO::operator=(*ioFrom);
         imgIOPtr->setDataType(dataType);
+        imgIOPtr->setSaveFormat(DataFileFormat::PNG);
         return imgIOPtr;
     }
     return nullptr;
@@ -44,6 +45,7 @@ VideoProcessIOPtr CConvertIO::convertToVideoIO(const ProtocolTaskIOPtr &ioFrom)
         auto videoIOPtr = std::make_shared<CVideoProcessIO>();
         videoIOPtr->CProtocolTaskIO::operator=(*ioFrom);
         videoIOPtr->setDataType(dataType);
+        videoIOPtr->setSaveFormat(DataFileFormat::AVI);
         return videoIOPtr;
     }
     return nullptr;
@@ -57,6 +59,7 @@ VideoProcessIOPtr CConvertIO::convertToStreamIO(const ProtocolTaskIOPtr &ioFrom)
         auto videoIOPtr = std::make_shared<CVideoProcessIO>();
         videoIOPtr->CProtocolTaskIO::operator=(*ioFrom);
         videoIOPtr->setDataType(dataType);
+        videoIOPtr->setSaveFormat(DataFileFormat::AVI);
         return videoIOPtr;
     }
     return nullptr;
@@ -70,6 +73,7 @@ ImageProcessIOPtr CConvertIO::convertToVolumeIO(const ProtocolTaskIOPtr &ioFrom)
         auto volumeIOPtr = std::make_shared<CImageProcessIO>();
         volumeIOPtr->CProtocolTaskIO::operator=(*ioFrom);
         volumeIOPtr->setDataType(dataType);
+        volumeIOPtr->setSaveFormat(DataFileFormat::PNG);
         return volumeIOPtr;
     }
     return nullptr;
