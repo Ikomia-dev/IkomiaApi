@@ -1446,7 +1446,7 @@ void CProtocol::resetTaskInput(ProtocolTaskPtr &taskPtr, size_t index)
     {
         auto dataType = taskPtr->getOriginalInputDataType(index);
         auto factory = m_pTaskIORegistration->getFactory();
-        auto taskIOPtr = factory.createObject(CProtocolTaskIO::getName(dataType), std::move(dataType));
+        auto taskIOPtr = factory.createObject(CProtocolTaskIO::getClassName(dataType), std::move(dataType));
 
         if(taskIOPtr)
             taskPtr->resetInput(index, taskIOPtr);

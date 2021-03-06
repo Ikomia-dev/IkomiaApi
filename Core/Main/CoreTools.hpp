@@ -364,8 +364,8 @@ namespace Ikomia
                 if(from == nullptr || to == nullptr)
                     return true;
 
-                auto nameFrom = from->getName();
-                auto nameTo = to->getName();
+                auto nameFrom = CProtocolTaskIO::getClassName(from->getDataType());
+                auto nameTo = CProtocolTaskIO::getClassName(to->getDataType());
 
                 return (nameFrom == nameTo ||
                         (nameFrom == "CImageProcessIO" && nameTo == "CVideoProcessIO") ||

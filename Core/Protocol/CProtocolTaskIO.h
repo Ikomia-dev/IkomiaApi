@@ -229,12 +229,12 @@ class CORESHARED_EXPORT CProtocolTaskIO
         virtual void        save(const std::string& path);
 
         /**
-         * @brief Static function to get the name of input or output according to the data type.
+         * @brief Static function to get the class name of input or output according to the data type.
          * @param ioDataType : data type see ::Data
          * @param bInput: indicate if it is input or output
          * @return name given by the system for the given data type.
          */
-        static std::string  getName(IODataType ioDataType);
+        static std::string  getClassName(IODataType ioDataType);
 
     private:
 

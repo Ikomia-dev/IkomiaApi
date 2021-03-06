@@ -223,7 +223,7 @@ void CProtocolTaskIO::save(const std::string &path)
     Q_UNUSED(path);
 }
 
-std::string CProtocolTaskIO::getName(IODataType ioDataType)
+std::string CProtocolTaskIO::getClassName(IODataType ioDataType)
 {
     switch(ioDataType)
     {
