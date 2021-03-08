@@ -7,7 +7,7 @@
 # Uncomment the following line to enable unit tests compilation
 #CONFIG += IKOMIA_TESTS
 # LINUX deployment (CENTOS 7)
-#CONFIG += centos centos7
+CONFIG += centos centos7
 
 ########################
 # Dependencies version #
@@ -15,11 +15,11 @@
 
 # Python
 # Arch
-unix:!macx:PYTHON_VERSION = 3.8
-unix:!macx:PYTHON_VERSION_EXT = 3.8
+#unix:!macx:PYTHON_VERSION = 3.8
+#unix:!macx:PYTHON_VERSION_EXT = 3.8
 # Centos7
-#unix:!macx:PYTHON_VERSION = 3.7m
-#unix:!macx:PYTHON_VERSION_EXT = 3.7m
+unix:!macx:PYTHON_VERSION = 3.7m
+unix:!macx:PYTHON_VERSION_EXT = 3.7m
 win32: PYTHON_VERSION = 3.8
 win32: PYTHON_VERSION_EXT = 38
 macx: PYTHON_VERSION = 3.7
