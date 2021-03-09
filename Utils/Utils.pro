@@ -36,6 +36,7 @@ HEADERS += \
         Containers/CQueue.hpp \
         DesignPattern/CObjectLocker.hpp \
         ExceptionCode.hpp \
+        UtilsDefine.hpp \
         UtilsTools.hpp \
         CMemoryInfo.h \
         CTreeDbManager.hpp \

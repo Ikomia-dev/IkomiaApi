@@ -41,6 +41,7 @@
 #include <opencv2/core/ocl.hpp>
 #include <iostream>
 #include "CException.h"
+#include "UtilsDefine.hpp"
 #include "opencv2/opencv.hpp"
 #include <stdio.h>
 #include <fcntl.h>
@@ -151,22 +152,11 @@ namespace Ikomia
             }
             inline QString      getCurrentVersionNumber()
             {
-                return "0.3.0";
+                return "0.4.0";
             }
             inline QString      getCurrentVersionName()
             {
-                return "0.3.0";
-            }
-
-            inline bool         isDeprecated(const QString& version)
-            {
-                const QSet<QString> breakChanges = {"0.3.0"};
-                for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
-                {
-                    if(version < *it)
-                        return true;
-                }
-                return false;
+                return "0.4.0";
             }
         }
 
@@ -694,6 +684,34 @@ namespace Ikomia
             inline std::string  getCppPath()
             {
                 return IkomiaApp::getAppFolder() + "/Plugins/C++";
+            }
+            inline PluginState  getCppState(const QString& version)
+            {
+                const std::set<QString> breakChanges = {"0.3.0", "0.4.0"};
+                for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
+                {
+                    if(version < *it)
+                        return PluginState::DEPRECATED;
+                }
+
+                if(version > Utils::IkomiaApp::getCurrentVersionNumber())
+                    return PluginState::UPDATED;
+
+                return PluginState::VALID;
+            }
+            inline PluginState  getPythonState(const QString& version)
+            {
+                const std::set<QString> breakChanges = {"0.3.0"};
+                for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
+                {
+                    if(version < *it)
+                        return PluginState::DEPRECATED;
+                }
+
+                if(version > Utils::IkomiaApp::getCurrentVersionNumber())
+                    return PluginState::UPDATED;
+
+                return PluginState::VALID;
             }
         }
 
