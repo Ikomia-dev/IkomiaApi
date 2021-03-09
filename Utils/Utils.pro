@@ -70,6 +70,7 @@ deployInclude.files = \
         CMemoryInfo.h \
         CTimer.hpp \
         UtilsGlobal.hpp \
+        UtilsDefine.hpp \
         CProgressSignalHandler.h \
         CWindowsDeviceEnumerator.h \
         PythonThread.hpp
