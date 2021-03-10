@@ -485,9 +485,13 @@ bool CProtocolTask::isSelfInput() const
     else
     {
         for(size_t i=0; i<m_inputs.size(); ++i)
+        {
+            if(m_inputs[i] == nullptr)
+                continue;
+
             if(!m_inputs[i]->isAutoInput())
                 return false;
-
+        }
         return true;
     }
 }
@@ -547,6 +551,9 @@ bool CProtocolTask::hasInput(const std::set<IODataType> &types) const
 {
     for(size_t i=0; i<m_inputs.size(); ++i)
     {
+        if(m_inputs[i] == nullptr)
+            continue;
+
         auto it = types.find(m_inputs[i]->getDataType());
         if(it != types.end())
             return true;
