@@ -189,7 +189,7 @@ CVideoIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
     std::string videoPath = fileName;
     std::string extension = Utils::File::extension(fileName);
 
-    if(!CDataVideoIO::isVideoFormat(extension, true))
+    if(!extension.empty() && !CDataVideoIO::isVideoFormat(extension, true))
         videoPath = CDataVideoIO::getImageSequenceInfo(fileName).first;
 
     auto it = m_mapVideoIO.find(videoPath);
