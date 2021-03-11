@@ -32,15 +32,15 @@ class CRunTaskManager
 
         void    setBatchMode(bool bEnable);
 
-        void    run(const ProtocolTaskPtr& pTask);
+        void    run(const ProtocolTaskPtr& pTask, const std::string inputName);
 
         void    stop(const ProtocolTaskPtr &taskPtr);
 
     private:
 
-        void    runImageProcess2D(const ProtocolTaskPtr& taskPtr);
-        void    runVideoProcess(const ProtocolTaskPtr& taskPtr);
-        void    runWholeVideoProcess(const ProtocolTaskPtr& taskPtr);
+        void    runImageProcess2D(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
+        void    runVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
+        void    runWholeVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
 
     private:
 

@@ -811,7 +811,7 @@ void CProtocolTask::stop()
     m_bStop = true;
 }
 
-void CProtocolTask::saveOutputs() const
+void CProtocolTask::saveOutputs(const std::string& baseName) const
 {
     bool bFirst = true;
     for(size_t i=0; i<m_outputs.size(); ++i)
@@ -823,7 +823,7 @@ void CProtocolTask::saveOutputs() const
                 Utils::File::createDirectory(m_outputFolder);
                 bFirst = false;
             }
-            m_outputs[i]->setSaveInfo(m_outputFolder, m_name);
+            m_outputs[i]->setSaveInfo(m_outputFolder, baseName);
             m_outputs[i]->save();
         }
     }

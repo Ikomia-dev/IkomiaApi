@@ -1118,10 +1118,10 @@ void CProtocol::runTask(const ProtocolVertex& id)
 
         // Update output folder
         auto baseFolder = taskPtr->getOutputFolder();
-        taskPtr->setOutputFolder(baseFolder + m_compositeInputName + "/");
+        taskPtr->setOutputFolder(baseFolder + m_startDate + "/" + taskPtr->getName() + "/");
         // Run task
         setRunningTask(id);
-        m_runMgr.run(taskPtr);
+        m_runMgr.run(taskPtr, m_compositeInputName);
         manageOutputs(id);
         // Restore output folder
         taskPtr->setOutputFolder(baseFolder);
@@ -1303,6 +1303,11 @@ void CProtocol::checkBatchModeState()
 void CProtocol::updateHash()
 {
     m_hashValue = getHashValue();
+}
+
+void CProtocol::updateStartTime()
+{
+    m_startDate = Utils::File::conformName(QDateTime::currentDateTime().toString(Qt::ISODate)).toStdString();
 }
 
 void CProtocol::connectSignals(const ProtocolTaskPtr& pNewTask)
@@ -1528,7 +1533,7 @@ void CProtocol::manageOutputs(const ProtocolVertex& taskId)
 
     // Auto-save outputs if in batch mode
     if(m_bBatchMode)
-        pTask->saveOutputs();
+        pTask->saveOutputs(m_compositeInputName);
 }
 
 //-------------------//

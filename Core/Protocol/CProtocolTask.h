@@ -633,7 +633,7 @@ class CORESHARED_EXPORT CProtocolTask
          */
         virtual void                stop();
 
-        virtual void                saveOutputs() const;
+        virtual void                saveOutputs(const std::string &baseName) const;
 
     /** @cond INTERNAL */
     protected:

@@ -32,7 +32,7 @@ void CRunTaskManager::setBatchMode(bool bEnable)
     m_bBatchMode = bEnable;
 }
 
-void CRunTaskManager::run(const ProtocolTaskPtr &pTask)
+void CRunTaskManager::run(const ProtocolTaskPtr &pTask, const std::string inputName)
 {
     m_bStop = false;
 
@@ -46,13 +46,13 @@ void CRunTaskManager::run(const ProtocolTaskPtr &pTask)
             pTask->run();
             break;
         case CProtocolTask::Type::IMAGE_PROCESS_2D:
-            runImageProcess2D(pTask);
+            runImageProcess2D(pTask, inputName);
             break;
         case CProtocolTask::Type::IMAGE_PROCESS_3D:
             pTask->run();
             break;
         case CProtocolTask::Type::VIDEO:
-            runVideoProcess(pTask);
+            runVideoProcess(pTask, inputName);
             break;
     }
 }
@@ -64,7 +64,7 @@ void CRunTaskManager::stop(const ProtocolTaskPtr &taskPtr)
         taskPtr->stop();
 }
 
-void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr)
+void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const std::string& inputName)
 {
     //Thread safety -> scoped lock for all inputs/outputs
     //Access through CObjectLocker<CProtocolTaskIO> ioLock(*ioPtr);
@@ -132,7 +132,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr)
     }
     else if(taskPtr->hasInput(videoTypes) && m_bBatchMode == true)
     {
-        runWholeVideoProcess(taskPtr);
+        runWholeVideoProcess(taskPtr, inputName);
     }
     else
     {
@@ -140,11 +140,11 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr)
     }
 }
 
-void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr)
+void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string& inputName)
 {
     if(m_bBatchMode == true)
     {
-        runWholeVideoProcess(taskPtr);
+        runWholeVideoProcess(taskPtr, inputName);
     }
     else
     {
@@ -162,7 +162,7 @@ void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr)
     }
 }
 
-void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr)
+void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const std::string& inputName)
 {
     bool bImageSequence = false;
     const std::set<IODataType> videoTypes = {IODataType::VIDEO, IODataType::VIDEO_LABEL, IODataType::VIDEO_BINARY};
@@ -201,9 +201,9 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr)
         Utils::File::createDirectory(taskPtr->getOutputFolder());
 
         if(bImageSequence)
-            outPath = taskPtr->getOutputFolder() + taskPtr->getName() + "_" + std::to_string(i+1) + "_%04d.png";
+            outPath = taskPtr->getOutputFolder() + inputName + "_" + std::to_string(i+1) + "_%04d.png";
         else
-            outPath = taskPtr->getOutputFolder() + taskPtr->getName() + "_" + std::to_string(i+1) + ".avi";
+            outPath = taskPtr->getOutputFolder() + inputName + "_" + std::to_string(i+1) + ".avi";
 
         outputPtr->addTemporaryFile(outPath);
         outputPtr->setVideoPath(outPath);

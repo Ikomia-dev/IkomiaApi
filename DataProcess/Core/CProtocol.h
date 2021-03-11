@@ -193,6 +193,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         void                            analyzeTaskIO(const ProtocolVertex& id);
 
         void                            updateHash();
+        void                            updateStartTime();
 
         void                            manageOutputs(const ProtocolVertex &taskId);
 
@@ -239,6 +240,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         std::string             m_description;
         std::string             m_keywords;
         std::string             m_compositeInputName;
+        std::string             m_startDate;
         ProtocolGraph           m_graph;
         ProtocolVertex          m_root;
         ProtocolVertex          m_lastTaskAdded;
