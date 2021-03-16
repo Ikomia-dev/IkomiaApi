@@ -20,9 +20,6 @@
 #include "CVideoDataManager.h"
 #include "CMemoryInfo.h"
 
-//Define Log category
-Q_LOGGING_CATEGORY(LogVideoDataManager, "Video manager")
-
 CVideoDataManager::CVideoDataManager()
 {
 }

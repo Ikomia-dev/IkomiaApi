@@ -20,9 +20,6 @@
 #include "CImageDataManager.h"
 #include "CMemoryInfo.h"
 
-//Define Log category
-Q_LOGGING_CATEGORY(LogImageDataManager, "Image manager")
-
 CImageDataManager::CImageDataManager()
 {
 }

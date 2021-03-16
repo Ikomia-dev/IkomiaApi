@@ -26,9 +26,6 @@
 #include "DataManagementGlobal.hpp"
 #include "CDataIO.hpp"
 
-//Register log category
-Q_DECLARE_LOGGING_CATEGORY(LogVideoDataManager)
-
 using CVideoIO = CDataIO<CDataVideoIO, CMat>;
 using CVideoIOPtr = std::shared_ptr<CDataIO<CDataVideoIO, CMat>>;
 using CDataVideoInfoPtr = std::shared_ptr<CDataVideoInfo>;

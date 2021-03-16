@@ -26,9 +26,6 @@
 #include "CDataIO.hpp"
 #include "DataManagementGlobal.hpp"
 
-//Register log category
-Q_DECLARE_LOGGING_CATEGORY(LogImageDataManager)
-
 using CImageIO = CDataIO<CDataImageIO, CMat>;
 using CImageIOPtr = std::shared_ptr<CDataIO<CDataImageIO, CMat>>;
 using CDataImageInfoPtr = std::shared_ptr<CDataImageInfo>;
