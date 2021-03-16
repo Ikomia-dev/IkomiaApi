@@ -27,6 +27,8 @@
 #include "ExceptionCode.hpp"
 #include "opencv2/opencv.hpp"
 
+using namespace Ikomia;
+
 /**
  * @brief
  * This class is the base class for exceptions handling into the Ikomia environment.
