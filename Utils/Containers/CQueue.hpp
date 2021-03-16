@@ -23,13 +23,12 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include "CException.h"
 
 template <typename T>
 class CQueue
 {
     public:
-
-        struct cancelled {};
 
         T       pop()
         {
@@ -37,13 +36,13 @@ class CQueue
             while (queue_.empty())
             {
                 if (cancelled_)
-                    throw cancelled();
+                    throw CException(CoreExCode::PROCESS_CANCELLED, "Threaded queue cancelled.");
 
                 if(cond_.wait_for(mlock, std::chrono::milliseconds(timeout_)) == std::cv_status::timeout)
-                    throw cancelled();
+                    throw CException(CoreExCode::TIMEOUT_REACHED, "Threaded queue timeout.");
 
                 if (cancelled_)
-                    throw cancelled();
+                    throw CException(CoreExCode::PROCESS_CANCELLED, "Threaded queue cancelled");
             }
             auto item = queue_.front();
             queue_.pop();
@@ -55,13 +54,13 @@ class CQueue
             while (queue_.empty())
             {
                 if (cancelled_)
-                    throw cancelled();
+                    throw CException(CoreExCode::PROCESS_CANCELLED, "Threaded queue cancelled.");
 
                 if(cond_.wait_for(mlock, std::chrono::milliseconds(timeout_)) == std::cv_status::timeout)
-                    throw cancelled();
+                    throw CException(CoreExCode::TIMEOUT_REACHED, "Threaded queue timeout.");
 
                 if (cancelled_)
-                    throw cancelled();
+                    throw CException(CoreExCode::PROCESS_CANCELLED, "Threaded queue cancelled.");
             }
             item = queue_.front();
             queue_.pop();
@@ -105,6 +104,10 @@ class CQueue
             cancelled_ = false;
             cond_.notify_all();
         }
+        void    setTimeout(int ms)
+        {
+            timeout_ = ms;
+        }
 
     private:
 
@@ -112,7 +115,7 @@ class CQueue
         std::mutex              mutex_;
         std::condition_variable cond_;
         bool                    cancelled_ = false;
-        const int               timeout_ = 5000; // In milliseconds
+        int                     timeout_ = 5000; // In milliseconds
 };
 
 #endif // CQUEUE_HPP
