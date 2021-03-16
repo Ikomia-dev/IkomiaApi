@@ -20,35 +20,6 @@
 #include "CDataVideoBuffer.h"
 #include "UtilsTools.hpp"
 
-/*extern "C" {
-    #include <libavcodec/avcodec.h>
-}
-
-void test_codec()
-{
-    // initialize libavcodec, and register all codecs and formats
-        avcodec_register_all();
-
-        // struct to hold the codecs
-        AVCodec* current_codec = NULL;
-
-        // initialize the AVCodec* object with first codec
-        current_codec = av_codec_next(current_codec);
-
-        std::cout<<"List of codecs:"<<std::endl;
-
-        // loop over all codecs
-        while (current_codec != NULL)
-        {
-
-            if(av_codec_is_encoder(current_codec) | av_codec_is_decoder(current_codec))
-            {
-                std::cout<<current_codec->name<<std::endl;
-            }
-            current_codec = av_codec_next(current_codec);
-        }
-}*/
-
 CDataVideoBuffer::CDataVideoBuffer()
 {
 }
@@ -133,6 +104,7 @@ void CDataVideoBuffer::startRead()
     if(!m_reader.isOpened())
         openVideo();
 
+    m_bError = false;
     m_queueRead.activate();
 
     auto future = QtConcurrent::run([=]
@@ -210,8 +182,10 @@ void CDataVideoBuffer::stopWrite()
 
 CMat CDataVideoBuffer::read()
 {
-    CMat img;
+    if(m_bError)
+        throw CException(CoreExCode::PROCESS_CANCELLED, m_lastErrorMsg, __func__, __FILE__, __LINE__);
 
+    CMat img;
     try
     {
         if(m_currentPos < m_nbFrames)
@@ -225,9 +199,9 @@ CMat CDataVideoBuffer::read()
             m_currentPos++;
         }
     }
-    catch(CQueue<CMat>::cancelled& /*e*/)
+    catch(std::exception& e)
     {
-        throw CException(CoreExCode::TIMEOUT_REACHED, tr("No more images to read").toStdString(), __func__, __FILE__, __LINE__);
+        throw CException(CoreExCode::TIMEOUT_REACHED, e.what() + tr("No more images to read.").toStdString(), __func__, __FILE__, __LINE__);
     }
     return img;
 }
@@ -486,35 +460,56 @@ void CDataVideoBuffer::updateRead()
         CMat frame;
         if(m_queueRead.size() < m_queueSize && m_queueWrite.size() < m_queueSize)
         {
-            grabCount++;
-            if(!m_reader.grab())
+            try
             {
+                grabCount++;
+                if(!m_reader.grab())
+                {
+                    m_lastErrorMsg = "OpenCV VideoCapture::grab() function failed.";
+                    failureCount++;
+                    continue;
+                }
+
+                if(!m_reader.retrieve(frame, m_mode))
+                {
+                    m_lastErrorMsg = "OpenCV VideoCapture::retrieve() function failed.";
+                    failureCount++;
+                    continue;
+                }
+
+                CMat dst;
+                if(frame.channels() > 1)
+                    cv::cvtColor(frame, dst, cv::COLOR_BGR2RGB);
+                else
+                    dst = frame.clone();
+
+                if(isStreamSource())
+                {
+                    //For stream, we replace the current frame
+                    if(m_queueRead.size() > 0)
+                        m_queueRead.pop();
+
+                    m_queueRead.push(dst);
+                }
+                else
+                {
+                    // For video files, we buffer frames in the queue
+                    m_queueRead.push(dst);
+                }
+
+                //Reset successive failure count
+                failureCount = 0;
+            }
+            catch(std::exception& e)
+            {
+                m_lastErrorMsg = e.what();
                 failureCount++;
-                continue;
-            }
-            m_reader.retrieve(frame, m_mode);
-
-            CMat dst;
-            if(frame.channels() > 1)
-                cv::cvtColor(frame, dst, cv::COLOR_BGR2RGB);
-            else
-                dst = frame.clone();
-
-            if(isStreamSource())
-            {
-                //For stream, we replace the current frame
-                if(m_queueRead.size() > 0)
-                    m_queueRead.pop();
-
-                m_queueRead.push(dst);
-            }
-            else
-            {
-                // For video files, we buffer frames in the queue
-                m_queueRead.push(dst);
             }
         }
     }
+
+    if(failureCount > m_maxFailureCount)
+        m_bError = true;
 }
 
 void CDataVideoBuffer::updateWrite()
@@ -552,9 +547,9 @@ void CDataVideoBuffer::updateStreamWrite()
             }
         }
     }
-    catch(CQueue<CMat>::cancelled& /*e*/)
+    catch(std::exception& /*e*/)
     {
-        // Nothing more to process, we're done
+        // Nothing more to process, we're done   
         qInfo().noquote() << "Write thread finished: no more images available";
     }
 }
@@ -613,10 +608,9 @@ void CDataVideoBuffer::writeVideoThread()
         }
         writer.release();
     }
-    catch(CQueue<CMat>::cancelled& /*e*/)
+    catch(std::exception& /*e*/)
     {
         // Nothing more to process, we're done
-        writer.release();
         qInfo().noquote() << "Write thread finished: no more images available";
     }
 }

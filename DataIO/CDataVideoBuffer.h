@@ -118,8 +118,8 @@ class DATAIOSHARED_EXPORT CDataVideoBuffer: public QObject
         CQueue<CMat>            m_queueRead;
         CQueue<CMat>            m_queueWrite;
         cv::VideoCapture        m_reader;
-        //cv::VideoWriter         m_writer;
         std::string             m_path;
+        std::string             m_lastErrorMsg;
         size_t                  m_queueSize = 128;
         std::mutex              m_mutex;
         QFutureWatcher<void>    m_watcherRead;
@@ -127,6 +127,7 @@ class DATAIOSHARED_EXPORT CDataVideoBuffer: public QObject
         std::future<void>       m_writeFuture;
         std::atomic_bool        m_bStopRead{true};
         std::atomic_bool        m_bStopWrite{true};
+        std::atomic_bool        m_bError{false};
         Type                    m_type = VIDEO;
         int                     m_fps = 0;
         int                     m_width = 0;
