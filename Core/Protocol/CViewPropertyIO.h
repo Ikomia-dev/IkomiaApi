@@ -30,7 +30,7 @@ class CORESHARED_EXPORT CViewPropertyIO
 {
     public:
 
-        enum class ViewMode { INPUT_OUTPUT, INPUT_ONLY, OUTPUT_ONLY };
+        enum class ViewMode { GUI_DRIVEN, INPUT_OUTPUT, INPUT_ONLY, OUTPUT_ONLY };
 
         CViewPropertyIO();
 
@@ -56,7 +56,7 @@ class CORESHARED_EXPORT CViewPropertyIO
 
         bool        m_bChanged = false;
         bool        m_bMaximized = false;
-        ViewMode    m_viewMode = ViewMode::INPUT_OUTPUT;
+        ViewMode    m_viewMode = ViewMode::GUI_DRIVEN;
 
         //Zoom properties
         bool        m_bZoomFit = false;
