@@ -110,7 +110,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
         if self.experiment_id != -1:
             mlflow.log_params(params)
 
-    def log_metric(self, key, value):
+    def log_metric(self, key, value, step=None):
         """
         Log metric to MLflow server
 
@@ -119,9 +119,9 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
             value: metric value (numerical)
         """
         if self.experiment_id != -1:
-            mlflow.log_metric(key, value)
+            mlflow.log_metric(key, value, step)
 
-    def log_metrics(self, metrics):
+    def log_metrics(self, metrics, step=None):
         """
         Log metrics to MLflow server
 
@@ -129,7 +129,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
             metrics (dict): parameters
         """
         if self.experiment_id != -1:
-            mlflow.log_metrics(metrics)
+            mlflow.log_metrics(metrics, step)
 
     def log_artifact(self, file_path):
         """
