@@ -308,6 +308,11 @@ constexpr auto _beginTaskRunDocString =
 constexpr auto _emitGraphicsContextChangedDocString =
         "Send event to notify that graphics context has changed inside the task and display has to be updated.\n";
 
+constexpr auto _emitAddSubProgressStepsDocString =
+        "Send event to add or remove progress steps to the progress bar.\n\n"
+        "Args:\n"
+        "   count (int): positive value to add steps, negative value to remove steps.\n";
+
 constexpr auto _emitStepProgressDocString =
         "Send step event to notify progress bar system.\n";
 

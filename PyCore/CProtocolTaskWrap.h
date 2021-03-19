@@ -109,6 +109,7 @@ class CProtocolTaskWrap : public CProtocolTask, public wrapper<CProtocolTask>
         void            default_globalInputChanged(bool bNewSequence);
 
         //Signal wrapped
+        void            emitAddSubProgressSteps(int count);
         void            emitStepProgress();
         void            emitGraphicsContextChanged();
         void            emitOutputChanged();

@@ -1317,6 +1317,7 @@ void CProtocol::connectSignals(const ProtocolTaskPtr& pNewTask)
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doProgress, this->getSignalRawPtr(), &CSignalHandler::onProgress);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doSetMessage, this->getSignalRawPtr(), &CSignalHandler::onSetMessage);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doSetElapsedTime, this->getSignalRawPtr(), &CSignalHandler::onSetElapsedTime);
+    QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doAddSubTotalSteps, this->getSignalRawPtr(), &CSignalHandler::onAddSubTotalSteps);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doAddGraphicsLayer, this->getSignalRawPtr(), &CSignalHandler::onAddGraphicsLayer);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doRemoveGraphicsLayer, this->getSignalRawPtr(), &CSignalHandler::onRemoveGraphicsLayer);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doOutputChanged, this->getSignalRawPtr(), &CSignalHandler::onOutputChanged);

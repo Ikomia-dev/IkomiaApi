@@ -36,6 +36,7 @@ class UTILSSHARED_EXPORT CProgressSignalHandler : public QObject
         CProgressSignalHandler();
 
         void    emitSetTotalSteps(int maxSteps);
+        void    emitAddSubTotalSteps(int count);
         void    emitSetMessage(const std::string& msg);
         void    emitSetElapsedTime(double time);
         void    emitProgress();
@@ -43,6 +44,7 @@ class UTILSSHARED_EXPORT CProgressSignalHandler : public QObject
     signals:
 
         void    doSetTotalSteps(int maxSteps);
+        void    doAddSubTotalSteps(int count);
         void    doSetMessage(const QString& msg);
         void    doSetElapsedTime(double elapsedTime);
         void    doSetValue(int value);
@@ -52,6 +54,7 @@ class UTILSSHARED_EXPORT CProgressSignalHandler : public QObject
     public slots:
 
         void    onSetTotalSteps(int maxSteps);
+        void    onAddSubTotalSteps(int count);
         void    onSetMessage(const QString& msg);
         void    onSetElapsedTime(double elapsedTime);
         void    onProgress();

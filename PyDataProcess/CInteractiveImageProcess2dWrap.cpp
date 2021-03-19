@@ -324,6 +324,11 @@ void CInteractiveImageProcess2dWrap::default_globalInputChanged(bool bNewSequenc
     }
 }
 
+void CInteractiveImageProcess2dWrap::emitAddSubProgressSteps(int count)
+{
+    emit m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CInteractiveImageProcess2dWrap::emitGraphicsContextChanged()
 {
     emit m_signalHandler->doGraphicsContextChanged();

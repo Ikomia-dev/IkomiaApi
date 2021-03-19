@@ -886,6 +886,9 @@ constexpr auto _forwardInputImageDocString =
         "   input_index (int): zero-based index of the input\n"
         "   output_index (int): zero-based index of the output\n";
 
+constexpr auto _emitAddSubProgressSteps =
+        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitAddSubProgressSteps`.\n";
+
 constexpr auto _emitStepProgressDocString =
         "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitStepProgress`.\n";
 

@@ -67,6 +67,7 @@ class CInteractiveImageProcess2dWrap: public CInteractiveImageProcess2d, public 
         virtual void    globalInputChanged(bool bNewSequence);
         void            default_globalInputChanged(bool bNewSequence);
 
+        void            emitAddSubProgressSteps(int count);
         void            emitStepProgress();
         void            emitGraphicsContextChanged();
         void            emitOutputChanged();

@@ -358,6 +358,11 @@ void CImageProcess2dWrap::default_globalInputChanged(bool bNewSequence)
     }
 }
 
+void CImageProcess2dWrap::emitAddSubProgressSteps(int count)
+{
+    emit m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CImageProcess2dWrap::emitStepProgress()
 {
     emit m_signalHandler->doProgress();

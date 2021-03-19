@@ -685,6 +685,11 @@ void CProtocolTaskWrap::default_globalInputChanged(bool bNewSequence)
     }
 }
 
+void CProtocolTaskWrap::emitAddSubProgressSteps(int count)
+{
+    m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CProtocolTaskWrap::emitGraphicsContextChanged()
 {
     emit m_signalHandler->doGraphicsContextChanged();

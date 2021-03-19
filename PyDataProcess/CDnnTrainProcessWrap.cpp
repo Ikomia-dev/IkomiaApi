@@ -235,6 +235,11 @@ void CDnnTrainProcessWrap::default_stop()
     }
 }
 
+void CDnnTrainProcessWrap::emitAddSubProgressSteps(int count)
+{
+    emit m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CDnnTrainProcessWrap::emitStepProgress()
 {
     emit m_signalHandler->doProgress();

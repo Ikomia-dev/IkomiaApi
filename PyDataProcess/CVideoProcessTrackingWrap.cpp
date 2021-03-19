@@ -324,6 +324,11 @@ void CVideoProcessTrackingWrap::default_globalInputChanged(bool bNewSequence)
     }
 }
 
+void CVideoProcessTrackingWrap::emitAddSubProgressSteps(int count)
+{
+    m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CVideoProcessTrackingWrap::emitGraphicsContextChanged()
 {
     emit m_signalHandler->doGraphicsContextChanged();

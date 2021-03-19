@@ -73,6 +73,7 @@ class CVideoProcessWrap: public CVideoProcess, public wrapper<CVideoProcess>
         virtual void    notifyVideoEnd();
         void            default_notifyVideoEnd();
 
+        void            emitAddSubProgressSteps(int count);
         void            emitStepProgress();
         void            emitGraphicsContextChanged();
         void            emitOutputChanged();

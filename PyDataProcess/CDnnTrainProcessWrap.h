@@ -55,6 +55,7 @@ class CDnnTrainProcessWrap : public CDnnTrainProcess, public wrapper<CDnnTrainPr
         virtual void    stop() override;
         void            default_stop();
 
+        void            emitAddSubProgressSteps(int count);
         void            emitStepProgress();
         void            emitOutputChanged();
 };

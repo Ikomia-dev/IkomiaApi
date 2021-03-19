@@ -28,6 +28,11 @@ void CProgressSignalHandler::emitSetTotalSteps(int maxSteps)
     emit doSetTotalSteps(maxSteps);
 }
 
+void CProgressSignalHandler::emitAddSubTotalSteps(int count)
+{
+    emit doAddSubTotalSteps(count);
+}
+
 void CProgressSignalHandler::emitSetMessage(const std::string &msg)
 {
     emit doSetMessage(QString::fromStdString(msg));
@@ -46,6 +51,11 @@ void CProgressSignalHandler::emitProgress()
 void CProgressSignalHandler::onSetTotalSteps(int maxSteps)
 {
     emit doSetTotalSteps(maxSteps);
+}
+
+void CProgressSignalHandler::onAddSubTotalSteps(int count)
+{
+    emit doAddSubTotalSteps(count);
 }
 
 void CProgressSignalHandler::onSetMessage(const QString &msg)

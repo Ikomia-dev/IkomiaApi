@@ -71,6 +71,7 @@ class CImageProcess2dWrap : public CImageProcess2d, public wrapper<CImageProcess
         virtual void    globalInputChanged(bool bNewSequence) override;
         void            default_globalInputChanged(bool bNewSequence);
 
+        void            emitAddSubProgressSteps(int count);
         void            emitStepProgress();
         void            emitGraphicsContextChanged();
         void            emitOutputChanged();

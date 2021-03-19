@@ -382,6 +382,11 @@ void CVideoProcessWrap::default_notifyVideoEnd()
     }
 }
 
+void CVideoProcessWrap::emitAddSubProgressSteps(int count)
+{
+    emit m_signalHandler->doAddSubTotalSteps(count);
+}
+
 void CVideoProcessWrap::emitGraphicsContextChanged()
 {
     emit m_signalHandler->doGraphicsContextChanged();
