@@ -962,7 +962,10 @@ void CProtocol::clearInputs()
 
     auto pRootTask = m_graph[m_root];
     if(pRootTask)
+    {
         pRootTask->clearInputs();
+        pRootTask->clearOutputs();
+    }
 }
 
 void CProtocol::clearAllOutputData()
