@@ -74,7 +74,6 @@ void CMlflowTrainProcess::endTaskRun()
         CPyEnsureGIL gil;
         object mlflow = import("mlflow");
         mlflow.attr("end_run")();
-        m_experimentId = -1;
     }
     catch(error_already_set&)
     {
