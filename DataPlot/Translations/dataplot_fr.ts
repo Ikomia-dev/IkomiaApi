@@ -4,7 +4,7 @@
 <context>
     <name>CHistogramPlot</name>
     <message>
-        <location filename="../CHistogramPlot.cpp" line="69"/>
+        <location filename="../CHistogramPlot.cpp" line="88"/>
         <source>No title</source>
         <translation>Sans titre</translation>
     </message>

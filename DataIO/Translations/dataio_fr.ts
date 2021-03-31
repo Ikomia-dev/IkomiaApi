@@ -5,7 +5,11 @@
     <name>CDataVideoBuffer</name>
     <message>
         <source>No more images to read</source>
-        <translation>Plus aucune image à lire</translation>
+        <translation type="vanished">Plus aucune image à lire</translation>
+    </message>
+    <message>
+        <source>No more images to read.</source>
+        <translation>Plus aucune image à lire.</translation>
     </message>
 </context>
 </TS>

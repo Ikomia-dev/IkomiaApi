@@ -4,7 +4,7 @@
 <context>
     <name>CColorPushButton</name>
     <message>
-        <location filename="../Widgets/CColorPushButton.cpp" line="41"/>
+        <location filename="../Widgets/CColorPushButton.cpp" line="60"/>
         <source>Color choice</source>
         <translation>Choix de couleur</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>CLogManager</name>
     <message>
-        <location filename="../CLogManager.cpp" line="104"/>
+        <location filename="../CLogManager.cpp" line="123"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>

@@ -18,7 +18,7 @@
 <context>
     <name>CGraphicsText</name>
     <message>
-        <location filename="../Graphics/CGraphicsText.cpp" line="129"/>
+        <location filename="../Graphics/CGraphicsText.cpp" line="148"/>
         <source>Text Area</source>
         <translation>Zone de texte</translation>
     </message>
@@ -26,7 +26,7 @@
 <context>
     <name>CProtocolTaskWidget</name>
     <message>
-        <location filename="../Protocol/CProtocolTaskWidget.cpp" line="6"/>
+        <location filename="../Protocol/CProtocolTaskWidget.cpp" line="25"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
@@ -34,12 +34,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="301"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="335"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="369"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="403"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="442"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="481"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="320"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="354"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="388"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="422"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="461"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="500"/>
         <source>Graphics object can&apos;t be created from empty data</source>
         <translation>Erreur de création de l&apos;object graphique: pas de donnée source</translation>
     </message>
@@ -48,170 +48,204 @@
         <translation type="vanished">Le pointeur vers l&apos;objet vidéo est nul.</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="68"/>
+        <location filename="../Data/CMeasure.cpp" line="87"/>
         <source>Surface</source>
         <translation>Surface</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="69"/>
+        <location filename="../Data/CMeasure.cpp" line="88"/>
         <source>Perimeter</source>
         <translation>Périmètre</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="70"/>
+        <location filename="../Data/CMeasure.cpp" line="89"/>
         <source>Centroid</source>
         <translation>Centre de gravité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="71"/>
+        <location filename="../Data/CMeasure.cpp" line="90"/>
         <source>Bounding box</source>
         <translation>Rectangle englobant</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="72"/>
+        <location filename="../Data/CMeasure.cpp" line="91"/>
         <source>Oriented bounding box</source>
         <translation>Rectangle orienté englobant</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="73"/>
+        <location filename="../Data/CMeasure.cpp" line="92"/>
         <source>Equivalent diameter</source>
         <translation>Diamètre équivalent</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="74"/>
+        <location filename="../Data/CMeasure.cpp" line="93"/>
         <source>Elongation</source>
         <translation>Elongation</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="75"/>
+        <location filename="../Data/CMeasure.cpp" line="94"/>
         <source>Circularity</source>
         <translation>Circularité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="76"/>
+        <location filename="../Data/CMeasure.cpp" line="95"/>
         <source>Solidity</source>
         <translation>Compacité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="77"/>
+        <location filename="../Data/CMeasure.cpp" line="96"/>
         <source>Custom measure</source>
         <translation>Mesure personnalisée</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="72"/>
         <source>Modality</source>
-        <translation type="vanished">Modalité</translation>
+        <translation>Modalité</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="74"/>
         <source>Position</source>
-        <translation type="vanished">Position</translation>
+        <translation>Position</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="76"/>
         <source>Time</source>
-        <translation type="vanished">Temps</translation>
+        <translation>Temps</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="78"/>
         <source>Volume</source>
-        <translation type="vanished">Volume</translation>
+        <translation>Volume</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="80"/>
         <source>Study</source>
-        <translation type="vanished">Etude</translation>
+        <translation>Etude</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="82"/>
         <source>Serie</source>
-        <translation type="vanished">Série</translation>
+        <translation>Série</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="84"/>
         <source>Dimension</source>
-        <translation type="vanished">Dimension</translation>
+        <translation>Dimension</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="312"/>
         <source>none</source>
-        <translation type="vanished">aucun</translation>
+        <translation>aucun</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="314"/>
         <source>image</source>
-        <translation type="vanished">image</translation>
+        <translation>image</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="316"/>
         <source>binary image</source>
-        <translation type="vanished">image binaire</translation>
+        <translation>image binaire</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="318"/>
         <source>label image</source>
-        <translation type="vanished">image labellisée</translation>
+        <translation>image labellisée</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="320"/>
         <source>volume</source>
-        <translation type="vanished">volume</translation>
+        <translation>volume</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="322"/>
         <source>binary volume</source>
-        <translation type="vanished">volume binaire</translation>
+        <translation>volume binaire</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="324"/>
         <source>label volume</source>
-        <translation type="vanished">volume labellisé</translation>
+        <translation>volume labellisé</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="327"/>
         <source>graphics</source>
-        <translation type="vanished">graphiques</translation>
+        <translation>graphiques</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="329"/>
         <source>blob values</source>
-        <translation type="vanished">mesures d&apos;objet</translation>
+        <translation>mesures d&apos;objet</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="331"/>
         <source>numeric values</source>
-        <translation type="vanished">valeurs numériques</translation>
+        <translation>valeurs numériques</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="333"/>
         <source>video</source>
-        <translation type="vanished">vidéo</translation>
+        <translation>vidéo</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="335"/>
         <source>binary video</source>
-        <translation type="vanished">vidéo binaire</translation>
+        <translation>vidéo binaire</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="337"/>
         <source>label Video</source>
-        <translation type="vanished">vidéo labellisée</translation>
+        <translation>vidéo labellisée</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="339"/>
         <source>live stream</source>
-        <translation type="vanished">flux vidéo</translation>
+        <translation>flux vidéo</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="341"/>
         <source>binary live stream</source>
-        <translation type="vanished">flux vidéo binaire</translation>
+        <translation>flux vidéo binaire</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="343"/>
         <source>label live stream</source>
-        <translation type="vanished">flux vidéo labellisé</translation>
+        <translation>flux vidéo labellisé</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="345"/>
         <source>custom result view</source>
-        <translation type="vanished">Vue personnalisée</translation>
+        <translation>Vue personnalisée</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="347"/>
         <source>descriptors</source>
-        <translation type="vanished">descripteurs</translation>
+        <translation>descripteurs</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="349"/>
         <source>folder</source>
-        <translation type="vanished">répertoire (projet)</translation>
+        <translation>répertoire (projet)</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="351"/>
         <source>folder path</source>
-        <translation type="vanished">répertoire (disque)</translation>
+        <translation>répertoire (disque)</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="353"/>
         <source>file path</source>
-        <translation type="vanished">fichier (disque)</translation>
+        <translation>fichier (disque)</translation>
     </message>
     <message>
+        <location filename="../Main/CoreTools.hpp" line="355"/>
         <source>deep learning dataset</source>
-        <translation type="vanished">dataset deep learning</translation>
+        <translation>dataset deep learning</translation>
+    </message>
+    <message>
+        <location filename="../Main/CoreTools.hpp" line="357"/>
+        <source>multi-dimensional array</source>
+        <translation>tableau multi-dimensionnel</translation>
     </message>
     <message>
         <source>Not available</source>
@@ -334,77 +368,85 @@
         <translation type="vanished">Dimensions de volume différentes</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="227"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="246"/>
         <source>Width</source>
         <translation>Largeur</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="228"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="247"/>
         <source>Height</source>
         <translation>Hauteur</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="229"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="248"/>
         <source>Channels</source>
         <translation>Canaux</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="230"/>
+        <location filename="../Data/CDataArrayInfo.cpp" line="83"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="249"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="231"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="250"/>
         <source>Bit depth</source>
         <translation>Nb bit par pixel</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="232"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="251"/>
         <source>Min bit</source>
         <translation>Bit min</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="233"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="252"/>
         <source>Max bit</source>
         <translation>Bit max</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="234"/>
+        <location filename="../Data/CDataArrayInfo.cpp" line="84"/>
+        <source>Size</source>
+        <translation>Taille</translation>
+    </message>
+    <message>
+        <location filename="../Data/CDataArrayInfo.cpp" line="85"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="253"/>
         <source>Min value</source>
         <translation>Valeur minimum</translation>
     </message>
     <message>
-        <location filename="../Data/CDataImageInfo.cpp" line="235"/>
+        <location filename="../Data/CDataArrayInfo.cpp" line="86"/>
+        <location filename="../Data/CDataImageInfo.cpp" line="254"/>
         <source>Max value</source>
         <translation>Valeur maximum</translation>
     </message>
     <message>
-        <location filename="../Data/CDataInfo.cpp" line="91"/>
+        <location filename="../Data/CDataInfo.cpp" line="110"/>
         <source>General metadata</source>
         <translation>Données générales</translation>
     </message>
     <message>
-        <location filename="../Data/CDataInfo.cpp" line="88"/>
+        <location filename="../Data/CDataInfo.cpp" line="107"/>
         <source>File path</source>
         <translation>Chemin du fichier</translation>
     </message>
     <message>
-        <location filename="../Data/CDataVideoInfo.cpp" line="73"/>
+        <location filename="../Data/CDataVideoInfo.cpp" line="92"/>
         <source>Total frame number</source>
         <translation>Nombre total d&apos;images</translation>
     </message>
     <message>
-        <location filename="../Data/CDataVideoInfo.cpp" line="74"/>
+        <location filename="../Data/CDataVideoInfo.cpp" line="93"/>
         <source>Current frame</source>
         <translation>Image courante</translation>
     </message>
     <message>
-        <location filename="../Data/CDataVideoInfo.cpp" line="75"/>
+        <location filename="../Data/CDataVideoInfo.cpp" line="94"/>
         <source>Video codec</source>
         <translation>Codec vidéo</translation>
     </message>
     <message>
-        <location filename="../Data/CDataConversion.cpp" line="111"/>
+        <location filename="../Data/CDataConversion.cpp" line="130"/>
         <source>Grayscale image required</source>
         <translation>Image monochrome requise</translation>
     </message>
