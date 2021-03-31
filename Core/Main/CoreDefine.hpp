@@ -64,7 +64,7 @@ namespace Ikomia
         NUMERIC_VALUES,         /**< Generic numeric values */
         DESCRIPTORS,            /**< Image descriptors (used for classification, registration...) */
         WIDGET,                 /**< User-defined widget */
-        FOLDER,                 /**< Ikomia project folder: may contain various data type */
+        PROJECT_FOLDER,         /**< Ikomia project folder: may contain various data type */
         FOLDER_PATH,            /**< Folder path */
         FILE_PATH,              /**< File path */
         DNN_DATASET,            /**< Dataset used for deep learning, composed with image and annotations */

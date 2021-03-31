@@ -46,7 +46,7 @@ class DATAPROCESSSHARED_EXPORT CGraphicsProcessInput : public CProtocolTaskIO
         CGraphicsProcessInput(CGraphicsProcessInput&& in);
         CGraphicsProcessInput(const CGraphicsProcessOutput &out);
 
-        virtual ~CGraphicsProcessInput();
+        virtual ~CGraphicsProcessInput() = default;
 
         CGraphicsProcessInput&      operator=(const CGraphicsProcessInput& in);
         CGraphicsProcessInput&      operator=(CGraphicsProcessInput&& in);

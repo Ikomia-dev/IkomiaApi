@@ -25,7 +25,6 @@
 #include "CFeatureProcessIO.hpp"
 #include "CVideoProcessIO.h"
 #include "CWidgetOutput.h"
-#include "CFolderInput.h"
 #include "CPathIO.h"
 
 CTaskIORegistration::CTaskIORegistration()
@@ -61,6 +60,5 @@ void CTaskIORegistration::registerCore()
     registerIO(std::make_shared<CFeatureProcessIOFactory>());
     registerIO(std::make_shared<CVideoProcessIOFactory>());
     registerIO(std::make_shared<CWidgetOutputFactory>());
-    registerIO(std::make_shared<CFolderInputFactory>());
     registerIO(std::make_shared<CPathIOFactory>());
 }

@@ -25,6 +25,7 @@ SOURCES += \
         CDnnTrainProcessWrap.cpp \
         CGraphicsInputWrap.cpp \
         CImageProcessIOWrap.cpp \
+        CPathIOWrap.cpp \
         CVideoProcessIOWrap.cpp \
         CWidgetOutputWrap.cpp \
         PyDataProcess.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
         CFeatureProcessIOWrap.hpp \
         CGraphicsInputWrap.h \
         CImageProcessIOWrap.h \
+        CPathIOWrap.h \
         CVideoProcessIOWrap.h \
         CWidgetOutputWrap.h \
         PyDataProcess.h \

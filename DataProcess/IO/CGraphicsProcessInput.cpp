@@ -61,10 +61,6 @@ CGraphicsProcessInput::CGraphicsProcessInput(const CGraphicsProcessOutput &out) 
     m_source = GraphicsSource::GRAPHICS_OUTPUT;
 }
 
-CGraphicsProcessInput::~CGraphicsProcessInput()
-{
-}
-
 CGraphicsProcessInput &CGraphicsProcessInput::operator=(const CGraphicsProcessInput &in)
 {
     CProtocolTaskIO::operator=(in);

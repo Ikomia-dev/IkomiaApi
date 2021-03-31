@@ -25,8 +25,6 @@
 #include "DataProcessGlobal.hpp"
 #include "Protocol/CProtocolTaskIO.h"
 
-class CFolderInput;
-
 class DATAPROCESSSHARED_EXPORT CPathIO : public CProtocolTaskIO
 {
     public:
@@ -34,9 +32,13 @@ class DATAPROCESSSHARED_EXPORT CPathIO : public CProtocolTaskIO
         CPathIO();
         CPathIO(IODataType data);
         CPathIO(IODataType data, const std::string& path);
-        CPathIO(const CFolderInput& in);
+        CPathIO(const CPathIO& in);
+        CPathIO(CPathIO&& in);
 
         virtual ~CPathIO() = default;
+
+        CPathIO&    operator=(const CPathIO& in);
+        CPathIO&    operator=(CPathIO&& in);
 
         void        setPath(const std::string& path);
 
@@ -47,13 +49,11 @@ class DATAPROCESSSHARED_EXPORT CPathIO : public CProtocolTaskIO
 
         void        clearData() override;
 
-        void        copy(const std::shared_ptr<CProtocolTaskIO> &ioPtr) override;
-
-        std::shared_ptr<CProtocolTaskIO>            clone() const;
+        std::shared_ptr<CPathIO>    clone() const;
 
     private:
 
-        virtual std::shared_ptr<CProtocolTaskIO>    cloneImp() const override;
+        virtual ProtocolTaskIOPtr   cloneImp() const override;
 
     private:
 

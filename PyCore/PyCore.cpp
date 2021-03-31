@@ -291,7 +291,8 @@ BOOST_PYTHON_MODULE(pycore)
         .value("ARRAY", IODataType::ARRAY)
     ;
 
-    class_<CProtocolTaskIOWrap, std::shared_ptr<CProtocolTaskIOWrap>>("CProtocolTaskIO", _protocolTaskIODocString, init<>("Default constructor"))
+    class_<CProtocolTaskIOWrap, std::shared_ptr<CProtocolTaskIOWrap>>("CProtocolTaskIO", _protocolTaskIODocString)
+        .def(init<>("Default constructor"))
         .def(init<IODataType>(_ctorProtocolTaskIODocString))
         .def(init<const CProtocolTaskIO&>("Copy constructor"))
         .add_property("dataType", &CProtocolTaskIO::getDataType, &CProtocolTaskIO::setDataType, "I/O data type")

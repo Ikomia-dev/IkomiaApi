@@ -262,6 +262,7 @@ std::string CProtocolTaskIO::getClassName(IODataType ioDataType)
         case IODataType::WIDGET:
             return "CWidgetOutput";
 
+        case IODataType::PROJECT_FOLDER:
         case IODataType::FOLDER_PATH:
         case IODataType::FILE_PATH:
             return "CPathIO";

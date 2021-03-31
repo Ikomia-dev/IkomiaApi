@@ -32,7 +32,6 @@ SOURCES += \
         Core/CRunTaskManager.cpp \
         IO/CArrayIO.cpp \
         IO/CConvertIO.cpp \
-        IO/CFolderInput.cpp \
         IO/CGraphicsProcessInput.cpp \
         IO/CGraphicsProcessOutput.cpp \
         IO/CImageProcessIO.cpp \
@@ -72,7 +71,6 @@ HEADERS += \
         IO/CConvertIO.h \
         IO/CDatasetIO.hpp \
         IO/CFeatureProcessIO.hpp \
-        IO/CFolderInput.h \
         IO/CGraphicsProcessInput.h \
         IO/CGraphicsProcessOutput.h \
         IO/CImageProcessIO.h \

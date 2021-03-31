@@ -345,7 +345,7 @@ namespace Ikomia
                         return QObject::tr("custom result view");
                     case IODataType::DESCRIPTORS:
                         return QObject::tr("descriptors");
-                    case IODataType::FOLDER:
+                    case IODataType::PROJECT_FOLDER:
                         return QObject::tr("folder");
                     case IODataType::FOLDER_PATH:
                         return QObject::tr("folder path");
@@ -369,11 +369,9 @@ namespace Ikomia
 
                 return (nameFrom == nameTo ||
                         (nameFrom == "CImageProcessIO" && nameTo == "CVideoProcessIO") ||
-                        (nameFrom == "CImageProcessIO" && nameTo == "CFolderInput") ||
                         (nameFrom == "CVideoProcessIO" && nameTo == "CImageProcessIO") ||
-                        (nameFrom == "CVideoProcessIO" && nameTo == "CFolderInput") ||
-                        (nameFrom == "CFolderInput" && nameTo == "CImageProcessIO") ||
-                        (nameFrom == "CFolderInput" && nameTo == "CVideoProcessIO"));
+                        (nameFrom == "CPathIO" && nameTo == "CImageProcessIO") ||
+                        (nameFrom == "CPathIO" && nameTo == "CVideoProcessIO"));
             }
 
             /**
@@ -460,7 +458,7 @@ namespace Ikomia
                             targetData == IODataType::IMAGE ||
                             targetData == IODataType::IMAGE_LABEL);
                 }
-                else if(srcData == IODataType::FOLDER)
+                else if(srcData == IODataType::PROJECT_FOLDER)
                 {
                     return targetData == IODataType::IMAGE ||
                             targetData == IODataType::IMAGE_BINARY ||
@@ -468,7 +466,7 @@ namespace Ikomia
                             targetData == IODataType::VIDEO ||
                             targetData == IODataType::VIDEO_BINARY ||
                             targetData == IODataType::VIDEO_LABEL ||
-                            targetData == IODataType::FOLDER ||
+                            targetData == IODataType::PROJECT_FOLDER ||
                             targetData == IODataType::FOLDER_PATH;
                 }
                 else

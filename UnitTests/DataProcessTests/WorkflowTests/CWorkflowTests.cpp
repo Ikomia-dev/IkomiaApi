@@ -217,13 +217,13 @@ void CWorkflowTests::protocolTaskConnection()
                 (dataSrc == IODataType::LIVE_STREAM_LABEL && dataTarget == IODataType::LIVE_STREAM) ||
                 (dataSrc == IODataType::INPUT_GRAPHICS && dataTarget == IODataType::OUTPUT_GRAPHICS) ||
                 (dataSrc == IODataType::OUTPUT_GRAPHICS && dataTarget == IODataType::INPUT_GRAPHICS) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::IMAGE) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::IMAGE_BINARY) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::IMAGE_LABEL) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::VIDEO) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::VIDEO_BINARY) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::VIDEO_LABEL) ||
-                (dataSrc == IODataType::FOLDER && dataTarget == IODataType::FOLDER_PATH))
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::IMAGE) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::IMAGE_BINARY) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::IMAGE_LABEL) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::VIDEO) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::VIDEO_BINARY) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::VIDEO_LABEL) ||
+                (dataSrc == IODataType::PROJECT_FOLDER && dataTarget == IODataType::FOLDER_PATH))
             {
                 //Connect tasks: OK
                 auto edgeId = protocol.connect(srcTaskId, 0, targetTaskId, 0);

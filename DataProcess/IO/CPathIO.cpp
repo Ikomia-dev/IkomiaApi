@@ -20,7 +20,6 @@
 #include <QObject>
 #include <boost/filesystem.hpp>
 #include "CPathIO.h"
-#include "CFolderInput.h"
 
 CPathIO::CPathIO() : CProtocolTaskIO(IODataType::FILE_PATH)
 {
@@ -41,10 +40,32 @@ CPathIO::CPathIO(IODataType data, const std::string &path) : CProtocolTaskIO(dat
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(const CFolderInput &in) : CProtocolTaskIO(in)
+CPathIO::CPathIO(const CPathIO &in) : CProtocolTaskIO(in)
 {
-    m_path = in.getPath();
+    m_path = in.m_path;
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
+}
+
+CPathIO::CPathIO(CPathIO &&in)
+{
+    m_path = std::move(in.m_path);
+    m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
+}
+
+CPathIO &CPathIO::operator=(const CPathIO &in)
+{
+    CProtocolTaskIO::operator=(in);
+    m_path = in.m_path;
+    m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
+    return *this;
+}
+
+CPathIO &CPathIO::operator=(CPathIO &&in)
+{
+    CProtocolTaskIO::operator=(in);
+    m_path = std::move(in.m_path);
+    m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
+    return *this;
 }
 
 void CPathIO::setPath(const std::string &path)
@@ -75,19 +96,12 @@ void CPathIO::clearData()
     m_path.clear();
 }
 
-void CPathIO::copy(const std::shared_ptr<CProtocolTaskIO> &ioPtr)
-{
-    auto pFolderInput = dynamic_cast<const CFolderInput*>(ioPtr.get());
-    if(pFolderInput)
-        *this = *pFolderInput;
-}
-
-std::shared_ptr<CProtocolTaskIO> CPathIO::clone() const
+std::shared_ptr<CPathIO> CPathIO::clone() const
 {
     return std::static_pointer_cast<CPathIO>(cloneImp());
 }
 
-std::shared_ptr<CProtocolTaskIO> CPathIO::cloneImp() const
+ProtocolTaskIOPtr CPathIO::cloneImp() const
 {
     return std::shared_ptr<CPathIO>(new CPathIO(*this));
 }
