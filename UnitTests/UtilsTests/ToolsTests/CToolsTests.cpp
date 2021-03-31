@@ -117,13 +117,16 @@ void CToolsTests::fileFunctions()
     path = Utils::File::getPathFromPattern(pathPattern, 11);
     QVERIFY(path != pathPattern && path == "/home/user/images/frame_0011.png");
 
-    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/frame_%04d.png";
+    //const std::string sequenceFolder = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/";
+    const std::string sequenceFolder = "/home/ludo/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/";
+
+    pathPattern = sequenceFolder + "frame_%04d.png";
     bool bFind = Utils::File::isFileSequenceExist(pathPattern);
     QVERIFY(bFind);
-    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/image_%04d.png";
+    pathPattern = sequenceFolder + "image_%04d.png";
     bFind = Utils::File::isFileSequenceExist(pathPattern);
     QVERIFY(!bFind);
-    pathPattern = "/run/media/ludo/data/Ludo/Work/Ikomia/Videos/Datasets/MPI-Sintel-testing/test/clean/ambush_1/frame%04d.jpg";
+    pathPattern = sequenceFolder + "frame%04d.jpg";
     bFind = Utils::File::isFileSequenceExist(pathPattern);
     QVERIFY(!bFind);
 }

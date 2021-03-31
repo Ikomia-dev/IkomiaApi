@@ -46,7 +46,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <regex>
+//#include <regex>
+#include <QRegularExpression>
 
 //Avoid conflict with Qt slots keyword
 #undef slots
@@ -483,10 +484,26 @@ namespace Ikomia
 
             inline std::string getPathFromPattern(const std::string& pathPattern, int index)
             {
+                // We can't use std::regex for now -> switch to QRegularExpression
+                // since PyTorch don't fix C++ 11 ABI compatibility with std::regex
+                // https://github.com/pytorch/pytorch/issues/50779
+
                 std::string path = pathPattern;
                 auto parent = getParentPath(pathPattern);
                 auto filePattern = getFileName(pathPattern);
-                const std::regex regex(R"((.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+))");
+                QRegularExpression re("(.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+)");
+                QRegularExpressionMatch match = re.match(QString::fromStdString(filePattern));
+
+                if(match.hasMatch())
+                {
+                    auto name = match.captured(1).toStdString();
+                    auto digits = match.captured(2).toInt();
+                    auto extension = match.captured(3).toStdString();
+                    boost::format fmt = boost::format("%1%%2%%3%") % name % boost::io::group(std::setw(digits), std::setfill('0'), index) % extension;
+                    path = parent + "/" + fmt.str();
+                }
+
+                /*const std::regex regex(R"((.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+))");
                 std::smatch match;
 
                 if(std::regex_search(filePattern, match, regex))
@@ -500,7 +517,7 @@ namespace Ikomia
                         boost::format fmt = boost::format("%1%%2%%3%") % name % boost::io::group(std::setw(digits), std::setfill('0'), index) % extension;
                         path = parent + "/" + fmt.str();
                     }
-                }
+                }*/
                 return path;
             }
 
@@ -512,13 +529,42 @@ namespace Ikomia
 
             inline bool isFileSequenceExist(const std::string& pathPattern)
             {
+                // We can't use std::regex for now -> switch to QRegularExpression
+                // since PyTorch don't fix C++ 11 ABI compatibility with std::regex
+                // https://github.com/pytorch/pytorch/issues/50779
+
                 // Search for file with pattern like {prefix}%(0)nd.{ext}'
                 boost::filesystem::path path(pathPattern);
                 boost::filesystem::path directory(path.parent_path().string());
                 auto filePattern = getFileName(pathPattern);
 
                 // Check pattern validity
-                std::smatch match;
+                QRegularExpression regexPattern("(.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+)");
+                QRegularExpressionMatch match = regexPattern.match(QString::fromStdString(filePattern));
+
+                if(!match.hasMatch())
+                    return false;
+
+                // Extract pattern information
+                auto prefix = match.captured(1);
+                auto digits = match.captured(2);
+                auto extension = match.captured(3);
+
+                // Regex to check file numbering validity
+                const QString strRegexFile = prefix + ".*[0-9]{" + digits + "}" + extension;
+                QRegularExpression regexFile(strRegexFile);
+
+                for(const auto& entry : boost::filesystem::directory_iterator(directory))
+                {
+                    const auto filename = entry.path().filename().string();
+                    QRegularExpressionMatch matchFile = regexFile.match(QString::fromStdString(filename));
+
+                    if(matchFile.hasMatch())
+                        return true;
+                }
+
+                // Check pattern validity
+                /*std::smatch match;
                 const std::regex regexPattern(R"((.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+))");
 
                 if(!std::regex_search(filePattern, match, regexPattern))
@@ -542,7 +588,8 @@ namespace Ikomia
                     const auto filename = entry.path().filename().string();
                     if(std::regex_search(filename, match, regexFile))
                         return true;
-                }
+                }*/
+
                 return false;
             }
 
