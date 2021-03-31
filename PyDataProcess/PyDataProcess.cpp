@@ -98,11 +98,23 @@ BOOST_PYTHON_MODULE(pydataprocess)
     init_numpy();
 
     //Register smart pointers
+    register_ptr_to_python<std::shared_ptr<CProcessFactory>>();
+    register_ptr_to_python<std::shared_ptr<CWidgetFactory>>();
+    register_ptr_to_python<std::shared_ptr<CGraphicsProcessInput>>();
+    register_ptr_to_python<std::shared_ptr<CGraphicsProcessOutput>>();
+    register_ptr_to_python<std::shared_ptr<CImageProcessIO>>();
+    register_ptr_to_python<std::shared_ptr<CVideoProcessIO>>();
+    register_ptr_to_python<std::shared_ptr<CWidgetOutput>>();
+    register_ptr_to_python<std::shared_ptr<CPathIO>>();
+    register_ptr_to_python<std::shared_ptr<CDatasetIO>>();
+    register_ptr_to_python<std::shared_ptr<CArrayIO>>();
     register_ptr_to_python<std::shared_ptr<CImageProcess2d>>();
     register_ptr_to_python<std::shared_ptr<CInteractiveImageProcess2d>>();
     register_ptr_to_python<std::shared_ptr<CVideoProcess>>();
     register_ptr_to_python<std::shared_ptr<CVideoProcessOF>>();
     register_ptr_to_python<std::shared_ptr<CVideoProcessTracking>>();
+    register_ptr_to_python<std::shared_ptr<CDnnTrainProcess>>();
+    register_ptr_to_python<std::shared_ptr<CDnnTrainProcessParam>>();
 
     //Register std::vector<T> <-> python list converters
     vector_from_python_list<uchar>();
