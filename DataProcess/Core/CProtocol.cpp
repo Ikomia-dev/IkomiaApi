@@ -596,7 +596,14 @@ std::vector<ProtocolVertex> CProtocol::getForwardPassTasks(const ProtocolVertex 
         {
             std::vector<ProtocolVertex> neededParents;
             findTaskToExecute(neededParents, candidate);
-            tasks.insert(tasks.end(), neededParents.begin(), neededParents.end());
+
+            // Add needed parents if not already in
+            for(size_t i=0; i<neededParents.size(); ++i)
+            {
+                auto it = std::find(tasks.begin(), tasks.end(), neededParents[i]);
+                if(it == tasks.end())
+                    tasks.push_back(neededParents[i]);
+            }
 
             //Add candidate task
             if(bValidTask)
@@ -606,7 +613,11 @@ std::vector<ProtocolVertex> CProtocol::getForwardPassTasks(const ProtocolVertex 
         {
             //Add candidate task
             if(bValidTask)
-                tasks.push_back(candidate);
+            {
+                auto it = std::find(tasks.begin(), tasks.end(), candidate);
+                if(it == tasks.end())
+                    tasks.push_back(candidate);
+            }
 
             //Insert each child to the FIFO list if not already in
             childs = getChilds(candidate);
