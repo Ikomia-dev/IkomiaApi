@@ -639,7 +639,7 @@ std::vector<ProtocolVertex> CProtocol::getSelfInputTasks() const
 
     for(auto it=vertices.first; it!=vertices.second; ++it)
     {
-        if(getInEdgesCount(*it) == 0)
+        if(*it != m_root && getInEdgesCount(*it) == 0)
         {
             ProtocolTaskPtr taskPtr = m_graph[*it];
             if(taskPtr && taskPtr->isSelfInput())
