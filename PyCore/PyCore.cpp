@@ -80,13 +80,6 @@ BOOST_PYTHON_MODULE(pycore)
 
     //Register smart pointers
     register_ptr_to_python<std::shared_ptr<CProxyGraphicsItem>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsComplexPoly>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsEllipse>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsPoint>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsPolygon>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsPolyline>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsRect>>();
-    register_ptr_to_python<std::shared_ptr<CProxyGraphicsText>>();
     register_ptr_to_python<std::shared_ptr<CProtocolTaskParam>>();
     register_ptr_to_python<std::shared_ptr<CProtocolTaskIO>>();
     register_ptr_to_python<std::shared_ptr<CProtocolTask>>();

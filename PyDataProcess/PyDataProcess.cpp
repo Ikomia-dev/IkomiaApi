@@ -101,7 +101,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
     register_ptr_to_python<std::shared_ptr<CProcessFactory>>();
     register_ptr_to_python<std::shared_ptr<CWidgetFactory>>();
     register_ptr_to_python<std::shared_ptr<CGraphicsProcessInput>>();
-    register_ptr_to_python<std::shared_ptr<CGraphicsProcessOutput>>();
     register_ptr_to_python<std::shared_ptr<CImageProcessIO>>();
     register_ptr_to_python<std::shared_ptr<CVideoProcessIO>>();
     register_ptr_to_python<std::shared_ptr<CWidgetOutput>>();
