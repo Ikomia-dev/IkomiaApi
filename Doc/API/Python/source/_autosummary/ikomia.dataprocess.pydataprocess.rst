@@ -23,6 +23,7 @@ PyDataProcess
       CWidgetOutput
       CDatasetIO
       CPathIO
+      CArrayIO
       NumericOutputType
       PlotType
       DatasetFormat

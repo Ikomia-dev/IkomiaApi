@@ -18,11 +18,13 @@ CProtocolTaskIO
       ~CProtocolTaskIO.getUnitElementCount
       ~CProtocolTaskIO.isAutoInput
       ~CProtocolTaskIO.isDataAvailable
+      ~CProtocolTaskIO.setDisplayable
    
    .. rubric:: Attributes
    .. autosummary::
       ~CProtocolTaskIO.dataType
       ~CProtocolTaskIO.dimCount
+      ~CProtocolTaskIO.description
    
    See :py:class:`~PyCore.IODataType` for available data types.
 
@@ -34,4 +36,5 @@ CProtocolTaskIO
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: setDisplayable
    

@@ -11,13 +11,13 @@ The Python environment configuration may vary among your operating system:
 
 - Version: *3.8*
 - Path: *c:\\Users\\{username}\Ikomia\Python*
-- Installed packages: *pip, numpy=1.18.5, requests, PyQt5=5.15.2, opencv=4.5.0, MLflow=1.12.1*
+- Installed packages: *pip, numpy=1.19.0, requests, PyQt5=5.15.2, opencv=4.5.0, MLflow=1.14.1*
 
 **Linux**
 
 - Version: *3.7*
 - Path: *~/Ikomia/Python*
-- Installed packages: *pip, numpy, requests, PyQt5=5.15.2, sip, opencv=4.5.0, MLflow=1.12.1*
+- Installed packages: *pip, numpy=1.19.0, requests, PyQt5=5.15.2, sip, opencv=4.5.0, MLflow=1.14.1*
 
 **Mac OS X**
 
