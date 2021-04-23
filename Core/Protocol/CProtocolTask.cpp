@@ -169,6 +169,7 @@ void CProtocolTask::setInput(const ProtocolTaskIOPtr &pInput, size_t index, bool
     if(Utils::Protocol::isConvertibleIO(m_inputs[index], pInput))
     {
         //Just share pointer
+        CPyEnsureGIL gil;
         m_inputs[index] = pInput;
     }
     else

@@ -34,6 +34,8 @@ class CDnnTrainProcessWrap : public CDnnTrainProcess, public wrapper<CDnnTrainPr
         CDnnTrainProcessWrap(const std::string& name, const std::shared_ptr<CDnnTrainProcessParam>& pParam);
         CDnnTrainProcessWrap(const CDnnTrainProcess& process);
 
+        ~CDnnTrainProcessWrap() = default;
+
         virtual size_t  getProgressSteps() override;
         size_t          default_getProgressSteps();
 

@@ -147,11 +147,7 @@ class CORESHARED_EXPORT CProtocolTask
          */
         CProtocolTask& operator=(const CProtocolTask&& task);
 
-        //virtual ~CProtocolTask() = default;
-        virtual ~CProtocolTask()
-        {
-
-        }
+        virtual ~CProtocolTask() = default;
 
         //Setters
         /**

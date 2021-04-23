@@ -78,7 +78,7 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainProcess : public CProtocolTask
         CDnnTrainProcess(const std::string& name);
         CDnnTrainProcess(const std::string& name, const std::shared_ptr<CDnnTrainProcessParam>& pParam);
 
-        virtual ~CDnnTrainProcess() = default;
+        ~CDnnTrainProcess() = default;
 
         /**
          * @brief See CProtocolTask::beginTaskRun.
