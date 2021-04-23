@@ -30,6 +30,7 @@ class DATAPROCESSSHARED_EXPORT CTaskIORegistration
     public:
 
         CTaskIORegistration();
+        ~CTaskIORegistration();
 
         const CProtocolTaskIOAbstractFactory&   getFactory() const;
 

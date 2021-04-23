@@ -39,6 +39,8 @@ class CImageProcess2dWrap : public CImageProcess2d, public wrapper<CImageProcess
         CImageProcess2dWrap(const std::string& name, bool bGraphicsInput);
         CImageProcess2dWrap(const CImageProcess2d& process);
 
+        ~CImageProcess2dWrap() = default;
+
         virtual size_t  getProgressSteps() override;
         size_t          default_getProgressSteps();
 

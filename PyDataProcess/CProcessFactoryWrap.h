@@ -29,6 +29,8 @@ class CProcessFactoryWrap: public CProcessFactory, public wrapper<CProcessFactor
 {
     public:
 
+        ~CProcessFactoryWrap() = default;
+
         virtual ProtocolTaskPtr create() override;
         virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override;
 };

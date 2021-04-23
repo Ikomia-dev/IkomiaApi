@@ -69,6 +69,11 @@ class CAbstractFactory
             return m_creators.find(key) != m_creators.end();
         }
 
+        virtual void    clear()
+        {
+            m_creators.clear();
+        }
+
     protected:
 
         std::unordered_map<Key, Creator> m_creators;

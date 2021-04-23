@@ -32,6 +32,12 @@ CTaskIORegistration::CTaskIORegistration()
     registerCore();
 }
 
+CTaskIORegistration::~CTaskIORegistration()
+{
+    CPyEnsureGIL gil;
+    m_factory.clear();
+}
+
 const CProtocolTaskIOAbstractFactory &CTaskIORegistration::getFactory() const
 {
     return m_factory;

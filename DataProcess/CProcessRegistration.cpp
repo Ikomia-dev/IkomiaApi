@@ -32,6 +32,13 @@ CProcessRegistration::CProcessRegistration()
     registerGmic();
 }
 
+CProcessRegistration::~CProcessRegistration()
+{
+    CPyEnsureGIL gil;
+    m_processFactory.clear();
+    m_widgetFactory.clear();
+}
+
 void CProcessRegistration::registerProcess(const std::shared_ptr<CProcessFactory>& pProcessFactory,
                                            const std::shared_ptr<CWidgetFactory>& pWidgetFactory)
 {
@@ -48,11 +55,17 @@ void CProcessRegistration::registerProcess(const std::shared_ptr<CProcessFactory
 
     m_processFactory.getList().push_back(pProcessFactory);
     //Passage par lambda -> pFactory par valeur pour assurer la portée du pointeur
-    auto pProcessFunc = [pProcessFactory](const ProtocolTaskParamPtr& param){ return pProcessFactory->create(param); };
+    auto pProcessFunc = [pProcessFactory](const ProtocolTaskParamPtr& param)
+    {
+        return pProcessFactory->create(param);
+    };
     m_processFactory.registerCreator(pProcessFactory->getInfo().m_name, pProcessFunc);
 
     m_widgetFactory.getList().push_back(pWidgetFactory);
-    auto pWidgetFunc = [pWidgetFactory](const ProtocolTaskParamPtr& param){ return pWidgetFactory->create(param); };
+    auto pWidgetFunc = [pWidgetFactory](const ProtocolTaskParamPtr& param)
+    {
+        return pWidgetFactory->create(param);
+    };
     m_widgetFactory.registerCreator(pWidgetFactory->getName(), pWidgetFunc);
 
     //Pour mémoire

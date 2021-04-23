@@ -29,6 +29,8 @@ class CWidgetFactoryWrap : public CWidgetFactory, public wrapper<CWidgetFactory>
 {
     public:
 
+        ~CWidgetFactoryWrap() = default;
+
         virtual ProtocolTaskWidgetPtr  create(const ProtocolTaskParamPtr pParam);
 };
 

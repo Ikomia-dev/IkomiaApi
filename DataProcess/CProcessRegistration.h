@@ -31,6 +31,7 @@ class DATAPROCESSSHARED_EXPORT CProcessRegistration
     public:
 
         CProcessRegistration();
+        ~CProcessRegistration();
 
         const CProcessAbstractFactory&  getProcessFactory() const;
         const CWidgetAbstractFactory&   getWidgetFactory() const;

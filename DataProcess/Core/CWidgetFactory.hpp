@@ -94,6 +94,12 @@ class CWidgetAbstractFactory: public CAbstractFactory<std::string, ProtocolTaskW
                               m_factories.end());
         }
 
+        void                clear() override
+        {
+            CAbstractFactory<std::string, ProtocolTaskWidgetPtr, const ProtocolTaskParamPtr>::clear();
+            m_factories.clear();
+        }
+
     private:
 
         WidgetFactories m_factories;

@@ -78,6 +78,8 @@ CProtocol::CProtocol(const CProtocol&& protocol) : CProtocolTask(protocol)
 
 CProtocol::~CProtocol()
 {
+    CPyEnsureGIL gil;
+    m_graph.clear();
 }
 
 CProtocol &CProtocol::operator=(const CProtocol &protocol)

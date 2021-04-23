@@ -37,7 +37,7 @@ class CProtocolTaskWrap : public CProtocolTask, public wrapper<CProtocolTask>
         CProtocolTaskWrap(const std::string& name);
         CProtocolTaskWrap(const CProtocolTask& task);
 
-        virtual ~CProtocolTaskWrap() = default;
+        ~CProtocolTaskWrap() = default;
 
         virtual void    setInputDataType(const IODataType& dataType, size_t index = 0) override;
         void            default_setInputDataType(const IODataType& dataType, size_t index = 0);

@@ -304,6 +304,12 @@ class CProtocolTaskIOAbstractFactory: public CAbstractFactory<std::string, Proto
             return m_factories;
         }
 
+        void                    clear() override
+        {
+            CAbstractFactory<std::string, ProtocolTaskIOPtr, IODataType>::clear();
+            m_factories.clear();
+        }
+
     private:
 
         ProtocolTaskIOFactories m_factories;

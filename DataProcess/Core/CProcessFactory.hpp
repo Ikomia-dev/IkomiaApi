@@ -104,6 +104,12 @@ class CProcessAbstractFactory: public CAbstractFactory<std::string, ProtocolTask
                               m_factories.end());
         }
 
+        void                clear() override
+        {
+            CAbstractFactory<std::string, ProtocolTaskPtr, const ProtocolTaskParamPtr>::clear();
+            m_factories.clear();
+        }
+
     private:
 
         ProcessFactories m_factories;
