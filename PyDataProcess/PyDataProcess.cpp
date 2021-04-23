@@ -65,8 +65,8 @@ void exposeFeatureIO(const std::string& className)
     void (CFeatureProcessIO<Type>::*addValueList4)(const std::vector<Type>&, const std::string&, const std::vector<std::string>&) = &CFeatureProcessIO<Type>::addValueList;
 
     class_<CFeatureProcessIOWrap<Type>, bases<CProtocolTaskIO>, std::shared_ptr<CFeatureProcessIOWrap<Type>>>(className.c_str(), _featureProcessIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const CFeatureProcessIO<Type>&>("Copy constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const CFeatureProcessIO<Type>&>("Copy constructor"))
         .def("setOutputType", &CFeatureProcessIO<Type>::setOutputType, _setOutputTypeDocString, args("self", "type"))
         .def("setPlotType", &CFeatureProcessIO<Type>::setPlotType, _setPlotTypeDocString, args("self", "type"))
         .def("addValueList", addValueList1, _addValueList1DocString, args("self", "values"))
@@ -116,8 +116,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     register_ptr_to_python<std::shared_ptr<CDnnTrainProcessParam>>();
 
     //Register std::vector<T> <-> python list converters
-    vector_from_python_list<uchar>();
-    vector_from_python_list<std::vector<uchar>>();
+    registerStdVector<uchar>();
+    registerStdVector<std::vector<uchar>>();
 
     //------------------------//
     //----- CProcessInfo -----//
@@ -179,8 +179,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CGraphicsInput -----//
     //--------------------------//
     class_<CGraphicsInputWrap, bases<CProtocolTaskIO>, std::shared_ptr<CGraphicsInputWrap>>("CGraphicsInput", _graphicsInputDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const CGraphicsProcessInput&>("Copy constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const CGraphicsProcessInput&>("Copy constructor"))
         .def("setItems", &CGraphicsProcessInput::setItems, _setItemsDocString, args("self", "items"))
         .def("getItems", &CGraphicsProcessInput::getItems, _getItemsDocString, args("self"))
         .def("isDataAvailable", &CGraphicsProcessInput::isDataAvailable, &CGraphicsInputWrap::default_isDataAvailable, _isGraphicsDataAvailableDocString, args("self"))
@@ -206,7 +206,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addText2)(const std::string&, float x, float y, const GraphicsTextProperty&) = &CGraphicsProcessOutput::addText;
 
     class_<CGraphicsProcessOutput, bases<CProtocolTaskIO>, std::shared_ptr<CGraphicsProcessOutput>>("CGraphicsOutput", _graphicsOutputDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
         .def("setNewLayer", &CGraphicsProcessOutput::setNewLayer, _setNewLayerDocString, args("self", "name"))
         .def("setImageIndex", &CGraphicsProcessOutput::setImageIndex, _setImageIndexDocString, args("self", "index"))
         .def("addItem", &CGraphicsProcessOutput::addItem, _addItemDocString, args("self", "item"))
@@ -230,11 +230,11 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CImageProcessIO -----//
     //---------------------------//
     class_<CImageProcessIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CImageProcessIOWrap>>("CImageProcessIO", _imageProcessIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const CMat&>(_ctor1imageProcessIODocString)[incref_return_value_policy<>()])
-        .def(init<IODataType>(_ctor2imageProcessIODocString)[incref_return_value_policy<>()])
-        .def(init<IODataType, const CMat&>(_ctor3imageProcessIODocString)[incref_return_value_policy<>()])
-        .def(init<const CImageProcessIO&>("Copy constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const CMat&>(_ctor1imageProcessIODocString))
+        .def(init<IODataType>(_ctor2imageProcessIODocString))
+        .def(init<IODataType, const CMat&>(_ctor3imageProcessIODocString))
+        .def(init<const CImageProcessIO&>("Copy constructor"))
         .def("setImage", &CImageProcessIO::setImage, _setImageDocString, args("self", "image"))
         .def("setOverlayMask", &CImageProcessIO::setOverlayMask, _setOverlayMaskDocString, args("self", "mask"))
         .def("setChannelCount", &CImageProcessIO::setChannelCount, _setChannelCountDocString, args("self", "nb"))
@@ -274,10 +274,10 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CVideoProcessIO -----//
     //---------------------------//
     class_<CVideoProcessIOWrap, bases<CImageProcessIO>, std::shared_ptr<CVideoProcessIOWrap>>("CVideoProcessIO", _videoProcessIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const CMat&>(_ctor1VideoProcessIODocString)[incref_return_value_policy<>()])
-        .def(init<IODataType>(_ctor2VideoProcessIODocString)[incref_return_value_policy<>()])
-        .def(init<IODataType, const CMat&>(_ctor3VideoProcessIODocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const CMat&>(_ctor1VideoProcessIODocString))
+        .def(init<IODataType>(_ctor2VideoProcessIODocString))
+        .def(init<IODataType, const CMat&>(_ctor3VideoProcessIODocString))
         .def(init<const CVideoProcessIO&>("Copy constructor"))
         .def("setVideoPath", &CVideoProcessIO::setVideoPath, _setVideoPathDocString, args("self", "path"))
         .def("setVideoPos", &CVideoProcessIO::setVideoPos, _setVideoPosDocString, args("self", "position"))
@@ -304,8 +304,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CWidgetOutput -----//
     //-------------------------//
     class_<CWidgetOutputWrap, bases<CProtocolTaskIO>, std::shared_ptr<CWidgetOutputWrap>>("CWidgetOutput", _widgetOutputDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<IODataType>(_ctorWidgetOutputDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<IODataType>(_ctorWidgetOutputDocString))
         .def("setWidget", &CWidgetOutputWrap::setWidget, _setWidgetDocString, args("self", "widget"))
         .def("isDataAvailable", &CWidgetOutput::isDataAvailable, &CWidgetOutputWrap::default_isDataAvailable, _isWidgetDataAvailableDocString, args("self"))
         .def("clearData", &CWidgetOutput::clearData, &CWidgetOutputWrap::default_clearData, _clearWidgetDataDocString, args("self"))
@@ -315,9 +315,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CPathIO -----//
     //-------------------//
     class_<CPathIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CPathIOWrap>>("CPathIO", _pathIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<IODataType>(_ctor1PathIODocString)[incref_return_value_policy<>()])
-        .def(init<IODataType, const std::string&>(_ctor2PathIODocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<IODataType>(_ctor1PathIODocString))
+        .def(init<IODataType, const std::string&>(_ctor2PathIODocString))
         .def("setPath", &CPathIO::setPath, _setPathDocString, args("self", "path"))
         .def("getPath", &CPathIO::getPath, _getPathDocString, args("self"))
         .def("isDataAvailable", &CPathIO::isDataAvailable, &CPathIOWrap::default_isDataAvailable, _isVideoDataAvailableDocString, args("self"))
@@ -340,8 +340,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     ;
 
     class_<CDatasetIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CDatasetIOWrap>, boost::noncopyable>("CDatasetIO", _datasetIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<CDatasetIO::Format>(_ctor1DatasetIODocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<CDatasetIO::Format>(_ctor1DatasetIODocString))
         .def("getImagePaths", &CDatasetIO::getImagePaths, &CDatasetIOWrap::default_getImagePaths, _getImagePathsDocStr)
         .def("getCategories", &CDatasetIO::getCategories, &CDatasetIOWrap::default_getCategories, _getCategoriesDocStr)
         .def("getCategoryCount", &CDatasetIO::getCategoryCount, &CDatasetIOWrap::default_getCategoryCount, _getCategoryCountDocStr)
@@ -356,9 +356,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CArrayIO -----//
     //--------------------//
     class_<CArrayIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CArrayIOWrap>>("CArrayIO", _arrayIODocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const CMat&>(_ctor1ArrayIODocString)[incref_return_value_policy<>()])
-        .def(init<const CArrayIO&>("Copy constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const CMat&>(_ctor1ArrayIODocString))
+        .def(init<const CArrayIO&>("Copy constructor"))
         .def("setArray", &CArrayIO::setArray, _setArrayDocString, args("self", "array"))
         .def("getArray", &CArrayIO::getArray, _getArrayDocString, args("self"))
         .def("getUnitElementCount", &CArrayIO::getUnitElementCount, &CArrayIOWrap::default_getUnitElementCount, _getArrayUnitElementCountDocString, args("self"))
@@ -376,10 +376,10 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CImageProcess2dWrap::*default_getProgressSteps2)(size_t) = &CImageProcess2dWrap::default_getProgressSteps;
 
     class_<CImageProcess2dWrap, bases<CProtocolTask>, std::shared_ptr<CImageProcess2dWrap>>("CImageProcess2d", _imageProcess2dDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<bool>(_ctor1ImageProcess2dDocString)[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctor2ImageProcess2dDocString)[incref_return_value_policy<>()])
-        .def(init<const std::string&, bool>(_ctor3ImageProcess2dDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<bool>(_ctor1ImageProcess2dDocString))
+        .def(init<const std::string&>(_ctor2ImageProcess2dDocString))
+        .def(init<const std::string&, bool>(_ctor3ImageProcess2dDocString))
         .def("setActive", &CImageProcess2d::setActive, &CImageProcess2dWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("setOutputColorMap", &CImageProcess2dWrap::setOutputColorMap, _setOutputColorMapDocString, args("self", "index", "mask_index", "colors"))
         .def("updateStaticOutputs", &CImageProcess2d::updateStaticOutputs, &CImageProcess2dWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
@@ -413,8 +413,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CInteractiveImageProcess2dWrap::*default_getProgressSteps4)(size_t) = &CInteractiveImageProcess2dWrap::default_getProgressSteps;
 
     class_<CInteractiveImageProcess2dWrap, bases<CImageProcess2d>, std::shared_ptr<CInteractiveImageProcess2dWrap>>("CInteractiveImageProcess2d", _interactiveImageProcess2d)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctorInteractiveImageProcessDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctorInteractiveImageProcessDocString))
         .def("setActive", &CInteractiveImageProcess2d::setActive, &CInteractiveImageProcess2dWrap::default_setActive, _setActiveInteractiveDocString, args("self", "is_active"))
         .def("updateStaticOutputs", &CInteractiveImageProcess2d::updateStaticOutputs, &CInteractiveImageProcess2dWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
         .def("beginTaskRun", &CInteractiveImageProcess2d::beginTaskRun, &CInteractiveImageProcess2dWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
@@ -446,8 +446,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CVideoProcessWrap::*default_getProgressSteps6)(size_t) = &CVideoProcessWrap::default_getProgressSteps;
 
     class_<CVideoProcessWrap, bases<CImageProcess2d>, std::shared_ptr<CVideoProcessWrap>>("CVideoProcess", _videoProcessDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctorVideoProcessDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctorVideoProcessDocString))
         .def("setActive", &CVideoProcess::setActive, &CVideoProcessWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("updateStaticOutputs", &CVideoProcess::updateStaticOutputs, &CVideoProcessWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
         .def("beginTaskRun", &CVideoProcess::beginTaskRun, &CVideoProcessWrap::default_beginTaskRun, _beginTaskRunVideoDocString, args("self"))
@@ -476,8 +476,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CVideoProcessOFWrap::*default_getProgressSteps8)(size_t) = &CVideoProcessOFWrap::default_getProgressSteps;
 
     class_<CVideoProcessOFWrap, bases<CVideoProcess>, std::shared_ptr<CVideoProcessOFWrap>>("CVideoProcessOF", _videoProcessOFDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctorVideoProcessOFDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctorVideoProcessOFDocString))
         .def("setActive", &CVideoProcessOF::setActive, &CVideoProcessOFWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("updateStaticOutputs", &CVideoProcessOF::updateStaticOutputs, &CVideoProcessOFWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
         .def("beginTaskRun", &CVideoProcessOF::beginTaskRun, &CVideoProcessOFWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
@@ -506,8 +506,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CVideoProcessTrackingWrap::*default_getProgressSteps10)(size_t) = &CVideoProcessTrackingWrap::default_getProgressSteps;
 
     class_<CVideoProcessTrackingWrap, bases<CVideoProcess>, std::shared_ptr<CVideoProcessTrackingWrap>>("CVideoProcessTracking", _videoProcessTrackingDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctorVideoTrackingDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctorVideoTrackingDocString))
         .def("setActive", &CVideoProcessTracking::setActive, &CVideoProcessTrackingWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("updateStaticOutputs", &CVideoProcessTracking::updateStaticOutputs, &CVideoProcessTrackingWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
         .def("beginTaskRun", &CVideoProcessTracking::beginTaskRun, &CVideoProcessTrackingWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
@@ -536,9 +536,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
     size_t (CDnnTrainProcessWrap::*default_getProgressSteps12)(size_t) = &CDnnTrainProcessWrap::default_getProgressSteps;
 
     class_<CDnnTrainProcessWrap, bases<CProtocolTask>, std::shared_ptr<CDnnTrainProcessWrap>>("CDnnTrainProcess", _dnnTrainProcessDocString)
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
-        .def(init<const std::string&>(_ctor1DnnTrainProcessDocString)[incref_return_value_policy<>()])
-        .def(init<const std::string&, const std::shared_ptr<CDnnTrainProcessParam>&>(_ctor2DnnTrainProcessDocString)[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctor1DnnTrainProcessDocString))
+        .def(init<const std::string&, const std::shared_ptr<CDnnTrainProcessParam>&>(_ctor2DnnTrainProcessDocString))
         .def("setActive", &CDnnTrainProcess::setActive, &CDnnTrainProcessWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("beginTaskRun", &CDnnTrainProcess::beginTaskRun, &CDnnTrainProcessWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
         .def("endTaskRun", &CDnnTrainProcess::endTaskRun, &CDnnTrainProcessWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
@@ -556,7 +556,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //---------------------------------//
     class_<CDnnTrainProcessParamWrap, bases<CProtocolTaskParam>, std::shared_ptr<CDnnTrainProcessParamWrap>>("CDnnTrainProcessParam", _dnnTrainProcessParamDocString)
         .enable_pickling()
-        .def(init<>("Default constructor")[incref_return_value_policy<>()])
+        .def(init<>("Default constructor"))
         .def("__copy__", &generic_copy<CDnnTrainProcessParamWrap>)
         .def("__deepcopy__", &generic_deepcopy<CDnnTrainProcessParamWrap>)
         .add_property("batch_size", &CDnnTrainProcessParam::getBatchSize, &CDnnTrainProcessParam::setBatchSize, "Training batch size")

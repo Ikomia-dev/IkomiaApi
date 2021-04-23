@@ -88,6 +88,14 @@ struct vector_from_python_list
     }
 };
 
+//Register std::vector<T> <-> python list converters
+template<typename T>
+void registerStdVector()
+{
+    to_python_converter<std::vector<T>, vector_to_python_list<T>>();
+    vector_from_python_list<T>();
+}
+
 // Generic override of Python __copy__ and __deepcopy__
 template<class T>
 inline PyObject * managingPyObject(T *p)
