@@ -119,6 +119,13 @@ CProtocolTask &CProtocolTask::operator=(const CProtocolTask &task)
     return *this;
 }
 
+CProtocolTask::~CProtocolTask()
+{
+    CPyEnsureGIL gil;
+    m_inputs.clear();
+    m_outputs.clear();
+}
+
 CProtocolTask &CProtocolTask::operator=(const CProtocolTask&& task)
 { 
     m_signalHandler = std::make_unique<CSignalHandler>();
