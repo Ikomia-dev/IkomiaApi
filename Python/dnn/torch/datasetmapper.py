@@ -52,52 +52,54 @@ class TorchDatasetMapper(Dataset):
         # Get bounding boxes
         boxes = []
         labels = []
+        target = {}
         iscrowd = []
         np_masks = None
         instance_index = 0
 
-        for annotation in img_data["annotations"]:
-            xmin = annotation["bbox"][0]
-            ymin = annotation["bbox"][1]
-            w = annotation["bbox"][2]
-            h = annotation["bbox"][3]
-            boxes.append([xmin, ymin, xmin+w, ymin+h])
+        if "annotations" in img_data:
+            for annotation in img_data["annotations"]:
+                xmin = annotation["bbox"][0]
+                ymin = annotation["bbox"][1]
+                w = annotation["bbox"][2]
+                h = annotation["bbox"][3]
+                boxes.append([xmin, ymin, xmin+w, ymin+h])
 
-            if self.has_bckgnd_class:
-                labels.append(annotation["category_id"])
-            else:
-                # 0 = background
-                labels.append(annotation["category_id"] + 1)
+                if self.has_bckgnd_class:
+                    labels.append(annotation["category_id"])
+                else:
+                    # 0 = background
+                    labels.append(annotation["category_id"] + 1)
 
-            if "iscrowd" in annotation:
-                iscrowd.append(annotation["iscrowd"])
-            else:
-                iscrowd.append(0)
+                if "iscrowd" in annotation:
+                    iscrowd.append(annotation["iscrowd"])
+                else:
+                    iscrowd.append(0)
 
-            if "segmentation_poly" in annotation:
-                w = img_data["width"]
-                h = img_data["height"]
+                if "segmentation_poly" in annotation:
+                    w = img_data["width"]
+                    h = img_data["height"]
 
-                if np_masks is None:
-                    np_masks = np.empty((len(img_data["annotations"]), h, w), dtype=np.uint8)
+                    if np_masks is None:
+                        np_masks = np.empty((len(img_data["annotations"]), h, w), dtype=np.uint8)
 
-                mask = ikdataset.polygon_to_mask(annotation["segmentation_poly"], w, h)
-                mask.reshape((1, h, w))
-                np_masks[instance_index, :, :] = mask
+                    mask = ikdataset.polygon_to_mask(annotation["segmentation_poly"], w, h)
+                    mask.reshape((1, h, w))
+                    np_masks[instance_index, :, :] = mask
 
-            instance_index += 1
+                instance_index += 1
 
-        # Convert everything into a torch.Tensor
-        boxes = torch.as_tensor(boxes, dtype=torch.float32)
-        labels = torch.as_tensor(labels, dtype=torch.int64)
-        image_id = torch.tensor([idx])
-        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-        iscrowd = torch.as_tensor(iscrowd, dtype=torch.int64)
+            # Convert everything into a torch.Tensor
+            boxes = torch.as_tensor(boxes, dtype=torch.float32)
+            labels = torch.as_tensor(labels, dtype=torch.int64)
+            image_id = torch.tensor([idx])
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+            iscrowd = torch.as_tensor(iscrowd, dtype=torch.int64)
 
-        # Put everything in a dict
-        target = {"boxes": boxes, "labels": labels, "image_id": image_id, "area": area, "iscrowd": iscrowd}
+            # Put everything in a dict
+            target = {"boxes": boxes, "labels": labels, "image_id": image_id, "area": area, "iscrowd": iscrowd}
 
-        # Get optional masks
+        # Segmentation masks
         if np_masks is not None:
             target["masks"] = torch.tensor(np_masks, dtype=torch.uint8)
         elif "segmentation_masks_np" in img_data:
