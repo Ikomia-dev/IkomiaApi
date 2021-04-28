@@ -911,6 +911,7 @@ void CProtocol::deleteTask(const ProtocolVertex &id)
     if(id == m_root)
         return;
 
+    CPyEnsureGIL gil;
     boost::clear_vertex(id, m_graph);    
     boost::remove_vertex(id, m_graph);
 
