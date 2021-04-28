@@ -20,6 +20,9 @@
 #ifndef DATAPROCESSTOOLS_HPP
 #define DATAPROCESSTOOLS_HPP
 
+#include "opencv2/opencv.hpp"
+#include "Data/CMat.hpp"
+
 namespace Ikomia
 {
     namespace Utils
@@ -63,6 +66,22 @@ namespace Ikomia
                         }
                     }
                 return ovrImg;
+            }
+            inline CMat     mergeColorMask(const CMat& image, const CMat& mask, const CMat& colormap, double opacity)
+            {
+                CMat result, colorMask;
+
+                if(mask.depth() != CV_8U)
+                    mask.convertTo(colorMask, CV_8U);
+                else
+                    colorMask = mask;
+
+                cv::applyColorMap(colorMask, colorMask, colormap);
+                cv::addWeighted(image, (1.0 - opacity), colorMask, opacity, 0.0, result, image.depth());
+                cv::Mat maskNot = mask > 0;
+                cv::bitwise_not(maskNot, maskNot);
+                image.copyTo(result, maskNot);
+                return result;
             }
         }
     }
