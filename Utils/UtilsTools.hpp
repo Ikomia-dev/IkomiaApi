@@ -871,6 +871,18 @@ namespace Ikomia
             }
         }
 
+        namespace Tensorboard
+        {
+            inline std::string getTrackingURI()
+            {
+                return "http://localhost:6006";
+            }
+            inline std::string getLogDirUri()
+            {
+                return Utils::IkomiaApp::getAppFolder() + "/Tensorboard";
+            }
+        }
+
     #ifdef __linux__
         namespace linuxHelp
         {

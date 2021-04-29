@@ -542,6 +542,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("setActive", &CDnnTrainProcess::setActive, &CDnnTrainProcessWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("beginTaskRun", &CDnnTrainProcess::beginTaskRun, &CDnnTrainProcessWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
         .def("endTaskRun", &CDnnTrainProcess::endTaskRun, &CDnnTrainProcessWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("getTensorboardLogDir", &CDnnTrainProcess::getTensorboardLogDir, _getTensorboardLogDirDocString, args("self"))
         .def("getProgressSteps", getProgressSteps11, default_getProgressSteps11, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps12, default_getProgressSteps12, _getProgressStepsDocString, args("self", "unit_elt_count"))
         .def("run", &CDnnTrainProcess::run, &CDnnTrainProcessWrap::default_run, _runDocString, args("self"))
@@ -549,6 +550,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("emitAddSubProgressSteps", &CDnnTrainProcessWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
         .def("emitStepProgress", &CDnnTrainProcessWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
         .def("emitOutputChanged", &CDnnTrainProcessWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("enableMlflow", &CDnnTrainProcess::enableMlflow, _enableMlflowDocString, args("self", "enable"))
+        .def("enableTensorboard", &CDnnTrainProcess::enableTensorboard, _enableTensorboardDocString, args("self", "enable"))
     ;
 
     //---------------------------------//

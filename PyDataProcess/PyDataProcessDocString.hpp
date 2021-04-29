@@ -1063,6 +1063,27 @@ constexpr auto _ctor1DnnTrainProcessDocString =
 constexpr auto _ctor2DnnTrainProcessDocString =
         "Internal use only";
 
+constexpr auto _getTensorboardLogDirDocString =
+        "Return Ikomia default logging directory for Tensorboard.\n\n"
+        "Returns:\n"
+        "   str: path of Tensorboard log directory\n";
+
+constexpr auto _enableMlflowDocString =
+        "Enable or disable automatic launch of MLflow dashboard when training starts. "
+        "Dashboard is opened just once except if a new call to this function is made before "
+        "a new training job starts.\n"
+        "Default: enable.\n\n"
+        "Args:"
+        "   enable (boolean): True or False\n";
+
+constexpr auto _enableTensorboardDocString =
+        "Enable or disable automatic launch of Tensorboard dashboard when training starts. "
+        "Dashboard is opened just once except if a new call to this function is made before "
+        "a new training job starts.\n"
+        "Default: enable.\n\n"
+        "Args:"
+        "   enable (boolean): True or False\n";
+
 //---------------------------------//
 //----- CDnnTrainProcessParam -----//
 //---------------------------------//

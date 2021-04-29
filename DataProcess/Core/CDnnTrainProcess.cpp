@@ -150,12 +150,38 @@ CDnnTrainProcess::CDnnTrainProcess(const std::string &name, const std::shared_pt
         m_pParam = std::make_shared<CDnnTrainProcessParam>();
 }
 
+std::string CDnnTrainProcess::getTensorboardLogDir() const
+{
+    return Utils::Tensorboard::getLogDirUri();
+}
+
+void CDnnTrainProcess::enableMlflow(bool bEnable)
+{
+    m_bOpenMlflow = bEnable;
+}
+
+void CDnnTrainProcess::enableTensorboard(bool bEnable)
+{
+    m_bOpenTensorboad = bEnable;
+}
+
 void CDnnTrainProcess::beginTaskRun()
 {
     CProtocolTask::beginTaskRun();
 
-    //Show MLflow server UI
-    QDesktopServices::openUrl(QUrl(QString::fromStdString(Utils::MLflow::getTrackingURI())));
+    //Show MLflow server UI once
+    if(m_bOpenMlflow)
+    {
+        QDesktopServices::openUrl(QUrl(QString::fromStdString(Utils::MLflow::getTrackingURI())));
+        m_bOpenMlflow = false;
+    }
+
+    //Show Tensorbord server UI
+    if(m_bOpenTensorboad)
+    {
+        QDesktopServices::openUrl(QUrl(QString::fromStdString(Utils::Tensorboard::getTrackingURI())));
+        m_bOpenTensorboad = false;
+    }
 }
 
 void CDnnTrainProcess::endTaskRun()

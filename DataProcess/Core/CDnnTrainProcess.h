@@ -80,6 +80,11 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainProcess : public CProtocolTask
 
         ~CDnnTrainProcess() = default;
 
+        std::string     getTensorboardLogDir() const;
+
+        void            enableMlflow(bool bEnable);
+        void            enableTensorboard(bool bEnable);
+
         /**
          * @brief See CProtocolTask::beginTaskRun.
          */
@@ -88,6 +93,11 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainProcess : public CProtocolTask
          * @brief See CProtocolTask::endTaskRun.
          */
         virtual void    endTaskRun() override;
+
+    private:
+
+        bool    m_bOpenMlflow = true;
+        bool    m_bOpenTensorboad = true;
 };
 
 #endif // CDNNTRAINPROCESS_H
