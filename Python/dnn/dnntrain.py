@@ -21,9 +21,39 @@
 Module dedicated to Deep Learning training.
 """
 
-from ikomia import dataprocess
+from ikomia import core, dataprocess
 import mlflow
 from datetime import datetime
+
+
+class TrainParam(dataprocess.CDnnTrainProcessParam):
+    """
+    Base class to manage Deep Learning training parameters.
+    It includes a dict structure to store parameter values.
+    """
+    def __init__(self):
+        """
+        Constructor. Initialize an empty dict structure.
+        """
+        dataprocess.CDnnTrainProcessParam.__init__(self)
+        self.cfg = {}
+
+    def setParamMap(self, param_map):
+        """
+        Set parameters loaded from Ikomia Studio.
+        """
+        for key, value in param_map:
+            self.cfg[key] = value
+
+    def getParamMap(self):
+        """
+        Return parameters for saving in Ikomia Studio.
+        """
+        param_map = core.ParamMap()
+        for key, value in self.cfg.items():
+            param_map[key] = str(value)
+
+        return param_map
 
 
 class TrainProcess(dataprocess.CDnnTrainProcess):
@@ -37,7 +67,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
         - metrics logging
         - training dashboard
 
-    It must be use with :py:class:`~PyDataProcess.CDnnTrainProcessParam` or derived for parameters.
+    It must be use with :py:class:`TrainParam` or derived for parameters.
     """
     def __init__(self, name, param):
         """
@@ -81,13 +111,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
             # Log parameters
             param = self.getParam()
             if param is not None:
-                mlflow.log_param("Model", param.model_name)
-                mlflow.log_param("Batch size", param.batch_size)
-                mlflow.log_param("Epochs", param.epochs)
-                mlflow.log_param("Classes", param.classes)
-                mlflow.log_param("Learning rate", param.learning_rate)
-                mlflow.log_param("Momentum", param.momentum)
-                mlflow.log_param("Weight decay", param.weight_decay)
+                self.log_params(param.cfg)
 
     def log_param(self, key, value):
         """

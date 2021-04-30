@@ -38,33 +38,20 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainProcessParam: public CProtocolTaskParam
         virtual ~CDnnTrainProcessParam() = default;
 
         virtual void        setParamMap(const UMapString& paramMap) override;
-        void                setBatchSize(int size);
-        void                setEpochCount(int nb);
-        void                setClassCount(int nb);
-        void                setLearningRate(float value);
-        void                setMomentum(float value);
-        void                setWeightDecay(float decay);
-        void                setModelName(const std::string& name);
 
         virtual UMapString  getParamMap() const override;
         virtual uint        getHashValue() const override;
-        int                 getBatchSize() const;
-        int                 getEpochCount() const;
-        int                 getClassCount() const;
-        float               getLearningRate() const;
-        float               getMomentum() const;
-        float               getWeightDecay() const;
-        std::string         getModelName() const;
 
     public:
 
-        int         m_batchSize = 32;
+        /*int         m_batchSize = 32;
         int         m_epochs = 1;
         int         m_classes = 1;
         float       m_learningRate = 0.001;
         float       m_momentum = 0.9;
         float       m_weightDecay = 0.0005;
-        std::string m_modelName = "";
+        std::string m_modelName = "";*/
+        std::map<std::string,std::string>   m_cfg;
 };
 
 //----------------------------//

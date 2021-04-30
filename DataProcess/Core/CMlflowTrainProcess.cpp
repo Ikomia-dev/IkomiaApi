@@ -57,6 +57,9 @@ void CMlflowTrainProcess::beginTaskRun()
         str strTaskName(m_name);
         str strId(m_experimentId);
         mlflow.attr("start_run")(none, strId, strTaskName, false);
+
+        auto paramPtr = std::static_pointer_cast<CDnnTrainProcessParam>(m_pParam);
+        logParams(paramPtr->m_cfg);
     }
     catch(error_already_set&)
     {
