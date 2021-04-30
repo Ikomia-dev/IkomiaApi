@@ -65,7 +65,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
                 - keypoint_connection_rules (list[tuple(str, str, (r,g,b))]): each tuple specifies a pair of connected keypoints and the color to use for the line between them.
     """
 
-    def __init__(self, format=dataprocess.DatasetFormat.OTHER):
+    def __init__(self, format="other"):
         """
         Constructor
 

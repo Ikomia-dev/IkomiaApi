@@ -703,7 +703,7 @@ constexpr auto _datasetIODocString =
 constexpr auto _ctor1DatasetIODocString =
         "Construct a CDatasetIO object specifying the source format.\n\n"
         "Args:\n"
-        "   sourceFormat: see :py:class:`DatasetFormat`) for possible values.\n\n";
+        "   str: unique string identifier.\n\n";
 
 constexpr auto _getImagePathsDocStr =
         "Virtual method to reimplement, return the file path list of all images contained in the dataset.\n\n"
@@ -729,6 +729,11 @@ constexpr auto _getGraphicsAnnotationsDocStr =
         "Virtual method to reimplement, return the list of graphics items corresponding to dataset annotations.\n\n"
         "Returns:\n"
         "   list of :py:class:`~ikomia.core.pycore.CGraphicsItem` or derived: graphics items\n";
+
+constexpr auto _getSourceFormatDocStr =
+        "Get the source format of the dataset.\n\n"
+        "Return:\n"
+        "   str: source format string identifier (lowercase)\n";
 
 constexpr auto _saveDocStr =
         "Virtual method to reimplement, save dataset structure as JSON.\n\n"

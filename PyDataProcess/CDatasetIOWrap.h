@@ -23,7 +23,7 @@
 #define CDATASETIOWRAP_H
 
 #include "PyDataProcessGlobal.h"
-#include "IO/CDatasetIO.hpp"
+#include "IO/CDatasetIO.h"
 
 
 class CDatasetIOWrap : public CDatasetIO, public wrapper<CDatasetIO>
@@ -31,7 +31,7 @@ class CDatasetIOWrap : public CDatasetIO, public wrapper<CDatasetIO>
     public:
 
         CDatasetIOWrap();
-        CDatasetIOWrap(CDatasetIO::Format sourceFormat);
+        CDatasetIOWrap(const std::string& sourceFormat);
 
         std::vector<std::string>            getImagePaths() const override;
         std::vector<std::string>            default_getImagePaths() const;

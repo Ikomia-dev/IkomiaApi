@@ -32,6 +32,7 @@ SOURCES += \
         Core/CRunTaskManager.cpp \
         IO/CArrayIO.cpp \
         IO/CConvertIO.cpp \
+        IO/CDatasetIO.cpp \
         IO/CGraphicsProcessInput.cpp \
         IO/CGraphicsProcessOutput.cpp \
         IO/CImageProcessIO.cpp \
@@ -69,7 +70,7 @@ HEADERS += \
         Core/CRunTaskManager.h \
         IO/CArrayIO.h \
         IO/CConvertIO.h \
-        IO/CDatasetIO.hpp \
+        IO/CDatasetIO.h \
         IO/CFeatureProcessIO.hpp \
         IO/CGraphicsProcessInput.h \
         IO/CGraphicsProcessOutput.h \
@@ -479,7 +480,7 @@ deployIncludeIO.files = \
         IO/CFeatureProcessIO.hpp \
         IO/CVideoProcessIO.h \
         IO/CViewPropertyIO.h \
-        IO/CDatasetIO.hpp
+        IO/CDatasetIO.h
 
 deployIncludeProcessCore.path = ../Build/Include/DataProcess/Process/Core
 deployIncludeProcessCore.files = \

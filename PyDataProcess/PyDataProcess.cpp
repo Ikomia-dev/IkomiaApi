@@ -327,26 +327,19 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----------------------//
     //----- CDatasetIO -----//
     //----------------------//
-    enum_<CDatasetIO::Format>("DatasetFormat", "Enum - List of dataset formats")
-        .value("COCO", CDatasetIO::Format::COCO)
-        .value("PASCAL_VOC", CDatasetIO::Format::PASCAL_VOC)
-        .value("YOLO", CDatasetIO::Format::YOLO)
-        .value("VIA", CDatasetIO::Format::VIA)
-        .value("OTHER", CDatasetIO::Format::OTHER)
-    ;
-
     class_<std::map<int, std::string>>("MapIntStr", "Data structure (same as Python dict) to store int key and string value")
         .def(map_indexing_suite<std::map<int, std::string>>())
     ;
 
     class_<CDatasetIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CDatasetIOWrap>, boost::noncopyable>("CDatasetIO", _datasetIODocString)
         .def(init<>("Default constructor"))
-        .def(init<CDatasetIO::Format>(_ctor1DatasetIODocString))
+        .def(init<const std::string&>(_ctor1DatasetIODocString))
         .def("getImagePaths", &CDatasetIO::getImagePaths, &CDatasetIOWrap::default_getImagePaths, _getImagePathsDocStr)
         .def("getCategories", &CDatasetIO::getCategories, &CDatasetIOWrap::default_getCategories, _getCategoriesDocStr)
         .def("getCategoryCount", &CDatasetIO::getCategoryCount, &CDatasetIOWrap::default_getCategoryCount, _getCategoryCountDocStr)
         .def("getMaskPath", &CDatasetIO::getMaskPath, &CDatasetIOWrap::default_getMaskPath, _getMaskPathDocStr)
         .def("getGraphicsAnnotations", &CDatasetIO::getAnnotationGraphics, &CDatasetIOWrap::default_getAnnotationGraphics, _getGraphicsAnnotationsDocStr)
+        .def("getSourceFormat", &CDatasetIO::getSourceFormat, _getSourceFormatDocStr)
         .def("isDataAvailable", &CDatasetIO::isDataAvailable, &CDatasetIOWrap::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
         .def("clearData", &CDatasetIO::clearData, &CDatasetIOWrap::default_clearData, _clearDataDerivedDocString, args("self"))
         .def("save", &CDatasetIO::save, &CDatasetIOWrap::default_save, _saveDocStr)
