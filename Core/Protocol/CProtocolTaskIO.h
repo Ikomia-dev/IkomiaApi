@@ -89,6 +89,11 @@ class CORESHARED_EXPORT CProtocolTaskIO
          */
         DataFileFormat      getSaveFormat() const;
         /**
+         * @brief Get possible export formats.
+         * @return Vector of file formats (::DataExportFormat).
+         */
+        virtual std::vector<DataFileFormat> getPossibleSaveFormats() const;
+        /**
          * @brief Get full save path.
          * @return Save path as std::string.
          */
@@ -98,7 +103,6 @@ class CORESHARED_EXPORT CProtocolTaskIO
          * @return Dimension count as size_t.
          */
         size_t              getDimensionCount() const;
-
         /**
          * @brief Gets the number of unit element in terms of processing scheme.
          * This value is used to define the number of progress steps for progress bar component.
@@ -107,12 +111,13 @@ class CORESHARED_EXPORT CProtocolTaskIO
          * @return Unit element count as size_t.
          */
         virtual size_t      getUnitElementCount() const;
-
         /**
          * @brief Gets the information associated with the input/output.
          * @return Object of CDataInfoPtr class or derived.
          */
         virtual CDataInfoPtr    getDataInfo();
+
+
 
         /**
          * @brief Checks if input or output object contains valid data.
@@ -122,7 +127,6 @@ class CORESHARED_EXPORT CProtocolTaskIO
          * @return True if there is valid data stored, False otherwise.
          */
         virtual bool        isDataAvailable() const;
-
         /**
           * @brief Checks whether the input needs external data.
           * @return True or False.
@@ -249,7 +253,7 @@ class CORESHARED_EXPORT CProtocolTaskIO
         std::string             m_saveBaseName;
         std::string             m_description;
         IODataType              m_dataType = IODataType::NONE;
-        DataFileFormat          m_saveFormat = DataFileFormat::TXT;
+        DataFileFormat          m_saveFormat = DataFileFormat::NONE;
         size_t                  m_dimCount = 0;
         CDataInfoPtr            m_infoPtr = nullptr;
         bool                    m_bNewDataInfo = false;

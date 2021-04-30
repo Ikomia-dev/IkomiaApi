@@ -139,6 +139,8 @@ class DATAPROCESSSHARED_EXPORT CVideoProcessIO : public CImageProcessIO
          */
         CDataInfoPtr        getDataInfo() override;
 
+        std::vector<DataFileFormat> getPossibleSaveFormats() const override;
+
         bool                hasVideo();
 
         /**

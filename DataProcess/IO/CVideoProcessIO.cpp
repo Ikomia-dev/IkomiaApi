@@ -218,6 +218,12 @@ CDataInfoPtr CVideoProcessIO::getDataInfo()
     return m_infoPtr;
 }
 
+std::vector<DataFileFormat> CVideoProcessIO::getPossibleSaveFormats() const
+{
+    std::vector<DataFileFormat> formats = { DataFileFormat::AVI, DataFileFormat::MPEG };
+    return formats;
+}
+
 bool CVideoProcessIO::isDataAvailable() const
 {
     bool bRet =  m_image.data != nullptr || m_videoImgList.size() > 0 ;

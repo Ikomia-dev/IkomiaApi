@@ -113,7 +113,7 @@ namespace Ikomia
 
     enum class DataFileFormat : size_t
     {
-        TXT, JSON, XML, YAML, CSV,
+        NONE, TXT, JSON, XML, YAML, CSV,
         BMP, JPG, JP2, PNG, TIF, WEBP,
         AVI, MPEG
     };

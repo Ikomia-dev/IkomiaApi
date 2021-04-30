@@ -187,6 +187,15 @@ CMat CImageProcessIO::getOverlayMask() const
     return m_overlayMask;
 }
 
+std::vector<DataFileFormat> CImageProcessIO::getPossibleSaveFormats() const
+{
+    std::vector<DataFileFormat> formats = {
+        DataFileFormat::PNG, DataFileFormat::JPG, DataFileFormat::TIF,
+        DataFileFormat::BMP, DataFileFormat::WEBP, DataFileFormat::JP2
+    };
+    return formats;
+}
+
 bool CImageProcessIO::isDataAvailable() const
 {
     if( m_dataType == IODataType::IMAGE ||

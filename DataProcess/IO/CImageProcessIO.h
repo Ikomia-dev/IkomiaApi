@@ -147,6 +147,8 @@ class DATAPROCESSSHARED_EXPORT CImageProcessIO : public CProtocolTaskIO
          */
         CMat            getOverlayMask() const;
 
+        std::vector<DataFileFormat> getPossibleSaveFormats() const override;
+
         /**
          * @brief Checks whether the input/output have valid image or not.
          * @return True if image is not empty, False otherwise.

@@ -108,6 +108,17 @@ DataFileFormat CProtocolTaskIO::getSaveFormat() const
     return m_saveFormat;
 }
 
+std::vector<DataFileFormat> CProtocolTaskIO::getPossibleSaveFormats() const
+{
+    if(m_saveFormat == DataFileFormat::NONE)
+        return std::vector<DataFileFormat>();
+    else
+    {
+        std::vector<DataFileFormat> formats = {m_saveFormat};
+        return formats;
+    }
+}
+
 std::string CProtocolTaskIO::getSavePath() const
 {
     return m_saveFolder + m_saveBaseName + Utils::Data::getFileFormatExtension(m_saveFormat);

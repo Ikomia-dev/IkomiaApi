@@ -63,6 +63,8 @@ class DATAPROCESSSHARED_EXPORT CWidgetOutput : public CProtocolTaskIO
          */
         QWidget*    getWidget() const;
 
+        std::vector<DataFileFormat> getPossibleSaveFormats() const override;
+
         /**
          * @brief Check if the output contains a valid widget (not null).
          * @return True if the widget pointer is not null, False otherwise.

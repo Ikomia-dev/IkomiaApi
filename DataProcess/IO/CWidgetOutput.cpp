@@ -49,6 +49,12 @@ QWidget *CWidgetOutput::getWidget() const
     return m_pWidget;
 }
 
+std::vector<DataFileFormat> CWidgetOutput::getPossibleSaveFormats() const
+{
+    std::vector<DataFileFormat> formats = { DataFileFormat::JPG, DataFileFormat::PNG, DataFileFormat::BMP};
+    return formats;
+}
+
 bool CWidgetOutput::isDataAvailable() const
 {
     return m_pWidget != nullptr;
