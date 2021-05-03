@@ -109,6 +109,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         void                            setTaskActionFlag(const ProtocolVertex &id, ActionFlag action, bool bEnable);
         void                            setTaskIORegistration(CTaskIORegistration* pRegistration);
         void                            setInputBatchState(size_t index, bool bBatch);
+        void                            setCfgEntry(const std::string& key, const std::string& value);
 
         //Getters
         std::string                     getDescription() const;
@@ -252,6 +253,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         bool                    m_bForceBatchMode = false;
         CTaskIORegistration*    m_pTaskIORegistration = nullptr;
         CRunTaskManager         m_runMgr;
+        std::map<std::string, std::string>  m_cfg;
 };
 
 //---------------------------//

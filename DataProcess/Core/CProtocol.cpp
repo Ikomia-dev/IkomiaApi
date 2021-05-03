@@ -39,6 +39,7 @@ CProtocol::CProtocol() : CProtocolTask()
     m_activeTask = m_root;
     m_runningTask = boost::graph_traits<ProtocolGraph>::null_vertex();
     m_signalHandler = std::make_unique<CProtocolSignalHandler>();
+    m_runMgr.setCfg(&m_cfg);
 }
 
 CProtocol::CProtocol(std::string name) : CProtocolTask(name)
@@ -48,6 +49,7 @@ CProtocol::CProtocol(std::string name) : CProtocolTask(name)
     m_activeTask = m_root;
     m_runningTask = boost::graph_traits<ProtocolGraph>::null_vertex();
     m_signalHandler = std::make_unique<CProtocolSignalHandler>();
+    m_runMgr.setCfg(&m_cfg);
 }
 
 CProtocol::CProtocol(const CProtocol &protocol) : CProtocolTask(protocol)
@@ -61,6 +63,7 @@ CProtocol::CProtocol(const CProtocol &protocol) : CProtocolTask(protocol)
     m_activeTask = protocol.m_activeTask;
     m_runningTask = protocol.m_runningTask;
     m_signalHandler = std::make_unique<CProtocolSignalHandler>();
+    m_runMgr.setCfg(&m_cfg);
 }
 
 CProtocol::CProtocol(const CProtocol&& protocol) : CProtocolTask(protocol)
@@ -74,6 +77,7 @@ CProtocol::CProtocol(const CProtocol&& protocol) : CProtocolTask(protocol)
     m_activeTask = std::move(protocol.m_activeTask);
     m_runningTask = std::move(protocol.m_runningTask);
     m_signalHandler = std::make_unique<CProtocolSignalHandler>();
+    m_runMgr.setCfg(&m_cfg);
 }
 
 CProtocol::~CProtocol()
@@ -224,6 +228,11 @@ void CProtocol::setInputBatchState(size_t index, bool bBatch)
         m_inputBatchState.resize(index+1);
 
     m_inputBatchState[index] = bBatch;
+}
+
+void CProtocol::setCfgEntry(const std::string &key, const std::string &value)
+{
+    m_cfg[key] = value;
 }
 
 /***********/
