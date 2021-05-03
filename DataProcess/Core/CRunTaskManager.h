@@ -31,6 +31,7 @@ class CRunTaskManager
         CRunTaskManager();
 
         void    setBatchMode(bool bEnable);
+        void    setCfg(std::map<std::string, std::string>* pCfg);
 
         void    run(const ProtocolTaskPtr& pTask, const std::string inputName);
 
@@ -42,11 +43,14 @@ class CRunTaskManager
         void    runVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
         void    runWholeVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
 
+        void    saveVideoOutputs(const ProtocolTaskPtr &taskPtr, const InputOutputVect& outputs);
+
     private:
 
         bool                m_bBatchMode = false;
         std::atomic_bool    m_bStop{false};
         size_t              m_outputVideoId = SIZE_MAX;
+        std::map<std::string, std::string>* m_pCfg = nullptr;
 };
 
 #endif // CRUNTASKMANAGER_H

@@ -21,6 +21,7 @@
 #include "Data/CDataVideoInfo.h"
 #include "IO/CImageProcessIO.h"
 #include "IO/CVideoProcessIO.h"
+#include "IO/CGraphicsProcessOutput.h"
 #include "Main/CoreTools.hpp"
 
 CRunTaskManager::CRunTaskManager()
@@ -30,6 +31,11 @@ CRunTaskManager::CRunTaskManager()
 void CRunTaskManager::setBatchMode(bool bEnable)
 {
     m_bBatchMode = bEnable;
+}
+
+void CRunTaskManager::setCfg(std::map<std::string, std::string> *pCfg)
+{
+    m_pCfg = pCfg;
 }
 
 void CRunTaskManager::run(const ProtocolTaskPtr &pTask, const std::string inputName)
@@ -216,15 +222,10 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const
     {
         try
         {
-            //Run process
+            // Run process
             taskPtr->run();
-
-            for(size_t j=0; j<videoOutputs.size(); ++j)
-            {
-                auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(videoOutputs[j]);
-                CMat img = outputPtr->getImage();
-                outputPtr->writeImage(img);
-            }
+            // Save video outputs
+            saveVideoOutputs(taskPtr, videoOutputs);
         }
         catch(CException& e)
         {
@@ -245,6 +246,43 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const
         outputPtr->waitWriteFinished();
         outputPtr->stopVideoWrite();
         outputPtr->setVideoPos(0);
+    }
+}
+
+void CRunTaskManager::saveVideoOutputs(const ProtocolTaskPtr &taskPtr, const InputOutputVect &outputs)
+{
+    bool bEmbedGraphics = false;
+    InputOutputVect graphicsOutputs;
+
+    if(m_pCfg)
+    {
+        auto it = m_pCfg->find("GraphicsEmbedded");
+        if(it != m_pCfg->end())
+            bEmbedGraphics = std::stoi(it->second);
+    }
+
+    if(bEmbedGraphics)
+        graphicsOutputs = taskPtr->getOutputs({ IODataType::OUTPUT_GRAPHICS});
+
+    for(size_t i=0; i<outputs.size(); ++i)
+    {
+        auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(outputs[i]);
+        CMat img = outputPtr->getImage();
+
+        if(bEmbedGraphics && graphicsOutputs.size() > 0)
+        {
+            for(size_t j=0; j<graphicsOutputs.size(); ++j)
+            {
+                auto graphicsOutPtr = std::static_pointer_cast<CGraphicsProcessOutput>(graphicsOutputs[j]);
+                if(graphicsOutPtr->getImageIndex() == (int)i)
+                {
+                    CGraphicsConversion graphicsConv((int)img.getNbCols(), (int)img.getNbRows());
+                    for(auto it : graphicsOutPtr->getItems())
+                        it->insertToImage(img, graphicsConv, false, false);
+                }
+            }
+        }
+        outputPtr->writeImage(img);
     }
 }
 

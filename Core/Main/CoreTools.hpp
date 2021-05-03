@@ -159,6 +159,7 @@ namespace Ikomia
             {
                 switch(format)
                 {
+                    case DataFileFormat::NONE: return "";
                     case DataFileFormat::TXT: return ".txt";
                     case DataFileFormat::JSON: return ".json";
                     case DataFileFormat::XML: return ".xml";
