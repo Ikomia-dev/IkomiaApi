@@ -491,7 +491,7 @@ namespace Ikomia
                 std::string path = pathPattern;
                 auto parent = getParentPath(pathPattern);
                 auto filePattern = getFileName(pathPattern);
-                QRegularExpression re("(.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+)");
+                QRegularExpression re("(.+)%[0-9]*([0-9]+)d(\\.[0-9a-z]+)");
                 QRegularExpressionMatch match = re.match(QString::fromStdString(filePattern));
 
                 if(match.hasMatch())
@@ -539,7 +539,7 @@ namespace Ikomia
                 auto filePattern = getFileName(pathPattern);
 
                 // Check pattern validity
-                QRegularExpression regexPattern("(.+)%[0-9]*([0-9]+)d(\.[0-9a-z]+)");
+                QRegularExpression regexPattern("(.+)%[0-9]*([0-9]+)d(\\.[0-9a-z]+)");
                 QRegularExpressionMatch match = regexPattern.match(QString::fromStdString(filePattern));
 
                 if(!match.hasMatch())
