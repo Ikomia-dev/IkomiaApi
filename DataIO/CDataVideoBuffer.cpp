@@ -530,7 +530,7 @@ void CDataVideoBuffer::updateStreamWrite()
     writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height));
     if(!writer.isOpened())
     {
-        qCritical().noquote() << "Failed to open video writer.";
+        qCritical().noquote() << "Failed to open video writer:" + QString::fromStdString(m_path);
         return;
     }
 
@@ -588,7 +588,7 @@ void CDataVideoBuffer::writeVideoThread()
 
     if(!writer.isOpened())
     {
-        qCritical().noquote() << "Failed to open video writer.";
+        qCritical().noquote() << "Failed to open video writer:" + QString::fromStdString(m_path);
         return;
     }
 
@@ -729,7 +729,7 @@ void CDataVideoBuffer::isWritable()
     if(writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height)) == false)
     {
         m_bStopWrite = true;
-        throw CException(DataIOExCode::FILE_NOT_EXISTS, "Failed to open video writer.", __func__, __FILE__, __LINE__);
+        throw CException(DataIOExCode::FILE_NOT_EXISTS, "Failed to open video writer:" + m_path, __func__, __FILE__, __LINE__);
     }
 }
 
