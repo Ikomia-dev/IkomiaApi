@@ -6053,53 +6053,53 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="836"/>
+        <location filename="../Core/CProtocol.cpp" line="858"/>
         <source>No valid connection available, please check input/output data types.</source>
         <translation>Aucune connextion possible, merci de vérifier les types de données d&apos;entrée/sortie.</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="863"/>
+        <location filename="../Core/CProtocol.cpp" line="885"/>
         <source>Invalid connection between output #%1 of %2 (%3) and input #%4 of %5 (%6)</source>
         <translation>Connexion invalide entre la sortie #%1 de %2 (%3) et l&apos;entrée #%4 de %5 (%6)</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="931"/>
+        <location filename="../Core/CProtocol.cpp" line="954"/>
         <source>One connection has been removed</source>
         <translation>Une connexion a été supprimée</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1119"/>
+        <location filename="../Core/CProtocol.cpp" line="1142"/>
         <source>Workflow stop requested by user</source>
         <translation>Arrêt du workflow demandé par l&apos;utilisateur</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1165"/>
+        <location filename="../Core/CProtocol.cpp" line="1188"/>
         <source>Stopping workflow...</source>
         <translation>Workflow en cours d&apos;arrêt...</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1195"/>
+        <location filename="../Core/CProtocol.cpp" line="1218"/>
         <source>No possible connection to input #%1</source>
         <translation>Aucune connexion possible à l&apos;entrée #%1</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1217"/>
+        <location filename="../Core/CProtocol.cpp" line="1240"/>
         <source>Data type mismatch on input #%1 between type %2 and type %3</source>
         <translation>Incompatibilité de type de données sur l&apos;entrée #%1 entre %2 et %3</translation>
     </message>
     <message>
-        <location filename="../Core/CRunTaskManager.cpp" line="40"/>
+        <location filename="../Core/CRunTaskManager.cpp" line="46"/>
         <source>Invalid task</source>
         <translation>Tâche invalide</translation>
     </message>
     <message>
-        <location filename="../Core/CRunTaskManager.cpp" line="92"/>
+        <location filename="../Core/CRunTaskManager.cpp" line="98"/>
         <source>Different volume dimensions</source>
         <translation>Dimensions de volume différentes</translation>
     </message>
     <message>
-        <location filename="../IO/CDatasetIO.hpp" line="39"/>
-        <location filename="../IO/CDatasetIO.hpp" line="45"/>
+        <location filename="../IO/CDatasetIO.cpp" line="9"/>
+        <location filename="../IO/CDatasetIO.cpp" line="22"/>
         <source>Annotated image dataset in Ikomia format (for Deep Learning).</source>
         <translation>Dataset d&apos;images annotées au format Ikomia (Deep Learning).</translation>
     </message>
