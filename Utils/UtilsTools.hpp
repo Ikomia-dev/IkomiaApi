@@ -153,11 +153,11 @@ namespace Ikomia
             }
             inline QString      getCurrentVersionNumber()
             {
-                return "0.4.1";
+                return "0.5.0";
             }
             inline QString      getCurrentVersionName()
             {
-                return "0.4.1";
+                return "0.5.0";
             }
         }
 
@@ -734,7 +734,7 @@ namespace Ikomia
             }
             inline PluginState  getCppState(const QString& version)
             {
-                const std::set<QString> breakChanges = {"0.3.0", "0.4.0", "0.4.1"};
+                const std::set<QString> breakChanges = {"0.3.0", "0.4.0", "0.4.1", "0.5.0"};
                 for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
                 {
                     if(version < *it)
