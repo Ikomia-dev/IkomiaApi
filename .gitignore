@@ -1,4 +1,5 @@
 IkomiaApi.pro.user
+Python/.idea
 Build/
 LocalSettings.pri
 Doc/API/C++/html

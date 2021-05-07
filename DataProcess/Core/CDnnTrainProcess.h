@@ -44,13 +44,6 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainProcessParam: public CProtocolTaskParam
 
     public:
 
-        /*int         m_batchSize = 32;
-        int         m_epochs = 1;
-        int         m_classes = 1;
-        float       m_learningRate = 0.001;
-        float       m_momentum = 0.9;
-        float       m_weightDecay = 0.0005;
-        std::string m_modelName = "";*/
         std::map<std::string,std::string>   m_cfg;
 };
 

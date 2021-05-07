@@ -108,6 +108,9 @@ class TorchDatasetMapper(Dataset):
         elif "instance_seg_masks_file" in img_data:
             masks = self._load_instance_seg_masks(img_data["instance_seg_masks_file"])
             target["masks"] = torch.tensor(masks, dtype=torch.uint8)
+        elif "semantic_seg_masks_file" in img_data:
+            masks = self._load_semantic_seg_masks(img_data["semantic_seg_masks_file"])
+            target["masks"] = torch.tensor(masks, dtype=torch.uint8)
 
         if self.transforms is not None:
             img, target = self.transforms(img, target)
@@ -135,6 +138,19 @@ class TorchDatasetMapper(Dataset):
                     mask[index, :, :] = labelled_mask == label
                 index += 1
 
+            return mask
+        else:
+            print("Error: segmentation mask format not supported")
+            return None
+
+    def _load_semantic_seg_masks(self, path):
+        # Load mask as [N H W] numpy array
+        filename, extension = os.path.splitext(path)
+
+        if extension == ".png":
+            # Labelled mask (one pixel value per category)
+            labelled_mask = np.array(Image.open(path))
+            mask = labelled_mask.reshape(1, labelled_mask.shape[0], labelled_mask.shape[1])
             return mask
         else:
             print("Error: segmentation mask format not supported")
