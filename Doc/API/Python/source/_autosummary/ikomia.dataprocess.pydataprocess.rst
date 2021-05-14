@@ -26,7 +26,6 @@ PyDataProcess
       CArrayIO
       NumericOutputType
       PlotType
-      DatasetFormat
       MapIntStr
 
    .. rubric:: Task management

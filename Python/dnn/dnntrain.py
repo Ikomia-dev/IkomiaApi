@@ -67,7 +67,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
         - metrics logging
         - training dashboard
 
-    It must be use with :py:class:`TrainParam` or derived for parameters.
+    It must be use with :py:class:`~ikomia.dnn.dnntrain.TrainParam` or derived for parameters.
     """
     def __init__(self, name, param):
         """
@@ -75,7 +75,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
 
         Args:
             name (str): task name
-            param (:py:class:`~PyDataProcess.CDnnTrainProcessParam`): task parameters
+            param (:py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`): task parameters
         """
         dataprocess.CDnnTrainProcess.__init__(self, name, param)
         self.experiment_id = -1
@@ -100,7 +100,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
         Proceed to training job initialization:
 
             - start new MLflow run
-            - log hyper-parameters contained in :py:class:`~PyDataProcess.CDnnTrainProcessParam`
+            - log hyper-parameters contained in :py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`
         """
         super().beginTaskRun()
         mlflow.end_run()

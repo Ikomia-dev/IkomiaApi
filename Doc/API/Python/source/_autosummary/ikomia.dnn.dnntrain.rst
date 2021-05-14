@@ -7,4 +7,5 @@ DnnTrain
    .. autosummary::
       :toctree: _autosummaryv
    
+      TrainParam
       TrainProcess

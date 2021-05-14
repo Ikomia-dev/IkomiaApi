@@ -20,7 +20,7 @@
 """
 Module dedicated to provide default implementation of
 Ikomia Deep Learning dataset structure.
-Derived from :py:class:`~pydataprocess.CDatasetIO`.
+Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 """
 
 from ikomia import core, dataprocess
@@ -31,9 +31,9 @@ import json
 class IkDatasetIO(dataprocess.CDatasetIO):
     """
         Define task input or output containing deep learning dataset structure.
-        Derived from :py:class:`~pydataprocess.CDatasetIO`.
+        Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 
-        Instances can be added as input or output of a :py:class:`~pycore.CProtocolTask` or derived object.
+        Instances can be added as input or output of a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object.
         Such input or output is required for deep learning training task.
         Dataset structure is composed of a global dict with 2 main entries
         'images' and 'metadata'.
@@ -70,7 +70,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         Constructor
 
         Args:
-            format: dataset source format, see :py:class:`~pydataprocess.DatasetFormat`.
+            format (str): dataset source format.
         """
         dataprocess.CDatasetIO.__init__(self, format)
         # Data are stored into a dict
@@ -97,7 +97,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         Return the list of categories (ie instance classes) in the dataset.
 
         Returns:
-            :py:class:`~pycore.MapIntStr` list: categories (dict-like structure)
+            :py:class:`~ikomia.core.pycore.MapIntStr` list: categories (dict-like structure)
         """
         categories = core.MapIntStr()
         for category_id in self.data["metadata"]["category_names"]:
@@ -152,7 +152,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
             img_path (str): path of the image from which we want annotations
 
         Returns:
-            :py:class:`~pycore.CGraphicsItem` list: graphics items
+            :py:class:`~ikomia.core.pycore.CGraphicsItem` list: graphics items
         """
         graphics = []
 

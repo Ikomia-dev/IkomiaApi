@@ -19,12 +19,12 @@ Each of these components is implemented by a specific class. We use inheritance 
 The API is divided into modules addressing specific features:
     - **Utils**: module offering various helper tools organized in different submodules
         - :py:mod:`~ikomia.utils.pyutils`: helper classes which are bindings from C++ libraries
-        - :py:mod:`pyqtutils`: helper functions simplifying widgets creation
-        - :py:mod:`qtconversion`: helper functions providing conversion from Python Qt framework (PyQt or PySide2) to C++ Qt
+        - :py:mod:`~ikomia.utils.pyqtutils`: helper functions simplifying widgets creation
+        - :py:mod:`~ikomia.utils.qtconversion`: helper functions providing conversion from Python Qt framework (PyQt or PySide2) to C++ Qt
     - **Core**: module offering essential base classes to implement input/ouput, task, parameters and widget.
-        - :py:mod:`pycore`: bindings from C++ libraries
+        - :py:mod:`~ikomia.core.pycore`: bindings from C++ libraries
     - **DataProcess**:module offering the main interface structure to plug user-defined task and several class specializations to facilitate common process implementation.
-        - :py:mod:`pydataprocess`: bindings from C++ libraries
+        - :py:mod:`~ikomia.dataprocess.pydataprocess`: bindings from C++ libraries
     - **DNN**: module providing features for Deep Learning tasks. More details :doc:`here<modules>`
 
 

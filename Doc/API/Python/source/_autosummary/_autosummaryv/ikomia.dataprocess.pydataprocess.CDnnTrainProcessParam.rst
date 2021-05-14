@@ -16,17 +16,6 @@ CDnnTrainProcessParam
       ~CDnnTrainProcessParam.getHashValue
       ~CDnnTrainProcessParam.getParamMap
       ~CDnnTrainProcessParam.setParamMap
- 
-   .. rubric:: Attributes
-   .. autosummary::
-   
-      ~CDnnTrainProcessParam.batch_size
-      ~CDnnTrainProcessParam.classes
-      ~CDnnTrainProcessParam.epochs
-      ~CDnnTrainProcessParam.learning_rate
-      ~CDnnTrainProcessParam.model_name
-      ~CDnnTrainProcessParam.momentum
-      ~CDnnTrainProcessParam.weight_decay
    
    .. rubric:: Details
 
