@@ -6055,7 +6055,7 @@
     <message>
         <location filename="../Core/CProtocol.cpp" line="858"/>
         <source>No valid connection available, please check input/output data types.</source>
-        <translation>Aucune connextion possible, merci de vérifier les types de données d&apos;entrée/sortie.</translation>
+        <translation>Aucune connexion possible, merci de vérifier les types de données d&apos;entrée/sortie.</translation>
     </message>
     <message>
         <location filename="../Core/CProtocol.cpp" line="885"/>
