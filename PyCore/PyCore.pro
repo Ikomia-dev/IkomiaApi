@@ -9,7 +9,7 @@ QT += core gui widgets sql concurrent
 CONFIG += plugin no_plugin_name_prefix
 TARGET = pycore
 TEMPLATE = lib
-VERSION = $$(IKOMIA_LIB_VERSION)
+VERSION = $$IKOMIA_LIB_VERSION
 win32:QMAKE_EXTENSION_SHLIB = pyd
 macx:QMAKE_EXTENSION_SHLIB = so
 

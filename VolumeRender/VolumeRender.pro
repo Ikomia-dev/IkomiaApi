@@ -9,7 +9,7 @@ QT       += core widgets sql concurrent opengl
 
 TARGET = ikVolumeRender
 TEMPLATE = lib
-VERSION = $$(IKOMIA_LIB_VERSION)
+VERSION = $$IKOMIA_LIB_VERSION
 
 DEFINES += VOLUMERENDER_LIBRARY BOOST_ALL_NO_LIB
 
