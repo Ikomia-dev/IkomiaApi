@@ -547,10 +547,10 @@ void CDataVideoBuffer::updateStreamWrite()
             }
         }
     }
-    catch(std::exception& /*e*/)
+    catch(std::exception& e)
     {
         // Nothing more to process, we're done   
-        qInfo().noquote() << "Write thread finished: no more images available";
+        qInfo().noquote() << "Stream writing ended: " << QString::fromStdString(e.what());
     }
 }
 
