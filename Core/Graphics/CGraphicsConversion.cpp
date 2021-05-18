@@ -185,12 +185,12 @@ void CGraphicsConversion::insertToImage(CMat &image, const CGraphicsPoint *pItem
     QRectF rcImg(0, 0, m_width, m_height);
 
     if(!rcImg.contains(rc))
-        throw CException(CoreExCode::INVALID_DIMENSION, "Point outside image bounds", __func__, __FILE__, __LINE__);
+        rc = rc.intersected(rcImg);
 
     cv::Scalar color = {255, 255, 255, 255};
     if(!bBinary)
     {
-        QColor penColor = pItem->pen().color();
+        QColor penColor = pItem->brush().color();
         color = {(double)penColor.red(), (double)penColor.green(), (double)penColor.blue(), (double)penColor.alpha()};
     }
     cv::RotatedRect rcObj(cv::Point2f(rc.topLeft().x(), rc.topLeft().y()),
@@ -435,12 +435,12 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPoint *
     QRectF rcImg(0, 0, m_width, m_height);
 
     if(!rcImg.contains(rc))
-        throw CException(CoreExCode::INVALID_DIMENSION, "Point outside image bounds", __func__, __FILE__, __LINE__);
+        rc = rc.intersected(rcImg);
 
     cv::Scalar color = {255, 255, 255, 255};
     if(!bBinary)
     {
-        auto penColor = pItem->m_property.m_penColor;
+        auto penColor = pItem->m_property.m_brushColor;
         color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
     }
     cv::RotatedRect rcObj(cv::Point2f(rc.topLeft().x(), rc.topLeft().y()),
