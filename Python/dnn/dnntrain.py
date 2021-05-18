@@ -38,13 +38,6 @@ class TrainParam(dataprocess.CDnnTrainProcessParam):
         dataprocess.CDnnTrainProcessParam.__init__(self)
         self.cfg = {}
 
-    def setParamMap(self, param_map):
-        """
-        Set parameters loaded from Ikomia Studio.
-        """
-        for key, value in param_map:
-            self.cfg[key] = value
-
     def getParamMap(self):
         """
         Return parameters for saving in Ikomia Studio.
