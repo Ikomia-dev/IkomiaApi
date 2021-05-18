@@ -1,4 +1,4 @@
-PyDataProcess
+﻿PyDataProcess
 =============
 
 .. automodule:: ikomia.dataprocess.pydataprocess
@@ -36,7 +36,8 @@ PyDataProcess
       CInteractiveImageProcess2d
       CVideoProcess
       CVideoProcessOF
-      CVideoProcessTracking      
+      CVideoProcessTracking
+      CDnnTrainProcess
       CProcessInfo
       Language
 

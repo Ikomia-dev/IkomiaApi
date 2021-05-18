@@ -60,3 +60,20 @@ html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(
     background: #ffeae0;
     color: #555555
 }
+
+/* Auto-generated table content*/
+html.writer-html5 .rst-content table.docutils td>p,
+html.writer-html5 .rst-content table.docutils th>p {
+ line-height:1rem;
+ margin-bottom:0;
+ font-size:1rem
+}
+
+#github-logo {
+    width: 32px;
+    height: 32px;
+    background: none;
+    display: inline;
+    vertical-align: middle;
+    margin-bottom: 0px
+}

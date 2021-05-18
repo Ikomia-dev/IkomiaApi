@@ -1,4 +1,4 @@
-CImageProcess2d
+﻿CImageProcess2d
 ===============
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess

@@ -10,7 +10,7 @@ To achieve this goal, Ikomia software includes a system based on pip requirement
 During the plugin installation, Ikomia software will parse the plugin directory to find requirements files
 and install dependencies automatically.
 
-**Before publishing plugins, authors must include the necessary requirements files.**
+.. note:: Before publishing plugins, authors must include the necessary requirements files.
 
 
 Requirements file structure
