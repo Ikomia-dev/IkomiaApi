@@ -38,7 +38,7 @@ def load_via_dataset(path):
         path (str): path to the JSON file
 
     Returns:
-        dict: Ikomia dataset structure
+        dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     with open(path) as fp:
         raw_data = json.load(fp)
@@ -169,7 +169,7 @@ def load_yolo_dataset(folder_path, class_path):
         class_path (str): path the text file containing all class names
 
     Returns:
-        dict: Ikomia dataset structure
+        dict: Ikomia dataset structure.  See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     data = {"images": [], "metadata": {}}
     id = 0
@@ -256,7 +256,7 @@ def load_coco_dataset(path, image_folder):
         image_folder (str): path to the image folder
 
     Returns:
-        dict: Ikomia dataset structure
+        dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     data = {"images": [], "metadata": {}}
 
@@ -325,7 +325,7 @@ def load_pascalvoc_dataset(annotation_folder, img_folder, instance_seg_folder, c
         class_path: path to text file containing class names
 
     Returns:
-        dict: Ikomia dataset structure
+        dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     id = 0
     data = {"images": [], "metadata": {}}

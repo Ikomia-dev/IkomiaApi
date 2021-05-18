@@ -9,7 +9,7 @@ QT  += core gui widgets sql concurrent
 
 TARGET = ikDataManagement
 TEMPLATE = lib
-VERSION = $$(IKOMIA_LIB_VERSION)
+VERSION = $$IKOMIA_LIB_VERSION
 
 DEFINES += DATAMANAGEMENT_LIBRARY BOOST_ALL_NO_LIB
 

@@ -1,0 +1,62 @@
+/* The toc tree */
+.wy-nav-side {
+    background-color: #150e83;
+}
+
+/* The selected items in the toc tree */
+.wy-menu-vertical li.current {
+    background-color: #ffac85;
+}
+
+/* When a list item that does belong to the selected block from the toc tree is hovered */
+.wy-menu-vertical li.current a:hover {
+    background-color: #cc5a20;
+}
+
+/* When a list item that does NOT belong to the selected block from the toc tree is hovered. */
+.wy-menu-vertical li a:hover {
+    background-color: #cc5a20;
+}
+
+/* Inside the depth-2 selected toc tree block */
+.wy-menu-vertical li.toctree-l2.current>a {
+    background-color: #ffc1a4
+}
+
+.wy-menu-vertical li.toctree-l2.current li.toctree-l3>a {
+    background-color: #ffd7c5
+}
+
+/* Max window size */
+.wy-nav-content {
+    max-width: 1024px;
+}
+
+/* It would be better for table to be visible without horizontal scrolling */
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    white-space: normal;
+}
+
+/* Class header style */
+html.writer-html4 .rst-content dl:not(.docutils)>dt,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    display: table;
+    margin: 6px 0;
+    font-size: 90%;
+    line-height: normal;
+    background: #e8e6ff;
+    color: #282185;
+    border-top: 3px solid #150e83;
+    padding: 6px;
+    position: relative
+}
+
+html.writer-html4 .rst-content dl:not(.docutils) dl:not(.field-list)>dt,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) dl:not(.field-list)>dt {
+    margin-bottom: 6px;
+    border: none;
+    border-left: 3px solid #cc5a20;
+    background: #ffeae0;
+    color: #555555
+}

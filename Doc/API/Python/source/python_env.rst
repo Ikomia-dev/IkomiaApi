@@ -1,6 +1,9 @@
 Python environment
 ==================
 
+Version
+-------
+
 Ikomia software comes with its own Python environment, 
 completely independant of the one you may install system-wide.
 In case of multi-users machine, Ikomia installs one Python environment per user. 
