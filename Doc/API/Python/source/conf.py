@@ -65,7 +65,7 @@ html_css_files = ['ikomia.css',]
 html_logo = '_static/app.png'
 
 # Auto-summary ON/OFF
-autosummary_generate = False
+autosummary_generate = True
 
 # Style customization - Alabaster
 #html_theme_options = {

@@ -1,39 +1,78 @@
 {% extends "!layout.html" %}
 
-{% block sidebartitle %}
-    {% if logo and theme_logo_only %}
-        <a href="{{ pathto(master_doc) }}">
-    {% else %}
-        <a href="{{ pathto(master_doc) }}" class="icon icon-home"> {{ project }}
-    {% endif %}
+{%- block extrahead %}
+{{ super() }}
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
 
-    {% if logo %}
+{% block sidebartitle %}
+{% if logo and theme_logo_only %}
+<a href="{{ pathto(master_doc) }}">
+    {% else %}
+    <a href="{{ pathto(master_doc) }}" class="icon icon-home"> {{ project }}
+        {% endif %}
+
+        {% if logo %}
         {# Not strictly valid HTML, but it's the only way to display/scale
             it properly, without weird scripting or heaps of work
         #}
-        <img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="{{ _('Logo') }}"/>
-    {% endif %}
+        <img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="{{ _('Logo') }}" />
+        {% endif %}
     </a>
 
     {% if theme_display_version %}
-        {%- set nav_version = version %}
-        {% if READTHEDOCS and current_version %}
-            {%- set nav_version = current_version %}
-        {% endif %}
-        {% if nav_version %}
-            <div class="version">
-                {{ nav_version }}
-            </div>
-        {% endif %}
+    {%- set nav_version = version %}
+    {% if READTHEDOCS and current_version %}
+    {%- set nav_version = current_version %}
+    {% endif %}
+    {% if nav_version %}
+    <div class="version">
+        {{ nav_version }}
+    </div>
+    {% endif %}
     {% endif %}
 
-    <a href="https://github.com/Ikomia-dev/IkomiaApi"
-       class="btn btn-neutral"
-       title="GitHub Ikomia API"
-       target="_blank" rel="noopener noreferrer">
+    <!-- Github button -->
+    <a href="https://github.com/Ikomia-dev/IkomiaApi" class="btn btn-neutral" title="GitHub Ikomia API" target="_blank" rel="noopener noreferrer">
         <img id="github-logo" src="_static/GitHub-Mark-32px.png" alt="">
         <span style="vertical-align:middle">GitHub</span>
     </a>
 
     {% include "searchbox.html" %}
-{% endblock %}
+    {% endblock %}
+
+    {% block navigation %}
+    <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        {% block menu %}
+        {#
+            The singlehtml builder doesn't handle this toctree call when the
+            toctree is empty. Skip building this for now.
+        #}
+        {% if 'singlehtml' not in builder %}
+        {% set global_toc = toctree(maxdepth=theme_navigation_depth|int,
+                                        collapse=theme_collapse_navigation|tobool,
+                                        includehidden=theme_includehidden|tobool,
+                                        titles_only=theme_titles_only|tobool) %}
+        {% endif %}
+        {% if global_toc %}
+        {{ global_toc }}
+        {% else %}
+        <!-- Local TOC -->
+        <div class="local-toc">{{ toc }}</div>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <!-- Social media icons -->
+    <div class="social-list">
+        <a class="social-item" href="https://fr.linkedin.com/company/ikomia" target="_blank" data-wpel-link="external" rel="external noopener noreferrer">
+            <i class="fa fa-linkedin-square"></i>
+        </a>
+        <a class="social-item" href="https://twitter.com/IkomiaOfficial" target="_blank" data-wpel-link="external" rel="external noopener noreferrer">
+            <i class="fa fa-twitter-square"></i>
+        </a>
+        <a class="social-item" href="https://www.youtube.com/channel/UC0nIasJy6f-b-f0SOEsBlQw" target="_blank" data-wpel-link="external" rel="external noopener noreferrer">
+            <i class="fa fa-youtube-play"></i>
+        </a>
+    </div>
+    {% endblock %}

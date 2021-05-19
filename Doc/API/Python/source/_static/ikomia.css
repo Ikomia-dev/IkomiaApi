@@ -64,9 +64,9 @@ html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(
 /* Auto-generated table content*/
 html.writer-html5 .rst-content table.docutils td>p,
 html.writer-html5 .rst-content table.docutils th>p {
- line-height:1rem;
- margin-bottom:0;
- font-size:1rem
+    line-height: 1rem;
+    margin-bottom: 0;
+    font-size: 1rem
 }
 
 #github-logo {
@@ -76,4 +76,20 @@ html.writer-html5 .rst-content table.docutils th>p {
     display: inline;
     vertical-align: middle;
     margin-bottom: 0px
+}
+
+/* Social bar */
+.social-list {
+    text-align: center;
+    margin: 20px;
+}
+
+/* Social icons */
+.social-item .fa {
+    padding: 5px;
+    font-size: 25px;
+    width: 40px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
 }
