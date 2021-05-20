@@ -120,7 +120,7 @@ class CDataIO : public _CDataIO
             return *this;
         }
 
-        VectorString                    fileNames(const SubsetBounds& bounds)
+        VectorString                    getFileNames(const SubsetBounds& bounds)
         {
             if(m_pDataIO)
                 return m_pDataIO->fileNames(bounds);

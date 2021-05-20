@@ -194,12 +194,8 @@ void COpencvVideoIO::write(const CMat &image)
     assert(!image.empty());
     assert(m_pVideoBuffer);
 
-    if(!m_pVideoBuffer->isWriteStarted())
-    {
-        m_pVideoBuffer->setFPS(25);
-        m_pVideoBuffer->setSize(image.getNbCols(), image.getNbRows());
-        m_pVideoBuffer->startStreamWrite();
-    }
+    if(!m_pVideoBuffer->isWriteStarted())        
+        m_pVideoBuffer->startStreamWrite(image.getNbCols(), image.getNbRows(), 25);
 
     CMat frame;
     if(image.channels() > 1)
@@ -216,7 +212,7 @@ void COpencvVideoIO::write(const CMat &image, const std::string &path)
     if(!m_pVideoBuffer->isWriteStarted())
     {
         m_pVideoBuffer->setVideoPath(path);
-        m_pVideoBuffer->startStreamWrite();
+        m_pVideoBuffer->startStreamWrite(image.getNbCols(), image.getNbRows(), 25);
     }
 
     CMat frame;

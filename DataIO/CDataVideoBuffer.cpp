@@ -158,11 +158,15 @@ void CDataVideoBuffer::startWrite(int width, int height, int nbFrames, int fps, 
     m_writeFuture = Utils::async([this]{ updateWrite(); });
 }
 
-void CDataVideoBuffer::startStreamWrite()
+void CDataVideoBuffer::startStreamWrite(int width, int height, int fps, int fourcc)
 {
     if(m_bStopWrite)
         m_bStopWrite = false;
 
+    m_width = width;
+    m_height = height;
+    m_fps = fps;
+    m_fourcc = fourcc;
     isWritable(); // may throw
     m_queueWrite.activate();
     m_writeFuture = Utils::async([this]{ updateStreamWrite(); });

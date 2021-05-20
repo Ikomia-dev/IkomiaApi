@@ -55,7 +55,7 @@ class DATAIOSHARED_EXPORT CDataVideoBuffer: public QObject
         void            clearRead();
 
         void            startWrite(int width, int height, int nbFrames, int fps=25, int fourcc=-1);
-        void            startStreamWrite();
+        void            startStreamWrite(int width, int height, int fps=25, int fourcc=-1);
         void            stopWrite();
 
         CMat            read();

@@ -82,12 +82,12 @@ void CVideoDataManager::fillDataset(CDataset<CMat> &dataset, const SubsetBounds 
         for(size_t i=0; i<subsetDataInfo.size(); ++i)
         {
             std::string fileName = subsetDataInfo[i]->getFileName();
-            m_pCurrentVideoIO = getVideoIO(fileName);
+            m_pCurrentVideoIn = getVideoIO(fileName);
 
-            if(m_pCurrentVideoIO == nullptr)
+            if(m_pCurrentVideoIn == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "Video reader unavailable", __func__, __FILE__, __LINE__);
 
-            CMat data = m_pCurrentVideoIO->read(subsetBounds);
+            CMat data = m_pCurrentVideoIn->read(subsetBounds);
             dataset.subset().addData(data);
             emitDoProgress();
         }
@@ -169,6 +169,13 @@ bool CVideoDataManager::isCamOrIPStreamLinux(const std::string& filename)
     return bRet | bRet1;
 }
 
+void CVideoDataManager::removeVideoIO(const std::string &filename)
+{
+    auto it = m_mapVideoIO.find(filename);
+    if(it != m_mapVideoIO.end())
+        m_mapVideoIO.erase(it);
+}
+
 void CVideoDataManager::setLiveMode(bool bLive)
 {
     m_bLive = bLive;
@@ -176,8 +183,8 @@ void CVideoDataManager::setLiveMode(bool bLive)
 
 void CVideoDataManager::setCurrentVideoIO(CDataset<CMat> &dataset)
 {
-    m_pCurrentVideoIO = getVideoIO(dataset.getDataInfo().at(0)->getFileName());
-    if(m_pCurrentVideoIO == nullptr)
+    m_pCurrentVideoIn = getVideoIO(dataset.getDataInfo().at(0)->getFileName());
+    if(m_pCurrentVideoIn == nullptr)
         return;
 }
 
@@ -209,18 +216,18 @@ CVideoIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
 
 CDataVideoInfoPtr CVideoDataManager::getDataVideoInfoPtr()
 {
-    if(m_pCurrentVideoIO == nullptr)
+    if(m_pCurrentVideoIn == nullptr)
         return nullptr;
 
-    return std::dynamic_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIO->dataInfo());
+    return std::dynamic_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIn->dataInfo());
 }
 
 CDataVideoBuffer::Type CVideoDataManager::getSourceType() const
 {
-    if(!m_pCurrentVideoIO)
+    if(!m_pCurrentVideoIn)
         return CDataVideoBuffer::NONE;
 
-    auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIO->dataInfo());
+    auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(m_pCurrentVideoIn->dataInfo());
     if(!infoPtr)
         return CDataVideoBuffer::NONE;
 
@@ -230,9 +237,9 @@ CDataVideoBuffer::Type CVideoDataManager::getSourceType() const
 CMat CVideoDataManager::playVideo(CDataset<CMat> &dataset)
 {
     auto datasetInfo = dataset.getDataInfo();
-    m_pCurrentVideoIO = getVideoIO(datasetInfo[0]->getFileName());
+    m_pCurrentVideoIn = getVideoIO(datasetInfo[0]->getFileName());
 
-    if(m_pCurrentVideoIO == nullptr)
+    if(m_pCurrentVideoIn == nullptr)
         return CMat();
 
     auto bounds = dataset.subsetBounds(0);
@@ -242,9 +249,9 @@ CMat CVideoDataManager::playVideo(CDataset<CMat> &dataset)
 
     CMat data;
     if(m_bLive)
-        data = m_pCurrentVideoIO->readLive();
+        data = m_pCurrentVideoIn->readLive();
     else
-        data = m_pCurrentVideoIO->read();
+        data = m_pCurrentVideoIn->read();
 
     dataset.subset().addData(data);
     return data;
@@ -252,8 +259,8 @@ CMat CVideoDataManager::playVideo(CDataset<CMat> &dataset)
 
 CMat CVideoDataManager::playVideo(CDataset<CMat>& dataset, const SubsetBounds& subsetBounds)
 {
-    m_pCurrentVideoIO = getVideoIO(dataset.getDataInfo().at(0)->getFileName());
-    if(m_pCurrentVideoIO == nullptr)
+    m_pCurrentVideoIn = getVideoIO(dataset.getDataInfo().at(0)->getFileName());
+    if(m_pCurrentVideoIn == nullptr)
         return CMat();
 
     auto bounds = dataset.subsetBounds(0);
@@ -263,9 +270,9 @@ CMat CVideoDataManager::playVideo(CDataset<CMat>& dataset, const SubsetBounds& s
 
     CMat data;
     if(m_bLive)
-        data = m_pCurrentVideoIO->readLive(subsetBounds);
+        data = m_pCurrentVideoIn->readLive(subsetBounds);
     else
-        data = m_pCurrentVideoIO->read(subsetBounds);
+        data = m_pCurrentVideoIn->read(subsetBounds);
 
     dataset.subset().addData(data);
     return data;
@@ -273,31 +280,44 @@ CMat CVideoDataManager::playVideo(CDataset<CMat>& dataset, const SubsetBounds& s
 
 void CVideoDataManager::writeVideo(const CMat& image, const std::string& path)
 {
-    assert(m_pCurrentVideoIO);
-    m_pCurrentVideoIO->write(image, path);
+    m_pCurrentVideoOut = getVideoIO(path);
+    if(m_pCurrentVideoOut)
+        m_pCurrentVideoOut->write(image);
 }
 
 void CVideoDataManager::stopWriteVideo()
 {
-    assert(m_pCurrentVideoIO);
-    m_pCurrentVideoIO->stopWrite();
+    if(m_pCurrentVideoOut)
+    {
+        m_pCurrentVideoOut->stopWrite();
+        auto filenames = m_pCurrentVideoOut->getFileNames(SubsetBounds());
+
+        if(filenames.size() > 0)
+            removeVideoIO(filenames[0]);
+    }
 }
 
 void CVideoDataManager::stopReadVideo()
 {
-    if(m_pCurrentVideoIO)
-        m_pCurrentVideoIO->stopRead();
+    if(m_pCurrentVideoIn)
+        m_pCurrentVideoIn->stopRead();
 }
 
 void CVideoDataManager::waitWriteFinished()
 {
-    if(m_pCurrentVideoIO)
-        m_pCurrentVideoIO->waitWriteFinished();
+    if(m_pCurrentVideoOut)
+    {
+        m_pCurrentVideoOut->waitWriteFinished();
+        auto filenames = m_pCurrentVideoOut->getFileNames(SubsetBounds());
+
+        if(filenames.size() > 0)
+            removeVideoIO(filenames[0]);
+    }
 }
 
 void CVideoDataManager::closeCamera()
 {
-    if(m_pCurrentVideoIO)
-        m_pCurrentVideoIO->closeCamera();
+    if(m_pCurrentVideoIn)
+        m_pCurrentVideoIn->closeCamera();
 }
 

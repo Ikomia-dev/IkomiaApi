@@ -77,12 +77,17 @@ class DATAMANAGEMENTSHARED_EXPORT CVideoDataManager : public CDataManager<CMat>
         bool                checkMemory(const CArrayDataInfo &arrayDataInfo);
         bool                isCamOrIPStreamLinux(const std::string& filename);
 
+        void                removeVideoIO(const std::string& filename);
+
     private:
 
         using CMapFileVideoIO = std::unordered_map<std::string, CVideoIOPtr>;
 
         CMapFileVideoIO     m_mapVideoIO;
-        CVideoIOPtr         m_pCurrentVideoIO = nullptr;
+        //Design choice : one video reader at a time -> to improve
+        CVideoIOPtr         m_pCurrentVideoIn = nullptr;
+        //Design choice : one video writer at a time -> to improve
+        CVideoIOPtr         m_pCurrentVideoOut = nullptr;
         bool                m_bLive = false;
 };
 
