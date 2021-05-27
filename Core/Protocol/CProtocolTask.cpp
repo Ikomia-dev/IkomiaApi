@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+#include <QJsonArray>
 #include "CProtocolTask.h"
 #include "CException.h"
 #include "Graphics/CGraphicsLayer.h"
@@ -835,6 +836,25 @@ void CProtocolTask::saveOutputs(const std::string& baseName) const
             m_outputs[i]->save();
         }
     }
+}
+
+QJsonObject CProtocolTask::toJson() const
+{
+    QJsonObject obj;
+    obj["name"] = QString::fromStdString(m_name);
+    QJsonArray jsonParams;
+
+    // Associated parameters
+    auto paramMap = m_pParam->getParamMap();
+    for(auto it=paramMap.begin(); it!=paramMap.end(); ++it)
+    {
+        QJsonObject jsonParam;
+        jsonParam["name"] = QString::fromStdString(it->first);
+        jsonParam["value"] = QString::fromStdString(it->second);
+        jsonParams.append(jsonParam);
+    }
+    obj["parameters"] = jsonParams;
+    return obj;
 }
 
 #include "moc_CProtocolTask.cpp"

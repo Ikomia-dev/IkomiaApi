@@ -33,6 +33,7 @@
 #include "Protocol/CProtocolTask.h"
 #include "Protocol/CProtocolEdge.hpp"
 #include "Protocol/CProtocolTaskWidget.h"
+#include "CProcessRegistration.h"
 #include "IO/CTaskIORegistration.h"
 #include "IO/CGraphicsProcessInput.h"
 #include "CRunTaskManager.h"
@@ -200,6 +201,10 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
 
         void                            writeGraphviz(const std::string& path);
 
+        void                            save(const std::string& path);
+
+        void                            load(const std::string& path);
+
         void                            notifyGraphicsChanged();
 
         virtual void                    notifyVideoStart(int frameCount) override;
@@ -234,6 +239,10 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
 
         void                            updateCompositeInputName();
 
+        void                            saveJSON(const std::string& path);
+
+        void                            loadJSON(const std::string& path);
+
     private:
 
         std::mutex              m_mutex;
@@ -251,6 +260,7 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         std::atomic<bool>       m_bStopped{false};
         bool                    m_bBatchMode = false;
         bool                    m_bForceBatchMode = false;
+        CProcessRegistration    m_processRegistrator;
         CTaskIORegistration*    m_pTaskIORegistration = nullptr;
         CRunTaskManager         m_runMgr;
         std::map<std::string, std::string>  m_cfg;

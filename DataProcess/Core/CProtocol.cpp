@@ -21,6 +21,8 @@
 #include "CProtocol.h"
 #include "CException.h"
 #include <QDebug>
+#include <QFile>
+#include <unordered_map>
 #include <boost/graph/graphviz.hpp>
 #include "Main/CoreTools.hpp"
 #include "Graphics/CGraphicsLayer.h"
@@ -1531,6 +1533,105 @@ void CProtocol::updateCompositeInputName()
             }
         }
     }
+}
+
+void CProtocol::save(const std::string &path)
+{
+    auto ext = Utils::File::extension(path);
+    if(ext == ".json")
+        saveJSON(path);
+    else
+        throw CException(CoreExCode::NOT_IMPLEMENTED, "Workflow can only be saved as JSON file", __func__, __FILE__, __LINE__);
+}
+
+void CProtocol::load(const std::string &path)
+{
+    auto ext = Utils::File::extension(path);
+    if(ext == ".json")
+        loadJSON(path);
+    else
+        throw CException(CoreExCode::NOT_IMPLEMENTED, "Workflow can only be loaded as JSON file", __func__, __FILE__, __LINE__);
+}
+
+void CProtocol::saveJSON(const std::string& path)
+{
+    QFile jsonFile(QString::fromStdString(path));
+    if(!jsonFile.open(QFile::WriteOnly))
+        throw CException(CoreExCode::INVALID_FILE, "Could not save file: " + path, __func__, __FILE__, __LINE__);
+
+    int id = 0;
+    std::unordered_map<ProtocolVertex, int> mapVertexToId;
+    QJsonObject jsonWorkflow;
+    QJsonArray jsonTasks, jsonEdges;
+
+    // Tasks
+    auto vertexRangeIt = boost::vertices(m_graph);
+    for(auto it=vertexRangeIt.first; it!=vertexRangeIt.second; ++it)
+    {
+        if(*it != m_root)
+        {
+            QJsonObject jsonTask;
+            jsonTask["task_id"] = id;
+            ProtocolTaskPtr taskPtr = m_graph[*it];
+            jsonTask["task_data"] = taskPtr->toJson();
+            jsonTasks.append(jsonTask);
+            mapVertexToId.insert(std::make_pair(*it, id++));
+        }
+    }
+    jsonWorkflow["tasks"] = jsonTasks;
+
+    // Edges
+    auto edgeRangeIt = boost::edges(m_graph);
+    for(auto it=edgeRangeIt.first; it!=edgeRangeIt.second; ++it)
+    {
+        QJsonObject jsonEdge;
+        ProtocolEdgePtr edgePtr = m_graph[*it];
+
+        // Edge source
+        auto itSrcId = mapVertexToId.find(boost::source(*it, m_graph));
+        if(itSrcId != mapVertexToId.end())
+            jsonEdge["source_id"] = itSrcId->second;
+        else
+            jsonEdge["source_id"] = -1;
+
+        jsonEdge["source_index"] = (int)edgePtr->getSourceIndex();
+
+        // Edge target
+        auto itTargetId = mapVertexToId.find(boost::target(*it, m_graph));
+        if(itTargetId != mapVertexToId.end())
+            jsonEdge["target_id"] = itTargetId->second;
+        else
+            jsonEdge["target_id"] = -1;
+
+        jsonEdge["target_index"] = (int)edgePtr->getTargetIndex();
+        jsonEdges.append(jsonEdge);
+    }
+    jsonWorkflow["connections"] = jsonEdges;
+
+    QJsonDocument jsonDoc(jsonWorkflow);
+    jsonFile.write(jsonDoc.toJson());
+}
+
+void CProtocol::loadJSON(const std::string &path)
+{
+    QFile jsonFile(QString::fromStdString(path));
+    if(!jsonFile.open(QFile::ReadOnly))
+        throw CException(CoreExCode::INVALID_FILE, "Could not load file: " + path, __func__, __FILE__, __LINE__);
+
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonFile.readAll()));
+    if(jsonDoc.isNull() || jsonDoc.isEmpty())
+        throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: invalid JSON structure", __func__, __FILE__, __LINE__);
+
+    QJsonObject jsonWorkflow = jsonDoc.object();
+    if(jsonWorkflow.isEmpty())
+        throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: empty JSON workflow", __func__, __FILE__, __LINE__);
+
+    QJsonArray jsonTasks = jsonWorkflow["tasks"].toArray();
+    for(int i=0; i<jsonTasks.size(); ++i)
+    {
+
+    }
+
 }
 
 void CProtocol::manageOutputs(const ProtocolVertex& taskId)

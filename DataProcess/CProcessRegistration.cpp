@@ -80,6 +80,34 @@ void CProcessRegistration::unregisterProcess(const std::string &name)
     m_widgetFactory.remove(name);
 }
 
+ProtocolTaskPtr CProcessRegistration::createProcessObject(const std::string &name, const ProtocolTaskParamPtr &paramPtr)
+{
+    ProtocolTaskPtr taskPtr = nullptr;
+    try
+    {
+        taskPtr = m_processFactory.createObject(name, std::move(paramPtr));
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException());
+    }
+    return taskPtr;
+}
+
+ProtocolTaskWidgetPtr CProcessRegistration::createWidgetObject(const std::string &name, const ProtocolTaskParamPtr &paramPtr)
+{
+    ProtocolTaskWidgetPtr widgetPtr = nullptr;
+    try
+    {
+        widgetPtr = m_widgetFactory.createObject(name, std::move(paramPtr));
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException());
+    }
+    return widgetPtr;
+}
+
 void CProcessRegistration::reset()
 {
     m_processFactory.getList().clear();

@@ -631,6 +631,8 @@ class CORESHARED_EXPORT CProtocolTask
 
         virtual void                saveOutputs(const std::string &baseName) const;
 
+        QJsonObject                 toJson() const;
+
     /** @cond INTERNAL */
     protected:
 

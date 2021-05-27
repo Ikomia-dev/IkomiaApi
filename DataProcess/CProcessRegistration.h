@@ -41,6 +41,9 @@ class DATAPROCESSSHARED_EXPORT CProcessRegistration
 
         void                            unregisterProcess(const std::string& name);
 
+        ProtocolTaskPtr                 createProcessObject(const std::string& name, const ProtocolTaskParamPtr& paramPtr);
+        ProtocolTaskWidgetPtr           createWidgetObject(const std::string& name, const ProtocolTaskParamPtr& paramPtr);
+
         void                            reset();
 
     private:
