@@ -86,7 +86,8 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
 
         //Constructors
         CProtocol();
-        CProtocol(std::string getName);
+        CProtocol(const std::string& name);
+        CProtocol(const std::string& name, CProcessRegistration* pTaskRegistration, CTaskIORegistration* pIORegistration, const GraphicsContextPtr &contextPtr);
         CProtocol(const CProtocol& protocol);
         CProtocol(const CProtocol&& protocol);
 
@@ -108,7 +109,6 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         void                            setActiveTask(const ProtocolVertex& id);
         void                            setRunningTask(const ProtocolVertex& id);
         void                            setTaskActionFlag(const ProtocolVertex &id, ActionFlag action, bool bEnable);
-        void                            setTaskIORegistration(CTaskIORegistration* pRegistration);
         void                            setInputBatchState(size_t index, bool bBatch);
         void                            setCfgEntry(const std::string& key, const std::string& value);
 
@@ -260,8 +260,9 @@ class DATAPROCESSSHARED_EXPORT CProtocol : public CProtocolTask
         std::atomic<bool>       m_bStopped{false};
         bool                    m_bBatchMode = false;
         bool                    m_bForceBatchMode = false;
-        CProcessRegistration    m_processRegistrator;
+        CProcessRegistration*   m_pTaskRegistration = nullptr;
         CTaskIORegistration*    m_pTaskIORegistration = nullptr;
+        GraphicsContextPtr      m_graphicsContextPtr = nullptr;
         CRunTaskManager         m_runMgr;
         std::map<std::string, std::string>  m_cfg;
 };

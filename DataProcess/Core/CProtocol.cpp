@@ -44,7 +44,7 @@ CProtocol::CProtocol() : CProtocolTask()
     m_runMgr.setCfg(&m_cfg);
 }
 
-CProtocol::CProtocol(std::string name) : CProtocolTask(name)
+CProtocol::CProtocol(const std::string &name) : CProtocolTask(name)
 {
     createRoot();
     m_lastTaskAdded = m_root;
@@ -52,6 +52,20 @@ CProtocol::CProtocol(std::string name) : CProtocolTask(name)
     m_runningTask = boost::graph_traits<ProtocolGraph>::null_vertex();
     m_signalHandler = std::make_unique<CProtocolSignalHandler>();
     m_runMgr.setCfg(&m_cfg);
+}
+
+CProtocol::CProtocol(const std::string &name, CProcessRegistration *pTaskRegistration, CTaskIORegistration *pIORegistration, const GraphicsContextPtr &contextPtr)
+    : CProtocolTask(name)
+{
+    createRoot();
+    m_lastTaskAdded = m_root;
+    m_activeTask = m_root;
+    m_runningTask = boost::graph_traits<ProtocolGraph>::null_vertex();
+    m_signalHandler = std::make_unique<CProtocolSignalHandler>();
+    m_runMgr.setCfg(&m_cfg);
+    m_pTaskRegistration = pTaskRegistration;
+    m_pTaskIORegistration = pIORegistration;
+    m_graphicsContextPtr = contextPtr;
 }
 
 CProtocol::CProtocol(const CProtocol &protocol) : CProtocolTask(protocol)
@@ -217,11 +231,6 @@ void CProtocol::setTaskActionFlag(const ProtocolVertex &id, CProtocolTask::Actio
 
         startIOAnalysis(id);
     }
-}
-
-void CProtocol::setTaskIORegistration(CTaskIORegistration *pRegistration)
-{
-    m_pTaskIORegistration = pRegistration;
 }
 
 void CProtocol::setInputBatchState(size_t index, bool bBatch)
@@ -816,6 +825,7 @@ ProtocolVertex CProtocol::addTask(const ProtocolTaskPtr& pNewTask)
     assert(pNewTask != nullptr);
     connectSignals(pNewTask);
     pNewTask->setOutputFolder(m_outputFolder);
+    pNewTask->setGraphicsContext(m_graphicsContextPtr);
     m_lastTaskAdded = boost::add_vertex(pNewTask, m_graph);
     return m_lastTaskAdded;
 }
@@ -1614,6 +1624,9 @@ void CProtocol::saveJSON(const std::string& path)
 
 void CProtocol::loadJSON(const std::string &path)
 {
+    assert(m_pTaskRegistration);
+    std::unordered_map<int, ProtocolVertex> mapIdToVertexId;
+
     QFile jsonFile(QString::fromStdString(path));
     if(!jsonFile.open(QFile::ReadOnly))
         throw CException(CoreExCode::INVALID_FILE, "Could not load file: " + path, __func__, __FILE__, __LINE__);
@@ -1626,12 +1639,52 @@ void CProtocol::loadJSON(const std::string &path)
     if(jsonWorkflow.isEmpty())
         throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: empty JSON workflow", __func__, __FILE__, __LINE__);
 
+    // Load tasks
     QJsonArray jsonTasks = jsonWorkflow["tasks"].toArray();
     for(int i=0; i<jsonTasks.size(); ++i)
     {
+        QJsonObject jsonTask = jsonTasks[i].toObject();
+        QJsonObject jsonTaskData = jsonTask["task_data"].toObject();
+        auto taskPtr = m_pTaskRegistration->createProcessObject(jsonTaskData["name"].toString().toStdString(), nullptr);
 
+        if(taskPtr)
+        {
+            UMapString paramMap;
+            QJsonArray jsonParams = jsonTaskData["parameters"].toArray();
+
+            for(int j=0; j<jsonParams.size(); ++j)
+            {
+                QJsonObject jsonParam = jsonParams[j].toObject();
+                paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
+            }
+            taskPtr->setParamMap(paramMap);
+            taskPtr->parametersModified();
+            auto vertexId = addTask(taskPtr);
+            mapIdToVertexId.insert(std::make_pair(jsonTask["task_id"].toInt(), vertexId));
+        }
     }
 
+    // Load connections
+    QJsonArray jsonEdges = jsonWorkflow["connections"].toArray();
+    for(int i=0; i<jsonEdges.size(); ++i)
+    {
+        QJsonObject jsonEdge = jsonEdges[i].toObject();
+        int srcId = jsonEdge["source_id"].toInt();
+        ProtocolVertex srcTaskId = boost::graph_traits<ProtocolGraph>::null_vertex();
+
+        auto itSrc = mapIdToVertexId.find(srcId);
+        if(itSrc != mapIdToVertexId.end())
+            srcTaskId = itSrc->second;
+
+        int targetId = jsonEdge["target_id"].toInt();
+        ProtocolVertex targetTaskId = boost::graph_traits<ProtocolGraph>::null_vertex();
+
+        auto itTarget = mapIdToVertexId.find(targetId);
+        if(itTarget != mapIdToVertexId.end())
+            targetTaskId = itTarget->second;
+
+        connect(srcTaskId, jsonEdge["source_index"].toInt(), targetTaskId, jsonEdge["target_index"].toInt());
+    }
 }
 
 void CProtocol::manageOutputs(const ProtocolVertex& taskId)

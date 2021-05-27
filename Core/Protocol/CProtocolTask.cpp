@@ -841,11 +841,12 @@ void CProtocolTask::saveOutputs(const std::string& baseName) const
 QJsonObject CProtocolTask::toJson() const
 {
     QJsonObject obj;
-    obj["name"] = QString::fromStdString(m_name);
-    QJsonArray jsonParams;
+    obj["name"] = QString::fromStdString(m_name);    
 
     // Associated parameters
+    QJsonArray jsonParams;
     auto paramMap = m_pParam->getParamMap();
+
     for(auto it=paramMap.begin(); it!=paramMap.end(); ++it)
     {
         QJsonObject jsonParam;
