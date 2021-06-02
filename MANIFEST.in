@@ -1,0 +1,5 @@
+recursive-include ikomia/core *.so
+recursive-include ikomia/dataio *.so
+recursive-include ikomia/dataprocess *.so
+recursive-include ikomia/utils *.so
+recursive-include ikomia/lib *.*

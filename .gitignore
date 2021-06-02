@@ -13,3 +13,6 @@ ikomia/dataprocess/pydataprocess.so
 ikomia/utils/pyutils.so
 doc/build
 doc/_build
+ikomia.egg-info
+build
+dist
