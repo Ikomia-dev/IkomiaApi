@@ -12,8 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../../../Build/Lib/Python'))
-
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +21,7 @@ copyright = '2020, Ikomia SAS'
 author = 'Ludovic Barusseau'
 
 # The full version, including alpha/beta/rc tags
-version = '0.5.0'
+version = '0.6.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -60,7 +59,7 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['ikomia.css',]
+html_css_files = ['ikomia.css', ]
 
 html_logo = '_static/app.png'
 
