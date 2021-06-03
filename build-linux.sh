@@ -1,20 +1,25 @@
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 [-m clean|build] [-r remote] [-b branch name] [-py python version tag] [-p platform name]"
+   echo "Usage: $0 [-m clean|build] [-r remote] [-b branch name] [-v python version tag] [-p platform name] [-w]"
    exit 1 # Exit script after printing help
 }
 
-while getopts "m:r:b:u:" opt
+build_wheel=0
+
+while getopts "m:r:b:v:p:w" opt
 do
    case "$opt" in
       m ) method="$OPTARG" ;;
       r ) remote="$OPTARG" ;;
       b ) branch="$OPTARG" ;;
-      py ) pytag="$OPTARG" ;;
+      v ) pytag="$OPTARG" ;;
       p ) platform="$OPTARG" ;;
+      w ) build_wheel=1 ;;
    esac
 done
+
+echo $build_wheel
 
 if [ -z "$method" ]
 then
@@ -48,6 +53,7 @@ then
   rm -rf ikomia.egg-info
   echo "Cleaning wheel successfully"
 else
+  echo "----- Build Ikomia C++ libs -----"
   build_dir="cpp/Build"
   if [ ! -d $build_dir ]
   then
@@ -59,6 +65,7 @@ else
   qmake ../IkomiaApi.pro
   make -j12
   make install
+  echo "----- Build done-----"
 
   cd ../..
   python_lib_dir="ikomia/lib"
@@ -67,11 +74,16 @@ else
     mkdir $python_lib_dir
   fi
 
+  echo "----- Copy C++ libs to Python package-----"
   cp -R cpp/Build/Lib/. $python_lib_dir
+  echo "----- Copy done-----"
 
-  python setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
-
-  echo "Generating wheel successfully"
+  if [ $build_wheel = 1 ]
+  then
+    echo "----- Generating Python wheel -----"
+    python setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
+    echo "----- Python wheel done -----"
+  fi
 fi
 
 

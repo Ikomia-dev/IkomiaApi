@@ -11,6 +11,7 @@ ikomia/core/pycore.so
 ikomia/dataio/pydataio.so
 ikomia/dataprocess/pydataprocess.so
 ikomia/utils/pyutils.so
+ikomia/lib
 doc/build
 doc/_build
 ikomia.egg-info
