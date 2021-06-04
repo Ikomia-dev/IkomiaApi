@@ -13,10 +13,10 @@ Code example for process implementation
     # - Class to handle the process parameters
     # - Inherits CProtocolTaskParam from Ikomia API
     # --------------------
-    class HelloWorldProcessParam(core.CProtocolTaskParam):
+    class HelloWorldProcessParam(core.CWorkflowTaskParam):
 
         def __init__(self):
-            core.CProtocolTaskParam.__init__(self)
+            core.CWorkflowTaskParam.__init__(self)
             # Place default value initialization here
             # Example : self.windowSize = 25
 
@@ -38,10 +38,10 @@ Code example for process implementation
     # - Class which implements the process
     # - Inherits CProtocolTask or derived from Ikomia API
     # --------------------
-    class HelloWorldProcess(dataprocess.CImageProcess2d):
+    class HelloWorldProcess(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
-            dataprocess.CImageProcess2d.__init__(self, name)
+            dataprocess.C2dImageTask.__init__(self, name)
             # Add input/output of the process here
             # Example :  self.addInput(core.CImageProcessIO())
             #           self.addOutput(core.CImageProcessIO())
@@ -92,10 +92,10 @@ Code example for process implementation
     # - Factory class to build process object
     # - Inherits CProcessFactory from Ikomia API
     # --------------------
-    class HelloWorldProcessFactory(dataprocess.CProcessFactory):
+    class HelloWorldProcessFactory(dataprocess.CTaskFactory):
 
         def __init__(self):
-            dataprocess.CProcessFactory.__init__(self)
+            dataprocess.CTaskFactory.__init__(self)
             # Set process information as string here
             self.info.name = "HelloWorld"
             self.info.description = "your description"

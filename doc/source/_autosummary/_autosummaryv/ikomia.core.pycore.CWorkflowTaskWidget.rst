@@ -1,9 +1,9 @@
-CProtocolTaskWidget
+CWorkflowTaskWidget
 ===================
 
 .. currentmodule:: ikomia.core.pycore
 
-.. autoclass:: CProtocolTaskWidget
+.. autoclass:: CWorkflowTaskWidget
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,15 +12,15 @@ CProtocolTaskWidget
 
    .. rubric:: Methods
    .. autosummary::
-      ~CProtocolTaskWidget.__init__
-      ~CProtocolTaskWidget.emitApply
-      ~CProtocolTaskWidget.emitSendProcessAction
-      ~CProtocolTaskWidget.emitSetGraphicsCategory
-      ~CProtocolTaskWidget.emitSetGraphicsTool
-      ~CProtocolTaskWidget.init
-      ~CProtocolTaskWidget.onApply
-      ~CProtocolTaskWidget.setApplyBtnHidden
-      ~CProtocolTaskWidget.setLayout
+      ~CWorkflowTaskWidget.__init__
+      ~CWorkflowTaskWidget.emitApply
+      ~CWorkflowTaskWidget.emitSendProcessAction
+      ~CWorkflowTaskWidget.emitSetGraphicsCategory
+      ~CWorkflowTaskWidget.emitSetGraphicsTool
+      ~CWorkflowTaskWidget.init
+      ~CWorkflowTaskWidget.onApply
+      ~CWorkflowTaskWidget.setApplyBtnHidden
+      ~CWorkflowTaskWidget.setLayout
 
    .. rubric:: Details
    

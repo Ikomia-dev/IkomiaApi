@@ -1,9 +1,9 @@
-CVideoProcess
-=============
+CVideoTask
+==========
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CVideoProcess
+.. autoclass:: CVideoTask
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,63 +12,63 @@ CVideoProcess
 
    .. rubric:: Methods
    .. autosummary::
-      ~CVideoProcess.__init__
+      ~CVideoTask.__init__
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~CVideoProcess.beginTaskRun
-      ~CVideoProcess.notifyVideoEnd
-      ~CVideoProcess.notifyVideoStart
+      ~CVideoTask.beginTaskRun
+      ~CVideoTask.notifyVideoEnd
+      ~CVideoTask.notifyVideoStart
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CVideoProcess.addInput
-      ~CVideoProcess.addOutput
-      ~CVideoProcess.applyGraphicsMask
-      ~CVideoProcess.applyGraphicsMaskToBinary
-      ~CVideoProcess.createGraphicsMask
-      ~CVideoProcess.emitGraphicsContextChanged
-      ~CVideoProcess.emitOutputChanged
-      ~CVideoProcess.emitStepProgress
-      ~CVideoProcess.endTaskRun
-      ~CVideoProcess.executeActions
-      ~CVideoProcess.forwardInputImage
-      ~CVideoProcess.getElapsedTime
-      ~CVideoProcess.getGraphicsMask
-      ~CVideoProcess.getInput
-      ~CVideoProcess.getInputCount
-      ~CVideoProcess.getInputDataType
-      ~CVideoProcess.getInputs
-      ~CVideoProcess.getOutput
-      ~CVideoProcess.getOutputCount
-      ~CVideoProcess.getOutputDataType
-      ~CVideoProcess.getOutputs
-      ~CVideoProcess.getParam
-      ~CVideoProcess.getProgressSteps
-      ~CVideoProcess.globalInputChanged
-      ~CVideoProcess.graphicsChanged
-      ~CVideoProcess.isGraphicsChangedListening
-      ~CVideoProcess.isMaskAvailable      
-      ~CVideoProcess.parametersModified
-      ~CVideoProcess.removeInput
-      ~CVideoProcess.run
-      ~CVideoProcess.setActionFlag
-      ~CVideoProcess.setActive
-      ~CVideoProcess.setInput
-      ~CVideoProcess.setInputDataType
-      ~CVideoProcess.setInputs
-      ~CVideoProcess.setOutput
-      ~CVideoProcess.setOutputColorMap
-      ~CVideoProcess.setOutputDataType
-      ~CVideoProcess.setOutputs
-      ~CVideoProcess.setParam
-      ~CVideoProcess.stop
-      ~CVideoProcess.updateStaticOutputs
+      ~CVideoTask.addInput
+      ~CVideoTask.addOutput
+      ~CVideoTask.applyGraphicsMask
+      ~CVideoTask.applyGraphicsMaskToBinary
+      ~CVideoTask.createGraphicsMask
+      ~CVideoTask.emitGraphicsContextChanged
+      ~CVideoTask.emitOutputChanged
+      ~CVideoTask.emitStepProgress
+      ~CVideoTask.endTaskRun
+      ~CVideoTask.executeActions
+      ~CVideoTask.forwardInputImage
+      ~CVideoTask.getElapsedTime
+      ~CVideoTask.getGraphicsMask
+      ~CVideoTask.getInput
+      ~CVideoTask.getInputCount
+      ~CVideoTask.getInputDataType
+      ~CVideoTask.getInputs
+      ~CVideoTask.getOutput
+      ~CVideoTask.getOutputCount
+      ~CVideoTask.getOutputDataType
+      ~CVideoTask.getOutputs
+      ~CVideoTask.getParam
+      ~CVideoTask.getProgressSteps
+      ~CVideoTask.globalInputChanged
+      ~CVideoTask.graphicsChanged
+      ~CVideoTask.isGraphicsChangedListening
+      ~CVideoTask.isMaskAvailable      
+      ~CVideoTask.parametersModified
+      ~CVideoTask.removeInput
+      ~CVideoTask.run
+      ~CVideoTask.setActionFlag
+      ~CVideoTask.setActive
+      ~CVideoTask.setInput
+      ~CVideoTask.setInputDataType
+      ~CVideoTask.setInputs
+      ~CVideoTask.setOutput
+      ~CVideoTask.setOutputColorMap
+      ~CVideoTask.setOutputDataType
+      ~CVideoTask.setOutputs
+      ~CVideoTask.setParam
+      ~CVideoTask.stop
+      ~CVideoTask.updateStaticOutputs
    
    .. rubric:: Attributes
    .. autosummary::
-      ~CVideoProcess.name
-      ~CVideoProcess.type
+      ~CVideoTask.name
+      ~CVideoTask.type
    
    .. rubric:: Details
    .. automethod:: __init__

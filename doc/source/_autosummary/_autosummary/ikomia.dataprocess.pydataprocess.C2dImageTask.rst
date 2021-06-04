@@ -1,9 +1,9 @@
-﻿CImageProcess2d
-===============
+﻿C2dImageTask
+============
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CImageProcess2d
+.. autoclass:: C2dImageTask
 
    .. rubric:: Import
    .. code-block:: python
@@ -13,61 +13,61 @@
 
    .. rubric:: Methods
    .. autosummary::
-      ~CImageProcess2d.__init__
-      ~CImageProcess2d.applyGraphicsMask
-      ~CImageProcess2d.applyGraphicsMaskToBinary
-      ~CImageProcess2d.createGraphicsMask
-      ~CImageProcess2d.emitGraphicsContextChanged
-      ~CImageProcess2d.emitOutputChanged
-      ~CImageProcess2d.emitStepProgress
-      ~CImageProcess2d.forwardInputImage
-      ~CImageProcess2d.getGraphicsMask
-      ~CImageProcess2d.isMaskAvailable
-      ~CImageProcess2d.setOutputColorMap
+      ~C2dImageTask.__init__
+      ~C2dImageTask.applyGraphicsMask
+      ~C2dImageTask.applyGraphicsMaskToBinary
+      ~C2dImageTask.createGraphicsMask
+      ~C2dImageTask.emitGraphicsContextChanged
+      ~C2dImageTask.emitOutputChanged
+      ~C2dImageTask.emitStepProgress
+      ~C2dImageTask.forwardInputImage
+      ~C2dImageTask.getGraphicsMask
+      ~C2dImageTask.isMaskAvailable
+      ~C2dImageTask.setOutputColorMap
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~CImageProcess2d.beginTaskRun
-      ~CImageProcess2d.endTaskRun
-      ~CImageProcess2d.graphicsChanged
-      ~CImageProcess2d.setActive
-      ~CImageProcess2d.updateStaticOutputs
+      ~C2dImageTask.beginTaskRun
+      ~C2dImageTask.endTaskRun
+      ~C2dImageTask.graphicsChanged
+      ~C2dImageTask.setActive
+      ~C2dImageTask.updateStaticOutputs
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CImageProcess2d.addInput
-      ~CImageProcess2d.addOutput
-      ~CImageProcess2d.executeActions
-      ~CImageProcess2d.getElapsedTime
-      ~CImageProcess2d.getInput
-      ~CImageProcess2d.getInputCount
-      ~CImageProcess2d.getInputDataType
-      ~CImageProcess2d.getInputs
-      ~CImageProcess2d.getOutput
-      ~CImageProcess2d.getOutputCount
-      ~CImageProcess2d.getOutputDataType
-      ~CImageProcess2d.getOutputs
-      ~CImageProcess2d.getParam
-      ~CImageProcess2d.getProgressSteps
-      ~CImageProcess2d.globalInputChanged      
-      ~CImageProcess2d.isGraphicsChangedListening      
-      ~CImageProcess2d.parametersModified
-      ~CImageProcess2d.removeInput
-      ~CImageProcess2d.run
-      ~CImageProcess2d.setActionFlag      
-      ~CImageProcess2d.setInput
-      ~CImageProcess2d.setInputDataType
-      ~CImageProcess2d.setInputs
-      ~CImageProcess2d.setOutput      
-      ~CImageProcess2d.setOutputDataType
-      ~CImageProcess2d.setOutputs
-      ~CImageProcess2d.setParam
-      ~CImageProcess2d.stop      
+      ~C2dImageTask.addInput
+      ~C2dImageTask.addOutput
+      ~C2dImageTask.executeActions
+      ~C2dImageTask.getElapsedTime
+      ~C2dImageTask.getInput
+      ~C2dImageTask.getInputCount
+      ~C2dImageTask.getInputDataType
+      ~C2dImageTask.getInputs
+      ~C2dImageTask.getOutput
+      ~C2dImageTask.getOutputCount
+      ~C2dImageTask.getOutputDataType
+      ~C2dImageTask.getOutputs
+      ~C2dImageTask.getParam
+      ~C2dImageTask.getProgressSteps
+      ~C2dImageTask.globalInputChanged      
+      ~C2dImageTask.isGraphicsChangedListening      
+      ~C2dImageTask.parametersModified
+      ~C2dImageTask.removeInput
+      ~C2dImageTask.run
+      ~C2dImageTask.setActionFlag      
+      ~C2dImageTask.setInput
+      ~C2dImageTask.setInputDataType
+      ~C2dImageTask.setInputs
+      ~C2dImageTask.setOutput      
+      ~C2dImageTask.setOutputDataType
+      ~C2dImageTask.setOutputs
+      ~C2dImageTask.setParam
+      ~C2dImageTask.stop      
    
    .. rubric:: Attributes
    .. autosummary::
-      ~CImageProcess2d.name
-      ~CImageProcess2d.type
+      ~C2dImageTask.name
+      ~C2dImageTask.type
    
    .. rubric:: Details
    .. automethod:: __init__

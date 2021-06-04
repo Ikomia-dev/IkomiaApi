@@ -142,7 +142,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Ellipse
-    class_<GraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~PyCore.CGraphicsEllipse` item.")
+    class_<GraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsEllipse` item.")
         .def_readwrite("pen_color", &GraphicsEllipseProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsEllipseProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsEllipseProperty::m_lineSize, "Outline size")
@@ -160,7 +160,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Point
-    class_<GraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPoint` item.")
+    class_<GraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPoint` item.")
         .def_readwrite("pen_color", &GraphicsPointProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsPointProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("size", &GraphicsPointProperty::m_size, "Size")
@@ -175,7 +175,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Polygon
-    class_<GraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPolygon` item.")
+    class_<GraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolygon` item.")
         .def_readwrite("pen_color", &GraphicsPolygonProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsPolygonProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsPolygonProperty::m_lineSize, "Outline size")
@@ -190,7 +190,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Polyline
-    class_<GraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPolyline` item.")
+    class_<GraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolyline` item.")
         .def_readwrite("pen_color", &GraphicsPolylineProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("line_size", &GraphicsPolylineProperty::m_lineSize, "Outline size")
         .def_readwrite("category", &GraphicsPolylineProperty::m_category, "Graphics category")
@@ -204,7 +204,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Rectangle
-    class_<GraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~PyCore.CGraphicsRectangle` item.")
+    class_<GraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsRectangle` item.")
         .def_readwrite("pen_color", &GraphicsRectProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsRectProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsRectProperty::m_lineSize, "Outline size")
@@ -222,7 +222,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Text
-    class_<GraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~PyCore.CGraphicsText` item.")
+    class_<GraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsText` item.")
         .def_readwrite("color", &GraphicsTextProperty::m_color, "Text color (list - rgba)")
         .def_readwrite("font_name", &GraphicsTextProperty::m_fontName, "Font family name")
         .def_readwrite("font_size", &GraphicsTextProperty::m_fontSize, "Font size")

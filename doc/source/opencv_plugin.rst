@@ -22,7 +22,7 @@ See :doc:`OCVBasics.py <opencv_plugin_interface>`.
 Process implementation
 ----------------------
 
-The aim of our plugin is to process images, so our task is derived from :py:class:`~~ikomia.dataprocess.pydataprocess.CImageProcess2d`. 
+The aim of our plugin is to process images, so our task is derived from :py:class:`~~ikomia.dataprocess.pydataprocess.C2dImageTask`.
 This base class comes with default inputs (image + graphics) and outputs (image) that fit our needs.
 
 Our process pipeline will be: *Convert to grayscale* -> *Gaussian blur* -> *Canny filter*.
@@ -40,7 +40,7 @@ In the *run* method, we now have to retrieve source image from input, add OpenCV
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.CImageProcess2d):
+    class OCVBasicsProcess(dataprocess.C2dImageTask):
 
         #...
 
@@ -91,12 +91,12 @@ Let's say we want to control blur strengh of the Gaussian filter, we have to man
 - Sigma Y
 
 First, we add member variables in the parameters class, they will be accessible from the process. 
-Note the presence of functions :py:meth:`~~ikomia.core.pycore.CProtocolTaskParam.setParamMap` and :py:meth:`~~ikomia.core.pycore.CProtocolTaskParam.getParamMap`
+Note the presence of functions :py:meth:`~~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and :py:meth:`~~ikomia.core.pycore.CWorkflowTaskParam.getParamMap`
 which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
 
-    class OCVBasicsProcessParam(core.CProtocolTaskParam):
+    class OCVBasicsProcessParam(core.CWorkflowTaskParam):
 
         def __init__(self):
             core.CProtocolTaskParam.__init__(self)
@@ -127,10 +127,10 @@ We are now able to manage parameters from the process. The constructor receives 
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.CImageProcess2d):
+    class OCVBasicsProcess(dataprocess.C2dImageTask):
     
         def __init__(self, name, param):
-            dataprocess.CImageProcess2d.__init__(self, name)
+            dataprocess.C2dImageTask.__init__(self, name)
 
             #Create parameters class
             if param is None:
@@ -142,7 +142,7 @@ Finally, we modify the *run* method to pass parameters to GaussianBlur function:
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.CImageProcess2d):
+    class OCVBasicsProcess(dataprocess.C2dImageTask):
 
         def run(self):
             # Core function of your process
@@ -172,10 +172,10 @@ Like the process class, the constructor receives an instance of the parameters s
 
 .. code-block:: python
 
-    class OCVBasicsWidget(core.CProtocolTaskWidget):
+    class OCVBasicsWidget(core.CWorkflowTaskWidget):
 
         def __init__(self, param, parent):
-            core.CProtocolTaskWidget.__init__(self, parent)
+            core.CWorkflowTaskWidget.__init__(self, parent)
 
             if param is None:
                 self.parameters = processMod.OCVBasicsProcessParam()
@@ -238,12 +238,12 @@ Let's see how our widget looks:
 .. image:: _static/opencv_plugin_widget.jpg
 
 Last thing, we have to update process parameters when a user change values through the widget. 
-We do that by overriding :py:meth:`~~ikomia.core.pycore.CProtocolTaskWidget.onApply` method. 
+We do that by overriding :py:meth:`~~ikomia.core.pycore.CWorkflowTaskWidget.onApply` method.
 It is called when user clicks the *Apply* button.
 
 .. code-block:: python
 
-    class OCVBasicsWidget(core.CProtocolTaskWidget):
+    class OCVBasicsWidget(core.CWorkflowTaskWidget):
         # ...
 
         def onApply(self):
@@ -264,14 +264,14 @@ Process metadata
 Finally, we will add some useful information about our plugin. 
 Ikomia software manages such information and display it to the user (parameters widget, Ikomia Store).
 Metadata can be added in the constructor of the process factory class in *OCVBasics_process.py*. 
-We have to fill the member object *info*, see :py:class:`~~ikomia.dataprocess.pydataprocess.CProcessInfo` for details.
+We have to fill the member object *info*, see :py:class:`~~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.
 
 .. code-block:: python
 
-    class OCVBasicsProcessFactory(dataprocess.CProcessFactory):
+    class OCVBasicsProcessFactory(dataprocess.CTaskFactory):
 
         def __init__(self):
-            dataprocess.CProcessFactory.__init__(self)
+            dataprocess.CTaskFactory.__init__(self)
             # Set process information as string here
             self.info.name = "OCVBasics"
             self.info.shortDescription = "OpenCV Canny"

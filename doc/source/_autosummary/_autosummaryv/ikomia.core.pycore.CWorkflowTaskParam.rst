@@ -1,9 +1,9 @@
-CProtocolTaskParam
+CWorkflowTaskParam
 ==================
 
 .. currentmodule:: ikomia.core.pycore
 
-.. autoclass:: CProtocolTaskParam
+.. autoclass:: CWorkflowTaskParam
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,10 +12,10 @@ CProtocolTaskParam
 
    .. rubric:: Methods
    .. autosummary::
-      ~CProtocolTaskParam.__init__
-      ~CProtocolTaskParam.getHashValue
-      ~CProtocolTaskParam.getParamMap
-      ~CProtocolTaskParam.setParamMap
+      ~CWorkflowTaskParam.__init__
+      ~CWorkflowTaskParam.getHashValue
+      ~CWorkflowTaskParam.getParamMap
+      ~CWorkflowTaskParam.setParamMap
 
    .. rubric:: Details
    

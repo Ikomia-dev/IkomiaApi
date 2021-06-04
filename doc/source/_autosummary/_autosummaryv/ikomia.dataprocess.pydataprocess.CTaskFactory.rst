@@ -1,9 +1,9 @@
-CProcessFactory
-===============
+CTaskFactory
+============
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CProcessFactory
+.. autoclass:: CTaskFactory
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,12 +12,12 @@ CProcessFactory
 
    .. rubric:: Methods
    .. autosummary::
-      ~CProcessFactory.__init__
-      ~CProcessFactory.create
+      ~CTaskFactory.__init__
+      ~CTaskFactory.create
 
    .. rubric:: Attributes
    .. autosummary::
-      ~CProcessFactory.info
+      ~CTaskFactory.info
    
    .. rubric:: Details
    

@@ -1,9 +1,9 @@
-CDnnTrainProcessParam
-=====================
+CDnnTrainTaskParam
+==================
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CDnnTrainProcessParam
+.. autoclass:: CDnnTrainTaskParam
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,10 +12,10 @@ CDnnTrainProcessParam
 
    .. rubric:: Methods
    .. autosummary::
-      ~CDnnTrainProcessParam.__init__
-      ~CDnnTrainProcessParam.getHashValue
-      ~CDnnTrainProcessParam.getParamMap
-      ~CDnnTrainProcessParam.setParamMap
+      ~CDnnTrainTaskParam.__init__
+      ~CDnnTrainTaskParam.getHashValue
+      ~CDnnTrainTaskParam.getParamMap
+      ~CDnnTrainTaskParam.setParamMap
    
    .. rubric:: Details
 

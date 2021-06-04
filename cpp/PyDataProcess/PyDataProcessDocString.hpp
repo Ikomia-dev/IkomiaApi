@@ -632,7 +632,7 @@ constexpr auto _ctorWidgetOutputDocString =
         "By default, the widget data type is IODataType.WIDGET (see :py:class:`~ikomia.core.pycore.IODataType`).\n";
 
 constexpr auto _setWidgetDocString =
-        "Set the widget instance: use :py:mod:`IkQtConversion` module to get C++ handle from Python Qt-based framework.\n\n"
+        "Set the widget instance: use :py:mod:`~ikomia.utils.qtconversion` module to get C++ handle from Python Qt-based framework.\n\n"
         "Args:\n"
         "   widget: compatible C++ widget handle\n";
 

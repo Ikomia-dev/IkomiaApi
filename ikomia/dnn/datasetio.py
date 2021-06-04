@@ -33,7 +33,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         Define task input or output containing deep learning dataset structure.
         Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 
-        Instances can be added as input or output of a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object.
+        Instances can be added as input or output of a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived object.
         Such input or output is required for deep learning training task.
         Dataset structure is composed of a global dict with 2 main entries
         'images' and 'metadata'.
@@ -97,7 +97,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         Return the list of categories (ie instance classes) in the dataset.
 
         Returns:
-            :py:class:`~ikomia.core.pycore.MapIntStr` list: categories (dict-like structure)
+            :py:class:`~ikomia.dataprocess.pydataprocess.MapIntStr` list: categories (dict-like structure)
         """
         categories = core.MapIntStr()
         for category_id in self.data["metadata"]["category_names"]:

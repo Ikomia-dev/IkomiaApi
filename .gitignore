@@ -16,4 +16,5 @@ doc/build
 doc/_build
 ikomia.egg-info
 build
+Build
 dist

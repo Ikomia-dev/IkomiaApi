@@ -16,10 +16,10 @@ Code example for widget implementation
     # - Class which implements widget associated with the process
     # - Inherits CProtocolTaskWidget from Ikomia API
     # --------------------
-    class HelloWorldWidget(core.CProtocolTaskWidget):
+    class HelloWorldWidget(core.CWorkflowTaskWidget):
 
         def __init__(self, param, parent):
-            core.CProtocolTaskWidget.__init__(self, parent)
+            core.CWorkflowTaskWidget.__init__(self, parent)
 
             if param is None:
                 self.parameters = processMod.HelloWorldProcessParam()

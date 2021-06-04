@@ -1,9 +1,9 @@
-CVideoProcessIO
-===============
+CVideoIO
+========
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CVideoProcessIO
+.. autoclass:: CVideoIO
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,46 +12,46 @@ CVideoProcessIO
 
    .. rubric:: Methods
    .. autosummary::
-      ~CVideoProcessIO.__init__
-      ~CVideoProcessIO.addVideoImage
-      ~CVideoProcessIO.getCurrentPos
-      ~CVideoProcessIO.getSnapshot
-      ~CVideoProcessIO.getVideoFrameCount
-      ~CVideoProcessIO.getVideoImages
-      ~CVideoProcessIO.getVideoPath
-      ~CVideoProcessIO.hasVideo
-      ~CVideoProcessIO.setVideoPath
-      ~CVideoProcessIO.setVideoPos
-      ~CVideoProcessIO.startVideo
-      ~CVideoProcessIO.startVideoWrite
-      ~CVideoProcessIO.stopVideo
-      ~CVideoProcessIO.stopVideoWrite
-      ~CVideoProcessIO.writeImage
+      ~CVideoIO.__init__
+      ~CVideoIO.addVideoImage
+      ~CVideoIO.getCurrentPos
+      ~CVideoIO.getSnapshot
+      ~CVideoIO.getVideoFrameCount
+      ~CVideoIO.getVideoImages
+      ~CVideoIO.getVideoPath
+      ~CVideoIO.hasVideo
+      ~CVideoIO.setVideoPath
+      ~CVideoIO.setVideoPos
+      ~CVideoIO.startVideo
+      ~CVideoIO.startVideoWrite
+      ~CVideoIO.stopVideo
+      ~CVideoIO.stopVideoWrite
+      ~CVideoIO.writeImage
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~CVideoProcessIO.clearData
-      ~CVideoProcessIO.getImage
-      ~CVideoProcessIO.getUnitElementCount
-      ~CVideoProcessIO.isDataAvailable
+      ~CVideoIO.clearData
+      ~CVideoIO.getImage
+      ~CVideoIO.getUnitElementCount
+      ~CVideoIO.isDataAvailable
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CVideoProcessIO.copyStaticData
-      ~CVideoProcessIO.getChannelCount
-      ~CVideoProcessIO.getData
-      ~CVideoProcessIO.getOverlayMask
-      ~CVideoProcessIO.isAutoInput      
-      ~CVideoProcessIO.isOverlayAvailable
-      ~CVideoProcessIO.setChannelCount
-      ~CVideoProcessIO.setCurrentImage
-      ~CVideoProcessIO.setImage
-      ~CVideoProcessIO.setOverlayMask
+      ~CVideoIO.copyStaticData
+      ~CVideoIO.getChannelCount
+      ~CVideoIO.getData
+      ~CVideoIO.getOverlayMask
+      ~CVideoIO.isAutoInput      
+      ~CVideoIO.isOverlayAvailable
+      ~CVideoIO.setChannelCount
+      ~CVideoIO.setCurrentImage
+      ~CVideoIO.setImage
+      ~CVideoIO.setOverlayMask
 
    .. rubric:: Attributes
    .. autosummary::
-      ~CVideoProcessIO.dataType
-      ~CVideoProcessIO.dimCount
+      ~CVideoIO.dataType
+      ~CVideoIO.dimCount
 
    .. rubric:: Details
    .. automethod:: __init__

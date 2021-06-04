@@ -19,8 +19,6 @@ do
    esac
 done
 
-echo $build_wheel
-
 if [ -z "$method" ]
 then
    method="build"

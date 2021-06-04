@@ -1,9 +1,9 @@
-CVideoProcessOF
-===============
+CVideoOFTask
+============
    
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CVideoProcessOF
+.. autoclass:: CVideoOFTask
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,62 +12,62 @@ CVideoProcessOF
 
    .. rubric:: Methods
    .. autosummary::
-      ~CVideoProcessOF.__init__
-      ~CVideoProcessOF.drawOptFlowMap
-      ~CVideoProcessOF.flowToDisplay
+      ~CVideoOFTask.__init__
+      ~CVideoOFTask.drawOptFlowMap
+      ~CVideoOFTask.flowToDisplay
 
    .. rubric:: Inherited methods
    .. autosummary::      
-      ~CVideoProcessOF.addInput
-      ~CVideoProcessOF.addOutput
-      ~CVideoProcessOF.applyGraphicsMask
-      ~CVideoProcessOF.applyGraphicsMaskToBinary
-      ~CVideoProcessOF.beginTaskRun
-      ~CVideoProcessOF.createGraphicsMask      
-      ~CVideoProcessOF.emitGraphicsContextChanged
-      ~CVideoProcessOF.emitOutputChanged
-      ~CVideoProcessOF.emitStepProgress
-      ~CVideoProcessOF.endTaskRun
-      ~CVideoProcessOF.executeActions      
-      ~CVideoProcessOF.forwardInputImage
-      ~CVideoProcessOF.getElapsedTime
-      ~CVideoProcessOF.getGraphicsMask
-      ~CVideoProcessOF.getInput
-      ~CVideoProcessOF.getInputCount
-      ~CVideoProcessOF.getInputDataType
-      ~CVideoProcessOF.getInputs
-      ~CVideoProcessOF.getOutput
-      ~CVideoProcessOF.getOutputCount
-      ~CVideoProcessOF.getOutputDataType
-      ~CVideoProcessOF.getOutputs
-      ~CVideoProcessOF.getParam
-      ~CVideoProcessOF.getProgressSteps
-      ~CVideoProcessOF.globalInputChanged
-      ~CVideoProcessOF.graphicsChanged
-      ~CVideoProcessOF.isGraphicsChangedListening
-      ~CVideoProcessOF.isMaskAvailable
-      ~CVideoProcessOF.notifyVideoEnd
-      ~CVideoProcessOF.notifyVideoStart
-      ~CVideoProcessOF.parametersModified
-      ~CVideoProcessOF.removeInput
-      ~CVideoProcessOF.run
-      ~CVideoProcessOF.setActionFlag
-      ~CVideoProcessOF.setActive
-      ~CVideoProcessOF.setInput
-      ~CVideoProcessOF.setInputDataType
-      ~CVideoProcessOF.setInputs
-      ~CVideoProcessOF.setOutput
-      ~CVideoProcessOF.setOutputColorMap
-      ~CVideoProcessOF.setOutputDataType
-      ~CVideoProcessOF.setOutputs
-      ~CVideoProcessOF.setParam
-      ~CVideoProcessOF.stop
-      ~CVideoProcessOF.updateStaticOutputs
+      ~CVideoOFTask.addInput
+      ~CVideoOFTask.addOutput
+      ~CVideoOFTask.applyGraphicsMask
+      ~CVideoOFTask.applyGraphicsMaskToBinary
+      ~CVideoOFTask.beginTaskRun
+      ~CVideoOFTask.createGraphicsMask      
+      ~CVideoOFTask.emitGraphicsContextChanged
+      ~CVideoOFTask.emitOutputChanged
+      ~CVideoOFTask.emitStepProgress
+      ~CVideoOFTask.endTaskRun
+      ~CVideoOFTask.executeActions      
+      ~CVideoOFTask.forwardInputImage
+      ~CVideoOFTask.getElapsedTime
+      ~CVideoOFTask.getGraphicsMask
+      ~CVideoOFTask.getInput
+      ~CVideoOFTask.getInputCount
+      ~CVideoOFTask.getInputDataType
+      ~CVideoOFTask.getInputs
+      ~CVideoOFTask.getOutput
+      ~CVideoOFTask.getOutputCount
+      ~CVideoOFTask.getOutputDataType
+      ~CVideoOFTask.getOutputs
+      ~CVideoOFTask.getParam
+      ~CVideoOFTask.getProgressSteps
+      ~CVideoOFTask.globalInputChanged
+      ~CVideoOFTask.graphicsChanged
+      ~CVideoOFTask.isGraphicsChangedListening
+      ~CVideoOFTask.isMaskAvailable
+      ~CVideoOFTask.notifyVideoEnd
+      ~CVideoOFTask.notifyVideoStart
+      ~CVideoOFTask.parametersModified
+      ~CVideoOFTask.removeInput
+      ~CVideoOFTask.run
+      ~CVideoOFTask.setActionFlag
+      ~CVideoOFTask.setActive
+      ~CVideoOFTask.setInput
+      ~CVideoOFTask.setInputDataType
+      ~CVideoOFTask.setInputs
+      ~CVideoOFTask.setOutput
+      ~CVideoOFTask.setOutputColorMap
+      ~CVideoOFTask.setOutputDataType
+      ~CVideoOFTask.setOutputs
+      ~CVideoOFTask.setParam
+      ~CVideoOFTask.stop
+      ~CVideoOFTask.updateStaticOutputs
 
    .. rubric:: Attributes
    .. autosummary::
-      ~CVideoProcessOF.name
-      ~CVideoProcessOF.type
+      ~CVideoOFTask.name
+      ~CVideoOFTask.type
 
    .. rubric:: Details
    .. automethod:: __init__

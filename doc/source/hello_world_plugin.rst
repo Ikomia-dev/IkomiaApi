@@ -22,24 +22,24 @@ Set parameters:
 - *Plugin name*: must be **unique** as it is the identifier of the plugin. The given name will appear in the Ikomia process library.
 - *Process type*: rely on the source data type. This choice determines the base class on which the process class will be derived from:
 
-    - *Generic process*: no input/output and no data structure pre-defined. See :py:class:`~ikomia.core.pycore.CProtocolTask`.
+    - *Generic process*: no input/output and no data structure pre-defined. See :py:class:`~ikomia.core.pycore.CWorkflowTask`.
     - *Image process*: image processing plugin.
     
         - inputs: image + graphics layer
         - ouputs: image
 
-        See :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`.
+        See :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`.
 
-    - *Interactive image process*: image processing plugin with user interation capability. Same inputs/outputs as image process option. See :py:class:`~ikomia.dataprocess.pydataprocess.CInteractiveImageProcess2d`.
+    - *Interactive image process*: image processing plugin with user interation capability. Same inputs/outputs as image process option. See :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask`.
     - *Video process*: video processing plugin.
 
         - inputs: video + graphics layer
         - ouputs: video 
 
-        See :py:class:`~ikomia.dataprocess.pydataprocess.CVideoProcess`.
+        See :py:class:`~ikomia.dataprocess.pydataprocess.CVideoTask`.
 
-    - *Optical flow process*: video processing plugin dedicated to Optical Flow. Same inputs/outputs as video process option. See :py:class:`~ikomia.dataprocess.pydataprocess.CVideoProcessOF`.
-- *Widget type*: empty widget only (for instance). User must create his own widget according to algorithm parameters. Basic knowledge of Qt framework is recommended. See :py:class:`~ikomia.core.pycore.CProtocolTaskWidget`.
+    - *Optical flow process*: video processing plugin dedicated to Optical Flow. Same inputs/outputs as video process option. See :py:class:`~ikomia.dataprocess.pydataprocess.CVideoOFTask`.
+- *Widget type*: empty widget only (for instance). User must create his own widget according to algorithm parameters. Basic knowledge of Qt framework is recommended. See :py:class:`~ikomia.core.pycore.CWorkflowTaskWidget`.
 - *GUI framework*: Qt based Python framework. PyQt5 recommended.
 
 Click on **Generate** button.

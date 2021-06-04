@@ -590,7 +590,7 @@ constexpr auto _WorkflowTaskWidget =
 
 constexpr auto _setLayoutDocString =
         "Set the main layout of the widget. "
-        "Use :py:mod:`IkQtConversion` module to get C++ handle from Python Qt-based framework.\n\n"
+        "Use :py:mod:`~ikomia.utils.qtconversion` module to get C++ handle from Python Qt-based framework.\n\n"
         "Args:\n"
         "   layout: compatible C++ layout handle\n";
 

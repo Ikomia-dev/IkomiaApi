@@ -1,9 +1,9 @@
-CProtocolTaskIO
+CWorkflowTaskIO
 ===============
 
 .. currentmodule:: ikomia.core.pycore
 
-.. autoclass:: CProtocolTaskIO
+.. autoclass:: CWorkflowTaskIO
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,19 +12,19 @@ CProtocolTaskIO
 
    .. rubric:: Methods
    .. autosummary::   
-      ~CProtocolTaskIO.__init__
-      ~CProtocolTaskIO.clearData
-      ~CProtocolTaskIO.copyStaticData
-      ~CProtocolTaskIO.getUnitElementCount
-      ~CProtocolTaskIO.isAutoInput
-      ~CProtocolTaskIO.isDataAvailable
-      ~CProtocolTaskIO.setDisplayable
+      ~CWorkflowTaskIO.__init__
+      ~CWorkflowTaskIO.clearData
+      ~CWorkflowTaskIO.copyStaticData
+      ~CWorkflowTaskIO.getUnitElementCount
+      ~CWorkflowTaskIO.isAutoInput
+      ~CWorkflowTaskIO.isDataAvailable
+      ~CWorkflowTaskIO.setDisplayable
    
    .. rubric:: Attributes
    .. autosummary::
-      ~CProtocolTaskIO.dataType
-      ~CProtocolTaskIO.dimCount
-      ~CProtocolTaskIO.description
+      ~CWorkflowTaskIO.dataType
+      ~CWorkflowTaskIO.dimCount
+      ~CWorkflowTaskIO.description
    
    See :py:class:`~PyCore.IODataType` for available data types.
 

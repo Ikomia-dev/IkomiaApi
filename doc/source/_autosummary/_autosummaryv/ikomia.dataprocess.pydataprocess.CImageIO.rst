@@ -1,9 +1,9 @@
-CImageProcessIO
-===============
+CImageIO
+========
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CImageProcessIO
+.. autoclass:: CImageIO
 
    .. rubric:: Import
    .. code-block:: python
@@ -12,32 +12,32 @@ CImageProcessIO
 
    .. rubric:: Methods
    .. autosummary::
-      ~CImageProcessIO.__init__
-      ~CImageProcessIO.getChannelCount
-      ~CImageProcessIO.getData
-      ~CImageProcessIO.getImage
-      ~CImageProcessIO.getOverlayMask
-      ~CImageProcessIO.isOverlayAvailable
-      ~CImageProcessIO.setChannelCount
-      ~CImageProcessIO.setCurrentImage
-      ~CImageProcessIO.setImage
-      ~CImageProcessIO.setOverlayMask
+      ~CImageIO.__init__
+      ~CImageIO.getChannelCount
+      ~CImageIO.getData
+      ~CImageIO.getImage
+      ~CImageIO.getOverlayMask
+      ~CImageIO.isOverlayAvailable
+      ~CImageIO.setChannelCount
+      ~CImageIO.setCurrentImage
+      ~CImageIO.setImage
+      ~CImageIO.setOverlayMask
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~CImageProcessIO.clearData
-      ~CImageProcessIO.copyStaticData
-      ~CImageProcessIO.getUnitElementCount
-      ~CImageProcessIO.isDataAvailable
+      ~CImageIO.clearData
+      ~CImageIO.copyStaticData
+      ~CImageIO.getUnitElementCount
+      ~CImageIO.isDataAvailable
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CImageProcessIO.isAutoInput
+      ~CImageIO.isAutoInput
    
    .. rubric:: Attributes
    .. autosummary::
-      ~CImageProcessIO.dataType
-      ~CImageProcessIO.dimCount
+      ~CImageIO.dataType
+      ~CImageIO.dimCount
 
    .. rubric:: Details
    .. automethod:: __init__
