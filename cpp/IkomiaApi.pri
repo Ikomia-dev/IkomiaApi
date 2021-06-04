@@ -24,6 +24,7 @@ macx{
 }
 
 CONFIG += c++14
+win32: CONFIG += skip_target_version_ext
 
 # OSX build option
 # CONFIG += osx_deploy
