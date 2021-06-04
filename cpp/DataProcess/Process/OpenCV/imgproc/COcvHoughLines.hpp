@@ -20,16 +20,16 @@
 #ifndef COCVHOUGHLINES_HPP
 #define COCVHOUGHLINES_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------------------//
 //----- COcvHoughLinesParam -----//
 //-------------------------------//
-class COcvHoughLinesParam: public CProtocolTaskParam
+class COcvHoughLinesParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvHoughLinesParam() : CProtocolTaskParam()
+        COcvHoughLinesParam() : CWorkflowTaskParam()
         {
         }
 
@@ -80,21 +80,21 @@ class COcvHoughLinesParam: public CProtocolTaskParam
 //--------------------------//
 //----- COcvHoughLines -----//
 //--------------------------//
-class COcvHoughLines : public CImageProcess2d
+class COcvHoughLines : public C2dImageTask
 {
     public:
 
-        COcvHoughLines() : CImageProcess2d()
+        COcvHoughLines() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             getOutput(1)->setDataType(IODataType::IMAGE_BINARY);
         }
-        COcvHoughLines(const std::string name, const std::shared_ptr<COcvHoughLinesParam>& pParam) : CImageProcess2d(name)
+        COcvHoughLines(const std::string name, const std::shared_ptr<COcvHoughLinesParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvHoughLinesParam>(*pParam);
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             getOutput(1)->setDataType(IODataType::IMAGE_BINARY);
         }
 
@@ -106,8 +106,8 @@ class COcvHoughLines : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvHoughLinesParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -150,9 +150,9 @@ class COcvHoughLines : public CImageProcess2d
         void    manageGraphicsOutput(const std::vector<cv::Vec2f>& lines)
         {
             assert(m_graphicsContextPtr);
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             CMat imgSrc = pInput->getImage();
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(2));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(2));
             assert(pOutput);
             pOutput->setNewLayer(getName());
             pOutput->setImageIndex(0);
@@ -179,7 +179,7 @@ class COcvHoughLines : public CImageProcess2d
         void    manageGraphicsOutput(const std::vector<cv::Vec4i>& lines)
         {
             assert(m_graphicsContextPtr);
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(2));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(2));
             assert(pOutput);
             pOutput->setNewLayer(getName());
             pOutput->setImageIndex(0);
@@ -195,15 +195,15 @@ class COcvHoughLines : public CImageProcess2d
 
         void    manageBinaryOutput()
         {
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pOutputGraphics = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(2));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pOutputGraphics = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(2));
 
             cv::Mat imgSrc = pInput->getImage();
             CGraphicsConversion graphicsConverter(imgSrc.cols, imgSrc.rows);
             CMat binary = graphicsConverter.graphicsToBinaryMask(pOutputGraphics->getItems());
             applyGraphicsMaskToBinary(binary, binary, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput)
                 pOutput->setImage(binary);
         }
@@ -222,7 +222,7 @@ class COcvHoughLines : public CImageProcess2d
         }
 };
 
-class COcvHoughLinesFactory : public CProcessFactory
+class COcvHoughLinesFactory : public CTaskFactory
 {
     public:
 
@@ -236,7 +236,7 @@ class COcvHoughLinesFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvHoughLinesParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -244,7 +244,7 @@ class COcvHoughLinesFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvHoughLinesParam>();
             assert(pDerivedParam != nullptr);

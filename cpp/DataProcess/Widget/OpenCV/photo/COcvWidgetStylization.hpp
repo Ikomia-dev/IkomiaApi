@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetStylization : public CProtocolTaskWidget
+class COcvWidgetStylization : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetStylization(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetStylization(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetStylization(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetStylization(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvStylizationParam>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetStylizationFactory : public CWidgetFactory
             m_name = QObject::tr("Stylization").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetStylization>(pParam);
         }

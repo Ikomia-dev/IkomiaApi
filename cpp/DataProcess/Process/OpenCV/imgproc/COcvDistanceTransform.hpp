@@ -20,18 +20,18 @@
 #ifndef COCVDISTANCETRANSFORM_HPP
 #define COCVDISTANCETRANSFORM_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include "opencv2/ximgproc.hpp"
 
 //-----------------------------//
 //----- COcvDistanceTransformParam -----//
 //-----------------------------//
-class COcvDistanceTransformParam: public CProtocolTaskParam
+class COcvDistanceTransformParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDistanceTransformParam() : CProtocolTaskParam(){}
+        COcvDistanceTransformParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -62,22 +62,22 @@ class COcvDistanceTransformParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDistanceTransform -----//
 //-------------------------//
-class COcvDistanceTransform : public CImageProcess2d
+class COcvDistanceTransform : public C2dImageTask
 {
     public:
 
-        COcvDistanceTransform() : CImageProcess2d()
+        COcvDistanceTransform() : C2dImageTask()
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
         }
-        COcvDistanceTransform(const std::string name, const std::shared_ptr<COcvDistanceTransformParam>& pParam) : CImageProcess2d(name)
+        COcvDistanceTransform(const std::string name, const std::shared_ptr<COcvDistanceTransformParam>& pParam) : C2dImageTask(name)
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             m_pParam = std::make_shared<COcvDistanceTransformParam>(*pParam);
             parametersModified();
         }
 
-        void    setParam(const ProtocolTaskParamPtr &pParam) override
+        void    setParam(const WorkflowTaskParamPtr &pParam) override
         {
             m_pParam = pParam;
             parametersModified();
@@ -90,7 +90,7 @@ class COcvDistanceTransform : public CImageProcess2d
                 return;
 
             if(pParam->m_bVoronoi == true && getOutputCount() == 1)
-                addOutput(std::make_shared<CImageProcessIO>());
+                addOutput(std::make_shared<CImageIO>());
             else if(pParam->m_bVoronoi == false && getOutputCount() == 2)
                 removeOutput(getOutputCount() - 1);
         }
@@ -103,8 +103,8 @@ class COcvDistanceTransform : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDistanceTransformParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -134,13 +134,13 @@ class COcvDistanceTransform : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
             if(pParam->m_bVoronoi ==  true)
             {
-                auto pOutputVoronoi = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+                auto pOutputVoronoi = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
                 if(pOutputVoronoi)
                     pOutputVoronoi->setImage(labels);
             }
@@ -149,7 +149,7 @@ class COcvDistanceTransform : public CImageProcess2d
         }
 };
 
-class COcvDistanceTransformFactory : public CProcessFactory
+class COcvDistanceTransformFactory : public CTaskFactory
 {
     public:
 
@@ -163,7 +163,7 @@ class COcvDistanceTransformFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvDistanceTransformParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -171,7 +171,7 @@ class COcvDistanceTransformFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvDistanceTransformParam>();
             assert(pDerivedParam != nullptr);

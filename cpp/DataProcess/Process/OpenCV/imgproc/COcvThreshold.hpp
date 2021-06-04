@@ -22,17 +22,17 @@
 
 #include "DataProcessTools.hpp"
 #include "Main/CoreTools.hpp"
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvThresholdParam -----//
 //------------------------------//
-class COcvThresholdParam: public CProtocolTaskParam
+class COcvThresholdParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvThresholdParam() : CProtocolTaskParam()
+        COcvThresholdParam() : CWorkflowTaskParam()
         {
         }
 
@@ -59,20 +59,20 @@ class COcvThresholdParam: public CProtocolTaskParam
 //------------------------------//
 //----- COcvThresholdParam -----//
 //------------------------------//
-class COcvThreshold : public CImageProcess2d
+class COcvThreshold : public C2dImageTask
 {
     public:
 
-        COcvThreshold() : CImageProcess2d()
+        COcvThreshold() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvThreshold(const std::string name, const std::shared_ptr<COcvThresholdParam>& pParam) : CImageProcess2d(name)
+        COcvThreshold(const std::string name, const std::shared_ptr<COcvThresholdParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvThresholdParam>(*pParam);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputColorMap(1, 0, {{255,0,0}});
         }
@@ -84,8 +84,8 @@ class COcvThreshold : public CImageProcess2d
 
         void    updateStaticOutputs() override
         {
-            CImageProcess2d::updateStaticOutputs();
-            auto pImgOutput =  std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            C2dImageTask::updateStaticOutputs();
+            auto pImgOutput =  std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             assert(pImgOutput);
             pImgOutput->setChannelCount(1);
         }
@@ -93,8 +93,8 @@ class COcvThreshold : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvThresholdParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -121,7 +121,7 @@ class COcvThreshold : public CImageProcess2d
             applyGraphicsMaskToBinary(imgDst, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -155,7 +155,7 @@ class COcvThreshold : public CImageProcess2d
         }
 };
 
-class COcvThresholdFactory : public CProcessFactory
+class COcvThresholdFactory : public CTaskFactory
 {
     public:
 
@@ -169,7 +169,7 @@ class COcvThresholdFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvThresholdParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -177,7 +177,7 @@ class COcvThresholdFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvThresholdParam>();
             assert(pDerivedParam != nullptr);

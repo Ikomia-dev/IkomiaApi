@@ -78,7 +78,7 @@ void CImageDataManager::fillDataset(CDataset<CMat> &dataset, const SubsetBounds 
         dataset.subset().setDimensions(dimensions(subsetBounds, DataDimension::IMAGE));
         size_t sizeZ = subsetDataInfo.size(DataDimension::IMAGE);
         assert(subsetDataInfo[0] != nullptr);
-        CImageIO io(subsetDataInfo[0]->getFileName());
+        CImageDataIO io(subsetDataInfo[0]->getFileName());
         CDataImageInfoPtr pInfo = std::dynamic_pointer_cast<CDataImageInfo>(io.dataInfo());
         assert(pInfo != nullptr);
 
@@ -207,7 +207,7 @@ bool CImageDataManager::checkMemory(const CArrayDataInfo &arrayDataInfo)
     {
         auto filename = arrayDataInfo[0]->getFileName();
 
-        CImageIO io(filename);
+        CImageDataIO io(filename);
         auto pInfo = std::static_pointer_cast<CDataImageInfo>(io.dataInfo());
 
         // Single or volume image
@@ -221,7 +221,7 @@ bool CImageDataManager::checkMemory(const CArrayDataInfo &arrayDataInfo)
             assert(arrayDataInfo[i] != nullptr);
             auto filename = arrayDataInfo[i]->getFileName();
 
-            CImageIO io(filename);
+            CImageDataIO io(filename);
             auto pInfo = std::static_pointer_cast<CDataImageInfo>(io.dataInfo());
 
             // Single or volume image
@@ -235,14 +235,14 @@ bool CImageDataManager::checkMemory(const CArrayDataInfo &arrayDataInfo)
     return (memInfo.availableMemory() > totalSize);
 }
 
-CImageIOPtr CImageDataManager::getImageIO(const std::string &fileName)
+CImageDataIOPtr CImageDataManager::getImageIO(const std::string &fileName)
 {
     auto it = m_mapImageIO.find(fileName);
     if(it != m_mapImageIO.end())
         return it->second;
     else
     {
-        auto itNew = m_mapImageIO.emplace(std::make_pair(fileName, std::make_unique<CImageIO>(fileName)));
+        auto itNew = m_mapImageIO.emplace(std::make_pair(fileName, std::make_unique<CImageDataIO>(fileName)));
         return itNew.first->second;
     }
 }

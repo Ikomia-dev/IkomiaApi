@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetAKAZE : public CProtocolTaskWidget
+class COcvWidgetAKAZE : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetAKAZE(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAKAZE(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetAKAZE(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAKAZE(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvAKAZEParam>(pParam);
             init();
@@ -118,7 +118,7 @@ class COcvWidgetAKAZEFactory : public CWidgetFactory
             m_name = QObject::tr("AKAZE").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetAKAZE>(pParam);
         }

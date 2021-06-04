@@ -20,17 +20,17 @@
 #ifndef COCVEDGEPRESERVINGFILTER_HPP
 #define COCVEDGEPRESERVINGFILTER_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //-----------------------------------------//
 //----- COcvEdgePreservingFilterParam -----//
 //-----------------------------------------//
-class COcvEdgePreservingFilterParam: public CProtocolTaskParam
+class COcvEdgePreservingFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvEdgePreservingFilterParam() : CProtocolTaskParam(){}
+        COcvEdgePreservingFilterParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -58,14 +58,14 @@ class COcvEdgePreservingFilterParam: public CProtocolTaskParam
 //------------------------------------//
 //----- COcvEdgePreservingFilter -----//
 //------------------------------------//
-class COcvEdgePreservingFilter : public CImageProcess2d
+class COcvEdgePreservingFilter : public C2dImageTask
 {
     public:
 
-        COcvEdgePreservingFilter() : CImageProcess2d()
+        COcvEdgePreservingFilter() : C2dImageTask()
         {
         }
-        COcvEdgePreservingFilter(const std::string name, const std::shared_ptr<COcvEdgePreservingFilterParam>& pParam) : CImageProcess2d(name)
+        COcvEdgePreservingFilter(const std::string name, const std::shared_ptr<COcvEdgePreservingFilterParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvEdgePreservingFilterParam>(*pParam);
         }
@@ -78,8 +78,8 @@ class COcvEdgePreservingFilter : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvEdgePreservingFilterParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -109,7 +109,7 @@ class COcvEdgePreservingFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -117,7 +117,7 @@ class COcvEdgePreservingFilter : public CImageProcess2d
         }
 };
 
-class COcvEdgePreservingFilterFactory : public CProcessFactory
+class COcvEdgePreservingFilterFactory : public CTaskFactory
 {
     public:
 
@@ -135,7 +135,7 @@ class COcvEdgePreservingFilterFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/dac/group__photo__render.html#gafaee2977597029bc8e35da6e67bd31f7";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pEdgePreservingFilterParam = std::dynamic_pointer_cast<COcvEdgePreservingFilterParam>(pParam);
             if(pEdgePreservingFilterParam != nullptr)
@@ -143,7 +143,7 @@ class COcvEdgePreservingFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pEdgePreservingFilterParam = std::make_shared<COcvEdgePreservingFilterParam>();
             assert(pEdgePreservingFilterParam != nullptr);

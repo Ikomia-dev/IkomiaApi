@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Colors/CGmicColorPresets.hpp"
 
-class CGmicWidgetColorPresets : public CProtocolTaskWidget
+class CGmicWidgetColorPresets : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetColorPresets(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetColorPresets(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetColorPresets(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetColorPresets(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicColorPresetsParam>(pParam);
             init();
@@ -111,7 +111,7 @@ class CGmicWidgetColorPresetsFactory : public CWidgetFactory
             m_name = QObject::tr("Color presets").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetColorPresets>(pParam);
         }

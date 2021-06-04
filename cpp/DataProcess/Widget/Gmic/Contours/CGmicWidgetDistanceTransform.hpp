@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Contours/CGmicDistanceTransform.hpp"
 
-class CGmicWidgetDistanceTransform : public CProtocolTaskWidget
+class CGmicWidgetDistanceTransform : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetDistanceTransform(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetDistanceTransform(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetDistanceTransform(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetDistanceTransform(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicDistanceTransformParam>(pParam);
             init();
@@ -86,7 +86,7 @@ class CGmicWidgetDistanceTransformFactory : public CWidgetFactory
             m_name = QObject::tr("Distance transform").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetDistanceTransform>(pParam);
         }

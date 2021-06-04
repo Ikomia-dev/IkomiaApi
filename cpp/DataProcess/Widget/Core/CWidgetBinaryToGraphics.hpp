@@ -31,7 +31,7 @@ class CWidgetBinaryToGraphics : public CWidgetApplyOnly
         {
         }
 
-        CWidgetBinaryToGraphics(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        CWidgetBinaryToGraphics(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 
@@ -49,7 +49,7 @@ class CWidgetBinaryToGraphicsFactory : public CWidgetFactory
             m_name = QObject::tr("Binary to graphics").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CWidgetBinaryToGraphics>(pParam);
         }

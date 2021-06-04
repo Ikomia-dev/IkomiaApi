@@ -23,7 +23,7 @@
 #include "DesignPattern/CAbstractFactory.hpp"
 #include "DesignPattern/CFactoryRegister.hpp"
 #include <QGridLayout>
-#include "Protocol/CProtocolTaskWidget.h"
+#include "Workflow/CWorkflowTaskWidget.h"
 
 /**
  * @ingroup groupDataProcess
@@ -63,10 +63,10 @@ class CWidgetFactory
         //ensure lifetime of shared pointers while Qt need raw pointers
         /**
          * @brief Pure virtual method to create new process widget instance with the given parameters.
-         * @param pParam: CProtocolTaskParam based shared pointer.
-         * @return CProtocolTaskWidget based shared pointer.
+         * @param pParam: CWorkflowTaskParam based shared pointer.
+         * @return CWorkflowTaskWidget based shared pointer.
          */
-        virtual ProtocolTaskWidgetPtr   create(const ProtocolTaskParamPtr pParam) = 0;
+        virtual WorkflowTaskWidgetPtr   create(const WorkflowTaskParamPtr pParam) = 0;
 
     protected:
 
@@ -77,7 +77,7 @@ using WidgetFactoryPtr = std::shared_ptr<CWidgetFactory>;
 using WidgetFactories = std::vector<WidgetFactoryPtr>;
 
 //Process abstract factory
-class CWidgetAbstractFactory: public CAbstractFactory<std::string, ProtocolTaskWidgetPtr, const ProtocolTaskParamPtr>
+class CWidgetAbstractFactory: public CAbstractFactory<std::string, WorkflowTaskWidgetPtr, const WorkflowTaskParamPtr>
 {
     public:
 
@@ -96,7 +96,7 @@ class CWidgetAbstractFactory: public CAbstractFactory<std::string, ProtocolTaskW
 
         void                clear() override
         {
-            CAbstractFactory<std::string, ProtocolTaskWidgetPtr, const ProtocolTaskParamPtr>::clear();
+            CAbstractFactory<std::string, WorkflowTaskWidgetPtr, const WorkflowTaskParamPtr>::clear();
             m_factories.clear();
         }
 

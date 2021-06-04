@@ -18,12 +18,12 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "CTaskIORegistration.h"
-#include "CImageProcessIO.h"
-#include "CMeasureProcessIO.h"
-#include "CGraphicsProcessInput.h"
-#include "CGraphicsProcessOutput.h"
-#include "CFeatureProcessIO.hpp"
-#include "CVideoProcessIO.h"
+#include "CImageIO.h"
+#include "CMeasureIO.h"
+#include "CGraphicsInput.h"
+#include "CGraphicsOutput.h"
+#include "CFeatureIO.hpp"
+#include "CVideoIO.h"
 #include "CWidgetOutput.h"
 #include "CPathIO.h"
 
@@ -38,12 +38,12 @@ CTaskIORegistration::~CTaskIORegistration()
     m_factory.clear();
 }
 
-const CProtocolTaskIOAbstractFactory &CTaskIORegistration::getFactory() const
+const CWorkflowTaskIOAbstractFactory &CTaskIORegistration::getFactory() const
 {
     return m_factory;
 }
 
-void CTaskIORegistration::registerIO(const std::shared_ptr<CProtocolTaskIOFactory> &pFactory)
+void CTaskIORegistration::registerIO(const std::shared_ptr<CWorkflowTaskIOFactory> &pFactory)
 {
     m_factory.getList().push_back(pFactory);
     //Passage par lambda -> pFactory par valeur pour assurer la portée du pointeur
@@ -59,12 +59,12 @@ void CTaskIORegistration::reset()
 
 void CTaskIORegistration::registerCore()
 {
-    registerIO(std::make_shared<CImageProcessIOFactory>());
-    registerIO(std::make_shared<CMeasureProcessIOFactory>());
-    registerIO(std::make_shared<CGraphicsProcessInputFactory>());
-    registerIO(std::make_shared<CGraphicsProcessOutputFactory>());
-    registerIO(std::make_shared<CFeatureProcessIOFactory>());
-    registerIO(std::make_shared<CVideoProcessIOFactory>());
+    registerIO(std::make_shared<CImageIOFactory>());
+    registerIO(std::make_shared<CMeasureIOFactory>());
+    registerIO(std::make_shared<CGraphicsInputFactory>());
+    registerIO(std::make_shared<CGraphicsOutputFactory>());
+    registerIO(std::make_shared<CFeatureIOFactory>());
+    registerIO(std::make_shared<CVideoIOFactory>());
     registerIO(std::make_shared<CWidgetOutputFactory>());
     registerIO(std::make_shared<CPathIOFactory>());
 }

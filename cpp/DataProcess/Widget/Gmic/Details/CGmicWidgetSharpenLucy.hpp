@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicSharpenLucy.hpp"
 
-class CGmicWidgetSharpenLucy : public CProtocolTaskWidget
+class CGmicWidgetSharpenLucy : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetSharpenLucy(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenLucy(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetSharpenLucy(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenLucy(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicSharpenLucyParam>(pParam);
             init();
@@ -81,7 +81,7 @@ class CGmicWidgetSharpenLucyFactory : public CWidgetFactory
             m_name = QObject::tr("Sharpen [Richardson-Lucy]").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetSharpenLucy>(pParam);
         }

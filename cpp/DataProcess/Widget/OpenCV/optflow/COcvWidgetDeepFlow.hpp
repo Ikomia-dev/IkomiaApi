@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetDeepFlow : public CProtocolTaskWidget
+class COcvWidgetDeepFlow : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDeepFlow(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDeepFlow(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDeepFlow(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDeepFlow(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDeepFlowParam>(pParam);
             init();
@@ -73,7 +73,7 @@ class COcvWidgetDeepFlowFactory : public CWidgetFactory
             m_name = QObject::tr("DeepFlow").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDeepFlow>(pParam);
         }

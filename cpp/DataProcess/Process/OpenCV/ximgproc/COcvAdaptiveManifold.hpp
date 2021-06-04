@@ -21,16 +21,16 @@
 #define COCVADAPTIVEMANIFOLD_H
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------------------------//
 //----- COcvAdaptiveManifoldParam -----//
 //-------------------------------------//
-class COcvAdaptiveManifoldParam: public CProtocolTaskParam
+class COcvAdaptiveManifoldParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvAdaptiveManifoldParam() : CProtocolTaskParam()
+        COcvAdaptiveManifoldParam() : CWorkflowTaskParam()
         {
         }
 
@@ -69,14 +69,14 @@ class COcvAdaptiveManifoldParam: public CProtocolTaskParam
 //--------------------------------//
 //----- COcvAdaptiveManifold -----//
 //--------------------------------//
-class COcvAdaptiveManifold : public CImageProcess2d
+class COcvAdaptiveManifold : public C2dImageTask
 {
     public:
 
-        COcvAdaptiveManifold() : CImageProcess2d()
+        COcvAdaptiveManifold() : C2dImageTask()
         {
         }
-        COcvAdaptiveManifold(const std::string name, const std::shared_ptr<COcvAdaptiveManifoldParam>& pParam) : CImageProcess2d(name)
+        COcvAdaptiveManifold(const std::string name, const std::shared_ptr<COcvAdaptiveManifoldParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvAdaptiveManifoldParam>(*pParam);
         }
@@ -90,8 +90,8 @@ class COcvAdaptiveManifold : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvAdaptiveManifoldParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -124,7 +124,7 @@ class COcvAdaptiveManifold : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -132,7 +132,7 @@ class COcvAdaptiveManifold : public CImageProcess2d
         }
 };
 
-class COcvAdaptiveManifoldFactory : public CProcessFactory
+class COcvAdaptiveManifoldFactory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class COcvAdaptiveManifoldFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/db7/classcv_1_1ximgproc_1_1AdaptiveManifoldFilter.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pManifoldParam = std::dynamic_pointer_cast<COcvAdaptiveManifoldParam>(pParam);
             if(pManifoldParam != nullptr)
@@ -158,7 +158,7 @@ class COcvAdaptiveManifoldFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pManifoldParam = std::make_shared<COcvAdaptiveManifoldParam>();
             assert(pManifoldParam != nullptr);

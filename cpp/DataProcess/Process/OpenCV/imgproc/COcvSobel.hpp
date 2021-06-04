@@ -20,17 +20,17 @@
 #ifndef COCVSOBEL_HPP
 #define COCVSOBEL_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvSobelParam -----//
 //--------------------------------//
-class COcvSobelParam: public CProtocolTaskParam
+class COcvSobelParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSobelParam() : CProtocolTaskParam(){}
+        COcvSobelParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -72,14 +72,14 @@ class COcvSobelParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvSobel -----//
 //---------------------------//
-class COcvSobel : public CImageProcess2d
+class COcvSobel : public C2dImageTask
 {
     public:
 
-        COcvSobel() : CImageProcess2d()
+        COcvSobel() : C2dImageTask()
         {
         }
-        COcvSobel(const std::string name, const std::shared_ptr<COcvSobelParam>& pParam) : CImageProcess2d(name)
+        COcvSobel(const std::string name, const std::shared_ptr<COcvSobelParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvSobelParam>(*pParam);
         }
@@ -96,8 +96,8 @@ class COcvSobel : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSobelParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -124,7 +124,7 @@ class COcvSobel : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -132,7 +132,7 @@ class COcvSobel : public CImageProcess2d
         }
 };
 
-class COcvSobelFactory : public CProcessFactory
+class COcvSobelFactory : public CTaskFactory
 {
     public:
 
@@ -146,7 +146,7 @@ class COcvSobelFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSobelParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -154,7 +154,7 @@ class COcvSobelFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvSobelParam>();
             assert(pDerivedParam != nullptr);

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicSharpenTones.hpp"
 
-class CGmicWidgetSharpenTones : public CProtocolTaskWidget
+class CGmicWidgetSharpenTones : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetSharpenTones(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenTones(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetSharpenTones(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenTones(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicSharpenTonesParam>(pParam);
             init();
@@ -76,7 +76,7 @@ class CGmicWidgetSharpenTonesFactory : public CWidgetFactory
             m_name = QObject::tr("Sharpen [Tones]").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetSharpenTones>(pParam);
         }

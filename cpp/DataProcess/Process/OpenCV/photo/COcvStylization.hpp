@@ -20,18 +20,18 @@
 #ifndef COCVSTYLIZATION_HPP
 #define COCVSTYLIZATION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/photo.hpp>
 
 //----------------------------------//
 //----- COcvStylizationParam -----//
 //----------------------------------//
-class COcvStylizationParam : public CProtocolTaskParam
+class COcvStylizationParam : public CWorkflowTaskParam
 {
     public:
 
-        COcvStylizationParam() : CProtocolTaskParam(){}
+        COcvStylizationParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -55,14 +55,14 @@ class COcvStylizationParam : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvStylization -----//
 //-----------------------------//
-class COcvStylization : public CImageProcess2d
+class COcvStylization : public C2dImageTask
 {
     public:
 
-        COcvStylization() : CImageProcess2d()
+        COcvStylization() : C2dImageTask()
         {
         }
-        COcvStylization(const std::string name, const std::shared_ptr<COcvStylizationParam>& pParam) : CImageProcess2d(name)
+        COcvStylization(const std::string name, const std::shared_ptr<COcvStylizationParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvStylizationParam>(*pParam);
         }
@@ -75,8 +75,8 @@ class COcvStylization : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvStylizationParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -108,7 +108,7 @@ class COcvStylization : public CImageProcess2d
             applyGraphicsMask(image, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -116,7 +116,7 @@ class COcvStylization : public CImageProcess2d
         }
 };
 
-class COcvStylizationFactory : public CProcessFactory
+class COcvStylizationFactory : public CTaskFactory
 {
     public:
 
@@ -130,7 +130,7 @@ class COcvStylizationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pStylizationParam = std::dynamic_pointer_cast<COcvStylizationParam>(pParam);
             if(pStylizationParam != nullptr)
@@ -138,7 +138,7 @@ class COcvStylizationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pStylizationParam = std::make_shared<COcvStylizationParam>();
             assert(pStylizationParam != nullptr);

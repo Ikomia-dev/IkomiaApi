@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/imgproc/COcvHoughLines.hpp"
 
-class COcvWidgetHoughLines : public CProtocolTaskWidget
+class COcvWidgetHoughLines : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetHoughLines(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHoughLines(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetHoughLines(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHoughLines(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvHoughLinesParam>(pParam);
             init();
@@ -87,7 +87,7 @@ class COcvWidgetHoughLinesFactory : public CWidgetFactory
             m_name = QObject::tr("Hough lines").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetHoughLines>(pParam);
         }

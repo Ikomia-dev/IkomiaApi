@@ -22,13 +22,13 @@
 #ifndef CDNNPROCESS_H
 #define CDNNPROCESS_H
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "opencv2/dnn.hpp"
 
 //----------------------------//
 //----- COcvDnnCoreParam -----//
 //----------------------------//
-class DATAPROCESSSHARED_EXPORT COcvDnnCoreParam: public CProtocolTaskParam
+class DATAPROCESSSHARED_EXPORT COcvDnnCoreParam: public CWorkflowTaskParam
 {
     public:
 
@@ -76,7 +76,7 @@ class DATAPROCESSSHARED_EXPORT COcvDnnProcessParam: public COcvDnnCoreParam
 //--------------------------//
 //----- COcvDnnProcess -----//
 //--------------------------//
-class DATAPROCESSSHARED_EXPORT COcvDnnProcess : public CImageProcess2d
+class DATAPROCESSSHARED_EXPORT COcvDnnProcess : public C2dImageTask
 {
     public:
 

@@ -23,13 +23,13 @@ CConvertIO::CConvertIO()
 {
 }
 
-ImageProcessIOPtr CConvertIO::convertToImageIO(const ProtocolTaskIOPtr &ioFrom)
+ImageIOPtr CConvertIO::convertToImageIO(const WorkflowTaskIOPtr &ioFrom)
 {
     auto dataType = CConvertIO::getTargetImageType(ioFrom->getDataType());
     if(dataType != IODataType::NONE)
     {
-        auto imgIOPtr = std::make_shared<CImageProcessIO>();
-        imgIOPtr->CProtocolTaskIO::operator=(*ioFrom);
+        auto imgIOPtr = std::make_shared<CImageIO>();
+        imgIOPtr->CWorkflowTaskIO::operator=(*ioFrom);
         imgIOPtr->setDataType(dataType);
         imgIOPtr->setSaveFormat(DataFileFormat::PNG);
         return imgIOPtr;
@@ -37,13 +37,13 @@ ImageProcessIOPtr CConvertIO::convertToImageIO(const ProtocolTaskIOPtr &ioFrom)
     return nullptr;
 }
 
-VideoProcessIOPtr CConvertIO::convertToVideoIO(const ProtocolTaskIOPtr &ioFrom)
+VideoIOPtr CConvertIO::convertToVideoIO(const WorkflowTaskIOPtr &ioFrom)
 {
     auto dataType = CConvertIO::getTargetVideoType(ioFrom->getDataType());
     if(dataType != IODataType::NONE)
     {
-        auto videoIOPtr = std::make_shared<CVideoProcessIO>();
-        videoIOPtr->CProtocolTaskIO::operator=(*ioFrom);
+        auto videoIOPtr = std::make_shared<CVideoIO>();
+        videoIOPtr->CWorkflowTaskIO::operator=(*ioFrom);
         videoIOPtr->setDataType(dataType);
         videoIOPtr->setSaveFormat(DataFileFormat::AVI);
         return videoIOPtr;
@@ -51,13 +51,13 @@ VideoProcessIOPtr CConvertIO::convertToVideoIO(const ProtocolTaskIOPtr &ioFrom)
     return nullptr;
 }
 
-VideoProcessIOPtr CConvertIO::convertToStreamIO(const ProtocolTaskIOPtr &ioFrom)
+VideoIOPtr CConvertIO::convertToStreamIO(const WorkflowTaskIOPtr &ioFrom)
 {
     auto dataType = CConvertIO::getTargetStreamType(ioFrom->getDataType());
     if(dataType != IODataType::NONE)
     {
-        auto videoIOPtr = std::make_shared<CVideoProcessIO>();
-        videoIOPtr->CProtocolTaskIO::operator=(*ioFrom);
+        auto videoIOPtr = std::make_shared<CVideoIO>();
+        videoIOPtr->CWorkflowTaskIO::operator=(*ioFrom);
         videoIOPtr->setDataType(dataType);
         videoIOPtr->setSaveFormat(DataFileFormat::AVI);
         return videoIOPtr;
@@ -65,13 +65,13 @@ VideoProcessIOPtr CConvertIO::convertToStreamIO(const ProtocolTaskIOPtr &ioFrom)
     return nullptr;
 }
 
-ImageProcessIOPtr CConvertIO::convertToVolumeIO(const ProtocolTaskIOPtr &ioFrom)
+ImageIOPtr CConvertIO::convertToVolumeIO(const WorkflowTaskIOPtr &ioFrom)
 {
     auto dataType = CConvertIO::getTargetVolumeType(ioFrom->getDataType());
     if(dataType != IODataType::NONE)
     {
-        auto volumeIOPtr = std::make_shared<CImageProcessIO>();
-        volumeIOPtr->CProtocolTaskIO::operator=(*ioFrom);
+        auto volumeIOPtr = std::make_shared<CImageIO>();
+        volumeIOPtr->CWorkflowTaskIO::operator=(*ioFrom);
         volumeIOPtr->setDataType(dataType);
         volumeIOPtr->setSaveFormat(DataFileFormat::PNG);
         return volumeIOPtr;

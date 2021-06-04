@@ -63,14 +63,14 @@ class COcvDnnClassifier: public COcvDnnProcess
 
         COcvDnnClassifier() : COcvDnnProcess()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
+            addOutput(std::make_shared<CMeasureIO>());
         }
         COcvDnnClassifier(const std::string& name, const std::shared_ptr<COcvDnnClassifierParam>& pParam) : COcvDnnProcess(name)
         {
             m_pParam = std::make_shared<COcvDnnClassifierParam>(*pParam);
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
+            addOutput(std::make_shared<CMeasureIO>());
         }
 
         size_t      getProgressSteps() override
@@ -96,8 +96,8 @@ class COcvDnnClassifier: public COcvDnnProcess
         void        run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            //auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            //auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDnnClassifierParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -160,13 +160,13 @@ class COcvDnnClassifier: public COcvDnnProcess
             double confidence = dnnOutput.at<float>(classId);
 
             //Graphics output
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             assert(pGraphicsOutput);
             pGraphicsOutput->setNewLayer("DnnLayer");
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             //We don't create the final CGraphicsText instance here for thread-safety reason
@@ -189,7 +189,7 @@ class COcvDnnClassifier: public COcvDnnProcess
 //------------------------------------//
 //----- COcvDnnClassifierFactory -----//
 //------------------------------------//
-class COcvDnnClassifierFactory : public CProcessFactory
+class COcvDnnClassifierFactory : public CTaskFactory
 {
     public:
 
@@ -203,7 +203,7 @@ class COcvDnnClassifierFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/d0f/group__dnn.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvDnnClassifierParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -211,7 +211,7 @@ class COcvDnnClassifierFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvDnnClassifierParam>();
             assert(pDerivedParam != nullptr);

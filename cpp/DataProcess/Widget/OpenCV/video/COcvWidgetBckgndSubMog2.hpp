@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/video/COcvBckgndSubMog2.hpp"
 
-class COcvWidgetBckgndSubMog2 : public CProtocolTaskWidget
+class COcvWidgetBckgndSubMog2 : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBckgndSubMog2(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubMog2(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetBckgndSubMog2(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubMog2(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBckgndSubMog2Param>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetBckgndSubMog2Factory : public CWidgetFactory
             m_name = QObject::tr("MOG2 background substractor").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBckgndSubMog2>(pParam);
         }

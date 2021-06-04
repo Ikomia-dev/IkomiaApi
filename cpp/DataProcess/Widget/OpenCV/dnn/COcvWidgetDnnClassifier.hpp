@@ -31,7 +31,7 @@ class COcvWidgetDnnClassifier: public COcvWidgetDnnProcess
         {
             init();
         }
-        COcvWidgetDnnClassifier(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
+        COcvWidgetDnnClassifier(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDnnClassifierParam>(pParam);
             init();
@@ -87,7 +87,7 @@ class COcvWidgetDnnClassifierFactory : public CWidgetFactory
             m_name = QObject::tr("DNN classification").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDnnClassifier>(pParam);
         }

@@ -37,7 +37,7 @@ class COcvWidgetOCRTesseract : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetOCRTesseract(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetOCRTesseract(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 
@@ -55,7 +55,7 @@ class COcvWidgetOCRTesseractFactory : public CWidgetFactory
             m_name = QObject::tr("OCRTesseract").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetOCRTesseract>(pParam);
         }

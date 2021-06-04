@@ -28,7 +28,7 @@ using namespace boost::python;
 
 
 //Special call policy that increases the reference count of the object being constructed
-//Needed for our CProtocolTaskWidget based objects that can be extended in Python
+//Needed for our CWorkflowTaskWidget based objects that can be extended in Python
 //Solve the issue of reference count for std::shared_ptr return from extended python class
 //and lead to segmentation fault caused by double delete
 template <class Base = default_call_policies>

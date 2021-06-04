@@ -28,15 +28,15 @@
 #include <QSpinBox>
 #include <QLabel>
 
-class CWidgetPlotMerge : public CProtocolTaskWidget
+class CWidgetPlotMerge : public CWorkflowTaskWidget
 {
     public:
 
-        CWidgetPlotMerge(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetPlotMerge(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        CWidgetPlotMerge(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetPlotMerge(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CPlotMergeParam>(pParam);
             init();
@@ -78,7 +78,7 @@ class CWidgetPlotMergeFactory : public CWidgetFactory
         }
         ~CWidgetPlotMergeFactory() {}
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<CWidgetPlotMerge>(pParam);
         }

@@ -28,16 +28,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetDft : public CProtocolTaskWidget
+class COcvWidgetDft : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDft(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDft(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDft(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDft(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDftParam>(pParam);
             init();
@@ -87,7 +87,7 @@ class COcvWidgetDftFactory : public CWidgetFactory
             m_name = QObject::tr("Discrete Fourier Transform").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetDft>(pParam);
         }

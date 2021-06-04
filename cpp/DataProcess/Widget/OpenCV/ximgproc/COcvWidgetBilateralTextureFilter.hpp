@@ -25,15 +25,15 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetBilateralTextureFilter : public CProtocolTaskWidget
+class COcvWidgetBilateralTextureFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBilateralTextureFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBilateralTextureFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetBilateralTextureFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBilateralTextureFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBilateralTextureFilterParam>(pParam);
             init();
@@ -109,7 +109,7 @@ class COcvWidgetBilateralTextureFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Bilateral texture filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBilateralTextureFilter>(pParam);
         }

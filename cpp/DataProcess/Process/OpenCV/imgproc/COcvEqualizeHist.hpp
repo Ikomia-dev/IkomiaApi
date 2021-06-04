@@ -20,17 +20,17 @@
 #ifndef COCVEQUALIZEHIST_HPP
 #define COCVEQUALIZEHIST_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvEqualizeHistParam -----//
 //------------------------------//
-class COcvEqualizeHistParam: public CProtocolTaskParam
+class COcvEqualizeHistParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvEqualizeHistParam() : CProtocolTaskParam(){}
+        COcvEqualizeHistParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -46,14 +46,14 @@ class COcvEqualizeHistParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvEqualizeHist -----//
 //-------------------------//
-class COcvEqualizeHist : public CImageProcess2d
+class COcvEqualizeHist : public C2dImageTask
 {
     public:
 
-        COcvEqualizeHist() : CImageProcess2d()
+        COcvEqualizeHist() : C2dImageTask()
         {
         }
-        COcvEqualizeHist(const std::string name, const std::shared_ptr<COcvEqualizeHistParam>& pParam) : CImageProcess2d(name)
+        COcvEqualizeHist(const std::string name, const std::shared_ptr<COcvEqualizeHistParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvEqualizeHistParam>(*pParam);
         }
@@ -66,8 +66,8 @@ class COcvEqualizeHist : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvEqualizeHistParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -108,7 +108,7 @@ class COcvEqualizeHist : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -116,7 +116,7 @@ class COcvEqualizeHist : public CImageProcess2d
         }
 };
 
-class COcvEqualizeHistFactory : public CProcessFactory
+class COcvEqualizeHistFactory : public CTaskFactory
 {
     public:
 
@@ -130,7 +130,7 @@ class COcvEqualizeHistFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/dc7/group__imgproc__hist.html#ga7e54091f0c937d49bf84152a16f76d6e";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pEqualizeHistParam = std::dynamic_pointer_cast<COcvEqualizeHistParam>(pParam);
             if(pEqualizeHistParam != nullptr)
@@ -138,7 +138,7 @@ class COcvEqualizeHistFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pEqualizeHistParam = std::make_shared<COcvEqualizeHistParam>();
             assert(pEqualizeHistParam != nullptr);

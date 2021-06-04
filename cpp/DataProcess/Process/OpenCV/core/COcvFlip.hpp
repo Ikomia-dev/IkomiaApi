@@ -21,17 +21,17 @@
 #define COCVFLIP_HPP
 
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //-------------------------//
 //----- COcvFlipParam -----//
 //-------------------------//
-class COcvFlipParam: public CProtocolTaskParam
+class COcvFlipParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFlipParam() : CProtocolTaskParam(){}
+        COcvFlipParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -54,14 +54,14 @@ class COcvFlipParam: public CProtocolTaskParam
 //--------------------//
 //----- COcvFlip -----//
 //--------------------//
-class COcvFlip : public CImageProcess2d
+class COcvFlip : public C2dImageTask
 {
     public:
 
-        COcvFlip() : CImageProcess2d()
+        COcvFlip() : C2dImageTask()
         {
         }
-        COcvFlip(const std::string name, const std::shared_ptr<COcvFlipParam>& pParam) : CImageProcess2d(name)
+        COcvFlip(const std::string name, const std::shared_ptr<COcvFlipParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvFlipParam>(*pParam);
         }
@@ -74,7 +74,7 @@ class COcvFlip : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvFlipParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -97,7 +97,7 @@ class COcvFlip : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -107,7 +107,7 @@ class COcvFlip : public CImageProcess2d
         }
 };
 
-class COcvFlipFactory : public CProcessFactory
+class COcvFlipFactory : public CTaskFactory
 {
     public:
 
@@ -121,7 +121,7 @@ class COcvFlipFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#gaca7be533e3dac7feb70fc60635adf441";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pFlipParam = std::dynamic_pointer_cast<COcvFlipParam>(pParam);
             if(pFlipParam != nullptr)
@@ -129,7 +129,7 @@ class COcvFlipFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pFlipParam = std::make_shared<COcvFlipParam>();
             assert(pFlipParam != nullptr);

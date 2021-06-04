@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Repair/CGmicInpaint.hpp"
 
-class CGmicWidgetInpaint : public CProtocolTaskWidget
+class CGmicWidgetInpaint : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetInpaint(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetInpaint(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetInpaint(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetInpaint(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicInpaintParam>(pParam);
             init();
@@ -86,7 +86,7 @@ class CGmicWidgetInpaintFactory : public CWidgetFactory
             m_name = QObject::tr("Patch-based Inpaint").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetInpaint>(pParam);
         }

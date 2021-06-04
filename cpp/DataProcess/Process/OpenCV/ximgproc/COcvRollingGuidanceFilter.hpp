@@ -20,18 +20,18 @@
 #ifndef COCVROLLINGGUIDANCEFILTER_HPP
 #define COCVROLLINGGUIDANCEFILTER_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------//
 //----- COcvRollingGuidanceFilterParam -----//
 //------------------------------//
-class COcvRollingGuidanceFilterParam: public CProtocolTaskParam
+class COcvRollingGuidanceFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRollingGuidanceFilterParam() : CProtocolTaskParam(){}
+        COcvRollingGuidanceFilterParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -65,14 +65,14 @@ class COcvRollingGuidanceFilterParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvRollingGuidanceFilter -----//
 //-------------------------//
-class COcvRollingGuidanceFilter : public CImageProcess2d
+class COcvRollingGuidanceFilter : public C2dImageTask
 {
     public:
 
-        COcvRollingGuidanceFilter() : CImageProcess2d()
+        COcvRollingGuidanceFilter() : C2dImageTask()
         {
         }
-        COcvRollingGuidanceFilter(const std::string name, const std::shared_ptr<COcvRollingGuidanceFilterParam>& pParam) : CImageProcess2d(name)
+        COcvRollingGuidanceFilter(const std::string name, const std::shared_ptr<COcvRollingGuidanceFilterParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvRollingGuidanceFilterParam>(*pParam);
         }
@@ -85,8 +85,8 @@ class COcvRollingGuidanceFilter : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvRollingGuidanceFilterParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -113,7 +113,7 @@ class COcvRollingGuidanceFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -121,7 +121,7 @@ class COcvRollingGuidanceFilter : public CImageProcess2d
         }
 };
 
-class COcvRollingGuidanceFilterFactory : public CProcessFactory
+class COcvRollingGuidanceFilterFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvRollingGuidanceFilterFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d17/group__ximgproc__filters.html#gacef7fba156b072851dae79e42c39001f";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvRollingGuidanceFilterParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -147,7 +147,7 @@ class COcvRollingGuidanceFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvRollingGuidanceFilterParam>();
             assert(pDerivedParam != nullptr);

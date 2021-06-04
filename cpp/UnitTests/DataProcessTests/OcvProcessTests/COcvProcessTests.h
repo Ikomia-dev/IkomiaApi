@@ -63,23 +63,23 @@ class COcvProcessTests : public QObject
 
         CMat    convertImage(const CMat& src, int newType);
 
-        void    addGraphicsRect(std::shared_ptr<CGraphicsProcessInput>& graphicsInputPtr);
+        void    addGraphicsRect(std::shared_ptr<CGraphicsInput>& graphicsInputPtr);
 
         CMat    loadSampleImage();
 
-        void    runNoInput(const std::string algoName, const ProtocolTaskParamPtr &paramPtr);
-        void    runImage(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex=-1);
-        void    runVideo(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex=-1);
-        void    runTypeImageTest(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex);
-        void    runStdTest1(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex);
-        void    runOpenCL(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex);
+        void    runNoInput(const std::string algoName, const WorkflowTaskParamPtr &paramPtr);
+        void    runImage(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex=-1);
+        void    runVideo(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex=-1);
+        void    runTypeImageTest(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex);
+        void    runStdTest1(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex, int graphicsInputIndex);
+        void    runOpenCL(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex);
 
     private:
 
         CMat                                m_image;
         QMap<int,bool>                      m_imgTypes;
         const size_t                        m_maxFrames = 50;
-        std::shared_ptr<CVideoProcessIO>    m_videoInputPtr;
+        std::shared_ptr<CVideoIO>    m_videoInputPtr;
         CProcessRegistration                m_processRegister;
 };
 

@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetPCAOF : public CProtocolTaskWidget
+class COcvWidgetPCAOF : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetPCAOF(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetPCAOF(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetPCAOF(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetPCAOF(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvPCAOFParam>(pParam);
             init();
@@ -87,7 +87,7 @@ class COcvWidgetPCAOFFactory : public CWidgetFactory
             m_name = QObject::tr("PCA Optical Flow").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetPCAOF>(pParam);
         }

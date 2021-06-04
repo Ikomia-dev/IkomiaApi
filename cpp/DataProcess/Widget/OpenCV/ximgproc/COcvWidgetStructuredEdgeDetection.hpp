@@ -36,7 +36,7 @@ class COcvWidgetStructuredEdgeDetection : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetStructuredEdgeDetection(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetStructuredEdgeDetection(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 
@@ -54,7 +54,7 @@ class COcvWidgetStructuredEdgeDetectionFactory : public CWidgetFactory
             m_name = QObject::tr("StructuredEdgeDetection").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetStructuredEdgeDetection>(pParam);
         }

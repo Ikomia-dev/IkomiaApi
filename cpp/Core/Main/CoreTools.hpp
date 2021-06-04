@@ -27,7 +27,7 @@
 #include <QRandomGenerator>
 #include "UtilsTools.hpp"
 #include "Main/CoreDefine.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 #include "Data/CMat.hpp"
 #include "Data/CMeasure.h"
 #include "Graphics/CGraphicsLayer.h"
@@ -303,7 +303,7 @@ namespace Ikomia
             }
         }
 
-        namespace Protocol
+        namespace Workflow
         {
             inline QString  getIODataName(IODataType dataType)
             {
@@ -360,19 +360,19 @@ namespace Ikomia
                 return QString();
             }
 
-            inline bool     isConvertibleIO(ProtocolTaskIOPtr from, ProtocolTaskIOPtr to)
+            inline bool     isConvertibleIO(WorkflowTaskIOPtr from, WorkflowTaskIOPtr to)
             {
                 if(from == nullptr || to == nullptr)
                     return true;
 
-                auto nameFrom = CProtocolTaskIO::getClassName(from->getDataType());
-                auto nameTo = CProtocolTaskIO::getClassName(to->getDataType());
+                auto nameFrom = CWorkflowTaskIO::getClassName(from->getDataType());
+                auto nameTo = CWorkflowTaskIO::getClassName(to->getDataType());
 
                 return (nameFrom == nameTo ||
-                        (nameFrom == "CImageProcessIO" && nameTo == "CVideoProcessIO") ||
-                        (nameFrom == "CVideoProcessIO" && nameTo == "CImageProcessIO") ||
-                        (nameFrom == "CPathIO" && nameTo == "CImageProcessIO") ||
-                        (nameFrom == "CPathIO" && nameTo == "CVideoProcessIO"));
+                        (nameFrom == "CImageIO" && nameTo == "CVideoIO") ||
+                        (nameFrom == "CVideoIO" && nameTo == "CImageIO") ||
+                        (nameFrom == "CPathIO" && nameTo == "CImageIO") ||
+                        (nameFrom == "CPathIO" && nameTo == "CVideoIO"));
             }
 
             /**

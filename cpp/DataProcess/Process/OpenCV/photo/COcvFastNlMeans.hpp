@@ -20,19 +20,19 @@
 #ifndef COCVNLMEANS_HPP
 #define COCVNLMEANS_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include "opencv2/photo/cuda.hpp"
 #include "UtilsTools.hpp"
 
 //----------------------------//
 //----- COcvNlMeansParam -----//
 //----------------------------//
-class COcvFastNlMeansParam: public CProtocolTaskParam
+class COcvFastNlMeansParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFastNlMeansParam() : CProtocolTaskParam(){}
+        COcvFastNlMeansParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -60,14 +60,14 @@ class COcvFastNlMeansParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvNlMeans -----//
 //-----------------------//
-class COcvFastNlMeans : public CImageProcess2d
+class COcvFastNlMeans : public C2dImageTask
 {
     public:
 
-        COcvFastNlMeans() : CImageProcess2d()
+        COcvFastNlMeans() : C2dImageTask()
         {
         }
-        COcvFastNlMeans(const std::string name, const std::shared_ptr<COcvFastNlMeansParam>& pParam) : CImageProcess2d(name)
+        COcvFastNlMeans(const std::string name, const std::shared_ptr<COcvFastNlMeansParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvFastNlMeansParam>(*pParam);
         }
@@ -80,8 +80,8 @@ class COcvFastNlMeans : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvFastNlMeansParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -128,7 +128,7 @@ class COcvFastNlMeans : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -136,7 +136,7 @@ class COcvFastNlMeans : public CImageProcess2d
         }
 };
 
-class COcvFastNlMeansFactory : public CProcessFactory
+class COcvFastNlMeansFactory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class COcvFastNlMeansFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvFastNlMeansParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -158,7 +158,7 @@ class COcvFastNlMeansFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvFastNlMeansParam>();
             assert(pDerivedParam != nullptr);

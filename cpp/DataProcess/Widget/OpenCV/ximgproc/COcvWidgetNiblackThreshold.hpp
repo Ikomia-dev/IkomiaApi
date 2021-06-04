@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvNiblackThreshold.hpp"
 
-class COcvWidgetNiblackThreshold : public CProtocolTaskWidget
+class COcvWidgetNiblackThreshold : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetNiblackThreshold(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetNiblackThreshold(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetNiblackThreshold(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetNiblackThreshold(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvNiblackThresholdParam>(pParam);
             init();
@@ -105,7 +105,7 @@ class COcvWidgetNiblackThresholdFactory : public CWidgetFactory
             m_name = QObject::tr("Niblack Threshold").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetNiblackThreshold>(pParam);
         }

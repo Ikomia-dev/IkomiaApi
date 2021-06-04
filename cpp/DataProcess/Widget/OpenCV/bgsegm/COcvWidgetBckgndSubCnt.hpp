@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/bgsegm/COcvBckgndSubCnt.hpp"
 
-class COcvWidgetBckgndSubCnt : public CProtocolTaskWidget
+class COcvWidgetBckgndSubCnt : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBckgndSubCnt(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubCnt(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetBckgndSubCnt(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubCnt(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBckgndSubCntParam>(pParam);
             init();
@@ -96,7 +96,7 @@ class COcvWidgetBckgndSubCntFactory : public CWidgetFactory
             m_name = QObject::tr("CNT background substractor").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBckgndSubCnt>(pParam);
         }

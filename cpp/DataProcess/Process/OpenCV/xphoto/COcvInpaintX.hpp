@@ -21,18 +21,18 @@
 #define COCVINPAINTX_HPP
 
 #include "opencv2/xphoto.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
-class COcvInpaintX : public CImageProcess2d
+class COcvInpaintX : public C2dImageTask
 {
     public:
 
-        COcvInpaintX() : CImageProcess2d()
+        COcvInpaintX() : C2dImageTask()
         {
         }
-        COcvInpaintX(const std::string name, const std::shared_ptr<CProtocolTaskParam>& pParam) : CImageProcess2d(name)
+        COcvInpaintX(const std::string name, const std::shared_ptr<CWorkflowTaskParam>& pParam) : C2dImageTask(name)
         {
-            m_pParam = std::make_shared<CProtocolTaskParam>(*pParam);
+            m_pParam = std::make_shared<CWorkflowTaskParam>(*pParam);
         }
 
         size_t  getProgressSteps() override
@@ -43,8 +43,8 @@ class COcvInpaintX : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
 
             if(pInput == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid input", __func__, __FILE__, __LINE__);
@@ -82,7 +82,7 @@ class COcvInpaintX : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -90,7 +90,7 @@ class COcvInpaintX : public CImageProcess2d
         }
 };
 
-class COcvInpaintXFactory : public CProcessFactory
+class COcvInpaintXFactory : public CTaskFactory
 {
     public:
 
@@ -104,13 +104,13 @@ class COcvInpaintXFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/daa/group__xphoto.html#gab4febba6be53e5fddc480b8cedf51eee";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
-            auto pParam = std::make_shared<CProtocolTaskParam>();
+            auto pParam = std::make_shared<CWorkflowTaskParam>();
             assert(pParam != nullptr);
             return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
         }

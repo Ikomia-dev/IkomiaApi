@@ -25,15 +25,15 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetL0Smooth : public CProtocolTaskWidget
+class COcvWidgetL0Smooth : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetL0Smooth(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetL0Smooth(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetL0Smooth(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetL0Smooth(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvL0SmoothParam>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetL0SmoothFactory : public CWidgetFactory
             m_name = QObject::tr("L0 smooth filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetL0Smooth>(pParam);
         }

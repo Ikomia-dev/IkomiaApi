@@ -20,7 +20,7 @@
 #ifndef CGMICCOLORPRESETS_HPP
 #define CGMICCOLORPRESETS_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -182,14 +182,14 @@ class CGmicColorPresetsParam: public CGmicTaskParam
 //-----------------------------//
 //----- CGmicColorPresets -----//
 //-----------------------------//
-class CGmicColorPresets : public CImageProcess2d
+class CGmicColorPresets : public C2dImageTask
 {
     public:
 
-        CGmicColorPresets() : CImageProcess2d()
+        CGmicColorPresets() : C2dImageTask()
         {
         }
-        CGmicColorPresets(const std::string name, const std::shared_ptr<CGmicColorPresetsParam>& pParam) : CImageProcess2d(name)
+        CGmicColorPresets(const std::string name, const std::shared_ptr<CGmicColorPresetsParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicColorPresetsParam>(*pParam);
         }
@@ -202,8 +202,8 @@ class CGmicColorPresets : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicColorPresetsParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -246,7 +246,7 @@ class CGmicColorPresets : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -254,7 +254,7 @@ class CGmicColorPresets : public CImageProcess2d
         }
 };
 
-class CGmicColorPresetsFactory : public CProcessFactory
+class CGmicColorPresetsFactory : public CTaskFactory
 {
     public:
 
@@ -269,7 +269,7 @@ class CGmicColorPresetsFactory : public CProcessFactory
             m_info.m_authors = "David Tschumperlé";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicColorPresetsParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -277,7 +277,7 @@ class CGmicColorPresetsFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicColorPresetsParam>();
             assert(pParam != nullptr);

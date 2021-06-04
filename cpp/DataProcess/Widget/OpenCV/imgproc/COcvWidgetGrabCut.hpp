@@ -27,15 +27,15 @@
 //-----------------------------//
 //----- COcvWidgetGrabCut -----//
 //-----------------------------//
-class COcvWidgetGrabCut : public CProtocolTaskWidget
+class COcvWidgetGrabCut : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGrabCut(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGrabCut(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGrabCut(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGrabCut(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGrabCutParam>(pParam);
             init();
@@ -158,7 +158,7 @@ class COcvWidgetGrabCutFactory : public CWidgetFactory
             m_name = QObject::tr("GrabCut Segmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGrabCut>(pParam);
         }

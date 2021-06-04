@@ -26,8 +26,8 @@
 #include "DataManagementGlobal.hpp"
 #include "CDataIO.hpp"
 
-using CVideoIO = CDataIO<CDataVideoIO, CMat>;
-using CVideoIOPtr = std::shared_ptr<CDataIO<CDataVideoIO, CMat>>;
+using CVideoDataIO = CDataIO<CDataVideoIO, CMat>;
+using CVideoDataIOPtr = std::shared_ptr<CDataIO<CDataVideoIO, CMat>>;
 using CDataVideoInfoPtr = std::shared_ptr<CDataVideoInfo>;
 
 class DATAMANAGEMENTSHARED_EXPORT CVideoDataManager : public CDataManager<CMat>
@@ -64,7 +64,7 @@ class DATAMANAGEMENTSHARED_EXPORT CVideoDataManager : public CDataManager<CMat>
 
     private:
 
-        CVideoIOPtr         getVideoIO(const std::string& fileName);
+        CVideoDataIOPtr     getVideoIO(const std::string& fileName);
 
         void                fillDataset(CDataset<CMat>& dataset, const SubsetBounds &subsetBounds, const CArrayDataInfo& arrayDataInfo);
 
@@ -81,13 +81,13 @@ class DATAMANAGEMENTSHARED_EXPORT CVideoDataManager : public CDataManager<CMat>
 
     private:
 
-        using CMapFileVideoIO = std::unordered_map<std::string, CVideoIOPtr>;
+        using CMapFileVideoIO = std::unordered_map<std::string, CVideoDataIOPtr>;
 
         CMapFileVideoIO     m_mapVideoIO;
         //Design choice : one video reader at a time -> to improve
-        CVideoIOPtr         m_pCurrentVideoIn = nullptr;
+        CVideoDataIOPtr     m_pCurrentVideoIn = nullptr;
         //Design choice : one video writer at a time -> to improve
-        CVideoIOPtr         m_pCurrentVideoOut = nullptr;
+        CVideoDataIOPtr     m_pCurrentVideoOut = nullptr;
         bool                m_bLive = false;
 };
 

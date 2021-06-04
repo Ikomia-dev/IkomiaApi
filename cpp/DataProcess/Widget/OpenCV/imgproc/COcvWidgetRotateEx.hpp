@@ -24,15 +24,15 @@
 #include "Process/OpenCV/imgproc/COcvRotateEx.hpp"
 #include <QDoubleSpinBox>
 
-class COcvWidgetRotateEx : public CProtocolTaskWidget
+class COcvWidgetRotateEx : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetRotateEx(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRotateEx(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetRotateEx(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRotateEx(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvRotateExParam>(pParam);
             init();
@@ -107,7 +107,7 @@ class COcvWidgetRotateExFactory : public CWidgetFactory
             m_name = QObject::tr("RotateEx").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRotateEx>(pParam);
         }

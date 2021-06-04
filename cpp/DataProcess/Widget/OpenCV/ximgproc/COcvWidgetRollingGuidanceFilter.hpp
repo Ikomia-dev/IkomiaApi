@@ -25,15 +25,15 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetRollingGuidanceFilter : public CProtocolTaskWidget
+class COcvWidgetRollingGuidanceFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetRollingGuidanceFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRollingGuidanceFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetRollingGuidanceFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRollingGuidanceFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvRollingGuidanceFilterParam>(pParam);
             init();
@@ -109,7 +109,7 @@ class COcvWidgetRollingGuidanceFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Rolling guidance filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRollingGuidanceFilter>(pParam);
         }

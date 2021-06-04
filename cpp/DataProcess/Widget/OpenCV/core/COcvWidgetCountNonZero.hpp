@@ -30,7 +30,7 @@ class COcvWidgetCountNonZero : public CWidgetApplyOnly
         COcvWidgetCountNonZero(QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(parent)
         {
         }
-        COcvWidgetCountNonZero(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetCountNonZero(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -44,7 +44,7 @@ class COcvWidgetCountNonZeroFactory : public CWidgetFactory
             m_name = QObject::tr("CountNonZero").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetCountNonZero>(pParam);
         }

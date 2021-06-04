@@ -149,7 +149,7 @@ bool CVideoDataManager::checkMemory(const CArrayDataInfo &arrayDataInfo)
             return true;
 
         // if not single or volume image, try video
-        CVideoIO videoio(filename);
+        CVideoDataIO videoio(filename);
         auto pVideoInfo = std::static_pointer_cast<CDataVideoInfo>(videoio.dataInfo());
         assert(pVideoInfo != nullptr);
         size_t videoSize = pVideoInfo->m_width * pVideoInfo->m_height * pVideoInfo->m_nbBand * pVideoInfo->getElementSize() * pVideoInfo->m_frameCount;
@@ -188,7 +188,7 @@ void CVideoDataManager::setCurrentVideoIO(CDataset<CMat> &dataset)
         return;
 }
 
-CVideoIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
+CVideoDataIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
 {
     std::string videoPath = fileName;
     std::string extension = Utils::File::extension(fileName);
@@ -203,12 +203,12 @@ CVideoIOPtr CVideoDataManager::getVideoIO(const std::string &fileName)
     {
         if(m_bLive)
         {
-            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoIO>(true, fileName)));
+            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoDataIO>(true, fileName)));
             return itNew.first->second;
         }
         else
         {
-            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoIO>(fileName)));
+            auto itNew = m_mapVideoIO.emplace(std::make_pair(videoPath, std::make_shared<CVideoDataIO>(fileName)));
             return itNew.first->second;
         }
     }

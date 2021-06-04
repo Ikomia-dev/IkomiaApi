@@ -150,7 +150,7 @@ void CDataImageIO::allocateDataIOPtr(const std::string &fileName)
     }
 }
 
-CDataImageIO::CImageIOPtr CDataImageIO::_allocateDataIOPtr(const std::string &fileName)
+CDataImageIO::CImageDataIOPtr CDataImageIO::_allocateDataIOPtr(const std::string &fileName)
 {
     if(boost::filesystem::is_directory(fileName))
         return std::make_unique<CDicomImageIO>(fileName);

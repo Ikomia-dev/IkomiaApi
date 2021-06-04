@@ -26,16 +26,16 @@
 #include <QLabel>
 #include <QGridLayout>
 
-class COcvWidgetDetailEnhance : public CProtocolTaskWidget
+class COcvWidgetDetailEnhance : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDetailEnhance(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDetailEnhance(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDetailEnhance(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDetailEnhance(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDetailEnhanceParam>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetDetailEnhanceFactory : public CWidgetFactory
             m_name = QObject::tr("Detail Enhance Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDetailEnhance>(pParam);
         }

@@ -20,17 +20,17 @@
 #ifndef COCVMORPHOLOGYEX_HPP
 #define COCVMORPHOLOGYEX_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //---------------------------------//
 //----- COcvMorphologyExParam -----//
 //---------------------------------//
-class COcvMorphologyExParam: public CProtocolTaskParam
+class COcvMorphologyExParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMorphologyExParam() : CProtocolTaskParam(){}
+        COcvMorphologyExParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -73,14 +73,14 @@ class COcvMorphologyExParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvMorphologyEx -----//
 //-------------------------//
-class COcvMorphologyEx : public CImageProcess2d
+class COcvMorphologyEx : public C2dImageTask
 {
     public:
 
-        COcvMorphologyEx() : CImageProcess2d()
+        COcvMorphologyEx() : C2dImageTask()
         {
         }
-        COcvMorphologyEx(const std::string name, const std::shared_ptr<COcvMorphologyExParam>& pParam) : CImageProcess2d(name)
+        COcvMorphologyEx(const std::string name, const std::shared_ptr<COcvMorphologyExParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvMorphologyExParam>(*pParam);
         }
@@ -93,8 +93,8 @@ class COcvMorphologyEx : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMorphologyExParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -125,7 +125,7 @@ class COcvMorphologyEx : public CImageProcess2d
             if(pInput->getDataType() == IODataType::IMAGE_BINARY)
                 getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -133,7 +133,7 @@ class COcvMorphologyEx : public CImageProcess2d
         }
 };
 
-class COcvMorphologyExFactory : public CProcessFactory
+class COcvMorphologyExFactory : public CTaskFactory
 {
     public:
 
@@ -152,7 +152,7 @@ class COcvMorphologyExFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pMorphologyExParam = std::dynamic_pointer_cast<COcvMorphologyExParam>(pParam);
             if(pMorphologyExParam != nullptr)
@@ -160,7 +160,7 @@ class COcvMorphologyExFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pMorphologyExParam = std::make_shared<COcvMorphologyExParam>();
             assert(pMorphologyExParam != nullptr);

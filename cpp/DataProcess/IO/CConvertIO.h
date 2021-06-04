@@ -22,8 +22,8 @@
 #ifndef CCONVERTIO_H
 #define CCONVERTIO_H
 
-#include "Protocol/CProtocolTaskIO.h"
-#include "IO/CVideoProcessIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
+#include "IO/CVideoIO.h"
 
 class CConvertIO
 {
@@ -31,17 +31,17 @@ class CConvertIO
 
         CConvertIO();
 
-        static ImageProcessIOPtr    convertToImageIO(const ProtocolTaskIOPtr& ioFrom);
-        static VideoProcessIOPtr    convertToVideoIO(const ProtocolTaskIOPtr& ioFrom);
-        static VideoProcessIOPtr    convertToStreamIO(const ProtocolTaskIOPtr& ioFrom);
-        static ImageProcessIOPtr    convertToVolumeIO(const ProtocolTaskIOPtr& ioFrom);
+        static ImageIOPtr    convertToImageIO(const WorkflowTaskIOPtr& ioFrom);
+        static VideoIOPtr    convertToVideoIO(const WorkflowTaskIOPtr& ioFrom);
+        static VideoIOPtr    convertToStreamIO(const WorkflowTaskIOPtr& ioFrom);
+        static ImageIOPtr    convertToVolumeIO(const WorkflowTaskIOPtr& ioFrom);
 
     private:
 
-        static IODataType           getTargetImageType(IODataType srcType);
-        static IODataType           getTargetVideoType(IODataType srcType);
-        static IODataType           getTargetStreamType(IODataType srcType);
-        static IODataType           getTargetVolumeType(IODataType srcType);
+        static IODataType   getTargetImageType(IODataType srcType);
+        static IODataType   getTargetVideoType(IODataType srcType);
+        static IODataType   getTargetStreamType(IODataType srcType);
+        static IODataType   getTargetVolumeType(IODataType srcType);
 };
 
 #endif // CCONVERTIO_H

@@ -82,7 +82,7 @@ class COcvDnnSegmentation: public COcvDnnProcess
 //----------------------------------//
 //----- COcvDnnSegmentationFactory -----//
 //----------------------------------//
-class COcvDnnSegmentationFactory : public CProcessFactory
+class COcvDnnSegmentationFactory : public CTaskFactory
 {
     public:
 
@@ -96,7 +96,7 @@ class COcvDnnSegmentationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/d0f/group__dnn.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvDnnSegmentationParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -104,7 +104,7 @@ class COcvDnnSegmentationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvDnnSegmentationParam>();
             assert(pDerivedParam != nullptr);

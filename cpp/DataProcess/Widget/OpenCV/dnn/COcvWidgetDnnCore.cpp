@@ -19,13 +19,13 @@
 
 #include "COcvWidgetDnnCore.h"
 
-COcvWidgetDnnCore::COcvWidgetDnnCore(QWidget *parent) : CProtocolTaskWidget(parent)
+COcvWidgetDnnCore::COcvWidgetDnnCore(QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     init();
     initConnections();
 }
 
-COcvWidgetDnnCore::COcvWidgetDnnCore(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent) : CProtocolTaskWidget(parent)
+COcvWidgetDnnCore::COcvWidgetDnnCore(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     m_pParam = std::dynamic_pointer_cast<COcvDnnCoreParam>(pParam);
     init();

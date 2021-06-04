@@ -19,9 +19,9 @@
 
 #include "CRunTaskManager.h"
 #include "Data/CDataVideoInfo.h"
-#include "IO/CImageProcessIO.h"
-#include "IO/CVideoProcessIO.h"
-#include "IO/CGraphicsProcessOutput.h"
+#include "IO/CImageIO.h"
+#include "IO/CVideoIO.h"
+#include "IO/CGraphicsOutput.h"
 #include "Main/CoreTools.hpp"
 
 CRunTaskManager::CRunTaskManager()
@@ -38,7 +38,7 @@ void CRunTaskManager::setCfg(std::map<std::string, std::string> *pCfg)
     m_pCfg = pCfg;
 }
 
-void CRunTaskManager::run(const ProtocolTaskPtr &pTask, const std::string inputName)
+void CRunTaskManager::run(const WorkflowTaskPtr &pTask, const std::string inputName)
 {
     m_bStop = false;
 
@@ -47,40 +47,40 @@ void CRunTaskManager::run(const ProtocolTaskPtr &pTask, const std::string inputN
 
     switch(pTask->getType())
     {
-        case CProtocolTask::Type::GENERIC:
-        case CProtocolTask::Type::DNN_TRAIN:
+        case CWorkflowTask::Type::GENERIC:
+        case CWorkflowTask::Type::DNN_TRAIN:
             pTask->run();
             break;
-        case CProtocolTask::Type::IMAGE_PROCESS_2D:
+        case CWorkflowTask::Type::IMAGE_PROCESS_2D:
             runImageProcess2D(pTask, inputName);
             break;
-        case CProtocolTask::Type::IMAGE_PROCESS_3D:
+        case CWorkflowTask::Type::IMAGE_PROCESS_3D:
             pTask->run();
             break;
-        case CProtocolTask::Type::VIDEO:
+        case CWorkflowTask::Type::VIDEO:
             runVideoProcess(pTask, inputName);
             break;
     }
 }
 
-void CRunTaskManager::stop(const ProtocolTaskPtr &taskPtr)
+void CRunTaskManager::stop(const WorkflowTaskPtr &taskPtr)
 {
     m_bStop = true;
     if(taskPtr)
         taskPtr->stop();
 }
 
-void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const std::string& inputName)
+void CRunTaskManager::runImageProcess2D(const WorkflowTaskPtr &taskPtr, const std::string& inputName)
 {
     //Thread safety -> scoped lock for all inputs/outputs
-    //Access through CObjectLocker<CProtocolTaskIO> ioLock(*ioPtr);
+    //Access through CObjectLocker<CWorkflowTaskIO> ioLock(*ioPtr);
     //auto inputLocks = taskPtr->createInputScopedLocks();
     //auto outputLocks = taskPtr->createOutputScopedLocks();
     const std::set<IODataType> volumeTypes = {IODataType::VOLUME, IODataType::VOLUME_LABEL, IODataType::VOLUME_BINARY};
     const std::set<IODataType> videoTypes = {IODataType::VIDEO, IODataType::VIDEO_LABEL, IODataType::VIDEO_BINARY};
 
     if(taskPtr->hasInput(volumeTypes) &&
-        ((taskPtr->isActionFlagEnable(CProtocolTask::ActionFlag::APPLY_VOLUME)) || m_bBatchMode == true))
+        ((taskPtr->isActionFlagEnable(CWorkflowTask::ActionFlag::APPLY_VOLUME)) || m_bBatchMode == true))
     {
         //Get volume inputs
         auto imageInputs = taskPtr->getInputs(volumeTypes);
@@ -88,12 +88,12 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
             return;
 
         //Check volume size
-        CMat firstVolume = std::static_pointer_cast<CImageProcessIO>(imageInputs[0])->getData();
+        CMat firstVolume = std::static_pointer_cast<CImageIO>(imageInputs[0])->getData();
         for(size_t i=1; i<imageInputs.size(); ++i)
         {
             if(imageInputs[i]->isDataAvailable())
             {
-                CMat volume = std::static_pointer_cast<CImageProcessIO>(imageInputs[i])->getData();
+                CMat volume = std::static_pointer_cast<CImageIO>(imageInputs[i])->getData();
                 if(firstVolume.size != volume.size)
                     throw CException(CoreExCode::INVALID_SIZE, QObject::tr("Different volume dimensions").toStdString(), __func__, __FILE__, __LINE__);
             }
@@ -105,7 +105,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
         {
             //Set the current image from the 3D input to process
             for(size_t j=0; j<imageInputs.size(); ++j)
-                std::static_pointer_cast<CImageProcessIO>(imageInputs[j])->setCurrentImage(i);
+                std::static_pointer_cast<CImageIO>(imageInputs[j])->setCurrentImage(i);
 
             //Run process
             taskPtr->run();
@@ -116,7 +116,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
                 auto volumeOutputs = taskPtr->getOutputs(volumeTypes);
                 for(size_t j=0; j<volumeOutputs.size(); ++j)
                 {
-                    auto ouputPtr = std::static_pointer_cast<CImageProcessIO>(volumeOutputs[j]);
+                    auto ouputPtr = std::static_pointer_cast<CImageIO>(volumeOutputs[j]);
                     volumes.emplace_back(CMat((int)firstVolume.getNbRows(), (int)firstVolume.getNbCols(), (int)firstVolume.getNbStacks(), ouputPtr->getImage().type()));
                 }
             }
@@ -124,7 +124,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
             //Insert 2D image into output 3D CMat
             for(size_t j=0; j<volumes.size(); ++j)
             {
-                auto pOutput = std::static_pointer_cast<CImageProcessIO>(taskPtr->getOutput(j));
+                auto pOutput = std::static_pointer_cast<CImageIO>(taskPtr->getOutput(j));
                 volumes[j].setPlane(i, pOutput->getImage());
             }
         }
@@ -132,7 +132,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
         //Set final output of task
         for(size_t i=0; i<volumes.size(); ++i)
         {
-            auto pOutput = std::static_pointer_cast<CImageProcessIO>(taskPtr->getOutput(i));
+            auto pOutput = std::static_pointer_cast<CImageIO>(taskPtr->getOutput(i));
             pOutput->setImage(volumes[i]);
         }
     }
@@ -146,7 +146,7 @@ void CRunTaskManager::runImageProcess2D(const ProtocolTaskPtr &taskPtr, const st
     }
 }
 
-void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string& inputName)
+void CRunTaskManager::runVideoProcess(const WorkflowTaskPtr& taskPtr, const std::string& inputName)
 {
     if(m_bBatchMode == true)
     {
@@ -168,7 +168,7 @@ void CRunTaskManager::runVideoProcess(const ProtocolTaskPtr& taskPtr, const std:
     }
 }
 
-void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const std::string& inputName)
+void CRunTaskManager::runWholeVideoProcess(const WorkflowTaskPtr &taskPtr, const std::string& inputName)
 {
     bool bImageSequence = false;
     const std::set<IODataType> videoTypes = {IODataType::VIDEO, IODataType::VIDEO_LABEL, IODataType::VIDEO_BINARY};
@@ -185,7 +185,7 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const
 
     for(size_t i=0; i<videoInputs.size(); ++i)
     {
-        auto inputPtr = std::static_pointer_cast<CVideoProcessIO>(videoInputs[i]);
+        auto inputPtr = std::static_pointer_cast<CVideoIO>(videoInputs[i]);
 
         //Check source type
         auto infoPtr = std::static_pointer_cast<CDataVideoInfo>(inputPtr->getDataInfo());
@@ -203,7 +203,7 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const
     {
         // Set save path
         std::string outPath;
-        auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(videoOutputs[i]);
+        auto outputPtr = std::static_pointer_cast<CVideoIO>(videoOutputs[i]);
         Utils::File::createDirectory(taskPtr->getOutputFolder());
 
         if(bImageSequence)
@@ -236,20 +236,20 @@ void CRunTaskManager::runWholeVideoProcess(const ProtocolTaskPtr &taskPtr, const
 
     for(size_t i=0; i<videoInputs.size(); ++i)
     {
-        auto inputPtr = std::static_pointer_cast<CVideoProcessIO>(videoInputs[i]);
+        auto inputPtr = std::static_pointer_cast<CVideoIO>(videoInputs[i]);
         inputPtr->stopVideo();
     }
 
     for(size_t i=0; i<videoOutputs.size(); ++i)
     {
-        auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(videoOutputs[i]);
+        auto outputPtr = std::static_pointer_cast<CVideoIO>(videoOutputs[i]);
         outputPtr->waitWriteFinished();
         outputPtr->stopVideoWrite();
         outputPtr->setVideoPos(0);
     }
 }
 
-void CRunTaskManager::saveVideoOutputs(const ProtocolTaskPtr &taskPtr, const InputOutputVect &outputs)
+void CRunTaskManager::saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect &outputs)
 {
     bool bEmbedGraphics = false;
     InputOutputVect graphicsOutputs;
@@ -266,14 +266,14 @@ void CRunTaskManager::saveVideoOutputs(const ProtocolTaskPtr &taskPtr, const Inp
 
     for(size_t i=0; i<outputs.size(); ++i)
     {
-        auto outputPtr = std::static_pointer_cast<CVideoProcessIO>(outputs[i]);
+        auto outputPtr = std::static_pointer_cast<CVideoIO>(outputs[i]);
         CMat img = outputPtr->getImage();
 
         if(bEmbedGraphics && graphicsOutputs.size() > 0)
         {
             for(size_t j=0; j<graphicsOutputs.size(); ++j)
             {
-                auto graphicsOutPtr = std::static_pointer_cast<CGraphicsProcessOutput>(graphicsOutputs[j]);
+                auto graphicsOutPtr = std::static_pointer_cast<CGraphicsOutput>(graphicsOutputs[j]);
                 if(graphicsOutPtr->getImageIndex() == (int)i)
                 {
                     CGraphicsConversion graphicsConv((int)img.getNbCols(), (int)img.getNbRows());

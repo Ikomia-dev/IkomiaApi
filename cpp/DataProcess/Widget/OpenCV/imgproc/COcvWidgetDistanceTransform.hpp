@@ -28,16 +28,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetDistanceTransform : public CProtocolTaskWidget
+class COcvWidgetDistanceTransform : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDistanceTransform(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDistanceTransform(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDistanceTransform(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDistanceTransform(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDistanceTransformParam>(pParam);
             init();
@@ -120,7 +120,7 @@ class COcvWidgetDistanceTransformFactory : public CWidgetFactory
             m_name = QObject::tr("Distance Transform").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetDistanceTransform>(pParam);
         }

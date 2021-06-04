@@ -28,15 +28,15 @@
 //#include <Widgets/QtPropertyBrowser/qtvariantproperty.h>
 //#include <Widgets/QtPropertyBrowser/qtgroupboxpropertybrowser.h>
 
-class COcvWidgetBilateral : public CProtocolTaskWidget
+class COcvWidgetBilateral : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBilateral(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBilateral(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetBilateral(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBilateral(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBilateralParam>(pParam);
             init();
@@ -130,7 +130,7 @@ class COcvWidgetBilateralFactory : public CWidgetFactory
             m_name = QObject::tr("Bilateral Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBilateral>(pParam);
         }

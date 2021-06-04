@@ -26,16 +26,16 @@
 #include <QGroupBox>
 #include <QVBoxLayout>
 
-class COcvWidgetCascadeClassifier : public CProtocolTaskWidget
+class COcvWidgetCascadeClassifier : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCascadeClassifier(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCascadeClassifier(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCascadeClassifier(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCascadeClassifier(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCascadeClassifierParam>(pParam);
             init();
@@ -123,7 +123,7 @@ class COcvWidgetCascadeClassifierFactory : public CWidgetFactory
             m_name = QObject::tr("Cascade Classifier Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetCascadeClassifier>(pParam);
         }

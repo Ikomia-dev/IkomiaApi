@@ -30,7 +30,7 @@ class COcvWidgetExp : public CWidgetApplyOnly
         COcvWidgetExp(QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(parent)
         {
         }
-        COcvWidgetExp(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetExp(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -44,7 +44,7 @@ class COcvWidgetExpFactory : public CWidgetFactory
             m_name = QObject::tr("Exponent").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetExp>(pParam);
         }

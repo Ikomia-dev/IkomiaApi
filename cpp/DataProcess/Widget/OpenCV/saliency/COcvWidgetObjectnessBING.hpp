@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetObjectnessBING : public CProtocolTaskWidget
+class COcvWidgetObjectnessBING : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetObjectnessBING(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetObjectnessBING(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetObjectnessBING(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetObjectnessBING(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvObjectnessBINGParam>(pParam);
             init();
@@ -71,7 +71,7 @@ class COcvWidgetObjectnessBINGFactory : public CWidgetFactory
             m_name = QObject::tr("ObjectnessBING").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetObjectnessBING>(pParam);
         }

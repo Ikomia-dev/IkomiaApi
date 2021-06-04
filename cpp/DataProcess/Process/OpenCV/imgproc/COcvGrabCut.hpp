@@ -20,12 +20,12 @@
 #ifndef COCVGRABCUT_HPP
 #define COCVGRABCUT_HPP
 
-#include "Core/CInteractiveImageProcess2d.h"
+#include "Core/C2dImageInteractiveTask.h"
 
 //----------------------------//
 //----- COcvGrabCutParam -----//
 //----------------------------//
-class COcvGrabCutParam: public CProtocolTaskParam
+class COcvGrabCutParam: public CWorkflowTaskParam
 {
     public:
 
@@ -62,24 +62,24 @@ class COcvGrabCutParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvGrabCut -----//
 //-----------------------//
-class COcvGrabCut : public CInteractiveImageProcess2d
+class COcvGrabCut : public C2dImageInteractiveTask
 {
     public:
 
-        COcvGrabCut() : CInteractiveImageProcess2d()
+        COcvGrabCut() : C2dImageInteractiveTask()
         {
             //Remove graphics input
             removeInput(1);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvGrabCut(const std::string name, const std::shared_ptr<COcvGrabCutParam>& pParam) : CInteractiveImageProcess2d(name)
+        COcvGrabCut(const std::string name, const std::shared_ptr<COcvGrabCutParam>& pParam) : C2dImageInteractiveTask(name)
         {
             //Remove graphics input
             removeInput(1);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
             m_pParam = std::make_shared<COcvGrabCutParam>(*pParam);
         }
@@ -124,8 +124,8 @@ class COcvGrabCut : public CInteractiveImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvGrabCutParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -169,7 +169,7 @@ class COcvGrabCut : public CInteractiveImageProcess2d
             applyGraphicsMaskToBinary(imgDst, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
             {
                 imgDst *= 255;
@@ -204,7 +204,7 @@ class COcvGrabCut : public CInteractiveImageProcess2d
         {
             if(m_mask.empty())
             {
-                auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+                auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
                 CMat imgSrc = pInput->getImage();
                 m_mask.create(imgSrc.size(), CV_8UC1);
             }
@@ -219,7 +219,7 @@ class COcvGrabCut : public CInteractiveImageProcess2d
         {
             if(m_mask.empty())
             {
-                auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+                auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
                 CMat imgSrc = pInput->getImage();
                 m_mask.create(imgSrc.size(), CV_8UC1);
             }
@@ -227,7 +227,7 @@ class COcvGrabCut : public CInteractiveImageProcess2d
             auto pItemInterface = dynamic_cast<CGraphicsItem*>(pItem);
             if(pItemInterface)
             {
-                auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+                auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
                 CMat imgSrc = pInput->getImage();
                 CGraphicsConversion converter((int)imgSrc.getNbRows(), (int)imgSrc.getNbCols());
                 pItemInterface->insertToImage(m_mask, converter, true, true);
@@ -258,7 +258,7 @@ class COcvGrabCut : public CInteractiveImageProcess2d
 //------------------------------//
 //----- COcvGrabCutFactory -----//
 //------------------------------//
-class COcvGrabCutFactory : public CProcessFactory
+class COcvGrabCutFactory : public CTaskFactory
 {
     public:
 
@@ -272,7 +272,7 @@ class COcvGrabCutFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGrabCutParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -280,7 +280,7 @@ class COcvGrabCutFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGrabCutParam>();
             assert(pDerivedParam != nullptr);

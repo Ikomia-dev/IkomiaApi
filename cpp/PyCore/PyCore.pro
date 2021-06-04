@@ -21,10 +21,10 @@ SOURCES += \
         ../Core/Data/CvMatNumpyArrayConverter.cpp \
         CGraphicsItemWrap.cpp \
         PyCore.cpp \
-        CProtocolTaskIOWrap.cpp \
-        CProtocolTaskParamWrap.cpp \
-        CProtocolTaskWrap.cpp \
-        CProtocolTaskWidgetWrap.cpp
+        CWorkflowTaskIOWrap.cpp \
+        CWorkflowTaskParamWrap.cpp \
+        CWorkflowTaskWrap.cpp \
+        CWorkflowTaskWidgetWrap.cpp
 
 HEADERS += \
         ../Core/Data/CvMatNumpyArrayConverter.h \
@@ -32,10 +32,10 @@ HEADERS += \
         PyCore.h \
         PyCoreDocString.hpp \
         PyCoreGlobal.h \
-        CProtocolTaskIOWrap.h \
-        CProtocolTaskParamWrap.h \
-        CProtocolTaskWrap.h \
-        CProtocolTaskWidgetWrap.h \
+        CWorkflowTaskIOWrap.h \
+        CWorkflowTaskParamWrap.h \
+        CWorkflowTaskWrap.h \
+        CWorkflowTaskWidgetWrap.h \
         PyCoreTools.hpp
 
 #macx:QMAKE_RPATHDIR += @executable_path/../Frameworks

@@ -3441,22 +3441,22 @@
         <translation type="vanished">Défaut</translation>
     </message>
     <message>
-        <location filename="../Core/CVideoProcessTracking.cpp" line="49"/>
+        <location filename="../Core/CVideoTrackingTask.cpp" line="49"/>
         <source>Tracker requires rectangular object</source>
         <translation>Le suivi nécessite un objet graphique rectangulaire</translation>
     </message>
     <message>
-        <location filename="../Core/CVideoProcessTracking.cpp" line="54"/>
+        <location filename="../Core/CVideoTrackingTask.cpp" line="54"/>
         <source>Tracker can only track one rectangular object</source>
         <translation>La méthode ne peut suivre qu&apos;un seul objet rectangulaire</translation>
     </message>
     <message>
-        <location filename="../Core/CVideoProcessTracking.cpp" line="59"/>
+        <location filename="../Core/CVideoTrackingTask.cpp" line="59"/>
         <source>Tracker can only track rectangular object</source>
         <translation>La méthode ne peut suivre qu&apos;un objet rectangulaire</translation>
     </message>
     <message>
-        <location filename="../Core/CVideoProcessTracking.cpp" line="96"/>
+        <location filename="../Core/CVideoTrackingTask.cpp" line="96"/>
         <location filename="../Process/OpenCV/video/COcvCamShift.hpp" line="228"/>
         <location filename="../Process/OpenCV/video/COcvMeanShift.hpp" line="219"/>
         <source>Tracked ROI</source>
@@ -6053,37 +6053,37 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="858"/>
+        <location filename="../Core/CWorkflow.cpp" line="858"/>
         <source>No valid connection available, please check input/output data types.</source>
         <translation>Aucune connexion possible, merci de vérifier les types de données d&apos;entrée/sortie.</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="885"/>
+        <location filename="../Core/CWorkflow.cpp" line="885"/>
         <source>Invalid connection between output #%1 of %2 (%3) and input #%4 of %5 (%6)</source>
         <translation>Connexion invalide entre la sortie #%1 de %2 (%3) et l&apos;entrée #%4 de %5 (%6)</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="954"/>
+        <location filename="../Core/CWorkflow.cpp" line="954"/>
         <source>One connection has been removed</source>
         <translation>Une connexion a été supprimée</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1142"/>
+        <location filename="../Core/CWorkflow.cpp" line="1142"/>
         <source>Workflow stop requested by user</source>
         <translation>Arrêt du workflow demandé par l&apos;utilisateur</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1188"/>
+        <location filename="../Core/CWorkflow.cpp" line="1188"/>
         <source>Stopping workflow...</source>
         <translation>Workflow en cours d&apos;arrêt...</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1218"/>
+        <location filename="../Core/CWorkflow.cpp" line="1218"/>
         <source>No possible connection to input #%1</source>
         <translation>Aucune connexion possible à l&apos;entrée #%1</translation>
     </message>
     <message>
-        <location filename="../Core/CProtocol.cpp" line="1240"/>
+        <location filename="../Core/CWorkflow.cpp" line="1240"/>
         <source>Data type mismatch on input #%1 between type %2 and type %3</source>
         <translation>Incompatibilité de type de données sur l&apos;entrée #%1 entre %2 et %3</translation>
     </message>
@@ -6104,7 +6104,7 @@
         <translation>Dataset d&apos;images annotées au format Ikomia (Deep Learning).</translation>
     </message>
     <message>
-        <location filename="../IO/CFeatureProcessIO.hpp" line="203"/>
+        <location filename="../IO/CFeatureIO.hpp" line="203"/>
         <source>Numerical values structured as table data (headers, labels and values).
 Can be displayed as table or plot.</source>
         <translation>Valeurs numériques structurées en tableau (entêtes, intitulés et valeurs).
@@ -6117,8 +6117,8 @@ Used as input only.</source>
 Utilisé en entrée seulement.</translation>
     </message>
     <message>
-        <location filename="../IO/CGraphicsProcessInput.cpp" line="26"/>
-        <location filename="../IO/CGraphicsProcessInput.cpp" line="34"/>
+        <location filename="../IO/CGraphicsInput.cpp" line="26"/>
+        <location filename="../IO/CGraphicsInput.cpp" line="34"/>
         <source>Graphics items organized in layer.
 Represent shapes and types of objects in image.
 Graphics can be created interactively by user.</source>
@@ -6127,24 +6127,24 @@ Permet de representer les objets d&apos;une image.
 Possibilité d&apos;être dessinés par l&apos;utilisateur.</translation>
     </message>
     <message>
-        <location filename="../IO/CGraphicsProcessOutput.cpp" line="35"/>
+        <location filename="../IO/CGraphicsOutput.cpp" line="35"/>
         <source>Graphics items organized in layer.
 Represent shapes and types of objects extracted from image.</source>
         <translation>Eléments graphiques organisés en couche.
 Permet de représenter les objets détectés dans une image.</translation>
     </message>
     <message>
-        <location filename="../IO/CImageProcessIO.cpp" line="26"/>
-        <location filename="../IO/CImageProcessIO.cpp" line="33"/>
-        <location filename="../IO/CImageProcessIO.cpp" line="44"/>
-        <location filename="../IO/CImageProcessIO.cpp" line="51"/>
+        <location filename="../IO/CImageIO.cpp" line="26"/>
+        <location filename="../IO/CImageIO.cpp" line="33"/>
+        <location filename="../IO/CImageIO.cpp" line="44"/>
+        <location filename="../IO/CImageIO.cpp" line="51"/>
         <source>2D or 3D images.
 Can be single frame from video or camera stream.</source>
         <translation>Image 2D ou 3D.
 Peut aussi réprésenter une frame de vidéo.</translation>
     </message>
     <message>
-        <location filename="../IO/CMeasureProcessIO.cpp" line="52"/>
+        <location filename="../IO/CMeasureIO.cpp" line="52"/>
         <source>Predefined measures computed from connected components (Surface, perimeter...).</source>
         <translation>Mesures prédéfinies calculées sur composantes connexes (surface, périmètre...).</translation>
     </message>
@@ -6156,19 +6156,19 @@ Peut aussi réprésenter une frame de vidéo.</translation>
         <translation>Chemin de fichier ou répertoire.</translation>
     </message>
     <message>
-        <location filename="../IO/CVideoProcessIO.cpp" line="27"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="33"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="39"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="45"/>
+        <location filename="../IO/CVideoIO.cpp" line="27"/>
+        <location filename="../IO/CVideoIO.cpp" line="33"/>
+        <location filename="../IO/CVideoIO.cpp" line="39"/>
+        <location filename="../IO/CVideoIO.cpp" line="45"/>
         <source>Video with read/write capabilities.</source>
         <translation>Vidéo en lecture/écriture.</translation>
     </message>
     <message>
-        <location filename="../IO/CVideoProcessIO.cpp" line="90"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="98"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="106"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="114"/>
-        <location filename="../IO/CVideoProcessIO.cpp" line="122"/>
+        <location filename="../IO/CVideoIO.cpp" line="90"/>
+        <location filename="../IO/CVideoIO.cpp" line="98"/>
+        <location filename="../IO/CVideoIO.cpp" line="106"/>
+        <location filename="../IO/CVideoIO.cpp" line="114"/>
+        <location filename="../IO/CVideoIO.cpp" line="122"/>
         <source>Video buffer pointer is null.</source>
         <translation>Video buffer pointer is null.</translation>
     </message>

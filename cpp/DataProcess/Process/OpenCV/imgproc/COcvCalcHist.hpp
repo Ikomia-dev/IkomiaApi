@@ -20,18 +20,18 @@
 #ifndef COCVCALCHIST_HPP
 #define COCVCALCHIST_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
-#include "IO/CFeatureProcessIO.hpp"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
+#include "IO/CFeatureIO.hpp"
 
 //------------------------------//
 //----- COcvCalcHistParam -----//
 //------------------------------//
-class COcvCalcHistParam: public CProtocolTaskParam
+class COcvCalcHistParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCalcHistParam() : CProtocolTaskParam(){}
+        COcvCalcHistParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -77,18 +77,18 @@ class COcvCalcHistParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvCalcHist -----//
 //-------------------------//
-class COcvCalcHist : public CImageProcess2d
+class COcvCalcHist : public C2dImageTask
 {
     public:
 
-        COcvCalcHist() : CImageProcess2d()
+        COcvCalcHist() : C2dImageTask()
         {
-            addOutput(std::make_shared<CFeatureProcessIO<double>>());
+            addOutput(std::make_shared<CFeatureIO<double>>());
         }
-        COcvCalcHist(const std::string name, const std::shared_ptr<COcvCalcHistParam>& pParam) : CImageProcess2d(name)
+        COcvCalcHist(const std::string name, const std::shared_ptr<COcvCalcHistParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvCalcHistParam>(*pParam);
-            addOutput(std::make_shared<CFeatureProcessIO<double>>());
+            addOutput(std::make_shared<CFeatureIO<double>>());
         }
 
         size_t  getProgressSteps() override
@@ -101,8 +101,8 @@ class COcvCalcHist : public CImageProcess2d
             if(getOutputCount() == 0)
                 throw CException(CoreExCode::INVALID_SIZE, "Wrong outputs count", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
 
             if(pOutput)
                 pOutput->setImage(pInput->getImage());
@@ -111,8 +111,8 @@ class COcvCalcHist : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvCalcHistParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -156,7 +156,7 @@ class COcvCalcHist : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureProcessIO<double>>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<double>>(getOutput(1));
             if(pOutput)
             {
                 assert(valuesByChannels.size() == namesByChannels.size());
@@ -173,7 +173,7 @@ class COcvCalcHist : public CImageProcess2d
         }
 };
 
-class COcvCalcHistFactory : public CProcessFactory
+class COcvCalcHistFactory : public CTaskFactory
 {
     public:
 
@@ -187,7 +187,7 @@ class COcvCalcHistFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvCalcHistParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -195,7 +195,7 @@ class COcvCalcHistFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvCalcHistParam>();
             assert(pDerivedParam != nullptr);

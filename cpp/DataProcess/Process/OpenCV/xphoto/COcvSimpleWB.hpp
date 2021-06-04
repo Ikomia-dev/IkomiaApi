@@ -20,18 +20,18 @@
 #ifndef COCVSIMPLEWB_HPP
 #define COCVSIMPLEWB_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/xphoto.hpp>
 
 //------------------------------//
 //----- COcvSimpleWBParam -----//
 //------------------------------//
-class COcvSimpleWBParam: public CProtocolTaskParam
+class COcvSimpleWBParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSimpleWBParam() : CProtocolTaskParam(){}
+        COcvSimpleWBParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -65,14 +65,14 @@ class COcvSimpleWBParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvSimpleWB -----//
 //-------------------------//
-class COcvSimpleWB : public CImageProcess2d
+class COcvSimpleWB : public C2dImageTask
 {
     public:
 
-        COcvSimpleWB() : CImageProcess2d()
+        COcvSimpleWB() : C2dImageTask()
         {
         }
-        COcvSimpleWB(const std::string name, const std::shared_ptr<COcvSimpleWBParam>& pParam) : CImageProcess2d(name)
+        COcvSimpleWB(const std::string name, const std::shared_ptr<COcvSimpleWBParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvSimpleWBParam>(*pParam);
         }
@@ -85,8 +85,8 @@ class COcvSimpleWB : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSimpleWBParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -119,7 +119,7 @@ class COcvSimpleWB : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -127,7 +127,7 @@ class COcvSimpleWB : public CImageProcess2d
         }
 };
 
-class COcvSimpleWBFactory : public CProcessFactory
+class COcvSimpleWBFactory : public CTaskFactory
 {
     public:
 
@@ -141,7 +141,7 @@ class COcvSimpleWBFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d8b/classcv_1_1xphoto_1_1SimpleWB.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSimpleWBParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -149,7 +149,7 @@ class COcvSimpleWBFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvSimpleWBParam>();
             assert(pDerivedParam != nullptr);

@@ -20,18 +20,18 @@
 #ifndef COCVDEEPFLOW_HPP
 #define COCVDEEPFLOW_HPP
 
-#include "Core/CVideoProcessOF.h"
-#include "IO/CVideoProcessIO.h"
+#include "Core/CVideoOFTask.h"
+#include "IO/CVideoIO.h"
 #include "opencv2/optflow.hpp"
 
 //------------------------------//
 //----- COcvDeepFlowParam -----//
 //------------------------------//
-class COcvDeepFlowParam: public CProtocolTaskParam
+class COcvDeepFlowParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDeepFlowParam() : CProtocolTaskParam(){}
+        COcvDeepFlowParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -54,14 +54,14 @@ class COcvDeepFlowParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDeepFlow -----//
 //-------------------------//
-class COcvDeepFlow : public CVideoProcessOF
+class COcvDeepFlow : public CVideoOFTask
 {
     public:
 
-        COcvDeepFlow() : CVideoProcessOF()
+        COcvDeepFlow() : CVideoOFTask()
         {
         }
-        COcvDeepFlow(const std::string name, const std::shared_ptr<COcvDeepFlowParam>& pParam) : CVideoProcessOF(name)
+        COcvDeepFlow(const std::string name, const std::shared_ptr<COcvDeepFlowParam>& pParam) : CVideoOFTask(name)
         {
             m_pParam = std::make_shared<COcvDeepFlowParam>(*pParam);
         }
@@ -79,8 +79,8 @@ class COcvDeepFlow : public CVideoProcessOF
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CVideoProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CVideoIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDeepFlowParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -122,7 +122,7 @@ class COcvDeepFlow : public CVideoProcessOF
         }
 };
 
-class COcvDeepFlowFactory : public CProcessFactory
+class COcvDeepFlowFactory : public CTaskFactory
 {
     public:
 
@@ -140,7 +140,7 @@ class COcvDeepFlowFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/d84/group__optflow.html#ga5e735547610172695cb0b39495af9d6d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDeepFlowParam = std::dynamic_pointer_cast<COcvDeepFlowParam>(pParam);
             if(pDeepFlowParam != nullptr)
@@ -148,7 +148,7 @@ class COcvDeepFlowFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDeepFlowParam = std::make_shared<COcvDeepFlowParam>();
             assert(pDeepFlowParam != nullptr);

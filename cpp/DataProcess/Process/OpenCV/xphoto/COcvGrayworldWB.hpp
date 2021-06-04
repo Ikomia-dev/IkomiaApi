@@ -20,18 +20,18 @@
 #ifndef COCVGRAYWORLDWB_HPP
 #define COCVGRAYWORLDWB_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/xphoto.hpp>
 
 //------------------------------//
 //----- COcvGrayworldWBParam -----//
 //------------------------------//
-class COcvGrayworldWBParam: public CProtocolTaskParam
+class COcvGrayworldWBParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvGrayworldWBParam() : CProtocolTaskParam(){}
+        COcvGrayworldWBParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -53,14 +53,14 @@ class COcvGrayworldWBParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvGrayworldWB -----//
 //-------------------------//
-class COcvGrayworldWB : public CImageProcess2d
+class COcvGrayworldWB : public C2dImageTask
 {
     public:
 
-        COcvGrayworldWB() : CImageProcess2d()
+        COcvGrayworldWB() : C2dImageTask()
         {
         }
-        COcvGrayworldWB(const std::string name, const std::shared_ptr<COcvGrayworldWBParam>& pParam) : CImageProcess2d(name)
+        COcvGrayworldWB(const std::string name, const std::shared_ptr<COcvGrayworldWBParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvGrayworldWBParam>(*pParam);
         }
@@ -73,8 +73,8 @@ class COcvGrayworldWB : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvGrayworldWBParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -103,7 +103,7 @@ class COcvGrayworldWB : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -111,7 +111,7 @@ class COcvGrayworldWB : public CImageProcess2d
         }
 };
 
-class COcvGrayworldWBFactory : public CProcessFactory
+class COcvGrayworldWBFactory : public CTaskFactory
 {
     public:
 
@@ -125,7 +125,7 @@ class COcvGrayworldWBFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d71/classcv_1_1xphoto_1_1GrayworldWB.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGrayworldWBParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -133,7 +133,7 @@ class COcvGrayworldWBFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGrayworldWBParam>();
             assert(pDerivedParam != nullptr);

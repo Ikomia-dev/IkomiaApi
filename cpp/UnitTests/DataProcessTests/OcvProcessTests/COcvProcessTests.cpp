@@ -11,7 +11,7 @@ void COcvProcessTests::initTestCase()
     m_image = loadSampleImage();
 
     std::string imagePath = UnitTest::getDataPath() + "/Videos/video.avi";
-    m_videoInputPtr = std::make_shared<CVideoProcessIO>();
+    m_videoInputPtr = std::make_shared<CVideoIO>();
     m_videoInputPtr->setVideoPath(imagePath);
 }
 
@@ -77,7 +77,7 @@ void COcvProcessTests::dft()
 void COcvProcessTests::exp()
 {
     enableAllImageTypes();
-    runStdTest1("Exponent", std::make_shared<CProtocolTaskParam>(), 0, 1);
+    runStdTest1("Exponent", std::make_shared<CWorkflowTaskParam>(), 0, 1);
 }
 
 void COcvProcessTests::extractChannel()
@@ -116,7 +116,7 @@ void COcvProcessTests::kmeans()
 void COcvProcessTests::log()
 {
     enableAllImageTypes();
-    runStdTest1("Log", std::make_shared<CProtocolTaskParam>(), 0, 1);
+    runStdTest1("Log", std::make_shared<CWorkflowTaskParam>(), 0, 1);
 }
 
 void COcvProcessTests::negative()
@@ -315,7 +315,7 @@ CMat COcvProcessTests::convertImage(const CMat &src, int newType)
     return src;
 }
 
-void COcvProcessTests::addGraphicsRect(std::shared_ptr<CGraphicsProcessInput>& graphicsInputPtr)
+void COcvProcessTests::addGraphicsRect(std::shared_ptr<CGraphicsInput>& graphicsInputPtr)
 {
     if(graphicsInputPtr == nullptr)
         return;
@@ -333,7 +333,7 @@ CMat COcvProcessTests::loadSampleImage()
     return img;
 }
 
-void COcvProcessTests::runNoInput(const std::string algoName, const ProtocolTaskParamPtr &paramPtr)
+void COcvProcessTests::runNoInput(const std::string algoName, const WorkflowTaskParamPtr &paramPtr)
 {
     auto factory = m_processRegister.getProcessFactory();
     auto processPtr = factory.createObject(algoName, std::move(paramPtr));
@@ -343,25 +343,25 @@ void COcvProcessTests::runNoInput(const std::string algoName, const ProtocolTask
     QVERIFY_EXCEPTION_THROWN(processPtr->run(), CException);
 }
 
-void COcvProcessTests::runImage(const std::string algoName, const ProtocolTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
+void COcvProcessTests::runImage(const std::string algoName, const WorkflowTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
 {
     auto factory = m_processRegister.getProcessFactory();
     auto processPtr = factory.createObject(algoName, std::move(paramPtr));
     QVERIFY(processPtr != nullptr);
-    auto inputPtr = std::dynamic_pointer_cast<CImageProcessIO>(processPtr->getInput(inputIndex));
+    auto inputPtr = std::dynamic_pointer_cast<CImageIO>(processPtr->getInput(inputIndex));
     QVERIFY(inputPtr != nullptr);
     inputPtr->setImage(m_image);
 
     if(graphicsInputIndex != -1)
     {
-        auto graphicsInputPtr = std::dynamic_pointer_cast<CGraphicsProcessInput>(processPtr->getInput(graphicsInputIndex));
+        auto graphicsInputPtr = std::dynamic_pointer_cast<CGraphicsInput>(processPtr->getInput(graphicsInputIndex));
         addGraphicsRect(graphicsInputPtr);
     }
 
     processPtr->run();
 }
 
-void COcvProcessTests::runVideo(const std::string algoName, const ProtocolTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
+void COcvProcessTests::runVideo(const std::string algoName, const WorkflowTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
 {
     auto factory = m_processRegister.getProcessFactory();
     auto processPtr = factory.createObject(algoName, std::move(paramPtr));
@@ -370,7 +370,7 @@ void COcvProcessTests::runVideo(const std::string algoName, const ProtocolTaskPa
 
     if(graphicsInputIndex != -1)
     {
-        auto graphicsInputPtr = std::dynamic_pointer_cast<CGraphicsProcessInput>(processPtr->getInput(graphicsInputIndex));
+        auto graphicsInputPtr = std::dynamic_pointer_cast<CGraphicsInput>(processPtr->getInput(graphicsInputIndex));
         addGraphicsRect(graphicsInputPtr);
     }
 
@@ -385,12 +385,12 @@ void COcvProcessTests::runVideo(const std::string algoName, const ProtocolTaskPa
     m_videoInputPtr->stopVideo();
 }
 
-void COcvProcessTests::runTypeImageTest(const std::string algoName, const ProtocolTaskParamPtr& paramPtr, int inputIndex)
+void COcvProcessTests::runTypeImageTest(const std::string algoName, const WorkflowTaskParamPtr& paramPtr, int inputIndex)
 {
     auto factory = m_processRegister.getProcessFactory();
     auto processPtr = factory.createObject(algoName, std::move(paramPtr));
     QVERIFY(processPtr != nullptr);
-    auto inputPtr = std::dynamic_pointer_cast<CImageProcessIO>(processPtr->getInput(inputIndex));
+    auto inputPtr = std::dynamic_pointer_cast<CImageIO>(processPtr->getInput(inputIndex));
     QVERIFY(inputPtr != nullptr);
 
     //Apply all image types
@@ -408,7 +408,7 @@ void COcvProcessTests::runTypeImageTest(const std::string algoName, const Protoc
     }
 }
 
-void COcvProcessTests::runStdTest1(const std::string algoName, const ProtocolTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
+void COcvProcessTests::runStdTest1(const std::string algoName, const WorkflowTaskParamPtr& paramPtr, int inputIndex, int graphicsInputIndex)
 {
     try
     {
@@ -425,14 +425,14 @@ void COcvProcessTests::runStdTest1(const std::string algoName, const ProtocolTas
     }
 }
 
-void COcvProcessTests::runOpenCL(const std::string algoName, const ProtocolTaskParamPtr &paramPtr, int inputIndex)
+void COcvProcessTests::runOpenCL(const std::string algoName, const WorkflowTaskParamPtr &paramPtr, int inputIndex)
 {
     auto factory = m_processRegister.getProcessFactory();
     auto processPtr = factory.createObject(algoName, std::move(paramPtr));
     QVERIFY(processPtr != nullptr);
 
     //Apply with image data
-    auto inputPtr = std::dynamic_pointer_cast<CImageProcessIO>(processPtr->getInput(inputIndex));
+    auto inputPtr = std::dynamic_pointer_cast<CImageIO>(processPtr->getInput(inputIndex));
     QVERIFY(inputPtr != nullptr);
     inputPtr->setImage(m_image);
 

@@ -31,7 +31,7 @@ class COcvWidgetNegative : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetNegative(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetNegative(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -45,7 +45,7 @@ class COcvWidgetNegativeFactory : public CWidgetFactory
             m_name = QObject::tr("Negative").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetNegative>(pParam);
         }

@@ -20,18 +20,18 @@
 #ifndef COCVDUALTVL1OPTICALFLOW_HPP
 #define COCVDUALTVL1OPTICALFLOW_HPP
 
-#include "Core/CVideoProcessOF.h"
-#include "IO/CVideoProcessIO.h"
+#include "Core/CVideoOFTask.h"
+#include "IO/CVideoIO.h"
 #include "opencv2/optflow.hpp"
 
 //------------------------------//
 //----- COcvDualTVL1OFParam -----//
 //------------------------------//
-class COcvDualTVL1OFParam: public CProtocolTaskParam
+class COcvDualTVL1OFParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDualTVL1OFParam() : CProtocolTaskParam(){}
+        COcvDualTVL1OFParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -88,14 +88,14 @@ class COcvDualTVL1OFParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDualTVL1OF -----//
 //-------------------------//
-class COcvDualTVL1OF : public CVideoProcessOF
+class COcvDualTVL1OF : public CVideoOFTask
 {
     public:
 
-        COcvDualTVL1OF() : CVideoProcessOF()
+        COcvDualTVL1OF() : CVideoOFTask()
         {
         }
-        COcvDualTVL1OF(const std::string name, const std::shared_ptr<COcvDualTVL1OFParam>& pParam) : CVideoProcessOF(name)
+        COcvDualTVL1OF(const std::string name, const std::shared_ptr<COcvDualTVL1OFParam>& pParam) : CVideoOFTask(name)
         {
             m_pParam = std::make_shared<COcvDualTVL1OFParam>(*pParam);
         }
@@ -113,8 +113,8 @@ class COcvDualTVL1OF : public CVideoProcessOF
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CVideoProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CVideoIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDualTVL1OFParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -156,7 +156,7 @@ class COcvDualTVL1OF : public CVideoProcessOF
         }
 };
 
-class COcvDualTVL1OFFactory : public CProcessFactory
+class COcvDualTVL1OFFactory : public CTaskFactory
 {
     public:
 
@@ -170,7 +170,7 @@ class COcvDualTVL1OFFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/d47/classcv_1_1DualTVL1OpticalFlow.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDualTVL1OFParam = std::dynamic_pointer_cast<COcvDualTVL1OFParam>(pParam);
             if(pDualTVL1OFParam != nullptr)
@@ -178,7 +178,7 @@ class COcvDualTVL1OFFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDualTVL1OFParam = std::make_shared<COcvDualTVL1OFParam>();
             assert(pDualTVL1OFParam != nullptr);

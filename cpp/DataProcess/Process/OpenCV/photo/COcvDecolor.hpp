@@ -20,17 +20,17 @@
 #ifndef COCVDECOLOR_HPP
 #define COCVDECOLOR_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------//
 //----- COcvDecolorParam -----//
 //----------------------------//
-class COcvDecolorParam: public CProtocolTaskParam
+class COcvDecolorParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDecolorParam() : CProtocolTaskParam(){}
+        COcvDecolorParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -46,17 +46,17 @@ class COcvDecolorParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvDecolor -----//
 //-----------------------//
-class COcvDecolor : public CImageProcess2d
+class COcvDecolor : public C2dImageTask
 {
     public:
 
-        COcvDecolor() : CImageProcess2d()
+        COcvDecolor() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
         }
-        COcvDecolor(const std::string name, const std::shared_ptr<COcvDecolorParam>& pParam) : CImageProcess2d(name)
+        COcvDecolor(const std::string name, const std::shared_ptr<COcvDecolorParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             m_pParam = std::make_shared<COcvDecolorParam>(*pParam);
         }
 
@@ -68,7 +68,7 @@ class COcvDecolor : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvDecolorParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -100,11 +100,11 @@ class COcvDecolor : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(imgDst);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(imgColorBoost);
 
@@ -112,7 +112,7 @@ class COcvDecolor : public CImageProcess2d
         }
 };
 
-class COcvDecolorFactory : public CProcessFactory
+class COcvDecolorFactory : public CTaskFactory
 {
     public:
 
@@ -130,7 +130,7 @@ class COcvDecolorFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d0d/group__photo.html#ga4864d4c007bda5dacdc5e9d4ed7e222c";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDecolorParam = std::dynamic_pointer_cast<COcvDecolorParam>(pParam);
             if(pDecolorParam != nullptr)
@@ -138,7 +138,7 @@ class COcvDecolorFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDecolorParam = std::make_shared<COcvDecolorParam>();
             assert(pDecolorParam != nullptr);

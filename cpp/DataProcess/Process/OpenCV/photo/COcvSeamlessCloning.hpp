@@ -20,17 +20,17 @@
 #ifndef COCVSEAMLESSCLONING_HPP
 #define COCVSEAMLESSCLONING_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------//
 //----- COcvSeamlessCloningParam -----//
 //----------------------------//
-class COcvSeamlessCloningParam: public CProtocolTaskParam
+class COcvSeamlessCloningParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSeamlessCloningParam() : CProtocolTaskParam(){}
+        COcvSeamlessCloningParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -51,25 +51,25 @@ class COcvSeamlessCloningParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvSeamlessCloning -----//
 //-----------------------//
-class COcvSeamlessCloning : public CImageProcess2d
+class COcvSeamlessCloning : public C2dImageTask
 {
     public:
 
-        COcvSeamlessCloning() : CImageProcess2d()
+        COcvSeamlessCloning() : C2dImageTask()
         {
             clearInputs();
-            addInput(std::make_shared<CImageProcessIO>());
-            addInput(std::make_shared<CGraphicsProcessInput>());
-            addInput(std::make_shared<CImageProcessIO>());
-            addInput(std::make_shared<CGraphicsProcessInput>());
+            addInput(std::make_shared<CImageIO>());
+            addInput(std::make_shared<CGraphicsInput>());
+            addInput(std::make_shared<CImageIO>());
+            addInput(std::make_shared<CGraphicsInput>());
         }
-        COcvSeamlessCloning(const std::string name, const std::shared_ptr<COcvSeamlessCloningParam>& pParam) : CImageProcess2d(name)
+        COcvSeamlessCloning(const std::string name, const std::shared_ptr<COcvSeamlessCloningParam>& pParam) : C2dImageTask(name)
         {
             clearInputs();
-            addInput(std::make_shared<CImageProcessIO>());
-            addInput(std::make_shared<CGraphicsProcessInput>());
-            addInput(std::make_shared<CImageProcessIO>());
-            addInput(std::make_shared<CGraphicsProcessInput>());
+            addInput(std::make_shared<CImageIO>());
+            addInput(std::make_shared<CGraphicsInput>());
+            addInput(std::make_shared<CImageIO>());
+            addInput(std::make_shared<CGraphicsInput>());
             m_pParam = std::make_shared<COcvSeamlessCloningParam>(*pParam);
         }
 
@@ -81,10 +81,10 @@ class COcvSeamlessCloning : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphics1 = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(2));
-            auto pGraphics2 = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(3));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphics1 = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(2));
+            auto pGraphics2 = std::dynamic_pointer_cast<CGraphicsInput>(getInput(3));
             auto pParam = std::dynamic_pointer_cast<COcvSeamlessCloningParam>(m_pParam);
 
             if( pInput1 == nullptr || pGraphics1 == nullptr ||
@@ -127,7 +127,7 @@ class COcvSeamlessCloning : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -135,7 +135,7 @@ class COcvSeamlessCloning : public CImageProcess2d
         }
 };
 
-class COcvSeamlessCloningFactory : public CProcessFactory
+class COcvSeamlessCloningFactory : public CTaskFactory
 {
     public:
 
@@ -153,7 +153,7 @@ class COcvSeamlessCloningFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/da0/group__photo__clone.html#ga2bf426e4c93a6b1f21705513dfeca49d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSeamlessCloningParam = std::dynamic_pointer_cast<COcvSeamlessCloningParam>(pParam);
             if(pSeamlessCloningParam != nullptr)
@@ -161,7 +161,7 @@ class COcvSeamlessCloningFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSeamlessCloningParam = std::make_shared<COcvSeamlessCloningParam>();
             assert(pSeamlessCloningParam != nullptr);

@@ -26,20 +26,26 @@ unix:PRECOMPILED_HEADER = pch.hpp
 
 SOURCES += \
         CProcessRegistration.cpp \
-        Core/CDnnTrainProcess.cpp \
-        Core/CMlflowTrainProcess.cpp \
-        Core/CProtocol.cpp \
+        Core/C2dFeatureImageTask.cpp \
+        Core/C2dFeatureMatcherTask.cpp \
+        Core/C2dImageInteractiveTask.cpp \
+        Core/C2dImageTask.cpp \
+        Core/CDnnTrainTask.cpp \
+        Core/CMlflowTrainTask.cpp \
         Core/CRunTaskManager.cpp \
+        Core/CTaskInfo.cpp \
+        Core/CVideoTask.cpp \
+        Core/CWorkflow.cpp \
         IO/CArrayIO.cpp \
         IO/CConvertIO.cpp \
         IO/CDatasetIO.cpp \
-        IO/CGraphicsProcessInput.cpp \
-        IO/CGraphicsProcessOutput.cpp \
-        IO/CImageProcessIO.cpp \
-        IO/CMeasureProcessIO.cpp \
+        IO/CGraphicsInput.cpp \
+        IO/CGraphicsOutput.cpp \
+        IO/CImageIO.cpp \
+        IO/CMeasureIO.cpp \
         IO/CPathIO.cpp \
         IO/CTaskIORegistration.cpp \
-        IO/CVideoProcessIO.cpp \
+        IO/CVideoIO.cpp \
         IO/CWidgetOutput.cpp \
         Process/Core/CBinaryToGraphics.cpp \
         Process/Core/CBlobMeasure.cpp \
@@ -53,32 +59,33 @@ SOURCES += \
         Widget/OpenCV/dnn/COcvWidgetDnnProcess.cpp \
         Process/OpenCV/superres/COcvSuperResBTVL1.cpp \
         Process/OpenCV/superres/CSuperResFrameSrc.cpp \
-        Core/CFeatureImageProcess2d.cpp \
-        Core/CFeatureMatcher2d.cpp \
-        Core/CImageProcess2d.cpp \
-        Core/CInteractiveImageProcess2d.cpp \
-        Core/CVideoProcess.cpp \
-        Core/CVideoProcessOF.cpp \
-        Core/CVideoProcessTracking.cpp \
-        Core/CProcessInfo.cpp \
+        Core/CVideoOFTask.cpp \
+        Core/CVideoTrackingTask.cpp \
         Process/OpenCV/dnn/COcvDnnSegmentation.cpp
 
 HEADERS += \
-        Core/CDnnTrainProcess.h \
-        Core/CMlflowTrainProcess.h \
-        Core/CProtocol.h \
+        Core/C2dFeatureImageTask.h \
+        Core/C2dFeatureMatcherTask.h \
+        Core/C2dImageInteractiveTask.h \
+        Core/C2dImageTask.h \
+        Core/CDnnTrainTask.h \
+        Core/CMlflowTrainTask.h \
         Core/CRunTaskManager.h \
+        Core/CTaskFactory.hpp \
+        Core/CTaskInfo.h \
+        Core/CVideoTask.h \
+        Core/CWorkflow.h \
         IO/CArrayIO.h \
         IO/CConvertIO.h \
         IO/CDatasetIO.h \
-        IO/CFeatureProcessIO.hpp \
-        IO/CGraphicsProcessInput.h \
-        IO/CGraphicsProcessOutput.h \
-        IO/CImageProcessIO.h \
-        IO/CMeasureProcessIO.h \
+        IO/CFeatureIO.hpp \
+        IO/CGraphicsInput.h \
+        IO/CGraphicsOutput.h \
+        IO/CImageIO.h \
+        IO/CMeasureIO.h \
         IO/CPathIO.h \
         IO/CTaskIORegistration.h \
-        IO/CVideoProcessIO.h \
+        IO/CVideoIO.h \
         IO/CWidgetOutput.h \
         Process/Core/CBinaryToGraphics.h \
         Process/Core/CGraphicsToBinary.h \
@@ -401,15 +408,8 @@ HEADERS += \
         Widget/OpenCV/ximgproc/COcvWidgetSuperpixelSLIC.hpp \
         Process/OpenCV/ximgproc/COcvStructuredEdgeDetection.hpp \
         Widget/OpenCV/ximgproc/COcvWidgetStructuredEdgeDetection.hpp \
-        Core/CFeatureImageProcess2d.h \
-        Core/CFeatureMatcher2d.h \
-        Core/CImageProcess2d.h \
-        Core/CInteractiveImageProcess2d.h \
-        Core/CProcessFactory.hpp \
-        Core/CVideoProcess.h \
-        Core/CVideoProcessOF.h \
-        Core/CVideoProcessTracking.h \
-        Core/CProcessInfo.h \
+        Core/CVideoOFTask.h \
+        Core/CVideoTrackingTask.h \
         Process/Core/CFillHoles.hpp \
         Core/CWidgetFactory.hpp \
         Widget/Core/CWidgetFillHoles.hpp \
@@ -454,31 +454,31 @@ deployInclude.files = \
 
 deployIncludeCore.path = ../Build/Include/DataProcess/Core
 deployIncludeCore.files = \
-        Core/CProtocol.h \
-        Core/CProcessFactory.hpp \
-        Core/CInteractiveImageProcess2d.h \
-        Core/CImageProcess2d.h \
-        Core/CVideoProcess.h \
-        Core/CVideoProcessOF.h \
-        Core/CVideoProcessTracking.h \
+        Core/CWorkflow.h \
+        Core/CTaskFactory.hpp \
+        Core/C2dImageInteractiveTask.h \
+        Core/C2dImageTask.h \
+        Core/CVideoTask.h \
+        Core/CVideoOFTask.h \
+        Core/CVideoTrackingTask.h \
         Core/CFeatureImageProcess2d.h \
         Core/CFeatureMatcher2d.h \
-        Core/CProcessInfo.h \
+        Core/CTaskInfo.h \
         Core/CWidgetFactory.hpp \
-        Core/CDnnTrainProcess.h \
-        Core/CMlflowTrainProcess.h \
+        Core/CDnnTrainTask.h \
+        Core/CMlflowTrainTask.h \
         Core/CRunTaskManager.h
 
 deployIncludeIO.path = ../Build/Include/DataProcess/IO
 deployIncludeIO.files = \
-        IO/CImageProcessIO.h \
-        IO/CMeasureProcessIO.h \
-        IO/CGraphicsProcessInput.h \
-        IO/CGraphicsProcessOutput.h \
+        IO/CImageIO.h \
+        IO/CMeasureIO.h \
+        IO/CGraphicsInput.h \
+        IO/CGraphicsOutput.h \
         IO/CGraphicsProcessIO.hpp \
         IO/CTaskIORegistration.h \
-        IO/CFeatureProcessIO.hpp \
-        IO/CVideoProcessIO.h \
+        IO/CFeatureIO.hpp \
+        IO/CVideoIO.h \
         IO/CViewPropertyIO.h \
         IO/CDatasetIO.h
 

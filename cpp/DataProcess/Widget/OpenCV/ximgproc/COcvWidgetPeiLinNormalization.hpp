@@ -22,15 +22,15 @@
 
 #include "Process/OpenCV/ximgproc/COcvPeiLinNormalization.hpp"
 
-class COcvWidgetPeiLinNormalization : public CProtocolTaskWidget
+class COcvWidgetPeiLinNormalization : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetPeiLinNormalization(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetPeiLinNormalization(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetPeiLinNormalization(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetPeiLinNormalization(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvPeiLinNormalizationParam>(pParam);
             init();
@@ -79,7 +79,7 @@ class COcvWidgetPeiLinNormalizationFactory : public CWidgetFactory
             m_name = QObject::tr("Pei-Lin Normalization").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetPeiLinNormalization>(pParam);
         }

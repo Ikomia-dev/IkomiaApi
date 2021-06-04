@@ -22,16 +22,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/photo/COcvDenoiseTVL1.hpp"
 
-class COcvWidgetDenoiseTVL1 : public CProtocolTaskWidget
+class COcvWidgetDenoiseTVL1 : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDenoiseTVL1(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDenoiseTVL1(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDenoiseTVL1(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDenoiseTVL1(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDenoiseTVL1Param>(pParam);
             init();
@@ -71,7 +71,7 @@ class COcvWidgetDenoiseTVL1Factory : public CWidgetFactory
             m_name = QObject::tr("Denoise TV L1").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDenoiseTVL1>(pParam);
         }

@@ -24,16 +24,16 @@
 
 #include "DataProcessGlobal.hpp"
 #include "Data/CMat.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 
 /**
  * @ingroup groupDataProcess
  * @brief The CArrayIO class defines an input or output for a workflow task dedicated to multi-dimensional array.
  * @details This class is designed to handle multi-dimensional array as input or output of a workflow task.
- * A CArrayIO instance can be added as input or output to a CProtocolTask or derived object.
+ * A CArrayIO instance can be added as input or output to a CWorkflowTask or derived object.
  * For Python, data structure is a numpy array.
  */
-class DATAPROCESSSHARED_EXPORT CArrayIO : public CProtocolTaskIO
+class DATAPROCESSSHARED_EXPORT CArrayIO : public CWorkflowTaskIO
 {
     public:
 
@@ -99,13 +99,13 @@ class DATAPROCESSSHARED_EXPORT CArrayIO : public CProtocolTaskIO
         void            clearData() override;
         /**
          * @brief Performs a deep copy the this instance
-         * @return CImageProcessIO smart pointer (std::shared_ptr).
+         * @return CImageIO smart pointer (std::shared_ptr).
          */
         std::shared_ptr<CArrayIO>           clone() const;
 
     private:
 
-        std::shared_ptr<CProtocolTaskIO>    cloneImp() const override;
+        std::shared_ptr<CWorkflowTaskIO>    cloneImp() const override;
 
     protected:
 
@@ -114,7 +114,7 @@ class DATAPROCESSSHARED_EXPORT CArrayIO : public CProtocolTaskIO
 
 using ArrayIOPtr = std::shared_ptr<CArrayIO>;
 
-class DATAPROCESSSHARED_EXPORT CArrayIOFactory: public CProtocolTaskIOFactory
+class DATAPROCESSSHARED_EXPORT CArrayIOFactory: public CWorkflowTaskIOFactory
 {
     public:
 
@@ -123,7 +123,7 @@ class DATAPROCESSSHARED_EXPORT CArrayIOFactory: public CProtocolTaskIOFactory
             m_name = "CArrayIO";
         }
 
-        virtual ProtocolTaskIOPtr   create(IODataType dataType)
+        virtual WorkflowTaskIOPtr   create(IODataType dataType)
         {
             Q_UNUSED(dataType);
             return std::make_shared<CArrayIO>();

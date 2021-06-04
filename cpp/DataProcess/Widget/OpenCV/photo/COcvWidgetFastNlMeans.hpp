@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/photo/COcvFastNlMeans.hpp"
 
-class COcvWidgetFastNlMeans : public CProtocolTaskWidget
+class COcvWidgetFastNlMeans : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetFastNlMeans(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastNlMeans(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetFastNlMeans(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastNlMeans(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvFastNlMeansParam>(pParam);
             init();
@@ -97,7 +97,7 @@ class COcvWidgetFastNlMeansFactory : public CWidgetFactory
             m_name = QObject::tr("Non Local Means Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFastNlMeans>(pParam);
         }

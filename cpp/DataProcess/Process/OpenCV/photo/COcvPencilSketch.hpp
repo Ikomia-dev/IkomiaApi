@@ -20,18 +20,18 @@
 #ifndef COCVPENCILSKETCH_HPP
 #define COCVPENCILSKETCH_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/photo.hpp>
 
 //----------------------------------//
 //----- COcvPencilSketchParam -----//
 //----------------------------------//
-class COcvPencilSketchParam : public CProtocolTaskParam
+class COcvPencilSketchParam : public CWorkflowTaskParam
 {
     public:
 
-        COcvPencilSketchParam() : CProtocolTaskParam(){}
+        COcvPencilSketchParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -58,17 +58,17 @@ class COcvPencilSketchParam : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvPencilSketch -----//
 //-----------------------------//
-class COcvPencilSketch : public CImageProcess2d
+class COcvPencilSketch : public C2dImageTask
 {
     public:
 
-        COcvPencilSketch() : CImageProcess2d()
+        COcvPencilSketch() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
         }
-        COcvPencilSketch(const std::string name, const std::shared_ptr<COcvPencilSketchParam>& pParam) : CImageProcess2d(name)
+        COcvPencilSketch(const std::string name, const std::shared_ptr<COcvPencilSketchParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             m_pParam = std::make_shared<COcvPencilSketchParam>(*pParam);
         }
 
@@ -80,8 +80,8 @@ class COcvPencilSketch : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvPencilSketchParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -113,11 +113,11 @@ class COcvPencilSketch : public CImageProcess2d
             applyGraphicsMask(image, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(imgDstGray);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(imgDst);
 
@@ -125,7 +125,7 @@ class COcvPencilSketch : public CImageProcess2d
         }
 };
 
-class COcvPencilSketchFactory : public CProcessFactory
+class COcvPencilSketchFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvPencilSketchFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pPencilSketchParam = std::dynamic_pointer_cast<COcvPencilSketchParam>(pParam);
             if(pPencilSketchParam != nullptr)
@@ -147,7 +147,7 @@ class COcvPencilSketchFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pPencilSketchParam = std::make_shared<COcvPencilSketchParam>();
             assert(pPencilSketchParam != nullptr);

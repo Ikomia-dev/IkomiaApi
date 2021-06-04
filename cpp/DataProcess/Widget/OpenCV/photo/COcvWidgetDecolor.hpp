@@ -31,7 +31,7 @@ class COcvWidgetDecolor : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetDecolor(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetDecolor(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -45,7 +45,7 @@ class COcvWidgetDecolorFactory : public CWidgetFactory
             m_name = QObject::tr("Decolor").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDecolor>(pParam);
         }

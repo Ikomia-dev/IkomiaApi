@@ -33,7 +33,7 @@ class COcvWidgetFlannMatcher : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetFlannMatcher(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetFlannMatcher(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 
@@ -51,7 +51,7 @@ class COcvWidgetFlannMatcherFactory : public CWidgetFactory
             m_name = QObject::tr("Flann based matcher").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFlannMatcher>(pParam);
         }

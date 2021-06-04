@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvGraphSegmentation.hpp"
 
-class COcvWidgetGraphSegmentation : public CProtocolTaskWidget
+class COcvWidgetGraphSegmentation : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGraphSegmentation(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGraphSegmentation(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGraphSegmentation(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGraphSegmentation(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGraphSegmentationParam>(pParam);
             init();
@@ -73,7 +73,7 @@ class COcvWidgetGraphSegmentationFactory : public CWidgetFactory
             m_name = QObject::tr("Graph Segmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGraphSegmentation>(pParam);
         }

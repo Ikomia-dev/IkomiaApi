@@ -21,12 +21,12 @@
 #define COCVBCKGNDSUBGMG_HPP
 
 #include "opencv2/bgsegm.hpp"
-#include "Core/CVideoProcess.h"
+#include "Core/CVideoTask.h"
 
 //---------------------------------//
 //----- COcvBckgndSubGmgParam -----//
 //---------------------------------//
-class COcvBckgndSubGmgParam: public CProtocolTaskParam
+class COcvBckgndSubGmgParam: public CWorkflowTaskParam
 {
     public:
 
@@ -57,20 +57,20 @@ class COcvBckgndSubGmgParam: public CProtocolTaskParam
 //----------------------------//
 //----- COcvBckgndSubGmg -----//
 //----------------------------//
-class COcvBckgndSubGmg : public CVideoProcess
+class COcvBckgndSubGmg : public CVideoTask
 {
     public:
 
-        COcvBckgndSubGmg() : CVideoProcess()
+        COcvBckgndSubGmg() : CVideoTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvBckgndSubGmg(const std::string name, const std::shared_ptr<COcvBckgndSubGmgParam>& pParam) : CVideoProcess(name)
+        COcvBckgndSubGmg(const std::string name, const std::shared_ptr<COcvBckgndSubGmgParam>& pParam) : CVideoTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
             m_pParam = std::make_shared<COcvBckgndSubGmgParam>(*pParam);
         }
@@ -94,7 +94,7 @@ class COcvBckgndSubGmg : public CVideoProcess
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvBckgndSubGmgParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -120,7 +120,7 @@ class COcvBckgndSubGmg : public CVideoProcess
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -138,7 +138,7 @@ class COcvBckgndSubGmg : public CVideoProcess
 //-----------------------------------//
 //----- COcvBckgndSubGmgFactory -----//
 //-----------------------------------//
-class COcvBckgndSubGmgFactory : public CProcessFactory
+class COcvBckgndSubGmgFactory : public CTaskFactory
 {
     public:
 
@@ -156,7 +156,7 @@ class COcvBckgndSubGmgFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d5c/classcv_1_1bgsegm_1_1BackgroundSubtractorGMG.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvBckgndSubGmgParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -164,7 +164,7 @@ class COcvBckgndSubGmgFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvBckgndSubGmgParam>();
             assert(pDerivedParam != nullptr);

@@ -20,7 +20,7 @@
 #ifndef CGMICBOOSTFADE_HPP
 #define CGMICBOOSTFADE_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -64,14 +64,14 @@ class CGmicBoostFadeParam: public CGmicTaskParam
 //----------------------------//
 //----- CGmicBoostFade -----//
 //----------------------------//
-class CGmicBoostFade : public CImageProcess2d
+class CGmicBoostFade : public C2dImageTask
 {
     public:
 
-        CGmicBoostFade() : CImageProcess2d()
+        CGmicBoostFade() : C2dImageTask()
         {
         }
-        CGmicBoostFade(const std::string name, const std::shared_ptr<CGmicBoostFadeParam>& pParam) : CImageProcess2d(name)
+        CGmicBoostFade(const std::string name, const std::shared_ptr<CGmicBoostFadeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicBoostFadeParam>(*pParam);
         }
@@ -84,8 +84,8 @@ class CGmicBoostFade : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicBoostFadeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -128,7 +128,7 @@ class CGmicBoostFade : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -136,7 +136,7 @@ class CGmicBoostFade : public CImageProcess2d
         }
 };
 
-class CGmicBoostFadeFactory : public CProcessFactory
+class CGmicBoostFadeFactory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class CGmicBoostFadeFactory : public CProcessFactory
             m_info.m_authors = "David Tschumperlé";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicBoostFadeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -158,7 +158,7 @@ class CGmicBoostFadeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicBoostFadeParam>();
             assert(pParam != nullptr);

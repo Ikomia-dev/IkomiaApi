@@ -20,17 +20,17 @@
 #ifndef COCVBFMATCHER_HPP
 #define COCVBFMATCHER_HPP
 
-#include "Core/CFeatureMatcher2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureMatcherTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvBFMatcherParam -----//
 //--------------------------------//
-class COcvBFMatcherParam: public CProtocolTaskParam
+class COcvBFMatcherParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvBFMatcherParam() : CProtocolTaskParam(){}
+        COcvBFMatcherParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -55,14 +55,14 @@ class COcvBFMatcherParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvBFMatcher -----//
 //---------------------------//
-class COcvBFMatcher : public CFeatureMatcher2d
+class COcvBFMatcher : public C2dFeatureMatcherTask
 {
     public:
 
-        COcvBFMatcher() : CFeatureMatcher2d()
+        COcvBFMatcher() : C2dFeatureMatcherTask()
         {
         }
-        COcvBFMatcher(const std::string name, const std::shared_ptr<COcvBFMatcherParam>& pParam) : CFeatureMatcher2d(name)
+        COcvBFMatcher(const std::string name, const std::shared_ptr<COcvBFMatcherParam>& pParam) : C2dFeatureMatcherTask(name)
         {
             m_pParam = std::make_shared<COcvBFMatcherParam>(*pParam);
         }
@@ -79,15 +79,15 @@ class COcvBFMatcher : public CFeatureMatcher2d
             if(getInputCount() < 6)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pImg1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pDesc1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pFeatures1 = std::dynamic_pointer_cast<CFeatureProcessIO<cv::KeyPoint>>(getInput(2));
+            auto pImg1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pDesc1 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pFeatures1 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(2));
 
-            auto pImg2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(3));
-            auto pDesc2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(4));
-            auto pFeatures2 = std::dynamic_pointer_cast<CFeatureProcessIO<cv::KeyPoint>>(getInput(5));
+            auto pImg2 = std::dynamic_pointer_cast<CImageIO>(getInput(3));
+            auto pDesc2 = std::dynamic_pointer_cast<CImageIO>(getInput(4));
+            auto pFeatures2 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(5));
 
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(6));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(6));
             auto pParam = std::dynamic_pointer_cast<COcvBFMatcherParam>(m_pParam);
 
             if( pDesc1 == nullptr || pImg1 == nullptr || pFeatures1 == nullptr ||
@@ -136,7 +136,7 @@ class COcvBFMatcher : public CFeatureMatcher2d
         }
 };
 
-class COcvBFMatcherFactory : public CProcessFactory
+class COcvBFMatcherFactory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class COcvBFMatcherFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d3/da1/classcv_1_1BFMatcher.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvBFMatcherParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -158,7 +158,7 @@ class COcvBFMatcherFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvBFMatcherParam>();
             assert(pDerivedParam != nullptr);

@@ -26,16 +26,16 @@
 #include <QCheckBox>
 #include <QLabel>
 
-class COcvWidgetGuidedFilter : public CProtocolTaskWidget
+class COcvWidgetGuidedFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGuidedFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGuidedFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetGuidedFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGuidedFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGuidedFilterParam>(pParam);
             init();
@@ -85,7 +85,7 @@ class COcvWidgetGuidedFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Guided Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGuidedFilter>(pParam);
         }

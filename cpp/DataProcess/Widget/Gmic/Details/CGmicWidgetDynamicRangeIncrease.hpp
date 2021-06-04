@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicDynamicRangeIncrease.hpp"
 
-class CGmicWidgetDynamicRangeIncrease : public CProtocolTaskWidget
+class CGmicWidgetDynamicRangeIncrease : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetDynamicRangeIncrease(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetDynamicRangeIncrease(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetDynamicRangeIncrease(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetDynamicRangeIncrease(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicDynamicRangeIncreaseParam>(pParam);
             init();
@@ -82,7 +82,7 @@ class CGmicWidgetDynamicRangeIncreaseFactory : public CWidgetFactory
             m_name = QObject::tr("Dynamic range increase").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetDynamicRangeIncrease>(pParam);
         }

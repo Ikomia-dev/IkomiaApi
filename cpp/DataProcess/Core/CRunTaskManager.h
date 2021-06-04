@@ -22,7 +22,7 @@
 #ifndef CRUNTASKMANAGER_H
 #define CRUNTASKMANAGER_H
 
-#include "Protocol/CProtocolTask.h"
+#include "Workflow/CWorkflowTask.h"
 
 class CRunTaskManager
 {
@@ -33,17 +33,17 @@ class CRunTaskManager
         void    setBatchMode(bool bEnable);
         void    setCfg(std::map<std::string, std::string>* pCfg);
 
-        void    run(const ProtocolTaskPtr& pTask, const std::string inputName);
+        void    run(const WorkflowTaskPtr& pTask, const std::string inputName);
 
-        void    stop(const ProtocolTaskPtr &taskPtr);
+        void    stop(const WorkflowTaskPtr &taskPtr);
 
     private:
 
-        void    runImageProcess2D(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
-        void    runVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
-        void    runWholeVideoProcess(const ProtocolTaskPtr& taskPtr, const std::string &inputName);
+        void    runImageProcess2D(const WorkflowTaskPtr& taskPtr, const std::string &inputName);
+        void    runVideoProcess(const WorkflowTaskPtr& taskPtr, const std::string &inputName);
+        void    runWholeVideoProcess(const WorkflowTaskPtr& taskPtr, const std::string &inputName);
 
-        void    saveVideoOutputs(const ProtocolTaskPtr &taskPtr, const InputOutputVect& outputs);
+        void    saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect& outputs);
 
     private:
 

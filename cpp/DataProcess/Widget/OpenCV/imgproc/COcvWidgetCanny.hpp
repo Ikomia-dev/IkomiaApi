@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetCanny : public CProtocolTaskWidget
+class COcvWidgetCanny : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCanny(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCanny(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCanny(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCanny(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCannyParam>(pParam);
             init();
@@ -85,7 +85,7 @@ class COcvWidgetCannyFactory : public CWidgetFactory
             m_name = QObject::tr("Canny").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetCanny>(pParam);
         }

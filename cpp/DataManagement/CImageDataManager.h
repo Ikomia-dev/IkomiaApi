@@ -26,8 +26,8 @@
 #include "CDataIO.hpp"
 #include "DataManagementGlobal.hpp"
 
-using CImageIO = CDataIO<CDataImageIO, CMat>;
-using CImageIOPtr = std::shared_ptr<CDataIO<CDataImageIO, CMat>>;
+using CImageDataIO = CDataIO<CDataImageIO, CMat>;
+using CImageDataIOPtr = std::shared_ptr<CDataIO<CDataImageIO, CMat>>;
 using CDataImageInfoPtr = std::shared_ptr<CDataImageInfo>;
 
 class DATAMANAGEMENTSHARED_EXPORT CImageDataManager : public CDataManager<CMat>
@@ -46,7 +46,7 @@ class DATAMANAGEMENTSHARED_EXPORT CImageDataManager : public CDataManager<CMat>
 
     private:
 
-        CImageIOPtr         getImageIO(const std::string& fileName);
+        CImageDataIOPtr     getImageIO(const std::string& fileName);
 
         void                fillDataset(CDataset<CMat>& dataset, const SubsetBounds &subsetBounds, const CArrayDataInfo& arrayDataInfo);
 
@@ -60,7 +60,7 @@ class DATAMANAGEMENTSHARED_EXPORT CImageDataManager : public CDataManager<CMat>
 
     private:
 
-        using CMapFileImageIO = std::unordered_map<std::string, CImageIOPtr>;
+        using CMapFileImageIO = std::unordered_map<std::string, CImageDataIOPtr>;
 
         CMapFileImageIO     m_mapImageIO;
 };

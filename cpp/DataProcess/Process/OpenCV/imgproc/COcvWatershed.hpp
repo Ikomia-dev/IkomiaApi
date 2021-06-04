@@ -20,17 +20,17 @@
 #ifndef COCVWATERSHED_HPP
 #define COCVWATERSHED_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvWatershedParam -----//
 //------------------------------//
-class COcvWatershedParam: public CProtocolTaskParam
+class COcvWatershedParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvWatershedParam() : CProtocolTaskParam(){}
+        COcvWatershedParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -46,22 +46,22 @@ class COcvWatershedParam: public CProtocolTaskParam
 //----------------------//
 //----- COcvWatershed -----//
 //----------------------//
-class COcvWatershed : public CImageProcess2d
+class COcvWatershed : public C2dImageTask
 {
     public:
 
-        COcvWatershed() : CImageProcess2d()
+        COcvWatershed() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(IODataType::IMAGE), 1);
+            insertInput(std::make_shared<CImageIO>(IODataType::IMAGE), 1);
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
         }
-        COcvWatershed(const std::string name, const std::shared_ptr<COcvWatershedParam>& pParam) : CImageProcess2d(name)
+        COcvWatershed(const std::string name, const std::shared_ptr<COcvWatershedParam>& pParam) : C2dImageTask(name)
         {
-            insertInput(std::make_shared<CImageProcessIO>(IODataType::IMAGE), 1);
+            insertInput(std::make_shared<CImageIO>(IODataType::IMAGE), 1);
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
             m_pParam = std::make_shared<COcvWatershedParam>(*pParam);
         }
@@ -74,9 +74,9 @@ class COcvWatershed : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(2));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(2));
 
             if(pInput1 == nullptr || pInput2 == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
@@ -123,7 +123,7 @@ class COcvWatershed : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             forwardInputImage(0, 1);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -132,7 +132,7 @@ class COcvWatershed : public CImageProcess2d
         }
 };
 
-class COcvWatershedFactory : public CProcessFactory
+class COcvWatershedFactory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class COcvWatershedFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvWatershedParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -158,7 +158,7 @@ class COcvWatershedFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvWatershedParam>();
             assert(pDerivedParam != nullptr);

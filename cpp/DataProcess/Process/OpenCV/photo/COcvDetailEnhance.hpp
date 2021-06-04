@@ -20,17 +20,17 @@
 #ifndef COCVDETAILENHANCE_H
 #define COCVDETAILENHANCE_H
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------------//
 //----- COcvDetailEnhanceParam -----//
 //----------------------------------//
-class COcvDetailEnhanceParam : public CProtocolTaskParam
+class COcvDetailEnhanceParam : public CWorkflowTaskParam
 {
     public:
 
-        COcvDetailEnhanceParam() : CProtocolTaskParam(){}
+        COcvDetailEnhanceParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -55,14 +55,14 @@ class COcvDetailEnhanceParam : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvDetailEnhance -----//
 //-----------------------------//
-class COcvDetailEnhance : public CImageProcess2d
+class COcvDetailEnhance : public C2dImageTask
 {
     public:
 
-        COcvDetailEnhance() : CImageProcess2d()
+        COcvDetailEnhance() : C2dImageTask()
         {
         }
-        COcvDetailEnhance(const std::string name, const std::shared_ptr<COcvDetailEnhanceParam>& pParam) : CImageProcess2d(name)
+        COcvDetailEnhance(const std::string name, const std::shared_ptr<COcvDetailEnhanceParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvDetailEnhanceParam>(*pParam);
         }
@@ -75,8 +75,8 @@ class COcvDetailEnhance : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDetailEnhanceParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -106,7 +106,7 @@ class COcvDetailEnhance : public CImageProcess2d
             applyGraphicsMask(image, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -114,7 +114,7 @@ class COcvDetailEnhance : public CImageProcess2d
         }
 };
 
-class COcvDetailEnhanceFactory : public CProcessFactory
+class COcvDetailEnhanceFactory : public CTaskFactory
 {
     public:
 
@@ -128,7 +128,7 @@ class COcvDetailEnhanceFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/dac/group__photo__render.html#ga0de660cb6f371a464a74c7b651415975";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDetailEnhanceParam = std::dynamic_pointer_cast<COcvDetailEnhanceParam>(pParam);
             if(pDetailEnhanceParam != nullptr)
@@ -136,7 +136,7 @@ class COcvDetailEnhanceFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDetailEnhanceParam = std::make_shared<COcvDetailEnhanceParam>();
             assert(pDetailEnhanceParam != nullptr);

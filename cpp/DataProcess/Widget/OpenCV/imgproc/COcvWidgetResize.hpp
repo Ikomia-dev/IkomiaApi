@@ -25,16 +25,16 @@
 #include <QComboBox>
 #include <QLineEdit>
 
-class COcvWidgetResize : public CProtocolTaskWidget
+class COcvWidgetResize : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetResize(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetResize(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetResize(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetResize(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvResizeParam>(pParam);
             init();
@@ -128,7 +128,7 @@ class COcvWidgetResizeFactory : public CWidgetFactory
             m_name = QObject::tr("Resize").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetResize>(pParam);
         }

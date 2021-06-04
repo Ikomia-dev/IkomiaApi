@@ -23,7 +23,7 @@
 //----------------------------------//
 //----- CBinaryToGraphicsParam -----//
 //----------------------------------//
-CBinaryToGraphicsParam::CBinaryToGraphicsParam() : CProtocolTaskParam()
+CBinaryToGraphicsParam::CBinaryToGraphicsParam() : CWorkflowTaskParam()
 {
 }
 
@@ -40,15 +40,15 @@ UMapString CBinaryToGraphicsParam::getParamMap() const
 //-----------------------------//
 //----- CBinaryToGraphics -----//
 //-----------------------------//
-CBinaryToGraphics::CBinaryToGraphics() : CImageProcess2d(false)
+CBinaryToGraphics::CBinaryToGraphics() : C2dImageTask(false)
 {
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
-CBinaryToGraphics::CBinaryToGraphics(const std::string name, const std::shared_ptr<CBinaryToGraphicsParam> &pParam) : CImageProcess2d(name, false)
+CBinaryToGraphics::CBinaryToGraphics(const std::string name, const std::shared_ptr<CBinaryToGraphicsParam> &pParam) : C2dImageTask(name, false)
 {
     m_pParam = std::make_shared<CBinaryToGraphicsParam>(*pParam);
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
 size_t CBinaryToGraphics::getProgressSteps()
@@ -60,7 +60,7 @@ void CBinaryToGraphics::run()
 {
     beginTaskRun();
 
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
 
     if(pInput == nullptr)
         throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
@@ -79,7 +79,7 @@ void CBinaryToGraphics::run()
         else
             img = imgSrc;
 
-        auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+        auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
         assert(pGraphicsOutput);
         pGraphicsOutput->setNewLayer(getName());
         emit m_signalHandler->doProgress();
@@ -168,7 +168,7 @@ void CBinaryToGraphics::computeLabel(const CMat &src)
 
 void CBinaryToGraphics::computeGraphics(const CColor& penColor, const CColor& brushColor, const int lineSize)
 {
-    auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+    auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
     assert(pOutput);
     CGraphicsConversion convert;
     auto graphics = convert.blobsToProxyGraphics(m_blobs, m_hierarchy, penColor, brushColor, lineSize);
@@ -176,7 +176,7 @@ void CBinaryToGraphics::computeGraphics(const CColor& penColor, const CColor& br
     for(size_t i=0; i<graphics.size(); ++i)
         pOutput->addItem(graphics[i]);
 
-    auto pInputImgOverlay = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInputImgOverlay = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     assert(pInputImgOverlay);
 
     if(pInputImgOverlay->isDataAvailable())

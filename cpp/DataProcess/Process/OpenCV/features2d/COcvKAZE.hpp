@@ -20,17 +20,17 @@
 #ifndef COCVKAZE_HPP
 #define COCVKAZE_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvKAZEParam -----//
 //--------------------------------//
-class COcvKAZEParam: public CProtocolTaskParam
+class COcvKAZEParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvKAZEParam() : CProtocolTaskParam(){}
+        COcvKAZEParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -76,16 +76,16 @@ class COcvKAZEParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvKAZE -----//
 //---------------------------//
-class COcvKAZE : public CFeatureImageProcess2d
+class COcvKAZE : public C2dFeatureImageTask
 {
     public:
 
-        COcvKAZE() : CFeatureImageProcess2d()
+        COcvKAZE() : C2dFeatureImageTask()
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
         }
-        COcvKAZE(const std::string name, const std::shared_ptr<COcvKAZEParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvKAZE(const std::string name, const std::shared_ptr<COcvKAZEParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
@@ -104,8 +104,8 @@ class COcvKAZE : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvKAZEParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -138,7 +138,7 @@ class COcvKAZE : public CFeatureImageProcess2d
         }
 };
 
-class COcvKAZEFactory : public CProcessFactory
+class COcvKAZEFactory : public CTaskFactory
 {
     public:
 
@@ -156,7 +156,7 @@ class COcvKAZEFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d3/d61/classcv_1_1KAZE.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvKAZEParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -164,7 +164,7 @@ class COcvKAZEFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvKAZEParam>();
             assert(pDerivedParam != nullptr);

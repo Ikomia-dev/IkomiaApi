@@ -20,7 +20,7 @@
 #ifndef CGMICREDEYE_HPP
 #define CGMICREDEYE_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -65,14 +65,14 @@ class CGmicRedEyeParam: public CGmicTaskParam
 //-----------------------//
 //----- CGmicRedEye -----//
 //-----------------------//
-class CGmicRedEye : public CImageProcess2d
+class CGmicRedEye : public C2dImageTask
 {
     public:
 
-        CGmicRedEye() : CImageProcess2d()
+        CGmicRedEye() : C2dImageTask()
         {
         }
-        CGmicRedEye(const std::string name, const std::shared_ptr<CGmicRedEyeParam>& pParam) : CImageProcess2d(name)
+        CGmicRedEye(const std::string name, const std::shared_ptr<CGmicRedEyeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicRedEyeParam>(*pParam);
         }
@@ -85,8 +85,8 @@ class CGmicRedEye : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicRedEyeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -129,7 +129,7 @@ class CGmicRedEye : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -137,7 +137,7 @@ class CGmicRedEye : public CImageProcess2d
         }
 };
 
-class CGmicRedEyeFactory : public CProcessFactory
+class CGmicRedEyeFactory : public CTaskFactory
 {
     public:
 
@@ -152,7 +152,7 @@ class CGmicRedEyeFactory : public CProcessFactory
             m_info.m_authors = "David Tschumperlé";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicRedEyeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -160,7 +160,7 @@ class CGmicRedEyeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicRedEyeParam>();
             assert(pParam != nullptr);

@@ -24,16 +24,16 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 
-class COcvWidgetRetinaToneMapping : public CProtocolTaskWidget
+class COcvWidgetRetinaToneMapping : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetRetinaToneMapping(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRetinaToneMapping(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetRetinaToneMapping(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRetinaToneMapping(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvRetinaToneMappingParam>(pParam);
             init();
@@ -67,7 +67,7 @@ class COcvWidgetRetinaToneMappingFactory : public CWidgetFactory
             m_name = QObject::tr("RetinaToneMapping").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRetinaToneMapping>(pParam);
         }

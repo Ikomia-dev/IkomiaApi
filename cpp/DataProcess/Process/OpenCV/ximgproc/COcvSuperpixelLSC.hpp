@@ -20,18 +20,18 @@
 #ifndef COCVSUPERPIXELLSC_HPP
 #define COCVSUPERPIXELLSC_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //----------------------------//
 //----- COcvSuperpixelLSCParam -----//
 //----------------------------//
-class COcvSuperpixelLSCParam: public CProtocolTaskParam
+class COcvSuperpixelLSCParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSuperpixelLSCParam() : CProtocolTaskParam(){}
+        COcvSuperpixelLSCParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -58,22 +58,22 @@ class COcvSuperpixelLSCParam: public CProtocolTaskParam
 //-----------------------------//
 //----- COcvSuperpixelLSC -----//
 //-----------------------------//
-class COcvSuperpixelLSC : public CImageProcess2d
+class COcvSuperpixelLSC : public C2dImageTask
 {
     public:
 
-        COcvSuperpixelLSC() : CImageProcess2d()
+        COcvSuperpixelLSC() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(2, 0);
         }
-        COcvSuperpixelLSC(const std::string name, const std::shared_ptr<COcvSuperpixelLSCParam>& pParam) : CImageProcess2d(name)
+        COcvSuperpixelLSC(const std::string name, const std::shared_ptr<COcvSuperpixelLSCParam>& pParam) : C2dImageTask(name)
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(2, 0);
             m_pParam = std::make_shared<COcvSuperpixelLSCParam>(*pParam);
         }
@@ -86,8 +86,8 @@ class COcvSuperpixelLSC : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSuperpixelLSCParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -118,11 +118,11 @@ class COcvSuperpixelLSC : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             forwardInputImage(0, 2);
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(imgDst);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(imgBin);
 
@@ -133,7 +133,7 @@ class COcvSuperpixelLSC : public CImageProcess2d
         cv::Ptr<cv::ximgproc::SuperpixelLSC> m_pSuperpixel;
 };
 
-class COcvSuperpixelLSCFactory : public CProcessFactory
+class COcvSuperpixelLSCFactory : public CTaskFactory
 {
     public:
 
@@ -147,7 +147,7 @@ class COcvSuperpixelLSCFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d5/da0/classcv_1_1ximgproc_1_1SuperpixelLSC.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSuperpixelLSCParam = std::dynamic_pointer_cast<COcvSuperpixelLSCParam>(pParam);
             if(pSuperpixelLSCParam != nullptr)
@@ -155,7 +155,7 @@ class COcvSuperpixelLSCFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSuperpixelLSCParam = std::make_shared<COcvSuperpixelLSCParam>();
             assert(pSuperpixelLSCParam != nullptr);

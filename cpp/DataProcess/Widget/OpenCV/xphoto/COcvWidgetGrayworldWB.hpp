@@ -25,15 +25,15 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetGrayworldWB : public CProtocolTaskWidget
+class COcvWidgetGrayworldWB : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGrayworldWB(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGrayworldWB(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGrayworldWB(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGrayworldWB(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGrayworldWBParam>(pParam);
             init();
@@ -78,7 +78,7 @@ class COcvWidgetGrayworldWBFactory : public CWidgetFactory
             m_name = QObject::tr("GrayworldWB").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGrayworldWB>(pParam);
         }

@@ -25,15 +25,15 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetLearningBasedWB : public CProtocolTaskWidget
+class COcvWidgetLearningBasedWB : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetLearningBasedWB(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetLearningBasedWB(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetLearningBasedWB(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetLearningBasedWB(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvLearningBasedWBParam>(pParam);
             init();
@@ -76,7 +76,7 @@ class COcvWidgetLearningBasedWBFactory : public CWidgetFactory
             m_name = QObject::tr("LearningBasedWB").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetLearningBasedWB>(pParam);
         }

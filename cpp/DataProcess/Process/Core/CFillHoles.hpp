@@ -20,26 +20,26 @@
 #ifndef CFILLHOLES_HPP
 #define CFILLHOLES_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------//
 //----- CFillHoles -----//
 //----------------------//
-class CFillHoles : public CImageProcess2d
+class CFillHoles : public C2dImageTask
 {
     public:
 
-        CFillHoles() : CImageProcess2d()
+        CFillHoles() : C2dImageTask()
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
         }
-        CFillHoles(const std::string name, const std::shared_ptr<CProtocolTaskParam>& pParam) : CImageProcess2d(name)
+        CFillHoles(const std::string name, const std::shared_ptr<CWorkflowTaskParam>& pParam) : C2dImageTask(name)
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            m_pParam = std::make_shared<CProtocolTaskParam>(*pParam);
+            m_pParam = std::make_shared<CWorkflowTaskParam>(*pParam);
         }
 
         size_t getProgressSteps() override
@@ -50,8 +50,8 @@ class CFillHoles : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
 
             if(pInput == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
@@ -79,7 +79,7 @@ class CFillHoles : public CImageProcess2d
             emit m_signalHandler->doProgress();
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -87,7 +87,7 @@ class CFillHoles : public CImageProcess2d
         }
 };
 
-class CFillHolesFactory : public CProcessFactory
+class CFillHolesFactory : public CTaskFactory
 {
     public:
 
@@ -100,16 +100,16 @@ class CFillHolesFactory : public CProcessFactory
             m_info.m_keywords = "fill,holes,binary";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             if(pParam != nullptr)
                 return std::make_shared<CFillHoles>(m_info.m_name, pParam);
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
-            auto pDerivedParam = std::make_shared<CProtocolTaskParam>();
+            auto pDerivedParam = std::make_shared<CWorkflowTaskParam>();
             assert(pDerivedParam != nullptr);
             return std::make_shared<CFillHoles>(m_info.m_name, pDerivedParam);
         }

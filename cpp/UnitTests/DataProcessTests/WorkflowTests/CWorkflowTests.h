@@ -1,9 +1,9 @@
-#ifndef CPROCESSPROTOCOLTESTS_H
-#define CPROCESSPROTOCOLTESTS_H
+#ifndef CPROCESSWorkflowTESTS_H
+#define CPROCESSWorkflowTESTS_H
 
 #include <QObject>
 #include "DataProcess.hpp"
-#include "Core/CProtocol.h"
+#include "Core/CWorkflow.h"
 
 class CWorkflowTests : public QObject
 {
@@ -15,24 +15,24 @@ class CWorkflowTests : public QObject
 
     private slots:
 
-        void            protocolConstructors();
-        void            protocolSetters();
-        void            protocolInputs();
-        void            protocolTaskConnection();
-        void            protocolStructure();
+        void            WorkflowConstructors();
+        void            WorkflowSetters();
+        void            WorkflowInputs();
+        void            WorkflowTaskConnection();
+        void            WorkflowStructure();
 
-        void            buildSimpleProtocol();
-        void            buildSingleLineProtocol();
-        void            buildTwoLinesProtocol();
-        void            buildNestedProtocols();
+        void            buildSimpleWorkflow();
+        void            buildSingleLineWorkflow();
+        void            buildTwoLinesWorkflow();
+        void            buildNestedWorkflows();
 
     private:
 
-        ProtocolTaskPtr createTask(IODataType inputType, IODataType outputType);
+        WorkflowTaskPtr createTask(IODataType inputType, IODataType outputType);
 
-        void            checkConnection(const CProtocol &protocol, const ProtocolEdge& e,
-                                        const ProtocolVertex& src, size_t srcIndex,
-                                        const ProtocolVertex& target, size_t targetIndex);
+        void            checkConnection(const CWorkflow &Workflow, const WorkflowEdge& e,
+                                        const WorkflowVertex& src, size_t srcIndex,
+                                        const WorkflowVertex& target, size_t targetIndex);
 
         CMat            loadSampleImage();
 
@@ -43,4 +43,4 @@ class CWorkflowTests : public QObject
         CProcessRegistration m_processRegister;
 };
 
-#endif // CPROCESSPROTOCOLTESTS_H
+#endif // CPROCESSWorkflowTESTS_H

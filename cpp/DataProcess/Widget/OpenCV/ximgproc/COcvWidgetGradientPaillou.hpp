@@ -27,15 +27,15 @@
 #include <QRadioButton>
 #include <QPushButton>
 
-class COcvWidgetGradientPaillou : public CProtocolTaskWidget
+class COcvWidgetGradientPaillou : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGradientPaillou(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGradientPaillou(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGradientPaillou(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGradientPaillou(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGradientPaillouParam>(pParam);
             init();
@@ -108,7 +108,7 @@ class COcvWidgetGradientPaillouFactory : public CWidgetFactory
             m_name = QObject::tr("Paillou gradient filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGradientPaillou>(pParam);
         }

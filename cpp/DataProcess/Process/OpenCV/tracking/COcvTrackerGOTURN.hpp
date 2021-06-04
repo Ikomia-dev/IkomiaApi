@@ -20,18 +20,18 @@
 #ifndef COCVTRACKERGOTURN_HPP
 #define COCVTRACKERGOTURN_HPP
 
-#include "Core/CVideoProcessTracking.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/CVideoTrackingTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/tracking.hpp>
 
 //--------------------------------//
 //----- COcvTrackerGOTURNParam -----//
 //--------------------------------//
-class COcvTrackerGOTURNParam: public CProtocolTaskParam
+class COcvTrackerGOTURNParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvTrackerGOTURNParam() : CProtocolTaskParam(){}
+        COcvTrackerGOTURNParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -50,14 +50,14 @@ class COcvTrackerGOTURNParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvTrackerGOTURN -----//
 //---------------------------//
-class COcvTrackerGOTURN : public CVideoProcessTracking
+class COcvTrackerGOTURN : public CVideoTrackingTask
 {
     public:
 
-        COcvTrackerGOTURN() : CVideoProcessTracking()
+        COcvTrackerGOTURN() : CVideoTrackingTask()
         {
         }
-        COcvTrackerGOTURN(const std::string name, const std::shared_ptr<COcvTrackerGOTURNParam>& pParam) : CVideoProcessTracking(name)
+        COcvTrackerGOTURN(const std::string name, const std::shared_ptr<COcvTrackerGOTURNParam>& pParam) : CVideoTrackingTask(name)
         {
             m_pParam = std::make_shared<COcvTrackerGOTURNParam>(*pParam);
         }
@@ -74,7 +74,7 @@ class COcvTrackerGOTURN : public CVideoProcessTracking
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvTrackerGOTURNParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -123,7 +123,7 @@ class COcvTrackerGOTURN : public CVideoProcessTracking
         cv::Ptr<cv::TrackerGOTURN>  m_pTracker;
 };
 
-class COcvTrackerGOTURNFactory : public CProcessFactory
+class COcvTrackerGOTURNFactory : public CTaskFactory
 {
     public:
 
@@ -141,7 +141,7 @@ class COcvTrackerGOTURNFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d4c/classcv_1_1TrackerGOTURN.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvTrackerGOTURNParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -149,7 +149,7 @@ class COcvTrackerGOTURNFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvTrackerGOTURNParam>();
             assert(pDerivedParam != nullptr);

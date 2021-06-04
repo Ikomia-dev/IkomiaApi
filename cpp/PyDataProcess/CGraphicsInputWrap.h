@@ -23,14 +23,14 @@
 #define CGRAPHICSINPUTWRAP_H
 
 #include "PyDataProcessGlobal.h"
-#include "IO/CGraphicsProcessInput.h"
+#include "IO/CGraphicsInput.h"
 
-class CGraphicsInputWrap : public CGraphicsProcessInput, public wrapper<CGraphicsProcessInput>
+class CGraphicsInputWrap : public CGraphicsInput, public wrapper<CGraphicsInput>
 {
     public:
 
         CGraphicsInputWrap();
-        CGraphicsInputWrap(const CGraphicsProcessInput &io);
+        CGraphicsInputWrap(const CGraphicsInput &io);
 
         virtual bool    isDataAvailable() const;
         bool            default_isDataAvailable() const;

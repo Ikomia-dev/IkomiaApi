@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicSharpenGradient.hpp"
 
-class CGmicWidgetSharpenGradient : public CProtocolTaskWidget
+class CGmicWidgetSharpenGradient : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetSharpenGradient(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenGradient(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetSharpenGradient(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSharpenGradient(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicSharpenGradientParam>(pParam);
             init();
@@ -76,7 +76,7 @@ class CGmicWidgetSharpenGradientFactory : public CWidgetFactory
             m_name = QObject::tr("Sharpen [Gradient]").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetSharpenGradient>(pParam);
         }

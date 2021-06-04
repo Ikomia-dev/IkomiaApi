@@ -59,13 +59,13 @@ UMapString COcvSuperResBTVL1Param::getParamMap() const
 //-----------------------------//
 //----- COcvSuperResBTVL1 -----//
 //-----------------------------//
-COcvSuperResBTVL1::COcvSuperResBTVL1() : CVideoProcess()
+COcvSuperResBTVL1::COcvSuperResBTVL1() : CVideoTask()
 {
     m_bCuda = Utils::Gpu::isCudaAvailable();
 }
 
 COcvSuperResBTVL1::COcvSuperResBTVL1(const std::string name, const std::shared_ptr<COcvSuperResBTVL1Param> &pParam)
-    : CVideoProcess(name)
+    : CVideoTask(name)
 {
     m_bCuda = Utils::Gpu::isCudaAvailable();
     m_pParam = std::make_shared<COcvSuperResBTVL1Param>(*pParam);
@@ -117,7 +117,7 @@ void COcvSuperResBTVL1::notifyVideoStart(int frameCount)
 void COcvSuperResBTVL1::run()
 {
     beginTaskRun();
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     auto pParam = std::dynamic_pointer_cast<COcvSuperResBTVL1Param>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -161,7 +161,7 @@ void COcvSuperResBTVL1::run()
     endTaskRun();
     emit m_signalHandler->doProgress();
 
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
     if(pOutput)
         pOutput->setImage(imgDst);
 
@@ -219,7 +219,7 @@ COcvSuperResBTVL1Factory::COcvSuperResBTVL1Factory()
     m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d0a/group__superres.html#ga73c184b0040c1afa7d6cdf0a9f32a8f8";
 }
 
-ProtocolTaskPtr COcvSuperResBTVL1Factory::create(const ProtocolTaskParamPtr &pParam)
+WorkflowTaskPtr COcvSuperResBTVL1Factory::create(const WorkflowTaskParamPtr &pParam)
 {
     auto pDerivedParam = std::dynamic_pointer_cast<COcvSuperResBTVL1Param>(pParam);
     if(pDerivedParam != nullptr)
@@ -228,7 +228,7 @@ ProtocolTaskPtr COcvSuperResBTVL1Factory::create(const ProtocolTaskParamPtr &pPa
         return create();
 }
 
-ProtocolTaskPtr COcvSuperResBTVL1Factory::create()
+WorkflowTaskPtr COcvSuperResBTVL1Factory::create()
 {
     auto pDerivedParam = std::make_shared<COcvSuperResBTVL1Param>();
     assert(pDerivedParam != nullptr);

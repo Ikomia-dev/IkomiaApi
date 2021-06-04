@@ -20,18 +20,18 @@
 #ifndef COCVRETINASEGMENTATION_HPP
 #define COCVRETINASEGMENTATION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/bioinspired.hpp>
 
 //----------------------------//
 //----- COcvRetinaSegmentationParam -----//
 //----------------------------//
-class COcvRetinaSegmentationParam: public CProtocolTaskParam
+class COcvRetinaSegmentationParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRetinaSegmentationParam() : CProtocolTaskParam(){}
+        COcvRetinaSegmentationParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -48,20 +48,20 @@ class COcvRetinaSegmentationParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvRetinaSegmentation -----//
 //-----------------------//
-class COcvRetinaSegmentation : public CImageProcess2d
+class COcvRetinaSegmentation : public C2dImageTask
 {
     public:
 
-        COcvRetinaSegmentation() : CImageProcess2d()
+        COcvRetinaSegmentation() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvRetinaSegmentation(const std::string name, const std::shared_ptr<COcvRetinaSegmentationParam>& pParam) : CImageProcess2d(name)
+        COcvRetinaSegmentation(const std::string name, const std::shared_ptr<COcvRetinaSegmentationParam>& pParam) : C2dImageTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
             m_pParam = std::make_shared<COcvRetinaSegmentationParam>(*pParam);
         }
@@ -74,7 +74,7 @@ class COcvRetinaSegmentation : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvRetinaSegmentationParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -115,7 +115,7 @@ class COcvRetinaSegmentation : public CImageProcess2d
             emit m_signalHandler->doProgress();
 
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -129,7 +129,7 @@ class COcvRetinaSegmentation : public CImageProcess2d
         cv::Ptr<cv::bioinspired::TransientAreasSegmentationModule> m_pRetina;
 };
 
-class COcvRetinaSegmentationFactory : public CProcessFactory
+class COcvRetinaSegmentationFactory : public CTaskFactory
 {
     public:
 
@@ -147,7 +147,7 @@ class COcvRetinaSegmentationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d6e/classcv_1_1bioinspired_1_1TransientAreasSegmentationModule.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pRetinaSegmentationParam = std::dynamic_pointer_cast<COcvRetinaSegmentationParam>(pParam);
             if(pRetinaSegmentationParam != nullptr)
@@ -155,7 +155,7 @@ class COcvRetinaSegmentationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pRetinaSegmentationParam = std::make_shared<COcvRetinaSegmentationParam>();
             assert(pRetinaSegmentationParam != nullptr);

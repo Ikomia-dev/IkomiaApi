@@ -20,17 +20,17 @@
 #ifndef COCVFASTNLMEANSMULTI_HPP
 #define COCVFASTNLMEANSMULTI_HPP
 
-#include "Core/CVideoProcess.h"
+#include "Core/CVideoTask.h"
 #include "UtilsTools.hpp"
 
 //---------------------------------//
 //----- COcvNlMeansMultiParam -----//
 //---------------------------------//
-class COcvFastNlMeansMultiParam: public CProtocolTaskParam
+class COcvFastNlMeansMultiParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFastNlMeansMultiParam() : CProtocolTaskParam(){}
+        COcvFastNlMeansMultiParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,14 +61,14 @@ class COcvFastNlMeansMultiParam: public CProtocolTaskParam
 //----------------------------//
 //----- COcvNlMeansMulti -----//
 //----------------------------//
-class COcvFastNlMeansMulti : public CVideoProcess
+class COcvFastNlMeansMulti : public CVideoTask
 {
     public:
 
-        COcvFastNlMeansMulti() : CVideoProcess()
+        COcvFastNlMeansMulti() : CVideoTask()
         {
         }
-        COcvFastNlMeansMulti(const std::string name, const std::shared_ptr<COcvFastNlMeansMultiParam>& pParam) : CVideoProcess(name)
+        COcvFastNlMeansMulti(const std::string name, const std::shared_ptr<COcvFastNlMeansMultiParam>& pParam) : CVideoTask(name)
         {
             m_pParam = std::make_shared<COcvFastNlMeansMultiParam>(*pParam);
         }
@@ -87,8 +87,8 @@ class COcvFastNlMeansMulti : public CVideoProcess
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvFastNlMeansMultiParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -132,7 +132,7 @@ class COcvFastNlMeansMulti : public CVideoProcess
 
                 endTaskRun();
 
-                auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+                auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
                 if(pOutput)
                     pOutput->setImage(imgDst);
 
@@ -145,7 +145,7 @@ class COcvFastNlMeansMulti : public CVideoProcess
         std::vector<cv::Mat>   m_srcImages;
 };
 
-class COcvFastNlMeansMultiFactory : public CProcessFactory
+class COcvFastNlMeansMultiFactory : public CTaskFactory
 {
     public:
 
@@ -159,7 +159,7 @@ class COcvFastNlMeansMultiFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvFastNlMeansMultiParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -167,7 +167,7 @@ class COcvFastNlMeansMultiFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvFastNlMeansMultiParam>();
             assert(pDerivedParam != nullptr);

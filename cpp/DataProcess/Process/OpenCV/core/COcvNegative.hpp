@@ -19,17 +19,17 @@
 
 #ifndef COCVNEGATIVE_HPP
 #define COCVNEGATIVE_HPP
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------//
 //----- COcvNegativeParam -----//
 //----------------------------//
-class COcvNegativeParam: public CProtocolTaskParam
+class COcvNegativeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvNegativeParam() : CProtocolTaskParam(){}
+        COcvNegativeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -45,14 +45,14 @@ class COcvNegativeParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvNegative -----//
 //-----------------------//
-class COcvNegative : public CImageProcess2d
+class COcvNegative : public C2dImageTask
 {
     public:
 
-        COcvNegative() : CImageProcess2d()
+        COcvNegative() : C2dImageTask()
         {
         }
-        COcvNegative(const std::string name, const std::shared_ptr<COcvNegativeParam>& pParam) : CImageProcess2d(name)
+        COcvNegative(const std::string name, const std::shared_ptr<COcvNegativeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvNegativeParam>(*pParam);
         }
@@ -65,7 +65,7 @@ class COcvNegative : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvNegativeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -88,7 +88,7 @@ class COcvNegative : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -98,7 +98,7 @@ class COcvNegative : public CImageProcess2d
         }
 };
 
-class COcvNegativeFactory : public CProcessFactory
+class COcvNegativeFactory : public CTaskFactory
 {
     public:
 
@@ -112,7 +112,7 @@ class COcvNegativeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pNegativeParam = std::dynamic_pointer_cast<COcvNegativeParam>(pParam);
             if(pNegativeParam != nullptr)
@@ -120,7 +120,7 @@ class COcvNegativeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pNegativeParam = std::make_shared<COcvNegativeParam>();
             assert(pNegativeParam != nullptr);

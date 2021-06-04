@@ -22,7 +22,7 @@
 //----------------------------------//
 //----- CGraphicsToBinaryParam -----//
 //----------------------------------//
-CGraphicsToBinaryParam::CGraphicsToBinaryParam() : CProtocolTaskParam()
+CGraphicsToBinaryParam::CGraphicsToBinaryParam() : CWorkflowTaskParam()
 {
 }
 
@@ -45,12 +45,12 @@ UMapString CGraphicsToBinaryParam::getParamMap() const
 //-----------------------------//
 //----- CGraphicsToBinary -----//
 //-----------------------------//
-CGraphicsToBinary::CGraphicsToBinary() : CImageProcess2d()
+CGraphicsToBinary::CGraphicsToBinary() : C2dImageTask()
 {
     removeInput(0);
 }
 
-CGraphicsToBinary::CGraphicsToBinary(const std::string name, const std::shared_ptr<CGraphicsToBinaryParam> &pParam) : CImageProcess2d(name)
+CGraphicsToBinary::CGraphicsToBinary(const std::string name, const std::shared_ptr<CGraphicsToBinaryParam> &pParam) : C2dImageTask(name)
 {
     removeInput(0);
     m_pParam = std::make_shared<CGraphicsToBinaryParam>(*pParam);
@@ -65,7 +65,7 @@ void CGraphicsToBinary::run()
 {
     beginTaskRun();
 
-    auto pInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(0));
     auto pParam = std::dynamic_pointer_cast<CGraphicsToBinaryParam>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -107,7 +107,7 @@ void CGraphicsToBinary::run()
     }
     emit m_signalHandler->doProgress();
 
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
     if(pOutput)
         pOutput->setImage(binary);
 

@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetSparseToDenseOF : public CProtocolTaskWidget
+class COcvWidgetSparseToDenseOF : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSparseToDenseOF(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSparseToDenseOF(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSparseToDenseOF(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSparseToDenseOF(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSparseToDenseOFParam>(pParam);
             init();
@@ -73,7 +73,7 @@ class COcvWidgetSparseToDenseOFFactory : public CWidgetFactory
             m_name = QObject::tr("SparseToDense Flow").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSparseToDenseOF>(pParam);
         }

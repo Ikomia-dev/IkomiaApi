@@ -21,13 +21,13 @@
 #include <QPainter>
 #include "Main/CoreTools.hpp"
 
-CWidgetOutput::CWidgetOutput() : CProtocolTaskIO(IODataType::WIDGET)
+CWidgetOutput::CWidgetOutput() : CWorkflowTaskIO(IODataType::WIDGET)
 {
     m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
     m_saveFormat = DataFileFormat::JPG;
 }
 
-CWidgetOutput::CWidgetOutput(IODataType data): CProtocolTaskIO(data)
+CWidgetOutput::CWidgetOutput(IODataType data): CWorkflowTaskIO(data)
 {
     m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
     m_saveFormat = DataFileFormat::JPG;
@@ -87,7 +87,7 @@ std::shared_ptr<CWidgetOutput> CWidgetOutput::clone() const
     return std::static_pointer_cast<CWidgetOutput>(cloneImp());
 }
 
-std::shared_ptr<CProtocolTaskIO> CWidgetOutput::cloneImp() const
+std::shared_ptr<CWorkflowTaskIO> CWidgetOutput::cloneImp() const
 {
     return std::shared_ptr<CWidgetOutput>(new CWidgetOutput(*this));
 }

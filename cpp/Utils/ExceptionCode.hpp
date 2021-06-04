@@ -48,7 +48,7 @@ namespace Ikomia
         INVALID_DIMENSION,      /**< Invalid dataset dimensions */
         INVALID_PARAMETER,      /**< Generic code for parameters errors */
         INVALID_IMAGE,          /**< Empty or invalid image */
-        INVALID_CONNECTION,     /**< Protocol: invalid connection between 2 tasks */
+        INVALID_CONNECTION,     /**< Workflow: invalid connection between 2 tasks */
         INVALID_FILE,           /**< Invalid file (format, extension, size...) */
         INVALID_USAGE,          /**< Invalid function usage (insatisfied prerequisites) */
         INVALID_VIDEO_WRITER,   /**< Invalid parameters for video writer */

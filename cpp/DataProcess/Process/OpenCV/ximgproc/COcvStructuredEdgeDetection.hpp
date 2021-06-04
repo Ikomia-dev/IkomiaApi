@@ -20,18 +20,18 @@
 #ifndef COCVSTRUCTUREDEDGEDETECTION_HPP
 #define COCVSTRUCTUREDEDGEDETECTION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //----------------------------//
 //----- COcvStructuredEdgeDetectionParam -----//
 //----------------------------//
-class COcvStructuredEdgeDetectionParam: public CProtocolTaskParam
+class COcvStructuredEdgeDetectionParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvStructuredEdgeDetectionParam() : CProtocolTaskParam(){}
+        COcvStructuredEdgeDetectionParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -53,14 +53,14 @@ class COcvStructuredEdgeDetectionParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvStructuredEdgeDetection -----//
 //-----------------------//
-class COcvStructuredEdgeDetection : public CImageProcess2d
+class COcvStructuredEdgeDetection : public C2dImageTask
 {
     public:
 
-        COcvStructuredEdgeDetection() : CImageProcess2d()
+        COcvStructuredEdgeDetection() : C2dImageTask()
         {
         }
-        COcvStructuredEdgeDetection(const std::string name, const std::shared_ptr<COcvStructuredEdgeDetectionParam>& pParam) : CImageProcess2d(name)
+        COcvStructuredEdgeDetection(const std::string name, const std::shared_ptr<COcvStructuredEdgeDetectionParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvStructuredEdgeDetectionParam>(*pParam);
         }
@@ -73,8 +73,8 @@ class COcvStructuredEdgeDetection : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvStructuredEdgeDetectionParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -107,7 +107,7 @@ class COcvStructuredEdgeDetection : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -117,7 +117,7 @@ class COcvStructuredEdgeDetection : public CImageProcess2d
         cv::Ptr<cv::ximgproc::StructuredEdgeDetection> m_pSuperpixel;
 };
 
-class COcvStructuredEdgeDetectionFactory : public CProcessFactory
+class COcvStructuredEdgeDetectionFactory : public CTaskFactory
 {
     public:
 
@@ -135,7 +135,7 @@ class COcvStructuredEdgeDetectionFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d8/d54/classcv_1_1ximgproc_1_1StructuredEdgeDetection.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pStructuredEdgeDetectionParam = std::dynamic_pointer_cast<COcvStructuredEdgeDetectionParam>(pParam);
             if(pStructuredEdgeDetectionParam != nullptr)
@@ -143,7 +143,7 @@ class COcvStructuredEdgeDetectionFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pStructuredEdgeDetectionParam = std::make_shared<COcvStructuredEdgeDetectionParam>();
             assert(pStructuredEdgeDetectionParam != nullptr);

@@ -20,17 +20,17 @@
 #ifndef COCVCANNY_HPP
 #define COCVCANNY_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvCannyParam -----//
 //------------------------------//
-class COcvCannyParam: public CProtocolTaskParam
+class COcvCannyParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCannyParam() : CProtocolTaskParam(){}
+        COcvCannyParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,15 +61,15 @@ class COcvCannyParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvCanny -----//
 //-------------------------//
-class COcvCanny : public CImageProcess2d
+class COcvCanny : public C2dImageTask
 {
     public:
 
-        COcvCanny() : CImageProcess2d()
+        COcvCanny() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
         }
-        COcvCanny(const std::string name, const std::shared_ptr<COcvCannyParam>& pParam) : CImageProcess2d(name)
+        COcvCanny(const std::string name, const std::shared_ptr<COcvCannyParam>& pParam) : C2dImageTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
             m_pParam = std::make_shared<COcvCannyParam>(*pParam);
@@ -83,8 +83,8 @@ class COcvCanny : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvCannyParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -110,7 +110,7 @@ class COcvCanny : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -119,7 +119,7 @@ class COcvCanny : public CImageProcess2d
         }
 };
 
-class COcvCannyFactory : public CProcessFactory
+class COcvCannyFactory : public CTaskFactory
 {
     public:
 
@@ -133,7 +133,7 @@ class COcvCannyFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pCannyParam = std::dynamic_pointer_cast<COcvCannyParam>(pParam);
             if(pCannyParam != nullptr)
@@ -141,7 +141,7 @@ class COcvCannyFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pCannyParam = std::make_shared<COcvCannyParam>();
             assert(pCannyParam != nullptr);

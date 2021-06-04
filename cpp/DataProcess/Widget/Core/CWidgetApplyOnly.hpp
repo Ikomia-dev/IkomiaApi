@@ -20,17 +20,17 @@
 #ifndef CWIDGETAPPLYONLY_HPP
 #define CWIDGETAPPLYONLY_HPP
 
-#include "Protocol/CProtocolTaskWidget.h"
+#include "Workflow/CWorkflowTaskWidget.h"
 
-class CWidgetApplyOnly : public CProtocolTaskWidget
+class CWidgetApplyOnly : public CWorkflowTaskWidget
 {
     public:
 
-        CWidgetApplyOnly(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetApplyOnly(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        CWidgetApplyOnly(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetApplyOnly(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = pParam;
             init();
@@ -41,7 +41,7 @@ class CWidgetApplyOnly : public CProtocolTaskWidget
         void init() final
         {
             if(m_pParam == nullptr)
-                m_pParam = std::make_shared<CProtocolTaskParam>();
+                m_pParam = std::make_shared<CWorkflowTaskParam>();
 
             // Remove scroll area widget from layout and delete it
             auto pLayout = dynamic_cast<QVBoxLayout*>(layout());
@@ -57,7 +57,7 @@ class CWidgetApplyOnly : public CProtocolTaskWidget
 
     private:
 
-        std::shared_ptr<CProtocolTaskParam> m_pParam = nullptr;
+        std::shared_ptr<CWorkflowTaskParam> m_pParam = nullptr;
 };
 
 #endif // CWIDGETAPPLYONLY_HPP

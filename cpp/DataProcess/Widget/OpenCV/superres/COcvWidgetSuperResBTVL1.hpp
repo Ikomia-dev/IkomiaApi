@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/superres/COcvSuperResBTVL1.h"
 
-class COcvWidgetSuperResBTVL1 : public CProtocolTaskWidget
+class COcvWidgetSuperResBTVL1 : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSuperResBTVL1(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSuperResBTVL1(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSuperResBTVL1(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSuperResBTVL1(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSuperResBTVL1Param>(pParam);
             init();
@@ -94,7 +94,7 @@ class COcvWidgetSuperResBTVL1Factory : public CWidgetFactory
             m_name = QObject::tr("Super Resolution BTVL1").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSuperResBTVL1>(pParam);
         }

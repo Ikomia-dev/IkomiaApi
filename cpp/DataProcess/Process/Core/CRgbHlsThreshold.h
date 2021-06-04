@@ -22,12 +22,12 @@
 #ifndef CRGBHLSTHRESHOLD_H
 #define CRGBHLSTHRESHOLD_H
 
-#include "Core/CInteractiveImageProcess2d.h"
+#include "Core/C2dImageInteractiveTask.h"
 
 //---------------------------------//
 //----- CRgbHlsThresholdParam -----//
 //---------------------------------//
-class CRgbHlsThresholdParam: public CProtocolTaskParam
+class CRgbHlsThresholdParam: public CWorkflowTaskParam
 {
     public:
 
@@ -61,7 +61,7 @@ class CRgbHlsThresholdParam: public CProtocolTaskParam
 //----------------------------//
 //----- CRgbHlsThreshold -----//
 //----------------------------//
-class CRgbHlsThreshold : public CInteractiveImageProcess2d
+class CRgbHlsThreshold : public C2dImageInteractiveTask
 {
     public:
 
@@ -84,15 +84,15 @@ class CRgbHlsThreshold : public CInteractiveImageProcess2d
 //-----------------------------------//
 //----- CRgbHlsThresholdFactory -----//
 //-----------------------------------//
-class CRgbHlsThresholdFactory : public CProcessFactory
+class CRgbHlsThresholdFactory : public CTaskFactory
 {
     public:
 
         CRgbHlsThresholdFactory();
         ~CRgbHlsThresholdFactory() {}
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override;
-        virtual ProtocolTaskPtr create() override;
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override;
+        virtual WorkflowTaskPtr create() override;
 };
 
 #endif // CRGBHLSTHRESHOLD_H

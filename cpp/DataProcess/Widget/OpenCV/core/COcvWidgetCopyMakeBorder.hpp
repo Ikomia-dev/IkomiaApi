@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/core/COcvCopyMakeBorder.hpp"
 
-class COcvWidgetCopyMakeBorder : public CProtocolTaskWidget
+class COcvWidgetCopyMakeBorder : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCopyMakeBorder(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCopyMakeBorder(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCopyMakeBorder(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCopyMakeBorder(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCopyMakeBorderParam>(pParam);
             init();
@@ -88,7 +88,7 @@ class COcvWidgetCopyMakeBorderFactory : public CWidgetFactory
             m_name = QObject::tr("CopyMakeBorder").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetCopyMakeBorder>(pParam);
         }

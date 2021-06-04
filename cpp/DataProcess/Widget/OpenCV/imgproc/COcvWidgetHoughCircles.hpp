@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/imgproc/COcvHoughCircles.hpp"
 
-class COcvWidgetHoughCircles : public CProtocolTaskWidget
+class COcvWidgetHoughCircles : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetHoughCircles(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHoughCircles(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetHoughCircles(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHoughCircles(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvHoughCirclesParam>(pParam);
             init();
@@ -84,7 +84,7 @@ class COcvWidgetHoughCirclesFactory : public CWidgetFactory
             m_name = QObject::tr("Hough circles").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetHoughCircles>(pParam);
         }

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Colors/CGmicAutoBalance.hpp"
 
-class CGmicWidgetAutoBalance : public CProtocolTaskWidget
+class CGmicWidgetAutoBalance : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetAutoBalance(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetAutoBalance(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetAutoBalance(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetAutoBalance(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicAutoBalanceParam>(pParam);
             init();
@@ -85,7 +85,7 @@ class CGmicWidgetAutoBalanceFactory : public CWidgetFactory
             m_name = QObject::tr("Auto balance").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetAutoBalance>(pParam);
         }

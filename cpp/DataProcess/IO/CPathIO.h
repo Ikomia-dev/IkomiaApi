@@ -23,9 +23,9 @@
 #define CPATHIO_H
 
 #include "DataProcessGlobal.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 
-class DATAPROCESSSHARED_EXPORT CPathIO : public CProtocolTaskIO
+class DATAPROCESSSHARED_EXPORT CPathIO : public CWorkflowTaskIO
 {
     public:
 
@@ -53,14 +53,14 @@ class DATAPROCESSSHARED_EXPORT CPathIO : public CProtocolTaskIO
 
     private:
 
-        virtual ProtocolTaskIOPtr   cloneImp() const override;
+        virtual WorkflowTaskIOPtr   cloneImp() const override;
 
     private:
 
         std::string m_path;
 };
 
-class DATAPROCESSSHARED_EXPORT CPathIOFactory: public CProtocolTaskIOFactory
+class DATAPROCESSSHARED_EXPORT CPathIOFactory: public CWorkflowTaskIOFactory
 {
     public:
 
@@ -69,7 +69,7 @@ class DATAPROCESSSHARED_EXPORT CPathIOFactory: public CProtocolTaskIOFactory
             m_name = "CPathIO";
         }
 
-        virtual ProtocolTaskIOPtr   create(IODataType dataType)
+        virtual WorkflowTaskIOPtr   create(IODataType dataType)
         {
             return std::make_shared<CPathIO>(dataType);
         }

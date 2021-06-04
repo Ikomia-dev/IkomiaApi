@@ -22,17 +22,17 @@
 
 #include "DataProcessTools.hpp"
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------------//
 //----- COcvAdaptiveThresholdParam -----//
 //--------------------------------------//
-class COcvAdaptiveThresholdParam: public CProtocolTaskParam
+class COcvAdaptiveThresholdParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvAdaptiveThresholdParam() : CProtocolTaskParam()
+        COcvAdaptiveThresholdParam() : CWorkflowTaskParam()
         {
         }
 
@@ -65,21 +65,21 @@ class COcvAdaptiveThresholdParam: public CProtocolTaskParam
 //--------------------------------------//
 //----- COcvAdaptiveThresholdParam -----//
 //--------------------------------------//
-class COcvAdaptiveThreshold : public CImageProcess2d
+class COcvAdaptiveThreshold : public C2dImageTask
 {
     public:
 
-        COcvAdaptiveThreshold() : CImageProcess2d()
+        COcvAdaptiveThreshold() : C2dImageTask()
         {
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvAdaptiveThreshold(const std::string name, const std::shared_ptr<COcvAdaptiveThresholdParam>& pParam) : CImageProcess2d(name)
+        COcvAdaptiveThreshold(const std::string name, const std::shared_ptr<COcvAdaptiveThresholdParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvAdaptiveThresholdParam>(*pParam);
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
 
@@ -90,8 +90,8 @@ class COcvAdaptiveThreshold : public CImageProcess2d
 
         void    updateStaticOutputs() override
         {
-            CImageProcess2d::updateStaticOutputs();
-            auto pImgOutput =  std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            C2dImageTask::updateStaticOutputs();
+            auto pImgOutput =  std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             assert(pImgOutput);
             pImgOutput->setChannelCount(1);
         }
@@ -99,8 +99,8 @@ class COcvAdaptiveThreshold : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvAdaptiveThresholdParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -129,7 +129,7 @@ class COcvAdaptiveThreshold : public CImageProcess2d
             applyGraphicsMaskToBinary(imgDst, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -156,7 +156,7 @@ class COcvAdaptiveThreshold : public CImageProcess2d
         }
 };
 
-class COcvAdaptiveThresholdFactory : public CProcessFactory
+class COcvAdaptiveThresholdFactory : public CTaskFactory
 {
     public:
 
@@ -170,7 +170,7 @@ class COcvAdaptiveThresholdFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvAdaptiveThresholdParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -178,7 +178,7 @@ class COcvAdaptiveThresholdFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvAdaptiveThresholdParam>();
             assert(pDerivedParam != nullptr);

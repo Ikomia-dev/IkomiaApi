@@ -19,11 +19,11 @@
 
 #include "CGraphicsInputWrap.h"
 
-CGraphicsInputWrap::CGraphicsInputWrap() : CGraphicsProcessInput()
+CGraphicsInputWrap::CGraphicsInputWrap() : CGraphicsInput()
 {    
 }
 
-CGraphicsInputWrap::CGraphicsInputWrap(const CGraphicsProcessInput &io) : CGraphicsProcessInput(io)
+CGraphicsInputWrap::CGraphicsInputWrap(const CGraphicsInput &io) : CGraphicsInput(io)
 {
 }
 
@@ -35,7 +35,7 @@ bool CGraphicsInputWrap::isDataAvailable() const
         if(override isDataOver = this->get_override("isDataAvailable"))
             return isDataOver();
 
-        return CGraphicsProcessInput::isDataAvailable();
+        return CGraphicsInput::isDataAvailable();
     }
     catch(boost::python::error_already_set&)
     {
@@ -48,7 +48,7 @@ bool CGraphicsInputWrap::default_isDataAvailable() const
     CPyEnsureGIL gil;
     try
     {
-        return this->CGraphicsProcessInput::isDataAvailable();
+        return this->CGraphicsInput::isDataAvailable();
     }
     catch(boost::python::error_already_set&)
     {
@@ -64,7 +64,7 @@ void CGraphicsInputWrap::clearData()
         if(override clearDataOver = this->get_override("clearData"))
             clearDataOver();
         else
-            CGraphicsProcessInput::clearData();
+            CGraphicsInput::clearData();
     }
     catch(boost::python::error_already_set&)
     {
@@ -77,7 +77,7 @@ void CGraphicsInputWrap::default_clearData()
     CPyEnsureGIL gil;
     try
     {
-        this->CGraphicsProcessInput::clearData();
+        this->CGraphicsInput::clearData();
     }
     catch(boost::python::error_already_set&)
     {

@@ -25,15 +25,15 @@
 #include <QGridLayout>
 #include <QComboBox>
 
-class COcvWidgetKMeans : public CProtocolTaskWidget
+class COcvWidgetKMeans : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetKMeans(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetKMeans(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetKMeans(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetKMeans(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvKMeansParam>(pParam);
             init();
@@ -120,7 +120,7 @@ class COcvWidgetKMeansFactory : public CWidgetFactory
             m_name = QObject::tr("K-means").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetKMeans>(pParam);
         }

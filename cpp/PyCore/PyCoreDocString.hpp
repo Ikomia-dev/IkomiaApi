@@ -268,19 +268,19 @@ constexpr auto _graphicsToBinaryMaskDocString =
         "   graphics: list of :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 //-------------------------//
-//----- CProtocolTask -----//
+//----- CWorkflowTask -----//
 //-------------------------//
-constexpr auto _protocolTaskDocString =
+constexpr auto _WorkflowTaskDocString =
         "Base class for all tasks that aim to be executed in a workflow. "
         "It provides all basic mechanisms to handle inputs and outputs, task parameters and progress feedbacks. "
         "It also provides an interface through overridable methods to set a formal scope to design custom task. "
         "This interface allows the implementation of various image-based process. "
         "One can also use the derived classes of the API which cover basic needs for "
-        "2D image, volume (see :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`), "
-        "or video (see :py:class:`~ikomia.dataprocess.pydataprocess.CVideoProcess`).\n\n";
+        "2D image, volume (see :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`), "
+        "or video (see :py:class:`~ikomia.dataprocess.pydataprocess.CVideoTask`).\n\n";
 
-constexpr auto _ctorProtocolTaskDocString =
-        "Construct CProtocolTask object with the given task name.\n\n"
+constexpr auto _ctorWorkflowTaskDocString =
+        "Construct CWorkflowTask object with the given task name.\n\n"
         "Args:\n"
         "   arg1: self\n\n"
         "   arg2 (str): task name, must be unique\n";
@@ -288,12 +288,12 @@ constexpr auto _ctorProtocolTaskDocString =
 constexpr auto _addInputDocString =
         "Add new input to the task.\n\n"
         "Args:\n"
-        "   input: :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n";
+        "   input: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n";
 
 constexpr auto _addOutputDocString =
         "Add new output to the task.\n\n"
         "Args:\n"
-        "   output: :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n";
+        "   output: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n";
 
 constexpr auto _removeInputDocString =
         "Remove input at the given position.\n\n"
@@ -303,7 +303,7 @@ constexpr auto _removeInputDocString =
 constexpr auto _beginTaskRunDocString =
         "Perform all initialization stuff before running the task. "
         "This method can be overriden to put custom initialization steps. "
-        "In this case, don't forget to call the base class method. This method must be the first call of the :py:meth:`~ikomia.core.pycore.CProtocolTask.run` method.\n";
+        "In this case, don't forget to call the base class method. This method must be the first call of the :py:meth:`~ikomia.core.pycore.CWorkflowTask.run` method.\n";
 
 constexpr auto _emitGraphicsContextChangedDocString =
         "Send event to notify that graphics context has changed inside the task and display has to be updated.\n";
@@ -322,7 +322,7 @@ constexpr auto _emitOutputChangedDocString =
 constexpr auto _endTaskRunDocString =
         "Performs all finalization stuff after running the task. "
         "This method can be overriden to put custom finalization steps. "
-        "In this case, don't forget to call the base class method. This method must be the last call of the :py:meth:`~ikomia.core.pycore.CProtocolTask.run` method.\n";
+        "In this case, don't forget to call the base class method. This method must be the last call of the :py:meth:`~ikomia.core.pycore.CWorkflowTask.run` method.\n";
 
 constexpr auto _executeActionsDocString =
         "Execute actions according to the specific defined behavior. In this base class, the method does nothing.\n\n"
@@ -339,7 +339,7 @@ constexpr auto _getInputDocString =
         "Args:\n"
         "   index (int): input index\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n";
 
 constexpr auto _getInputCountDocString =
         "Get the number of inputs.\n\n"
@@ -357,14 +357,14 @@ constexpr auto _getInputDataTypeDocString =
 constexpr auto _getInputsDocString =
         "Get the whole list of inputs.\n\n"
         "Returns:\n"
-        "   list: list of :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based objects\n";
+        "   list: list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
 
 constexpr auto _getOutputDocString =
         "Get output at position index.\n\n"
         "Args:\n"
         "   index (int): output index\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n";
 
 constexpr auto _getOutputCountDocString =
         "Get the number of outputs.\n\n"
@@ -382,17 +382,17 @@ constexpr auto _getOutputDataTypeDocString =
 constexpr auto _getOutputs1DocString =
         "Get the whole list of outputs.\n\n"
         "Returns:\n"
-        "   list: list of :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based objects\n";
+        "   list: list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
 
 constexpr auto _getOutputs2DocString =
         "Get the list of outputs of the given data type.\n\n"
         "Returns:\n"
-        "   list: list of :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based objects\n";
+        "   list: list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
 
 constexpr auto _getParamDocString =
         "Get task parameters.\n\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTaskParam` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n";
 
 constexpr auto _getProgressSteps1DocString =
         "Get the number of progress steps when the system runs the task.\n\n"
@@ -403,7 +403,7 @@ constexpr auto _getProgressSteps2DocString =
         "Get the number of progress steps when the systems runs the task. "
         "It takes into account the number of unit element to process.\n\n"
         "Args:\n"
-        "   unit_elt_count (int): unit elements count. See :py:class:`~ikomia.core.pycore.CProtocolTaskIO` for more details.\n\n"
+        "   unit_elt_count (int): unit elements count. See :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` for more details.\n\n"
         "Returns:\n"
         "   int: steps count\n";
 
@@ -456,7 +456,7 @@ constexpr auto _setInputDocString =
         "If the input at position index does not exist, the function creates as many generic inputs to reach the number of index+1 "
         "and sets the input at position index.\n\n"
         "Args:\n"
-        "   input: :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n\n"
+        "   input: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n\n"
         "   index (int): zero-based input index\n\n"
         "   is_new_sequence (bool): indicate if new input is a new sequence (ex: new frame of the same video is not a new sequence)\n";
 
@@ -471,7 +471,7 @@ constexpr auto _setInputDataTypeDocString =
 constexpr auto _setInputsDocString =
         "Set the whole list of inputs with the given one.\n\n"
         "Args:\n"
-        "   inputs (list): list of :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based objects\n"
+        "   inputs (list): list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n"
         "   is_new_sequence (bool): indicate if new input is a new sequence (ex: new frame of the same video is not a new sequence)\n";
 
 constexpr auto _setOutputDocString =
@@ -479,7 +479,7 @@ constexpr auto _setOutputDocString =
         "If the output at position index does not exist, the function creates as many generic outputs to reach the number of index+1 "
         "and sets the output at position index.\n\n"
         "Args:\n"
-        "   output: :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based object\n\n"
+        "   output: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n\n"
         "   index (int): zero-based output index\n";
 
 constexpr auto _setOutputDataTypeDocString =
@@ -493,12 +493,12 @@ constexpr auto _setOutputDataTypeDocString =
 constexpr auto _setOutputsDocString =
         "Set the whole list of outputs with the given one.\n\n"
         "Args:\n"
-        "   outputs (list): list of :py:class:`~ikomia.core.pycore.CProtocolTaskIO` based objects\n";
+        "   outputs (list): list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
 
 constexpr auto _setParamDocString =
         "Set the task parameters object. Task can have only one parameters object.\n\n"
         "Args:\n"
-        "   param: :py:class:`~ikomia.core.pycore.CProtocolTaskParam` based object\n";
+        "   param: :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n";
 
 constexpr auto _updateStaticOutputsDocString =
         "Updates the static information deduced from inputs. "
@@ -506,13 +506,13 @@ constexpr auto _updateStaticOutputsDocString =
         "This method is called each time inputs changed.\n";
 
 //---------------------------//
-//----- CProtocolTaskIO -----//
+//----- CWorkflowTaskIO -----//
 //---------------------------//
-constexpr auto _protocolTaskIODocString =
+constexpr auto _WorkflowTaskIODocString =
         "Base class for the management of task inputs and outputs. "
         "Each task can have as many inputs and outputs, and each must be derived from this class.\n\n";
 
-constexpr auto _ctorProtocolTaskIODocString =
+constexpr auto _ctorWorkflowTaskIODocString =
         "Constructor with parameters\n\n"
         "arg1 (:py:class:`~ikomia.core.pycore.IODataType`): Data type\n";
 
@@ -550,12 +550,12 @@ constexpr auto _copyStaticDataDocString =
         "Copy the static data from the given input or ouput. "
         "Static data are those which are not generated at runtime. Should be overriden for custom input or output.\n\n"
         "Args:\n"
-        "   io (:py:class:`~ikomia.core.pycore.CProtocolTaskIO`): input or ouput instance from which data is copied.\n";
+        "   io (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO`): input or ouput instance from which data is copied.\n";
 
 //------------------------------//
-//----- CProtocolTaskParam -----//
+//----- CWorkflowTaskParam -----//
 //------------------------------//
-constexpr auto _protocolTaskParamDocString =
+constexpr auto _WorkflowTaskParamDocString =
         "Base class for the management of task parameters. "
         "It consists of two virtual methods that should be overriden to fill or get the structure holding parameters value. "
         "This structure is used internally by the system to save and load parameters values of task used in a workflow.\n\n";
@@ -578,9 +578,9 @@ constexpr auto _getHashValueDocString =
         "   int: hash value\n";
 
 //-------------------------------//
-//----- CProtocolTaskWidget -----//
+//----- CWorkflowTaskWidget -----//
 //-------------------------------//
-constexpr auto _protocolTaskWidget =
+constexpr auto _WorkflowTaskWidget =
         "Base class for all widgets associated with a task. "
         "Each process comes with a Qt widget to manage algorithm parameters and user actions. "
         "The widget class implementation is mandatory. "

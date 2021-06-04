@@ -22,15 +22,15 @@
 
 #include "Process/OpenCV/core/COcvSplit.hpp"
 
-class COcvWidgetSplit : public CProtocolTaskWidget
+class COcvWidgetSplit : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSplit(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSplit(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetSplit(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSplit(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSplitParam>(pParam);
             init();
@@ -75,7 +75,7 @@ class COcvWidgetSplitFactory : public CWidgetFactory
             m_name = QObject::tr("Split Operator").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSplit>(pParam);
         }

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Repair/CGmicRedEye.hpp"
 
-class CGmicWidgetRedEye : public CProtocolTaskWidget
+class CGmicWidgetRedEye : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetRedEye(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetRedEye(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetRedEye(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetRedEye(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicRedEyeParam>(pParam);
             init();
@@ -74,7 +74,7 @@ class CGmicWidgetRedEyeFactory : public CWidgetFactory
             m_name = QObject::tr("Red-eye").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetRedEye>(pParam);
         }

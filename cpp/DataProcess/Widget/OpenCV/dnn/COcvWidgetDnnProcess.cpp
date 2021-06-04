@@ -24,7 +24,7 @@ COcvWidgetDnnProcess::COcvWidgetDnnProcess(QWidget *parent) : COcvWidgetDnnCore(
     init();
 }
 
-COcvWidgetDnnProcess::COcvWidgetDnnProcess(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent) : COcvWidgetDnnCore(pParam, parent)
+COcvWidgetDnnProcess::COcvWidgetDnnProcess(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent) : COcvWidgetDnnCore(pParam, parent)
 {
     m_pParam = std::dynamic_pointer_cast<COcvDnnProcessParam>(pParam);
     init();

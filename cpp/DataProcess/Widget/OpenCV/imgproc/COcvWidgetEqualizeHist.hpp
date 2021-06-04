@@ -31,7 +31,7 @@ class COcvWidgetEqualizeHist : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetEqualizeHist(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetEqualizeHist(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -45,7 +45,7 @@ class COcvWidgetEqualizeHistFactory : public CWidgetFactory
             m_name = QObject::tr("Equalize histogram").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetEqualizeHist>(pParam);
         }

@@ -22,15 +22,15 @@
 #ifndef CBLOBMEASURE_HPP
 #define CBLOBMEASURE_HPP
 
-#include "Core/CProcessFactory.hpp"
-#include "Core/CImageProcess2d.h"
-#include "IO/CVideoProcessIO.h"
-#include "IO/CMeasureProcessIO.h"
+#include "Core/CTaskFactory.hpp"
+#include "Core/C2dImageTask.h"
+#include "IO/CVideoIO.h"
+#include "IO/CMeasureIO.h"
 
 //-----------------------------//
 //----- CBlobMeasureParam -----//
 //-----------------------------//
-class CBlobMeasureParam: public CProtocolTaskParam
+class CBlobMeasureParam: public CWorkflowTaskParam
 {
     public:
 
@@ -48,7 +48,7 @@ class CBlobMeasureParam: public CProtocolTaskParam
 //------------------------//
 //----- CBlobMeasure -----//
 //------------------------//
-class CBlobMeasure : public CImageProcess2d
+class CBlobMeasure : public C2dImageTask
 {
     public:
 
@@ -76,7 +76,7 @@ class CBlobMeasure : public CImageProcess2d
         std::vector<std::vector<cv::Point>> m_blobs;
 };
 
-class CBlobMeasureFactory : public CProcessFactory
+class CBlobMeasureFactory : public CTaskFactory
 {
     public:
 
@@ -90,7 +90,7 @@ class CBlobMeasureFactory : public CProcessFactory
         }
         ~CBlobMeasureFactory() {}
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CBlobMeasureParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -98,7 +98,7 @@ class CBlobMeasureFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<CBlobMeasureParam>();
             assert(pDerivedParam != nullptr);

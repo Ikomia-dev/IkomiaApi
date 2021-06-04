@@ -20,15 +20,15 @@
 #ifndef CPLOTPROCESS_H
 #define CPLOTPROCESS_H
 
-#include "Core/CProcessFactory.hpp"
-#include "IO/CImageProcessIO.h"
-#include "IO/CMeasureProcessIO.h"
-#include "IO/CFeatureProcessIO.hpp"
+#include "Core/CTaskFactory.hpp"
+#include "IO/CImageIO.h"
+#include "IO/CMeasureIO.h"
+#include "IO/CFeatureIO.hpp"
 
 //-----------------------------//
 //----- CPlotProcessParam -----//
 //-----------------------------//
-class CPlotMergeParam: public CProtocolTaskParam
+class CPlotMergeParam: public CWorkflowTaskParam
 {
     public:
 
@@ -54,29 +54,29 @@ class CPlotMergeParam: public CProtocolTaskParam
 //------------------------//
 //----- CPlotProcess -----//
 //------------------------//
-class CPlotMerge : public CProtocolTask
+class CPlotMerge : public CWorkflowTask
 {
     public:
 
-        CPlotMerge() : CProtocolTask()
+        CPlotMerge() : CWorkflowTask()
         {
-            addInput(std::make_shared<CImageProcessIO>(IODataType::IMAGE));
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE));
-            addOutput(std::make_shared<CFeatureProcessIO<double>>());
+            addInput(std::make_shared<CImageIO>(IODataType::IMAGE));
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE));
+            addOutput(std::make_shared<CFeatureIO<double>>());
         }
-        CPlotMerge(const std::string name, const std::shared_ptr<CPlotMergeParam>& pParam) : CProtocolTask(name)
+        CPlotMerge(const std::string name, const std::shared_ptr<CPlotMergeParam>& pParam) : CWorkflowTask(name)
         {
             m_pParam = std::make_shared<CPlotMergeParam>(*pParam);
-            addInput(std::make_shared<CImageProcessIO>(IODataType::IMAGE));
+            addInput(std::make_shared<CImageIO>(IODataType::IMAGE));
 
             for(int i=0; i<pParam->m_inputCount; ++i)
-                addInput(std::make_shared<CFeatureProcessIO<double>>());
+                addInput(std::make_shared<CFeatureIO<double>>());
 
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE));
-            addOutput(std::make_shared<CFeatureProcessIO<double>>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE));
+            addOutput(std::make_shared<CFeatureIO<double>>());
         }
 
-        void    setParam(const ProtocolTaskParamPtr &pParam) override
+        void    setParam(const WorkflowTaskParamPtr &pParam) override
         {
             m_pParam = pParam;
             auto pParamTmp = std::dynamic_pointer_cast<CPlotMergeParam>(m_pParam);
@@ -86,7 +86,7 @@ class CPlotMerge : public CProtocolTask
             if(pParamTmp->m_inputCount > (int)inOldCount)
             {
                 for(size_t i=0; i<pParamTmp->m_inputCount-inOldCount; ++i)
-                    addInput(std::make_shared<CFeatureProcessIO<double>>());
+                    addInput(std::make_shared<CFeatureIO<double>>());
             }
             else
             {
@@ -102,7 +102,7 @@ class CPlotMerge : public CProtocolTask
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<CPlotMergeParam>(m_pParam);
 
             if(pParam == nullptr)
@@ -111,17 +111,17 @@ class CPlotMerge : public CProtocolTask
             if(pInput->isDataAvailable() == false)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
 
-            std::vector<std::shared_ptr<CFeatureProcessIO<double>>> inputs;
+            std::vector<std::shared_ptr<CFeatureIO<double>>> inputs;
             int index = 1;
             for(int i=0; i<pParam->m_inputCount; ++i)
             {
-                inputs.push_back(std::dynamic_pointer_cast<CFeatureProcessIO<double>>(getInput(index++)));
+                inputs.push_back(std::dynamic_pointer_cast<CFeatureIO<double>>(getInput(index++)));
                 if(inputs.back() == nullptr)
                     throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureProcessIO<double>>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<double>>(getOutput(1));
             if(pOutput)
             {
                 pOutput->clearData();
@@ -152,15 +152,15 @@ class CPlotMerge : public CProtocolTask
             if(getOutputCount() == 0)
                 throw CException(CoreExCode::INVALID_SIZE, "Wrong outputs count", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
 
             if(pOutput)
                 pOutput->setImage(pInput->getImage());
         }
 };
 
-class CPlotMergeFactory : public CProcessFactory
+class CPlotMergeFactory : public CTaskFactory
 {
     public:
 
@@ -174,7 +174,7 @@ class CPlotMergeFactory : public CProcessFactory
         }
         ~CPlotMergeFactory() {}
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CPlotMergeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -182,7 +182,7 @@ class CPlotMergeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<CPlotMergeParam>();
             assert(pDerivedParam != nullptr);

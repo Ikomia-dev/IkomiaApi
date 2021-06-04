@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvJointBilateralFilter.hpp"
 
-class COcvWidgetJointBilateralFilter : public CProtocolTaskWidget
+class COcvWidgetJointBilateralFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetJointBilateralFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetJointBilateralFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetJointBilateralFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetJointBilateralFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvJointBilateralFilterParam>(pParam);
             init();
@@ -85,7 +85,7 @@ class COcvWidgetJointBilateralFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Joint Bilateral Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetJointBilateralFilter>(pParam);
         }

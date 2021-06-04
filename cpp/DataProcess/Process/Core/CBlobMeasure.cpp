@@ -19,14 +19,14 @@
 
 #include "CBlobMeasure.h"
 #include "Main/CoreTools.hpp"
-#include "IO/CGraphicsProcessOutput.h"
+#include "IO/CGraphicsOutput.h"
 #include "Graphics/CGraphicsLayer.h"
 #include "Graphics/CGraphicsConversion.h"
 
 //-----------------------------//
 //----- CBlobMeasureParam -----//
 //-----------------------------//
-CBlobMeasureParam::CBlobMeasureParam() : CProtocolTaskParam()
+CBlobMeasureParam::CBlobMeasureParam() : CWorkflowTaskParam()
 {
 }
 
@@ -65,21 +65,21 @@ UMapString CBlobMeasureParam::getParamMap() const
 //------------------------//
 //----- CBlobMeasure -----//
 //------------------------//
-CBlobMeasure::CBlobMeasure() : CImageProcess2d()
+CBlobMeasure::CBlobMeasure() : C2dImageTask()
 {
-    insertInput(std::make_shared<CImageProcessIO>(), 1);
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CMeasureProcessIO>());
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    insertInput(std::make_shared<CImageIO>(), 1);
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
-CBlobMeasure::CBlobMeasure(const std::string name, const std::shared_ptr<CBlobMeasureParam> &pParam) : CImageProcess2d(name)
+CBlobMeasure::CBlobMeasure(const std::string name, const std::shared_ptr<CBlobMeasureParam> &pParam) : C2dImageTask(name)
 {
     m_pParam = std::make_shared<CBlobMeasureParam>(*pParam);
-    insertInput(std::make_shared<CImageProcessIO>(), 1);
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CMeasureProcessIO>());
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    insertInput(std::make_shared<CImageIO>(), 1);
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
 size_t CBlobMeasure::getProgressSteps()
@@ -94,7 +94,7 @@ void CBlobMeasure::run()
     if(getInputCount() == 0)
         throw CException(CoreExCode::INVALID_PARAMETER, "No input", __func__, __FILE__, __LINE__);
 
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     auto pParam = std::dynamic_pointer_cast<CBlobMeasureParam>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -120,14 +120,14 @@ void CBlobMeasure::run()
             img = imgSrc;
 
         //Get measures output to fill it
-        auto pOutputMeasure = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+        auto pOutputMeasure = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
         if(pOutputMeasure == nullptr)
             throw CException(CoreExCode::INVALID_SIZE, "Invalid measures output", __func__, __FILE__, __LINE__);
 
         pOutputMeasure->clearData();
 
         //Check graphics output and create layer
-        auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(3));
+        auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(3));
         if(pGraphicsOutput == nullptr)
             throw CException(CoreExCode::INVALID_SIZE, "Invalid graphics output", __func__, __FILE__, __LINE__);
 
@@ -188,11 +188,11 @@ void CBlobMeasure::updateStaticOutputs()
         {
             auto dataType = getOutputDataType(i);
             if(dataType == IODataType::IMAGE)
-                setOutput(std::make_shared<CVideoProcessIO>(), i);
+                setOutput(std::make_shared<CVideoIO>(), i);
             else if(dataType == IODataType::IMAGE_BINARY)
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::VIDEO_BINARY), i);
+                setOutput(std::make_shared<CVideoIO>(IODataType::VIDEO_BINARY), i);
             else if(dataType == IODataType::IMAGE_LABEL)
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::VIDEO_LABEL), i);
+                setOutput(std::make_shared<CVideoIO>(IODataType::VIDEO_LABEL), i);
         }
     }
     else if(bInputStream == true)
@@ -201,11 +201,11 @@ void CBlobMeasure::updateStaticOutputs()
         {
             auto dataType = getOutputDataType(i);
             if(dataType == IODataType::IMAGE)
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM), i);
+                setOutput(std::make_shared<CVideoIO>(IODataType::LIVE_STREAM), i);
             else if(dataType == IODataType::IMAGE_BINARY)
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM_BINARY), i);
+                setOutput(std::make_shared<CVideoIO>(IODataType::LIVE_STREAM_BINARY), i);
             else if(dataType == IODataType::IMAGE_LABEL)
-                setOutput(std::make_shared<CVideoProcessIO>(IODataType::LIVE_STREAM_LABEL), i);
+                setOutput(std::make_shared<CVideoIO>(IODataType::LIVE_STREAM_LABEL), i);
         }
     }
     else
@@ -216,11 +216,11 @@ void CBlobMeasure::updateStaticOutputs()
         for(size_t i=0; i<getOutputCount(); ++i)
         {
             if(getOutputDataType(i) == IODataType::VIDEO || getOutputDataType(i) == IODataType::LIVE_STREAM)
-                setOutput(std::make_shared<CImageProcessIO>(), i);
+                setOutput(std::make_shared<CImageIO>(), i);
             else if(getOutputDataType(i) == IODataType::VIDEO_BINARY || getOutputDataType(i) == IODataType::LIVE_STREAM_BINARY)
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY), i);
+                setOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY), i);
             else if(getOutputDataType(i) == IODataType::VIDEO_LABEL || getOutputDataType(i) == IODataType::LIVE_STREAM_LABEL)
-                setOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_LABEL), i);
+                setOutput(std::make_shared<CImageIO>(IODataType::IMAGE_LABEL), i);
         }
     }
 }
@@ -312,7 +312,7 @@ void CBlobMeasure::computeFromLabel(CMat imgSrc)
 
 void CBlobMeasure::computeGraphics(const CColor& penColor, const CColor& brushColor, const int lineSize)
 {
-    auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(3));
+    auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(3));
     assert(pOutput);
     CGraphicsConversion convert;
     auto graphics = convert.blobsToProxyGraphics(m_blobs, m_hierarchy, penColor, brushColor, lineSize);
@@ -320,7 +320,7 @@ void CBlobMeasure::computeGraphics(const CColor& penColor, const CColor& brushCo
     for(size_t i=0; i<graphics.size(); ++i)
         pOutput->addItem(graphics[i]);
 
-    auto pInputImgOverlay = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+    auto pInputImgOverlay = std::dynamic_pointer_cast<CImageIO>(getInput(1));
     assert(pInputImgOverlay);
 
     if(pInputImgOverlay->isDataAvailable())
@@ -330,12 +330,12 @@ void CBlobMeasure::computeGraphics(const CColor& penColor, const CColor& brushCo
 void CBlobMeasure::computeMeasures(const std::string& label)
 {
     //Get graphics items list
-    auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(3));
+    auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(3));
     assert(pGraphicsOutput);
     auto graphicsItems = pGraphicsOutput->getItems();
 
     //Get measures output to fill it
-    auto pOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+    auto pOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
     assert(pOutput);
 
     if(m_blobs.size() > 0)

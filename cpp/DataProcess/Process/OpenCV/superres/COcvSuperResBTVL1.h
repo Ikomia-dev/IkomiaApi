@@ -22,13 +22,13 @@
 #ifndef COCVSUPERRESBTVL1_H
 #define COCVSUPERRESBTVL1_H
 
-#include "Core/CVideoProcess.h"
+#include "Core/CVideoTask.h"
 #include "CSuperResFrameSrc.h"
 
 //----------------------------------//
 //----- COcvSuperResBTVL1Param -----//
 //----------------------------------//
-class COcvSuperResBTVL1Param : public CProtocolTaskParam
+class COcvSuperResBTVL1Param : public CWorkflowTaskParam
 {
     public:
 
@@ -63,7 +63,7 @@ class COcvSuperResBTVL1Param : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvSuperResBTVL1 -----//
 //-----------------------------//
-class COcvSuperResBTVL1 : public CVideoProcess
+class COcvSuperResBTVL1 : public CVideoTask
 {
     public:
 
@@ -92,14 +92,14 @@ class COcvSuperResBTVL1 : public CVideoProcess
 //------------------------------------//
 //----- COcvSuperResBTVL1Factory -----//
 //------------------------------------//
-class COcvSuperResBTVL1Factory : public CProcessFactory
+class COcvSuperResBTVL1Factory : public CTaskFactory
 {
     public:
 
         COcvSuperResBTVL1Factory();
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override;
-        virtual ProtocolTaskPtr create() override;
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override;
+        virtual WorkflowTaskPtr create() override;
 };
 
 #endif // COCVSUPERRESBTVL1_H

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/photo/COcvEdgePreservingFilter.hpp"
 
-class COcvWidgetEdgePreservingFilter : public CProtocolTaskWidget
+class COcvWidgetEdgePreservingFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetEdgePreservingFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetEdgePreservingFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetEdgePreservingFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetEdgePreservingFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvEdgePreservingFilterParam>(pParam);
             init();
@@ -95,7 +95,7 @@ class COcvWidgetEdgePreservingFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Edge Preserving Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetEdgePreservingFilter>(pParam);
         }

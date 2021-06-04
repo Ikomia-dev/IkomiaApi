@@ -21,16 +21,16 @@
 #define COCVMIN_HPP
 
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //------------------------//
 //----- COcvMinParam -----//
 //------------------------//
-class COcvMinParam: public CProtocolTaskParam
+class COcvMinParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMinParam() : CProtocolTaskParam(){}
+        COcvMinParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,18 +61,18 @@ class COcvMinParam: public CProtocolTaskParam
 //-------------------//
 //----- COcvMin -----//
 //-------------------//
-class COcvMin : public CImageProcess2d
+class COcvMin : public C2dImageTask
 {
     public:
 
-        COcvMin() : CImageProcess2d()
+        COcvMin() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvMin(const std::string name, const std::shared_ptr<COcvMinParam>& pParam) : CImageProcess2d(name)
+        COcvMin(const std::string name, const std::shared_ptr<COcvMinParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvMinParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
 
         size_t  getProgressSteps() override
@@ -87,8 +87,8 @@ class COcvMin : public CImageProcess2d
             if(getInputCount() < 3)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMinParam>(m_pParam);
 
             if(pParam == nullptr)
@@ -138,7 +138,7 @@ class COcvMin : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -148,7 +148,7 @@ class COcvMin : public CImageProcess2d
         }
 };
 
-class COcvMinFactory : public CProcessFactory
+class COcvMinFactory : public CTaskFactory
 {
     public:
 
@@ -162,7 +162,7 @@ class COcvMinFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga9af368f182ee76d0463d0d8d5330b764";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvMinParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -170,7 +170,7 @@ class COcvMinFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvMinParam>();
             assert(pDerivedParam != nullptr);

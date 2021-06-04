@@ -28,12 +28,12 @@
 #include <QListWidget>
 #include <QGroupBox>
 
-class CWidgetBlobMeasure : public CProtocolTaskWidget
+class CWidgetBlobMeasure : public CWorkflowTaskWidget
 {
     public:
 
         CWidgetBlobMeasure(QWidget *parent = Q_NULLPTR);
-        CWidgetBlobMeasure(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR);
+        CWidgetBlobMeasure(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR);
 
     public slots:
 
@@ -65,7 +65,7 @@ class CWidgetBlobMeasureFactory : public CWidgetFactory
         }
         ~CWidgetBlobMeasureFactory() {}
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CWidgetBlobMeasure>(pParam);
         }

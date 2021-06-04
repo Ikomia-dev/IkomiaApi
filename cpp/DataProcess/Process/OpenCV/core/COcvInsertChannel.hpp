@@ -20,16 +20,16 @@
 #ifndef COCVINSERTCHANNEL_HPP
 #define COCVINSERTCHANNEL_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //----------------------------------//
 //----- COcvInsertChannelParam -----//
 //----------------------------------//
-class COcvInsertChannelParam: public CProtocolTaskParam
+class COcvInsertChannelParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvInsertChannelParam() : CProtocolTaskParam(){}
+        COcvInsertChannelParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -51,17 +51,17 @@ class COcvInsertChannelParam: public CProtocolTaskParam
 //------------------------------//
 //----- COcvInsertChannel -----//
 //------------------------------//
-class COcvInsertChannel : public CImageProcess2d
+class COcvInsertChannel : public C2dImageTask
 {
     public:
 
-        COcvInsertChannel() : CImageProcess2d(false)
+        COcvInsertChannel() : C2dImageTask(false)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
         }
-        COcvInsertChannel(const std::string name, const std::shared_ptr<COcvInsertChannelParam>& pParam) : CImageProcess2d(name, false)
+        COcvInsertChannel(const std::string name, const std::shared_ptr<COcvInsertChannelParam>& pParam) : C2dImageTask(name, false)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
             m_pParam = std::make_shared<COcvInsertChannelParam>(*pParam);
         }
 
@@ -77,8 +77,8 @@ class COcvInsertChannel : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvInsertChannelParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -116,7 +116,7 @@ class COcvInsertChannel : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -124,7 +124,7 @@ class COcvInsertChannel : public CImageProcess2d
         }
 };
 
-class COcvInsertChannelFactory : public CProcessFactory
+class COcvInsertChannelFactory : public CTaskFactory
 {
     public:
 
@@ -138,7 +138,7 @@ class COcvInsertChannelFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/d2/de8/group__core__array.html#ga1d4bd886d35b00ec0b764cb4ce6eb515";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvInsertChannelParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -146,7 +146,7 @@ class COcvInsertChannelFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvInsertChannelParam>();
             assert(pDerivedParam != nullptr);

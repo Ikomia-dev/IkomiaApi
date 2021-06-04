@@ -19,18 +19,18 @@
 
 #ifndef COCVDTFILTERSTYLIZE_HPP
 #define COCVDTFILTERSTYLIZE_HPP
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------------//
 //----- COcvDTFilterStylizeParam -----//
 //------------------------------------//
-class COcvDTFilterStylizeParam: public CProtocolTaskParam
+class COcvDTFilterStylizeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDTFilterStylizeParam() : CProtocolTaskParam(){}
+        COcvDTFilterStylizeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -57,14 +57,14 @@ class COcvDTFilterStylizeParam: public CProtocolTaskParam
 //-------------------------------//
 //----- COcvDTFilterStylize -----//
 //-------------------------------//
-class COcvDTFilterStylize : public CImageProcess2d
+class COcvDTFilterStylize : public C2dImageTask
 {
     public:
 
-        COcvDTFilterStylize() : CImageProcess2d()
+        COcvDTFilterStylize() : C2dImageTask()
         {
         }
-        COcvDTFilterStylize(const std::string name, const std::shared_ptr<COcvDTFilterStylizeParam>& pParam) : CImageProcess2d(name)
+        COcvDTFilterStylize(const std::string name, const std::shared_ptr<COcvDTFilterStylizeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvDTFilterStylizeParam>(*pParam);
         }
@@ -77,8 +77,8 @@ class COcvDTFilterStylize : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDTFilterStylizeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -135,7 +135,7 @@ class COcvDTFilterStylize : public CImageProcess2d
                 applyGraphicsMask(imgSrc, imgDst, 0);
             }
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -144,7 +144,7 @@ class COcvDTFilterStylize : public CImageProcess2d
         }
 };
 
-class COcvDTFilterStylizeFactory : public CProcessFactory
+class COcvDTFilterStylizeFactory : public CTaskFactory
 {
     public:
 
@@ -157,7 +157,7 @@ class COcvDTFilterStylizeFactory : public CProcessFactory
             m_info.m_keywords = "Cartoon,Stylization,DTFilterStylize";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDTFilterStylizeParam = std::dynamic_pointer_cast<COcvDTFilterStylizeParam>(pParam);
             if(pDTFilterStylizeParam != nullptr)
@@ -165,7 +165,7 @@ class COcvDTFilterStylizeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDTFilterStylizeParam = std::make_shared<COcvDTFilterStylizeParam>();
             assert(pDTFilterStylizeParam != nullptr);

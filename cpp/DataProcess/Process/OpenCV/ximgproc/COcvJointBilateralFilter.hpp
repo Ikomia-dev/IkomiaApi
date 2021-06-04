@@ -21,16 +21,16 @@
 #define COCVJOINTBILATERALFILTER_HPP
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-----------------------------------------//
 //----- COcvJointBilateralFilterParam -----//
 //-----------------------------------------//
-class COcvJointBilateralFilterParam: public CProtocolTaskParam
+class COcvJointBilateralFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvJointBilateralFilterParam() : CProtocolTaskParam()
+        COcvJointBilateralFilterParam() : CWorkflowTaskParam()
         {
         }
 
@@ -63,17 +63,17 @@ class COcvJointBilateralFilterParam: public CProtocolTaskParam
 //------------------------------------//
 //----- COcvJointBilateralFilter -----//
 //------------------------------------//
-class COcvJointBilateralFilter : public CImageProcess2d
+class COcvJointBilateralFilter : public C2dImageTask
 {
     public:
 
-        COcvJointBilateralFilter() : CImageProcess2d()
+        COcvJointBilateralFilter() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvJointBilateralFilter(const std::string name, const std::shared_ptr<COcvJointBilateralFilterParam>& pParam) : CImageProcess2d(name)
+        COcvJointBilateralFilter(const std::string name, const std::shared_ptr<COcvJointBilateralFilterParam>& pParam) : C2dImageTask(name)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
             m_pParam = std::make_shared<COcvJointBilateralFilterParam>(*pParam);
         }
 
@@ -86,9 +86,9 @@ class COcvJointBilateralFilter : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(2));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(2));
             auto pParam = std::dynamic_pointer_cast<COcvJointBilateralFilterParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -121,7 +121,7 @@ class COcvJointBilateralFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -129,7 +129,7 @@ class COcvJointBilateralFilter : public CImageProcess2d
         }
 };
 
-class COcvJointBilateralFilterFactory : public CProcessFactory
+class COcvJointBilateralFilterFactory : public CTaskFactory
 {
     public:
 
@@ -143,7 +143,7 @@ class COcvJointBilateralFilterFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d17/group__ximgproc__filters.html#ga80b9b58fb85dd069691b709285ab985c";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pManifoldParam = std::dynamic_pointer_cast<COcvJointBilateralFilterParam>(pParam);
             if(pManifoldParam != nullptr)
@@ -151,7 +151,7 @@ class COcvJointBilateralFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pManifoldParam = std::make_shared<COcvJointBilateralFilterParam>();
             assert(pManifoldParam != nullptr);

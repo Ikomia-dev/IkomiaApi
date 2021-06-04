@@ -20,18 +20,18 @@
 #ifndef COCVOBJECTNESSBING_HPP
 #define COCVOBJECTNESSBING_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/saliency.hpp>
 
 //------------------------------//
 //----- COcvObjectnessBINGParam -----//
 //------------------------------//
-class COcvObjectnessBINGParam: public CProtocolTaskParam
+class COcvObjectnessBINGParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvObjectnessBINGParam() : CProtocolTaskParam(){}
+        COcvObjectnessBINGParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -52,17 +52,17 @@ class COcvObjectnessBINGParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvObjectnessBING -----//
 //-------------------------//
-class COcvObjectnessBING : public CImageProcess2d
+class COcvObjectnessBING : public C2dImageTask
 {
     public:
 
-        COcvObjectnessBING() : CImageProcess2d()
+        COcvObjectnessBING() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvObjectnessBING(const std::string name, const std::shared_ptr<COcvObjectnessBINGParam>& pParam) : CImageProcess2d(name)
+        COcvObjectnessBING(const std::string name, const std::shared_ptr<COcvObjectnessBINGParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             m_pParam = std::make_shared<COcvObjectnessBINGParam>(*pParam);
         }
 
@@ -73,7 +73,7 @@ class COcvObjectnessBING : public CImageProcess2d
 
         void manageGraphicOuputs(const std::vector<cv::Vec4i>& saliencyMap)
         {
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(getOutputCount() - 1));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(getOutputCount() - 1));
             if(pOutput == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "Invalid graphics output", __func__, __FILE__, __LINE__);
 
@@ -102,7 +102,7 @@ class COcvObjectnessBING : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvObjectnessBINGParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -148,7 +148,7 @@ class COcvObjectnessBING : public CImageProcess2d
         int m_height = 0;
 };
 
-class COcvObjectnessBINGFactory : public CProcessFactory
+class COcvObjectnessBINGFactory : public CTaskFactory
 {
     public:
 
@@ -166,7 +166,7 @@ class COcvObjectnessBINGFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/db/d63/classcv_1_1saliency_1_1ObjectnessBING.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pObjectnessBINGParam = std::dynamic_pointer_cast<COcvObjectnessBINGParam>(pParam);
             if(pObjectnessBINGParam != nullptr)
@@ -174,7 +174,7 @@ class COcvObjectnessBINGFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pObjectnessBINGParam = std::make_shared<COcvObjectnessBINGParam>();
             assert(pObjectnessBINGParam != nullptr);

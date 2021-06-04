@@ -20,17 +20,17 @@
 #ifndef COCVCOLORCHANGE_HPP
 #define COCVCOLORCHANGE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------//
 //----- COcvColorchangeParam -----//
 //----------------------------//
-class COcvColorchangeParam: public CProtocolTaskParam
+class COcvColorchangeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvColorchangeParam() : CProtocolTaskParam(){}
+        COcvColorchangeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -57,14 +57,14 @@ class COcvColorchangeParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvColorchange -----//
 //-----------------------//
-class COcvColorchange : public CImageProcess2d
+class COcvColorchange : public C2dImageTask
 {
     public:
 
-        COcvColorchange() : CImageProcess2d()
+        COcvColorchange() : C2dImageTask()
         {
         }
-        COcvColorchange(const std::string name, const std::shared_ptr<COcvColorchangeParam>& pParam) : CImageProcess2d(name)
+        COcvColorchange(const std::string name, const std::shared_ptr<COcvColorchangeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvColorchangeParam>(*pParam);
         }
@@ -77,8 +77,8 @@ class COcvColorchange : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphics = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphics = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
 
             auto pParam = std::dynamic_pointer_cast<COcvColorchangeParam>(m_pParam);
 
@@ -116,7 +116,7 @@ class COcvColorchange : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -124,7 +124,7 @@ class COcvColorchange : public CImageProcess2d
         }
 };
 
-class COcvColorchangeFactory : public CProcessFactory
+class COcvColorchangeFactory : public CTaskFactory
 {
     public:
 
@@ -138,7 +138,7 @@ class COcvColorchangeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/da0/group__photo__clone.html#ga6684f35dc669ff6196a7c340dc73b98e";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pColorchangeParam = std::dynamic_pointer_cast<COcvColorchangeParam>(pParam);
             if(pColorchangeParam != nullptr)
@@ -146,7 +146,7 @@ class COcvColorchangeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pColorchangeParam = std::make_shared<COcvColorchangeParam>();
             assert(pColorchangeParam != nullptr);

@@ -20,18 +20,18 @@
 #ifndef COCVFARNEBACKOPTICALFLOW_HPP
 #define COCVFARNEBACKOPTICALFLOW_HPP
 
-#include "Core/CVideoProcessOF.h"
-#include "IO/CVideoProcessIO.h"
+#include "Core/CVideoOFTask.h"
+#include "IO/CVideoIO.h"
 #include "opencv2/tracking.hpp"
 
 //------------------------------//
 //----- COcvFarnebackOFParam -----//
 //------------------------------//
-class COcvFarnebackOFParam: public CProtocolTaskParam
+class COcvFarnebackOFParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFarnebackOFParam() : CProtocolTaskParam(){}
+        COcvFarnebackOFParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -78,14 +78,14 @@ class COcvFarnebackOFParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvFarnebackOF -----//
 //-------------------------//
-class COcvFarnebackOF : public CVideoProcessOF
+class COcvFarnebackOF : public CVideoOFTask
 {
     public:
 
-        COcvFarnebackOF() : CVideoProcessOF()
+        COcvFarnebackOF() : CVideoOFTask()
         {
         }
-        COcvFarnebackOF(const std::string name, const std::shared_ptr<COcvFarnebackOFParam>& pParam) : CVideoProcessOF(name)
+        COcvFarnebackOF(const std::string name, const std::shared_ptr<COcvFarnebackOFParam>& pParam) : CVideoOFTask(name)
         {
             m_pParam = std::make_shared<COcvFarnebackOFParam>(*pParam);
         }
@@ -103,8 +103,8 @@ class COcvFarnebackOF : public CVideoProcessOF
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CVideoProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CVideoIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvFarnebackOFParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -146,7 +146,7 @@ class COcvFarnebackOF : public CVideoProcessOF
         }
 };
 
-class COcvFarnebackOFFactory : public CProcessFactory
+class COcvFarnebackOFFactory : public CTaskFactory
 {
     public:
 
@@ -160,7 +160,7 @@ class COcvFarnebackOFFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/d9e/classcv_1_1FarnebackOpticalFlow.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pFarnebackOFParam = std::dynamic_pointer_cast<COcvFarnebackOFParam>(pParam);
             if(pFarnebackOFParam != nullptr)
@@ -168,7 +168,7 @@ class COcvFarnebackOFFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pFarnebackOFParam = std::make_shared<COcvFarnebackOFParam>();
             assert(pFarnebackOFParam != nullptr);

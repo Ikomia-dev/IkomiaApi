@@ -19,18 +19,18 @@
 
 #ifndef COCVDTFILTERENHANCE_HPP
 #define COCVDTFILTERENHANCE_HPP
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //----------------------------//
 //----- COcvDTFilterEnhanceParam -----//
 //----------------------------//
-class COcvDTFilterEnhanceParam: public CProtocolTaskParam
+class COcvDTFilterEnhanceParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDTFilterEnhanceParam() : CProtocolTaskParam(){}
+        COcvDTFilterEnhanceParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -63,14 +63,14 @@ class COcvDTFilterEnhanceParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvDTFilterEnhance -----//
 //-----------------------//
-class COcvDTFilterEnhance : public CImageProcess2d
+class COcvDTFilterEnhance : public C2dImageTask
 {
     public:
 
-        COcvDTFilterEnhance() : CImageProcess2d()
+        COcvDTFilterEnhance() : C2dImageTask()
         {
         }
-        COcvDTFilterEnhance(const std::string name, const std::shared_ptr<COcvDTFilterEnhanceParam>& pParam) : CImageProcess2d(name)
+        COcvDTFilterEnhance(const std::string name, const std::shared_ptr<COcvDTFilterEnhanceParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvDTFilterEnhanceParam>(*pParam);
         }
@@ -83,8 +83,8 @@ class COcvDTFilterEnhance : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDTFilterEnhanceParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -150,7 +150,7 @@ class COcvDTFilterEnhance : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -158,7 +158,7 @@ class COcvDTFilterEnhance : public CImageProcess2d
         }
 };
 
-class COcvDTFilterEnhanceFactory : public CProcessFactory
+class COcvDTFilterEnhanceFactory : public CTaskFactory
 {
     public:
 
@@ -171,7 +171,7 @@ class COcvDTFilterEnhanceFactory : public CProcessFactory
             m_info.m_keywords = "Details,Enhancement,DTFilterEnhance";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDTFilterEnhanceParam = std::dynamic_pointer_cast<COcvDTFilterEnhanceParam>(pParam);
             if(pDTFilterEnhanceParam != nullptr)
@@ -179,7 +179,7 @@ class COcvDTFilterEnhanceFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDTFilterEnhanceParam = std::make_shared<COcvDTFilterEnhanceParam>();
             assert(pDTFilterEnhanceParam != nullptr);

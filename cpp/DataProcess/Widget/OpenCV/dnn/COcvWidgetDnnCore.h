@@ -22,15 +22,15 @@
 #ifndef COCVWIDGETDNNCORE_H
 #define COCVWIDGETDNNCORE_H
 
-#include "Protocol/CProtocolTaskWidget.h"
+#include "Workflow/CWorkflowTaskWidget.h"
 #include "Process/OpenCV/dnn/COcvDnnProcess.h"
 
-class DATAPROCESSSHARED_EXPORT COcvWidgetDnnCore : public CProtocolTaskWidget
+class DATAPROCESSSHARED_EXPORT COcvWidgetDnnCore : public CWorkflowTaskWidget
 {
     public:
 
         COcvWidgetDnnCore(QWidget *parent = Q_NULLPTR);
-        COcvWidgetDnnCore(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR);
+        COcvWidgetDnnCore(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR);
 
     protected:
 

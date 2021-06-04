@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetTextureFlattening : public CProtocolTaskWidget
+class COcvWidgetTextureFlattening : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetTextureFlattening(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetTextureFlattening(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetTextureFlattening(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetTextureFlattening(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvTextureFlatteningParam>(pParam);
             init();
@@ -101,7 +101,7 @@ class COcvWidgetTextureFlatteningFactory : public CWidgetFactory
             m_name = QObject::tr("Texture flattening").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetTextureFlattening>(pParam);
         }

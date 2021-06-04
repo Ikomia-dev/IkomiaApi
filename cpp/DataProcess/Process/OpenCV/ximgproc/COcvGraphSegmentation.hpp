@@ -20,18 +20,18 @@
 #ifndef COCVGRAPHSEGMENTATION_HPP
 #define COCVGRAPHSEGMENTATION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //--------------------------------------//
 //----- COcvGraphSegmentationParam -----//
 //--------------------------------------//
-class COcvGraphSegmentationParam: public CProtocolTaskParam
+class COcvGraphSegmentationParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvGraphSegmentationParam() : CProtocolTaskParam(){}
+        COcvGraphSegmentationParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -59,21 +59,21 @@ class COcvGraphSegmentationParam: public CProtocolTaskParam
 //---------------------------------//
 //----- COcvGraphSegmentation -----//
 //---------------------------------//
-class COcvGraphSegmentation : public CImageProcess2d
+class COcvGraphSegmentation : public C2dImageTask
 {
     public:
 
-        COcvGraphSegmentation() : CImageProcess2d()
+        COcvGraphSegmentation() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
         }
-        COcvGraphSegmentation(const std::string name, const std::shared_ptr<COcvGraphSegmentationParam>& pParam) : CImageProcess2d(name)
+        COcvGraphSegmentation(const std::string name, const std::shared_ptr<COcvGraphSegmentationParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvGraphSegmentationParam>(*pParam);
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
         }
 
@@ -85,7 +85,7 @@ class COcvGraphSegmentation : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvGraphSegmentationParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -114,7 +114,7 @@ class COcvGraphSegmentation : public CImageProcess2d
             emit m_signalHandler->doProgress();
             forwardInputImage(0, 1);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -123,7 +123,7 @@ class COcvGraphSegmentation : public CImageProcess2d
         }
 };
 
-class COcvGraphSegmentationFactory : public CProcessFactory
+class COcvGraphSegmentationFactory : public CTaskFactory
 {
     public:
 
@@ -141,7 +141,7 @@ class COcvGraphSegmentationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d5/df0/group__ximgproc__segmentation.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGraphSegmentationParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -149,7 +149,7 @@ class COcvGraphSegmentationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGraphSegmentationParam>();
             assert(pDerivedParam != nullptr);

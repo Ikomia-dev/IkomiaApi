@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvFastLineDetector.hpp"
 
-class COcvWidgetFastLineDetector : public CProtocolTaskWidget
+class COcvWidgetFastLineDetector : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetFastLineDetector(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastLineDetector(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetFastLineDetector(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastLineDetector(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvFastLineDetectorParam>(pParam);
             init();
@@ -118,7 +118,7 @@ class COcvWidgetFastLineDetectorFactory : public CWidgetFactory
             m_name = QObject::tr("Fast Line Detector").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFastLineDetector>(pParam);
         }

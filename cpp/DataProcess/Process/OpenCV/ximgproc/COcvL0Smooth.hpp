@@ -20,18 +20,18 @@
 #ifndef COCVL0SMOOTH_HPP
 #define COCVL0SMOOTH_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------//
 //----- COcvL0SmoothParam -----//
 //------------------------------//
-class COcvL0SmoothParam: public CProtocolTaskParam
+class COcvL0SmoothParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvL0SmoothParam() : CProtocolTaskParam(){}
+        COcvL0SmoothParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -56,14 +56,14 @@ class COcvL0SmoothParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvL0Smooth -----//
 //-------------------------//
-class COcvL0Smooth : public CImageProcess2d
+class COcvL0Smooth : public C2dImageTask
 {
     public:
 
-        COcvL0Smooth() : CImageProcess2d()
+        COcvL0Smooth() : C2dImageTask()
         {
         }
-        COcvL0Smooth(const std::string name, const std::shared_ptr<COcvL0SmoothParam>& pParam) : CImageProcess2d(name)
+        COcvL0Smooth(const std::string name, const std::shared_ptr<COcvL0SmoothParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvL0SmoothParam>(*pParam);
         }
@@ -76,8 +76,8 @@ class COcvL0Smooth : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvL0SmoothParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -104,7 +104,7 @@ class COcvL0Smooth : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -112,7 +112,7 @@ class COcvL0Smooth : public CImageProcess2d
         }
 };
 
-class COcvL0SmoothFactory : public CProcessFactory
+class COcvL0SmoothFactory : public CTaskFactory
 {
     public:
 
@@ -130,7 +130,7 @@ class COcvL0SmoothFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d17/group__ximgproc__filters.html#gac13015b6a8a7e99554f4affa7b6896ae";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvL0SmoothParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -138,7 +138,7 @@ class COcvL0SmoothFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvL0SmoothParam>();
             assert(pDerivedParam != nullptr);

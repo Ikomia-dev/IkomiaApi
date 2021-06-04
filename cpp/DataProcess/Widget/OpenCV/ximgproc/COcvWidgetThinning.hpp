@@ -25,16 +25,16 @@
 #include <QLabel>
 #include <QGridLayout>
 
-class COcvWidgetThinning : public CProtocolTaskWidget
+class COcvWidgetThinning : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetThinning(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetThinning(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetThinning(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetThinning(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvThinningParam>(pParam);
             init();
@@ -79,7 +79,7 @@ class COcvWidgetThinningFactory : public CWidgetFactory
             m_name = QObject::tr("Thinning").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetThinning>(pParam);
         }
