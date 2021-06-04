@@ -33,7 +33,7 @@ class DATAPROCESSSHARED_EXPORT CProcessRegistration
         CProcessRegistration();
         ~CProcessRegistration();
 
-        const CTaskAbstractFactory&  getProcessFactory() const;
+        const CTaskAbstractFactory&     getProcessFactory() const;
         const CWidgetAbstractFactory&   getWidgetFactory() const;
 
         void                            registerProcess(const std::shared_ptr<CTaskFactory>& pProcessFactory,
@@ -72,7 +72,7 @@ class DATAPROCESSSHARED_EXPORT CProcessRegistration
 
     private:
 
-        CTaskAbstractFactory         m_processFactory;
+        CTaskAbstractFactory            m_processFactory;
         CWidgetAbstractFactory          m_widgetFactory;
 };
 

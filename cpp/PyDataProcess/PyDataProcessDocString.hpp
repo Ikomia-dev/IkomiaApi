@@ -17,8 +17,8 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef pydataprocessDOCSTRING_HPP
-#define pydataprocessDOCSTRING_HPP
+#ifndef PYDATAPROCESSDOCSTRING_HPP
+#define PYDATAPROCESSDOCSTRING_HPP
 
 constexpr auto _moduleDocString =
         "Module offering all features to implement image processing plugins that can be used in the Ikomia workflow. "
@@ -31,17 +31,17 @@ constexpr auto _moduleDocString =
         "It also provides class specialization for common processing task.\n"
         "You will find details about implementation below.\n\n";
 
-//------------------------//
+//---------------------//
 //----- CTaskInfo -----//
-//------------------------//
+//---------------------//
 constexpr auto _processInfoDocString =
         "Manage metadata associated with a task. "
         "Information are then available for consulting in the software. "
         "These metadata are also used by the system search engine (process library and store).\n";
 
-//---------------------------//
+//------------------------//
 //----- CTaskFactory -----//
-//---------------------------//
+//------------------------//
 constexpr auto _processFactoryDocString =
         "Abstract class defining the core structure of the process factory. "
         "The system extensibility for the process library is based on the factory design pattern. "
@@ -109,9 +109,9 @@ constexpr auto _getWidgetFactoryDocString =
         "Returns:\n"
         "   factory: :py:class:`CWidgetFactory` based object\n";
 
-//-----------------------------//
+//----------------------//
 //----- CFeatureIO -----//
-//-----------------------------//
+//----------------------//
 constexpr auto _featureProcessIODocString =
         "Define input or output for a task dedicated to manage numeric values. "
         "C++ implementation uses template to handle various data types. In Python, Ikomia API exposes only the double precision (float) specialization. "
@@ -195,9 +195,9 @@ constexpr auto _setPlotTypeDocString =
         "Args:\n"
         "   type (PlotType): plot type\n";
 
-//---------------------------//
+//--------------------//
 //----- CImageIO -----//
-//---------------------------//
+//--------------------//
 constexpr auto _imageProcessIODocString =
         "Define input or output for a task dedicated to image processing (2D or 3D). "
         "This class is designed to handle image as input or output. "
@@ -486,9 +486,9 @@ constexpr auto _addText2DocString =
         "   y (float): y-coordinate of the top-left point.\n\n"
         "   properties (:py:class:`~ikomia.core.pycore.GraphicsTextProperty`): display properties\n";
 
-//---------------------------//
+//--------------------//
 //----- CVideoIO -----//
-//---------------------------//
+//--------------------//
 constexpr auto _videoProcessIODocString =
         "Define an input or output for a task dedicated to video management. "
         "This class is designed to handle video and instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived object. "
@@ -780,9 +780,9 @@ constexpr auto _setArrayDocString =
         "Args:\n"
         "   array (Numpy array): nd array\n";
 
-//---------------------------//
+//------------------------//
 //----- C2dImageTask -----//
-//---------------------------//
+//------------------------//
 constexpr auto _imageProcess2dDocString =
         "Implement all basic features used in a task dedicated to 2D image processing. "
         "This class defines a task with the following properties:\n\n"
@@ -904,9 +904,9 @@ constexpr auto _emitGraphicsContextChangedDocString =
 constexpr auto _emitOutputChangedDocString =
         "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitOutputChanged`.\n";
 
-//--------------------------------------//
+//-----------------------------------//
 //----- C2dImageInteractiveTask -----//
-//--------------------------------------//
+//-----------------------------------//
 constexpr auto _interactiveImageProcess2d =
         "Add user interactions capability to a 2D image process task. "
         "The class implements a user interaction mechanism through the use of dedicated graphics layer. "
@@ -960,9 +960,9 @@ constexpr auto _computeBlobsDocString =
 constexpr auto _clearInteractionLayerDocString =
         "Clear all graphics items in the interaction layer.\n";
 
-//-------------------------//
+//----------------------//
 //----- CVideoTask -----//
-//-------------------------//
+//----------------------//
 constexpr auto _videoProcessDocString =
         "Add video specific features. "
         "This class defines a task with the following properties:\n\n"
@@ -991,9 +991,9 @@ constexpr auto _notifyVideoEndDocString =
 constexpr auto _beginTaskRunVideoDocString =
         "Perform video specific checks before the process is started.\n";
 
-//---------------------------//
+//------------------------//
 //----- CVideoOFTask -----//
-//---------------------------//
+//------------------------//
 constexpr auto _videoProcessOFDocString =
         "Add optical flow specific features for methods based on OpenCV framework. "
         "This class handles the persistent data required to compute classical optical flow algorithms. "
@@ -1024,9 +1024,9 @@ constexpr auto _flowToDisplayDocString =
         "Returns:\n"
         "   Numpy array: displayable color image (3 channels)\n";
 
-//---------------------------------//
+//------------------------------//
 //----- CVideoTrackingTask -----//
-//---------------------------------//
+//------------------------------//
 constexpr auto _videoProcessTrackingDocString =
         "Add specific features for tracking task. "
         "This class handles the graphics input to extract the region of interest to track. "
@@ -1056,9 +1056,9 @@ constexpr auto _manageOutputsDocString =
         "- Output #3: graphics layer (tracked item)\n"
         "- Output #4: tracked region coordinates\n";
 
-//----------------------------//
+//-------------------------//
 //----- CDnnTrainTask -----//
-//----------------------------//
+//-------------------------//
 constexpr auto _dnnTrainProcessDocString =
         "Internal use only";
 
@@ -1089,9 +1089,9 @@ constexpr auto _enableTensorboardDocString =
         "Args:"
         "   enable (boolean): True or False\n";
 
-//---------------------------------//
+//------------------------------//
 //----- CDnnTrainTaskParam -----//
-//---------------------------------//
+//------------------------------//
 constexpr auto _dnnTrainProcessParamDocString =
         "Base class defining common deep learning hyper-parameters.\n\n"
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.";
@@ -1113,4 +1113,34 @@ constexpr auto _getHashValueDocString =
         "Returns:\n"
         "   int: hash value\n";
 
-#endif // pydataprocessDOCSTRING_HPP
+//---------------------------//
+//----- CIkomiaRegistry -----//
+//---------------------------//
+constexpr auto _ikomiaRegistryDocString =
+        "Algorithms registry of the Ikomia platform.";
+
+constexpr auto _getAlgorithmsDocString =
+        "Get all available algorithms from the Ikomia registry. Before using an algorithm, you must instanciate it "
+        "from its name using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
+        "You can only instanciate algorithms whose name is in the returned list.\n\n"
+        "Returns:\n"
+        "   string: list of algorithm names\n";
+
+constexpr auto _createInstance1DocString =
+        "Instanciate algorithm of the Ikomia registry from its name with default parameters. The full list of available algorithms can be"
+        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Args:\n"
+        "   algorithm name(str): unique name\n\n"
+        "Returns:\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+
+constexpr auto _createInstance2DocString =
+        "Instanciate algorithm of the Ikomia registry from its name with the given parameters. The full list of available algorithms can be"
+        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Args:\n"
+        "   algorithm name(str): unique name\n\n"
+        "   parameters object(:py:class:`~ikomia.core.pycore.CWorkflowTaskParam`): associated parameters\n\n"
+        "Returns:\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+
+#endif // PYDATAPROCESSDOCSTRING_HPP

@@ -39,6 +39,7 @@
 #include "CDatasetIOWrap.h"
 #include "CPathIOWrap.h"
 #include "CArrayIOWrap.h"
+#include "CIkomiaRegistry.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL IKOMIA_ARRAY_API
@@ -119,9 +120,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
     registerStdVector<uchar>();
     registerStdVector<std::vector<uchar>>();
 
-    //------------------------//
+    //---------------------//
     //----- CTaskInfo -----//
-    //------------------------//
+    //---------------------//
     enum_<CTaskInfo::Language>("Language", "Enum - List of supported programming language")
         .value("CPP", CTaskInfo::CPP)
         .value("PYTHON", CTaskInfo::PYTHON)
@@ -145,9 +146,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .add_property("repository", &CTaskInfo::getRepository, &CTaskInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
     ;
 
-    //---------------------------//
+    //------------------------//
     //----- CTaskFactory -----//
-    //---------------------------//
+    //------------------------//
     //Overload member functions
     WorkflowTaskPtr (CTaskFactory::*create_void)() = &CTaskFactory::create;
     WorkflowTaskPtr (CTaskFactory::*create_param)(const WorkflowTaskParamPtr&) = &CTaskFactory::create;
@@ -226,9 +227,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("addText", addText2, _addText2DocString, args("self", "text", "x", "y", "properties"))
     ;
 
-    //---------------------------//
+    //--------------------//
     //----- CImageIO -----//
-    //---------------------------//
+    //--------------------//
     class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1imageProcessIODocString))
@@ -250,9 +251,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("copyStaticData", &CImageIO::copyStaticData, &CImageIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
     ;
 
-    //-----------------------------//
+    //----------------------//
     //----- CFeatureIO -----//
-    //-----------------------------//
+    //----------------------//
     enum_<NumericOutputType>("NumericOutputType", "Enum - List of a display types for numeric values")
         .value("NONE", NumericOutputType::NONE)
         .value("TABLE", NumericOutputType::TABLE)
@@ -270,9 +271,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
 
     exposeFeatureIO<double>("CDblFeatureIO");
 
-    //---------------------------//
+    //--------------------//
     //----- CVideoIO -----//
-    //---------------------------//
+    //--------------------//
     class_<CVideoIOWrap, bases<CImageIO>, std::shared_ptr<CVideoIOWrap>>("CVideoIO", _videoProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1VideoProcessIODocString))
@@ -359,9 +360,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("clearData", &CArrayIO::clearData, &CArrayIOWrap::default_clearData, _clearArrayDataDocString, args("self"))
     ;
 
-    //---------------------------//
+    //------------------------//
     //----- C2dImageTask -----//
-    //---------------------------//
+    //------------------------//
     //Overload member functions
     size_t (C2dImageTask::*getProgressSteps1)() = &C2dImageTask::getProgressSteps;
     size_t (C2dImageTask::*getProgressSteps2)(size_t) = &C2dImageTask::getProgressSteps;
@@ -396,9 +397,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("emitOutputChanged", &C2dImageTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //--------------------------------------//
+    //-----------------------------------//
     //----- C2dImageInteractiveTask -----//
-    //--------------------------------------//
+    //-----------------------------------//
     //Overload member functions
     size_t (C2dImageInteractiveTask::*getProgressSteps3)() = &C2dImageInteractiveTask::getProgressSteps;
     size_t (C2dImageInteractiveTask::*getProgressSteps4)(size_t) = &C2dImageInteractiveTask::getProgressSteps;
@@ -429,9 +430,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("emitOutputChanged", &C2dImageInteractiveTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //-------------------------//
+    //----------------------//
     //----- CVideoTask -----//
-    //-------------------------//
+    //----------------------//
     //Overload member functions
     size_t (CVideoTask::*getProgressSteps5)() = &CVideoTask::getProgressSteps;
     size_t (CVideoTask::*getProgressSteps6)(size_t) = &CVideoTask::getProgressSteps;
@@ -459,9 +460,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("emitOutputChanged", &CVideoTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //---------------------------//
+    //------------------------//
     //----- CVideoOFTask -----//
-    //---------------------------//
+    //------------------------//
     //Overload member functions
     size_t (CVideoOFTask::*getProgressSteps7)() = &CVideoOFTask::getProgressSteps;
     size_t (CVideoOFTask::*getProgressSteps8)(size_t) = &CVideoOFTask::getProgressSteps;
@@ -489,9 +490,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("flowToDisplay", &CVideoOFTask::flowToDisplay, _flowToDisplayDocString, args("self", "flow"))
     ;
 
-    //---------------------------------//
+    //------------------------------//
     //----- CVideoTrackingTask -----//
-    //---------------------------------//
+    //------------------------------//
     //Overload member functions
     size_t (CVideoTrackingTask::*getProgressSteps9)() = &CVideoTrackingTask::getProgressSteps;
     size_t (CVideoTrackingTask::*getProgressSteps10)(size_t) = &CVideoTrackingTask::getProgressSteps;
@@ -519,9 +520,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("manageOutputs", &CVideoTrackingTask::manageOutputs, _manageOutputsDocString, args("self"))
     ;
 
-    //----------------------------//
+    //-------------------------//
     //----- CDnnTrainTask -----//
-    //----------------------------//
+    //-------------------------//
     //Overload member functions
     size_t (CDnnTrainTask::*getProgressSteps11)() = &CDnnTrainTask::getProgressSteps;
     size_t (CDnnTrainTask::*getProgressSteps12)(size_t) = &CDnnTrainTask::getProgressSteps;
@@ -547,9 +548,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("enableTensorboard", &CDnnTrainTask::enableTensorboard, _enableTensorboardDocString, args("self", "enable"))
     ;
 
-    //---------------------------------//
+    //------------------------------//
     //----- CDnnTrainTaskParam -----//
-    //---------------------------------//
+    //------------------------------//
     class_<CDnnTrainTaskParamWrap, bases<CWorkflowTaskParam>, std::shared_ptr<CDnnTrainTaskParamWrap>>("CDnnTrainTaskParam", _dnnTrainProcessParamDocString)
         .enable_pickling()
         .def(init<>("Default constructor"))
@@ -558,5 +559,18 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("setParamMap", &CDnnTrainTaskParam::setParamMap, &CDnnTrainTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
         .def("getParamMap", &CDnnTrainTaskParam::getParamMap, &CDnnTrainTaskParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
         .def("getHashValue", &CDnnTrainTaskParam::getHashValue, &CDnnTrainTaskParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
+    ;
+
+    //---------------------------//
+    //----- CIkomiaRegistry -----//
+    //---------------------------//
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance1)(const std::string&) = &CIkomiaRegistry::createInstance;
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance2)(const std::string&, const WorkflowTaskParamPtr&) = &CIkomiaRegistry::createInstance;
+
+    class_<CIkomiaRegistry, std::shared_ptr<CIkomiaRegistry>>("CIkomiaRegistry", _ikomiaRegistryDocString)
+        .def(init<>("Default constructor"))
+        .def("getAlgorithms", &CIkomiaRegistry::getAlgorithms, _getAlgorithmsDocString, args("self)"))
+        .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
+        .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
     ;
 }

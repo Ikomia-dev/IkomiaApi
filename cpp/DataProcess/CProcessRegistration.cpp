@@ -27,6 +27,7 @@
 
 CProcessRegistration::CProcessRegistration()
 {
+    CPyEnsureGIL gil;
     registerCore();
     registerOpenCV();
     registerGmic();
@@ -385,10 +386,12 @@ void CProcessRegistration::registerCvText()
 
 const CTaskAbstractFactory& CProcessRegistration::getProcessFactory() const
 {
+    CPyEnsureGIL gil;
     return m_processFactory;
 }
 
 const CWidgetAbstractFactory& CProcessRegistration::getWidgetFactory() const
 {
+    CPyEnsureGIL gil;
     return m_widgetFactory;
 }
