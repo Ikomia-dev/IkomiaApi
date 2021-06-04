@@ -2,6 +2,8 @@ import logging
 import numpy as np
 from ikomia import utils, core, dataprocess, dnn
 
+logger = logging.getLogger(__name__)
+
 
 def test_utils():
     print("----- Utils module -----")
@@ -9,25 +11,25 @@ def test_utils():
         cpp_exc = utils.CException()
 
         memory = utils.CMemoryInfo()
-        print("Total memory:", memory.totalMemory())
-        print("Available memory:", memory.availableMemory())
-        print("Memory load:", memory.memoryLoad())
+        logger.info("Total memory:" + str(memory.totalMemory()))
+        logger.info("Available memory:" + str(memory.availableMemory()))
+        logger.info("Memory load:" + str(memory.memoryLoad()))
 
         timer = utils.CTimer()
         timer.start()
         timer.printElapsedTime_ms("Elapsed time")
         timer.printTotalElapsedTime_ms("Total elapsed time")
     except Exception as e:
-        logging.error(e.message)
+        logger.error(e)
 
 
 def test_core():
     print("----- Core module -----")
     try:
-        io = core.CProtocolTaskIO()
-        task = core.CProtocolTask("NewTask")
-        print("Task name:", task.name)
-        param = core.CProtocolTaskParam()
+        io = core.CWorkflowTaskIO()
+        task = core.CWorkflowTask("NewTask")
+        logger.info("Task name:" + task.name)
+        param = core.CWorkflowTaskParam()
         point2d = core.CPointF(0.0, 0.0)
         complex_poly = core.CGraphicsComplexPolygon()
         ellipse = core.CGraphicsEllipse()
@@ -37,14 +39,14 @@ def test_core():
         rect = core.CGraphicsRectangle()
         graphics_conv = core.CGraphicsConversion(512, 512)
     except Exception as e:
-        logging.error(e.message)
+        logger.error(e)
 
 
 def test_dataprocess():
     print("----- DataProcess module -----")
     try:
-        image_io = dataprocess.CImageProcessIO(core.IODataType.IMAGE)
-        video_io = dataprocess.CVideoProcessIO(core.IODataType.VIDEO)
+        image_io = dataprocess.CImageIO(core.IODataType.IMAGE)
+        video_io = dataprocess.CVideoIO(core.IODataType.VIDEO)
         feat_io = dataprocess.CDblFeatureIO()
         graphics_in = dataprocess.CGraphicsInput()
         graphics_out = dataprocess.CGraphicsOutput()
@@ -57,18 +59,18 @@ def test_dataprocess():
         categories[2] = "windsurf"
         categories[3] = "surf"
 
-        image_task = dataprocess.CImageProcess2d("Image-task")
-        print("Task name:", image_task.name)
-        video_task = dataprocess.CVideoProcess("Video-task")
-        print("Task name:", video_task.name)
-        video_of_task = dataprocess.CVideoProcess("Video-optical-flow-task")
-        print("Task name:", video_of_task.name)
-        video_tracking = dataprocess.CVideoProcessTracking("Video-tracking-task")
-        print("Task name:", video_tracking.name)
+        image_task = dataprocess.C2dImageTask("Image-task")
+        logger.info("Task name:" + image_task.name)
+        video_task = dataprocess.CVideoTask("Video-task")
+        logger.info("Task name:" + video_task.name)
+        video_of_task = dataprocess.CVideoOFTask("Video-optical-flow-task")
+        logger.info("Task name:" + video_of_task.name)
+        video_tracking = dataprocess.CVideoTrackingTask("Video-tracking-task")
+        logger.info("Task name:" + video_tracking.name)
 
-        info = dataprocess.CProcessInfo()
+        info = dataprocess.CTaskInfo()
     except Exception as e:
-        logging.error(e.message)
+        logger.error(e)
 
 
 def test_dnn():
@@ -76,11 +78,11 @@ def test_dnn():
     try:
         train_param = dnn.TrainParam()
         train_task = dnn.TrainProcess("Train-task", train_param)
-        print("Task name:", train_task.name)
+        logger.info("Task name:" + train_task.name)
 
         datasetio = dnn.IkDatasetIO("new-format")
     except Exception as e:
-        logging.error(e.message)
+        logger.error(e)
 
 
 if __name__ == "__main__":
@@ -88,4 +90,4 @@ if __name__ == "__main__":
     test_core()
     test_dataprocess()
     test_dnn()
-    print("Install test run successfully")
+    logger.info("Install test run successfully")
