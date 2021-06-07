@@ -27,7 +27,6 @@
 
 CProcessRegistration::CProcessRegistration()
 {
-    CPyEnsureGIL gil;
     registerCore();
     registerOpenCV();
     registerGmic();

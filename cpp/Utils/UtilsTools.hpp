@@ -161,6 +161,22 @@ namespace Ikomia
             }
         }
 
+        namespace OS
+        {
+            inline int getCurrent()
+            {
+                #if defined(Q_OS_LINUX)
+                    return OSType::LINUX;
+                #elif defined(Q_OS_MACOS)
+                    return OSType::OSX;
+                #elif defined(Q_OS_WIN64)
+                    return OSType::WIN;
+                #else
+                    return OSType::ALL;
+                #endif
+            }
+        }
+
         namespace String
         {
             inline void tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters = " ")

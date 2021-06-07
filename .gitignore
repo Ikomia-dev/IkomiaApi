@@ -6,10 +6,16 @@ cpp/Doc/API/latex
 cpp/Doc/Internal/html
 cpp/Doc/Internal/latex
 .idea
+ikomia/__pycache__
 ikomia/.idea
+ikomia/core/__pycache__
 ikomia/core/pycore.so
+ikomia.dataio/__pycache__
 ikomia/dataio/pydataio.so
+ikomia/dataprocess/__pycache__
 ikomia/dataprocess/pydataprocess.so
+ikomia/dnn/__pycache__
+ikomia/utils/__pycache__
 ikomia/utils/pyutils.so
 ikomia/lib
 doc/build

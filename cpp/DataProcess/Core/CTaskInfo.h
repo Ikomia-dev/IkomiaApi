@@ -24,6 +24,9 @@
 
 #include <string>
 #include "DataProcessGlobal.hpp"
+#include "UtilsDefine.hpp"
+
+using namespace Ikomia;
 
 /**
  * @ingroup groupDataProcess
@@ -43,17 +46,6 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         {
             CPP,    /**< C++ */
             PYTHON  /**< Python */
-        };
-        /**
-         * @enum OS
-         * @brief The OS enum defines the possible operating systems.
-         */
-        enum OS
-        {
-            ALL,    /**< Cross-platform process, implemented in Python */
-            LINUX,  /**< Linux */
-            WIN,    /**< Windows 10 */
-            OSX     /**< Mac OS X 10.13 or higher */
         };
 
         /**
@@ -134,7 +126,7 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         std::string m_repo = "";
         int         m_year = -1;                /**< Year of the article or the algorithme */
         int         m_language = CPP;           /**< Programming language */
-        int         m_os = LINUX;               /**< Compatible operating system */
+        int         m_os = OSType::LINUX;       /**< Compatible operating system */
 };
 
 #endif // CTASKINFO_H
