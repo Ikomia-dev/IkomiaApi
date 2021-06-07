@@ -569,8 +569,11 @@ BOOST_PYTHON_MODULE(pydataprocess)
 
     class_<CIkomiaRegistry, std::shared_ptr<CIkomiaRegistry>>("CIkomiaRegistry", _ikomiaRegistryDocString)
         .def(init<>("Default constructor"))
+        .def("setPluginsDirectory", &CIkomiaRegistry::setPluginsDirectory, _setPluginsDirDocString, args("self", "directory"))
+        .def("getPluginsDirectory", &CIkomiaRegistry::getPluginsDirectory, _getPluginsDirDocString, args("self"))
         .def("getAlgorithms", &CIkomiaRegistry::getAlgorithms, _getAlgorithmsDocString, args("self)"))
         .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
         .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
+        .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
     ;
 }

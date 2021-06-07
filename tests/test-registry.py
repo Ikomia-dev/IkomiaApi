@@ -1,12 +1,12 @@
 import logging
-from ikomia import utils, dataprocess
+from ikomia.dataprocess import store
 
 logger = logging.getLogger(__name__)
 
 
 def test_names():
     try:
-        registry = dataprocess.CIkomiaRegistry()
+        registry = store.IkomiaRegistry()
         algos = registry.getAlgorithms()
         logger.info("Number of algorithms:" + str(len(algos)))
         logger.info(algos)
@@ -16,7 +16,7 @@ def test_names():
 
 def test_instantiation():
     try:
-        registry = dataprocess.CIkomiaRegistry()
+        registry = store.IkomiaRegistry()
         algo_names = registry.getAlgorithms()
         algos = []
 

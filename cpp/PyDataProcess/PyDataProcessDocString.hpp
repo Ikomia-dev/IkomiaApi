@@ -1119,6 +1119,16 @@ constexpr auto _getHashValueDocString =
 constexpr auto _ikomiaRegistryDocString =
         "Algorithms registry of the Ikomia platform.";
 
+constexpr auto _setPluginsDirDocString =
+        "Set directory where Ikomia plugins are stored.\n\n"
+        "Args:\n"
+        "   directory (str)\n";
+
+constexpr auto _getPluginsDirDocString =
+        "Get the current Ikomia plugins directory.\n\n"
+        "Returns:\n"
+        "   str: full path to Ikomia plugins directory\n";
+
 constexpr auto _getAlgorithmsDocString =
         "Get all available algorithms from the Ikomia registry. Before using an algorithm, you must instanciate it "
         "from its name using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
@@ -1142,5 +1152,11 @@ constexpr auto _createInstance2DocString =
         "   parameters object(:py:class:`~ikomia.core.pycore.CWorkflowTaskParam`): associated parameters\n\n"
         "Returns:\n"
         "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+
+constexpr auto _registerTaskDocString =
+        "Add new algorithm factory to Ikomia registry. Once registered, you are able to instanciate algorithm object "
+        "and use it inside a workflow.\n\n"
+        "Args:\n"
+        "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
 
 #endif // PYDATAPROCESSDOCSTRING_HPP

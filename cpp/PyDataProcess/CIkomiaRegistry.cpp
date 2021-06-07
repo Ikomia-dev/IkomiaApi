@@ -46,6 +46,11 @@ WorkflowTaskPtr CIkomiaRegistry::createInstance(const std::string &processName, 
     return m_processRegistrator.createProcessObject(processName, paramPtr);
 }
 
+void CIkomiaRegistry::registerTask(const TaskFactoryPtr &factoryPtr)
+{
+    m_processRegistrator.registerProcess(factoryPtr, nullptr);
+}
+
 void CIkomiaRegistry::loadCppPlugins()
 {
     QDir pluginsDir(QString::fromStdString(m_pluginsDir + "/C++"));

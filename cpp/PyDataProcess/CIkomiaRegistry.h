@@ -19,6 +19,8 @@ class CIkomiaRegistry
         WorkflowTaskPtr             createInstance(const std::string& processName);
         WorkflowTaskPtr             createInstance(const std::string& processName, const WorkflowTaskParamPtr& paramPtr);
 
+        void                        registerTask(const TaskFactoryPtr& factoryPtr);
+
         void                        loadCppPlugins();
 
     private:
