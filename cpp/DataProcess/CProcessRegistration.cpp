@@ -42,7 +42,7 @@ CProcessRegistration::~CProcessRegistration()
 void CProcessRegistration::registerProcess(const std::shared_ptr<CTaskFactory>& pProcessFactory,
                                            const std::shared_ptr<CWidgetFactory>& pWidgetFactory)
 {
-    assert(pProcessFactory && pWidgetFactory);
+    assert(pProcessFactory);
 
     auto name = pProcessFactory->getInfo().getName();
     if(m_processFactory.isCreatorExists(name) == true)
@@ -61,12 +61,15 @@ void CProcessRegistration::registerProcess(const std::shared_ptr<CTaskFactory>& 
     };
     m_processFactory.registerCreator(pProcessFactory->getInfo().m_name, pProcessFunc);
 
-    m_widgetFactory.getList().push_back(pWidgetFactory);
-    auto pWidgetFunc = [pWidgetFactory](const WorkflowTaskParamPtr& param)
+    if(pWidgetFactory)
     {
-        return pWidgetFactory->create(param);
-    };
-    m_widgetFactory.registerCreator(pWidgetFactory->getName(), pWidgetFunc);
+        m_widgetFactory.getList().push_back(pWidgetFactory);
+        auto pWidgetFunc = [pWidgetFactory](const WorkflowTaskParamPtr& param)
+        {
+            return pWidgetFactory->create(param);
+        };
+        m_widgetFactory.registerCreator(pWidgetFactory->getName(), pWidgetFunc);
+    }
 
     //Pour mémoire
     //Passage par std::bind -> cast nécessaire car 2 méthodes create() existent
