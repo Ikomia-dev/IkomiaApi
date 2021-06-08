@@ -23,6 +23,8 @@
 #include "CException.h"
 #include "CMemoryInfo.h"
 #include "CTimer.hpp"
+#include "UtilsDefine.hpp"
+#include "UtilsTools.hpp"
 
 BOOST_PYTHON_MODULE(pyutils)
 {
@@ -34,6 +36,15 @@ BOOST_PYTHON_MODULE(pyutils)
 
     // Set the docstring of the current module scope
     scope().attr("__doc__") = _moduleDocString;
+
+    enum_<PluginState>("PluginState", "Enum - List of plugin states for version compatibility")
+        .value("VALID", PluginState::VALID)
+        .value("DEPRECATED", PluginState::DEPRECATED)
+        .value("UPDATED", PluginState::UPDATED)
+    ;
+
+    def("getApiVersion", &Utils::IkomiaApp::getCurrentVersionNumber, _getCurrentVersionDocString);
+    def("getCompatibilityState", &Utils::Plugin::getStdPythonState, _pythonStateDocString, args("version"));
 
     //----- Binding CException -----
     class_<CException>("CException", _exceptionDocString, init<>("Default constructor"))

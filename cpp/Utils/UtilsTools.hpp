@@ -776,6 +776,10 @@ namespace Ikomia
 
                 return PluginState::VALID;
             }
+            inline PluginState  getStdPythonState(const std::string& version)
+            {
+                return getPythonState(QString::fromStdString(version));
+            }
         }
 
         namespace Python

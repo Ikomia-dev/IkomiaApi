@@ -23,6 +23,18 @@
 
 constexpr auto _moduleDocString = "Module offering various helper tools.\n";
 
+constexpr auto _getCurrentVersionDocString =
+        "Get the current API version.\n\n"
+        "Returns:"
+        "   str: API version\n";
+
+constexpr auto _pythonStateDocString =
+        "Get the plugin compatibility state. See :py:class:`utils.pyutils.PluginState` for possible values.\n\n"
+        "Args:\n"
+        "   version (str): base version of the plugin\n\n"
+        "Returns:\n"
+        "   :py:class:`utils.pyutils.PluginState`: state\n";
+
 //----------------------
 //----- CException -----
 //-----------------------
