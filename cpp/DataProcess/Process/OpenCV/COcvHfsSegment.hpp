@@ -2,17 +2,17 @@
 #define COCVHFSSEGMENT_HPP
 
 #include <opencv2/hfs.hpp>
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvHfsSegmentParam -----//
 //------------------------------//
-class COcvHfsSegmentParam: public CProtocolTaskParam
+class COcvHfsSegmentParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvHfsSegmentParam() : CProtocolTaskParam(){}
+        COcvHfsSegmentParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -52,21 +52,21 @@ class COcvHfsSegmentParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvHfsSegment -----//
 //-------------------------//
-class COcvHfsSegment : public CImageProcess2d
+class COcvHfsSegment : public C2dImageTask
 {
     public:
 
-        COcvHfsSegment() : CImageProcess2d()
+        COcvHfsSegment() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
         }
-        COcvHfsSegment(const std::string name, const std::shared_ptr<COcvHfsSegmentParam>& pParam) : CImageProcess2d(name)
+        COcvHfsSegment(const std::string name, const std::shared_ptr<COcvHfsSegmentParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvHfsSegmentParam>(*pParam);
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0);
         }
 
@@ -78,8 +78,8 @@ class COcvHfsSegment : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvHfsSegmentParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -112,7 +112,7 @@ class COcvHfsSegment : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -121,7 +121,7 @@ class COcvHfsSegment : public CImageProcess2d
         }
 };
 
-class COcvHfsSegmentFactory : public CProcessFactory
+class COcvHfsSegmentFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvHfsSegmentFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/d29/group__hfs.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pHfsSegmentParam = std::dynamic_pointer_cast<COcvHfsSegmentParam>(pParam);
             if(pHfsSegmentParam != nullptr)
@@ -147,7 +147,7 @@ class COcvHfsSegmentFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pHfsSegmentParam = std::make_shared<COcvHfsSegmentParam>();
             assert(pHfsSegmentParam != nullptr);

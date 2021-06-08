@@ -30,7 +30,7 @@ class COcvWidgetDnnColorization: public COcvWidgetDnnProcess
         COcvWidgetDnnColorization(QWidget *parent = Q_NULLPTR): COcvWidgetDnnProcess(parent)
         {
         }
-        COcvWidgetDnnColorization(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
+        COcvWidgetDnnColorization(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
         {
         }
 };
@@ -44,7 +44,7 @@ class COcvWidgetDnnColorizationFactory : public CWidgetFactory
             m_name = QObject::tr("DNN colorization").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDnnColorization>(pParam);
         }

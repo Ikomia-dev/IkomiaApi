@@ -21,17 +21,17 @@
 #define COCVMERGE_HPP
 
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvMergeParam -----//
 //------------------------------//
-class COcvMergeParam: public CProtocolTaskParam
+class COcvMergeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMergeParam() : CProtocolTaskParam(){}
+        COcvMergeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -53,22 +53,22 @@ class COcvMergeParam: public CProtocolTaskParam
 //---------------------//
 //----- COcvMerge -----//
 //---------------------//
-class COcvMerge : public CImageProcess2d
+class COcvMerge : public C2dImageTask
 {
     public:
 
-        COcvMerge() : CImageProcess2d(false)
+        COcvMerge() : C2dImageTask(false)
         {
         }
-        COcvMerge(const std::string name, const std::shared_ptr<COcvMergeParam>& pParam) : CImageProcess2d(name, false)
+        COcvMerge(const std::string name, const std::shared_ptr<COcvMergeParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvMergeParam>(*pParam);
             clearInputs();
             for(int i=0; i<pParam->m_inputCount; ++i)
-                addInput(std::make_shared<CImageProcessIO>());
+                addInput(std::make_shared<CImageIO>());
         }
 
-        void    setParam(const ProtocolTaskParamPtr &pParam) override
+        void    setParam(const WorkflowTaskParamPtr &pParam) override
         {
             m_pParam = pParam;
             parametersModified();
@@ -83,7 +83,7 @@ class COcvMerge : public CImageProcess2d
             {
                 assert(getInput(0) != nullptr);
                 for(int i=0; i<pParam->m_inputCount - inOldCount; ++i)
-                    addInput(std::make_shared<CImageProcessIO>(getInput(0)->getDataType()));
+                    addInput(std::make_shared<CImageIO>(getInput(0)->getDataType()));
             }
             else
             {
@@ -108,10 +108,10 @@ class COcvMerge : public CImageProcess2d
             if((int)getInputCount() != pParam->m_inputCount)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Inputs count mismatch", __func__, __FILE__, __LINE__);
 
-            std::vector<std::shared_ptr<CImageProcessIO>> inputs;
+            std::vector<std::shared_ptr<CImageIO>> inputs;
             for(int i=0; i<pParam->m_inputCount; ++i)
             {
-                auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(i));
+                auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(i));
                 inputs.push_back(pInput);
             }
 
@@ -163,7 +163,7 @@ class COcvMerge : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -171,7 +171,7 @@ class COcvMerge : public CImageProcess2d
         }
 };
 
-class COcvMergeFactory : public CProcessFactory
+class COcvMergeFactory : public CTaskFactory
 {
     public:
 
@@ -185,7 +185,7 @@ class COcvMergeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga61f2f2bde4a0a0154b2333ea504fab1d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvMergeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -193,7 +193,7 @@ class COcvMergeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvMergeParam>();
             assert(pDerivedParam != nullptr);

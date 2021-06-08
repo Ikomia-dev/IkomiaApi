@@ -17,31 +17,31 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef pydataprocessDOCSTRING_HPP
-#define pydataprocessDOCSTRING_HPP
+#ifndef PYDATAPROCESSDOCSTRING_HPP
+#define PYDATAPROCESSDOCSTRING_HPP
 
 constexpr auto _moduleDocString =
         "Module offering all features to implement image processing plugins that can be used in the Ikomia workflow. "
         "The system uses factory design pattern to allow integration of third-party plugins. "
         "So when you want to add your own plugin, you have to implement (override) three factory classes derived from the followings:\n\n"
         "- :py:class:`~ikomia.dataprocess.pydataprocess.CPluginProcessInterface`: abstract base class exposing the two factories required by the plugin engine (task and widget)\n"
-        "- :py:class:`~ikomia.dataprocess.pydataprocess.CProcessFactory`: abstract base class for process instanciation\n"
+        "- :py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory`: abstract base class for process instanciation\n"
         "- :py:class:`~ikomia.dataprocess.pydataprocess.CWidgetFactory`: abstract base class for widget instanciation\n\n"
         "This module provides class specialization for several types of usual inputs/outputs.\n"
         "It also provides class specialization for common processing task.\n"
         "You will find details about implementation below.\n\n";
 
-//------------------------//
-//----- CProcessInfo -----//
-//------------------------//
+//---------------------//
+//----- CTaskInfo -----//
+//---------------------//
 constexpr auto _processInfoDocString =
         "Manage metadata associated with a task. "
         "Information are then available for consulting in the software. "
         "These metadata are also used by the system search engine (process library and store).\n";
 
-//---------------------------//
-//----- CProcessFactory -----//
-//---------------------------//
+//------------------------//
+//----- CTaskFactory -----//
+//------------------------//
 constexpr auto _processFactoryDocString =
         "Abstract class defining the core structure of the process factory. "
         "The system extensibility for the process library is based on the factory design pattern. "
@@ -51,21 +51,21 @@ constexpr auto _processFactoryDocString =
 constexpr auto _processFactoryInfoDocString =
         "Metadata structure associated with the task. "
         "Some fields are mandatory to allow plugin publication. "
-        "See :py:class:`~ikomia.dataprocess.pydataprocess.CProcessInfo` for details.\n";
+        "See :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.\n";
 
 constexpr auto _create1DocString =
         "Pure virtual method to create new process task instance with default task parameters. "
         "Must be implemented.\n\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTask` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask` based object\n";
 
 constexpr auto _create2DocString =
         "Pure virtual method to create new process task instance with the given task parameters. "
         "Must be implemented.\n\n"
         "Args:\n"
-        "   param: :py:class:`~ikomia.core.pycore.CProtocolTaskParam` based object\n\n"
+        "   param: :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTask` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask` based object\n";
 
 //--------------------------//
 //----- CWidgetFactory -----//
@@ -83,9 +83,9 @@ constexpr auto _createWidgetDocString =
         "Pure virtual method to create new task widget instance with the given task parameters. "
         "Must be implemented.\n\n"
         "Args:\n"
-        "   param: :py:class:`~ikomia.core.pycore.CProtocolTaskParam` based object\n\n"
+        "   param: :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n\n"
         "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CProtocolTaskWidget` based object\n";
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTaskWidget` based object\n";
 
 //-----------------------------------//
 //----- CPluginProcessInterface -----//
@@ -101,7 +101,7 @@ constexpr auto _getProcessFactoryDocString =
         "Pure virtual method that returns instance of a task factory object. "
         "Must be implemented.\n\n"
         "Returns:\n"
-        "   factory: :py:class:`CProcessFactory` based object\n";
+        "   factory: :py:class:`CTaskFactory` based object\n";
 
 constexpr auto _getWidgetFactoryDocString =
         "Pure virtual method that returns instance of a task factory object. "
@@ -109,16 +109,16 @@ constexpr auto _getWidgetFactoryDocString =
         "Returns:\n"
         "   factory: :py:class:`CWidgetFactory` based object\n";
 
-//-----------------------------//
-//----- CFeatureProcessIO -----//
-//-----------------------------//
+//----------------------//
+//----- CFeatureIO -----//
+//----------------------//
 constexpr auto _featureProcessIODocString =
         "Define input or output for a task dedicated to manage numeric values. "
         "C++ implementation uses template to handle various data types. In Python, Ikomia API exposes only the double precision (float) specialization. "
         "The class is designed to handle numeric values, "
         "it consists on a list of float values, a list of associated labels and a display type (see :py:class:`NumericOutputType`). "
         "For the specific case of plot display, a plot type property is available (see :py:class:`PlotType`). "
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`\n\n";
 
 constexpr auto _addValueList1DocString =
         "Append a new value list.\n\n"
@@ -145,10 +145,10 @@ constexpr auto _addValueList4DocString =
         "   labels (list of str): store label for each numeric value\n";
 
 constexpr auto _clearDataDerivedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTaskIO.clearData`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTaskIO.clearData`.\n";
 
 constexpr auto _copyStaticDataDerivedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTaskIO.copyStaticData`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTaskIO.copyStaticData`.\n";
 
 constexpr auto _getAllLabelListDocString =
         "Get all label lists associated with value lists.\n\n"
@@ -172,7 +172,7 @@ constexpr auto _getPlotTypeDocString =
         "   PlotType: plot type\n";
 
 constexpr auto _getUnitEltCountDerivedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTaskIO.getUnitElementCount`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTaskIO.getUnitElementCount`.\n";
 
 constexpr auto _getValueListDocString =
         "Get value list at position index.\n\n"
@@ -182,7 +182,7 @@ constexpr auto _getValueListDocString =
         "   list: float values\n";
 
 constexpr auto _isDataAvailableDerivedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTaskIO.isDataAvailable`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTaskIO.isDataAvailable`.\n";
 
 constexpr auto _setOutputTypeDocString =
         "Set output display type. See :py:class:`NumericOutputType` for possible values.\n\n"
@@ -195,23 +195,23 @@ constexpr auto _setPlotTypeDocString =
         "Args:\n"
         "   type (PlotType): plot type\n";
 
-//---------------------------//
-//----- CImageProcessIO -----//
-//---------------------------//
+//--------------------//
+//----- CImageIO -----//
+//--------------------//
 constexpr auto _imageProcessIODocString =
         "Define input or output for a task dedicated to image processing (2D or 3D). "
         "This class is designed to handle image as input or output. "
-        "A CImageProcessIO instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object. "
+        "A CImageIO instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived object. "
         "It is the base class to define input or output of an image processing task. "
         "Several image data type can be defined according to the nature of the algorithm:\n\n"
         "- binary image\n"
         "- labelled image\n"
         "- standard image\n\n"
         "The internal image data structure is a numpy array that can be either 2D or 3D.\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1imageProcessIODocString =
-        "Construct a CImageProcessIO instance with the given image. "
+        "Construct a CImageIO instance with the given image. "
         "By default, the image output type is set to the standard one (IODataType.IMAGE). "
         "See :py:class:`~ikomia.core.pycore.IODataType` for details.\n\n"
         "Args:\n"
@@ -219,7 +219,7 @@ constexpr auto _ctor1imageProcessIODocString =
         "   arg2 (Numpy array): 2D/3D image\n";
 
 constexpr auto _ctor2imageProcessIODocString =
-        "Construct a CImageProcessIO instance with the given data type. The data type must be one of these values:\n\n"
+        "Construct a CImageIO instance with the given data type. The data type must be one of these values:\n\n"
         "- IODataType.IMAGE\n"
         "- IODataType.IMAGE_BINARY\n"
         "- IODataType.IMAGE_LABEL\n"
@@ -232,7 +232,7 @@ constexpr auto _ctor2imageProcessIODocString =
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n";
 
 constexpr auto _ctor3imageProcessIODocString =
-        "Construct a CImageProcessIO instance with the given data type and the given image. "
+        "Construct a CImageIO instance with the given data type and the given image. "
         "The data type must be one of these values:\n\n"
         "- IODataType.IMAGE\n"
         "- IODataType.IMAGE_BINARY\n"
@@ -252,7 +252,7 @@ constexpr auto _copyImageStaticDataDocString =
         "Set the static information from the given input or ouput. "
         "For this class, the channel count is the only static data.\n\n"
         "Args:\n"
-        "   io (:py:class:`~ikomia.core.pycore.CProtocolTaskIO`): input or ouput instance from which data is copied.\n";
+        "   io (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO`): input or ouput instance from which data is copied.\n";
 
 constexpr auto _getChannelCountDocString =
         "Get the static channel count information. "
@@ -317,7 +317,7 @@ constexpr auto _setOverlayMaskDocString =
         "This method sets this mask, it will be displayed automatically according to a predefined color map. "
         "Zero pixels of the mask will be completely transparent, non-zero will be displayed according to the corresponding color in the color map. "
         "The color map must be defined in the task implementation. "
-        "See :py:meth:`~CImageProcess2d.setOutputColorMap` for details.\n\n"
+        "See :py:meth:`~C2dImageTask.setOutputColorMap` for details.\n\n"
         "Args:\n"
         "   image (Numpy array): image buffer (8 bits - 1 channel)\n";
 
@@ -326,9 +326,9 @@ constexpr auto _setOverlayMaskDocString =
 //--------------------------//
 constexpr auto _graphicsInputDocString =
         "Define task input containing graphics items. Consult :py:class:`~ikomia.core.pycore.GraphicsItem` to see the list of possible graphics types. "
-        "Instance can be added as input of a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived. "
+        "Instance can be added as input of a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived. "
         "This kind of input is used to manage user-defined ROI or to forward graphics items generated by a previous task in your workflow. "
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _setItemsDocString =
         "Fill input with the given graphics item list.\n\n"
@@ -353,11 +353,11 @@ constexpr auto _clearGraphicsDataDocString =
 //---------------------------//
 constexpr auto _graphicsOutputDocString =
         "Define task output containing graphics items. Consult :py:class:`~ikomia.core.pycore.GraphicsItem` to see the list of possible graphics types. "
-        "Instance can be added as output of a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived. "
+        "Instance can be added as output of a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived. "
         "This kind of output is used to manage graphics items generated in a task. "
         "Ikomia software displays it as an overlay layer on top of images or videos. "
         "Graphics items can then be forwarded as input of workflow's following tasks. "
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _setNewLayerDocString =
         "Initiate a new graphics layer for the output with the given name. The method clears all graphics items that was previously generated.\n\n"
@@ -366,7 +366,7 @@ constexpr auto _setNewLayerDocString =
 
 constexpr auto _setImageIndexDocString =
         "Set the output index on which graphics items will be displayed (in overlay layer). "
-        "Index must refer to an existing output managing image data such as :py:class:`CImageProcessIO` or derived.\n\n"
+        "Index must refer to an existing output managing image data such as :py:class:`CImageIO` or derived.\n\n"
         "Args:\n"
         "   index (int): index of image-based output\n";
 
@@ -486,22 +486,22 @@ constexpr auto _addText2DocString =
         "   y (float): y-coordinate of the top-left point.\n\n"
         "   properties (:py:class:`~ikomia.core.pycore.GraphicsTextProperty`): display properties\n";
 
-//---------------------------//
-//----- CVideoProcessIO -----//
-//---------------------------//
+//--------------------//
+//----- CVideoIO -----//
+//--------------------//
 constexpr auto _videoProcessIODocString =
         "Define an input or output for a task dedicated to video management. "
-        "This class is designed to handle video and instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object. "
+        "This class is designed to handle video and instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived object. "
         "It is the base class to define input or output of a video processing task. "
         "Several video output type can be defined according to the nature of the algorithm:\n\n"
         "- binary video\n"
         "- labelled video (graylevel connected components)\n"
         "- standard video\n\n"
         "Source video can be either a file, an image sequence or a stream. Image data is stored as a numpy array.\n"
-        "Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO`.\n\n";
+        "Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`.\n\n";
 
 constexpr auto _ctor1VideoProcessIODocString =
-        "Construct a CVideoProcessIO instance with the given image. "
+        "Construct a CVideoIO instance with the given image. "
         "By default, the image output type is set to the standard one (IODataType.IMAGE). "
         "See :py:class:`~ikomia.core.pycore.IODataType` for details.\n\n"
         "Args:\n"
@@ -509,7 +509,7 @@ constexpr auto _ctor1VideoProcessIODocString =
         "   arg2 (Numpy array): 2D image\n";
 
 constexpr auto _ctor2VideoProcessIODocString =
-        "Construct a CVideoProcessIO instance with the given data type. The data type must be one of these values:\n\n"
+        "Construct a CVideoIO instance with the given data type. The data type must be one of these values:\n\n"
         "- IODataType.VIDEO\n"
         "- IODataType.VIDEO_BINARY\n"
         "- IODataType.VIDEO_LABEL\n"
@@ -522,7 +522,7 @@ constexpr auto _ctor2VideoProcessIODocString =
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n";
 
 constexpr auto _ctor3VideoProcessIODocString =
-        "Construct a CVideoProcessIO instance with the given data type and the given image. "
+        "Construct a CVideoIO instance with the given data type and the given image. "
         "The data type must be one of these values:\n\n"
         "- IODataType.VIDEO\n"
         "- IODataType.VIDEO_BINARY\n"
@@ -625,14 +625,14 @@ constexpr auto _widgetOutputDocString =
         "Define a widget output for a task. "
         "This class is designed to handle widget as output of a workflow task. "
         "A widget must be a derived object from QWidget of the Qt framework (PyQt5 or PySide2).\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctorWidgetOutputDocString =
         "Construct a CWidgetOutput instance with the given data type."
         "By default, the widget data type is IODataType.WIDGET (see :py:class:`~ikomia.core.pycore.IODataType`).\n";
 
 constexpr auto _setWidgetDocString =
-        "Set the widget instance: use :py:mod:`IkQtConversion` module to get C++ handle from Python Qt-based framework.\n\n"
+        "Set the widget instance: use :py:mod:`~ikomia.utils.qtconversion` module to get C++ handle from Python Qt-based framework.\n\n"
         "Args:\n"
         "   widget: compatible C++ widget handle\n";
 
@@ -649,7 +649,7 @@ constexpr auto _clearWidgetDataDocString =
 //-------------------//
 constexpr auto _pathIODocString =
         "Define input or output for a task to handle file or folder path. "
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1PathIODocString =
         "Construct a CPathIO instance with the given data type. "
@@ -673,8 +673,8 @@ constexpr auto _clearDataDocString =
 //----------------------//
 constexpr auto _datasetIODocString =
         "Virtual base classe to define task input or output containing deep learning dataset structure. "
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n"
-        "Instances can be added as input or output of a :py:class:`~ikomia.core.pycore.CProtocolTask` or "
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n"
+        "Instances can be added as input or output of a :py:class:`~ikomia.core.pycore.CWorkflowTask` or "
         "derived object. Such input or output is required for deep learning training "
         "task. Custom dataset loader must inherit this class and implements required virtual methods. \n\n"
         "Dataset structure is composed of a dict for each image and some common "
@@ -745,9 +745,9 @@ constexpr auto _saveDocStr =
 //--------------------//
 constexpr auto _arrayIODocString =
         "Define multi-dimensional array as input or output of a task. "
-        "A CArrayIO instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CProtocolTask` or derived object. "
+        "A CArrayIO instance can be added as input or output to a :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived object. "
         "The internal image data structure is a numpy array.\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskIO`.\n\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1ArrayIODocString =
         "Construct a CArrayIO instance with the given array. "
@@ -780,65 +780,65 @@ constexpr auto _setArrayDocString =
         "Args:\n"
         "   array (Numpy array): nd array\n";
 
-//---------------------------//
-//----- CImageProcess2d -----//
-//---------------------------//
+//------------------------//
+//----- C2dImageTask -----//
+//------------------------//
 constexpr auto _imageProcess2dDocString =
         "Implement all basic features used in a task dedicated to 2D image processing. "
         "This class defines a task with the following properties:\n\n"
         "Inputs:\n\n"
-        "- image (:py:class:`CImageProcessIO`)\n"
+        "- image (:py:class:`CImageIO`)\n"
         "- graphics layer (not accessible yet in Python API)\n\n"
         "Outputs:\n\n"
-        "- image (:py:class:`CImageProcessIO`)\n\n"
+        "- image (:py:class:`CImageIO`)\n\n"
         "It is a good starting point to use it as a base class for all task dedicated to 2D images.\n\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTask`.\n";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTask`.\n";
 
 constexpr auto _ctor1ImageProcess2dDocString =
-        "Construct CImageProcess2d task with or without graphics input.\n\n"
+        "Construct C2dImageTask task with or without graphics input.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (bool): True, the task manage graphics input. False, the task does not have any graphics input\n";
 
 constexpr auto _ctor2ImageProcess2dDocString =
-        "Construct CImageProcess2d task with the given name. Default inputs and outputs.\n\n"
+        "Construct C2dImageTask task with the given name. Default inputs and outputs.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (str): task name, must be unique\n";
 
 constexpr auto _ctor3ImageProcess2dDocString =
-        "Construct CImageProcess2d task with the given name, with or without graphics input.\n\n"
+        "Construct C2dImageTask task with the given name, with or without graphics input.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (str): task name, must be unique\n\n"
         "   arg3 (bool): True, the task manage graphics input. False, the task does not have any graphics input\n";
 
 constexpr auto _setActiveDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.setActive`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.setActive`.\n";
 
 constexpr auto _setOutputColorMapDocString =
         "Bind a display color map to an image output. "
         "The color mask is generated from an output mask generated by the task itself (binary or labelled image).\n\n"
         "Args:\n"
-        "   index (int): zero-based index of the output to be displayed with the color map. The output must be a :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO` or derived.\n"
+        "   index (int): zero-based index of the output to be displayed with the color map. The output must be a :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO` or derived.\n"
         "   mask_index (int): zero-based index of the output representing the mask used to generate the color overlay.\n"
         "   colors (list): list of tuples (r,g,b values) for the color map. If empty, the system generates random colors.\n";
 
 constexpr auto _updateStaticOutputsDocString =
         "Determine output data type automatically from input data types. "
-        "Don't forget to call this method in overriden methods. See :py:meth:`~ikomia.core.pycore.CProtocolTask.updateStaticOutputs`.\n";
+        "Don't forget to call this method in overriden methods. See :py:meth:`~ikomia.core.pycore.CWorkflowTask.updateStaticOutputs`.\n";
 
 constexpr auto _beginTaskRunDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.beginTaskRun`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.beginTaskRun`.\n";
 
 constexpr auto _endTaskRunDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.endTaskRun`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.endTaskRun`.\n";
 
 constexpr auto _graphicsChangedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.graphicsChanged`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.graphicsChanged`.\n";
 
 constexpr auto _globalInputChangedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.globalInputChanged`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.globalInputChanged`.\n";
 
 constexpr auto _createGraphicsMaskDocString =
         "Generate a binary mask image from the given graphics input. "
@@ -864,7 +864,7 @@ constexpr auto _applyGraphicsMaskToBinaryDocString =
         "   index (int): zero-based index of the mask\n";
 
 constexpr auto _getProgressStepsDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.getProgressSteps`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.getProgressSteps`.\n";
 
 constexpr auto _getGraphicsMaskDocString =
         "Get the binary mask generated from graphics input at position index.\n\n"
@@ -881,10 +881,10 @@ constexpr auto _isMaskAvailableDocString =
         "   bool: True if mask is available, False otherwise\n";
 
 constexpr auto _runDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.run`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.run`.\n";
 
 constexpr auto _stopDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.stop`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.stop`.\n";
 
 constexpr auto _forwardInputImageDocString =
         "Forward input image at position input_index to output at position output_index.\n\n"
@@ -893,31 +893,31 @@ constexpr auto _forwardInputImageDocString =
         "   output_index (int): zero-based index of the output\n";
 
 constexpr auto _emitAddSubProgressSteps =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitAddSubProgressSteps`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitAddSubProgressSteps`.\n";
 
 constexpr auto _emitStepProgressDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitStepProgress`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitStepProgress`.\n";
 
 constexpr auto _emitGraphicsContextChangedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitGraphicsContextChanged`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitGraphicsContextChanged`.\n";
 
 constexpr auto _emitOutputChangedDocString =
-        "See :py:meth:`~ikomia.core.pycore.CProtocolTask.emitOutputChanged`.\n";
+        "See :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitOutputChanged`.\n";
 
-//--------------------------------------//
-//----- CInteractiveImageProcess2d -----//
-//--------------------------------------//
+//-----------------------------------//
+//----- C2dImageInteractiveTask -----//
+//-----------------------------------//
 constexpr auto _interactiveImageProcess2d =
         "Add user interactions capability to a 2D image process task. "
         "The class implements a user interaction mechanism through the use of dedicated graphics layer. "
-        "When a CInteractiveImageProcess2d instance is active, the system automatically activates this "
+        "When a C2dImageInteractiveTask instance is active, the system automatically activates this "
         "internal graphics layer on which the user can interact by drawing items (points, lines, polygons...). "
         "Every changes on this layer are then notified to this class, and actions can be implemented accordingly. "
         "The class could be used for example to handle interactive segmentation with color picker.\n\n"
-        "Derived from :py:class:`CImageProcess2d`.\n";
+        "Derived from :py:class:`C2dImageTask`.\n";
 
 constexpr auto _ctorInteractiveImageProcessDocString =
-        "Construct CImageProcess2d task with the given name. Same inputs and outputs as :py:class:`CImageProcess2d`.\n\n"
+        "Construct C2dImageTask task with the given name. Same inputs and outputs as :py:class:`C2dImageTask`.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (str): task name, must be unique\n";
@@ -960,22 +960,22 @@ constexpr auto _computeBlobsDocString =
 constexpr auto _clearInteractionLayerDocString =
         "Clear all graphics items in the interaction layer.\n";
 
-//-------------------------//
-//----- CVideoProcess -----//
-//-------------------------//
+//----------------------//
+//----- CVideoTask -----//
+//----------------------//
 constexpr auto _videoProcessDocString =
         "Add video specific features. "
         "This class defines a task with the following properties:\n\n"
         "Inputs:\n\n"
-        "- video (:py:class:`CVideoProcessIO`)\n"
+        "- video (:py:class:`CVideoIO`)\n"
         "- graphics layer (not accessible yet in Python API)\n\n"
         "Outputs:\n\n"
-        "- video (:py:class:`CVideoProcessIO`)\n\n"
+        "- video (:py:class:`CVideoIO`)\n\n"
         "It should be the base class for all task dedicated to video processing.\n\n"
-        "Derived from :py:class:`CImageProcess2d`.\n";
+        "Derived from :py:class:`C2dImageTask`.\n";
 
 constexpr auto _ctorVideoProcessDocString =
-        "Construct CVideoProcess object with the given name.\n\n"
+        "Construct CVideoTask object with the given name.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (str): task name, must be unique\n";
@@ -991,24 +991,24 @@ constexpr auto _notifyVideoEndDocString =
 constexpr auto _beginTaskRunVideoDocString =
         "Perform video specific checks before the process is started.\n";
 
-//---------------------------//
-//----- CVideoProcessOF -----//
-//---------------------------//
+//------------------------//
+//----- CVideoOFTask -----//
+//------------------------//
 constexpr auto _videoProcessOFDocString =
         "Add optical flow specific features for methods based on OpenCV framework. "
         "This class handles the persistent data required to compute classical optical flow algorithms. "
         "It also offers a way to display the computed flow as a color map.\n\n"
-        "Derived from :py:class:`CVideoProcess`.\n";
+        "Derived from :py:class:`CVideoTask`.\n";
 
 constexpr auto _ctorVideoProcessOFDocString =
-        "Construct CVideoProcessOF object with the given name. "
-        "Same inputs and outputs as :py:class:`CVideoProcess`.\n\n"
+        "Construct CVideoOFTask object with the given name. "
+        "Same inputs and outputs as :py:class:`CVideoTask`.\n\n"
         "Args:\n"
         "   arg1 (self)\n\n"
         "   arg2 (str): task name, must be unique\n";
 
 constexpr auto _beginTaskRunVideoOFDocString =
-        "See :py:meth:`CVideoProcess.beginTaskRun`.\n";
+        "See :py:meth:`CVideoTask.beginTaskRun`.\n";
 
 constexpr auto _drawOptFlowMapDocString =
         "Add optical flow vectors to optical flow map (image).\n\n"
@@ -1024,19 +1024,19 @@ constexpr auto _flowToDisplayDocString =
         "Returns:\n"
         "   Numpy array: displayable color image (3 channels)\n";
 
-//---------------------------------//
-//----- CVideoProcessTracking -----//
-//---------------------------------//
+//------------------------------//
+//----- CVideoTrackingTask -----//
+//------------------------------//
 constexpr auto _videoProcessTrackingDocString =
         "Add specific features for tracking task. "
         "This class handles the graphics input to extract the region of interest to track. "
         "This region is limited to rectangle region. "
         "It also generates the tracking results as a binary mask and a dedicated graphics layer.\n\n"
-        "Derived from :py:class:`CVideoProcess`.\n";
+        "Derived from :py:class:`CVideoTask`.\n";
 
 constexpr auto _ctorVideoTrackingDocString =
-        "Construct CVideoProcessTracking object with the given name.\n\n"
-        "Inputs: same as :py:class:`CVideoProcess`.\n\n"
+        "Construct CVideoTrackingTask object with the given name.\n\n"
+        "Inputs: same as :py:class:`CVideoTask`.\n\n"
         "Outputs:\n\n"
         "- binary mask (video frame)\n"
         "- original image (video frame)\n"
@@ -1056,9 +1056,9 @@ constexpr auto _manageOutputsDocString =
         "- Output #3: graphics layer (tracked item)\n"
         "- Output #4: tracked region coordinates\n";
 
-//----------------------------//
-//----- CDnnTrainProcess -----//
-//----------------------------//
+//-------------------------//
+//----- CDnnTrainTask -----//
+//-------------------------//
 constexpr auto _dnnTrainProcessDocString =
         "Internal use only";
 
@@ -1089,12 +1089,12 @@ constexpr auto _enableTensorboardDocString =
         "Args:"
         "   enable (boolean): True or False\n";
 
-//---------------------------------//
-//----- CDnnTrainProcessParam -----//
-//---------------------------------//
+//------------------------------//
+//----- CDnnTrainTaskParam -----//
+//------------------------------//
 constexpr auto _dnnTrainProcessParamDocString =
         "Base class defining common deep learning hyper-parameters.\n\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CProtocolTaskParam`.";
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.";
 
 constexpr auto _setParamMapDocString =
         "Set task parameter names and values from the given :py:class:`~ikomia.core.pycore.ParamMap` object (same use as Python dict).\n\n"
@@ -1113,4 +1113,50 @@ constexpr auto _getHashValueDocString =
         "Returns:\n"
         "   int: hash value\n";
 
-#endif // pydataprocessDOCSTRING_HPP
+//---------------------------//
+//----- CIkomiaRegistry -----//
+//---------------------------//
+constexpr auto _ikomiaRegistryDocString =
+        "Algorithms registry of the Ikomia platform.";
+
+constexpr auto _setPluginsDirDocString =
+        "Set directory where Ikomia plugins are stored.\n\n"
+        "Args:\n"
+        "   directory (str)\n";
+
+constexpr auto _getPluginsDirDocString =
+        "Get the current Ikomia plugins directory.\n\n"
+        "Returns:\n"
+        "   str: full path to Ikomia plugins directory\n";
+
+constexpr auto _getAlgorithmsDocString =
+        "Get all available algorithms from the Ikomia registry. Before using an algorithm, you must instanciate it "
+        "from its name using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
+        "You can only instanciate algorithms whose name is in the returned list.\n\n"
+        "Returns:\n"
+        "   string: list of algorithm names\n";
+
+constexpr auto _createInstance1DocString =
+        "Instanciate algorithm of the Ikomia registry from its name with default parameters. The full list of available algorithms can be"
+        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Args:\n"
+        "   algorithm name(str): unique name\n\n"
+        "Returns:\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+
+constexpr auto _createInstance2DocString =
+        "Instanciate algorithm of the Ikomia registry from its name with the given parameters. The full list of available algorithms can be"
+        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Args:\n"
+        "   algorithm name(str): unique name\n\n"
+        "   parameters object(:py:class:`~ikomia.core.pycore.CWorkflowTaskParam`): associated parameters\n\n"
+        "Returns:\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+
+constexpr auto _registerTaskDocString =
+        "Add new algorithm factory to Ikomia registry. Once registered, you are able to instanciate algorithm object "
+        "and use it inside a workflow.\n\n"
+        "Args:\n"
+        "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
+
+#endif // PYDATAPROCESSDOCSTRING_HPP

@@ -28,16 +28,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetFarnebackOF : public CProtocolTaskWidget
+class COcvWidgetFarnebackOF : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetFarnebackOF(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFarnebackOF(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetFarnebackOF(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFarnebackOF(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvFarnebackOFParam>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetFarnebackOFFactory : public CWidgetFactory
             m_name = QObject::tr("Farneback Optical Flow").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFarnebackOF>(pParam);
         }

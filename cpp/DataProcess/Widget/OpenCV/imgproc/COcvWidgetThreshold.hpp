@@ -25,15 +25,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/imgproc/COcvThreshold.hpp"
 
-class COcvWidgetThreshold : public CProtocolTaskWidget
+class COcvWidgetThreshold : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetThreshold(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetThreshold(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetThreshold(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetThreshold(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvThresholdParam>(pParam);
             init();
@@ -102,7 +102,7 @@ class COcvWidgetThresholdFactory : public CWidgetFactory
             m_name = QObject::tr("Threshold").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetThreshold>(pParam);
         }

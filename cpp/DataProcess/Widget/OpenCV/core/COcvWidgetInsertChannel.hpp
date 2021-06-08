@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/core/COcvInsertChannel.hpp"
 
-class COcvWidgetInsertChannel : public CProtocolTaskWidget
+class COcvWidgetInsertChannel : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetInsertChannel(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetInsertChannel(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetInsertChannel(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetInsertChannel(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvInsertChannelParam>(pParam);
             init();
@@ -69,7 +69,7 @@ class COcvWidgetInsertChannelFactory : public CWidgetFactory
             m_name = QObject::tr("Insert channel").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetInsertChannel>(pParam);
         }

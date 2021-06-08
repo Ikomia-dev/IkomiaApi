@@ -24,15 +24,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include <QComboBox>
 
-class COcvWidgetLogicalOp : public CProtocolTaskWidget
+class COcvWidgetLogicalOp : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetLogicalOp(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetLogicalOp(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetLogicalOp(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetLogicalOp(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvLogicalOpParam>(pParam);
             init();
@@ -87,7 +87,7 @@ class COcvWidgetLogicalOpFactory : public CWidgetFactory
             m_name = QObject::tr("Logical operations").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetLogicalOp>(pParam);
         }

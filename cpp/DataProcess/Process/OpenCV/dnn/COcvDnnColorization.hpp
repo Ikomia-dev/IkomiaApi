@@ -85,7 +85,7 @@ class COcvDnnColorization: public COcvDnnProcess
         void        run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvDnnProcessParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -171,7 +171,7 @@ class COcvDnnColorization: public COcvDnnProcess
             cv::merge(channels, 3, imgLab);
             cv::cvtColor(imgLab, imgOut, cv::COLOR_Lab2RGB);
 
-            auto pImgOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pImgOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             pImgOutput->setImage(imgOut);
         }
 
@@ -183,7 +183,7 @@ class COcvDnnColorization: public COcvDnnProcess
 //--------------------------------------//
 //----- COcvDnnColorizationFactory -----//
 //--------------------------------------//
-class COcvDnnColorizationFactory : public CProcessFactory
+class COcvDnnColorizationFactory : public CTaskFactory
 {
     public:
 
@@ -197,7 +197,7 @@ class COcvDnnColorizationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/d0f/group__dnn.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvDnnProcessParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -205,7 +205,7 @@ class COcvDnnColorizationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvDnnProcessParam>();
             assert(pDerivedParam != nullptr);

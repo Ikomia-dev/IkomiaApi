@@ -20,17 +20,17 @@
 #ifndef COCVGFTT_HPP
 #define COCVGFTT_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvGFTTParam -----//
 //--------------------------------//
-class COcvGFTTParam: public CProtocolTaskParam
+class COcvGFTTParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvGFTTParam() : CProtocolTaskParam(){}
+        COcvGFTTParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -75,15 +75,15 @@ class COcvGFTTParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvGFTT -----//
 //---------------------------//
-class COcvGFTT : public CFeatureImageProcess2d
+class COcvGFTT : public C2dFeatureImageTask
 {
     public:
 
-        COcvGFTT() : CFeatureImageProcess2d()
+        COcvGFTT() : C2dFeatureImageTask()
         {
             addKeypointOutput();
         }
-        COcvGFTT(const std::string name, const std::shared_ptr<COcvGFTTParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvGFTT(const std::string name, const std::shared_ptr<COcvGFTTParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointOutput();
             m_pParam = std::make_shared<COcvGFTTParam>(*pParam);
@@ -101,8 +101,8 @@ class COcvGFTT : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvGFTTParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -134,7 +134,7 @@ class COcvGFTT : public CFeatureImageProcess2d
         }
 };
 
-class COcvGFTTFactory : public CProcessFactory
+class COcvGFTTFactory : public CTaskFactory
 {
     public:
 
@@ -148,7 +148,7 @@ class COcvGFTTFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d21/classcv_1_1GFTTDetector.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGFTTParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -156,7 +156,7 @@ class COcvGFTTFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGFTTParam>();
             assert(pDerivedParam != nullptr);

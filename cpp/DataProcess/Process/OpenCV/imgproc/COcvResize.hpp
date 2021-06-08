@@ -20,18 +20,18 @@
 #ifndef COCVRESIZE_HPP
 #define COCVRESIZE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include "opencv2/cudawarping.hpp"
 
 //---------------------------//
 //----- COcvResizeParam -----//
 //---------------------------//
-class COcvResizeParam: public CProtocolTaskParam
+class COcvResizeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvResizeParam() : CProtocolTaskParam(){}
+        COcvResizeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -68,14 +68,14 @@ class COcvResizeParam: public CProtocolTaskParam
 //----------------------//
 //----- COcvResize -----//
 //----------------------//
-class COcvResize : public CImageProcess2d
+class COcvResize : public C2dImageTask
 {
     public:
 
-        COcvResize() : CImageProcess2d(false)
+        COcvResize() : C2dImageTask(false)
         {
         }
-        COcvResize(const std::string name, const std::shared_ptr<COcvResizeParam>& pParam) : CImageProcess2d(name, false)
+        COcvResize(const std::string name, const std::shared_ptr<COcvResizeParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvResizeParam>(*pParam);
         }
@@ -88,7 +88,7 @@ class COcvResize : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvResizeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -121,7 +121,7 @@ class COcvResize : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -129,7 +129,7 @@ class COcvResize : public CImageProcess2d
         }
 };
 
-class COcvResizeFactory : public CProcessFactory
+class COcvResizeFactory : public CTaskFactory
 {
     public:
 
@@ -143,7 +143,7 @@ class COcvResizeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pFlipParam = std::dynamic_pointer_cast<COcvResizeParam>(pParam);
             if(pFlipParam != nullptr)
@@ -151,7 +151,7 @@ class COcvResizeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pFlipParam = std::make_shared<COcvResizeParam>();
             assert(pFlipParam != nullptr);

@@ -33,7 +33,7 @@ class COcvWidgetRetinaSegmentation : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetRetinaSegmentation(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetRetinaSegmentation(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 
@@ -51,7 +51,7 @@ class COcvWidgetRetinaSegmentationFactory : public CWidgetFactory
             m_name = QObject::tr("RetinaSegmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRetinaSegmentation>(pParam);
         }

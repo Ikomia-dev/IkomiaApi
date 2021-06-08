@@ -20,17 +20,17 @@
 #ifndef COCVBILATERAL_H
 #define COCVBILATERAL_H
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvBilateralParam -----//
 //------------------------------//
-class COcvBilateralParam: public CProtocolTaskParam
+class COcvBilateralParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvBilateralParam() : CProtocolTaskParam(){}
+        COcvBilateralParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,14 +61,14 @@ class COcvBilateralParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvBilateral -----//
 //-------------------------//
-class COcvBilateral : public CImageProcess2d
+class COcvBilateral : public C2dImageTask
 {
     public:
 
-        COcvBilateral() : CImageProcess2d()
+        COcvBilateral() : C2dImageTask()
         {
         }
-        COcvBilateral(const std::string name, const std::shared_ptr<COcvBilateralParam>& pParam) : CImageProcess2d(name)
+        COcvBilateral(const std::string name, const std::shared_ptr<COcvBilateralParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvBilateralParam>(*pParam);
         }
@@ -81,8 +81,8 @@ class COcvBilateral : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvBilateralParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -109,7 +109,7 @@ class COcvBilateral : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -117,7 +117,7 @@ class COcvBilateral : public CImageProcess2d
         }
 };
 
-class COcvBilateralFactory : public CProcessFactory
+class COcvBilateralFactory : public CTaskFactory
 {
     public:
 
@@ -131,7 +131,7 @@ class COcvBilateralFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvBilateralParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -139,7 +139,7 @@ class COcvBilateralFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvBilateralParam>();
             assert(pDerivedParam != nullptr);

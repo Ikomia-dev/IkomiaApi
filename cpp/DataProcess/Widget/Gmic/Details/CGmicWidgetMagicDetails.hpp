@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicMagicDetails.hpp"
 
-class CGmicWidgetMagicDetails : public CProtocolTaskWidget
+class CGmicWidgetMagicDetails : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetMagicDetails(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetMagicDetails(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetMagicDetails(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetMagicDetails(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicMagicDetailsParam>(pParam);
             init();
@@ -85,7 +85,7 @@ class CGmicWidgetMagicDetailsFactory : public CWidgetFactory
             m_name = QObject::tr("Magic details").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetMagicDetails>(pParam);
         }

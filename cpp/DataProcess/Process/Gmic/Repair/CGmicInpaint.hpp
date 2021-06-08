@@ -20,7 +20,7 @@
 #ifndef CGMICINPAINT_HPP
 #define CGMICINPAINT_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -85,14 +85,14 @@ class CGmicInpaintParam: public CGmicTaskParam
 //------------------------//
 //----- CGmicInpaint -----//
 //------------------------//
-class CGmicInpaint : public CImageProcess2d
+class CGmicInpaint : public C2dImageTask
 {
     public:
 
-        CGmicInpaint() : CImageProcess2d()
+        CGmicInpaint() : C2dImageTask()
         {
         }
-        CGmicInpaint(const std::string name, const std::shared_ptr<CGmicInpaintParam>& pParam) : CImageProcess2d(name)
+        CGmicInpaint(const std::string name, const std::shared_ptr<CGmicInpaintParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicInpaintParam>(*pParam);
         }
@@ -105,8 +105,8 @@ class CGmicInpaint : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicInpaintParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -152,7 +152,7 @@ class CGmicInpaint : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -160,7 +160,7 @@ class CGmicInpaint : public CImageProcess2d
         }
 };
 
-class CGmicInpaintFactory : public CProcessFactory
+class CGmicInpaintFactory : public CTaskFactory
 {
     public:
 
@@ -178,7 +178,7 @@ class CGmicInpaintFactory : public CProcessFactory
             m_info.m_authors = "David Tschumperlé, Maxime Daisy";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicInpaintParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -186,7 +186,7 @@ class CGmicInpaintFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicInpaintParam>();
             assert(pParam != nullptr);

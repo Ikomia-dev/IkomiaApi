@@ -20,18 +20,18 @@
 #ifndef COCVMOTIONSALIENCYBINWANGAPR2014_HPP
 #define COCVMOTIONSALIENCYBINWANGAPR2014_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/saliency.hpp>
 
 //------------------------------//
 //----- COcvMotionSaliencyBinWangApr2014Param -----//
 //------------------------------//
-class COcvMotionSaliencyBinWangApr2014Param: public CProtocolTaskParam
+class COcvMotionSaliencyBinWangApr2014Param: public CWorkflowTaskParam
 {
     public:
 
-        COcvMotionSaliencyBinWangApr2014Param() : CProtocolTaskParam(){}
+        COcvMotionSaliencyBinWangApr2014Param() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -48,15 +48,15 @@ class COcvMotionSaliencyBinWangApr2014Param: public CProtocolTaskParam
 //--------------------------------------------//
 //----- COcvMotionSaliencyBinWangApr2014 -----//
 //--------------------------------------------//
-class COcvMotionSaliencyBinWangApr2014 : public CImageProcess2d
+class COcvMotionSaliencyBinWangApr2014 : public C2dImageTask
 {
     public:
 
-        COcvMotionSaliencyBinWangApr2014() : CImageProcess2d()
+        COcvMotionSaliencyBinWangApr2014() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
         }
-        COcvMotionSaliencyBinWangApr2014(const std::string name, const std::shared_ptr<COcvMotionSaliencyBinWangApr2014Param>& pParam) : CImageProcess2d(name)
+        COcvMotionSaliencyBinWangApr2014(const std::string name, const std::shared_ptr<COcvMotionSaliencyBinWangApr2014Param>& pParam) : C2dImageTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
             m_pParam = std::make_shared<COcvMotionSaliencyBinWangApr2014Param>(*pParam);
@@ -70,8 +70,8 @@ class COcvMotionSaliencyBinWangApr2014 : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMotionSaliencyBinWangApr2014Param>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -138,7 +138,7 @@ class COcvMotionSaliencyBinWangApr2014 : public CImageProcess2d
             applyGraphicsMask(imgSrc, saliencyMap, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(saliencyMap);
 
@@ -151,7 +151,7 @@ class COcvMotionSaliencyBinWangApr2014 : public CImageProcess2d
         int m_height = 0;
 };
 
-class COcvMotionSaliencyBinWangApr2014Factory : public CProcessFactory
+class COcvMotionSaliencyBinWangApr2014Factory : public CTaskFactory
 {
     public:
 
@@ -169,7 +169,7 @@ class COcvMotionSaliencyBinWangApr2014Factory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/d9b/classcv_1_1saliency_1_1MotionSaliencyBinWangApr2014.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pMotionSaliencyBinWangApr2014Param = std::dynamic_pointer_cast<COcvMotionSaliencyBinWangApr2014Param>(pParam);
             if(pMotionSaliencyBinWangApr2014Param != nullptr)
@@ -177,7 +177,7 @@ class COcvMotionSaliencyBinWangApr2014Factory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pMotionSaliencyBinWangApr2014Param = std::make_shared<COcvMotionSaliencyBinWangApr2014Param>();
             assert(pMotionSaliencyBinWangApr2014Param != nullptr);

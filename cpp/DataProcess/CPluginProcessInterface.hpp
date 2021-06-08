@@ -20,7 +20,7 @@
 #ifndef CPROCESSWIDGETINTERFACE_HPP
 #define CPROCESSWIDGETINTERFACE_HPP
 
-#include "Core/CProcessFactory.hpp"
+#include "Core/CTaskFactory.hpp"
 #include "Core/CWidgetFactory.hpp"
 
 /**
@@ -37,9 +37,9 @@ class CPluginProcessInterface
 
         /**
          * @brief Pure virtual method that gets the process task factory.
-         * @return CProcessFactory based shared pointer.
+         * @return CTaskFactory based shared pointer.
          */
-        virtual std::shared_ptr<CProcessFactory>        getProcessFactory() = 0;
+        virtual std::shared_ptr<CTaskFactory>        getProcessFactory() = 0;
         /**
          * @brief Pure virtual method that gets the process widget factory.
          * @return CWidgetFactory based shared pointer.

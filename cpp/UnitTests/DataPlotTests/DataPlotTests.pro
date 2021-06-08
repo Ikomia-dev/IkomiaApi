@@ -46,11 +46,11 @@ INCLUDEPATH += $$PWD/../../Utils
 DEPENDPATH += $$PWD/../../Utils
 
 #Dynamic link to Qwt
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../qwt/build/lib/ -lqwt
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../qwt/build/lib/ -lqwtd
-else:unix:!macx: LIBS += -L$$PWD/../../../qwt/build/lib/ -lqwt
-else:macx: LIBS += -F$$PWD/../../../qwt/build/lib/ -framework qwt
-INCLUDEPATH += $$PWD/../../../qwt/src
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../qwt/build/lib/ -lqwt
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../qwt/build/lib/ -lqwtd
+else:unix:!macx: LIBS += -L$$PWD/../../../../qwt/build/lib/ -lqwt
+else:macx: LIBS += -F$$PWD/../../../../qwt/build/lib/ -framework qwt
+INCLUDEPATH += $$PWD/../../../../qwt/src
 
 #Dynamic link to DataPlot
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../DataPlot/release/ -likDataPlot

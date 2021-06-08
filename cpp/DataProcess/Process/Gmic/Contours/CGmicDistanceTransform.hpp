@@ -20,7 +20,7 @@
 #ifndef CGMICDISTANCETRANSFORM_HPP
 #define CGMICDISTANCETRANSFORM_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -72,14 +72,14 @@ class CGmicDistanceTransformParam: public CGmicTaskParam
 //----------------------------------//
 //----- CGmicDistanceTransform -----//
 //----------------------------------//
-class CGmicDistanceTransform : public CImageProcess2d
+class CGmicDistanceTransform : public C2dImageTask
 {
     public:
 
-        CGmicDistanceTransform() : CImageProcess2d()
+        CGmicDistanceTransform() : C2dImageTask()
         {
         }
-        CGmicDistanceTransform(const std::string name, const std::shared_ptr<CGmicDistanceTransformParam>& pParam) : CImageProcess2d(name)
+        CGmicDistanceTransform(const std::string name, const std::shared_ptr<CGmicDistanceTransformParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicDistanceTransformParam>(*pParam);
         }
@@ -92,8 +92,8 @@ class CGmicDistanceTransform : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicDistanceTransformParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -136,7 +136,7 @@ class CGmicDistanceTransform : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -144,7 +144,7 @@ class CGmicDistanceTransform : public CImageProcess2d
         }
 };
 
-class CGmicDistanceTransformFactory : public CProcessFactory
+class CGmicDistanceTransformFactory : public CTaskFactory
 {
     public:
 
@@ -159,7 +159,7 @@ class CGmicDistanceTransformFactory : public CProcessFactory
             m_info.m_year = 2011;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicDistanceTransformParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -167,7 +167,7 @@ class CGmicDistanceTransformFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicDistanceTransformParam>();
             assert(pParam != nullptr);

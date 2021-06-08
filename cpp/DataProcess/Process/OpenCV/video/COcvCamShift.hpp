@@ -20,13 +20,13 @@
 #ifndef COCVCAMSHIFT_HPP
 #define COCVCAMSHIFT_HPP
 
-#include "Core/CVideoProcess.h"
+#include "Core/CVideoTask.h"
 #include "Graphics/CGraphicsPolygon.h"
 
 //------------------------------//
 //----- COcvCamShiftParam -----//
 //-----------------------------//
-class COcvCamShiftParam: public CProtocolTaskParam
+class COcvCamShiftParam: public CWorkflowTaskParam
 {
     public:
 
@@ -60,22 +60,22 @@ class COcvCamShiftParam: public CProtocolTaskParam
 //------------------------//
 //----- COcvCamShift -----//
 //------------------------//
-class COcvCamShift : public CVideoProcess
+class COcvCamShift : public CVideoTask
 {
     public:
 
-        COcvCamShift() : CVideoProcess()
+        COcvCamShift() : CVideoTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CMeasureIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvCamShift(const std::string name, const std::shared_ptr<COcvCamShiftParam>& pParam) : CVideoProcess(name)
+        COcvCamShift(const std::string name, const std::shared_ptr<COcvCamShiftParam>& pParam) : CVideoTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CMeasureIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
             m_pParam = std::make_shared<COcvCamShiftParam>(*pParam);            
         }
@@ -101,7 +101,7 @@ class COcvCamShift : public CVideoProcess
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvCamShiftParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -149,7 +149,7 @@ class COcvCamShift : public CVideoProcess
 
         void    setRoiToTrack()
         {
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             if(pGraphicsInput == nullptr)
                 return;
 
@@ -182,7 +182,7 @@ class COcvCamShift : public CVideoProcess
 
             const float* phRange = m_hRange.data();
             cv::Mat hsv, mask, hue;
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             cv::cvtColor(pInput->getImage(), hsv, cv::COLOR_RGB2HSV);
             cv::inRange(hsv, cv::Scalar(m_hMin, m_sMin, m_vMin), cv::Scalar(m_hMax, m_sMax, m_vMax), mask);
             int ch[] = {0, 0};
@@ -200,8 +200,8 @@ class COcvCamShift : public CVideoProcess
             forwardInputImage(0, 1);
 
             //Generate binary mask
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
 
             if(pOutput)
             {
@@ -222,7 +222,7 @@ class COcvCamShift : public CVideoProcess
             }
 
             //Tracked oriented rectangle coordinates
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             if(pMeasureOutput)
             {
                 CMeasure bboxMeasure(CMeasure::ORIENTED_BBOX, QObject::tr("Tracked ROI").toStdString());
@@ -250,7 +250,7 @@ class COcvCamShift : public CVideoProcess
 //-------------------------------//
 //----- COcvCamShiftFactory -----//
 //-------------------------------//
-class COcvCamShiftFactory : public CProcessFactory
+class COcvCamShiftFactory : public CTaskFactory
 {
     public:
 
@@ -264,7 +264,7 @@ class COcvCamShiftFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/d6b/group__video__track.html#gaef2bd39c8356f423124f1fe7c44d54a1";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvCamShiftParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -272,7 +272,7 @@ class COcvCamShiftFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvCamShiftParam>();
             assert(pDerivedParam != nullptr);

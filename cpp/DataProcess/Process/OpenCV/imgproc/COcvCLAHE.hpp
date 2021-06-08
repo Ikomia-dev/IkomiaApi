@@ -20,17 +20,17 @@
 #ifndef COCVCLAHE_HPP
 #define COCVCLAHE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------//
 //----- COcvCLAHEParam -----//
 //--------------------------//
-class COcvCLAHEParam: public CProtocolTaskParam
+class COcvCLAHEParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCLAHEParam() : CProtocolTaskParam(){}
+        COcvCLAHEParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,14 +52,14 @@ class COcvCLAHEParam: public CProtocolTaskParam
 //-----------------------------------------------------------------------//
 //----- COcvCLAHE: Contrast Limited Adaptive Histogram Equalization -----//
 //-----------------------------------------------------------------------//
-class COcvCLAHE : public CImageProcess2d
+class COcvCLAHE : public C2dImageTask
 {
     public:
 
-        COcvCLAHE() : CImageProcess2d()
+        COcvCLAHE() : C2dImageTask()
         {
         }
-        COcvCLAHE(const std::string name, const std::shared_ptr<COcvCLAHEParam>& pParam) : CImageProcess2d(name)
+        COcvCLAHE(const std::string name, const std::shared_ptr<COcvCLAHEParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvCLAHEParam>(*pParam);
         }
@@ -72,8 +72,8 @@ class COcvCLAHE : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvCLAHEParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -117,7 +117,7 @@ class COcvCLAHE : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -125,7 +125,7 @@ class COcvCLAHE : public CImageProcess2d
         }
 };
 
-class COcvCLAHEFactory : public CProcessFactory
+class COcvCLAHEFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvCLAHEFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/db6/classcv_1_1CLAHE.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pCLAHEParam = std::dynamic_pointer_cast<COcvCLAHEParam>(pParam);
             if(pCLAHEParam != nullptr)
@@ -147,7 +147,7 @@ class COcvCLAHEFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pCLAHEParam = std::make_shared<COcvCLAHEParam>();
             assert(pCLAHEParam != nullptr);

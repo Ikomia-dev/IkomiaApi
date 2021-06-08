@@ -94,23 +94,23 @@ Inputs
 ^^^^^^
 
 Our active contour methods are designed to process 2D images, the corresponding base class from which our 
-scikit_MorphoSnakesProcess class inherits is :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`. It comes with built-in inputs :
+scikit_MorphoSnakesProcess class inherits is :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`. It comes with built-in inputs :
 
-- Source image (:py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO`)
+- Source image (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`)
 - Graphics (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
 
 As we discuss earlier, seeds for active contour methods can be set from graphics (user input) or binary mask directly. 
-So we need to add a new image-based input of type :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO` to handle binary mask initialization.
+So we need to add a new image-based input of type :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO` to handle binary mask initialization.
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.CImageProcess2d):
+    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
-            dataprocess.CImageProcess2d.__init__(self, name)
+            dataprocess.C2dImageTask.__init__(self, name)
             ...
             # add input -> initial level set
-            self.addInput(dataprocess.CImageProcessIO())
+            self.addInput(dataprocess.CImageIO())
             ...
 
 .. _outputs:
@@ -119,24 +119,24 @@ Outputs
 ^^^^^^^
 Here are outputs that our plugin should returned:
 
-- Final level set as binary mask representing segmented objects (:py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`): directly consummable by connected tasks in workflow.
-- Image with overlay containing segmented objects displayed on top of the original image (:py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`): for visualization purpose.
+- Final level set as binary mask representing segmented objects (:py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`): directly consummable by connected tasks in workflow.
+- Image with overlay containing segmented objects displayed on top of the original image (:py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`): for visualization purpose.
 
-:py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d`-based class comes also with built-in output:
+:py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask`-based class comes also with built-in output:
 
-- Image (:py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO`)
+- Image (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`)
 
-So we need to add a new image-based output of type :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcessIO`.
+So we need to add a new image-based output of type :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`.
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.CImageProcess2d):
+    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
-            dataprocess.CImageProcess2d.__init__(self, name)
+            dataprocess.C2dImageTask.__init__(self, name)
             ...
             # add output -> results image
-            self.addOutput(dataprocess.CImageProcessIO())
+            self.addOutput(dataprocess.CImageIO())
             ...
 
 .. _active_contour_methods:
@@ -187,10 +187,10 @@ the scikit-image functions as both structures are numpy arrays.
         ...
 
 For graphics input, we need to generate a binary mask representing active contour seeds from graphics drawn by users. 
-We will use 2 methods of :py:class:`~ikomia.dataprocess.pydataprocess.CImageProcess2d` to achieve that:
+We will use 2 methods of :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask` to achieve that:
 
-- :py:meth:`~ikomia.dataprocess.pydataprocess.CImageProcess2d.createGraphicsMask`: create a binary mask from :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput` and append it to the internal mask list.
-- :py:meth:`~ikomia.dataprocess.pydataprocess.CImageProcess2d.getGraphicsMask`: get a mask from the internal mask list as numpy array.
+- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.createGraphicsMask`: create a binary mask from :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput` and append it to the internal mask list.
+- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.getGraphicsMask`: get a mask from the internal mask list as numpy array.
 
 .. code-block:: python
 
@@ -233,13 +233,13 @@ Ikomia software will then display the mask in a transparent overlay on top of th
 Colors are fully customizable, you can set a single color for binary mask or a complete colormap for grayscale mask.
 
 In our example, we want to display the final level set on top of the original image, so we need 
-to forward the original input to a given output (see :py:meth:`~ikomia.dataprocess.pydataprocess.CImageProcess2d.forwardInputImage`):
+to forward the original input to a given output (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.forwardInputImage`):
 
 .. code-block:: python
 
     self.forwardInputImage(0, 1) 
 
-And we apply the color mask vizualisation in red (see :py:meth:`~ikomia.dataprocess.pydataprocess.CImageProcess2d.setOutputColorMap`):
+And we apply the color mask vizualisation in red (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.setOutputColorMap`):
 
 .. code-block:: python
 
@@ -252,7 +252,7 @@ Progress bar
 
 Note that functions *morphological_geodesic_active_contour()* and *morphological_chan_vese()* from scikit-image 
 have one specificity that can be usefull for us. They have an *iter_callback* parameter called once per iteration
-we can use to refresh the progress bar of Ikomia software. We call :py:meth:`~ikomia.core.pycore.CProtocolTask.emitStepProgress` 
+we can use to refresh the progress bar of Ikomia software. We call :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitStepProgress`
 in a lambda function given *to iter_callback* parameter:
 
 .. code-block:: python
@@ -260,11 +260,11 @@ in a lambda function given *to iter_callback* parameter:
     proc_img = morphological_geodesic_active_contour(..., iter_callback=(lambda callback: self.emitStepProgress())
 
 We also need to specify the number of iterations (steps) to our progress bar by overriding 
-:py:meth:`~ikomia.core.pycore.CProtocolTask.getProgressSteps`:
+:py:meth:`~ikomia.core.pycore.CWorkflowTask.getProgressSteps`:
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.CImageProcess2d):
+    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
 
         def getProgressSteps(self, eltCount=1):
             param = self.getParam()
@@ -303,15 +303,15 @@ Morphological Chan Vese:
 - iter_callback : function called once per iteration, optional
 
 First, we add member variables in the parameters class, they will be accessible from the process.
-Note the presence of functions :py:meth:`~ikomia.core.pycore.CProtocolTaskParam.setParamMap` and 
-:py:meth:`~ikomia.core.pycore.CProtocolTaskParam.getParamMap()` which are required to save/load values when user wants to save his workflow.
+Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and
+:py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.getParamMap()` which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesParam(core.CProtocolTaskParam):
+    class scikit_MorphoSnakesParam(core.CWorkflowTaskParam):
 
         def __init__(self):
-            core.CProtocolTaskParam.__init__(self)
+            core.CWorkflowTaskParam.__init__(self)
             # parameters
             self.method = "mgac"
             self.mgac_amplification_contour = "Inverse gaussian gradient"
@@ -357,7 +357,7 @@ We now modify the *run()* method to give parameters to our function:
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.CImageProcess2d):
+    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
 
         def run(self):
             ...
@@ -393,7 +393,7 @@ Global widget initialization
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def __init__(self, param, parent):
             # Create layout : QGridLayout by default
@@ -431,7 +431,7 @@ Method selection:
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
         ...
         def methodWidget(self):
             label_method = QLabel("Methods :")
@@ -451,7 +451,7 @@ MGAC method parameters (see `source code <https://github.com/Ikomia-dev/IkomiaPl
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def mgacWidget(self):
             ...
@@ -461,7 +461,7 @@ Chan Vese method parameters (see `source code <https://github.com/Ikomia-dev/Iko
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def chanVeseWidget(self):
             ...
@@ -470,7 +470,7 @@ We use the slot *self.OnMethodChange()* to change current index of our QStackWid
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
         #pySlot
         def OnMethodChange(self):
             if self.comboMethod.currentText() == "Morphological Geodesic Active Contour":
@@ -490,7 +490,7 @@ We do that by overriding *onApply()* method which is called when user clicks the
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CProtocolTaskWidget):
+    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def onApply(self):
             # Apply button clicked slot
@@ -529,7 +529,7 @@ Process metadata
 Finally, we will add some useful information about our plugin. Ikomia software manages such information and 
 display it to the user (parameters widget, Ikomia Apps). Metadata can be added in the constructor of the process 
 factory class in *scikit_MorphoSnakes_process.py*. We have to fill the member object info, 
-see :py:class:`~ikomia.dataprocess.pydataprocess.CProcessInfo` for details.
+see :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.
 
 **Our plugin is now fully functional and interactive !**
 

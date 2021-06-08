@@ -20,18 +20,18 @@
 #ifndef COCVSALIENCYFINEGRAINED_HPP
 #define COCVSALIENCYFINEGRAINED_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/saliency.hpp>
 
 //------------------------------//
 //----- COcvSaliencyFineGrainedParam -----//
 //------------------------------//
-class COcvSaliencyFineGrainedParam: public CProtocolTaskParam
+class COcvSaliencyFineGrainedParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSaliencyFineGrainedParam() : CProtocolTaskParam(){}
+        COcvSaliencyFineGrainedParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -48,17 +48,17 @@ class COcvSaliencyFineGrainedParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvSaliencyFineGrained -----//
 //-------------------------//
-class COcvSaliencyFineGrained : public CImageProcess2d
+class COcvSaliencyFineGrained : public C2dImageTask
 {
     public:
 
-        COcvSaliencyFineGrained() : CImageProcess2d()
+        COcvSaliencyFineGrained() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
         }
-        COcvSaliencyFineGrained(const std::string name, const std::shared_ptr<COcvSaliencyFineGrainedParam>& pParam) : CImageProcess2d(name)
+        COcvSaliencyFineGrained(const std::string name, const std::shared_ptr<COcvSaliencyFineGrainedParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
             m_pParam = std::make_shared<COcvSaliencyFineGrainedParam>(*pParam);
         }
 
@@ -70,8 +70,8 @@ class COcvSaliencyFineGrained : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSaliencyFineGrainedParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -111,11 +111,11 @@ class COcvSaliencyFineGrained : public CImageProcess2d
             applyGraphicsMask(imgSrc, binaryMap, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(saliencyMap);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(binaryMap);
 
@@ -126,7 +126,7 @@ class COcvSaliencyFineGrained : public CImageProcess2d
         cv::Ptr<cv::saliency::StaticSaliencyFineGrained> m_pSaliency;
 };
 
-class COcvSaliencyFineGrainedFactory : public CProcessFactory
+class COcvSaliencyFineGrainedFactory : public CTaskFactory
 {
     public:
 
@@ -144,7 +144,7 @@ class COcvSaliencyFineGrainedFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/dd0/classcv_1_1saliency_1_1StaticSaliencyFineGrained.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSaliencyFineGrainedParam = std::dynamic_pointer_cast<COcvSaliencyFineGrainedParam>(pParam);
             if(pSaliencyFineGrainedParam != nullptr)
@@ -152,7 +152,7 @@ class COcvSaliencyFineGrainedFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSaliencyFineGrainedParam = std::make_shared<COcvSaliencyFineGrainedParam>();
             assert(pSaliencyFineGrainedParam != nullptr);

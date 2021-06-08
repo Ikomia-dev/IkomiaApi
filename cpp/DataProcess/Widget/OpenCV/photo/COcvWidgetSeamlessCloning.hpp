@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetSeamlessCloning : public CProtocolTaskWidget
+class COcvWidgetSeamlessCloning : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSeamlessCloning(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSeamlessCloning(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSeamlessCloning(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSeamlessCloning(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSeamlessCloningParam>(pParam);
             init();
@@ -75,7 +75,7 @@ class COcvWidgetSeamlessCloningFactory : public CWidgetFactory
             m_name = QObject::tr("SeamlessCloning").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSeamlessCloning>(pParam);
         }

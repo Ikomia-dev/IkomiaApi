@@ -31,7 +31,7 @@ class COcvWidgetDnnDetector: public COcvWidgetDnnProcess
         {
             init();
         }
-        COcvWidgetDnnDetector(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
+        COcvWidgetDnnDetector(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(pParam);
             init();
@@ -105,7 +105,7 @@ class COcvWidgetDnnDetectorFactory : public CWidgetFactory
             m_name = QObject::tr("DNN detection").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDnnDetector>(pParam);
         }

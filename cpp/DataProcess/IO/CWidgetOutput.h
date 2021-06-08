@@ -24,7 +24,7 @@
 
 #include <QWidget>
 #include "DataProcessGlobal.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 
 /**
  * @ingroup groupCore
@@ -33,7 +33,7 @@
  * A widget must be a derived object from QWidget od the Qt framework.
  * In Python,it can be either a QWidget based instance from PyQt5 or PySide2 bindings.
  */
-class DATAPROCESSSHARED_EXPORT CWidgetOutput : public CProtocolTaskIO
+class DATAPROCESSSHARED_EXPORT CWidgetOutput : public CWorkflowTaskIO
 {
     public:
 
@@ -87,14 +87,14 @@ class DATAPROCESSSHARED_EXPORT CWidgetOutput : public CProtocolTaskIO
 
     private:
 
-        virtual std::shared_ptr<CProtocolTaskIO> cloneImp() const override;
+        virtual std::shared_ptr<CWorkflowTaskIO> cloneImp() const override;
 
     protected:
 
         QWidget*    m_pWidget = nullptr;
 };
 
-class DATAPROCESSSHARED_EXPORT CWidgetOutputFactory: public CProtocolTaskIOFactory
+class DATAPROCESSSHARED_EXPORT CWidgetOutputFactory: public CWorkflowTaskIOFactory
 {
     public:
 
@@ -103,7 +103,7 @@ class DATAPROCESSSHARED_EXPORT CWidgetOutputFactory: public CProtocolTaskIOFacto
             m_name = "CWidgetOutput";
         }
 
-        virtual ProtocolTaskIOPtr   create(IODataType dataType)
+        virtual WorkflowTaskIOPtr   create(IODataType dataType)
         {
             return std::make_shared<CWidgetOutput>(dataType);
         }

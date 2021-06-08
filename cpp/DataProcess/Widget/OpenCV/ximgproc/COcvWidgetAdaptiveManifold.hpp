@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QLabel>
 
-class COcvWidgetAdaptiveManifold : public CProtocolTaskWidget
+class COcvWidgetAdaptiveManifold : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetAdaptiveManifold(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAdaptiveManifold(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetAdaptiveManifold(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAdaptiveManifold(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvAdaptiveManifoldParam>(pParam);
             init();
@@ -114,7 +114,7 @@ class COcvWidgetAdaptiveManifoldFactory : public CWidgetFactory
             m_name = QObject::tr("Adaptive Manifold Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetAdaptiveManifold>(pParam);
         }

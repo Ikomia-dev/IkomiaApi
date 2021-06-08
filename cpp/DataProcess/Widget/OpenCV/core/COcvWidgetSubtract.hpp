@@ -24,16 +24,16 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 
-class COcvWidgetSubtract : public CProtocolTaskWidget
+class COcvWidgetSubtract : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSubtract(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSubtract(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSubtract(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSubtract(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSubtractParam>(pParam);
             init();
@@ -91,7 +91,7 @@ class COcvWidgetSubtractFactory : public CWidgetFactory
             m_name = QObject::tr("Subtract").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSubtract>(pParam);
         }

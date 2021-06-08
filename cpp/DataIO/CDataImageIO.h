@@ -32,7 +32,7 @@
  */
 class DATAIOSHARED_EXPORT CDataImageIO
 {
-    using CImageIOPtr = std::unique_ptr<CVirtualImageIO>;
+    using CImageDataIOPtr = std::unique_ptr<CVirtualImageIO>;
 
     public:
 
@@ -107,11 +107,11 @@ class DATAIOSHARED_EXPORT CDataImageIO
     private:
 
         void                            allocateDataIOPtr(const std::string& fileName);
-        static CImageIOPtr              _allocateDataIOPtr(const std::string& fileName);
+        static CImageDataIOPtr          _allocateDataIOPtr(const std::string& fileName);
 
     private:
 
-        CImageIOPtr         m_pImgIO;
+        CImageDataIOPtr     m_pImgIO;
 };
 
 #endif // CDATAIMAGEIO_H

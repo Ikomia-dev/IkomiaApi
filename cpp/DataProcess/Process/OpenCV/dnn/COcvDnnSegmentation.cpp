@@ -50,18 +50,18 @@ UMapString COcvDnnSegmentationParam::getParamMap() const
 COcvDnnSegmentation::COcvDnnSegmentation() : COcvDnnProcess()
 {
     setOutputDataType(IODataType::IMAGE_LABEL, 0);
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
 COcvDnnSegmentation::COcvDnnSegmentation(const std::string name, const std::shared_ptr<COcvDnnSegmentationParam> &pParam): COcvDnnProcess(name)
 {
     m_pParam = std::make_shared<COcvDnnSegmentationParam>(*pParam);
     setOutputDataType(IODataType::IMAGE_LABEL, 0);
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CImageProcessIO>());
-    addOutput(std::make_shared<CGraphicsProcessOutput>());
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CImageIO>());
+    addOutput(std::make_shared<CGraphicsOutput>());
 }
 
 size_t COcvDnnSegmentation::getProgressSteps()
@@ -145,7 +145,7 @@ bool COcvDnnSegmentation::isBgr()
 void COcvDnnSegmentation::run()
 {
     beginTaskRun();
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     auto pParam = std::dynamic_pointer_cast<COcvDnnSegmentationParam>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -212,10 +212,10 @@ void COcvDnnSegmentation::manageOutput(std::vector<cv::Mat> &netOutputs)
 void COcvDnnSegmentation::manageMaskRCNNOutput(std::vector<cv::Mat> &netOutputs)
 {
     auto pParam = std::dynamic_pointer_cast<COcvDnnSegmentationParam>(m_pParam);
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
 
     //Graphics output
-    auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(3));
+    auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(3));
     pGraphicsOutput->setNewLayer("DnnLayer");
     pGraphicsOutput->setImageIndex(1);
 
@@ -271,7 +271,7 @@ void COcvDnnSegmentation::manageMaskRCNNOutput(std::vector<cv::Mat> &netOutputs)
         }
     }
 
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
     if(pOutput)
         pOutput->setImage(labelImg);
 }
@@ -304,10 +304,10 @@ void COcvDnnSegmentation::createLabelImageOutput(const cv::Mat &netOutput)
         }
     }
 
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     cv::resize(labelImg, labelImg, pInput->getImage().size(), 0, 0, cv::INTER_LINEAR);
 
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
     if(pOutput)
         pOutput->setImage(labelImg);
 }
@@ -338,7 +338,7 @@ std::vector<cv::Vec3b> COcvDnnSegmentation::generateColorMap(const cv::Mat &netO
 
 void COcvDnnSegmentation::createLegendImage(const cv::Mat &netOutput, const std::vector<cv::Vec3b> &colors, bool bWithBackgroundClass)
 {
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(2));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(2));
     if(pOutput == nullptr)
         throw CException(CoreExCode::INVALID_PARAMETER, "Invalid legend output", __func__, __FILE__, __LINE__);
 

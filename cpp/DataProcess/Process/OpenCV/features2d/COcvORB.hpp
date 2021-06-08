@@ -20,17 +20,17 @@
 #ifndef COCVORB_HPP
 #define COCVORB_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvORBParam -----//
 //--------------------------------//
-class COcvORBParam: public CProtocolTaskParam
+class COcvORBParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvORBParam() : CProtocolTaskParam(){}
+        COcvORBParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -85,16 +85,16 @@ class COcvORBParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvORB -----//
 //---------------------------//
-class COcvORB : public CFeatureImageProcess2d
+class COcvORB : public C2dFeatureImageTask
 {
     public:
 
-        COcvORB() : CFeatureImageProcess2d()
+        COcvORB() : C2dFeatureImageTask()
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
         }
-        COcvORB(const std::string name, const std::shared_ptr<COcvORBParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvORB(const std::string name, const std::shared_ptr<COcvORBParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
@@ -113,8 +113,8 @@ class COcvORB : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvORBParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -148,7 +148,7 @@ class COcvORB : public CFeatureImageProcess2d
         }
 };
 
-class COcvORBFactory : public CProcessFactory
+class COcvORBFactory : public CTaskFactory
 {
     public:
 
@@ -166,7 +166,7 @@ class COcvORBFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/db/d95/classcv_1_1ORB.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvORBParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -174,7 +174,7 @@ class COcvORBFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvORBParam>();
             assert(pDerivedParam != nullptr);

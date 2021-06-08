@@ -20,17 +20,17 @@
 #ifndef COCVNORMALIZE_HPP
 #define COCVNORMALIZE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //-------------------------//
 //----- COcvNormalizeParam -----//
 //-------------------------//
-class COcvNormalizeParam: public CProtocolTaskParam
+class COcvNormalizeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvNormalizeParam() : CProtocolTaskParam(){}
+        COcvNormalizeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,14 +61,14 @@ class COcvNormalizeParam: public CProtocolTaskParam
 //--------------------//
 //----- COcvNormalize -----//
 //--------------------//
-class COcvNormalize : public CImageProcess2d
+class COcvNormalize : public C2dImageTask
 {
     public:
 
-        COcvNormalize() : CImageProcess2d()
+        COcvNormalize() : C2dImageTask()
         {
         }
-        COcvNormalize(const std::string name, const std::shared_ptr<COcvNormalizeParam>& pParam) : CImageProcess2d(name)
+        COcvNormalize(const std::string name, const std::shared_ptr<COcvNormalizeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvNormalizeParam>(*pParam);
         }
@@ -81,7 +81,7 @@ class COcvNormalize : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvNormalizeParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -104,7 +104,7 @@ class COcvNormalize : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -114,7 +114,7 @@ class COcvNormalize : public CImageProcess2d
         }
 };
 
-class COcvNormalizeFactory : public CProcessFactory
+class COcvNormalizeFactory : public CTaskFactory
 {
     public:
 
@@ -128,7 +128,7 @@ class COcvNormalizeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pNormalizeParam = std::dynamic_pointer_cast<COcvNormalizeParam>(pParam);
             if(pNormalizeParam != nullptr)
@@ -136,7 +136,7 @@ class COcvNormalizeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pNormalizeParam = std::make_shared<COcvNormalizeParam>();
             assert(pNormalizeParam != nullptr);

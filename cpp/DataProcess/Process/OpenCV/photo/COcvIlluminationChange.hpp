@@ -20,17 +20,17 @@
 #ifndef COCVILLUMINATIONCHANGE_HPP
 #define COCVILLUMINATIONCHANGE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //----------------------------//
 //----- COcvIlluminationChangeParam -----//
 //----------------------------//
-class COcvIlluminationChangeParam: public CProtocolTaskParam
+class COcvIlluminationChangeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvIlluminationChangeParam() : CProtocolTaskParam(){}
+        COcvIlluminationChangeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -54,14 +54,14 @@ class COcvIlluminationChangeParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvIlluminationChange -----//
 //-----------------------//
-class COcvIlluminationChange : public CImageProcess2d
+class COcvIlluminationChange : public C2dImageTask
 {
     public:
 
-        COcvIlluminationChange() : CImageProcess2d()
+        COcvIlluminationChange() : C2dImageTask()
         {
         }
-        COcvIlluminationChange(const std::string name, const std::shared_ptr<COcvIlluminationChangeParam>& pParam) : CImageProcess2d(name)
+        COcvIlluminationChange(const std::string name, const std::shared_ptr<COcvIlluminationChangeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvIlluminationChangeParam>(*pParam);
         }
@@ -74,8 +74,8 @@ class COcvIlluminationChange : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphics = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphics = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
 
             auto pParam = std::dynamic_pointer_cast<COcvIlluminationChangeParam>(m_pParam);
 
@@ -111,7 +111,7 @@ class COcvIlluminationChange : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -119,7 +119,7 @@ class COcvIlluminationChange : public CImageProcess2d
         }
 };
 
-class COcvIlluminationChangeFactory : public CProcessFactory
+class COcvIlluminationChangeFactory : public CTaskFactory
 {
     public:
 
@@ -133,7 +133,7 @@ class COcvIlluminationChangeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/da0/group__photo__clone.html#gac5025767cf2febd8029d474278e886c7";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pIlluminationChangeParam = std::dynamic_pointer_cast<COcvIlluminationChangeParam>(pParam);
             if(pIlluminationChangeParam != nullptr)
@@ -141,7 +141,7 @@ class COcvIlluminationChangeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pIlluminationChangeParam = std::make_shared<COcvIlluminationChangeParam>();
             assert(pIlluminationChangeParam != nullptr);

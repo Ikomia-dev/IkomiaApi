@@ -20,7 +20,7 @@
 #ifndef CGMICDEBLUR_HPP
 #define CGMICDEBLUR_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -92,14 +92,14 @@ class CGmicSharpenDeblurParam: public CGmicTaskParam
 //-----------------------//
 //----- CGmicDeblur -----//
 //-----------------------//
-class CGmicSharpenDeblur : public CImageProcess2d
+class CGmicSharpenDeblur : public C2dImageTask
 {
     public:
 
-        CGmicSharpenDeblur() : CImageProcess2d()
+        CGmicSharpenDeblur() : C2dImageTask()
         {
         }
-        CGmicSharpenDeblur(const std::string name, const std::shared_ptr<CGmicSharpenDeblurParam>& pParam) : CImageProcess2d(name)
+        CGmicSharpenDeblur(const std::string name, const std::shared_ptr<CGmicSharpenDeblurParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicSharpenDeblurParam>(*pParam);
         }
@@ -112,8 +112,8 @@ class CGmicSharpenDeblur : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicSharpenDeblurParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -156,7 +156,7 @@ class CGmicSharpenDeblur : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -164,7 +164,7 @@ class CGmicSharpenDeblur : public CImageProcess2d
         }
 };
 
-class CGmicSharpenDeblurFactory : public CProcessFactory
+class CGmicSharpenDeblurFactory : public CTaskFactory
 {
     public:
 
@@ -179,7 +179,7 @@ class CGmicSharpenDeblurFactory : public CProcessFactory
             m_info.m_year = 2010;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicSharpenDeblurParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -187,7 +187,7 @@ class CGmicSharpenDeblurFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicSharpenDeblurParam>();
             assert(pParam != nullptr);

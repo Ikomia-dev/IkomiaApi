@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvAnisotropicDiffusion.hpp"
 
-class COcvWidgetAnisotropicDiffusion : public CProtocolTaskWidget
+class COcvWidgetAnisotropicDiffusion : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetAnisotropicDiffusion(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAnisotropicDiffusion(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetAnisotropicDiffusion(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAnisotropicDiffusion(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvAnisotropicDiffusionParam>(pParam);
             init();
@@ -94,7 +94,7 @@ class COcvWidgetAnisotropicDiffusionFactory : public CWidgetFactory
             m_name = QObject::tr("Anisotropic Diffusion").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetAnisotropicDiffusion>(pParam);
         }

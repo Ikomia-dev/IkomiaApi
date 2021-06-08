@@ -20,17 +20,17 @@
 #ifndef COCVROTATE_HPP
 #define COCVROTATE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //---------------------------//
 //----- COcvRotateParam -----//
 //---------------------------//
-class COcvRotateParam: public CProtocolTaskParam
+class COcvRotateParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRotateParam() : CProtocolTaskParam(){}
+        COcvRotateParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,14 +52,14 @@ class COcvRotateParam: public CProtocolTaskParam
 //----------------------//
 //----- COcvRotate -----//
 //----------------------//
-class COcvRotate : public CImageProcess2d
+class COcvRotate : public C2dImageTask
 {
     public:
 
-        COcvRotate() : CImageProcess2d(false)
+        COcvRotate() : C2dImageTask(false)
         {
         }
-        COcvRotate(const std::string name, const std::shared_ptr<COcvRotateParam>& pParam) : CImageProcess2d(name, false)
+        COcvRotate(const std::string name, const std::shared_ptr<COcvRotateParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvRotateParam>(*pParam);
         }
@@ -72,7 +72,7 @@ class COcvRotate : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvRotateParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -96,7 +96,7 @@ class COcvRotate : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -104,7 +104,7 @@ class COcvRotate : public CImageProcess2d
         }
 };
 
-class COcvRotateFactory : public CProcessFactory
+class COcvRotateFactory : public CTaskFactory
 {
     public:
 
@@ -118,7 +118,7 @@ class COcvRotateFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pRotateParam = std::dynamic_pointer_cast<COcvRotateParam>(pParam);
             if(pRotateParam != nullptr)
@@ -126,7 +126,7 @@ class COcvRotateFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pRotateParam = std::make_shared<COcvRotateParam>();
             assert(pRotateParam != nullptr);

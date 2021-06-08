@@ -19,12 +19,12 @@
 
 #include "CWidgetBlobMeasure.h"
 
-CWidgetBlobMeasure::CWidgetBlobMeasure(QWidget *parent) : CProtocolTaskWidget(parent)
+CWidgetBlobMeasure::CWidgetBlobMeasure(QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     init();
 }
 
-CWidgetBlobMeasure::CWidgetBlobMeasure(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent) : CProtocolTaskWidget(parent)
+CWidgetBlobMeasure::CWidgetBlobMeasure(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     m_pParam = std::dynamic_pointer_cast<CBlobMeasureParam>(pParam);
     init();

@@ -20,7 +20,7 @@
 #ifndef CGMICMAGICDETAILS_HPP
 #define CGMICMAGICDETAILS_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -86,14 +86,14 @@ class CGmicMagicDetailsParam: public CGmicTaskParam
 //-----------------------------//
 //----- CGmicMagicDetails -----//
 //-----------------------------//
-class CGmicMagicDetails : public CImageProcess2d
+class CGmicMagicDetails : public C2dImageTask
 {
     public:
 
-        CGmicMagicDetails() : CImageProcess2d()
+        CGmicMagicDetails() : C2dImageTask()
         {
         }
-        CGmicMagicDetails(const std::string name, const std::shared_ptr<CGmicMagicDetailsParam>& pParam) : CImageProcess2d(name)
+        CGmicMagicDetails(const std::string name, const std::shared_ptr<CGmicMagicDetailsParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicMagicDetailsParam>(*pParam);
         }
@@ -106,8 +106,8 @@ class CGmicMagicDetails : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicMagicDetailsParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -150,7 +150,7 @@ class CGmicMagicDetails : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -158,7 +158,7 @@ class CGmicMagicDetails : public CImageProcess2d
         }
 };
 
-class CGmicMagicDetailsFactory : public CProcessFactory
+class CGmicMagicDetailsFactory : public CTaskFactory
 {
     public:
 
@@ -173,7 +173,7 @@ class CGmicMagicDetailsFactory : public CProcessFactory
             m_info.m_year = 2018;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicMagicDetailsParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -181,7 +181,7 @@ class CGmicMagicDetailsFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicMagicDetailsParam>();
             assert(pParam != nullptr);

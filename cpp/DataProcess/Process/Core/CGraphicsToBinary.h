@@ -22,13 +22,13 @@
 #ifndef CGRAPHICSTOBINARY_H
 #define CGRAPHICSTOBINARY_H
 
-#include "Core/CProcessFactory.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/CTaskFactory.hpp"
+#include "Core/C2dImageTask.h"
 
 //----------------------------------//
 //----- CGraphicsToBinaryParam -----//
 //----------------------------------//
-class CGraphicsToBinaryParam: public CProtocolTaskParam
+class CGraphicsToBinaryParam: public CWorkflowTaskParam
 {
     public:
 
@@ -48,7 +48,7 @@ class CGraphicsToBinaryParam: public CProtocolTaskParam
 //-----------------------------//
 //----- CGraphicsToBinary -----//
 //-----------------------------//
-class CGraphicsToBinary : public CImageProcess2d
+class CGraphicsToBinary : public C2dImageTask
 {
     public:
 
@@ -60,7 +60,7 @@ class CGraphicsToBinary : public CImageProcess2d
         void    run() override;
 };
 
-class CGraphicsToBinaryFactory : public CProcessFactory
+class CGraphicsToBinaryFactory : public CTaskFactory
 {
     public:
 
@@ -74,7 +74,7 @@ class CGraphicsToBinaryFactory : public CProcessFactory
         }
         ~CGraphicsToBinaryFactory() {}
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGraphicsToBinaryParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -82,7 +82,7 @@ class CGraphicsToBinaryFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<CGraphicsToBinaryParam>();
             assert(pDerivedParam != nullptr);

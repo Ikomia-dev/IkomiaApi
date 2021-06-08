@@ -26,7 +26,7 @@ import mlflow
 from datetime import datetime
 
 
-class TrainParam(dataprocess.CDnnTrainProcessParam):
+class TrainParam(dataprocess.CDnnTrainTaskParam):
     """
     Base class to manage Deep Learning training parameters.
     It includes a dict structure to store parameter values.
@@ -35,7 +35,7 @@ class TrainParam(dataprocess.CDnnTrainProcessParam):
         """
         Constructor. Initialize an empty dict structure.
         """
-        dataprocess.CDnnTrainProcessParam.__init__(self)
+        dataprocess.CDnnTrainTaskParam.__init__(self)
         self.cfg = {}
 
     def getParamMap(self):
@@ -49,7 +49,7 @@ class TrainParam(dataprocess.CDnnTrainProcessParam):
         return param_map
 
 
-class TrainProcess(dataprocess.CDnnTrainProcess):
+class TrainProcess(dataprocess.CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
     It includes MLflow framework and handle connections with it:
@@ -70,7 +70,7 @@ class TrainProcess(dataprocess.CDnnTrainProcess):
             name (str): task name
             param (:py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`): task parameters
         """
-        dataprocess.CDnnTrainProcess.__init__(self, name, param)
+        dataprocess.CDnnTrainTask.__init__(self, name, param)
         self.experiment_id = -1
         self._init_mlflow()
 

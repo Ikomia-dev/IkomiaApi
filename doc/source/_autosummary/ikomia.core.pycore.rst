@@ -8,7 +8,7 @@ PyCore
       :toctree: _autosummaryv
          
       IODataType
-      CProtocolTaskIO
+      CWorkflowTaskIO
 
 
    .. rubric:: Task management
@@ -17,14 +17,14 @@ PyCore
       
       TaskType
       ActionFlag
-      CProtocolTask
+      CWorkflowTask
 
 
    .. rubric:: Parameters management
    .. autosummary::
       :toctree: _autosummaryv
 
-      CProtocolTaskParam
+      CWorkflowTaskParam
       ParamMap
 
 
@@ -32,7 +32,7 @@ PyCore
    .. autosummary::
       :toctree: _autosummaryv
 
-      CProtocolTaskWidget
+      CWorkflowTaskWidget
 
 
    .. rubric:: Graphics management

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/bgsegm/COcvBckgndSubLsbp.hpp"
 
-class COcvWidgetBckgndSubLsbp : public CProtocolTaskWidget
+class COcvWidgetBckgndSubLsbp : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBckgndSubLsbp(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubLsbp(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetBckgndSubLsbp(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubLsbp(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBckgndSubLsbpParam>(pParam);
             init();
@@ -98,7 +98,7 @@ class COcvWidgetBckgndSubLsbpFactory : public CWidgetFactory
             m_name = QObject::tr("LSBP background substractor").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBckgndSubLsbp>(pParam);
         }

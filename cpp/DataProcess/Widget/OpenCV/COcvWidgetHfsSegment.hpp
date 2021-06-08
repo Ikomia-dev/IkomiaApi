@@ -29,16 +29,16 @@
 #include <QComboBox>
 #include <QGroupBox>
 
-class COcvWidgetHfsSegment : public CProtocolTaskWidget
+class COcvWidgetHfsSegment : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetHfsSegment(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHfsSegment(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetHfsSegment(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetHfsSegment(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvHfsSegmentParam>(pParam);
             init();
@@ -154,7 +154,7 @@ class COcvWidgetHfsSegmentFactory : public CWidgetFactory
             m_name = QObject::tr("Hierarchical Feature Selection Segmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetHfsSegment>(pParam);
         }

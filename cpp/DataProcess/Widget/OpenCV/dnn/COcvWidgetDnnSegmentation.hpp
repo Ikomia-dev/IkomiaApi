@@ -31,7 +31,7 @@ class COcvWidgetDnnSegmentation: public COcvWidgetDnnProcess
         {
             init();
         }
-        COcvWidgetDnnSegmentation(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
+        COcvWidgetDnnSegmentation(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : COcvWidgetDnnProcess(pParam, parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDnnSegmentationParam>(pParam);
             init();
@@ -103,7 +103,7 @@ class COcvWidgetDnnSegmentationFactory : public CWidgetFactory
             m_name = QObject::tr("DNN segmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDnnSegmentation>(pParam);
         }

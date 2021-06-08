@@ -22,12 +22,12 @@
 //----------------------------------//
 //----- CWidgetRgbHlsThreshold -----//
 //----------------------------------//
-CWidgetRgbHlsThreshold::CWidgetRgbHlsThreshold(QWidget *parent) : CProtocolTaskWidget(parent)
+CWidgetRgbHlsThreshold::CWidgetRgbHlsThreshold(QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     init();
 }
 
-CWidgetRgbHlsThreshold::CWidgetRgbHlsThreshold(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent) : CProtocolTaskWidget(parent)
+CWidgetRgbHlsThreshold::CWidgetRgbHlsThreshold(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent) : CWorkflowTaskWidget(parent)
 {
     m_pParam = std::dynamic_pointer_cast<CRgbHlsThresholdParam>(pParam);
     init();
@@ -58,7 +58,7 @@ CWidgetRgbHlsThresholdFactory::CWidgetRgbHlsThresholdFactory()
     m_name = QObject::tr("RGB-HLS Segmentation").toStdString();
 }
 
-ProtocolTaskWidgetPtr CWidgetRgbHlsThresholdFactory::create(std::shared_ptr<CProtocolTaskParam> pParam)
+WorkflowTaskWidgetPtr CWidgetRgbHlsThresholdFactory::create(std::shared_ptr<CWorkflowTaskParam> pParam)
 {
     return std::make_shared<CWidgetRgbHlsThreshold>(pParam);
 }

@@ -21,16 +21,16 @@
 #define COCVGUIDEDFILTER_HPP
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------------------------//
 //----- COcvGuidedFilterParam -----//
 //-------------------------------------//
-class COcvGuidedFilterParam: public CProtocolTaskParam
+class COcvGuidedFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvGuidedFilterParam() : CProtocolTaskParam()
+        COcvGuidedFilterParam() : CWorkflowTaskParam()
         {
         }
 
@@ -55,17 +55,17 @@ class COcvGuidedFilterParam: public CProtocolTaskParam
 //--------------------------------//
 //----- COcvGuidedFilter -----//
 //--------------------------------//
-class COcvGuidedFilter : public CImageProcess2d
+class COcvGuidedFilter : public C2dImageTask
 {
     public:
 
-        COcvGuidedFilter() : CImageProcess2d()
+        COcvGuidedFilter() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvGuidedFilter(const std::string name, const std::shared_ptr<COcvGuidedFilterParam>& pParam) : CImageProcess2d(name)
+        COcvGuidedFilter(const std::string name, const std::shared_ptr<COcvGuidedFilterParam>& pParam) : C2dImageTask(name)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
             m_pParam = std::make_shared<COcvGuidedFilterParam>(*pParam);
         }
 
@@ -78,9 +78,9 @@ class COcvGuidedFilter : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(2));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(2));
             auto pParam = std::dynamic_pointer_cast<COcvGuidedFilterParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -125,7 +125,7 @@ class COcvGuidedFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -133,7 +133,7 @@ class COcvGuidedFilter : public CImageProcess2d
         }
 };
 
-class COcvGuidedFilterFactory : public CProcessFactory
+class COcvGuidedFilterFactory : public CTaskFactory
 {
     public:
 
@@ -151,7 +151,7 @@ class COcvGuidedFilterFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d17/group__ximgproc__filters.html#ga86813d59f8452a9600e979c6287805f5";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pManifoldParam = std::dynamic_pointer_cast<COcvGuidedFilterParam>(pParam);
             if(pManifoldParam != nullptr)
@@ -159,7 +159,7 @@ class COcvGuidedFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pManifoldParam = std::make_shared<COcvGuidedFilterParam>();
             assert(pManifoldParam != nullptr);

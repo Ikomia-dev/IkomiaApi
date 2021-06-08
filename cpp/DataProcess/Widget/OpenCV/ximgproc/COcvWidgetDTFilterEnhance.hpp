@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetDTFilterEnhance : public CProtocolTaskWidget
+class COcvWidgetDTFilterEnhance : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetDTFilterEnhance(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDTFilterEnhance(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetDTFilterEnhance(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetDTFilterEnhance(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvDTFilterEnhanceParam>(pParam);
             init();
@@ -82,7 +82,7 @@ class COcvWidgetDTFilterEnhanceFactory : public CWidgetFactory
             m_name = QObject::tr("DTFilterEnhance").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetDTFilterEnhance>(pParam);
         }

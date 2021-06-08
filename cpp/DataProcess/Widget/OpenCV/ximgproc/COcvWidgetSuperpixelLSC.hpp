@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetSuperpixelLSC : public CProtocolTaskWidget
+class COcvWidgetSuperpixelLSC : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSuperpixelLSC(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSuperpixelLSC(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSuperpixelLSC(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSuperpixelLSC(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSuperpixelLSCParam>(pParam);
             init();
@@ -78,7 +78,7 @@ class COcvWidgetSuperpixelLSCFactory : public CWidgetFactory
             m_name = QObject::tr("SuperpixelLSC").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSuperpixelLSC>(pParam);
         }

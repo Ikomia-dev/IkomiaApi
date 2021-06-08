@@ -21,21 +21,21 @@
 #define COCVLOG_HPP
 
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------//
 //----- COcvLog -----//
 //-------------------//
-class COcvLog : public CImageProcess2d
+class COcvLog : public C2dImageTask
 {
     public:
 
-        COcvLog() : CImageProcess2d()
+        COcvLog() : C2dImageTask()
         {
         }
-        COcvLog(const std::string name, const std::shared_ptr<CProtocolTaskParam>& pParam) : CImageProcess2d(name)
+        COcvLog(const std::string name, const std::shared_ptr<CWorkflowTaskParam>& pParam) : C2dImageTask(name)
         {
-            m_pParam = std::make_shared<CProtocolTaskParam>(*pParam);
+            m_pParam = std::make_shared<CWorkflowTaskParam>(*pParam);
         }
 
         size_t  getProgressSteps() override
@@ -50,7 +50,7 @@ class COcvLog : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             if(pInput == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
 
@@ -78,7 +78,7 @@ class COcvLog : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -88,7 +88,7 @@ class COcvLog : public CImageProcess2d
         }
 };
 
-class COcvLogFactory : public CProcessFactory
+class COcvLogFactory : public CTaskFactory
 {
     public:
 
@@ -102,16 +102,16 @@ class COcvLogFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga937ecdce4679a77168730830a955bea7";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             if(pParam != nullptr)
                 return std::make_shared<COcvLog>(m_info.m_name, pParam);
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
-            auto pParam = std::make_shared<CProtocolTaskParam>();
+            auto pParam = std::make_shared<CWorkflowTaskParam>();
             assert(pParam != nullptr);
             return std::make_shared<COcvLog>(m_info.m_name, pParam);
         }

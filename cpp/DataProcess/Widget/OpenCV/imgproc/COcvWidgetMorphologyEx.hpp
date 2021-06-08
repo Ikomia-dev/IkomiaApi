@@ -28,16 +28,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetMorphologyEx : public CProtocolTaskWidget
+class COcvWidgetMorphologyEx : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetMorphologyEx(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetMorphologyEx(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetMorphologyEx(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetMorphologyEx(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvMorphologyExParam>(pParam);
             init();
@@ -130,7 +130,7 @@ class COcvWidgetMorphologyExFactory : public CWidgetFactory
             m_name = QObject::tr("MorphologyEx").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetMorphologyEx>(pParam);
         }

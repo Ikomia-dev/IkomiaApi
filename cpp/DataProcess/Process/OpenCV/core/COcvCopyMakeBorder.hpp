@@ -20,16 +20,16 @@
 #ifndef COCVCOPYMAKEBORDER_HPP
 #define COCVCOPYMAKEBORDER_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-----------------------------------//
 //----- COcvCopyMakeBorderParam -----//
 //-----------------------------------//
-class COcvCopyMakeBorderParam: public CProtocolTaskParam
+class COcvCopyMakeBorderParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCopyMakeBorderParam() : CProtocolTaskParam(){}
+        COcvCopyMakeBorderParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -72,14 +72,14 @@ class COcvCopyMakeBorderParam: public CProtocolTaskParam
 //------------------------------//
 //----- COcvCopyMakeBorder -----//
 //------------------------------//
-class COcvCopyMakeBorder : public CImageProcess2d
+class COcvCopyMakeBorder : public C2dImageTask
 {
     public:
 
-        COcvCopyMakeBorder() : CImageProcess2d(false)
+        COcvCopyMakeBorder() : C2dImageTask(false)
         {
         }
-        COcvCopyMakeBorder(const std::string name, const std::shared_ptr<COcvCopyMakeBorderParam>& pParam) : CImageProcess2d(name, false)
+        COcvCopyMakeBorder(const std::string name, const std::shared_ptr<COcvCopyMakeBorderParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvCopyMakeBorderParam>(*pParam);
         }
@@ -92,7 +92,7 @@ class COcvCopyMakeBorder : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvCopyMakeBorderParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -117,7 +117,7 @@ class COcvCopyMakeBorder : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -125,7 +125,7 @@ class COcvCopyMakeBorder : public CImageProcess2d
         }
 };
 
-class COcvCopyMakeBorderFactory : public CProcessFactory
+class COcvCopyMakeBorderFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvCopyMakeBorderFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/d2/de8/group__core__array.html#ga2ac1049c2c3dd25c2b41bffe17658a36";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvCopyMakeBorderParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -147,7 +147,7 @@ class COcvCopyMakeBorderFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvCopyMakeBorderParam>();
             assert(pDerivedParam != nullptr);

@@ -20,20 +20,20 @@
 #ifndef COCVSELECTIVESEARCHSEGMENTATION_HPP
 #define COCVSELECTIVESEARCHSEGMENTATION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------------------------//
 //----- COcvSelectiveSearchSegmentationParam -----//
 //------------------------------------------------//
-class COcvSelectiveSearchSegmentationParam: public CProtocolTaskParam
+class COcvSelectiveSearchSegmentationParam: public CWorkflowTaskParam
 {
     public:
 
         enum InitializationMethod{SINGLE, FAST, QUALITY};
 
-        COcvSelectiveSearchSegmentationParam() : CProtocolTaskParam(){}
+        COcvSelectiveSearchSegmentationParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -94,17 +94,17 @@ class COcvSelectiveSearchSegmentationParam: public CProtocolTaskParam
 //-------------------------------------------//
 //----- COcvSelectiveSearchSegmentation -----//
 //-------------------------------------------//
-class COcvSelectiveSearchSegmentation : public CImageProcess2d
+class COcvSelectiveSearchSegmentation : public C2dImageTask
 {
     public:
 
-        COcvSelectiveSearchSegmentation() : CImageProcess2d()
+        COcvSelectiveSearchSegmentation() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvSelectiveSearchSegmentation(const std::string name, const std::shared_ptr<COcvSelectiveSearchSegmentationParam>& pParam) : CImageProcess2d(name)
+        COcvSelectiveSearchSegmentation(const std::string name, const std::shared_ptr<COcvSelectiveSearchSegmentationParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             m_pParam = std::make_shared<COcvSelectiveSearchSegmentationParam>(*pParam);
         }
 
@@ -116,7 +116,7 @@ class COcvSelectiveSearchSegmentation : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvSelectiveSearchSegmentationParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -192,7 +192,7 @@ class COcvSelectiveSearchSegmentation : public CImageProcess2d
 
         void    manageOutputs(const std::vector<cv::Rect>& rects)
         {
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             if(pGraphicsOutput == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "No valid graphics output found", __func__, __FILE__, __LINE__);
 
@@ -207,7 +207,7 @@ class COcvSelectiveSearchSegmentation : public CImageProcess2d
         }
 };
 
-class COcvSelectiveSearchSegmentationFactory : public CProcessFactory
+class COcvSelectiveSearchSegmentationFactory : public CTaskFactory
 {
     public:
 
@@ -225,7 +225,7 @@ class COcvSelectiveSearchSegmentationFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d5/df0/group__ximgproc__segmentation.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSelectiveSearchSegmentationParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -233,7 +233,7 @@ class COcvSelectiveSearchSegmentationFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvSelectiveSearchSegmentationParam>();
             assert(pDerivedParam != nullptr);

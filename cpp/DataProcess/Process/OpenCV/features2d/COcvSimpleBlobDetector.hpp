@@ -20,17 +20,17 @@
 #ifndef COCVSIMPLEBLOBDETECTOR_HPP
 #define COCVSIMPLEBLOBDETECTOR_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvSimpleBlobDetectorParam -----//
 //--------------------------------//
-class COcvSimpleBlobDetectorParam: public CProtocolTaskParam
+class COcvSimpleBlobDetectorParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSimpleBlobDetectorParam() : CProtocolTaskParam(){}
+        COcvSimpleBlobDetectorParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -82,15 +82,15 @@ class COcvSimpleBlobDetectorParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvSimpleBlobDetector -----//
 //---------------------------//
-class COcvSimpleBlobDetector : public CFeatureImageProcess2d
+class COcvSimpleBlobDetector : public C2dFeatureImageTask
 {
     public:
 
-        COcvSimpleBlobDetector() : CFeatureImageProcess2d()
+        COcvSimpleBlobDetector() : C2dFeatureImageTask()
         {
             addKeypointOutput();
         }
-        COcvSimpleBlobDetector(const std::string name, const std::shared_ptr<COcvSimpleBlobDetectorParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvSimpleBlobDetector(const std::string name, const std::shared_ptr<COcvSimpleBlobDetectorParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointOutput();
             m_pParam = std::make_shared<COcvSimpleBlobDetectorParam>(*pParam);
@@ -108,8 +108,8 @@ class COcvSimpleBlobDetector : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSimpleBlobDetectorParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -141,7 +141,7 @@ class COcvSimpleBlobDetector : public CFeatureImageProcess2d
         }
 };
 
-class COcvSimpleBlobDetectorFactory : public CProcessFactory
+class COcvSimpleBlobDetectorFactory : public CTaskFactory
 {
     public:
 
@@ -155,7 +155,7 @@ class COcvSimpleBlobDetectorFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d0/d7a/classcv_1_1SimpleBlobDetector.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSimpleBlobDetectorParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -163,7 +163,7 @@ class COcvSimpleBlobDetectorFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvSimpleBlobDetectorParam>();
             assert(pDerivedParam != nullptr);

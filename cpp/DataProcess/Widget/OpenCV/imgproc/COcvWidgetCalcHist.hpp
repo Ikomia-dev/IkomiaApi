@@ -26,16 +26,16 @@
 #include <QLabel>
 #include <QPushButton>
 
-class COcvWidgetCalcHist : public CProtocolTaskWidget
+class COcvWidgetCalcHist : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCalcHist(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCalcHist(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCalcHist(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCalcHist(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCalcHistParam>(pParam);
             init();
@@ -83,7 +83,7 @@ class COcvWidgetCalcHistFactory : public CWidgetFactory
             m_name = QObject::tr("CalcHist").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetCalcHist>(pParam);
         }

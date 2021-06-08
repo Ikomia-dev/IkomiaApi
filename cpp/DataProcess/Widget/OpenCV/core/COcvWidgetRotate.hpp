@@ -24,15 +24,15 @@
 #include "Process/OpenCV/core/COcvRotate.hpp"
 #include <QComboBox>
 
-class COcvWidgetRotate : public CProtocolTaskWidget
+class COcvWidgetRotate : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetRotate(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRotate(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetRotate(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRotate(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvRotateParam>(pParam);
             init();
@@ -84,7 +84,7 @@ class COcvWidgetRotateFactory : public CWidgetFactory
             m_name = QObject::tr("Rotate").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRotate>(pParam);
         }

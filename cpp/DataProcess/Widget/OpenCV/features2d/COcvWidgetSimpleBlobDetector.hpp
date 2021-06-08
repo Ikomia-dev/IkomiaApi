@@ -27,16 +27,16 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-class COcvWidgetSimpleBlobDetector : public CProtocolTaskWidget
+class COcvWidgetSimpleBlobDetector : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSimpleBlobDetector(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSimpleBlobDetector(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetSimpleBlobDetector(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSimpleBlobDetector(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSimpleBlobDetectorParam>(pParam);
             init();
@@ -195,7 +195,7 @@ class COcvWidgetSimpleBlobDetectorFactory : public CWidgetFactory
             m_name = QObject::tr("SimpleBlobDetector").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSimpleBlobDetector>(pParam);
         }

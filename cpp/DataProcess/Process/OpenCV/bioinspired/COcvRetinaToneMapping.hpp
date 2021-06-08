@@ -20,18 +20,18 @@
 #ifndef COCVRETINATONEMAPPING_HPP
 #define COCVRETINATONEMAPPING_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/bioinspired.hpp>
 
 //----------------------------//
 //----- COcvRetinaToneMappingParam -----//
 //----------------------------//
-class COcvRetinaToneMappingParam: public CProtocolTaskParam
+class COcvRetinaToneMappingParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRetinaToneMappingParam() : CProtocolTaskParam(){}
+        COcvRetinaToneMappingParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -48,14 +48,14 @@ class COcvRetinaToneMappingParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvRetinaToneMapping -----//
 //-----------------------//
-class COcvRetinaToneMapping : public CImageProcess2d
+class COcvRetinaToneMapping : public C2dImageTask
 {
     public:
 
-        COcvRetinaToneMapping() : CImageProcess2d()
+        COcvRetinaToneMapping() : C2dImageTask()
         {
         }
-        COcvRetinaToneMapping(const std::string name, const std::shared_ptr<COcvRetinaToneMappingParam>& pParam) : CImageProcess2d(name)
+        COcvRetinaToneMapping(const std::string name, const std::shared_ptr<COcvRetinaToneMappingParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvRetinaToneMappingParam>(*pParam);
         }
@@ -68,7 +68,7 @@ class COcvRetinaToneMapping : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvRetinaToneMappingParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -96,7 +96,7 @@ class COcvRetinaToneMapping : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -104,7 +104,7 @@ class COcvRetinaToneMapping : public CImageProcess2d
         }
 };
 
-class COcvRetinaToneMappingFactory : public CProcessFactory
+class COcvRetinaToneMappingFactory : public CTaskFactory
 {
     public:
 
@@ -122,7 +122,7 @@ class COcvRetinaToneMappingFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dd/d73/classcv_1_1bioinspired_1_1RetinaFastToneMapping.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pRetinaToneMappingParam = std::dynamic_pointer_cast<COcvRetinaToneMappingParam>(pParam);
             if(pRetinaToneMappingParam != nullptr)
@@ -130,7 +130,7 @@ class COcvRetinaToneMappingFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pRetinaToneMappingParam = std::make_shared<COcvRetinaToneMappingParam>();
             assert(pRetinaToneMappingParam != nullptr);

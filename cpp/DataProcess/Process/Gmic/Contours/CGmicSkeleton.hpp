@@ -20,7 +20,7 @@
 #ifndef CGMICSKELETON_HPP
 #define CGMICSKELETON_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -64,14 +64,14 @@ class CGmicSkeletonParam: public CGmicTaskParam
 //-------------------------//
 //----- CGmicSkeleton -----//
 //-------------------------//
-class CGmicSkeleton : public CImageProcess2d
+class CGmicSkeleton : public C2dImageTask
 {
     public:
 
-        CGmicSkeleton() : CImageProcess2d()
+        CGmicSkeleton() : C2dImageTask()
         {
         }
-        CGmicSkeleton(const std::string name, const std::shared_ptr<CGmicSkeletonParam>& pParam) : CImageProcess2d(name)
+        CGmicSkeleton(const std::string name, const std::shared_ptr<CGmicSkeletonParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicSkeletonParam>(*pParam);
         }
@@ -84,8 +84,8 @@ class CGmicSkeleton : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicSkeletonParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -128,7 +128,7 @@ class CGmicSkeleton : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -136,7 +136,7 @@ class CGmicSkeleton : public CImageProcess2d
         }
 };
 
-class CGmicSkeletonFactory : public CProcessFactory
+class CGmicSkeletonFactory : public CTaskFactory
 {
     public:
 
@@ -151,7 +151,7 @@ class CGmicSkeletonFactory : public CProcessFactory
             m_info.m_year = 2011;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicSkeletonParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -159,7 +159,7 @@ class CGmicSkeletonFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicSkeletonParam>();
             assert(pParam != nullptr);

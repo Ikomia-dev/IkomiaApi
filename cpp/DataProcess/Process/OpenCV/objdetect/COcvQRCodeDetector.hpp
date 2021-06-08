@@ -19,18 +19,18 @@
 
 #ifndef COCVQRCODEDETECTOR_HPP
 #define COCVQRCODEDETECTOR_HPP
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/objdetect.hpp>
 
 //----------------------------//
 //----- COcvQRCodeDetectorParam -----//
 //----------------------------//
-class COcvQRCodeDetectorParam: public CProtocolTaskParam
+class COcvQRCodeDetectorParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvQRCodeDetectorParam() : CProtocolTaskParam(){}
+        COcvQRCodeDetectorParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -54,17 +54,17 @@ class COcvQRCodeDetectorParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvQRCodeDetector -----//
 //-----------------------//
-class COcvQRCodeDetector : public CImageProcess2d
+class COcvQRCodeDetector : public C2dImageTask
 {
     public:
 
-        COcvQRCodeDetector() : CImageProcess2d()
+        COcvQRCodeDetector() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvQRCodeDetector(const std::string name, const std::shared_ptr<COcvQRCodeDetectorParam>& pParam) : CImageProcess2d(name)
+        COcvQRCodeDetector(const std::string name, const std::shared_ptr<COcvQRCodeDetectorParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             m_pParam = std::make_shared<COcvQRCodeDetectorParam>(*pParam);
         }
 
@@ -75,7 +75,7 @@ class COcvQRCodeDetector : public CImageProcess2d
 
         void    manageOuputGraphics(const std::vector<cv::Point>& points, const std::string& code)
         {
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(getOutputCount() - 1));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(getOutputCount() - 1));
             if(pOutput == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "Invalid graphics output", __func__, __FILE__, __LINE__);
 
@@ -130,8 +130,8 @@ class COcvQRCodeDetector : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvQRCodeDetectorParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -178,7 +178,7 @@ class COcvQRCodeDetector : public CImageProcess2d
         }
 };
 
-class COcvQRCodeDetectorFactory : public CProcessFactory
+class COcvQRCodeDetectorFactory : public CTaskFactory
 {
     public:
 
@@ -192,7 +192,7 @@ class COcvQRCodeDetectorFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/dc3/classcv_1_1QRCodeDetector.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pQRCodeDetectorParam = std::dynamic_pointer_cast<COcvQRCodeDetectorParam>(pParam);
             if(pQRCodeDetectorParam != nullptr)
@@ -200,7 +200,7 @@ class COcvQRCodeDetectorFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pQRCodeDetectorParam = std::make_shared<COcvQRCodeDetectorParam>();
             assert(pQRCodeDetectorParam != nullptr);

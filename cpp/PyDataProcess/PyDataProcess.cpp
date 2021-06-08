@@ -21,24 +21,25 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include "Data/CvMatNumpyArrayConverter.h"
 #include "PyDataProcessDocString.hpp"
-#include "CProcessFactoryWrap.h"
+#include "CTaskFactoryWrap.h"
 #include "CWidgetFactoryWrap.h"
 #include "CPluginProcessInterfaceWrap.h"
-#include "CImageProcess2dWrap.h"
-#include "CInteractiveImageProcess2dWrap.h"
-#include "CVideoProcessWrap.h"
-#include "CVideoProcessOFWrap.h"
-#include "CVideoProcessTrackingWrap.h"
-#include "CDnnTrainProcessWrap.h"
-#include "CDnnTrainProcessParamWrap.h"
-#include "CFeatureProcessIOWrap.hpp"
+#include "C2dImageTaskWrap.h"
+#include "C2dImageInteractiveTaskWrap.h"
+#include "CVideoTaskWrap.h"
+#include "CVideoOFTaskWrap.h"
+#include "CVideoTrackingTaskWrap.h"
+#include "CDnnTrainTaskWrap.h"
+#include "CDnnTrainTaskParamWrap.h"
+#include "CFeatureIOWrap.hpp"
 #include "CGraphicsInputWrap.h"
-#include "CImageProcessIOWrap.h"
-#include "CVideoProcessIOWrap.h"
+#include "CImageIOWrap.h"
+#include "CVideoIOWrap.h"
 #include "CWidgetOutputWrap.h"
 #include "CDatasetIOWrap.h"
 #include "CPathIOWrap.h"
 #include "CArrayIOWrap.h"
+#include "CIkomiaRegistry.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL IKOMIA_ARRAY_API
@@ -59,29 +60,29 @@ template<typename Type>
 void exposeFeatureIO(const std::string& className)
 {
     //Overload member functions
-    void (CFeatureProcessIO<Type>::*addValueList1)(const std::vector<Type>&) = &CFeatureProcessIO<Type>::addValueList;
-    void (CFeatureProcessIO<Type>::*addValueList2)(const std::vector<Type>&, const std::string&) = &CFeatureProcessIO<Type>::addValueList;
-    void (CFeatureProcessIO<Type>::*addValueList3)(const std::vector<Type>&, const std::vector<std::string>&) = &CFeatureProcessIO<Type>::addValueList;
-    void (CFeatureProcessIO<Type>::*addValueList4)(const std::vector<Type>&, const std::string&, const std::vector<std::string>&) = &CFeatureProcessIO<Type>::addValueList;
+    void (CFeatureIO<Type>::*addValueList1)(const std::vector<Type>&) = &CFeatureIO<Type>::addValueList;
+    void (CFeatureIO<Type>::*addValueList2)(const std::vector<Type>&, const std::string&) = &CFeatureIO<Type>::addValueList;
+    void (CFeatureIO<Type>::*addValueList3)(const std::vector<Type>&, const std::vector<std::string>&) = &CFeatureIO<Type>::addValueList;
+    void (CFeatureIO<Type>::*addValueList4)(const std::vector<Type>&, const std::string&, const std::vector<std::string>&) = &CFeatureIO<Type>::addValueList;
 
-    class_<CFeatureProcessIOWrap<Type>, bases<CProtocolTaskIO>, std::shared_ptr<CFeatureProcessIOWrap<Type>>>(className.c_str(), _featureProcessIODocString)
+    class_<CFeatureIOWrap<Type>, bases<CWorkflowTaskIO>, std::shared_ptr<CFeatureIOWrap<Type>>>(className.c_str(), _featureProcessIODocString)
         .def(init<>("Default constructor"))
-        .def(init<const CFeatureProcessIO<Type>&>("Copy constructor"))
-        .def("setOutputType", &CFeatureProcessIO<Type>::setOutputType, _setOutputTypeDocString, args("self", "type"))
-        .def("setPlotType", &CFeatureProcessIO<Type>::setPlotType, _setPlotTypeDocString, args("self", "type"))
+        .def(init<const CFeatureIO<Type>&>("Copy constructor"))
+        .def("setOutputType", &CFeatureIO<Type>::setOutputType, _setOutputTypeDocString, args("self", "type"))
+        .def("setPlotType", &CFeatureIO<Type>::setPlotType, _setPlotTypeDocString, args("self", "type"))
         .def("addValueList", addValueList1, _addValueList1DocString, args("self", "values"))
         .def("addValueList", addValueList2, _addValueList2DocString, args("self", "values", "header_label"))
         .def("addValueList", addValueList3, _addValueList3DocString, args("self", "values", "labels"))
         .def("addValueList", addValueList4, _addValueList4DocString, args("self", "values", "header_label", "labels"))
-        .def("getOutputType", &CFeatureProcessIO<Type>::getOutputType, _getOutputTypeDocString, args("self"))
-        .def("getPlotType", &CFeatureProcessIO<Type>::getPlotType, _getPlotTypeDocString, args("self"))
-        .def("getValueList", &CFeatureProcessIO<Type>::getValueList, _getValueListDocString, args("self", "index"))
-        .def("getAllValueList", &CFeatureProcessIO<Type>::getAllValues, _getAllValueListDocString, args("self"))
-        .def("getAllLabelList", &CFeatureProcessIO<Type>::getAllValueLabels, _getAllLabelListDocString, args("self"))
-        .def("getUnitElementCount", &CFeatureProcessIO<Type>::getUnitElementCount, &CFeatureProcessIOWrap<Type>::default_getUnitElementCount, _getUnitEltCountDerivedDocString, args("self"))
-        .def("isDataAvailable", &CFeatureProcessIO<Type>::isDataAvailable, &CFeatureProcessIOWrap<Type>::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
-        .def("clearData", &CFeatureProcessIO<Type>::clearData, &CFeatureProcessIOWrap<Type>::default_clearData, _clearDataDerivedDocString, args("self"))
-        .def("copyStaticData", &CFeatureProcessIO<Type>::copyStaticData, &CFeatureProcessIOWrap<Type>::default_copyStaticData, _copyStaticDataDerivedDocString, args("self", "io"))
+        .def("getOutputType", &CFeatureIO<Type>::getOutputType, _getOutputTypeDocString, args("self"))
+        .def("getPlotType", &CFeatureIO<Type>::getPlotType, _getPlotTypeDocString, args("self"))
+        .def("getValueList", &CFeatureIO<Type>::getValueList, _getValueListDocString, args("self", "index"))
+        .def("getAllValueList", &CFeatureIO<Type>::getAllValues, _getAllValueListDocString, args("self"))
+        .def("getAllLabelList", &CFeatureIO<Type>::getAllValueLabels, _getAllLabelListDocString, args("self"))
+        .def("getUnitElementCount", &CFeatureIO<Type>::getUnitElementCount, &CFeatureIOWrap<Type>::default_getUnitElementCount, _getUnitEltCountDerivedDocString, args("self"))
+        .def("isDataAvailable", &CFeatureIO<Type>::isDataAvailable, &CFeatureIOWrap<Type>::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
+        .def("clearData", &CFeatureIO<Type>::clearData, &CFeatureIOWrap<Type>::default_clearData, _clearDataDerivedDocString, args("self"))
+        .def("copyStaticData", &CFeatureIO<Type>::copyStaticData, &CFeatureIOWrap<Type>::default_copyStaticData, _copyStaticDataDerivedDocString, args("self", "io"))
     ;
 }
 
@@ -98,63 +99,63 @@ BOOST_PYTHON_MODULE(pydataprocess)
     init_numpy();
 
     //Register smart pointers
-    register_ptr_to_python<std::shared_ptr<CProcessFactory>>();
+    register_ptr_to_python<std::shared_ptr<CTaskFactory>>();
     register_ptr_to_python<std::shared_ptr<CWidgetFactory>>();
-    register_ptr_to_python<std::shared_ptr<CGraphicsProcessInput>>();
-    register_ptr_to_python<std::shared_ptr<CImageProcessIO>>();
-    register_ptr_to_python<std::shared_ptr<CVideoProcessIO>>();
+    register_ptr_to_python<std::shared_ptr<CGraphicsInput>>();
+    register_ptr_to_python<std::shared_ptr<CImageIO>>();
+    register_ptr_to_python<std::shared_ptr<CVideoIO>>();
     register_ptr_to_python<std::shared_ptr<CWidgetOutput>>();
     register_ptr_to_python<std::shared_ptr<CPathIO>>();
     register_ptr_to_python<std::shared_ptr<CDatasetIO>>();
     register_ptr_to_python<std::shared_ptr<CArrayIO>>();
-    register_ptr_to_python<std::shared_ptr<CImageProcess2d>>();
-    register_ptr_to_python<std::shared_ptr<CInteractiveImageProcess2d>>();
-    register_ptr_to_python<std::shared_ptr<CVideoProcess>>();
-    register_ptr_to_python<std::shared_ptr<CVideoProcessOF>>();
-    register_ptr_to_python<std::shared_ptr<CVideoProcessTracking>>();
-    register_ptr_to_python<std::shared_ptr<CDnnTrainProcess>>();
-    register_ptr_to_python<std::shared_ptr<CDnnTrainProcessParam>>();
+    register_ptr_to_python<std::shared_ptr<C2dImageTask>>();
+    register_ptr_to_python<std::shared_ptr<C2dImageInteractiveTask>>();
+    register_ptr_to_python<std::shared_ptr<CVideoTask>>();
+    register_ptr_to_python<std::shared_ptr<CVideoOFTask>>();
+    register_ptr_to_python<std::shared_ptr<CVideoTrackingTask>>();
+    register_ptr_to_python<std::shared_ptr<CDnnTrainTask>>();
+    register_ptr_to_python<std::shared_ptr<CDnnTrainTaskParam>>();
 
     //Register std::vector<T> <-> python list converters
     registerStdVector<uchar>();
     registerStdVector<std::vector<uchar>>();
 
-    //------------------------//
-    //----- CProcessInfo -----//
-    //------------------------//
-    enum_<CProcessInfo::Language>("Language", "Enum - List of supported programming language")
-        .value("CPP", CProcessInfo::CPP)
-        .value("PYTHON", CProcessInfo::PYTHON)
+    //---------------------//
+    //----- CTaskInfo -----//
+    //---------------------//
+    enum_<CTaskInfo::Language>("Language", "Enum - List of supported programming language")
+        .value("CPP", CTaskInfo::CPP)
+        .value("PYTHON", CTaskInfo::PYTHON)
     ;
 
-    class_<CProcessInfo>("CProcessInfo", _processInfoDocString, init<>("Default constructor"))
-        .add_property("name", &CProcessInfo::getName, &CProcessInfo::setName, "Name of the plugin (mandatory - must be unique)")
-        .add_property("path", &CProcessInfo::getPath, &CProcessInfo::setPath, "Path in the library tree view of Ikomia")
-        .add_property("shortDescription", &CProcessInfo::getShortDescription, &CProcessInfo::setShortDescription, "Short description of the plugin (mandatory)")
-        .add_property("description", &CProcessInfo::getDescription, &CProcessInfo::setDescription, "Full description of the plugin (mandatory)")
-        .add_property("documentationLink", &CProcessInfo::getDocumentationLink, &CProcessInfo::setDocumentationLink, "Address (URL) of online documentation")
-        .add_property("iconPath", &CProcessInfo::getIconPath, &CProcessInfo::setIconPath, "Relative path to the plugin icon")
-        .add_property("keywords", &CProcessInfo::getKeywords, &CProcessInfo::setKeywords, "Keywords associated with the plugin (Used for Ikomia search engine")
-        .add_property("authors", &CProcessInfo::getAuthors, &CProcessInfo::setAuthors, "Authors of the plugin and/or corresponding paper (mandatory)")
-        .add_property("article", &CProcessInfo::getArticle, &CProcessInfo::setArticle, "Title of the corresponding paper")
-        .add_property("journal", &CProcessInfo::getJournal, &CProcessInfo::setJournal, "Paper journal")
-        .add_property("version", &CProcessInfo::getVersion, &CProcessInfo::setVersion, "Plugin version (mandatory)")
-        .add_property("year", &CProcessInfo::getYear, &CProcessInfo::setYear, "Year of paper publication")
-        .add_property("language", &CProcessInfo::getLanguage, &CProcessInfo::setLanguage, "Python")
-        .add_property("license", &CProcessInfo::getLicense, &CProcessInfo::setLicense, "License of the plugin")
-        .add_property("repository", &CProcessInfo::getRepository, &CProcessInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
+    class_<CTaskInfo>("CTaskInfo", _processInfoDocString, init<>("Default constructor"))
+        .add_property("name", &CTaskInfo::getName, &CTaskInfo::setName, "Name of the plugin (mandatory - must be unique)")
+        .add_property("path", &CTaskInfo::getPath, &CTaskInfo::setPath, "Path in the library tree view of Ikomia")
+        .add_property("shortDescription", &CTaskInfo::getShortDescription, &CTaskInfo::setShortDescription, "Short description of the plugin (mandatory)")
+        .add_property("description", &CTaskInfo::getDescription, &CTaskInfo::setDescription, "Full description of the plugin (mandatory)")
+        .add_property("documentationLink", &CTaskInfo::getDocumentationLink, &CTaskInfo::setDocumentationLink, "Address (URL) of online documentation")
+        .add_property("iconPath", &CTaskInfo::getIconPath, &CTaskInfo::setIconPath, "Relative path to the plugin icon")
+        .add_property("keywords", &CTaskInfo::getKeywords, &CTaskInfo::setKeywords, "Keywords associated with the plugin (Used for Ikomia search engine")
+        .add_property("authors", &CTaskInfo::getAuthors, &CTaskInfo::setAuthors, "Authors of the plugin and/or corresponding paper (mandatory)")
+        .add_property("article", &CTaskInfo::getArticle, &CTaskInfo::setArticle, "Title of the corresponding paper")
+        .add_property("journal", &CTaskInfo::getJournal, &CTaskInfo::setJournal, "Paper journal")
+        .add_property("version", &CTaskInfo::getVersion, &CTaskInfo::setVersion, "Plugin version (mandatory)")
+        .add_property("year", &CTaskInfo::getYear, &CTaskInfo::setYear, "Year of paper publication")
+        .add_property("language", &CTaskInfo::getLanguage, &CTaskInfo::setLanguage, "Python")
+        .add_property("license", &CTaskInfo::getLicense, &CTaskInfo::setLicense, "License of the plugin")
+        .add_property("repository", &CTaskInfo::getRepository, &CTaskInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
     ;
 
-    //---------------------------//
-    //----- CProcessFactory -----//
-    //---------------------------//
+    //------------------------//
+    //----- CTaskFactory -----//
+    //------------------------//
     //Overload member functions
-    ProtocolTaskPtr (CProcessFactory::*create_void)() = &CProcessFactory::create;
-    ProtocolTaskPtr (CProcessFactory::*create_param)(const ProtocolTaskParamPtr&) = &CProcessFactory::create;
-    CProcessInfo& (CProcessFactory::*getInfoByRef)() = &CProcessFactory::getInfo;
+    WorkflowTaskPtr (CTaskFactory::*create_void)() = &CTaskFactory::create;
+    WorkflowTaskPtr (CTaskFactory::*create_param)(const WorkflowTaskParamPtr&) = &CTaskFactory::create;
+    CTaskInfo& (CTaskFactory::*getInfoByRef)() = &CTaskFactory::getInfo;
 
-    class_<CProcessFactoryWrap, std::shared_ptr<CProcessFactoryWrap>, boost::noncopyable>("CProcessFactory", _processFactoryDocString)
-        .add_property("info", make_function(getInfoByRef, return_internal_reference<>()), &CProcessFactory::setInfo, _processFactoryInfoDocString)
+    class_<CTaskFactoryWrap, std::shared_ptr<CTaskFactoryWrap>, boost::noncopyable>("CTaskFactory", _processFactoryDocString)
+        .add_property("info", make_function(getInfoByRef, return_internal_reference<>()), &CTaskFactory::setInfo, _processFactoryInfoDocString)
         .def("create", pure_virtual(create_void), _create1DocString, args("self"))
         .def("create", pure_virtual(create_param), _create2DocString, args("self", "param"))
     ;
@@ -178,38 +179,38 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------------//
     //----- CGraphicsInput -----//
     //--------------------------//
-    class_<CGraphicsInputWrap, bases<CProtocolTaskIO>, std::shared_ptr<CGraphicsInputWrap>>("CGraphicsInput", _graphicsInputDocString)
+    class_<CGraphicsInputWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CGraphicsInputWrap>>("CGraphicsInput", _graphicsInputDocString)
         .def(init<>("Default constructor"))
-        .def(init<const CGraphicsProcessInput&>("Copy constructor"))
-        .def("setItems", &CGraphicsProcessInput::setItems, _setItemsDocString, args("self", "items"))
-        .def("getItems", &CGraphicsProcessInput::getItems, _getItemsDocString, args("self"))
-        .def("isDataAvailable", &CGraphicsProcessInput::isDataAvailable, &CGraphicsInputWrap::default_isDataAvailable, _isGraphicsDataAvailableDocString, args("self"))
-        .def("clearData", &CGraphicsProcessInput::clearData, &CGraphicsInputWrap::default_clearData, _clearGraphicsDataDocString, args("self"))
+        .def(init<const CGraphicsInput&>("Copy constructor"))
+        .def("setItems", &CGraphicsInput::setItems, _setItemsDocString, args("self", "items"))
+        .def("getItems", &CGraphicsInput::getItems, _getItemsDocString, args("self"))
+        .def("isDataAvailable", &CGraphicsInput::isDataAvailable, &CGraphicsInputWrap::default_isDataAvailable, _isGraphicsDataAvailableDocString, args("self"))
+        .def("clearData", &CGraphicsInput::clearData, &CGraphicsInputWrap::default_clearData, _clearGraphicsDataDocString, args("self"))
     ;
 
     //---------------------------//
     //----- CGraphicsOutput -----//
     //---------------------------//
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPoint1)(const CPointF&) = &CGraphicsProcessOutput::addPoint;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPoint2)(const CPointF&, const GraphicsPointProperty&) = &CGraphicsProcessOutput::addPoint;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addRectangle1)(float, float, float, float) = &CGraphicsProcessOutput::addRectangle;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addRectangle2)(float, float, float, float, const GraphicsRectProperty&) = &CGraphicsProcessOutput::addRectangle;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addEllipse1)(float, float, float, float) = &CGraphicsProcessOutput::addEllipse;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addEllipse2)(float, float, float, float, const GraphicsEllipseProperty&) = &CGraphicsProcessOutput::addEllipse;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPolygon1)(const std::vector<CPointF>&) = &CGraphicsProcessOutput::addPolygon;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPolygon2)(const std::vector<CPointF>&, const GraphicsPolygonProperty&) = &CGraphicsProcessOutput::addPolygon;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPolyline1)(const std::vector<CPointF>&) = &CGraphicsProcessOutput::addPolyline;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addPolyline2)(const std::vector<CPointF>&, const GraphicsPolylineProperty&) = &CGraphicsProcessOutput::addPolyline;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addComplexPolygon1)(const PolygonF&, const std::vector<PolygonF>&) = &CGraphicsProcessOutput::addComplexPolygon;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addComplexPolygon2)(const PolygonF&, const std::vector<PolygonF>&, const GraphicsPolygonProperty&) = &CGraphicsProcessOutput::addComplexPolygon;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addText1)(const std::string&, float x, float y) = &CGraphicsProcessOutput::addText;
-    ProxyGraphicsItemPtr (CGraphicsProcessOutput::*addText2)(const std::string&, float x, float y, const GraphicsTextProperty&) = &CGraphicsProcessOutput::addText;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPoint1)(const CPointF&) = &CGraphicsOutput::addPoint;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPoint2)(const CPointF&, const GraphicsPointProperty&) = &CGraphicsOutput::addPoint;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addRectangle1)(float, float, float, float) = &CGraphicsOutput::addRectangle;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addRectangle2)(float, float, float, float, const GraphicsRectProperty&) = &CGraphicsOutput::addRectangle;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addEllipse1)(float, float, float, float) = &CGraphicsOutput::addEllipse;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addEllipse2)(float, float, float, float, const GraphicsEllipseProperty&) = &CGraphicsOutput::addEllipse;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolygon1)(const std::vector<CPointF>&) = &CGraphicsOutput::addPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolygon2)(const std::vector<CPointF>&, const GraphicsPolygonProperty&) = &CGraphicsOutput::addPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolyline1)(const std::vector<CPointF>&) = &CGraphicsOutput::addPolyline;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolyline2)(const std::vector<CPointF>&, const GraphicsPolylineProperty&) = &CGraphicsOutput::addPolyline;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addComplexPolygon1)(const PolygonF&, const std::vector<PolygonF>&) = &CGraphicsOutput::addComplexPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addComplexPolygon2)(const PolygonF&, const std::vector<PolygonF>&, const GraphicsPolygonProperty&) = &CGraphicsOutput::addComplexPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addText1)(const std::string&, float x, float y) = &CGraphicsOutput::addText;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addText2)(const std::string&, float x, float y, const GraphicsTextProperty&) = &CGraphicsOutput::addText;
 
-    class_<CGraphicsProcessOutput, bases<CProtocolTaskIO>, std::shared_ptr<CGraphicsProcessOutput>>("CGraphicsOutput", _graphicsOutputDocString)
+    class_<CGraphicsOutput, bases<CWorkflowTaskIO>, std::shared_ptr<CGraphicsOutput>>("CGraphicsOutput", _graphicsOutputDocString)
         .def(init<>("Default constructor"))
-        .def("setNewLayer", &CGraphicsProcessOutput::setNewLayer, _setNewLayerDocString, args("self", "name"))
-        .def("setImageIndex", &CGraphicsProcessOutput::setImageIndex, _setImageIndexDocString, args("self", "index"))
-        .def("addItem", &CGraphicsProcessOutput::addItem, _addItemDocString, args("self", "item"))
+        .def("setNewLayer", &CGraphicsOutput::setNewLayer, _setNewLayerDocString, args("self", "name"))
+        .def("setImageIndex", &CGraphicsOutput::setImageIndex, _setImageIndexDocString, args("self", "index"))
+        .def("addItem", &CGraphicsOutput::addItem, _addItemDocString, args("self", "item"))
         .def("addPoint", addPoint1, _addPoint1DocString, args("self", "point"))
         .def("addPoint", addPoint2, _addPoint2DocString, args("self", "point", "properties"))
         .def("addRectangle", addRectangle1, _addRectangle1DocString, args("self", "x", "y", "width", "height"))
@@ -226,33 +227,33 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("addText", addText2, _addText2DocString, args("self", "text", "x", "y", "properties"))
     ;
 
-    //---------------------------//
-    //----- CImageProcessIO -----//
-    //---------------------------//
-    class_<CImageProcessIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CImageProcessIOWrap>>("CImageProcessIO", _imageProcessIODocString)
+    //--------------------//
+    //----- CImageIO -----//
+    //--------------------//
+    class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1imageProcessIODocString))
         .def(init<IODataType>(_ctor2imageProcessIODocString))
         .def(init<IODataType, const CMat&>(_ctor3imageProcessIODocString))
-        .def(init<const CImageProcessIO&>("Copy constructor"))
-        .def("setImage", &CImageProcessIO::setImage, _setImageDocString, args("self", "image"))
-        .def("setOverlayMask", &CImageProcessIO::setOverlayMask, _setOverlayMaskDocString, args("self", "mask"))
-        .def("setChannelCount", &CImageProcessIO::setChannelCount, _setChannelCountDocString, args("self", "nb"))
-        .def("setCurrentImage", &CImageProcessIO::setCurrentImage, _setCurrentImageDocString, args("self", "index"))
-        .def("getChannelCount", &CImageProcessIO::getChannelCount, _getChannelCountDocString, args("self"))
-        .def("getData", &CImageProcessIO::getData, _getDataDocString, args("self"))
-        .def("getImage", &CImageProcessIO::getImage, &CImageProcessIOWrap::default_getImage, _getImageDocString, args("self"))
-        .def("getOverlayMask", &CImageProcessIO::getOverlayMask, _getOverlayMaskDocString, args("self"))
-        .def("getUnitElementCount", &CImageProcessIO::getUnitElementCount, &CImageProcessIOWrap::default_getUnitElementCount, _getImageUnitElementCountDocString, args("self"))
-        .def("isDataAvailable", &CImageProcessIO::isDataAvailable, &CImageProcessIOWrap::default_isDataAvailable, _isImageDataAvailableDocString, args("self"))
-        .def("isOverlayAvailable", &CImageProcessIO::isOverlayAvailable, _isOverlayAvailableDocString, args("self"))
-        .def("clearData", &CImageProcessIO::clearData, &CImageProcessIOWrap::default_clearData, _clearImageDataDocString, args("self"))
-        .def("copyStaticData", &CImageProcessIO::copyStaticData, &CImageProcessIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
+        .def(init<const CImageIO&>("Copy constructor"))
+        .def("setImage", &CImageIO::setImage, _setImageDocString, args("self", "image"))
+        .def("setOverlayMask", &CImageIO::setOverlayMask, _setOverlayMaskDocString, args("self", "mask"))
+        .def("setChannelCount", &CImageIO::setChannelCount, _setChannelCountDocString, args("self", "nb"))
+        .def("setCurrentImage", &CImageIO::setCurrentImage, _setCurrentImageDocString, args("self", "index"))
+        .def("getChannelCount", &CImageIO::getChannelCount, _getChannelCountDocString, args("self"))
+        .def("getData", &CImageIO::getData, _getDataDocString, args("self"))
+        .def("getImage", &CImageIO::getImage, &CImageIOWrap::default_getImage, _getImageDocString, args("self"))
+        .def("getOverlayMask", &CImageIO::getOverlayMask, _getOverlayMaskDocString, args("self"))
+        .def("getUnitElementCount", &CImageIO::getUnitElementCount, &CImageIOWrap::default_getUnitElementCount, _getImageUnitElementCountDocString, args("self"))
+        .def("isDataAvailable", &CImageIO::isDataAvailable, &CImageIOWrap::default_isDataAvailable, _isImageDataAvailableDocString, args("self"))
+        .def("isOverlayAvailable", &CImageIO::isOverlayAvailable, _isOverlayAvailableDocString, args("self"))
+        .def("clearData", &CImageIO::clearData, &CImageIOWrap::default_clearData, _clearImageDataDocString, args("self"))
+        .def("copyStaticData", &CImageIO::copyStaticData, &CImageIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
     ;
 
-    //-----------------------------//
-    //----- CFeatureProcessIO -----//
-    //-----------------------------//
+    //----------------------//
+    //----- CFeatureIO -----//
+    //----------------------//
     enum_<NumericOutputType>("NumericOutputType", "Enum - List of a display types for numeric values")
         .value("NONE", NumericOutputType::NONE)
         .value("TABLE", NumericOutputType::TABLE)
@@ -270,40 +271,40 @@ BOOST_PYTHON_MODULE(pydataprocess)
 
     exposeFeatureIO<double>("CDblFeatureIO");
 
-    //---------------------------//
-    //----- CVideoProcessIO -----//
-    //---------------------------//
-    class_<CVideoProcessIOWrap, bases<CImageProcessIO>, std::shared_ptr<CVideoProcessIOWrap>>("CVideoProcessIO", _videoProcessIODocString)
+    //--------------------//
+    //----- CVideoIO -----//
+    //--------------------//
+    class_<CVideoIOWrap, bases<CImageIO>, std::shared_ptr<CVideoIOWrap>>("CVideoIO", _videoProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1VideoProcessIODocString))
         .def(init<IODataType>(_ctor2VideoProcessIODocString))
         .def(init<IODataType, const CMat&>(_ctor3VideoProcessIODocString))
-        .def(init<const CVideoProcessIO&>("Copy constructor"))
-        .def("setVideoPath", &CVideoProcessIO::setVideoPath, _setVideoPathDocString, args("self", "path"))
-        .def("setVideoPos", &CVideoProcessIO::setVideoPos, _setVideoPosDocString, args("self", "position"))
-        .def("getVideoFrameCount", &CVideoProcessIO::getVideoFrameCount, _getVideoFrameCountDocString, args("self"))
-        .def("getVideoImages", &CVideoProcessIO::getVideoImages, _getVideoImagesDocString, args("self"))
-        .def("getVideoPath", &CVideoProcessIO::getVideoPath, _getVideoPathDocString, args("self"))
-        .def("getSnapshot", &CVideoProcessIO::getSnapshot, _getSnapshotDocString, args("self", "position"))
-        .def("getCurrentPos", &CVideoProcessIO::getCurrentPos, _getCurrentPosDocString, args("self"))
-        .def("startVideo", &CVideoProcessIO::startVideo, _startVideoDocString, args("self"))
-        .def("stopVideo", &CVideoProcessIO::stopVideo, _stopVideoDocString, args("self"))
-        .def("startVideoWrite", &CVideoProcessIO::startVideoWrite, _startVideoWriteDocString, args("self"))
-        .def("stopVideoWrite", &CVideoProcessIO::stopVideoWrite, _stopVideoWriteDocString, args("self"))
-        .def("addVideoImage", &CVideoProcessIO::addVideoImage, _addVideoImageDocString, args("self", "image"))
-        .def("writeImage", &CVideoProcessIO::writeImage, _writeImageDocString, args("self", "image"))
-        .def("hasVideo", &CVideoProcessIO::hasVideo, _hasVideoDocString, args("self"))
-        .def("getImage", &CVideoProcessIO::getImage, &CVideoProcessIOWrap::default_getImage, _getVideoImageDocString, args("self"))
-        .def("getUnitElementCount", &CVideoProcessIO::getUnitElementCount, &CVideoProcessIOWrap::default_getUnitElementCount, _getVideoUnitElementCountDocString, args("self"))
-        .def("isDataAvailable", &CVideoProcessIO::isDataAvailable, &CVideoProcessIOWrap::default_isDataAvailable, _isVideoDataAvailableDocString, args("self"))
-        .def("clearData", &CVideoProcessIO::clearData, &CVideoProcessIOWrap::default_clearData, _clearVideoDataDocString, args("self"))
-        .def("copyStaticData", &CVideoProcessIO::copyStaticData, &CVideoProcessIOWrap::default_copyStaticData, _copyStaticDataDerivedDocString, args("self"))
+        .def(init<const CVideoIO&>("Copy constructor"))
+        .def("setVideoPath", &CVideoIO::setVideoPath, _setVideoPathDocString, args("self", "path"))
+        .def("setVideoPos", &CVideoIO::setVideoPos, _setVideoPosDocString, args("self", "position"))
+        .def("getVideoFrameCount", &CVideoIO::getVideoFrameCount, _getVideoFrameCountDocString, args("self"))
+        .def("getVideoImages", &CVideoIO::getVideoImages, _getVideoImagesDocString, args("self"))
+        .def("getVideoPath", &CVideoIO::getVideoPath, _getVideoPathDocString, args("self"))
+        .def("getSnapshot", &CVideoIO::getSnapshot, _getSnapshotDocString, args("self", "position"))
+        .def("getCurrentPos", &CVideoIO::getCurrentPos, _getCurrentPosDocString, args("self"))
+        .def("startVideo", &CVideoIO::startVideo, _startVideoDocString, args("self"))
+        .def("stopVideo", &CVideoIO::stopVideo, _stopVideoDocString, args("self"))
+        .def("startVideoWrite", &CVideoIO::startVideoWrite, _startVideoWriteDocString, args("self"))
+        .def("stopVideoWrite", &CVideoIO::stopVideoWrite, _stopVideoWriteDocString, args("self"))
+        .def("addVideoImage", &CVideoIO::addVideoImage, _addVideoImageDocString, args("self", "image"))
+        .def("writeImage", &CVideoIO::writeImage, _writeImageDocString, args("self", "image"))
+        .def("hasVideo", &CVideoIO::hasVideo, _hasVideoDocString, args("self"))
+        .def("getImage", &CVideoIO::getImage, &CVideoIOWrap::default_getImage, _getVideoImageDocString, args("self"))
+        .def("getUnitElementCount", &CVideoIO::getUnitElementCount, &CVideoIOWrap::default_getUnitElementCount, _getVideoUnitElementCountDocString, args("self"))
+        .def("isDataAvailable", &CVideoIO::isDataAvailable, &CVideoIOWrap::default_isDataAvailable, _isVideoDataAvailableDocString, args("self"))
+        .def("clearData", &CVideoIO::clearData, &CVideoIOWrap::default_clearData, _clearVideoDataDocString, args("self"))
+        .def("copyStaticData", &CVideoIO::copyStaticData, &CVideoIOWrap::default_copyStaticData, _copyStaticDataDerivedDocString, args("self"))
     ;
 
     //-------------------------//
     //----- CWidgetOutput -----//
     //-------------------------//
-    class_<CWidgetOutputWrap, bases<CProtocolTaskIO>, std::shared_ptr<CWidgetOutputWrap>>("CWidgetOutput", _widgetOutputDocString)
+    class_<CWidgetOutputWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CWidgetOutputWrap>>("CWidgetOutput", _widgetOutputDocString)
         .def(init<>("Default constructor"))
         .def(init<IODataType>(_ctorWidgetOutputDocString))
         .def("setWidget", &CWidgetOutputWrap::setWidget, _setWidgetDocString, args("self", "widget"))
@@ -314,7 +315,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //-------------------//
     //----- CPathIO -----//
     //-------------------//
-    class_<CPathIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CPathIOWrap>>("CPathIO", _pathIODocString)
+    class_<CPathIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CPathIOWrap>>("CPathIO", _pathIODocString)
         .def(init<>("Default constructor"))
         .def(init<IODataType>(_ctor1PathIODocString))
         .def(init<IODataType, const std::string&>(_ctor2PathIODocString))
@@ -331,7 +332,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def(map_indexing_suite<std::map<int, std::string>>())
     ;
 
-    class_<CDatasetIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CDatasetIOWrap>, boost::noncopyable>("CDatasetIO", _datasetIODocString)
+    class_<CDatasetIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CDatasetIOWrap>, boost::noncopyable>("CDatasetIO", _datasetIODocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctor1DatasetIODocString))
         .def("getImagePaths", &CDatasetIO::getImagePaths, &CDatasetIOWrap::default_getImagePaths, _getImagePathsDocStr)
@@ -348,7 +349,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------//
     //----- CArrayIO -----//
     //--------------------//
-    class_<CArrayIOWrap, bases<CProtocolTaskIO>, std::shared_ptr<CArrayIOWrap>>("CArrayIO", _arrayIODocString)
+    class_<CArrayIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CArrayIOWrap>>("CArrayIO", _arrayIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1ArrayIODocString))
         .def(init<const CArrayIO&>("Copy constructor"))
@@ -359,204 +360,220 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("clearData", &CArrayIO::clearData, &CArrayIOWrap::default_clearData, _clearArrayDataDocString, args("self"))
     ;
 
-    //---------------------------//
-    //----- CImageProcess2d -----//
-    //---------------------------//
+    //------------------------//
+    //----- C2dImageTask -----//
+    //------------------------//
     //Overload member functions
-    size_t (CImageProcess2d::*getProgressSteps1)() = &CImageProcess2d::getProgressSteps;
-    size_t (CImageProcess2d::*getProgressSteps2)(size_t) = &CImageProcess2d::getProgressSteps;
-    size_t (CImageProcess2dWrap::*default_getProgressSteps1)() = &CImageProcess2dWrap::default_getProgressSteps;
-    size_t (CImageProcess2dWrap::*default_getProgressSteps2)(size_t) = &CImageProcess2dWrap::default_getProgressSteps;
+    size_t (C2dImageTask::*getProgressSteps1)() = &C2dImageTask::getProgressSteps;
+    size_t (C2dImageTask::*getProgressSteps2)(size_t) = &C2dImageTask::getProgressSteps;
+    size_t (C2dImageTaskWrap::*default_getProgressSteps1)() = &C2dImageTaskWrap::default_getProgressSteps;
+    size_t (C2dImageTaskWrap::*default_getProgressSteps2)(size_t) = &C2dImageTaskWrap::default_getProgressSteps;
 
-    class_<CImageProcess2dWrap, bases<CProtocolTask>, std::shared_ptr<CImageProcess2dWrap>>("CImageProcess2d", _imageProcess2dDocString)
+    class_<C2dImageTaskWrap, bases<CWorkflowTask>, std::shared_ptr<C2dImageTaskWrap>>("C2dImageTask", _imageProcess2dDocString)
         .def(init<>("Default constructor"))
         .def(init<bool>(_ctor1ImageProcess2dDocString))
         .def(init<const std::string&>(_ctor2ImageProcess2dDocString))
         .def(init<const std::string&, bool>(_ctor3ImageProcess2dDocString))
-        .def("setActive", &CImageProcess2d::setActive, &CImageProcess2dWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("setOutputColorMap", &CImageProcess2dWrap::setOutputColorMap, _setOutputColorMapDocString, args("self", "index", "mask_index", "colors"))
-        .def("updateStaticOutputs", &CImageProcess2d::updateStaticOutputs, &CImageProcess2dWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CImageProcess2d::beginTaskRun, &CImageProcess2dWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
-        .def("endTaskRun", &CImageProcess2d::endTaskRun, &CImageProcess2dWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("graphicsChanged", &CImageProcess2d::graphicsChanged, &CImageProcess2dWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
-        .def("globalInputChanged", &CImageProcess2d::globalInputChanged, &CImageProcess2dWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
-        .def("createGraphicsMask", &CImageProcess2d::createGraphicsMask, _createGraphicsMaskDocString, args("self", "width", "height", "graphics"))
-        .def("applyGraphicsMask", &CImageProcess2d::applyGraphicsMask, _applyGraphicsMaskDocString, args("self", "src", "dst", "index"))
-        .def("applyGraphicsMaskToBinary", &CImageProcess2d::applyGraphicsMaskToBinary, _applyGraphicsMaskToBinaryDocString, args("self", "src", "dst", "index"))
+        .def("setActive", &C2dImageTask::setActive, &C2dImageTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("setOutputColorMap", &C2dImageTaskWrap::setOutputColorMap, _setOutputColorMapDocString, args("self", "index", "mask_index", "colors"))
+        .def("updateStaticOutputs", &C2dImageTask::updateStaticOutputs, &C2dImageTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &C2dImageTask::beginTaskRun, &C2dImageTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
+        .def("endTaskRun", &C2dImageTask::endTaskRun, &C2dImageTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("graphicsChanged", &C2dImageTask::graphicsChanged, &C2dImageTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
+        .def("globalInputChanged", &C2dImageTask::globalInputChanged, &C2dImageTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
+        .def("createGraphicsMask", &C2dImageTask::createGraphicsMask, _createGraphicsMaskDocString, args("self", "width", "height", "graphics"))
+        .def("applyGraphicsMask", &C2dImageTask::applyGraphicsMask, _applyGraphicsMaskDocString, args("self", "src", "dst", "index"))
+        .def("applyGraphicsMaskToBinary", &C2dImageTask::applyGraphicsMaskToBinary, _applyGraphicsMaskToBinaryDocString, args("self", "src", "dst", "index"))
         .def("getProgressSteps", getProgressSteps1, default_getProgressSteps1, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps2, default_getProgressSteps2, _getProgressStepsDocString, args("self", "unit_elt_count"))
-        .def("getGraphicsMask", &CImageProcess2d::getGraphicsMask, _getGraphicsMaskDocString, args("self", "index"))
-        .def("isMaskAvailable", &CImageProcess2d::isMaskAvailable, _isMaskAvailableDocString, args("self", "index"))
-        .def("run", &CImageProcess2d::run, &CImageProcess2dWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CImageProcess2d::stop, &CImageProcess2dWrap::default_stop, _stopDocString, args("self"))
-        .def("forwardInputImage", &CImageProcess2d::forwardInputImage, _forwardInputImageDocString, args("self", "input_index", "output_index"))
-        .def("emitAddSubProgressSteps", &CImageProcess2dWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CImageProcess2dWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CImageProcess2dWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CImageProcess2dWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("getGraphicsMask", &C2dImageTask::getGraphicsMask, _getGraphicsMaskDocString, args("self", "index"))
+        .def("isMaskAvailable", &C2dImageTask::isMaskAvailable, _isMaskAvailableDocString, args("self", "index"))
+        .def("run", &C2dImageTask::run, &C2dImageTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &C2dImageTask::stop, &C2dImageTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("forwardInputImage", &C2dImageTask::forwardInputImage, _forwardInputImageDocString, args("self", "input_index", "output_index"))
+        .def("emitAddSubProgressSteps", &C2dImageTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &C2dImageTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &C2dImageTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &C2dImageTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //--------------------------------------//
-    //----- CInteractiveImageProcess2d -----//
-    //--------------------------------------//
+    //-----------------------------------//
+    //----- C2dImageInteractiveTask -----//
+    //-----------------------------------//
     //Overload member functions
-    size_t (CInteractiveImageProcess2d::*getProgressSteps3)() = &CInteractiveImageProcess2d::getProgressSteps;
-    size_t (CInteractiveImageProcess2d::*getProgressSteps4)(size_t) = &CInteractiveImageProcess2d::getProgressSteps;
-    size_t (CInteractiveImageProcess2dWrap::*default_getProgressSteps3)() = &CInteractiveImageProcess2dWrap::default_getProgressSteps;
-    size_t (CInteractiveImageProcess2dWrap::*default_getProgressSteps4)(size_t) = &CInteractiveImageProcess2dWrap::default_getProgressSteps;
+    size_t (C2dImageInteractiveTask::*getProgressSteps3)() = &C2dImageInteractiveTask::getProgressSteps;
+    size_t (C2dImageInteractiveTask::*getProgressSteps4)(size_t) = &C2dImageInteractiveTask::getProgressSteps;
+    size_t (C2dImageInteractiveTaskWrap::*default_getProgressSteps3)() = &C2dImageInteractiveTaskWrap::default_getProgressSteps;
+    size_t (C2dImageInteractiveTaskWrap::*default_getProgressSteps4)(size_t) = &C2dImageInteractiveTaskWrap::default_getProgressSteps;
 
-    class_<CInteractiveImageProcess2dWrap, bases<CImageProcess2d>, std::shared_ptr<CInteractiveImageProcess2dWrap>>("CInteractiveImageProcess2d", _interactiveImageProcess2d)
+    class_<C2dImageInteractiveTaskWrap, bases<C2dImageTask>, std::shared_ptr<C2dImageInteractiveTaskWrap>>("C2dImageInteractiveTask", _interactiveImageProcess2d)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorInteractiveImageProcessDocString))
-        .def("setActive", &CInteractiveImageProcess2d::setActive, &CInteractiveImageProcess2dWrap::default_setActive, _setActiveInteractiveDocString, args("self", "is_active"))
-        .def("updateStaticOutputs", &CInteractiveImageProcess2d::updateStaticOutputs, &CInteractiveImageProcess2dWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CInteractiveImageProcess2d::beginTaskRun, &CInteractiveImageProcess2dWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
-        .def("endTaskRun", &CInteractiveImageProcess2d::endTaskRun, &CInteractiveImageProcess2dWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("graphicsChanged", &CInteractiveImageProcess2d::graphicsChanged, &CInteractiveImageProcess2dWrap::default_graphicsChanged, _graphicsChangedInteractiveDocString, args("self"))
-        .def("globalInputChanged", &CInteractiveImageProcess2d::globalInputChanged, &CInteractiveImageProcess2dWrap::default_globalInputChanged, _globalInputChangedInteractiveDocString, args("self", "is_new_sequence"))
+        .def("setActive", &C2dImageInteractiveTask::setActive, &C2dImageInteractiveTaskWrap::default_setActive, _setActiveInteractiveDocString, args("self", "is_active"))
+        .def("updateStaticOutputs", &C2dImageInteractiveTask::updateStaticOutputs, &C2dImageInteractiveTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &C2dImageInteractiveTask::beginTaskRun, &C2dImageInteractiveTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
+        .def("endTaskRun", &C2dImageInteractiveTask::endTaskRun, &C2dImageInteractiveTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("graphicsChanged", &C2dImageInteractiveTask::graphicsChanged, &C2dImageInteractiveTaskWrap::default_graphicsChanged, _graphicsChangedInteractiveDocString, args("self"))
+        .def("globalInputChanged", &C2dImageInteractiveTask::globalInputChanged, &C2dImageInteractiveTaskWrap::default_globalInputChanged, _globalInputChangedInteractiveDocString, args("self", "is_new_sequence"))
         .def("getProgressSteps", getProgressSteps3, default_getProgressSteps3, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps4, default_getProgressSteps4, _getProgressStepsDocString, args("self", "unit_elt_count"))
-        .def("getInteractionMask", &CInteractiveImageProcess2d::getInteractionMask, _getInteractionMaskDocString, args("self"))
-        .def("getBlobs", &CInteractiveImageProcess2d::getBlobs, _getBlobsDocString, args("self"))
-        .def("createInteractionMask", &CInteractiveImageProcess2d::createInteractionMask, _createInteractionMaskDocString, args("self", "width", "height"))
-        .def("computeBlobs", &CInteractiveImageProcess2d::computeBlobs, _computeBlobsDocString, args("self"))
-        .def("clearInteractionLayer", &CInteractiveImageProcess2d::clearInteractionLayer, _clearInteractionLayerDocString, args("self"))
-        .def("run", &CInteractiveImageProcess2d::run, &CInteractiveImageProcess2dWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CInteractiveImageProcess2d::stop, &CInteractiveImageProcess2dWrap::default_stop, _stopDocString, args("self"))
-        .def("emitAddSubProgressSteps", &CInteractiveImageProcess2dWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CInteractiveImageProcess2dWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CInteractiveImageProcess2dWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CInteractiveImageProcess2dWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("getInteractionMask", &C2dImageInteractiveTask::getInteractionMask, _getInteractionMaskDocString, args("self"))
+        .def("getBlobs", &C2dImageInteractiveTask::getBlobs, _getBlobsDocString, args("self"))
+        .def("createInteractionMask", &C2dImageInteractiveTask::createInteractionMask, _createInteractionMaskDocString, args("self", "width", "height"))
+        .def("computeBlobs", &C2dImageInteractiveTask::computeBlobs, _computeBlobsDocString, args("self"))
+        .def("clearInteractionLayer", &C2dImageInteractiveTask::clearInteractionLayer, _clearInteractionLayerDocString, args("self"))
+        .def("run", &C2dImageInteractiveTask::run, &C2dImageInteractiveTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &C2dImageInteractiveTask::stop, &C2dImageInteractiveTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("emitAddSubProgressSteps", &C2dImageInteractiveTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &C2dImageInteractiveTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &C2dImageInteractiveTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &C2dImageInteractiveTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //-------------------------//
-    //----- CVideoProcess -----//
-    //-------------------------//
+    //----------------------//
+    //----- CVideoTask -----//
+    //----------------------//
     //Overload member functions
-    size_t (CVideoProcess::*getProgressSteps5)() = &CVideoProcess::getProgressSteps;
-    size_t (CVideoProcess::*getProgressSteps6)(size_t) = &CVideoProcess::getProgressSteps;
-    size_t (CVideoProcessWrap::*default_getProgressSteps5)() = &CVideoProcessWrap::default_getProgressSteps;
-    size_t (CVideoProcessWrap::*default_getProgressSteps6)(size_t) = &CVideoProcessWrap::default_getProgressSteps;
+    size_t (CVideoTask::*getProgressSteps5)() = &CVideoTask::getProgressSteps;
+    size_t (CVideoTask::*getProgressSteps6)(size_t) = &CVideoTask::getProgressSteps;
+    size_t (CVideoTaskWrap::*default_getProgressSteps5)() = &CVideoTaskWrap::default_getProgressSteps;
+    size_t (CVideoTaskWrap::*default_getProgressSteps6)(size_t) = &CVideoTaskWrap::default_getProgressSteps;
 
-    class_<CVideoProcessWrap, bases<CImageProcess2d>, std::shared_ptr<CVideoProcessWrap>>("CVideoProcess", _videoProcessDocString)
+    class_<CVideoTaskWrap, bases<C2dImageTask>, std::shared_ptr<CVideoTaskWrap>>("CVideoTask", _videoProcessDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorVideoProcessDocString))
-        .def("setActive", &CVideoProcess::setActive, &CVideoProcessWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("updateStaticOutputs", &CVideoProcess::updateStaticOutputs, &CVideoProcessWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CVideoProcess::beginTaskRun, &CVideoProcessWrap::default_beginTaskRun, _beginTaskRunVideoDocString, args("self"))
-        .def("endTaskRun", &CVideoProcess::endTaskRun, &CVideoProcessWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("notifyVideoStart", &CVideoProcess::notifyVideoStart, &CVideoProcessWrap::default_notifyVideoStart, _notifyVideoStartDocString, args("self", "frame_count"))
-        .def("notifyVideoEnd", &CVideoProcess::notifyVideoEnd, &CVideoProcessWrap::default_notifyVideoEnd, _notifyVideoEndDocString, args("self"))
-        .def("graphicsChanged", &CVideoProcess::graphicsChanged, &CVideoProcessWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
-        .def("globalInputChanged", &CVideoProcess::globalInputChanged, &CVideoProcessWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
+        .def("setActive", &CVideoTask::setActive, &CVideoTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("updateStaticOutputs", &CVideoTask::updateStaticOutputs, &CVideoTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &CVideoTask::beginTaskRun, &CVideoTaskWrap::default_beginTaskRun, _beginTaskRunVideoDocString, args("self"))
+        .def("endTaskRun", &CVideoTask::endTaskRun, &CVideoTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("notifyVideoStart", &CVideoTask::notifyVideoStart, &CVideoTaskWrap::default_notifyVideoStart, _notifyVideoStartDocString, args("self", "frame_count"))
+        .def("notifyVideoEnd", &CVideoTask::notifyVideoEnd, &CVideoTaskWrap::default_notifyVideoEnd, _notifyVideoEndDocString, args("self"))
+        .def("graphicsChanged", &CVideoTask::graphicsChanged, &CVideoTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
+        .def("globalInputChanged", &CVideoTask::globalInputChanged, &CVideoTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
         .def("getProgressSteps", getProgressSteps5, default_getProgressSteps5, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps6, default_getProgressSteps6, _getProcessFactoryDocString, args("self", "unit_elt_count"))
-        .def("run", &CVideoProcess::run, &CVideoProcessWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CVideoProcess::stop, &CVideoProcessWrap::default_stop, _stopDocString, args("self"))
-        .def("emitAddSubProgressSteps", &CVideoProcessWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CVideoProcessWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CVideoProcessWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CVideoProcessWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("run", &CVideoTask::run, &CVideoTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &CVideoTask::stop, &CVideoTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("emitAddSubProgressSteps", &CVideoTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &CVideoTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &CVideoTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &CVideoTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
-    //---------------------------//
-    //----- CVideoProcessOF -----//
-    //---------------------------//
+    //------------------------//
+    //----- CVideoOFTask -----//
+    //------------------------//
     //Overload member functions
-    size_t (CVideoProcessOF::*getProgressSteps7)() = &CVideoProcessOF::getProgressSteps;
-    size_t (CVideoProcessOF::*getProgressSteps8)(size_t) = &CVideoProcessOF::getProgressSteps;
-    size_t (CVideoProcessOFWrap::*default_getProgressSteps7)() = &CVideoProcessOFWrap::default_getProgressSteps;
-    size_t (CVideoProcessOFWrap::*default_getProgressSteps8)(size_t) = &CVideoProcessOFWrap::default_getProgressSteps;
+    size_t (CVideoOFTask::*getProgressSteps7)() = &CVideoOFTask::getProgressSteps;
+    size_t (CVideoOFTask::*getProgressSteps8)(size_t) = &CVideoOFTask::getProgressSteps;
+    size_t (CVideoOFTaskWrap::*default_getProgressSteps7)() = &CVideoOFTaskWrap::default_getProgressSteps;
+    size_t (CVideoOFTaskWrap::*default_getProgressSteps8)(size_t) = &CVideoOFTaskWrap::default_getProgressSteps;
 
-    class_<CVideoProcessOFWrap, bases<CVideoProcess>, std::shared_ptr<CVideoProcessOFWrap>>("CVideoProcessOF", _videoProcessOFDocString)
+    class_<CVideoOFTaskWrap, bases<CVideoTask>, std::shared_ptr<CVideoOFTaskWrap>>("CVideoOFTask", _videoProcessOFDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorVideoProcessOFDocString))
-        .def("setActive", &CVideoProcessOF::setActive, &CVideoProcessOFWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("updateStaticOutputs", &CVideoProcessOF::updateStaticOutputs, &CVideoProcessOFWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CVideoProcessOF::beginTaskRun, &CVideoProcessOFWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
-        .def("endTaskRun", &CVideoProcessOF::endTaskRun, &CVideoProcessOFWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("graphicsChanged", &CVideoProcessOF::graphicsChanged, &CVideoProcessOFWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
-        .def("globalInputChanged", &CVideoProcessOF::globalInputChanged, &CVideoProcessOFWrap::default_globalInputChanged, _globalInputChangedDocString, args("self" "is_new_sequence"))
+        .def("setActive", &CVideoOFTask::setActive, &CVideoOFTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("updateStaticOutputs", &CVideoOFTask::updateStaticOutputs, &CVideoOFTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &CVideoOFTask::beginTaskRun, &CVideoOFTaskWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
+        .def("endTaskRun", &CVideoOFTask::endTaskRun, &CVideoOFTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("graphicsChanged", &CVideoOFTask::graphicsChanged, &CVideoOFTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
+        .def("globalInputChanged", &CVideoOFTask::globalInputChanged, &CVideoOFTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self" "is_new_sequence"))
         .def("getProgressSteps", getProgressSteps7, default_getProgressSteps7, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps8, default_getProgressSteps8, _getProgressStepsDocString, args("self", "unit_elt_count"))
-        .def("run", &CVideoProcessOF::run, &CVideoProcessOFWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CVideoProcessOF::stop, &CVideoProcessOFWrap::default_stop, _stopDocString, args("self"))
-        .def("emitAddSubProgressSteps", &CVideoProcessOFWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CVideoProcessOFWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CVideoProcessOFWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CVideoProcessOFWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
-        .def("drawOptFlowMap", &CVideoProcessOF::drawOptFlowMap, _drawOptFlowMapDocString, args("self", "flow", "vectors", "step"))
-        .def("flowToDisplay", &CVideoProcessOF::flowToDisplay, _flowToDisplayDocString, args("self", "flow"))
+        .def("run", &CVideoOFTask::run, &CVideoOFTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &CVideoOFTask::stop, &CVideoOFTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("emitAddSubProgressSteps", &CVideoOFTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &CVideoOFTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &CVideoOFTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &CVideoOFTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("drawOptFlowMap", &CVideoOFTask::drawOptFlowMap, _drawOptFlowMapDocString, args("self", "flow", "vectors", "step"))
+        .def("flowToDisplay", &CVideoOFTask::flowToDisplay, _flowToDisplayDocString, args("self", "flow"))
     ;
 
-    //---------------------------------//
-    //----- CVideoProcessTracking -----//
-    //---------------------------------//
+    //------------------------------//
+    //----- CVideoTrackingTask -----//
+    //------------------------------//
     //Overload member functions
-    size_t (CVideoProcessTracking::*getProgressSteps9)() = &CVideoProcessTracking::getProgressSteps;
-    size_t (CVideoProcessTracking::*getProgressSteps10)(size_t) = &CVideoProcessTracking::getProgressSteps;
-    size_t (CVideoProcessTrackingWrap::*default_getProgressSteps9)() = &CVideoProcessTrackingWrap::default_getProgressSteps;
-    size_t (CVideoProcessTrackingWrap::*default_getProgressSteps10)(size_t) = &CVideoProcessTrackingWrap::default_getProgressSteps;
+    size_t (CVideoTrackingTask::*getProgressSteps9)() = &CVideoTrackingTask::getProgressSteps;
+    size_t (CVideoTrackingTask::*getProgressSteps10)(size_t) = &CVideoTrackingTask::getProgressSteps;
+    size_t (CVideoTrackingTaskWrap::*default_getProgressSteps9)() = &CVideoTrackingTaskWrap::default_getProgressSteps;
+    size_t (CVideoTrackingTaskWrap::*default_getProgressSteps10)(size_t) = &CVideoTrackingTaskWrap::default_getProgressSteps;
 
-    class_<CVideoProcessTrackingWrap, bases<CVideoProcess>, std::shared_ptr<CVideoProcessTrackingWrap>>("CVideoProcessTracking", _videoProcessTrackingDocString)
+    class_<CVideoTrackingTaskWrap, bases<CVideoTask>, std::shared_ptr<CVideoTrackingTaskWrap>>("CVideoTrackingTask", _videoProcessTrackingDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorVideoTrackingDocString))
-        .def("setActive", &CVideoProcessTracking::setActive, &CVideoProcessTrackingWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("updateStaticOutputs", &CVideoProcessTracking::updateStaticOutputs, &CVideoProcessTrackingWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CVideoProcessTracking::beginTaskRun, &CVideoProcessTrackingWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
-        .def("endTaskRun", &CVideoProcessTracking::endTaskRun, &CVideoProcessTrackingWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("graphicsChanged", &CVideoProcessTracking::graphicsChanged, &CVideoProcessTrackingWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
-        .def("globalInputChanged", &CVideoProcessTracking::globalInputChanged, &CVideoProcessTrackingWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
+        .def("setActive", &CVideoTrackingTask::setActive, &CVideoTrackingTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("updateStaticOutputs", &CVideoTrackingTask::updateStaticOutputs, &CVideoTrackingTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &CVideoTrackingTask::beginTaskRun, &CVideoTrackingTaskWrap::default_beginTaskRun, _beginTaskRunVideoOFDocString, args("self"))
+        .def("endTaskRun", &CVideoTrackingTask::endTaskRun, &CVideoTrackingTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("graphicsChanged", &CVideoTrackingTask::graphicsChanged, &CVideoTrackingTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
+        .def("globalInputChanged", &CVideoTrackingTask::globalInputChanged, &CVideoTrackingTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
         .def("getProgressSteps", getProgressSteps9, default_getProgressSteps9, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps10, default_getProgressSteps10, _getProgressStepsDocString, args("self" "unit_elt_count"))
-        .def("run", &CVideoProcessTracking::run, &CVideoProcessTrackingWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CVideoProcessTracking::stop, &CVideoProcessTrackingWrap::default_stop, _stopDocString, args("self"))
-        .def("emitAddSubProgressSteps", &CVideoProcessTrackingWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CVideoProcessTrackingWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CVideoProcessTrackingWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CVideoProcessTrackingWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
-        .def("setRoiToTrack", &CVideoProcessTracking::setRoiToTrack, _setRoiToTrackDocString, args("self"))
-        .def("manageOutputs", &CVideoProcessTracking::manageOutputs, _manageOutputsDocString, args("self"))
+        .def("run", &CVideoTrackingTask::run, &CVideoTrackingTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &CVideoTrackingTask::stop, &CVideoTrackingTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("emitAddSubProgressSteps", &CVideoTrackingTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &CVideoTrackingTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &CVideoTrackingTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &CVideoTrackingTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("setRoiToTrack", &CVideoTrackingTask::setRoiToTrack, _setRoiToTrackDocString, args("self"))
+        .def("manageOutputs", &CVideoTrackingTask::manageOutputs, _manageOutputsDocString, args("self"))
     ;
 
-    //----------------------------//
-    //----- CDnnTrainProcess -----//
-    //----------------------------//
+    //-------------------------//
+    //----- CDnnTrainTask -----//
+    //-------------------------//
     //Overload member functions
-    size_t (CDnnTrainProcess::*getProgressSteps11)() = &CDnnTrainProcess::getProgressSteps;
-    size_t (CDnnTrainProcess::*getProgressSteps12)(size_t) = &CDnnTrainProcess::getProgressSteps;
-    size_t (CDnnTrainProcessWrap::*default_getProgressSteps11)() = &CDnnTrainProcessWrap::default_getProgressSteps;
-    size_t (CDnnTrainProcessWrap::*default_getProgressSteps12)(size_t) = &CDnnTrainProcessWrap::default_getProgressSteps;
+    size_t (CDnnTrainTask::*getProgressSteps11)() = &CDnnTrainTask::getProgressSteps;
+    size_t (CDnnTrainTask::*getProgressSteps12)(size_t) = &CDnnTrainTask::getProgressSteps;
+    size_t (CDnnTrainTaskWrap::*default_getProgressSteps11)() = &CDnnTrainTaskWrap::default_getProgressSteps;
+    size_t (CDnnTrainTaskWrap::*default_getProgressSteps12)(size_t) = &CDnnTrainTaskWrap::default_getProgressSteps;
 
-    class_<CDnnTrainProcessWrap, bases<CProtocolTask>, std::shared_ptr<CDnnTrainProcessWrap>>("CDnnTrainProcess", _dnnTrainProcessDocString)
+    class_<CDnnTrainTaskWrap, bases<CWorkflowTask>, std::shared_ptr<CDnnTrainTaskWrap>>("CDnnTrainTask", _dnnTrainProcessDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctor1DnnTrainProcessDocString))
-        .def(init<const std::string&, const std::shared_ptr<CDnnTrainProcessParam>&>(_ctor2DnnTrainProcessDocString))
-        .def("setActive", &CDnnTrainProcess::setActive, &CDnnTrainProcessWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("beginTaskRun", &CDnnTrainProcess::beginTaskRun, &CDnnTrainProcessWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
-        .def("endTaskRun", &CDnnTrainProcess::endTaskRun, &CDnnTrainProcessWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("getTensorboardLogDir", &CDnnTrainProcess::getTensorboardLogDir, _getTensorboardLogDirDocString, args("self"))
+        .def(init<const std::string&, const std::shared_ptr<CDnnTrainTaskParam>&>(_ctor2DnnTrainProcessDocString))
+        .def("setActive", &CDnnTrainTask::setActive, &CDnnTrainTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("beginTaskRun", &CDnnTrainTask::beginTaskRun, &CDnnTrainTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
+        .def("endTaskRun", &CDnnTrainTask::endTaskRun, &CDnnTrainTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("getTensorboardLogDir", &CDnnTrainTask::getTensorboardLogDir, _getTensorboardLogDirDocString, args("self"))
         .def("getProgressSteps", getProgressSteps11, default_getProgressSteps11, _getProgressStepsDocString, args("self"))
         .def("getProgressSteps", getProgressSteps12, default_getProgressSteps12, _getProgressStepsDocString, args("self", "unit_elt_count"))
-        .def("run", &CDnnTrainProcess::run, &CDnnTrainProcessWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CDnnTrainProcess::stop, &CDnnTrainProcessWrap::default_stop, _stopDocString, args("self"))
-        .def("emitAddSubProgressSteps", &CDnnTrainProcessWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
-        .def("emitStepProgress", &CDnnTrainProcessWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitOutputChanged", &CDnnTrainProcessWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
-        .def("enableMlflow", &CDnnTrainProcess::enableMlflow, _enableMlflowDocString, args("self", "enable"))
-        .def("enableTensorboard", &CDnnTrainProcess::enableTensorboard, _enableTensorboardDocString, args("self", "enable"))
+        .def("run", &CDnnTrainTask::run, &CDnnTrainTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &CDnnTrainTask::stop, &CDnnTrainTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("emitAddSubProgressSteps", &CDnnTrainTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressSteps, args("self", "count"))
+        .def("emitStepProgress", &CDnnTrainTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitOutputChanged", &CDnnTrainTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("enableMlflow", &CDnnTrainTask::enableMlflow, _enableMlflowDocString, args("self", "enable"))
+        .def("enableTensorboard", &CDnnTrainTask::enableTensorboard, _enableTensorboardDocString, args("self", "enable"))
     ;
 
-    //---------------------------------//
-    //----- CDnnTrainProcessParam -----//
-    //---------------------------------//
-    class_<CDnnTrainProcessParamWrap, bases<CProtocolTaskParam>, std::shared_ptr<CDnnTrainProcessParamWrap>>("CDnnTrainProcessParam", _dnnTrainProcessParamDocString)
+    //------------------------------//
+    //----- CDnnTrainTaskParam -----//
+    //------------------------------//
+    class_<CDnnTrainTaskParamWrap, bases<CWorkflowTaskParam>, std::shared_ptr<CDnnTrainTaskParamWrap>>("CDnnTrainTaskParam", _dnnTrainProcessParamDocString)
         .enable_pickling()
         .def(init<>("Default constructor"))
-        .def("__copy__", &generic_copy<CDnnTrainProcessParamWrap>)
-        .def("__deepcopy__", &generic_deepcopy<CDnnTrainProcessParamWrap>)
-        .def("setParamMap", &CDnnTrainProcessParam::setParamMap, &CDnnTrainProcessParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
-        .def("getParamMap", &CDnnTrainProcessParam::getParamMap, &CDnnTrainProcessParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
-        .def("getHashValue", &CDnnTrainProcessParam::getHashValue, &CDnnTrainProcessParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
+        .def("__copy__", &generic_copy<CDnnTrainTaskParamWrap>)
+        .def("__deepcopy__", &generic_deepcopy<CDnnTrainTaskParamWrap>)
+        .def("setParamMap", &CDnnTrainTaskParam::setParamMap, &CDnnTrainTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
+        .def("getParamMap", &CDnnTrainTaskParam::getParamMap, &CDnnTrainTaskParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
+        .def("getHashValue", &CDnnTrainTaskParam::getHashValue, &CDnnTrainTaskParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
+    ;
+
+    //---------------------------//
+    //----- CIkomiaRegistry -----//
+    //---------------------------//
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance1)(const std::string&) = &CIkomiaRegistry::createInstance;
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance2)(const std::string&, const WorkflowTaskParamPtr&) = &CIkomiaRegistry::createInstance;
+
+    class_<CIkomiaRegistry, std::shared_ptr<CIkomiaRegistry>>("CIkomiaRegistry", _ikomiaRegistryDocString)
+        .def(init<>("Default constructor"))
+        .def("setPluginsDirectory", &CIkomiaRegistry::setPluginsDirectory, _setPluginsDirDocString, args("self", "directory"))
+        .def("getPluginsDirectory", &CIkomiaRegistry::getPluginsDirectory, _getPluginsDirDocString, args("self"))
+        .def("getAlgorithms", &CIkomiaRegistry::getAlgorithms, _getAlgorithmsDocString, args("self)"))
+        .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
+        .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
+        .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
     ;
 }

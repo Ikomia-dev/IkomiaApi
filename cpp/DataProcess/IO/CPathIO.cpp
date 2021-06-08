@@ -21,26 +21,26 @@
 #include <boost/filesystem.hpp>
 #include "CPathIO.h"
 
-CPathIO::CPathIO() : CProtocolTaskIO(IODataType::FILE_PATH)
+CPathIO::CPathIO() : CWorkflowTaskIO(IODataType::FILE_PATH)
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(IODataType data) : CProtocolTaskIO(data)
+CPathIO::CPathIO(IODataType data) : CWorkflowTaskIO(data)
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(IODataType data, const std::string &path) : CProtocolTaskIO(data)
+CPathIO::CPathIO(IODataType data, const std::string &path) : CWorkflowTaskIO(data)
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_path = path;
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(const CPathIO &in) : CProtocolTaskIO(in)
+CPathIO::CPathIO(const CPathIO &in) : CWorkflowTaskIO(in)
 {
     m_path = in.m_path;
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
@@ -54,7 +54,7 @@ CPathIO::CPathIO(CPathIO &&in)
 
 CPathIO &CPathIO::operator=(const CPathIO &in)
 {
-    CProtocolTaskIO::operator=(in);
+    CWorkflowTaskIO::operator=(in);
     m_path = in.m_path;
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
     return *this;
@@ -62,7 +62,7 @@ CPathIO &CPathIO::operator=(const CPathIO &in)
 
 CPathIO &CPathIO::operator=(CPathIO &&in)
 {
-    CProtocolTaskIO::operator=(in);
+    CWorkflowTaskIO::operator=(in);
     m_path = std::move(in.m_path);
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
     return *this;
@@ -101,7 +101,7 @@ std::shared_ptr<CPathIO> CPathIO::clone() const
     return std::static_pointer_cast<CPathIO>(cloneImp());
 }
 
-ProtocolTaskIOPtr CPathIO::cloneImp() const
+WorkflowTaskIOPtr CPathIO::cloneImp() const
 {
     return std::shared_ptr<CPathIO>(new CPathIO(*this));
 }

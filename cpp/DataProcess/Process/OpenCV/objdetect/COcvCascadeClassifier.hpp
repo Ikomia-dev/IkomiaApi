@@ -20,20 +20,20 @@
 #ifndef COCVCASCADECLASSIFIER_H
 #define COCVCASCADECLASSIFIER_H
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
-#include "IO/CGraphicsProcessOutput.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
+#include "IO/CGraphicsOutput.h"
 #include "Graphics/CGraphicsLayer.h"
 #include "Graphics/CGraphicsRectangle.h"
 
 //--------------------------------------//
 //----- COcvCascadeClassifierParam -----//
 //--------------------------------------//
-class COcvCascadeClassifierParam: public CProtocolTaskParam
+class COcvCascadeClassifierParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCascadeClassifierParam(): CProtocolTaskParam()
+        COcvCascadeClassifierParam(): CWorkflowTaskParam()
         {
 #ifdef _WIN32
             //m_modelFiles.push_back("C:/msys64/mingw64/share/OpenCV/haarcascades/haarcascade_eye.xml");
@@ -44,11 +44,11 @@ class COcvCascadeClassifierParam: public CProtocolTaskParam
             //std::string modelFile = "/usr/share/opencv/haarcascades/haarcascade_frontalface_alt2.xml";
 #endif
         }
-        COcvCascadeClassifierParam(std::string modelFile) : CProtocolTaskParam()
+        COcvCascadeClassifierParam(std::string modelFile) : CWorkflowTaskParam()
         {
             m_modelFiles.push_back(modelFile);
         }
-        COcvCascadeClassifierParam(std::vector<std::string> modelFiles) : CProtocolTaskParam()
+        COcvCascadeClassifierParam(std::vector<std::string> modelFiles) : CWorkflowTaskParam()
         {
             m_modelFiles = modelFiles;
         }
@@ -79,18 +79,18 @@ class COcvCascadeClassifierParam: public CProtocolTaskParam
 //---------------------------------//
 //----- COcvCascadeClassifier -----//
 //---------------------------------//
-class COcvCascadeClassifier : public CImageProcess2d
+class COcvCascadeClassifier : public C2dImageTask
 {
     public:
 
-        COcvCascadeClassifier() : CImageProcess2d()
+        COcvCascadeClassifier() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvCascadeClassifier(const std::string name, const std::shared_ptr<COcvCascadeClassifierParam>& pParam) : CImageProcess2d(name)
+        COcvCascadeClassifier(const std::string name, const std::shared_ptr<COcvCascadeClassifierParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvCascadeClassifierParam>(*pParam);
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
 
         size_t  getProgressSteps() override
@@ -101,7 +101,7 @@ class COcvCascadeClassifier : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvCascadeClassifierParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -124,13 +124,13 @@ class COcvCascadeClassifier : public CImageProcess2d
             if(getOutputCount() < 2)
                 throw CException(CoreExCode::INVALID_SIZE, "Wrong outputs count", __func__, __FILE__, __LINE__);
 
-            auto pOutImage = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutImage = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             pOutImage->setImage(imgDst);
             emit m_signalHandler->doProgress();
 
             try
             {
-                auto pOutGraphics = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+                auto pOutGraphics = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
                 pOutGraphics->setNewLayer(getName());
                 pOutGraphics->setImageIndex(0);
 
@@ -156,7 +156,7 @@ class COcvCascadeClassifier : public CImageProcess2d
         }
 };
 
-class COcvCascadeClassifierFactory : public CProcessFactory
+class COcvCascadeClassifierFactory : public CTaskFactory
 {
     public:
 
@@ -170,7 +170,7 @@ class COcvCascadeClassifierFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/de5/classcv_1_1CascadeClassifier.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pCascadeParam = std::dynamic_pointer_cast<COcvCascadeClassifierParam>(pParam);
             if(pCascadeParam != nullptr)
@@ -178,7 +178,7 @@ class COcvCascadeClassifierFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pCascadeParam = std::make_shared<COcvCascadeClassifierParam>();
             assert(pCascadeParam != nullptr);

@@ -20,17 +20,17 @@
 #ifndef COCVABSDIFF_HPP
 #define COCVABSDIFF_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvAbsdiffParam -----//
 //--------------------------------//
-class COcvAbsdiffParam: public CProtocolTaskParam
+class COcvAbsdiffParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvAbsdiffParam() : CProtocolTaskParam(){}
+        COcvAbsdiffParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -47,18 +47,18 @@ class COcvAbsdiffParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvAbsdiff -----//
 //---------------------------//
-class COcvAbsdiff : public CImageProcess2d
+class COcvAbsdiff : public C2dImageTask
 {
     public:
 
-        COcvAbsdiff() : CImageProcess2d()
+        COcvAbsdiff() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
         }
-        COcvAbsdiff(const std::string name, const std::shared_ptr<COcvAbsdiffParam>& pParam) : CImageProcess2d(name)
+        COcvAbsdiff(const std::string name, const std::shared_ptr<COcvAbsdiffParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvAbsdiffParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
         }
 
         size_t  getProgressSteps() override
@@ -73,8 +73,8 @@ class COcvAbsdiff : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvAbsdiffParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -97,7 +97,7 @@ class COcvAbsdiff : public CImageProcess2d
                 throw CException(CoreExCode::INVALID_PARAMETER, e, __func__, __FILE__, __LINE__);
             }
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -109,7 +109,7 @@ class COcvAbsdiff : public CImageProcess2d
         }
 };
 
-class COcvAbsdiffFactory : public CProcessFactory
+class COcvAbsdiffFactory : public CTaskFactory
 {
     public:
 
@@ -123,7 +123,7 @@ class COcvAbsdiffFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga6fef31bc8c4071cbc114a758a2b79c14";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvAbsdiffParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -131,7 +131,7 @@ class COcvAbsdiffFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvAbsdiffParam>();
             assert(pDerivedParam != nullptr);

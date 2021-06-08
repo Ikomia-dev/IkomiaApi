@@ -39,7 +39,7 @@ CProcessRegistration::~CProcessRegistration()
     m_widgetFactory.clear();
 }
 
-void CProcessRegistration::registerProcess(const std::shared_ptr<CProcessFactory>& pProcessFactory,
+void CProcessRegistration::registerProcess(const std::shared_ptr<CTaskFactory>& pProcessFactory,
                                            const std::shared_ptr<CWidgetFactory>& pWidgetFactory)
 {
     assert(pProcessFactory && pWidgetFactory);
@@ -55,14 +55,14 @@ void CProcessRegistration::registerProcess(const std::shared_ptr<CProcessFactory
 
     m_processFactory.getList().push_back(pProcessFactory);
     //Passage par lambda -> pFactory par valeur pour assurer la portée du pointeur
-    auto pProcessFunc = [pProcessFactory](const ProtocolTaskParamPtr& param)
+    auto pProcessFunc = [pProcessFactory](const WorkflowTaskParamPtr& param)
     {
         return pProcessFactory->create(param);
     };
     m_processFactory.registerCreator(pProcessFactory->getInfo().m_name, pProcessFunc);
 
     m_widgetFactory.getList().push_back(pWidgetFactory);
-    auto pWidgetFunc = [pWidgetFactory](const ProtocolTaskParamPtr& param)
+    auto pWidgetFunc = [pWidgetFactory](const WorkflowTaskParamPtr& param)
     {
         return pWidgetFactory->create(param);
     };
@@ -70,7 +70,7 @@ void CProcessRegistration::registerProcess(const std::shared_ptr<CProcessFactory
 
     //Pour mémoire
     //Passage par std::bind -> cast nécessaire car 2 méthodes create() existent
-    //auto pFunc = static_cast<std::shared_ptr<CProtocolTask> (CProcessFactory::*)(const std::shared_ptr<CProtocolTaskParam>&)>(&CProcessFactory::create);
+    //auto pFunc = static_cast<std::shared_ptr<CWorkflowTask> (CTaskFactory::*)(const std::shared_ptr<CWorkflowTaskParam>&)>(&CTaskFactory::create);
     //m_factory.registerCreator(pFactory->name(), std::bind(pFunc, pFactory, std::placeholders::_1));
 }
 
@@ -80,9 +80,9 @@ void CProcessRegistration::unregisterProcess(const std::string &name)
     m_widgetFactory.remove(name);
 }
 
-ProtocolTaskPtr CProcessRegistration::createProcessObject(const std::string &name, const ProtocolTaskParamPtr &paramPtr)
+WorkflowTaskPtr CProcessRegistration::createProcessObject(const std::string &name, const WorkflowTaskParamPtr &paramPtr)
 {
-    ProtocolTaskPtr taskPtr = nullptr;
+    WorkflowTaskPtr taskPtr = nullptr;
     try
     {
         taskPtr = m_processFactory.createObject(name, std::move(paramPtr));
@@ -94,9 +94,9 @@ ProtocolTaskPtr CProcessRegistration::createProcessObject(const std::string &nam
     return taskPtr;
 }
 
-ProtocolTaskWidgetPtr CProcessRegistration::createWidgetObject(const std::string &name, const ProtocolTaskParamPtr &paramPtr)
+WorkflowTaskWidgetPtr CProcessRegistration::createWidgetObject(const std::string &name, const WorkflowTaskParamPtr &paramPtr)
 {
-    ProtocolTaskWidgetPtr widgetPtr = nullptr;
+    WorkflowTaskWidgetPtr widgetPtr = nullptr;
     try
     {
         widgetPtr = m_widgetFactory.createObject(name, std::move(paramPtr));
@@ -383,12 +383,14 @@ void CProcessRegistration::registerCvText()
     registerProcess(std::make_shared<COcvOCRTesseractFactory>(), std::make_shared<COcvWidgetOCRTesseractFactory>());
 }
 
-const CProcessAbstractFactory& CProcessRegistration::getProcessFactory() const
+const CTaskAbstractFactory& CProcessRegistration::getProcessFactory() const
 {
+    CPyEnsureGIL gil;
     return m_processFactory;
 }
 
 const CWidgetAbstractFactory& CProcessRegistration::getWidgetFactory() const
 {
+    CPyEnsureGIL gil;
     return m_widgetFactory;
 }

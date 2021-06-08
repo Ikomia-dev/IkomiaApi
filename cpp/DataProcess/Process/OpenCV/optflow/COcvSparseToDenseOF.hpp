@@ -20,18 +20,18 @@
 #ifndef COCVSPARSETODENSEOF_HPP
 #define COCVSPARSETODENSEOF_HPP
 
-#include "Core/CVideoProcessOF.h"
-#include "IO/CVideoProcessIO.h"
+#include "Core/CVideoOFTask.h"
+#include "IO/CVideoIO.h"
 #include "opencv2/optflow.hpp"
 
 //------------------------------//
 //----- COcvSparseToDenseOFParam -----//
 //------------------------------//
-class COcvSparseToDenseOFParam: public CProtocolTaskParam
+class COcvSparseToDenseOFParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSparseToDenseOFParam() : CProtocolTaskParam(){}
+        COcvSparseToDenseOFParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -54,14 +54,14 @@ class COcvSparseToDenseOFParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvSparseToDenseOF -----//
 //-------------------------//
-class COcvSparseToDenseOF : public CVideoProcessOF
+class COcvSparseToDenseOF : public CVideoOFTask
 {
     public:
 
-        COcvSparseToDenseOF() : CVideoProcessOF()
+        COcvSparseToDenseOF() : CVideoOFTask()
         {
         }
-        COcvSparseToDenseOF(const std::string name, const std::shared_ptr<COcvSparseToDenseOFParam>& pParam) : CVideoProcessOF(name)
+        COcvSparseToDenseOF(const std::string name, const std::shared_ptr<COcvSparseToDenseOFParam>& pParam) : CVideoOFTask(name)
         {
             m_pParam = std::make_shared<COcvSparseToDenseOFParam>(*pParam);
         }
@@ -79,8 +79,8 @@ class COcvSparseToDenseOF : public CVideoProcessOF
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CVideoProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CVideoIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSparseToDenseOFParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -129,7 +129,7 @@ class COcvSparseToDenseOF : public CVideoProcessOF
         }
 };
 
-class COcvSparseToDenseOFFactory : public CProcessFactory
+class COcvSparseToDenseOFFactory : public CTaskFactory
 {
     public:
 
@@ -143,7 +143,7 @@ class COcvSparseToDenseOFFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/d84/group__optflow.html#gad6aa63f2703202806fe18dc1353b5f4b";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSparseToDenseOFParam = std::dynamic_pointer_cast<COcvSparseToDenseOFParam>(pParam);
             if(pSparseToDenseOFParam != nullptr)
@@ -151,7 +151,7 @@ class COcvSparseToDenseOFFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSparseToDenseOFParam = std::make_shared<COcvSparseToDenseOFParam>();
             assert(pSparseToDenseOFParam != nullptr);

@@ -24,16 +24,16 @@
 #include "Process/OpenCV/imgproc/COcvCLAHE.hpp"
 #include <QSpinBox>
 
-class COcvWidgetCLAHE : public CProtocolTaskWidget
+class COcvWidgetCLAHE : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCLAHE(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCLAHE(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCLAHE(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCLAHE(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCLAHEParam>(pParam);
             init();
@@ -71,7 +71,7 @@ class COcvWidgetCLAHEFactory : public CWidgetFactory
             m_name = QObject::tr("CLAHE").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_unique<COcvWidgetCLAHE>(pParam);
         }

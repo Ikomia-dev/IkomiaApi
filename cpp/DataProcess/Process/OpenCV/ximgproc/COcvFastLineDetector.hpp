@@ -21,16 +21,16 @@
 #define COCVFASTLINEDETECTOR_HPP
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------------------------//
 //----- COcvFastLineDetectorParam -----//
 //-------------------------------------//
-class COcvFastLineDetectorParam: public CProtocolTaskParam
+class COcvFastLineDetectorParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFastLineDetectorParam() : CProtocolTaskParam()
+        COcvFastLineDetectorParam() : CWorkflowTaskParam()
         {
         }
 
@@ -69,17 +69,17 @@ class COcvFastLineDetectorParam: public CProtocolTaskParam
 //--------------------------------//
 //----- COcvFastLineDetector -----//
 //--------------------------------//
-class COcvFastLineDetector : public CImageProcess2d
+class COcvFastLineDetector : public C2dImageTask
 {
     public:
 
-        COcvFastLineDetector() : CImageProcess2d()
+        COcvFastLineDetector() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvFastLineDetector(const std::string name, const std::shared_ptr<COcvFastLineDetectorParam>& pParam) : CImageProcess2d(name)
+        COcvFastLineDetector(const std::string name, const std::shared_ptr<COcvFastLineDetectorParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             m_pParam = std::make_shared<COcvFastLineDetectorParam>(*pParam);
         }
 
@@ -92,7 +92,7 @@ class COcvFastLineDetector : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvFastLineDetectorParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -134,7 +134,7 @@ class COcvFastLineDetector : public CImageProcess2d
 
         void    manageLinesOutput(const std::vector<cv::Vec4f>& lines)
         {
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             if(pOutput == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "Invalid graphics output", __func__, __FILE__, __LINE__);
 
@@ -151,7 +151,7 @@ class COcvFastLineDetector : public CImageProcess2d
         }
 };
 
-class COcvFastLineDetectorFactory : public CProcessFactory
+class COcvFastLineDetectorFactory : public CTaskFactory
 {
     public:
 
@@ -169,7 +169,7 @@ class COcvFastLineDetectorFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d4c/classcv_1_1ximgproc_1_1FastLineDetector.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvFastLineDetectorParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -177,7 +177,7 @@ class COcvFastLineDetectorFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvFastLineDetectorParam>();
             assert(pDerivedParam != nullptr);

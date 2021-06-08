@@ -20,17 +20,17 @@
 #ifndef COCVBRISK_HPP
 #define COCVBRISK_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvBRISKParam -----//
 //--------------------------------//
-class COcvBRISKParam: public CProtocolTaskParam
+class COcvBRISKParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvBRISKParam() : CProtocolTaskParam(){}
+        COcvBRISKParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -67,16 +67,16 @@ class COcvBRISKParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvBRISK -----//
 //---------------------------//
-class COcvBRISK : public CFeatureImageProcess2d
+class COcvBRISK : public C2dFeatureImageTask
 {
     public:
 
-        COcvBRISK() : CFeatureImageProcess2d()
+        COcvBRISK() : C2dFeatureImageTask()
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
         }
-        COcvBRISK(const std::string name, const std::shared_ptr<COcvBRISKParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvBRISK(const std::string name, const std::shared_ptr<COcvBRISKParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
@@ -95,8 +95,8 @@ class COcvBRISK : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvBRISKParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -128,7 +128,7 @@ class COcvBRISK : public CFeatureImageProcess2d
         }
 };
 
-class COcvBRISKFactory : public CProcessFactory
+class COcvBRISKFactory : public CTaskFactory
 {
     public:
 
@@ -146,7 +146,7 @@ class COcvBRISKFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/de/dbf/classcv_1_1BRISK.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvBRISKParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -154,7 +154,7 @@ class COcvBRISKFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvBRISKParam>();
             assert(pDerivedParam != nullptr);

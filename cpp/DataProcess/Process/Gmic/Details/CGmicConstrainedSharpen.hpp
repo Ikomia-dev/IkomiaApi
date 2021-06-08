@@ -20,7 +20,7 @@
 #ifndef CGMICCONSTRAINEDSHARPEN_HPP
 #define CGMICCONSTRAINEDSHARPEN_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -92,14 +92,14 @@ class CGmicConstrainedSharpenParam: public CGmicTaskParam
 //-----------------------------------//
 //----- CGmicConstrainedSharpen -----//
 //-----------------------------------//
-class CGmicConstrainedSharpen : public CImageProcess2d
+class CGmicConstrainedSharpen : public C2dImageTask
 {
     public:
 
-        CGmicConstrainedSharpen() : CImageProcess2d()
+        CGmicConstrainedSharpen() : C2dImageTask()
         {
         }
-        CGmicConstrainedSharpen(const std::string name, const std::shared_ptr<CGmicConstrainedSharpenParam>& pParam) : CImageProcess2d(name)
+        CGmicConstrainedSharpen(const std::string name, const std::shared_ptr<CGmicConstrainedSharpenParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicConstrainedSharpenParam>(*pParam);
         }
@@ -112,8 +112,8 @@ class CGmicConstrainedSharpen : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicConstrainedSharpenParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -156,7 +156,7 @@ class CGmicConstrainedSharpen : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -164,7 +164,7 @@ class CGmicConstrainedSharpen : public CImageProcess2d
         }
 };
 
-class CGmicConstrainedSharpenFactory : public CProcessFactory
+class CGmicConstrainedSharpenFactory : public CTaskFactory
 {
     public:
 
@@ -183,7 +183,7 @@ class CGmicConstrainedSharpenFactory : public CProcessFactory
             m_info.m_year = 2016;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicConstrainedSharpenParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -191,7 +191,7 @@ class CGmicConstrainedSharpenFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicConstrainedSharpenParam>();
             assert(pParam != nullptr);

@@ -21,25 +21,25 @@
 #include "Data/CDataArrayInfo.h"
 #include <QObject>
 
-CArrayIO::CArrayIO() : CProtocolTaskIO(IODataType::ARRAY)
+CArrayIO::CArrayIO() : CWorkflowTaskIO(IODataType::ARRAY)
 {
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
 }
 
-CArrayIO::CArrayIO(const CMat &array) : CProtocolTaskIO(IODataType::ARRAY)
+CArrayIO::CArrayIO(const CMat &array) : CWorkflowTaskIO(IODataType::ARRAY)
 {
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
     m_array = array;
     m_bNewDataInfo = true;
 }
 
-CArrayIO::CArrayIO(const CArrayIO &io) : CProtocolTaskIO(io)
+CArrayIO::CArrayIO(const CArrayIO &io) : CWorkflowTaskIO(io)
 {
     m_array = io.m_array;
     m_bNewDataInfo = true;
 }
 
-CArrayIO::CArrayIO(const CArrayIO &&io) : CProtocolTaskIO(io)
+CArrayIO::CArrayIO(const CArrayIO &&io) : CWorkflowTaskIO(io)
 {
     m_array = std::move(io.m_array);
     m_bNewDataInfo = true;
@@ -47,7 +47,7 @@ CArrayIO::CArrayIO(const CArrayIO &&io) : CProtocolTaskIO(io)
 
 CArrayIO &CArrayIO::operator=(const CArrayIO &io)
 {
-    CProtocolTaskIO::operator=(io);
+    CWorkflowTaskIO::operator=(io);
     m_array = io.m_array;
     m_bNewDataInfo = true;
     return *this;
@@ -55,7 +55,7 @@ CArrayIO &CArrayIO::operator=(const CArrayIO &io)
 
 CArrayIO &CArrayIO::operator=(const CArrayIO &&io)
 {
-    CProtocolTaskIO::operator=(io);
+    CWorkflowTaskIO::operator=(io);
     m_array = std::move(io.m_array);
     m_bNewDataInfo = true;
     return *this;
@@ -103,7 +103,7 @@ std::shared_ptr<CArrayIO> CArrayIO::clone() const
     return std::static_pointer_cast<CArrayIO>(cloneImp());
 }
 
-std::shared_ptr<CProtocolTaskIO> CArrayIO::cloneImp() const
+std::shared_ptr<CWorkflowTaskIO> CArrayIO::cloneImp() const
 {
     return std::shared_ptr<CArrayIO>(new CArrayIO(*this));
 }

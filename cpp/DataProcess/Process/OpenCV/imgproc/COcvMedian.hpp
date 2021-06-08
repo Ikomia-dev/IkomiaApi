@@ -20,17 +20,17 @@
 #ifndef COCVMEDIAN_HPP
 #define COCVMEDIAN_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //---------------------------//
 //----- COcvMedianParam -----//
 //---------------------------//
-class COcvMedianParam: public CProtocolTaskParam
+class COcvMedianParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMedianParam() : CProtocolTaskParam(){}
+        COcvMedianParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,14 +52,14 @@ class COcvMedianParam: public CProtocolTaskParam
 //----------------------//
 //----- COcvMedian -----//
 //----------------------//
-class COcvMedian : public CImageProcess2d
+class COcvMedian : public C2dImageTask
 {
     public:
 
-        COcvMedian() : CImageProcess2d()
+        COcvMedian() : C2dImageTask()
         {
         }
-        COcvMedian(const std::string name, const std::shared_ptr<COcvMedianParam>& pParam) : CImageProcess2d(name)
+        COcvMedian(const std::string name, const std::shared_ptr<COcvMedianParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvMedianParam>(*pParam);
         }
@@ -72,8 +72,8 @@ class COcvMedian : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMedianParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -100,7 +100,7 @@ class COcvMedian : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -108,7 +108,7 @@ class COcvMedian : public CImageProcess2d
         }
 };
 
-class COcvMedianFactory : public CProcessFactory
+class COcvMedianFactory : public CTaskFactory
 {
     public:
 
@@ -122,7 +122,7 @@ class COcvMedianFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pMedianParam = std::dynamic_pointer_cast<COcvMedianParam>(pParam);
             if(pMedianParam != nullptr)
@@ -130,7 +130,7 @@ class COcvMedianFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pMedianParam = std::make_shared<COcvMedianParam>();
             assert(pMedianParam != nullptr);

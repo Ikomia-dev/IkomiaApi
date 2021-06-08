@@ -21,17 +21,17 @@
 #define COCVDFT_HPP
 
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvDftParam -----//
 //------------------------------//
-class COcvDftParam: public CProtocolTaskParam
+class COcvDftParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDftParam() : CProtocolTaskParam(){}
+        COcvDftParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -56,20 +56,20 @@ class COcvDftParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDft -----//
 //-------------------------//
-class COcvDft : public CImageProcess2d
+class COcvDft : public C2dImageTask
 {
     public:
 
-        COcvDft() : CImageProcess2d(false)
+        COcvDft() : C2dImageTask(false)
         {
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CImageIO>());
         }
-        COcvDft(const std::string name, const std::shared_ptr<COcvDftParam>& pParam) : CImageProcess2d(name, false)
+        COcvDft(const std::string name, const std::shared_ptr<COcvDftParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvDftParam>(*pParam);
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CImageIO>());
         }
 
         size_t  getProgressSteps() override
@@ -124,7 +124,7 @@ class COcvDft : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvDftParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -166,16 +166,16 @@ class COcvDft : public CImageProcess2d
             emit m_signalHandler->doProgress();
 
             // For conserving the real result transform for processing and inverse transform
-            auto pOutputReal = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutputReal = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutputReal)
                 pOutputReal->setImage(realcomp[0]);
             // For conserving the real result transform for processing and inverse transform
-            auto pOutputComplex = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutputComplex = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutputComplex)
                 pOutputComplex->setImage(realcomp[1]);
 
             // For displaying spectrum
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(2));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(2));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -183,7 +183,7 @@ class COcvDft : public CImageProcess2d
         }
 };
 
-class COcvDftFactory : public CProcessFactory
+class COcvDftFactory : public CTaskFactory
 {
     public:
 
@@ -197,7 +197,7 @@ class COcvDftFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDftParam = std::dynamic_pointer_cast<COcvDftParam>(pParam);
             if(pDftParam != nullptr)
@@ -205,7 +205,7 @@ class COcvDftFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDftParam = std::make_shared<COcvDftParam>();
             assert(pDftParam != nullptr);

@@ -23,7 +23,7 @@
 #define CTASKIOREGISTRATION_H
 
 #include "DataProcessGlobal.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 
 class DATAPROCESSSHARED_EXPORT CTaskIORegistration
 {
@@ -32,9 +32,9 @@ class DATAPROCESSSHARED_EXPORT CTaskIORegistration
         CTaskIORegistration();
         ~CTaskIORegistration();
 
-        const CProtocolTaskIOAbstractFactory&   getFactory() const;
+        const CWorkflowTaskIOAbstractFactory&   getFactory() const;
 
-        void                                    registerIO(const std::shared_ptr<CProtocolTaskIOFactory>& pFactory);
+        void                                    registerIO(const std::shared_ptr<CWorkflowTaskIOFactory>& pFactory);
 
         void                                    reset();
 
@@ -44,7 +44,7 @@ class DATAPROCESSSHARED_EXPORT CTaskIORegistration
 
     private:
 
-        CProtocolTaskIOAbstractFactory  m_factory;
+        CWorkflowTaskIOAbstractFactory  m_factory;
 };
 
 #endif // CTASKIOREGISTRATION_H

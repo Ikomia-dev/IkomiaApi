@@ -20,16 +20,16 @@
 #ifndef COCVHOUGHCIRCLES_HPP
 #define COCVHOUGHCIRCLES_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //---------------------------------//
 //----- COcvHoughCirclesParam -----//
 //---------------------------------//
-class COcvHoughCirclesParam: public CProtocolTaskParam
+class COcvHoughCirclesParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvHoughCirclesParam() : CProtocolTaskParam()
+        COcvHoughCirclesParam() : CWorkflowTaskParam()
         {
         }
 
@@ -71,21 +71,21 @@ class COcvHoughCirclesParam: public CProtocolTaskParam
 //----------------------------//
 //----- COcvHoughCircles -----//
 //----------------------------//
-class COcvHoughCircles : public CImageProcess2d
+class COcvHoughCircles : public C2dImageTask
 {
     public:
 
-        COcvHoughCircles() : CImageProcess2d()
+        COcvHoughCircles() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             getOutput(1)->setDataType(IODataType::IMAGE_BINARY);
         }
-        COcvHoughCircles(const std::string name, const std::shared_ptr<COcvHoughCirclesParam>& pParam) : CImageProcess2d(name)
+        COcvHoughCircles(const std::string name, const std::shared_ptr<COcvHoughCirclesParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvHoughCirclesParam>(*pParam);
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             getOutput(1)->setDataType(IODataType::IMAGE_BINARY);
         }
 
@@ -97,8 +97,8 @@ class COcvHoughCircles : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvHoughCirclesParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -133,7 +133,7 @@ class COcvHoughCircles : public CImageProcess2d
         void    manageGraphicsOutput(const std::vector<cv::Vec3f>& circles)
         {
             assert(m_graphicsContextPtr);
-            auto pOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(2));
+            auto pOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(2));
             assert(pOutput);
             pOutput->setNewLayer(getName());
             pOutput->setImageIndex(0);
@@ -147,21 +147,21 @@ class COcvHoughCircles : public CImageProcess2d
         }
         void    manageBinaryOutput()
         {
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pOutputGraphics = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(2));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pOutputGraphics = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(2));
 
             cv::Mat imgSrc = pInput->getImage();
             CGraphicsConversion graphicsConverter(imgSrc.cols, imgSrc.rows);
             CMat binary = graphicsConverter.graphicsToBinaryMask(pOutputGraphics->getItems());
             applyGraphicsMaskToBinary(binary, binary, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput)
                 pOutput->setImage(binary);
         }
 };
 
-class COcvHoughCirclesFactory : public CProcessFactory
+class COcvHoughCirclesFactory : public CTaskFactory
 {
     public:
 
@@ -175,7 +175,7 @@ class COcvHoughCirclesFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvHoughCirclesParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -183,7 +183,7 @@ class COcvHoughCirclesFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvHoughCirclesParam>();
             assert(pDerivedParam != nullptr);

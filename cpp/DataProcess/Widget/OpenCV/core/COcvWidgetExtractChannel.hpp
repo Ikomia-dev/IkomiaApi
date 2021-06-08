@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/core/COcvExtractChannel.hpp"
 
-class COcvWidgetExtractChannel : public CProtocolTaskWidget
+class COcvWidgetExtractChannel : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetExtractChannel(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetExtractChannel(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetExtractChannel(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetExtractChannel(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvExtractChannelParam>(pParam);
             init();
@@ -68,7 +68,7 @@ class COcvWidgetExtractChannelFactory : public CWidgetFactory
             m_name = QObject::tr("Extract channel").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetExtractChannel>(pParam);
         }

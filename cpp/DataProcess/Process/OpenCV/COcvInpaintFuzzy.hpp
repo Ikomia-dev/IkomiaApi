@@ -1,17 +1,17 @@
 #ifndef COCVINPAINTFUZZY_HPP
 #define COCVINPAINTFUZZY_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "opencv2/fuzzy/fuzzy_image.hpp"
 
 //---------------------------------//
 //----- COcvInpaintFuzzyParam -----//
 //---------------------------------//
-class COcvInpaintFuzzyParam: public CProtocolTaskParam
+class COcvInpaintFuzzyParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvInpaintFuzzyParam() : CProtocolTaskParam()
+        COcvInpaintFuzzyParam() : CWorkflowTaskParam()
         {
         }
 
@@ -38,14 +38,14 @@ class COcvInpaintFuzzyParam: public CProtocolTaskParam
 //----------------------------//
 //----- COcvInpaintFuzzy -----//
 //----------------------------//
-class COcvInpaintFuzzy: public CImageProcess2d
+class COcvInpaintFuzzy: public C2dImageTask
 {
     public:
 
-        COcvInpaintFuzzy() : CImageProcess2d()
+        COcvInpaintFuzzy() : C2dImageTask()
         {
         }
-        COcvInpaintFuzzy(const std::string name, const std::shared_ptr<COcvInpaintFuzzyParam>& pParam) : CImageProcess2d(name)
+        COcvInpaintFuzzy(const std::string name, const std::shared_ptr<COcvInpaintFuzzyParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvInpaintFuzzyParam>(*pParam);
         }
@@ -58,8 +58,8 @@ class COcvInpaintFuzzy: public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvInpaintFuzzyParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -90,7 +90,7 @@ class COcvInpaintFuzzy: public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -101,7 +101,7 @@ class COcvInpaintFuzzy: public CImageProcess2d
 //-----------------------------------//
 //----- COcvInpaintFuzzyFactory -----//
 //-----------------------------------//
-class COcvInpaintFuzzyFactory : public CProcessFactory
+class COcvInpaintFuzzyFactory : public CTaskFactory
 {
     public:
 
@@ -115,7 +115,7 @@ class COcvInpaintFuzzyFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/dfc/group__f__image.html#ga62fa7703db24939ad65d7a799e8e599e";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvInpaintFuzzyParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -123,7 +123,7 @@ class COcvInpaintFuzzyFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvInpaintFuzzyParam>();
             assert(pDerivedParam != nullptr);

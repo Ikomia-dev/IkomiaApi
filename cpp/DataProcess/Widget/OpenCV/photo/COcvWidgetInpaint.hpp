@@ -26,15 +26,15 @@
 #include <QGridLayout>
 #include "Process/OpenCV/photo/COcvInpaint.hpp"
 
-class COcvWidgetInpaint : public CProtocolTaskWidget
+class COcvWidgetInpaint : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetInpaint(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetInpaint(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetInpaint(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetInpaint(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvInpaintParam>(pParam);;
             init();
@@ -94,7 +94,7 @@ class COcvWidgetInpaintFactory : public CWidgetFactory
             m_name = QObject::tr("Inpaint filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetInpaint>(pParam);
         }

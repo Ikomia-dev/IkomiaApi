@@ -22,7 +22,7 @@
 //----------------------------//
 //----- COcvDnnCoreParam -----//
 //----------------------------//
-COcvDnnCoreParam::COcvDnnCoreParam() : CProtocolTaskParam()
+COcvDnnCoreParam::COcvDnnCoreParam() : CWorkflowTaskParam()
 {
 }
 
@@ -75,11 +75,11 @@ UMapString COcvDnnProcessParam::getParamMap() const
 //--------------------------//
 //----- COcvDnnProcess -----//
 //--------------------------//
-COcvDnnProcess::COcvDnnProcess() : CImageProcess2d()
+COcvDnnProcess::COcvDnnProcess() : C2dImageTask()
 {
 }
 
-COcvDnnProcess::COcvDnnProcess(const std::string &name) : CImageProcess2d(name)
+COcvDnnProcess::COcvDnnProcess(const std::string &name) : C2dImageTask(name)
 {
 }
 

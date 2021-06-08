@@ -20,7 +20,7 @@
 #ifndef CGMICDOG_HPP
 #define CGMICDOG_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -72,14 +72,14 @@ class CGmicDoGParam: public CGmicTaskParam
 //--------------------//
 //----- CGmicDoG -----//
 //--------------------//
-class CGmicDoG : public CImageProcess2d
+class CGmicDoG : public C2dImageTask
 {
     public:
 
-        CGmicDoG() : CImageProcess2d()
+        CGmicDoG() : C2dImageTask()
         {
         }
-        CGmicDoG(const std::string name, const std::shared_ptr<CGmicDoGParam>& pParam) : CImageProcess2d(name)
+        CGmicDoG(const std::string name, const std::shared_ptr<CGmicDoGParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicDoGParam>(*pParam);
         }
@@ -92,8 +92,8 @@ class CGmicDoG : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicDoGParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -136,7 +136,7 @@ class CGmicDoG : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -144,7 +144,7 @@ class CGmicDoG : public CImageProcess2d
         }
 };
 
-class CGmicDoGFactory : public CProcessFactory
+class CGmicDoGFactory : public CTaskFactory
 {
     public:
 
@@ -159,7 +159,7 @@ class CGmicDoGFactory : public CProcessFactory
             m_info.m_year = 2010;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicDoGParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -167,7 +167,7 @@ class CGmicDoGFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicDoGParam>();
             assert(pParam != nullptr);

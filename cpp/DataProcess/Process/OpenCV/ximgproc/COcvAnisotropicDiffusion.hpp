@@ -20,18 +20,18 @@
 #ifndef COCVANISOTROPICDIFFUSION_HPP
 #define COCVANISOTROPICDIFFUSION_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //-----------------------------------------//
 //----- COcvAnisotropicDiffusionParam -----//
 //-----------------------------------------//
-class COcvAnisotropicDiffusionParam: public CProtocolTaskParam
+class COcvAnisotropicDiffusionParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvAnisotropicDiffusionParam() : CProtocolTaskParam(){}
+        COcvAnisotropicDiffusionParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -59,14 +59,14 @@ class COcvAnisotropicDiffusionParam: public CProtocolTaskParam
 //------------------------------------//
 //----- COcvAnisotropicDiffusion -----//
 //------------------------------------//
-class COcvAnisotropicDiffusion : public CImageProcess2d
+class COcvAnisotropicDiffusion : public C2dImageTask
 {
     public:
 
-        COcvAnisotropicDiffusion() : CImageProcess2d()
+        COcvAnisotropicDiffusion() : C2dImageTask()
         {
         }
-        COcvAnisotropicDiffusion(const std::string name, const std::shared_ptr<COcvAnisotropicDiffusionParam>& pParam) : CImageProcess2d(name)
+        COcvAnisotropicDiffusion(const std::string name, const std::shared_ptr<COcvAnisotropicDiffusionParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvAnisotropicDiffusionParam>(*pParam);
         }
@@ -79,8 +79,8 @@ class COcvAnisotropicDiffusion : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvAnisotropicDiffusionParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -107,7 +107,7 @@ class COcvAnisotropicDiffusion : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -115,7 +115,7 @@ class COcvAnisotropicDiffusion : public CImageProcess2d
         }
 };
 
-class COcvAnisotropicDiffusionFactory : public CProcessFactory
+class COcvAnisotropicDiffusionFactory : public CTaskFactory
 {
     public:
 
@@ -129,7 +129,7 @@ class COcvAnisotropicDiffusionFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d2d/group__ximgproc.html#gaffedd976e0a8efb5938107acab185ec2";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvAnisotropicDiffusionParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -137,7 +137,7 @@ class COcvAnisotropicDiffusionFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvAnisotropicDiffusionParam>();
             assert(pDerivedParam != nullptr);

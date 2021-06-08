@@ -19,7 +19,7 @@
 
 #include "CPluginProcessInterfaceWrap.h"
 
-std::shared_ptr<CProcessFactory> CPluginProcessInterfaceWrap::getProcessFactory()
+std::shared_ptr<CTaskFactory> CPluginProcessInterfaceWrap::getProcessFactory()
 {
     CPyEnsureGIL gil;
     try

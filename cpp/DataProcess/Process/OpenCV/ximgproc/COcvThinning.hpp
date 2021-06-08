@@ -20,18 +20,18 @@
 #ifndef COCVTHINNING_HPP
 #define COCVTHINNING_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include "opencv2/ximgproc.hpp"
 
 //-----------------------------//
 //----- COcvThinningParam -----//
 //-----------------------------//
-class COcvThinningParam: public CProtocolTaskParam
+class COcvThinningParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvThinningParam() : CProtocolTaskParam(){}
+        COcvThinningParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -53,15 +53,15 @@ class COcvThinningParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvThinning -----//
 //-------------------------//
-class COcvThinning : public CImageProcess2d
+class COcvThinning : public C2dImageTask
 {
     public:
 
-        COcvThinning() : CImageProcess2d()
+        COcvThinning() : C2dImageTask()
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
         }
-        COcvThinning(const std::string name, const std::shared_ptr<COcvThinningParam>& pParam) : CImageProcess2d(name)
+        COcvThinning(const std::string name, const std::shared_ptr<COcvThinningParam>& pParam) : C2dImageTask(name)
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             m_pParam = std::make_shared<COcvThinningParam>(*pParam);
@@ -75,8 +75,8 @@ class COcvThinning : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvThinningParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -103,7 +103,7 @@ class COcvThinning : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -111,7 +111,7 @@ class COcvThinning : public CImageProcess2d
         }
 };
 
-class COcvThinningFactory : public CProcessFactory
+class COcvThinningFactory : public CTaskFactory
 {
     public:
 
@@ -125,7 +125,7 @@ class COcvThinningFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d2d/group__ximgproc.html#ga37002c6ca80c978edb6ead5d6b39740c";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvThinningParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -133,7 +133,7 @@ class COcvThinningFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvThinningParam>();
             assert(pDerivedParam != nullptr);

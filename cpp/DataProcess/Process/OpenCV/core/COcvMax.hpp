@@ -21,16 +21,16 @@
 #define COCVMAX_HPP
 
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //------------------------//
 //----- COcvMaxParam -----//
 //------------------------//
-class COcvMaxParam: public CProtocolTaskParam
+class COcvMaxParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMaxParam() : CProtocolTaskParam(){}
+        COcvMaxParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,18 +61,18 @@ class COcvMaxParam: public CProtocolTaskParam
 //-------------------//
 //----- COcvMax -----//
 //-------------------//
-class COcvMax : public CImageProcess2d
+class COcvMax : public C2dImageTask
 {
     public:
 
-        COcvMax() : CImageProcess2d()
+        COcvMax() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvMax(const std::string name, const std::shared_ptr<COcvMaxParam>& pParam) : CImageProcess2d(name)
+        COcvMax(const std::string name, const std::shared_ptr<COcvMaxParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvMaxParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
 
         size_t  getProgressSteps() override
@@ -87,8 +87,8 @@ class COcvMax : public CImageProcess2d
             if(getInputCount() < 3)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMaxParam>(m_pParam);
 
             if(pParam == nullptr)
@@ -138,7 +138,7 @@ class COcvMax : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -148,7 +148,7 @@ class COcvMax : public CImageProcess2d
         }
 };
 
-class COcvMaxFactory : public CProcessFactory
+class COcvMaxFactory : public CTaskFactory
 {
     public:
 
@@ -162,7 +162,7 @@ class COcvMaxFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#gacc40fa15eac0fb83f8ca70b7cc0b588d";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvMaxParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -170,7 +170,7 @@ class COcvMaxFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvMaxParam>();
             assert(pDerivedParam != nullptr);

@@ -20,17 +20,17 @@
 #ifndef COCVSPLIT_HPP
 #define COCVSPLIT_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvSplitParam -----//
 //------------------------------//
-class COcvSplitParam: public CProtocolTaskParam
+class COcvSplitParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSplitParam() : CProtocolTaskParam(){}
+        COcvSplitParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,20 +52,20 @@ class COcvSplitParam: public CProtocolTaskParam
 //---------------------//
 //----- COcvSplit -----//
 //---------------------//
-class COcvSplit : public CImageProcess2d
+class COcvSplit : public C2dImageTask
 {
     public:
 
-        COcvSplit() : CImageProcess2d(false)
+        COcvSplit() : C2dImageTask(false)
         {
         }
-        COcvSplit(const std::string name, const std::shared_ptr<COcvSplitParam>& pParam) : CImageProcess2d(name, false)
+        COcvSplit(const std::string name, const std::shared_ptr<COcvSplitParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvSplitParam>(*pParam);
             parametersModified();            
         }
 
-        void    setParam(const ProtocolTaskParamPtr &pParam) override
+        void    setParam(const WorkflowTaskParamPtr &pParam) override
         {
             m_pParam = pParam;
             parametersModified();
@@ -79,7 +79,7 @@ class COcvSplit : public CImageProcess2d
             if(pParam->m_outputCount > outOldCount)
             {
                 for(int i=0; i<pParam->m_outputCount - outOldCount; ++i)
-                    addOutput(std::make_shared<CImageProcessIO>());
+                    addOutput(std::make_shared<CImageIO>());
             }
             else
             {
@@ -102,7 +102,7 @@ class COcvSplit : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             if(pInput == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
 
@@ -129,7 +129,7 @@ class COcvSplit : public CImageProcess2d
 
             for(size_t i=0; i<getOutputCount(); ++i)
             {
-                auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(i));
+                auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(i));
                 if(pOutput)
                 {
                     if(i < pInput->m_channelCount)
@@ -143,7 +143,7 @@ class COcvSplit : public CImageProcess2d
         }
 };
 
-class COcvSplitFactory : public CProcessFactory
+class COcvSplitFactory : public CTaskFactory
 {
     public:
 
@@ -157,7 +157,7 @@ class COcvSplitFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga0547c7fed86152d7e9d0096029c8518a";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSplitParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -165,7 +165,7 @@ class COcvSplitFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<COcvSplitParam>();
             assert(pParam != nullptr);

@@ -24,9 +24,9 @@
     </message>
 </context>
 <context>
-    <name>CProtocolTaskWidget</name>
+    <name>CWorkflowTaskWidget</name>
     <message>
-        <location filename="../Protocol/CProtocolTaskWidget.cpp" line="25"/>
+        <location filename="../Workflow/CWorkflowTaskWidget.cpp" line="25"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
@@ -344,12 +344,12 @@
         <translation type="vanished">Arrêt du workflow en cours...</translation>
     </message>
     <message>
-        <source>Protocol stop requested by user</source>
-        <translation type="vanished">Arrêt du protocol demandé par l&apos;utilisateur</translation>
+        <source>Workflow stop requested by user</source>
+        <translation type="vanished">Arrêt du Workflow demandé par l&apos;utilisateur</translation>
     </message>
     <message>
-        <source>Stopping protocol...</source>
-        <translation type="vanished">Arrêt du protocole en cours...</translation>
+        <source>Stopping Workflow...</source>
+        <translation type="vanished">Arrêt du Workflowe en cours...</translation>
     </message>
     <message>
         <source>No possible connection to input #%1</source>

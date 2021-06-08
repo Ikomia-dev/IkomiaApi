@@ -21,10 +21,6 @@ SOURCES += \
         Data/CDataDicomInfo.cpp \
         Data/CDataVideoInfo.cpp \
         Data/CMeasure.cpp \
-        Protocol/CProtocolTask.cpp \
-        Protocol/CProtocolTaskIO.cpp \
-        Protocol/CProtocolTaskWidget.cpp \
-        Protocol/CProtocolTaskParam.cpp \
         Graphics/CGraphicsLayer.cpp \
         Graphics/CGraphicsJSON.cpp \
         Graphics/CGraphicsComplexPolygon.cpp \
@@ -36,7 +32,11 @@ SOURCES += \
         Graphics/CGraphicsConversion.cpp \
         Graphics/CGraphicsPoint.cpp \
         Graphics/CGraphicsContext.cpp \
-        Protocol/CViewPropertyIO.cpp
+        Workflow/CViewPropertyIO.cpp \
+        Workflow/CWorkflowTask.cpp \
+        Workflow/CWorkflowTaskIO.cpp \
+        Workflow/CWorkflowTaskParam.cpp \
+        Workflow/CWorkflowTaskWidget.cpp
 
 HEADERS += \
         Data/CDataArrayInfo.h \
@@ -54,11 +54,6 @@ HEADERS += \
         Graphics/CGraphicsItem.hpp \
         Graphics/CPoint.hpp \
         Graphics/GraphicsProperty.hpp \
-        Protocol/CProtocolEdge.hpp \
-        Protocol/CProtocolTask.h \
-        Protocol/CProtocolTaskIO.h \
-        Protocol/CProtocolTaskWidget.h \
-        Protocol/CProtocolTaskParam.h \
         Graphics/CGraphicsLayer.h \
         Graphics/CGraphicsJSON.h \
         Graphics/CGraphicsComplexPolygon.h \
@@ -70,11 +65,16 @@ HEADERS += \
         Graphics/CGraphicsPoint.h \
         Graphics/CGraphicsConversion.h \
         Graphics/CGraphicsContext.h \
-        Protocol/CViewPropertyIO.h \
+        Workflow/CViewPropertyIO.h \
         Main/CoreDefine.hpp \
         Main/CoreTools.hpp \
         Main/forwards.hpp \
-        Main/CoreGlobal.hpp
+        Main/CoreGlobal.hpp \
+        Workflow/CWorkflowEdge.hpp \
+        Workflow/CWorkflowTask.h \
+        Workflow/CWorkflowTaskIO.h \
+        Workflow/CWorkflowTaskParam.h \
+        Workflow/CWorkflowTaskWidget.h
 
 #Use of 'lupdate Core.pro' to update translation files
 #Use of 'lrelease Core.pro' to generate .qm files
@@ -113,14 +113,14 @@ deployIncludeGraphics.files = \
         Graphics/CPoint.hpp \
         Graphics/GraphicsProperty.hpp
 
-deployIncludeProtocol.path = ../Build/Include/Core/Protocol
-deployIncludeProtocol.files = \
-        Protocol/CProtocolEdge.hpp \
-        Protocol/CProtocolTaskParam.h \
-        Protocol/CProtocolTaskWidget.h \
-        Protocol/CProtocolTask.h \
-        Protocol/CProtocolTaskIO.h \
-        Protocol/CViewPropertyIO.h
+deployIncludeWorkflow.path = ../Build/Include/Core/Workflow
+deployIncludeWorkflow.files = \
+        Workflow/CWorkflowEdge.hpp \
+        Workflow/CWorkflowTaskParam.h \
+        Workflow/CWorkflowTaskWidget.h \
+        Workflow/CWorkflowTask.h \
+        Workflow/CWorkflowTaskIO.h \
+        Workflow/CViewPropertyIO.h
 
 deployIncludeMain.path = ../Build/Include/Core/Main
 deployIncludeMain.files = \
@@ -131,7 +131,7 @@ deployIncludeMain.files = \
 INSTALLS += target
 INSTALLS += deployIncludeData
 INSTALLS += deployIncludeGraphics
-INSTALLS += deployIncludeProtocol
+INSTALLS += deployIncludeWorkflow
 INSTALLS += deployIncludeMain
 
 LIBS += $$link_opencv()

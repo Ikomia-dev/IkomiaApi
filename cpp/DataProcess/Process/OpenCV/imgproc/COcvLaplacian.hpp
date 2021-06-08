@@ -20,17 +20,17 @@
 #ifndef COCVLAPLACIAN_HPP
 #define COCVLAPLACIAN_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvLaplacianParam -----//
 //------------------------------//
-class COcvLaplacianParam: public CProtocolTaskParam
+class COcvLaplacianParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvLaplacianParam() : CProtocolTaskParam(){}
+        COcvLaplacianParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -64,14 +64,14 @@ class COcvLaplacianParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvLaplacian -----//
 //-------------------------//
-class COcvLaplacian : public CImageProcess2d
+class COcvLaplacian : public C2dImageTask
 {
     public:
 
-        COcvLaplacian() : CImageProcess2d()
+        COcvLaplacian() : C2dImageTask()
         {
         }
-        COcvLaplacian(const std::string name, const std::shared_ptr<COcvLaplacianParam>& pParam) : CImageProcess2d(name)
+        COcvLaplacian(const std::string name, const std::shared_ptr<COcvLaplacianParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvLaplacianParam>(*pParam);
         }
@@ -84,8 +84,8 @@ class COcvLaplacian : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvLaplacianParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -112,7 +112,7 @@ class COcvLaplacian : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -120,7 +120,7 @@ class COcvLaplacian : public CImageProcess2d
         }
 };
 
-class COcvLaplacianFactory : public CProcessFactory
+class COcvLaplacianFactory : public CTaskFactory
 {
     public:
 
@@ -134,7 +134,7 @@ class COcvLaplacianFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pLaplacianParam = std::dynamic_pointer_cast<COcvLaplacianParam>(pParam);
             if(pLaplacianParam != nullptr)
@@ -142,7 +142,7 @@ class COcvLaplacianFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pLaplacianParam = std::make_shared<COcvLaplacianParam>();
             assert(pLaplacianParam != nullptr);

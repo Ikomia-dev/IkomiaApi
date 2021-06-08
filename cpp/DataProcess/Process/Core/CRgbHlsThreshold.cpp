@@ -18,12 +18,12 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "CRgbHlsThreshold.h"
-#include "IO/CImageProcessIO.h"
+#include "IO/CImageIO.h"
 
 //---------------------------------//
 //----- CRgbHlsThresholdParam -----//
 //---------------------------------//
-CRgbHlsThresholdParam::CRgbHlsThresholdParam() : CProtocolTaskParam()
+CRgbHlsThresholdParam::CRgbHlsThresholdParam() : CWorkflowTaskParam()
 {
 }
 
@@ -64,18 +64,18 @@ UMapString CRgbHlsThresholdParam::getParamMap() const
 //----------------------------//
 //----- CRgbHlsThreshold -----//
 //----------------------------//
-CRgbHlsThreshold::CRgbHlsThreshold() : CInteractiveImageProcess2d()
+CRgbHlsThreshold::CRgbHlsThreshold() : C2dImageInteractiveTask()
 {
     setOutputDataType(IODataType::IMAGE_BINARY, 0);
-    addOutput(std::make_shared<CImageProcessIO>());
+    addOutput(std::make_shared<CImageIO>());
     setOutputColorMap(1, 0, {{255,0,0}});
 }
 
 CRgbHlsThreshold::CRgbHlsThreshold(const std::string name, const std::shared_ptr<CRgbHlsThresholdParam> &pParam)
-    : CInteractiveImageProcess2d(name)
+    : C2dImageInteractiveTask(name)
 {
     setOutputDataType(IODataType::IMAGE_BINARY, 0);
-    addOutput(std::make_shared<CImageProcessIO>());
+    addOutput(std::make_shared<CImageIO>());
     setOutputColorMap(1, 0, {{255,0,0}});
     m_pParam = std::make_shared<CRgbHlsThresholdParam>(*pParam);
 }
@@ -98,8 +98,8 @@ void CRgbHlsThreshold::graphicsChanged()
 void CRgbHlsThreshold::run()
 {
     beginTaskRun();
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-    auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+    auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
     auto pParam = std::dynamic_pointer_cast<CRgbHlsThresholdParam>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -150,7 +150,7 @@ void CRgbHlsThreshold::run()
     applyGraphicsMaskToBinary(imgDst, imgDst, 0);
     forwardInputImage(0, 1);
 
-    auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+    auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
     if(pOutput)
         pOutput->setImage(imgDst);
 
@@ -169,7 +169,7 @@ void CRgbHlsThreshold::executeActions(int flags)
 
 void CRgbHlsThreshold::updateThresholds()
 {
-    auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+    auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
     auto pParam = std::dynamic_pointer_cast<CRgbHlsThresholdParam>(m_pParam);
 
     if(pInput == nullptr || pParam == nullptr)
@@ -230,7 +230,7 @@ CRgbHlsThresholdFactory::CRgbHlsThresholdFactory()
     m_info.m_keywords = "Color segmentation, RGB, HLS, threshold";
 }
 
-ProtocolTaskPtr CRgbHlsThresholdFactory::create(const ProtocolTaskParamPtr &pParam)
+WorkflowTaskPtr CRgbHlsThresholdFactory::create(const WorkflowTaskParamPtr &pParam)
 {
     auto pDerivedParam = std::dynamic_pointer_cast<CRgbHlsThresholdParam>(pParam);
     if(pDerivedParam != nullptr)
@@ -239,7 +239,7 @@ ProtocolTaskPtr CRgbHlsThresholdFactory::create(const ProtocolTaskParamPtr &pPar
         return create();
 }
 
-ProtocolTaskPtr CRgbHlsThresholdFactory::create()
+WorkflowTaskPtr CRgbHlsThresholdFactory::create()
 {
     auto pDerivedParam = std::make_shared<CRgbHlsThresholdParam>();
     assert(pDerivedParam != nullptr);

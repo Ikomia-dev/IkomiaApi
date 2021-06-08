@@ -20,18 +20,18 @@
 #ifndef COCVDISOPTICALFLOW_HPP
 #define COCVDISOPTICALFLOW_HPP
 
-#include "Core/CVideoProcessOF.h"
-#include "IO/CVideoProcessIO.h"
+#include "Core/CVideoOFTask.h"
+#include "IO/CVideoIO.h"
 #include "opencv2/tracking.hpp"
 
 //------------------------------//
 //----- COcvDISOFParam -----//
 //------------------------------//
-class COcvDISOFParam: public CProtocolTaskParam
+class COcvDISOFParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDISOFParam() : CProtocolTaskParam(){}
+        COcvDISOFParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -57,14 +57,14 @@ class COcvDISOFParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDISOF -----//
 //-------------------------//
-class COcvDISOF : public CVideoProcessOF
+class COcvDISOF : public CVideoOFTask
 {
     public:
 
-        COcvDISOF() : CVideoProcessOF()
+        COcvDISOF() : CVideoOFTask()
         {
         }
-        COcvDISOF(const std::string name, const std::shared_ptr<COcvDISOFParam>& pParam) : CVideoProcessOF(name)
+        COcvDISOF(const std::string name, const std::shared_ptr<COcvDISOFParam>& pParam) : CVideoOFTask(name)
         {
             m_pParam = std::make_shared<COcvDISOFParam>(*pParam);
         }
@@ -82,8 +82,8 @@ class COcvDISOF : public CVideoProcessOF
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CVideoProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CVideoIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDISOFParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -125,7 +125,7 @@ class COcvDISOF : public CVideoProcessOF
         }
 };
 
-class COcvDISOFFactory : public CProcessFactory
+class COcvDISOFFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvDISOFFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d06/classcv_1_1optflow_1_1DISOpticalFlow.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDISOFParam = std::dynamic_pointer_cast<COcvDISOFParam>(pParam);
             if(pDISOFParam != nullptr)
@@ -147,7 +147,7 @@ class COcvDISOFFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDISOFParam = std::make_shared<COcvDISOFParam>();
             assert(pDISOFParam != nullptr);

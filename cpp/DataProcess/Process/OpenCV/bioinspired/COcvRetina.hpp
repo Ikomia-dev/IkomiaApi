@@ -20,18 +20,18 @@
 #ifndef COCVRETINA_HPP
 #define COCVRETINA_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/bioinspired.hpp>
 
 //----------------------------//
 //----- COcvRetinaParam -----//
 //----------------------------//
-class COcvRetinaParam: public CProtocolTaskParam
+class COcvRetinaParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRetinaParam() : CProtocolTaskParam(){}
+        COcvRetinaParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,17 +52,17 @@ class COcvRetinaParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvRetina -----//
 //-----------------------//
-class COcvRetina : public CImageProcess2d
+class COcvRetina : public C2dImageTask
 {
     public:
 
-        COcvRetina() : CImageProcess2d()
+        COcvRetina() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
         }
-        COcvRetina(const std::string name, const std::shared_ptr<COcvRetinaParam>& pParam) : CImageProcess2d(name)
+        COcvRetina(const std::string name, const std::shared_ptr<COcvRetinaParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             m_pParam = std::make_shared<COcvRetinaParam>(*pParam);
         }
 
@@ -74,7 +74,7 @@ class COcvRetina : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvRetinaParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -145,11 +145,11 @@ class COcvRetina : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(imgParvo);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(imgMagno);
 
@@ -166,7 +166,7 @@ class COcvRetina : public CImageProcess2d
         int                                 m_height = 0;
 };
 
-class COcvRetinaFactory : public CProcessFactory
+class COcvRetinaFactory : public CTaskFactory
 {
     public:
 
@@ -184,7 +184,7 @@ class COcvRetinaFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/d54/classcv_1_1bioinspired_1_1Retina.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pRetinaParam = std::dynamic_pointer_cast<COcvRetinaParam>(pParam);
             if(pRetinaParam != nullptr)
@@ -192,7 +192,7 @@ class COcvRetinaFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pRetinaParam = std::make_shared<COcvRetinaParam>();
             assert(pRetinaParam != nullptr);

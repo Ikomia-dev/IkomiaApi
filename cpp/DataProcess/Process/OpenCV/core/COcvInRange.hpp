@@ -20,17 +20,17 @@
 #ifndef COCVINRANGE_HPP
 #define COCVINRANGE_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvInRangeParam -----//
 //--------------------------------//
-class COcvInRangeParam: public CProtocolTaskParam
+class COcvInRangeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvInRangeParam() : CProtocolTaskParam(){}
+        COcvInRangeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -75,20 +75,20 @@ class COcvInRangeParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvInRange -----//
 //---------------------------//
-class COcvInRange : public CImageProcess2d
+class COcvInRange : public C2dImageTask
 {
     public:
 
-        COcvInRange() : CImageProcess2d()
+        COcvInRange() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
-            insertInput(std::make_shared<CImageProcessIO>(), 2);
+            insertInput(std::make_shared<CImageIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 2);
         }
-        COcvInRange(const std::string name, const std::shared_ptr<COcvInRangeParam>& pParam) : CImageProcess2d(name)
+        COcvInRange(const std::string name, const std::shared_ptr<COcvInRangeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvInRangeParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
-            insertInput(std::make_shared<CImageProcessIO>(), 2);
+            insertInput(std::make_shared<CImageIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 2);
         }
 
         size_t getProgressSteps() override
@@ -101,7 +101,7 @@ class COcvInRange : public CImageProcess2d
             assert(getInputCount() == 4);
             beginTaskRun();
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvInRangeParam>(m_pParam);
 
             if(pParam == nullptr)
@@ -128,7 +128,7 @@ class COcvInRange : public CImageProcess2d
                 else
                 {
                     //lower:scalar - upper:image
-                    auto pInputUpper = std::dynamic_pointer_cast<CImageProcessIO>(getInput(2));
+                    auto pInputUpper = std::dynamic_pointer_cast<CImageIO>(getInput(2));
                     if(pInputUpper == nullptr)
                         throw CException(CoreExCode::NULL_POINTER, "Empty upper image", __func__, __FILE__, __LINE__);
 
@@ -148,7 +148,7 @@ class COcvInRange : public CImageProcess2d
             else if(pParam->m_bUpperScalar == true)
             {
                 //lower:image - upper:scalar
-                auto pInputLower = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+                auto pInputLower = std::dynamic_pointer_cast<CImageIO>(getInput(1));
                 if(pInputLower == nullptr)
                     throw CException(CoreExCode::NULL_POINTER, "Empty lower image", __func__, __FILE__, __LINE__);
 
@@ -167,8 +167,8 @@ class COcvInRange : public CImageProcess2d
             else
             {
                 //Lower:image - upper:image
-                auto pInputLower = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-                auto pInputUpper = std::dynamic_pointer_cast<CImageProcessIO>(getInput(2));
+                auto pInputLower = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+                auto pInputUpper = std::dynamic_pointer_cast<CImageIO>(getInput(2));
 
                 if(pInputLower == nullptr || pInputUpper == nullptr)
                     throw CException(CoreExCode::NULL_POINTER, "Empty bounds images", __func__, __FILE__, __LINE__);
@@ -187,7 +187,7 @@ class COcvInRange : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -197,7 +197,7 @@ class COcvInRange : public CImageProcess2d
         }
 };
 
-class COcvInRangeFactory : public CProcessFactory
+class COcvInRangeFactory : public CTaskFactory
 {
     public:
 
@@ -211,7 +211,7 @@ class COcvInRangeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvInRangeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -219,7 +219,7 @@ class COcvInRangeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvInRangeParam>();
             assert(pDerivedParam != nullptr);

@@ -20,18 +20,18 @@
 #ifndef COCVTEXTUREFLATTENING_HPP
 #define COCVTEXTUREFLATTENING_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/photo.hpp>
 
 //----------------------------------//
 //----- COcvTextureFlatteningParam -----//
 //----------------------------------//
-class COcvTextureFlatteningParam : public CProtocolTaskParam
+class COcvTextureFlatteningParam : public CWorkflowTaskParam
 {
     public:
 
-        COcvTextureFlatteningParam() : CProtocolTaskParam(){}
+        COcvTextureFlatteningParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -58,14 +58,14 @@ class COcvTextureFlatteningParam : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvTextureFlattening -----//
 //-----------------------------//
-class COcvTextureFlattening : public CImageProcess2d
+class COcvTextureFlattening : public C2dImageTask
 {
     public:
 
-        COcvTextureFlattening() : CImageProcess2d()
+        COcvTextureFlattening() : C2dImageTask()
         {
         }
-        COcvTextureFlattening(const std::string name, const std::shared_ptr<COcvTextureFlatteningParam>& pParam) : CImageProcess2d(name)
+        COcvTextureFlattening(const std::string name, const std::shared_ptr<COcvTextureFlatteningParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvTextureFlatteningParam>(*pParam);
         }
@@ -78,8 +78,8 @@ class COcvTextureFlattening : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvTextureFlatteningParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -115,7 +115,7 @@ class COcvTextureFlattening : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -123,7 +123,7 @@ class COcvTextureFlattening : public CImageProcess2d
         }
 };
 
-class COcvTextureFlatteningFactory : public CProcessFactory
+class COcvTextureFlatteningFactory : public CTaskFactory
 {
     public:
 
@@ -137,7 +137,7 @@ class COcvTextureFlatteningFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/da0/group__photo__clone.html#gad55df6aa53797365fa7cc23959a54004";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pTextureFlatteningParam = std::dynamic_pointer_cast<COcvTextureFlatteningParam>(pParam);
             if(pTextureFlatteningParam != nullptr)
@@ -145,7 +145,7 @@ class COcvTextureFlatteningFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pTextureFlatteningParam = std::make_shared<COcvTextureFlatteningParam>();
             assert(pTextureFlatteningParam != nullptr);

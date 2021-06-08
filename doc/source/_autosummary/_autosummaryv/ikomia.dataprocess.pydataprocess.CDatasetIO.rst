@@ -11,7 +11,7 @@ CDatasetIO
          from ikomia import dataprocess
 
    **Note**: a default implementation is provided in the pure Python API.
-   See :py:mod:`datasetio` for details.
+   See :py:mod:`~ikomia.dnn.datasetio` for details.
 
    .. rubric:: Methods
    .. autosummary::

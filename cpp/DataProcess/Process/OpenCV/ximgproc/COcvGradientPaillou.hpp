@@ -20,20 +20,20 @@
 #ifndef COCVGRADIENTPAILLOU_HPP
 #define COCVGRADIENTPAILLOU_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------//
 //----- COcvGradientPaillouParam -----//
 //------------------------------//
-class COcvGradientPaillouParam: public CProtocolTaskParam
+class COcvGradientPaillouParam: public CWorkflowTaskParam
 {
     public:
         enum orientation : int {
           X,Y
         };
-        COcvGradientPaillouParam() : CProtocolTaskParam(){}
+        COcvGradientPaillouParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -61,14 +61,14 @@ class COcvGradientPaillouParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvGradientPaillou -----//
 //-------------------------//
-class COcvGradientPaillou : public CImageProcess2d
+class COcvGradientPaillou : public C2dImageTask
 {
     public:
 
-        COcvGradientPaillou() : CImageProcess2d()
+        COcvGradientPaillou() : C2dImageTask()
         {
         }
-        COcvGradientPaillou(const std::string name, const std::shared_ptr<COcvGradientPaillouParam>& pParam) : CImageProcess2d(name)
+        COcvGradientPaillou(const std::string name, const std::shared_ptr<COcvGradientPaillouParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvGradientPaillouParam>(*pParam);
         }
@@ -81,8 +81,8 @@ class COcvGradientPaillou : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvGradientPaillouParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -112,7 +112,7 @@ class COcvGradientPaillou : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -120,7 +120,7 @@ class COcvGradientPaillou : public CImageProcess2d
         }
 };
 
-class COcvGradientPaillouFactory : public CProcessFactory
+class COcvGradientPaillouFactory : public CTaskFactory
 {
     public:
 
@@ -138,7 +138,7 @@ class COcvGradientPaillouFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d17/group__ximgproc__filters.html#ga72624ecc016ba7b637374de088fe9cc2";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGradientPaillouParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -146,7 +146,7 @@ class COcvGradientPaillouFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGradientPaillouParam>();
             assert(pDerivedParam != nullptr);

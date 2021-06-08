@@ -20,18 +20,18 @@
 #ifndef COCVKMEANS_HPP
 #define COCVKMEANS_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
-#include "IO/CMeasureProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
+#include "IO/CMeasureIO.h"
 
 //------------------------------//
 //----- COcvKMeansParam -----//
 //------------------------------//
-class COcvKMeansParam: public CProtocolTaskParam
+class COcvKMeansParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvKMeansParam() : CProtocolTaskParam(){}
+        COcvKMeansParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -68,22 +68,22 @@ class COcvKMeansParam: public CProtocolTaskParam
 //----------------------//
 //----- COcvKMeans -----//
 //----------------------//
-class COcvKMeans : public CImageProcess2d
+class COcvKMeans : public C2dImageTask
 {
     public:
 
-        COcvKMeans() : CImageProcess2d()
+        COcvKMeans() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_LABEL));
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_LABEL));
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CMeasureIO>());
             setOutputColorMap(2, 1);
         }
-        COcvKMeans(const std::string name, const std::shared_ptr<COcvKMeansParam>& pParam) : CImageProcess2d(name)
+        COcvKMeans(const std::string name, const std::shared_ptr<COcvKMeansParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_LABEL));
-            addOutput(std::make_shared<CImageProcessIO>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_LABEL));
+            addOutput(std::make_shared<CImageIO>());
+            addOutput(std::make_shared<CMeasureIO>());
             setOutputColorMap(2, 1);
             m_pParam = std::make_shared<COcvKMeansParam>(*pParam);
         }
@@ -96,8 +96,8 @@ class COcvKMeans : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvKMeansParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -161,7 +161,7 @@ class COcvKMeans : public CImageProcess2d
             forwardInputImage(0, 2);
 
             //Color or monochrome image according to source image
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
             {
                 applyGraphicsMask(imgSrc, imgDst1, 0);
@@ -169,7 +169,7 @@ class COcvKMeans : public CImageProcess2d
             }
 
             //Label image monochrome
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
             {
                 applyGraphicsMaskToBinary(imgDst2, imgDst2, 0);
@@ -177,7 +177,7 @@ class COcvKMeans : public CImageProcess2d
             }
 
             //Compactness and center values
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(3));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(3));
             if(pMeasureOutput)
             {
                 pMeasureOutput->addObjectMeasure(CObjectMeasure(CMeasure(CMeasure::CUSTOM, QObject::tr("Compactness").toStdString()), compactness, -1, ""));
@@ -218,7 +218,7 @@ class COcvKMeans : public CImageProcess2d
         }
 };
 
-class COcvKMeansFactory : public CProcessFactory
+class COcvKMeansFactory : public CTaskFactory
 {
     public:
 
@@ -232,7 +232,7 @@ class COcvKMeansFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvKMeansParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -240,7 +240,7 @@ class COcvKMeansFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvKMeansParam>();
             assert(pDerivedParam != nullptr);

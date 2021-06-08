@@ -30,7 +30,7 @@ class COcvWidgetMotionSaliencyBinWangApr2014 : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetMotionSaliencyBinWangApr2014(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetMotionSaliencyBinWangApr2014(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -44,7 +44,7 @@ class COcvWidgetMotionSaliencyBinWangApr2014Factory : public CWidgetFactory
             m_name = QObject::tr("MotionSaliencyBinWangApr2014").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetMotionSaliencyBinWangApr2014>(pParam);
         }

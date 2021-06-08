@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Colors/CGmicBoostFade.hpp"
 
-class CGmicWidgetBoostFade : public CProtocolTaskWidget
+class CGmicWidgetBoostFade : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetBoostFade(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetBoostFade(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetBoostFade(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetBoostFade(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicBoostFadeParam>(pParam);
             init();
@@ -75,7 +75,7 @@ class CGmicWidgetBoostFadeFactory : public CWidgetFactory
             m_name = QObject::tr("Boost fade").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetBoostFade>(pParam);
         }

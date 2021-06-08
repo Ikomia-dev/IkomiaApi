@@ -25,16 +25,16 @@
 #include <QLabel>
 #include <QGridLayout>
 
-class COcvWidgetColorMap : public CProtocolTaskWidget
+class COcvWidgetColorMap : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetColorMap(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetColorMap(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetColorMap(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetColorMap(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvColorMapParam>(pParam);
             init();
@@ -90,7 +90,7 @@ class COcvWidgetColorMapFactory : public CWidgetFactory
             m_name = QObject::tr("Colormap").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetColorMap>(pParam);
         }

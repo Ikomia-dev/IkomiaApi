@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Details/CGmicConstrainedSharpen.hpp"
 
-class CGmicWidgetConstrainedSharpen : public CProtocolTaskWidget
+class CGmicWidgetConstrainedSharpen : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetConstrainedSharpen(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetConstrainedSharpen(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetConstrainedSharpen(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetConstrainedSharpen(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicConstrainedSharpenParam>(pParam);
             init();
@@ -92,7 +92,7 @@ class CGmicWidgetConstrainedSharpenFactory : public CWidgetFactory
             m_name = QObject::tr("Constrained sharpen").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetConstrainedSharpen>(pParam);
         }

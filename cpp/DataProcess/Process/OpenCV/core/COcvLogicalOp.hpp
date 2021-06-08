@@ -21,19 +21,19 @@
 #define COCVAND_HPP
 
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvLogicalOpParam -----//
 //------------------------------//
-class COcvLogicalOpParam : public CProtocolTaskParam
+class COcvLogicalOpParam : public CWorkflowTaskParam
 {
     public:
 
         enum BitwiseOp {AND, OR, NOT, XOR};
 
-        COcvLogicalOpParam() : CProtocolTaskParam()
+        COcvLogicalOpParam() : CWorkflowTaskParam()
         {
         }
 
@@ -57,17 +57,17 @@ class COcvLogicalOpParam : public CProtocolTaskParam
 //-------------------------//
 //----- COcvLogicalOp -----//
 //-------------------------//
-class COcvLogicalOp : public CImageProcess2d
+class COcvLogicalOp : public C2dImageTask
 {
     public:
 
-        COcvLogicalOp() : CImageProcess2d()
+        COcvLogicalOp() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvLogicalOp(const std::string name, const std::shared_ptr<COcvLogicalOpParam>& pParam) : CImageProcess2d(name)
+        COcvLogicalOp(const std::string name, const std::shared_ptr<COcvLogicalOpParam>& pParam) : C2dImageTask(name)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
             m_pParam = std::make_shared<COcvLogicalOpParam>(*pParam);
         }
 
@@ -83,8 +83,8 @@ class COcvLogicalOp : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvLogicalOpParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -115,7 +115,7 @@ class COcvLogicalOp : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -125,7 +125,7 @@ class COcvLogicalOp : public CImageProcess2d
         }
 };
 
-class COcvLogicalOpFactory : public CProcessFactory
+class COcvLogicalOpFactory : public CTaskFactory
 {
     public:
 
@@ -139,7 +139,7 @@ class COcvLogicalOpFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pLogicalOpParam = std::dynamic_pointer_cast<COcvLogicalOpParam>(pParam);
             if(pLogicalOpParam != nullptr)
@@ -147,7 +147,7 @@ class COcvLogicalOpFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pLogicalOpParam = std::make_shared<COcvLogicalOpParam>();
             assert(pLogicalOpParam != nullptr);

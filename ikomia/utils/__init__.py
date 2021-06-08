@@ -22,3 +22,26 @@ from .qtconversion import *
 from .pyqtutils import *
 from .plugindeps import *
 from .data import *
+import sys
+import logging
+
+
+def init_logging(rank=-1):
+    logger = logging.getLogger()
+
+    if rank in [-1, 0]:
+        logger.handlers = []
+        logger.setLevel(logging.INFO)
+        formatter = logging.Formatter("%(message)s")
+
+        info = logging.StreamHandler(sys.stdout)
+        info.setLevel(logging.INFO)
+        info.setFormatter(formatter)
+        logger.addHandler(info)
+
+        err = logging.StreamHandler(sys.stderr)
+        err.setLevel(logging.ERROR)
+        err.setFormatter(formatter)
+        logger.addHandler(err)
+    else:
+        logging.basicConfig(format="%(message)s", level=logging.WARN)

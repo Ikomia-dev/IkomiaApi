@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Contours/CGmicSuperPixels.hpp"
 
-class CGmicWidgetSuperPixels : public CProtocolTaskWidget
+class CGmicWidgetSuperPixels : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetSuperPixels(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSuperPixels(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetSuperPixels(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetSuperPixels(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicSuperPixelsParam>(pParam);
             init();
@@ -83,7 +83,7 @@ class CGmicWidgetSuperPixelsFactory : public CWidgetFactory
             m_name = QObject::tr("Super-pixels").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetSuperPixels>(pParam);
         }

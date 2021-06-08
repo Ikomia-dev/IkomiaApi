@@ -20,16 +20,16 @@
 #ifndef COCVSIFT_HPP
 #define COCVSIFT_HPP
 
-#include "Core/CFeatureImageProcess2d.h"
+#include "Core/C2dFeatureImageTask.h"
 
 //-------------------------//
 //----- COcvSIFTParam -----//
 //-------------------------//
-class COcvSIFTParam: public CProtocolTaskParam
+class COcvSIFTParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSIFTParam() : CProtocolTaskParam(){}
+        COcvSIFTParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -72,16 +72,16 @@ class COcvSIFTParam: public CProtocolTaskParam
 //--------------------//
 //----- COcvSIFT -----//
 //--------------------//
-class COcvSIFT : public CFeatureImageProcess2d
+class COcvSIFT : public C2dFeatureImageTask
 {
     public:
 
-        COcvSIFT() : CFeatureImageProcess2d()
+        COcvSIFT() : C2dFeatureImageTask()
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
         }
-        COcvSIFT(const std::string name, const std::shared_ptr<COcvSIFTParam>& pParam) : CFeatureImageProcess2d(name)
+        COcvSIFT(const std::string name, const std::shared_ptr<COcvSIFTParam>& pParam) : C2dFeatureImageTask(name)
         {
             addKeypointInput();
             addDescriptorAndKeypointOuputs();
@@ -100,8 +100,8 @@ class COcvSIFT : public CFeatureImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSIFTParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -134,7 +134,7 @@ class COcvSIFT : public CFeatureImageProcess2d
         }
 };
 
-class COcvSIFTFactory : public CProcessFactory
+class COcvSIFTFactory : public CTaskFactory
 {
     public:
 
@@ -152,7 +152,7 @@ class COcvSIFTFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.5.0/d7/d60/classcv_1_1SIFT.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvSIFTParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -160,7 +160,7 @@ class COcvSIFTFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvSIFTParam>();
             assert(pDerivedParam != nullptr);

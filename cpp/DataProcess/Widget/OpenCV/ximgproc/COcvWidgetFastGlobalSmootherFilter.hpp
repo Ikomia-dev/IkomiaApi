@@ -23,15 +23,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvFastGlobalSmootherFilter.hpp"
 
-class COcvWidgetFastGlobalSmootherFilter : public CProtocolTaskWidget
+class COcvWidgetFastGlobalSmootherFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetFastGlobalSmootherFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastGlobalSmootherFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetFastGlobalSmootherFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFastGlobalSmootherFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvFastGlobalSmootherFilterParam>(pParam);
             init();
@@ -103,7 +103,7 @@ class COcvWidgetFastGlobalSmootherFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Fast Global Smoother Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFastGlobalSmootherFilter>(pParam);
         }

@@ -20,18 +20,18 @@
 #ifndef COCVTONEMAPDURAND_HPP
 #define COCVTONEMAPDURAND_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/xphoto.hpp>
 
 //----------------------------------//
 //----- COcvTonemapDurandParam -----//
 //----------------------------------//
-class COcvTonemapDurandParam : public CProtocolTaskParam
+class COcvTonemapDurandParam : public CWorkflowTaskParam
 {
     public:
 
-        COcvTonemapDurandParam() : CProtocolTaskParam(){}
+        COcvTonemapDurandParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -64,14 +64,14 @@ class COcvTonemapDurandParam : public CProtocolTaskParam
 //-----------------------------//
 //----- COcvTonemapDurand -----//
 //-----------------------------//
-class COcvTonemapDurand : public CImageProcess2d
+class COcvTonemapDurand : public C2dImageTask
 {
     public:
 
-        COcvTonemapDurand() : CImageProcess2d()
+        COcvTonemapDurand() : C2dImageTask()
         {
         }
-        COcvTonemapDurand(const std::string name, const std::shared_ptr<COcvTonemapDurandParam>& pParam) : CImageProcess2d(name)
+        COcvTonemapDurand(const std::string name, const std::shared_ptr<COcvTonemapDurandParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvTonemapDurandParam>(*pParam);
         }
@@ -84,8 +84,8 @@ class COcvTonemapDurand : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvTonemapDurandParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -114,7 +114,7 @@ class COcvTonemapDurand : public CImageProcess2d
             applyGraphicsMask(image, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -122,7 +122,7 @@ class COcvTonemapDurand : public CImageProcess2d
         }
 };
 
-class COcvTonemapDurandFactory : public CProcessFactory
+class COcvTonemapDurandFactory : public CTaskFactory
 {
     public:
 
@@ -136,7 +136,7 @@ class COcvTonemapDurandFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/da/d3d/classcv_1_1TonemapDurand.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pTonemapDurandParam = std::dynamic_pointer_cast<COcvTonemapDurandParam>(pParam);
             if(pTonemapDurandParam != nullptr)
@@ -144,7 +144,7 @@ class COcvTonemapDurandFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pTonemapDurandParam = std::make_shared<COcvTonemapDurandParam>();
             assert(pTonemapDurandParam != nullptr);

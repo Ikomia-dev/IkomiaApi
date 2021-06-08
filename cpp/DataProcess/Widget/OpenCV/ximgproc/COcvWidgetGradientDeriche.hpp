@@ -27,15 +27,15 @@
 #include <QRadioButton>
 #include <QPushButton>
 
-class COcvWidgetGradientDeriche : public CProtocolTaskWidget
+class COcvWidgetGradientDeriche : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGradientDeriche(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGradientDeriche(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGradientDeriche(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGradientDeriche(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGradientDericheParam>(pParam);
             init();
@@ -108,7 +108,7 @@ class COcvWidgetGradientDericheFactory : public CWidgetFactory
             m_name = QObject::tr("Deriche gradient filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGradientDeriche>(pParam);
         }

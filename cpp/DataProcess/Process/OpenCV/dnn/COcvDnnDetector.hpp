@@ -68,14 +68,14 @@ class COcvDnnDetector: public COcvDnnProcess
 
         COcvDnnDetector() : COcvDnnProcess()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
+            addOutput(std::make_shared<CMeasureIO>());
         }
         COcvDnnDetector(const std::string name, const std::shared_ptr<COcvDnnDetectorParam> &pParam): COcvDnnProcess(name)
         {
             m_pParam = std::make_shared<COcvDnnDetectorParam>(*pParam);
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
-            addOutput(std::make_shared<CMeasureProcessIO>());
+            addOutput(std::make_shared<CGraphicsOutput>());
+            addOutput(std::make_shared<CMeasureIO>());
         }
 
         size_t      getProgressSteps() override
@@ -136,8 +136,8 @@ class COcvDnnDetector: public COcvDnnProcess
         void        run()
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            //auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            //auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -233,16 +233,16 @@ class COcvDnnDetector: public COcvDnnProcess
             // detections and an every detection is a vector of values
             // [batchId, classId, confidence, left, top, right, bottom]
             auto pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(m_pParam);
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             CMat imgSrc = pInput->getImage();
 
             //Graphics output
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             pGraphicsOutput->setNewLayer("DnnLayer");
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             for(int i=0; i<dnnOutput.size[2]; i++)
@@ -287,16 +287,16 @@ class COcvDnnDetector: public COcvDnnProcess
         void        manageRCNNOutput(const cv::Mat &dnnOutput)
         {
             auto pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(m_pParam);
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             CMat imgSrc = pInput->getImage();
 
             //Graphics output
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             pGraphicsOutput->setNewLayer("DnnLayer");
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             int size = getNetworkInputSize();
@@ -345,7 +345,7 @@ class COcvDnnDetector: public COcvDnnProcess
         void        manageYoloOutput(const std::vector<cv::Mat>& netOutputs)
         {
             auto pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(m_pParam);
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             CMat imgSrc = pInput->getImage();
             std::vector<cv::Rect2d> detections;
             std::vector<float> confidences;
@@ -382,12 +382,12 @@ class COcvDnnDetector: public COcvDnnProcess
             cv::dnn::NMSBoxes(detections, confidences, pParam->m_confidence, pParam->m_nmsThreshold, indices);
 
             //Graphics output
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             pGraphicsOutput->setNewLayer("DnnLayer");
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             for(size_t i=0; i<indices.size(); ++i)
@@ -422,7 +422,7 @@ class COcvDnnDetector: public COcvDnnProcess
             CV_Assert(scores.size[2] == geometry.size[2]); CV_Assert(scores.size[3] == geometry.size[3]);
 
             auto pParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(m_pParam);
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             CMat imgSrc = pInput->getImage();
 
             std::vector<cv::RotatedRect> detections;
@@ -468,12 +468,12 @@ class COcvDnnDetector: public COcvDnnProcess
             cv::dnn::NMSBoxes(detections, confidences, pParam->m_confidence, pParam->m_nmsThreshold, indices);
 
             //Graphics output
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(1));
             pGraphicsOutput->setNewLayer("DnnLayer");
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureProcessIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             int size = getNetworkInputSize();
@@ -505,7 +505,7 @@ class COcvDnnDetector: public COcvDnnProcess
 //----------------------------------//
 //----- COcvDnnDetectorFactory -----//
 //----------------------------------//
-class COcvDnnDetectorFactory : public CProcessFactory
+class COcvDnnDetectorFactory : public CTaskFactory
 {
     public:
 
@@ -519,7 +519,7 @@ class COcvDnnDetectorFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d6/d0f/group__dnn.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvDnnDetectorParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -527,7 +527,7 @@ class COcvDnnDetectorFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvDnnDetectorParam>();
             assert(pDerivedParam != nullptr);

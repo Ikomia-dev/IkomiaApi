@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Core/CCut.hpp"
 
-class CWidgetCut : public CProtocolTaskWidget
+class CWidgetCut : public CWorkflowTaskWidget
 {
     public:
 
-        CWidgetCut(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetCut(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CWidgetCut(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CWidgetCut(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CCutParam>(pParam);
             init();
@@ -70,7 +70,7 @@ class CWidgetCutFactory : public CWidgetFactory
             m_name = QObject::tr("Cut").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CWidgetCut>(pParam);
         }

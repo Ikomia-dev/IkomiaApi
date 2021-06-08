@@ -20,7 +20,7 @@
 #include "CWidgetFactoryWrap.h"
 #include "PythonThread.hpp"
 
-ProtocolTaskWidgetPtr CWidgetFactoryWrap::create(const ProtocolTaskParamPtr pParam)
+WorkflowTaskWidgetPtr CWidgetFactoryWrap::create(const WorkflowTaskParamPtr pParam)
 {
     CPyEnsureGIL gil;
     try

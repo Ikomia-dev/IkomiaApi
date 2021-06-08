@@ -8,15 +8,15 @@
       :toctree: _autosummaryv
 
       CPluginProcessInterface
-      CProcessFactory
+      CTaskFactory
       CWidgetFactory
 
    .. rubric:: Input/Output management
    .. autosummary::
       :toctree: _autosummaryv
 
-      CImageProcessIO
-      CVideoProcessIO
+      CImageIO
+      CVideoIO
       CDblFeatureIO
       CGraphicsInput
       CGraphicsOutput
@@ -32,17 +32,17 @@
    .. autosummary::
       :toctree: _autosummary
    
-      CImageProcess2d
-      CInteractiveImageProcess2d
-      CVideoProcess
-      CVideoProcessOF
-      CVideoProcessTracking
-      CDnnTrainProcess
-      CProcessInfo
+      C2dImageTask
+      C2dImageInteractiveTask
+      CVideoTask
+      CVideoOFTask
+      CVideoTrackingTask
+      CDnnTrainTask
+      CTaskInfo
       Language
 
    .. rubric:: Parameters management
    .. autosummary::
       :toctree: _autosummaryv
 
-      CDnnTrainProcessParam
+      CDnnTrainTaskParam

@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/bgsegm/COcvBckgndSubGsoc.hpp"
 
-class COcvWidgetBckgndSubGsoc : public CProtocolTaskWidget
+class COcvWidgetBckgndSubGsoc : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetBckgndSubGsoc(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubGsoc(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetBckgndSubGsoc(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetBckgndSubGsoc(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvBckgndSubGsocParam>(pParam);
             init();
@@ -94,7 +94,7 @@ class COcvWidgetBckgndSubGsocFactory : public CWidgetFactory
             m_name = QObject::tr("GSOC background substractor").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetBckgndSubGsoc>(pParam);
         }

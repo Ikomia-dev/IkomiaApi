@@ -24,16 +24,16 @@
 #include "Process/OpenCV/core/COcvFlip.hpp"
 #include <QRadioButton>
 
-class COcvWidgetFlip : public CProtocolTaskWidget
+class COcvWidgetFlip : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetFlip(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFlip(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetFlip(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetFlip(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvFlipParam>(pParam);
             init();
@@ -101,7 +101,7 @@ class COcvWidgetFlipFactory : public CWidgetFactory
             m_name = QObject::tr("Flip").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetFlip>(pParam);
         }

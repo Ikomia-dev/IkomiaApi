@@ -20,18 +20,18 @@
 #ifndef COCVBILATERALTEXTUREFILTER_HPP
 #define COCVBILATERALTEXTUREFILTER_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //------------------------------//
 //----- COcvBilateralTextureFilterParam -----//
 //------------------------------//
-class COcvBilateralTextureFilterParam: public CProtocolTaskParam
+class COcvBilateralTextureFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvBilateralTextureFilterParam() : CProtocolTaskParam(){}
+        COcvBilateralTextureFilterParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -62,14 +62,14 @@ class COcvBilateralTextureFilterParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvBilateralTextureFilter -----//
 //-------------------------//
-class COcvBilateralTextureFilter : public CImageProcess2d
+class COcvBilateralTextureFilter : public C2dImageTask
 {
     public:
 
-        COcvBilateralTextureFilter() : CImageProcess2d()
+        COcvBilateralTextureFilter() : C2dImageTask()
         {
         }
-        COcvBilateralTextureFilter(const std::string name, const std::shared_ptr<COcvBilateralTextureFilterParam>& pParam) : CImageProcess2d(name)
+        COcvBilateralTextureFilter(const std::string name, const std::shared_ptr<COcvBilateralTextureFilterParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvBilateralTextureFilterParam>(*pParam);
         }
@@ -82,8 +82,8 @@ class COcvBilateralTextureFilter : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvBilateralTextureFilterParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -110,7 +110,7 @@ class COcvBilateralTextureFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -118,7 +118,7 @@ class COcvBilateralTextureFilter : public CImageProcess2d
         }
 };
 
-class COcvBilateralTextureFilterFactory : public CProcessFactory
+class COcvBilateralTextureFilterFactory : public CTaskFactory
 {
     public:
 
@@ -135,7 +135,7 @@ class COcvBilateralTextureFilterFactory : public CProcessFactory
             m_info.m_year = 2014;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvBilateralTextureFilterParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -143,7 +143,7 @@ class COcvBilateralTextureFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvBilateralTextureFilterParam>();
             assert(pDerivedParam != nullptr);

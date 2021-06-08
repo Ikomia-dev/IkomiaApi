@@ -19,16 +19,16 @@
 
 #ifndef COCVCOMPARE_HPP
 #define COCVCOMPARE_HPP
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //----------------------------//
 //----- COcvCompareParam -----//
 //----------------------------//
-class COcvCompareParam: public CProtocolTaskParam
+class COcvCompareParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCompareParam() : CProtocolTaskParam(){}
+        COcvCompareParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -50,18 +50,18 @@ class COcvCompareParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvCompare -----//
 //-----------------------//
-class COcvCompare : public CImageProcess2d
+class COcvCompare : public C2dImageTask
 {
     public:
 
-        COcvCompare() : CImageProcess2d()
+        COcvCompare() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
         }
-        COcvCompare(const std::string name, const std::shared_ptr<COcvCompareParam>& pParam) : CImageProcess2d(name)
+        COcvCompare(const std::string name, const std::shared_ptr<COcvCompareParam>& pParam) : C2dImageTask(name)
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 0);
+            insertInput(std::make_shared<CImageIO>(), 0);
             getOutput(0)->setDataType(IODataType::IMAGE_BINARY);
             m_pParam = std::make_shared<COcvCompareParam>(*pParam);
         }
@@ -78,8 +78,8 @@ class COcvCompare : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvCompareParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -103,7 +103,7 @@ class COcvCompare : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -113,7 +113,7 @@ class COcvCompare : public CImageProcess2d
         }
 };
 
-class COcvCompareFactory : public CProcessFactory
+class COcvCompareFactory : public CTaskFactory
 {
     public:
 
@@ -127,7 +127,7 @@ class COcvCompareFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/d2/de8/group__core__array.html#ga303cfb72acf8cbb36d884650c09a3a97";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvCompareParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -135,7 +135,7 @@ class COcvCompareFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvCompareParam>();
             assert(pDerivedParam != nullptr);

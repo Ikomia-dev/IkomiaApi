@@ -25,15 +25,15 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/imgproc/COcvGaussianBlur.hpp"
 
-class COcvWidgetGaussianBlur : public CProtocolTaskWidget
+class COcvWidgetGaussianBlur : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetGaussianBlur(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGaussianBlur(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
-        COcvWidgetGaussianBlur(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetGaussianBlur(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvGaussianBlurParam>(pParam);
             init();
@@ -96,7 +96,7 @@ class COcvWidgetGaussianBlurFactory : public CWidgetFactory
             m_name = QObject::tr("Gaussian Blur").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetGaussianBlur>(pParam);
         }

@@ -20,7 +20,7 @@
 #ifndef CGMICSHARPENLUCY_HPP
 #define CGMICSHARPENLUCY_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -71,14 +71,14 @@ class CGmicSharpenLucyParam: public CGmicTaskParam
 //-----------------------//
 //----- CGmicLucy -----//
 //-----------------------//
-class CGmicSharpenLucy : public CImageProcess2d
+class CGmicSharpenLucy : public C2dImageTask
 {
     public:
 
-        CGmicSharpenLucy() : CImageProcess2d()
+        CGmicSharpenLucy() : C2dImageTask()
         {
         }
-        CGmicSharpenLucy(const std::string name, const std::shared_ptr<CGmicSharpenLucyParam>& pParam) : CImageProcess2d(name)
+        CGmicSharpenLucy(const std::string name, const std::shared_ptr<CGmicSharpenLucyParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicSharpenLucyParam>(*pParam);
         }
@@ -91,8 +91,8 @@ class CGmicSharpenLucy : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicSharpenLucyParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -135,7 +135,7 @@ class CGmicSharpenLucy : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -143,7 +143,7 @@ class CGmicSharpenLucy : public CImageProcess2d
         }
 };
 
-class CGmicSharpenLucyFactory : public CProcessFactory
+class CGmicSharpenLucyFactory : public CTaskFactory
 {
     public:
 
@@ -158,7 +158,7 @@ class CGmicSharpenLucyFactory : public CProcessFactory
             m_info.m_year = 2013;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicSharpenLucyParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -166,7 +166,7 @@ class CGmicSharpenLucyFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicSharpenLucyParam>();
             assert(pParam != nullptr);

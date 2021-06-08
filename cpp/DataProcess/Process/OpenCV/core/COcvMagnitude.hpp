@@ -20,16 +20,16 @@
 #ifndef COCVMAGNITUDE_HPP
 #define COCVMAGNITUDE_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //--------------------------------//
 //----- COcvMagnitudeParam -----//
 //--------------------------------//
-class COcvMagnitudeParam: public CProtocolTaskParam
+class COcvMagnitudeParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvMagnitudeParam() : CProtocolTaskParam(){}
+        COcvMagnitudeParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -49,18 +49,18 @@ class COcvMagnitudeParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvMagnitude -----//
 //---------------------------//
-class COcvMagnitude : public CImageProcess2d
+class COcvMagnitude : public C2dImageTask
 {
     public:
 
-        COcvMagnitude() : CImageProcess2d()
+        COcvMagnitude() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvMagnitude(const std::string name, const std::shared_ptr<COcvMagnitudeParam>& pParam) : CImageProcess2d(name)
+        COcvMagnitude(const std::string name, const std::shared_ptr<COcvMagnitudeParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvMagnitudeParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
 
         size_t  getProgressSteps() override
@@ -75,8 +75,8 @@ class COcvMagnitude : public CImageProcess2d
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInput2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
+            auto pInput1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInput2 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvMagnitudeParam>(m_pParam);
 
             if(pInput1 == nullptr || pInput2 == nullptr || pParam == nullptr)
@@ -100,7 +100,7 @@ class COcvMagnitude : public CImageProcess2d
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -110,7 +110,7 @@ class COcvMagnitude : public CImageProcess2d
         }
 };
 
-class COcvMagnitudeFactory : public CProcessFactory
+class COcvMagnitudeFactory : public CTaskFactory
 {
     public:
 
@@ -124,7 +124,7 @@ class COcvMagnitudeFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#ga6d3b097586bca4409873d64a90fe64c3";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvMagnitudeParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -132,7 +132,7 @@ class COcvMagnitudeFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvMagnitudeParam>();
             assert(pDerivedParam != nullptr);

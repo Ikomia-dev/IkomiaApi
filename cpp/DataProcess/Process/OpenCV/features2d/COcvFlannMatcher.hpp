@@ -20,17 +20,17 @@
 #ifndef COCVFLANNMATCHER_HPP
 #define COCVFLANNMATCHER_HPP
 
-#include "Core/CFeatureMatcher2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dFeatureMatcherTask.h"
+#include "IO/CImageIO.h"
 
 //--------------------------------//
 //----- COcvFlannMatcherParam -----//
 //--------------------------------//
-class COcvFlannMatcherParam: public CProtocolTaskParam
+class COcvFlannMatcherParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvFlannMatcherParam() : CProtocolTaskParam(){}
+        COcvFlannMatcherParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -47,15 +47,15 @@ class COcvFlannMatcherParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvFlannMatcher -----//
 //---------------------------//
-class COcvFlannMatcher : public CFeatureMatcher2d
+class COcvFlannMatcher : public C2dFeatureMatcherTask
 {
     public:
 
-        COcvFlannMatcher() : CFeatureMatcher2d()
+        COcvFlannMatcher() : C2dFeatureMatcherTask()
         {
 
         }
-        COcvFlannMatcher(const std::string name, const std::shared_ptr<COcvFlannMatcherParam>& pParam) : CFeatureMatcher2d(name)
+        COcvFlannMatcher(const std::string name, const std::shared_ptr<COcvFlannMatcherParam>& pParam) : C2dFeatureMatcherTask(name)
         {
             m_pParam = std::make_shared<COcvFlannMatcherParam>(*pParam);
         }
@@ -72,15 +72,15 @@ class COcvFlannMatcher : public CFeatureMatcher2d
             if(getInputCount() < 3)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pImg1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pDesc1 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pFeatures1 = std::dynamic_pointer_cast<CFeatureProcessIO<cv::KeyPoint>>(getInput(2));
+            auto pImg1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pDesc1 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pFeatures1 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(2));
 
-            auto pImg2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(3));
-            auto pDesc2 = std::dynamic_pointer_cast<CImageProcessIO>(getInput(4));
-            auto pFeatures2 = std::dynamic_pointer_cast<CFeatureProcessIO<cv::KeyPoint>>(getInput(5));
+            auto pImg2 = std::dynamic_pointer_cast<CImageIO>(getInput(3));
+            auto pDesc2 = std::dynamic_pointer_cast<CImageIO>(getInput(4));
+            auto pFeatures2 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(5));
 
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(6));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(6));
             auto pParam = std::dynamic_pointer_cast<COcvFlannMatcherParam>(m_pParam);
 
             if(pDesc1 == nullptr || pImg1 == nullptr || pFeatures1 == nullptr ||
@@ -134,7 +134,7 @@ class COcvFlannMatcher : public CFeatureMatcher2d
         }
 };
 
-class COcvFlannMatcherFactory : public CProcessFactory
+class COcvFlannMatcherFactory : public CTaskFactory
 {
     public:
 
@@ -148,7 +148,7 @@ class COcvFlannMatcherFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/dc/de2/classcv_1_1FlannBasedMatcher.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvFlannMatcherParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -156,7 +156,7 @@ class COcvFlannMatcherFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvFlannMatcherParam>();
             assert(pDerivedParam != nullptr);

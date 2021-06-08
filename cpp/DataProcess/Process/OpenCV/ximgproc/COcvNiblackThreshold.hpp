@@ -21,17 +21,17 @@
 #define COCVNIBLACKTHRESHOLD_HPP
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //-------------------------------------//
 //----- COcvNiblackThresholdParam -----//
 //-------------------------------------//
-class COcvNiblackThresholdParam: public CProtocolTaskParam
+class COcvNiblackThresholdParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvNiblackThresholdParam() : CProtocolTaskParam()
+        COcvNiblackThresholdParam() : CWorkflowTaskParam()
         {
         }
 
@@ -64,21 +64,21 @@ class COcvNiblackThresholdParam: public CProtocolTaskParam
 //--------------------------------------//
 //----- COcvAdaptiveThresholdParam -----//
 //--------------------------------------//
-class COcvNiblackThreshold : public CImageProcess2d
+class COcvNiblackThreshold : public C2dImageTask
 {
     public:
 
-        COcvNiblackThreshold() : CImageProcess2d()
+        COcvNiblackThreshold() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
-        COcvNiblackThreshold(const std::string name, const std::shared_ptr<COcvNiblackThresholdParam>& pParam) : CImageProcess2d(name)
+        COcvNiblackThreshold(const std::string name, const std::shared_ptr<COcvNiblackThresholdParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvNiblackThresholdParam>(*pParam);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
 
@@ -89,8 +89,8 @@ class COcvNiblackThreshold : public CImageProcess2d
 
         void    updateStaticOutputs() override
         {
-            CImageProcess2d::updateStaticOutputs();
-            auto pImgOutput =  std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            C2dImageTask::updateStaticOutputs();
+            auto pImgOutput =  std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             assert(pImgOutput);
             pImgOutput->setChannelCount(1);
         }
@@ -98,8 +98,8 @@ class COcvNiblackThreshold : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvNiblackThresholdParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -128,7 +128,7 @@ class COcvNiblackThreshold : public CImageProcess2d
             applyGraphicsMaskToBinary(imgDst, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -155,7 +155,7 @@ class COcvNiblackThreshold : public CImageProcess2d
         }
 };
 
-class COcvNiblackThresholdFactory : public CProcessFactory
+class COcvNiblackThresholdFactory : public CTaskFactory
 {
     public:
 
@@ -169,7 +169,7 @@ class COcvNiblackThresholdFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d2d/group__ximgproc.html#ga7b5b6f57106f4507d7195aef0fbe88d7";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvNiblackThresholdParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -177,7 +177,7 @@ class COcvNiblackThresholdFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvNiblackThresholdParam>();
             assert(pDerivedParam != nullptr);

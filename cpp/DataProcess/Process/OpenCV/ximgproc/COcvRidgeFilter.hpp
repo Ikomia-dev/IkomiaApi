@@ -21,16 +21,16 @@
 #define COCVRIDGEFILTER_HPP
 
 #include "opencv2/ximgproc.hpp"
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-------------------------------------//
 //----- COcvRidgeFilterParam -----//
 //-------------------------------------//
-class COcvRidgeFilterParam: public CProtocolTaskParam
+class COcvRidgeFilterParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvRidgeFilterParam() : CProtocolTaskParam()
+        COcvRidgeFilterParam() : CWorkflowTaskParam()
         {
         }
 
@@ -75,14 +75,14 @@ class COcvRidgeFilterParam: public CProtocolTaskParam
 //--------------------------------//
 //----- COcvRidgeFilter -----//
 //--------------------------------//
-class COcvRidgeFilter : public CImageProcess2d
+class COcvRidgeFilter : public C2dImageTask
 {
     public:
 
-        COcvRidgeFilter() : CImageProcess2d()
+        COcvRidgeFilter() : C2dImageTask()
         {
         }
-        COcvRidgeFilter(const std::string& name, const std::shared_ptr<COcvRidgeFilterParam>& pParam) : CImageProcess2d(name)
+        COcvRidgeFilter(const std::string& name, const std::shared_ptr<COcvRidgeFilterParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvRidgeFilterParam>(*pParam);
         }
@@ -96,8 +96,8 @@ class COcvRidgeFilter : public CImageProcess2d
         {
             beginTaskRun();
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvRidgeFilterParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -133,7 +133,7 @@ class COcvRidgeFilter : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -141,7 +141,7 @@ class COcvRidgeFilter : public CImageProcess2d
         }
 };
 
-class COcvRidgeFilterFactory : public CProcessFactory
+class COcvRidgeFilterFactory : public CTaskFactory
 {
     public:
 
@@ -155,7 +155,7 @@ class COcvRidgeFilterFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d36/classcv_1_1ximgproc_1_1RidgeDetectionFilter.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pManifoldParam = std::dynamic_pointer_cast<COcvRidgeFilterParam>(pParam);
             if(pManifoldParam != nullptr)
@@ -163,7 +163,7 @@ class COcvRidgeFilterFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pManifoldParam = std::make_shared<COcvRidgeFilterParam>();
             assert(pManifoldParam != nullptr);

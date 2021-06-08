@@ -20,17 +20,17 @@
 #ifndef COCVDENOISETVL1_HPP
 #define COCVDENOISETVL1_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //-----------------------------------------//
 //----- COcvDenoiseTVL1Param -----//
 //-----------------------------------------//
-class COcvDenoiseTVL1Param: public CProtocolTaskParam
+class COcvDenoiseTVL1Param: public CWorkflowTaskParam
 {
     public:
 
-        COcvDenoiseTVL1Param() : CProtocolTaskParam(){}
+        COcvDenoiseTVL1Param() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -56,14 +56,14 @@ class COcvDenoiseTVL1Param: public CProtocolTaskParam
 //------------------------------------//
 //----- COcvDenoiseTVL1 -----//
 //------------------------------------//
-class COcvDenoiseTVL1 : public CImageProcess2d
+class COcvDenoiseTVL1 : public C2dImageTask
 {
     public:
 
-        COcvDenoiseTVL1() : CImageProcess2d()
+        COcvDenoiseTVL1() : C2dImageTask()
         {
         }
-        COcvDenoiseTVL1(const std::string name, const std::shared_ptr<COcvDenoiseTVL1Param>& pParam) : CImageProcess2d(name)
+        COcvDenoiseTVL1(const std::string name, const std::shared_ptr<COcvDenoiseTVL1Param>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvDenoiseTVL1Param>(*pParam);
         }
@@ -76,8 +76,8 @@ class COcvDenoiseTVL1 : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvDenoiseTVL1Param>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -124,7 +124,7 @@ class COcvDenoiseTVL1 : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -132,7 +132,7 @@ class COcvDenoiseTVL1 : public CImageProcess2d
         }
 };
 
-class COcvDenoiseTVL1Factory : public CProcessFactory
+class COcvDenoiseTVL1Factory : public CTaskFactory
 {
     public:
 
@@ -150,7 +150,7 @@ class COcvDenoiseTVL1Factory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDenoiseTVL1Param = std::dynamic_pointer_cast<COcvDenoiseTVL1Param>(pParam);
             if(pDenoiseTVL1Param != nullptr)
@@ -158,7 +158,7 @@ class COcvDenoiseTVL1Factory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDenoiseTVL1Param = std::make_shared<COcvDenoiseTVL1Param>();
             assert(pDenoiseTVL1Param != nullptr);

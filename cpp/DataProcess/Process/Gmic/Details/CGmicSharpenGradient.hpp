@@ -20,7 +20,7 @@
 #ifndef CGMICSHARPENGRADIENT_HPP
 #define CGMICSHARPENGRADIENT_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -67,14 +67,14 @@ class CGmicSharpenGradientParam: public CGmicTaskParam
 //-------------------------//
 //----- CGmicGradient -----//
 //-------------------------//
-class CGmicSharpenGradient : public CImageProcess2d
+class CGmicSharpenGradient : public C2dImageTask
 {
     public:
 
-        CGmicSharpenGradient() : CImageProcess2d()
+        CGmicSharpenGradient() : C2dImageTask()
         {
         }
-        CGmicSharpenGradient(const std::string name, const std::shared_ptr<CGmicSharpenGradientParam>& pParam) : CImageProcess2d(name)
+        CGmicSharpenGradient(const std::string name, const std::shared_ptr<CGmicSharpenGradientParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicSharpenGradientParam>(*pParam);
         }
@@ -87,8 +87,8 @@ class CGmicSharpenGradient : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicSharpenGradientParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -131,7 +131,7 @@ class CGmicSharpenGradient : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -139,7 +139,7 @@ class CGmicSharpenGradient : public CImageProcess2d
         }
 };
 
-class CGmicSharpenGradientFactory : public CProcessFactory
+class CGmicSharpenGradientFactory : public CTaskFactory
 {
     public:
 
@@ -154,7 +154,7 @@ class CGmicSharpenGradientFactory : public CProcessFactory
             m_info.m_year = 2015;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicSharpenGradientParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -162,7 +162,7 @@ class CGmicSharpenGradientFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicSharpenGradientParam>();
             assert(pParam != nullptr);

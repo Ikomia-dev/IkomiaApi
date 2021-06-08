@@ -20,17 +20,17 @@
 #ifndef COCVGAUSSIANBLUR_H
 #define COCVGAUSSIANBLUR_H
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvGaussianBlurParam -----//
 //------------------------------//
-class COcvGaussianBlurParam: public CProtocolTaskParam
+class COcvGaussianBlurParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvGaussianBlurParam() : CProtocolTaskParam(){}
+        COcvGaussianBlurParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -63,14 +63,14 @@ class COcvGaussianBlurParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvGaussianBlur -----//
 //-------------------------//
-class COcvGaussianBlur : public CImageProcess2d
+class COcvGaussianBlur : public C2dImageTask
 {
     public:
 
-        COcvGaussianBlur() : CImageProcess2d()
+        COcvGaussianBlur() : C2dImageTask()
         {
         }
-        COcvGaussianBlur(const std::string name, const std::shared_ptr<COcvGaussianBlurParam>& pParam) : CImageProcess2d(name)
+        COcvGaussianBlur(const std::string name, const std::shared_ptr<COcvGaussianBlurParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvGaussianBlurParam>(*pParam);
         }
@@ -83,8 +83,8 @@ class COcvGaussianBlur : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvGaussianBlurParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -111,7 +111,7 @@ class COcvGaussianBlur : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -119,7 +119,7 @@ class COcvGaussianBlur : public CImageProcess2d
         }
 };
 
-class COcvGaussianBlurFactory : public CProcessFactory
+class COcvGaussianBlurFactory : public CTaskFactory
 {
     public:
 
@@ -133,7 +133,7 @@ class COcvGaussianBlurFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvGaussianBlurParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -141,7 +141,7 @@ class COcvGaussianBlurFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvGaussianBlurParam>();
             assert(pDerivedParam != nullptr);

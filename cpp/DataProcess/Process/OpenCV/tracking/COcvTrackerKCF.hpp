@@ -20,18 +20,18 @@
 #ifndef COCVTRACKERKCF_HPP
 #define COCVTRACKERKCF_HPP
 
-#include "Core/CVideoProcessTracking.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/CVideoTrackingTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/tracking.hpp>
 
 //--------------------------------//
 //----- COcvTrackerKCFParam -----//
 //--------------------------------//
-class COcvTrackerKCFParam: public CProtocolTaskParam
+class COcvTrackerKCFParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvTrackerKCFParam() : CProtocolTaskParam(){}
+        COcvTrackerKCFParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -50,14 +50,14 @@ class COcvTrackerKCFParam: public CProtocolTaskParam
 //---------------------------//
 //----- COcvTrackerKCF -----//
 //---------------------------//
-class COcvTrackerKCF : public CVideoProcessTracking
+class COcvTrackerKCF : public CVideoTrackingTask
 {
     public:
 
-        COcvTrackerKCF() : CVideoProcessTracking()
+        COcvTrackerKCF() : CVideoTrackingTask()
         {
         }
-        COcvTrackerKCF(const std::string name, const std::shared_ptr<COcvTrackerKCFParam>& pParam) : CVideoProcessTracking(name)
+        COcvTrackerKCF(const std::string name, const std::shared_ptr<COcvTrackerKCFParam>& pParam) : CVideoTrackingTask(name)
         {
             m_pParam = std::make_shared<COcvTrackerKCFParam>(*pParam);
         }
@@ -74,7 +74,7 @@ class COcvTrackerKCF : public CVideoProcessTracking
             if(getInputCount() < 2)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvTrackerKCFParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -123,7 +123,7 @@ class COcvTrackerKCF : public CVideoProcessTracking
         cv::Ptr<cv::TrackerKCF>  m_pTracker;
 };
 
-class COcvTrackerKCFFactory : public CProcessFactory
+class COcvTrackerKCFFactory : public CTaskFactory
 {
     public:
 
@@ -141,7 +141,7 @@ class COcvTrackerKCFFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/dff/classcv_1_1TrackerKCF.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvTrackerKCFParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -149,7 +149,7 @@ class COcvTrackerKCFFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvTrackerKCFParam>();
             assert(pDerivedParam != nullptr);

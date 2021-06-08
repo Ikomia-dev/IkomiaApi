@@ -20,16 +20,16 @@
 #ifndef COCVCOUNTNONZERO_HPP
 #define COCVCOUNTNONZERO_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //---------------------------------//
 //----- COcvCountNonZeroParam -----//
 //---------------------------------//
-class COcvCountNonZeroParam: public CProtocolTaskParam
+class COcvCountNonZeroParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCountNonZeroParam() : CProtocolTaskParam(){}
+        COcvCountNonZeroParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -45,20 +45,20 @@ class COcvCountNonZeroParam: public CProtocolTaskParam
 //----------------------------//
 //----- COcvCountNonZero -----//
 //----------------------------//
-class COcvCountNonZero : public CImageProcess2d
+class COcvCountNonZero : public C2dImageTask
 {
     public:
 
-        COcvCountNonZero() : CImageProcess2d(false)
+        COcvCountNonZero() : C2dImageTask(false)
         {
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureProcessIO<int>>());
+            addOutput(std::make_shared<CFeatureIO<int>>());
         }
-        COcvCountNonZero(const std::string name, const std::shared_ptr<COcvCountNonZeroParam>& pParam) : CImageProcess2d(name, false)
+        COcvCountNonZero(const std::string name, const std::shared_ptr<COcvCountNonZeroParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvCountNonZeroParam>(*pParam);
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureProcessIO<int>>());
+            addOutput(std::make_shared<CFeatureIO<int>>());
         }
 
         size_t  getProgressSteps() override
@@ -73,7 +73,7 @@ class COcvCountNonZero : public CImageProcess2d
             if(getInputCount() < 1)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Not enough inputs", __func__, __FILE__, __LINE__);
 
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             if(pInput == nullptr)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
 
@@ -95,7 +95,7 @@ class COcvCountNonZero : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureProcessIO<int>>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<int>>(getOutput(0));
             if(pOutput)
             {
                 std::vector<int> values;
@@ -106,7 +106,7 @@ class COcvCountNonZero : public CImageProcess2d
         }
 };
 
-class COcvCountNonZeroFactory : public CProcessFactory
+class COcvCountNonZeroFactory : public CTaskFactory
 {
     public:
 
@@ -120,7 +120,7 @@ class COcvCountNonZeroFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/d2/de8/group__core__array.html#gaa4b89393263bb4d604e0fe5986723914";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvCountNonZeroParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -128,7 +128,7 @@ class COcvCountNonZeroFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvCountNonZeroParam>();
             assert(pDerivedParam != nullptr);

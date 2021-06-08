@@ -30,7 +30,7 @@ class COcvWidgetSaliencyFineGrained : public CWidgetApplyOnly
         {
         }
 
-        COcvWidgetSaliencyFineGrained(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
+        COcvWidgetSaliencyFineGrained(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWidgetApplyOnly(pParam, parent)
         {
         }
 };
@@ -44,7 +44,7 @@ class COcvWidgetSaliencyFineGrainedFactory : public CWidgetFactory
             m_name = QObject::tr("StaticSaliencyFineGrained").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSaliencyFineGrained>(pParam);
         }

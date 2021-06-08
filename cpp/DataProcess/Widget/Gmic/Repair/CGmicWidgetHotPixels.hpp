@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/Gmic/Repair/CGmicHotPixels.hpp"
 
-class CGmicWidgetHotPixels : public CProtocolTaskWidget
+class CGmicWidgetHotPixels : public CWorkflowTaskWidget
 {
     public:
 
-        CGmicWidgetHotPixels(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetHotPixels(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        CGmicWidgetHotPixels(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        CGmicWidgetHotPixels(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<CGmicHotPixelsParam>(pParam);
             init();
@@ -73,7 +73,7 @@ class CGmicWidgetHotPixelsFactory : public CWidgetFactory
             m_name = QObject::tr("Hot pixels").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<CGmicWidgetHotPixels>(pParam);
         }

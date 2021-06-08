@@ -21,47 +21,49 @@ SOURCES += \
         ../Core/Data/CvMatNumpyArrayConverter.cpp \
         CArrayIOWrap.cpp \
         CDatasetIOWrap.cpp \
-        CDnnTrainProcessParamWrap.cpp \
-        CDnnTrainProcessWrap.cpp \
+        CDnnTrainTaskParamWrap.cpp \
+        CDnnTrainTaskWrap.cpp \
         CGraphicsInputWrap.cpp \
-        CImageProcessIOWrap.cpp \
+        CIkomiaRegistry.cpp \
+        CImageIOWrap.cpp \
         CPathIOWrap.cpp \
-        CVideoProcessIOWrap.cpp \
+        CVideoIOWrap.cpp \
         CWidgetOutputWrap.cpp \
         PyDataProcess.cpp \
-        CProcessFactoryWrap.cpp \
+        CTaskFactoryWrap.cpp \
         CWidgetFactoryWrap.cpp \
         CPluginProcessInterfaceWrap.cpp \
-        CImageProcess2dWrap.cpp \
-        CInteractiveImageProcess2dWrap.cpp \
-        CVideoProcessWrap.cpp \
-        CVideoProcessOFWrap.cpp \
-        CVideoProcessTrackingWrap.cpp
+        C2dImageTaskWrap.cpp \
+        C2dImageInteractiveTaskWrap.cpp \
+        CVideoTaskWrap.cpp \
+        CVideoOFTaskWrap.cpp \
+        CVideoTrackingTaskWrap.cpp
 
 HEADERS += \
         ../Core/Data/CvMatNumpyArrayConverter.h \
         CArrayIOWrap.h \
         CDatasetIOWrap.h \
-        CDnnTrainProcessParamWrap.h \
-        CDnnTrainProcessWrap.h \
-        CFeatureProcessIOWrap.hpp \
+        CDnnTrainTaskParamWrap.h \
+        CDnnTrainTaskWrap.h \
+        CFeatureIOWrap.hpp \
         CGraphicsInputWrap.h \
-        CImageProcessIOWrap.h \
+        CIkomiaRegistry.h \
+        CImageIOWrap.h \
         CPathIOWrap.h \
-        CVideoProcessIOWrap.h \
+        CVideoIOWrap.h \
         CWidgetOutputWrap.h \
         PyDataProcess.h \
         PyDataProcessDocString.hpp \
         PyDataProcessGlobal.h \
         PyDataProcessTools.hpp \
-        CProcessFactoryWrap.h \
+        CTaskFactoryWrap.h \
         CWidgetFactoryWrap.h \
         CPluginProcessInterfaceWrap.h \
-        CImageProcess2dWrap.h \
-        CInteractiveImageProcess2dWrap.h \
-        CVideoProcessWrap.h \
-        CVideoProcessOFWrap.h \
-        CVideoProcessTrackingWrap.h
+        C2dImageTaskWrap.h \
+        C2dImageInteractiveTaskWrap.h \
+        CVideoTaskWrap.h \
+        CVideoOFTaskWrap.h \
+        CVideoTrackingTaskWrap.h
 
 #Make install directive
 target.path = ../../ikomia/dataprocess

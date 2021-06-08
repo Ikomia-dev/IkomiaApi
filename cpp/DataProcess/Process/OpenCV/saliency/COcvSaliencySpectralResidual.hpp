@@ -20,18 +20,18 @@
 #ifndef COCVSALIENCYSPECTRALRESIDUAL_HPP
 #define COCVSALIENCYSPECTRALRESIDUAL_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/saliency.hpp>
 
 //------------------------------//
 //----- COcvSaliencySpectralResidualParam -----//
 //------------------------------//
-class COcvSaliencySpectralResidualParam: public CProtocolTaskParam
+class COcvSaliencySpectralResidualParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSaliencySpectralResidualParam() : CProtocolTaskParam(){}
+        COcvSaliencySpectralResidualParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -48,17 +48,17 @@ class COcvSaliencySpectralResidualParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvSaliencySpectralResidual -----//
 //-------------------------//
-class COcvSaliencySpectralResidual : public CImageProcess2d
+class COcvSaliencySpectralResidual : public C2dImageTask
 {
     public:
 
-        COcvSaliencySpectralResidual() : CImageProcess2d()
+        COcvSaliencySpectralResidual() : C2dImageTask()
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
         }
-        COcvSaliencySpectralResidual(const std::string name, const std::shared_ptr<COcvSaliencySpectralResidualParam>& pParam) : CImageProcess2d(name)
+        COcvSaliencySpectralResidual(const std::string name, const std::shared_ptr<COcvSaliencySpectralResidualParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
             m_pParam = std::make_shared<COcvSaliencySpectralResidualParam>(*pParam);
         }
 
@@ -70,8 +70,8 @@ class COcvSaliencySpectralResidual : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSaliencySpectralResidualParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -111,11 +111,11 @@ class COcvSaliencySpectralResidual : public CImageProcess2d
             applyGraphicsMask(imgSrc, binaryMap, 0);
             emit m_signalHandler->doProgress();
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(saliencyMap);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(binaryMap);
 
@@ -127,7 +127,7 @@ class COcvSaliencySpectralResidual : public CImageProcess2d
         cv::Ptr<cv::saliency::StaticSaliencySpectralResidual> m_pSaliency;
 };
 
-class COcvSaliencySpectralResidualFactory : public CProcessFactory
+class COcvSaliencySpectralResidualFactory : public CTaskFactory
 {
     public:
 
@@ -145,7 +145,7 @@ class COcvSaliencySpectralResidualFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d37/classcv_1_1saliency_1_1StaticSaliencySpectralResidual.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSaliencySpectralResidualParam = std::dynamic_pointer_cast<COcvSaliencySpectralResidualParam>(pParam);
             if(pSaliencySpectralResidualParam != nullptr)
@@ -153,7 +153,7 @@ class COcvSaliencySpectralResidualFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSaliencySpectralResidualParam = std::make_shared<COcvSaliencySpectralResidualParam>();
             assert(pSaliencySpectralResidualParam != nullptr);

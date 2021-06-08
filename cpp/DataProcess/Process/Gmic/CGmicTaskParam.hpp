@@ -20,13 +20,13 @@
 #ifndef CGMICTASKPARAM_HPP
 #define CGMICTASKPARAM_HPP
 
-#include "Protocol/CProtocolTaskParam.h"
+#include "Workflow/CWorkflowTaskParam.h"
 
-class CGmicTaskParam: public CProtocolTaskParam
+class CGmicTaskParam: public CWorkflowTaskParam
 {
     public:
 
-        CGmicTaskParam() : CProtocolTaskParam(){}
+        CGmicTaskParam() : CWorkflowTaskParam(){}
 
         virtual std::string getParamString() const = 0;
 };

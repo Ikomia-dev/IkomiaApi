@@ -22,10 +22,10 @@
 #include <QString>
 #include <QHash>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include "CProtocolTaskParamWrap.h"
-#include "CProtocolTaskIOWrap.h"
-#include "CProtocolTaskWrap.h"
-#include "CProtocolTaskWidgetWrap.h"
+#include "CWorkflowTaskParamWrap.h"
+#include "CWorkflowTaskIOWrap.h"
+#include "CWorkflowTaskWrap.h"
+#include "CWorkflowTaskWidgetWrap.h"
 #include "Data/CvMatNumpyArrayConverter.h"
 #include "CGraphicsItemWrap.h"
 #include "Graphics/CGraphicsComplexPolygon.h"
@@ -80,10 +80,10 @@ BOOST_PYTHON_MODULE(pycore)
 
     //Register smart pointers
     register_ptr_to_python<std::shared_ptr<CProxyGraphicsItem>>();
-    register_ptr_to_python<std::shared_ptr<CProtocolTaskParam>>();
-    register_ptr_to_python<std::shared_ptr<CProtocolTaskIO>>();
-    register_ptr_to_python<std::shared_ptr<CProtocolTask>>();
-    register_ptr_to_python<std::shared_ptr<CProtocolTaskWidget>>();
+    register_ptr_to_python<std::shared_ptr<CWorkflowTaskParam>>();
+    register_ptr_to_python<std::shared_ptr<CWorkflowTaskIO>>();
+    register_ptr_to_python<std::shared_ptr<CWorkflowTask>>();
+    register_ptr_to_python<std::shared_ptr<CWorkflowTaskWidget>>();
 
     registerStdVector<int>();
     registerStdVector<double>();
@@ -142,7 +142,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Ellipse
-    class_<GraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~PyCore.CGraphicsEllipse` item.")
+    class_<GraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsEllipse` item.")
         .def_readwrite("pen_color", &GraphicsEllipseProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsEllipseProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsEllipseProperty::m_lineSize, "Outline size")
@@ -160,7 +160,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Point
-    class_<GraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPoint` item.")
+    class_<GraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPoint` item.")
         .def_readwrite("pen_color", &GraphicsPointProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsPointProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("size", &GraphicsPointProperty::m_size, "Size")
@@ -175,7 +175,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Polygon
-    class_<GraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPolygon` item.")
+    class_<GraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolygon` item.")
         .def_readwrite("pen_color", &GraphicsPolygonProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsPolygonProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsPolygonProperty::m_lineSize, "Outline size")
@@ -190,7 +190,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Polyline
-    class_<GraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~PyCore.CGraphicsPolyline` item.")
+    class_<GraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolyline` item.")
         .def_readwrite("pen_color", &GraphicsPolylineProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("line_size", &GraphicsPolylineProperty::m_lineSize, "Outline size")
         .def_readwrite("category", &GraphicsPolylineProperty::m_category, "Graphics category")
@@ -204,7 +204,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Rectangle
-    class_<GraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~PyCore.CGraphicsRectangle` item.")
+    class_<GraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsRectangle` item.")
         .def_readwrite("pen_color", &GraphicsRectProperty::m_penColor, "Outline color (list - rgba)")
         .def_readwrite("brush_color", &GraphicsRectProperty::m_brushColor, "Fill color (list - rgba)")
         .def_readwrite("line_size", &GraphicsRectProperty::m_lineSize, "Outline size")
@@ -222,7 +222,7 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Text
-    class_<GraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~PyCore.CGraphicsText` item.")
+    class_<GraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsText` item.")
         .def_readwrite("color", &GraphicsTextProperty::m_color, "Text color (list - rgba)")
         .def_readwrite("font_name", &GraphicsTextProperty::m_fontName, "Font family name")
         .def_readwrite("font_size", &GraphicsTextProperty::m_fontSize, "Font size")
@@ -254,24 +254,24 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //------------------------------//
-    //----- CProtocolTaskParam -----//
+    //----- CWorkflowTaskParam -----//
     //------------------------------//
     class_<std::unordered_map<std::string, std::string>>("ParamMap", "Data structure (same as Python dict) to store task parameters names and values")
         .def(map_indexing_suite<std::unordered_map<std::string, std::string>>())
     ;
 
-    class_<CProtocolTaskParamWrap, std::shared_ptr<CProtocolTaskParamWrap>>("CProtocolTaskParam", _protocolTaskParamDocString)
+    class_<CWorkflowTaskParamWrap, std::shared_ptr<CWorkflowTaskParamWrap>>("CWorkflowTaskParam", _WorkflowTaskParamDocString)
         .enable_pickling()
         .def(init<>("Default constructor"))
-        .def("__copy__", &generic_copy<CProtocolTaskParamWrap>)
-        .def("__deepcopy__", &generic_deepcopy<CProtocolTaskParamWrap>)
-        .def("setParamMap", &CProtocolTaskParam::setParamMap, &CProtocolTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
-        .def("getParamMap", &CProtocolTaskParam::getParamMap, &CProtocolTaskParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
-        .def("getHashValue", &CProtocolTaskParam::getHashValue, &CProtocolTaskParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
+        .def("__copy__", &generic_copy<CWorkflowTaskParamWrap>)
+        .def("__deepcopy__", &generic_deepcopy<CWorkflowTaskParamWrap>)
+        .def("setParamMap", &CWorkflowTaskParam::setParamMap, &CWorkflowTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
+        .def("getParamMap", &CWorkflowTaskParam::getParamMap, &CWorkflowTaskParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
+        .def("getHashValue", &CWorkflowTaskParam::getHashValue, &CWorkflowTaskParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
     ;
 
     //---------------------------//
-    //----- CProtocolTaskIO -----//
+    //----- CWorkflowTaskIO -----//
     //---------------------------//
     enum_<IODataType>("IODataType", "Enum - List of available input/output data types")
         .value("NONE", IODataType::NONE)
@@ -281,6 +281,12 @@ BOOST_PYTHON_MODULE(pycore)
         .value("VOLUME", IODataType::VOLUME)
         .value("VOLUME_BINARY", IODataType::VOLUME_BINARY)
         .value("VOLUME_LABEL", IODataType::VOLUME_LABEL)
+        .value("VIDEO", IODataType::VIDEO)
+        .value("VIDEO_BINARY", IODataType::VIDEO_BINARY)
+        .value("VIDEO_LABEL", IODataType::VIDEO_LABEL)
+        .value("LIVE_STREAM", IODataType::LIVE_STREAM)
+        .value("LIVE_STREAM_BINARY", IODataType::LIVE_STREAM_BINARY)
+        .value("LIVE_STREAM_LABEL", IODataType::LIVE_STREAM_LABEL)
         .value("INPUT_GRAPHICS", IODataType::INPUT_GRAPHICS)
         .value("OUTPUT_GRAPHICS", IODataType::OUTPUT_GRAPHICS)
         .value("NUMERIC_VALUES", IODataType::NUMERIC_VALUES)
@@ -292,109 +298,109 @@ BOOST_PYTHON_MODULE(pycore)
         .value("ARRAY", IODataType::ARRAY)
     ;
 
-    class_<CProtocolTaskIOWrap, std::shared_ptr<CProtocolTaskIOWrap>>("CProtocolTaskIO", _protocolTaskIODocString)
+    class_<CWorkflowTaskIOWrap, std::shared_ptr<CWorkflowTaskIOWrap>>("CWorkflowTaskIO", _WorkflowTaskIODocString)
         .def(init<>("Default constructor"))
-        .def(init<IODataType>(_ctorProtocolTaskIODocString))
-        .def(init<const CProtocolTaskIO&>("Copy constructor"))
-        .add_property("dataType", &CProtocolTaskIO::getDataType, &CProtocolTaskIO::setDataType, "I/O data type")
-        .add_property("dimCount", &CProtocolTaskIO::getDimensionCount, &CProtocolTaskIO::setDimensionCount, "Number of dimensions")
-        .add_property("description", &CProtocolTaskIO::getDescription, &CProtocolTaskIO::setDescription, "Custom description to explain input/output type and use")
-        .def("getUnitElementCount", &CProtocolTaskIO::getUnitElementCount, &CProtocolTaskIOWrap::default_getUnitElementCount, _getUnitElementCountDocString, args("self"))
-        .def("isDataAvailable", &CProtocolTaskIO::isDataAvailable, &CProtocolTaskIOWrap::default_isDataAvailable, _isDataAvailableDocString, args("self"))
-        .def("isAutoInput", &CProtocolTaskIO::isAutoInput, &CProtocolTaskIOWrap::default_isAutoInput, _isAutoInputDocString, args("self"))
-        .def("setDisplayable", &CProtocolTaskIO::setDisplayable, _setDisplayableDocString, args("self", "displayable"))
-        .def("clearData", &CProtocolTaskIO::clearData, &CProtocolTaskIOWrap::default_clearData, _clearDataDocString, args("self"))
-        .def("copyStaticData", &CProtocolTaskIO::copyStaticData, &CProtocolTaskIOWrap::default_copyStaticData, _copyStaticDataDocString, args("self", "io"))
+        .def(init<IODataType>(_ctorWorkflowTaskIODocString))
+        .def(init<const CWorkflowTaskIO&>("Copy constructor"))
+        .add_property("dataType", &CWorkflowTaskIO::getDataType, &CWorkflowTaskIO::setDataType, "I/O data type")
+        .add_property("dimCount", &CWorkflowTaskIO::getDimensionCount, &CWorkflowTaskIO::setDimensionCount, "Number of dimensions")
+        .add_property("description", &CWorkflowTaskIO::getDescription, &CWorkflowTaskIO::setDescription, "Custom description to explain input/output type and use")
+        .def("getUnitElementCount", &CWorkflowTaskIO::getUnitElementCount, &CWorkflowTaskIOWrap::default_getUnitElementCount, _getUnitElementCountDocString, args("self"))
+        .def("isDataAvailable", &CWorkflowTaskIO::isDataAvailable, &CWorkflowTaskIOWrap::default_isDataAvailable, _isDataAvailableDocString, args("self"))
+        .def("isAutoInput", &CWorkflowTaskIO::isAutoInput, &CWorkflowTaskIOWrap::default_isAutoInput, _isAutoInputDocString, args("self"))
+        .def("setDisplayable", &CWorkflowTaskIO::setDisplayable, _setDisplayableDocString, args("self", "displayable"))
+        .def("clearData", &CWorkflowTaskIO::clearData, &CWorkflowTaskIOWrap::default_clearData, _clearDataDocString, args("self"))
+        .def("copyStaticData", &CWorkflowTaskIO::copyStaticData, &CWorkflowTaskIOWrap::default_copyStaticData, _copyStaticDataDocString, args("self", "io"))
     ;
 
     //-------------------------//
-    //----- CProtocolTask -----//
+    //----- CWorkflowTask -----//
     //-------------------------//
-    enum_<CProtocolTask::Type>("TaskType", "Enum - List of available process or task types")
-        .value("GENERIC", CProtocolTask::Type::GENERIC)
-        .value("IMAGE_PROCESS_2D", CProtocolTask::Type::IMAGE_PROCESS_2D)
-        .value("IMAGE_PROCESS_3D", CProtocolTask::Type::IMAGE_PROCESS_3D)
-        .value("VIDEO", CProtocolTask::Type::VIDEO)
+    enum_<CWorkflowTask::Type>("TaskType", "Enum - List of available process or task types")
+        .value("GENERIC", CWorkflowTask::Type::GENERIC)
+        .value("IMAGE_PROCESS_2D", CWorkflowTask::Type::IMAGE_PROCESS_2D)
+        .value("IMAGE_PROCESS_3D", CWorkflowTask::Type::IMAGE_PROCESS_3D)
+        .value("VIDEO", CWorkflowTask::Type::VIDEO)
     ;
 
-    enum_<CProtocolTask::ActionFlag>("ActionFlag", "Enum - List of specific behaviors or actions that can be enable/disable for a task")
-        .value("APPLY_VOLUME", CProtocolTask::ActionFlag::APPLY_VOLUME)
-        .value("OUTPUT_AUTO_EXPORT", CProtocolTask::ActionFlag::OUTPUT_AUTO_EXPORT)
+    enum_<CWorkflowTask::ActionFlag>("ActionFlag", "Enum - List of specific behaviors or actions that can be enable/disable for a task")
+        .value("APPLY_VOLUME", CWorkflowTask::ActionFlag::APPLY_VOLUME)
+        .value("OUTPUT_AUTO_EXPORT", CWorkflowTask::ActionFlag::OUTPUT_AUTO_EXPORT)
     ;
 
     //Overload member functions
-    size_t (CProtocolTask::*getProgressSteps1)() = &CProtocolTask::getProgressSteps;
-    size_t (CProtocolTask::*getProgressSteps2)(size_t) = &CProtocolTask::getProgressSteps;
-    size_t (CProtocolTaskWrap::*default_getProgressSteps1)() = &CProtocolTaskWrap::default_getProgressSteps;
-    size_t (CProtocolTaskWrap::*default_getProgressSteps2)(size_t) = &CProtocolTaskWrap::default_getProgressSteps;
-    InputOutputVect (CProtocolTask::*getInputs1)() const = &CProtocolTask::getInputs;
-    InputOutputVect (CProtocolTaskWrap::*getInputs2)(const std::vector<IODataType>&) const = &CProtocolTaskWrap::getInputs;
-    InputOutputVect (CProtocolTask::*getOutputs1)() const = &CProtocolTask::getOutputs;
-    InputOutputVect (CProtocolTaskWrap::*getOutputs2)(const std::vector<IODataType>&) const = &CProtocolTaskWrap::getOutputs;
-    void (CProtocolTask::*addInputRef)(const ProtocolTaskIOPtr&) = &CProtocolTask::addInput;
-    void (CProtocolTask::*addOutputRef)(const ProtocolTaskIOPtr&) = &CProtocolTask::addOutput;
+    size_t (CWorkflowTask::*getProgressSteps1)() = &CWorkflowTask::getProgressSteps;
+    size_t (CWorkflowTask::*getProgressSteps2)(size_t) = &CWorkflowTask::getProgressSteps;
+    size_t (CWorkflowTaskWrap::*default_getProgressSteps1)() = &CWorkflowTaskWrap::default_getProgressSteps;
+    size_t (CWorkflowTaskWrap::*default_getProgressSteps2)(size_t) = &CWorkflowTaskWrap::default_getProgressSteps;
+    InputOutputVect (CWorkflowTask::*getInputs1)() const = &CWorkflowTask::getInputs;
+    InputOutputVect (CWorkflowTaskWrap::*getInputs2)(const std::vector<IODataType>&) const = &CWorkflowTaskWrap::getInputs;
+    InputOutputVect (CWorkflowTask::*getOutputs1)() const = &CWorkflowTask::getOutputs;
+    InputOutputVect (CWorkflowTaskWrap::*getOutputs2)(const std::vector<IODataType>&) const = &CWorkflowTaskWrap::getOutputs;
+    void (CWorkflowTask::*addInputRef)(const WorkflowTaskIOPtr&) = &CWorkflowTask::addInput;
+    void (CWorkflowTask::*addOutputRef)(const WorkflowTaskIOPtr&) = &CWorkflowTask::addOutput;
 
-    class_<CProtocolTaskWrap, std::shared_ptr<CProtocolTaskWrap>>("CProtocolTask", _protocolTaskDocString)
+    class_<CWorkflowTaskWrap, std::shared_ptr<CWorkflowTaskWrap>>("CWorkflowTask", _WorkflowTaskDocString)
         .def(init<>("Default constructor"))
-        .def(init<const std::string&>(_ctorProtocolTaskDocString))
-        .def(init<const CProtocolTask&>("Copy constructor"))
-        .add_property("type", &CProtocolTask::getType, "Main purpose or data type on which the task is dedicated to.")
-        .add_property("name", &CProtocolTask::getName, &CProtocolTask::setName, "Task name (must be unique)")
-        .def("setInputDataType", &CProtocolTask::setInputDataType, &CProtocolTaskWrap::default_setInputDataType, _setInputDataTypeDocString, args("self", "data_type", "index"))
-        .def("setInput", &CProtocolTask::setInput, &CProtocolTaskWrap::default_setInput, _setInputDocString, args("self", "input", "index", "is_new_sequence"))
-        .def("setInputs", &CProtocolTask::setInputs, &CProtocolTaskWrap::default_setInputs, _setInputsDocString, args("self", "inputs", "is_new_sequence"))
-        .def("setOutputDataType", &CProtocolTask::setOutputDataType, &CProtocolTaskWrap::default_setOutputDataType, _setOutputDataTypeDocString, args("self", "data_type", "index"))
-        .def("setOutput", &CProtocolTask::setOutput, &CProtocolTaskWrap::default_setOutput, _setOutputDocString, args("self", "output", "index"))
-        .def("setOutputs", &CProtocolTask::setOutputs, &CProtocolTaskWrap::default_setOutputs, _setOutputsDocString, args("self", "outputs"))
-        .def("setParam", &CProtocolTask::setParam, &CProtocolTaskWrap::default_setParam, _setParamDocString, args("self", "param"))
-        .def("setActionFlag", &CProtocolTask::setActionFlag, _setActionFlagDocString, args("self", "action", "is_enable"))
-        .def("setActive", &CProtocolTask::setActive, &CProtocolTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
-        .def("getInputCount", &CProtocolTask::getInputCount, _getInputCountDocString, args("self"))
+        .def(init<const std::string&>(_ctorWorkflowTaskDocString))
+        .def(init<const CWorkflowTask&>("Copy constructor"))
+        .add_property("type", &CWorkflowTask::getType, "Main purpose or data type on which the task is dedicated to.")
+        .add_property("name", &CWorkflowTask::getName, &CWorkflowTask::setName, "Task name (must be unique)")
+        .def("setInputDataType", &CWorkflowTask::setInputDataType, &CWorkflowTaskWrap::default_setInputDataType, _setInputDataTypeDocString, args("self", "data_type", "index"))
+        .def("setInput", &CWorkflowTask::setInput, &CWorkflowTaskWrap::default_setInput, _setInputDocString, args("self", "input", "index", "is_new_sequence"))
+        .def("setInputs", &CWorkflowTask::setInputs, &CWorkflowTaskWrap::default_setInputs, _setInputsDocString, args("self", "inputs", "is_new_sequence"))
+        .def("setOutputDataType", &CWorkflowTask::setOutputDataType, &CWorkflowTaskWrap::default_setOutputDataType, _setOutputDataTypeDocString, args("self", "data_type", "index"))
+        .def("setOutput", &CWorkflowTask::setOutput, &CWorkflowTaskWrap::default_setOutput, _setOutputDocString, args("self", "output", "index"))
+        .def("setOutputs", &CWorkflowTask::setOutputs, &CWorkflowTaskWrap::default_setOutputs, _setOutputsDocString, args("self", "outputs"))
+        .def("setParam", &CWorkflowTask::setParam, &CWorkflowTaskWrap::default_setParam, _setParamDocString, args("self", "param"))
+        .def("setActionFlag", &CWorkflowTask::setActionFlag, _setActionFlagDocString, args("self", "action", "is_enable"))
+        .def("setActive", &CWorkflowTask::setActive, &CWorkflowTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
+        .def("getInputCount", &CWorkflowTask::getInputCount, _getInputCountDocString, args("self"))
         .def("getInputs", getInputs1, _getInputsDocString, args("self"))
         .def("getInputs", getInputs2, _getInputsDocString, args("self", "types"))
-        .def("getInput", &CProtocolTask::getInput, _getInputDocString, args("self", "index"))
-        .def("getInputDataType", &CProtocolTask::getInputDataType, _getInputDataTypeDocString, args("self", "index"))
-        .def("getOutputCount", &CProtocolTask::getOutputCount, _getOutputCountDocString, args("self"))
+        .def("getInput", &CWorkflowTask::getInput, _getInputDocString, args("self", "index"))
+        .def("getInputDataType", &CWorkflowTask::getInputDataType, _getInputDataTypeDocString, args("self", "index"))
+        .def("getOutputCount", &CWorkflowTask::getOutputCount, _getOutputCountDocString, args("self"))
         .def("getOutputs", getOutputs1, _getOutputs1DocString, args("self"))
         .def("getOutputs", getOutputs2, _getOutputs2DocString, args("self", "types"))
-        .def("getOutput", &CProtocolTask::getOutput, _getOutputDocString, args("self", "index"))
-        .def("getParam", &CProtocolTask::getParam, _getParamDocString, args("self"))
-        .def("getOutputDataType", &CProtocolTask::getOutputDataType, _getOutputDataTypeDocString, args("self", "index"))
-        .def("getElapsedTime", &CProtocolTask::getElapsedTime, _getElapsedTimeDocString, args("self"))
+        .def("getOutput", &CWorkflowTask::getOutput, _getOutputDocString, args("self", "index"))
+        .def("getParam", &CWorkflowTask::getParam, _getParamDocString, args("self"))
+        .def("getOutputDataType", &CWorkflowTask::getOutputDataType, _getOutputDataTypeDocString, args("self", "index"))
+        .def("getElapsedTime", &CWorkflowTask::getElapsedTime, _getElapsedTimeDocString, args("self"))
         .def("getProgressSteps", getProgressSteps1, default_getProgressSteps1, _getProgressSteps1DocString, args("self"))
         .def("getProgressSteps", getProgressSteps2, default_getProgressSteps2, _getProgressSteps2DocString, args("self", "unit_elt_count"))
-        .def("isGraphicsChangedListening", &CProtocolTask::isGraphicsChangedListening, &CProtocolTaskWrap::default_isGraphicsChangedListening, _isGraphicsChangedListeningDocString, args("self"))
-        .def("addInput", addInputRef, &CProtocolTaskWrap::default_addInput, _addInputDocString, args("self", "input"))
-        .def("addOutput", addOutputRef, &CProtocolTaskWrap::default_addOutput, _addOutputDocString, args("self", "output"))
-        .def("removeInput", &CProtocolTask::removeInput, _removeInputDocString, args("self", "index"))
-        .def("run", &CProtocolTask::run, &CProtocolTaskWrap::default_run, _runDocString, args("self"))
-        .def("stop", &CProtocolTask::stop, &CProtocolTaskWrap::default_stop, _stopDocString, args("self"))
-        .def("executeActions", &CProtocolTask::executeActions, &CProtocolTaskWrap::default_executeActions, _executeActionsDocString, args("self", "action"))
-        .def("updateStaticOutputs", &CProtocolTask::updateStaticOutputs, &CProtocolTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
-        .def("beginTaskRun", &CProtocolTask::beginTaskRun, &CProtocolTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
-        .def("endTaskRun", &CProtocolTask::endTaskRun, &CProtocolTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
-        .def("parametersModified", &CProtocolTask::parametersModified, &CProtocolTaskWrap::default_parametersModified, _parametersModifiedDocString, args("self"))
-        .def("graphicsChanged", &CProtocolTask::graphicsChanged, &CProtocolTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
-        .def("globalInputChanged", &CProtocolTask::globalInputChanged, &CProtocolTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
-        .def("emitAddSubProgressSteps", &CProtocolTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressStepsDocString, args("self", "count"))
-        .def("emitStepProgress", &CProtocolTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
-        .def("emitGraphicsContextChanged", &CProtocolTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
-        .def("emitOutputChanged", &CProtocolTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("isGraphicsChangedListening", &CWorkflowTask::isGraphicsChangedListening, &CWorkflowTaskWrap::default_isGraphicsChangedListening, _isGraphicsChangedListeningDocString, args("self"))
+        .def("addInput", addInputRef, &CWorkflowTaskWrap::default_addInput, _addInputDocString, args("self", "input"))
+        .def("addOutput", addOutputRef, &CWorkflowTaskWrap::default_addOutput, _addOutputDocString, args("self", "output"))
+        .def("removeInput", &CWorkflowTask::removeInput, _removeInputDocString, args("self", "index"))
+        .def("run", &CWorkflowTask::run, &CWorkflowTaskWrap::default_run, _runDocString, args("self"))
+        .def("stop", &CWorkflowTask::stop, &CWorkflowTaskWrap::default_stop, _stopDocString, args("self"))
+        .def("executeActions", &CWorkflowTask::executeActions, &CWorkflowTaskWrap::default_executeActions, _executeActionsDocString, args("self", "action"))
+        .def("updateStaticOutputs", &CWorkflowTask::updateStaticOutputs, &CWorkflowTaskWrap::default_updateStaticOutputs, _updateStaticOutputsDocString, args("self"))
+        .def("beginTaskRun", &CWorkflowTask::beginTaskRun, &CWorkflowTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
+        .def("endTaskRun", &CWorkflowTask::endTaskRun, &CWorkflowTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
+        .def("parametersModified", &CWorkflowTask::parametersModified, &CWorkflowTaskWrap::default_parametersModified, _parametersModifiedDocString, args("self"))
+        .def("graphicsChanged", &CWorkflowTask::graphicsChanged, &CWorkflowTaskWrap::default_graphicsChanged, _graphicsChangedDocString, args("self"))
+        .def("globalInputChanged", &CWorkflowTask::globalInputChanged, &CWorkflowTaskWrap::default_globalInputChanged, _globalInputChangedDocString, args("self", "is_new_sequence"))
+        .def("emitAddSubProgressSteps", &CWorkflowTaskWrap::emitAddSubProgressSteps, _emitAddSubProgressStepsDocString, args("self", "count"))
+        .def("emitStepProgress", &CWorkflowTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
+        .def("emitGraphicsContextChanged", &CWorkflowTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
+        .def("emitOutputChanged", &CWorkflowTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
     ;
 
     //-------------------------------//
-    //----- CProtocolTaskWidget -----//
+    //----- CWorkflowTaskWidget -----//
     //-------------------------------//
-    class_<CProtocolTaskWidgetWrap, std::shared_ptr<CProtocolTaskWidgetWrap>, boost::noncopyable>("CProtocolTaskWidget", _protocolTaskWidget)
+    class_<CWorkflowTaskWidgetWrap, std::shared_ptr<CWorkflowTaskWidgetWrap>, boost::noncopyable>("CWorkflowTaskWidget", _WorkflowTaskWidget)
         .def(init<>("Default constructor"))
-        .def(init<QWidget*>("Construct CProtocolTaskWidget with parent."))
-        .def("setLayout", &CProtocolTaskWidgetWrap::setLayout, _setLayoutDocString, args("self", "layout"))
-        .def("setApplyBtnHidden", &CProtocolTaskWidget::setApplyBtnHidden, _setApplyBtnHiddenDocString, args("self", "is_hidden"))
-        .def("init", pure_virtual(&CProtocolTaskWidgetWrap::init), _initDocString, args("self"))
-        .def("onApply", &CProtocolTaskWidget::onApply, &CProtocolTaskWidgetWrap::default_onApply, _applyDocString, args("self"))
-        .def("emitApply", &CProtocolTaskWidgetWrap::emitApply, _emitApplyDocString, args("self"))
-        .def("emitSendProcessAction", &CProtocolTaskWidgetWrap::emitSendProcessAction, _emitSendProcessActionDocString, args("self", "action"))
-        .def("emitSetGraphicsTool", &CProtocolTaskWidgetWrap::emitSetGraphicsTool, _emitSetGraphicsToolDocString, args("self", "tool"))
-        .def("emitSetGraphicsCategory", &CProtocolTaskWidgetWrap::emitSetGraphicsCategory, _emitSetGraphicsCategoryDocString, args("self", "category"))
+        .def(init<QWidget*>("Construct CWorkflowTaskWidget with parent."))
+        .def("setLayout", &CWorkflowTaskWidgetWrap::setLayout, _setLayoutDocString, args("self", "layout"))
+        .def("setApplyBtnHidden", &CWorkflowTaskWidget::setApplyBtnHidden, _setApplyBtnHiddenDocString, args("self", "is_hidden"))
+        .def("init", pure_virtual(&CWorkflowTaskWidgetWrap::init), _initDocString, args("self"))
+        .def("onApply", &CWorkflowTaskWidget::onApply, &CWorkflowTaskWidgetWrap::default_onApply, _applyDocString, args("self"))
+        .def("emitApply", &CWorkflowTaskWidgetWrap::emitApply, _emitApplyDocString, args("self"))
+        .def("emitSendProcessAction", &CWorkflowTaskWidgetWrap::emitSendProcessAction, _emitSendProcessActionDocString, args("self", "action"))
+        .def("emitSetGraphicsTool", &CWorkflowTaskWidgetWrap::emitSetGraphicsTool, _emitSetGraphicsToolDocString, args("self", "tool"))
+        .def("emitSetGraphicsCategory", &CWorkflowTaskWidgetWrap::emitSetGraphicsCategory, _emitSetGraphicsCategoryDocString, args("self", "category"))
     ;
 }

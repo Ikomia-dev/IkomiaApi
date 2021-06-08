@@ -20,17 +20,17 @@
 #ifndef CCUT_HPP
 #define CCUT_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //---------------------//
 //----- CCutParam -----//
 //---------------------//
-class CCutParam: public CProtocolTaskParam
+class CCutParam: public CWorkflowTaskParam
 {
     public:
 
-        CCutParam() : CProtocolTaskParam(){}
+        CCutParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -52,16 +52,16 @@ class CCutParam: public CProtocolTaskParam
 //----------------//
 //----- CCut -----//
 //----------------//
-class CCut : public CImageProcess2d
+class CCut : public C2dImageTask
 {
     public:
 
-        CCut() : CImageProcess2d(true)
+        CCut() : C2dImageTask(true)
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
         }
-        CCut(const std::string name, const std::shared_ptr<CCutParam>& pParam) : CImageProcess2d(name, true)
+        CCut(const std::string name, const std::shared_ptr<CCutParam>& pParam) : C2dImageTask(name, true)
         {
             getInput(0)->setDataType(IODataType::IMAGE_BINARY);
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
@@ -76,8 +76,8 @@ class CCut : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CCutParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -135,7 +135,7 @@ class CCut : public CImageProcess2d
             emit m_signalHandler->doProgress();
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -143,7 +143,7 @@ class CCut : public CImageProcess2d
         }
 };
 
-class CCutFactory : public CProcessFactory
+class CCutFactory : public CTaskFactory
 {
     public:
 
@@ -156,7 +156,7 @@ class CCutFactory : public CProcessFactory
             m_info.m_keywords = "cut,connected,separate,binary";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CCutParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -164,7 +164,7 @@ class CCutFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<CCutParam>();
             assert(pDerivedParam != nullptr);

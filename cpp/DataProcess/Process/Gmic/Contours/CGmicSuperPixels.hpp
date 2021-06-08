@@ -20,7 +20,7 @@
 #ifndef CGMICSUPERPIXELS_HPP
 #define CGMICSUPERPIXELS_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -84,14 +84,14 @@ class CGmicSuperPixelsParam: public CGmicTaskParam
 //----------------------------//
 //----- CGmicSuperPixels -----//
 //----------------------------//
-class CGmicSuperPixels : public CImageProcess2d
+class CGmicSuperPixels : public C2dImageTask
 {
     public:
 
-        CGmicSuperPixels() : CImageProcess2d()
+        CGmicSuperPixels() : C2dImageTask()
         {
         }
-        CGmicSuperPixels(const std::string name, const std::shared_ptr<CGmicSuperPixelsParam>& pParam) : CImageProcess2d(name)
+        CGmicSuperPixels(const std::string name, const std::shared_ptr<CGmicSuperPixelsParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicSuperPixelsParam>(*pParam);
         }
@@ -104,8 +104,8 @@ class CGmicSuperPixels : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicSuperPixelsParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -148,7 +148,7 @@ class CGmicSuperPixels : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -156,7 +156,7 @@ class CGmicSuperPixels : public CImageProcess2d
         }
 };
 
-class CGmicSuperPixelsFactory : public CProcessFactory
+class CGmicSuperPixelsFactory : public CTaskFactory
 {
     public:
 
@@ -171,7 +171,7 @@ class CGmicSuperPixelsFactory : public CProcessFactory
             m_info.m_year = 2017;
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicSuperPixelsParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -179,7 +179,7 @@ class CGmicSuperPixelsFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicSuperPixelsParam>();
             assert(pParam != nullptr);

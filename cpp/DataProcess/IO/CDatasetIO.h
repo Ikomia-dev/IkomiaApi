@@ -25,10 +25,10 @@
 #include <QJsonDocument>
 #include "DataProcessGlobal.hpp"
 #include "Main/CoreGlobal.hpp"
-#include "Protocol/CProtocolTaskIO.h"
+#include "Workflow/CWorkflowTaskIO.h"
 #include "Graphics/CGraphicsItem.hpp"
 
-class DATAPROCESSSHARED_EXPORT CDatasetIO: public CProtocolTaskIO
+class DATAPROCESSSHARED_EXPORT CDatasetIO: public CWorkflowTaskIO
 {
     public:
 

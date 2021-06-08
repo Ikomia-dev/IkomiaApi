@@ -20,18 +20,18 @@
 #ifndef COCVSUPERPIXELSEEDS_HPP
 #define COCVSUPERPIXELSEEDS_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/ximgproc.hpp>
 
 //----------------------------//
 //----- COcvSuperpixelSEEDSParam -----//
 //----------------------------//
-class COcvSuperpixelSEEDSParam: public CProtocolTaskParam
+class COcvSuperpixelSEEDSParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvSuperpixelSEEDSParam() : CProtocolTaskParam(){}
+        COcvSuperpixelSEEDSParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -67,22 +67,22 @@ class COcvSuperpixelSEEDSParam: public CProtocolTaskParam
 //-----------------------//
 //----- COcvSuperpixelSEEDS -----//
 //-----------------------//
-class COcvSuperpixelSEEDS : public CImageProcess2d
+class COcvSuperpixelSEEDS : public C2dImageTask
 {
     public:
 
-        COcvSuperpixelSEEDS() : CImageProcess2d()
+        COcvSuperpixelSEEDS() : C2dImageTask()
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(2, 0);
         }
-        COcvSuperpixelSEEDS(const std::string name, const std::shared_ptr<COcvSuperpixelSEEDSParam>& pParam) : CImageProcess2d(name)
+        COcvSuperpixelSEEDS(const std::string name, const std::shared_ptr<COcvSuperpixelSEEDSParam>& pParam) : C2dImageTask(name)
         {
             setOutputDataType(IODataType::IMAGE_LABEL, 0);
-            addOutput(std::make_shared<CImageProcessIO>(IODataType::IMAGE_BINARY));
-            addOutput(std::make_shared<CImageProcessIO>());
+            addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_BINARY));
+            addOutput(std::make_shared<CImageIO>());
             setOutputColorMap(2, 0);
             m_pParam = std::make_shared<COcvSuperpixelSEEDSParam>(*pParam);
         }
@@ -95,8 +95,8 @@ class COcvSuperpixelSEEDS : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvSuperpixelSEEDSParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -127,11 +127,11 @@ class COcvSuperpixelSEEDS : public CImageProcess2d
             applyGraphicsMask(imgSrc, imgDst, 0);
             forwardInputImage(0, 2);
 
-            auto pOutput1 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput1 = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput1)
                 pOutput1->setImage(imgDst);
 
-            auto pOutput2 = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(1));
+            auto pOutput2 = std::dynamic_pointer_cast<CImageIO>(getOutput(1));
             if(pOutput2)
                 pOutput2->setImage(imgBin);
 
@@ -142,7 +142,7 @@ class COcvSuperpixelSEEDS : public CImageProcess2d
         cv::Ptr<cv::ximgproc::SuperpixelSEEDS> m_pSuperpixel;
 };
 
-class COcvSuperpixelSEEDSFactory : public CProcessFactory
+class COcvSuperpixelSEEDSFactory : public CTaskFactory
 {
     public:
 
@@ -156,7 +156,7 @@ class COcvSuperpixelSEEDSFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/df/d81/classcv_1_1ximgproc_1_1SuperpixelSEEDS.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pSuperpixelSEEDSParam = std::dynamic_pointer_cast<COcvSuperpixelSEEDSParam>(pParam);
             if(pSuperpixelSEEDSParam != nullptr)
@@ -164,7 +164,7 @@ class COcvSuperpixelSEEDSFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pSuperpixelSEEDSParam = std::make_shared<COcvSuperpixelSEEDSParam>();
             assert(pSuperpixelSEEDSParam != nullptr);

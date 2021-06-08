@@ -20,18 +20,18 @@
 #ifndef COCVOCRTESSERACT_HPP
 #define COCVOCRTESSERACT_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include <opencv2/text.hpp>
 
 //------------------------------//
 //----- COcvOCRTesseractParam -----//
 //------------------------------//
-class COcvOCRTesseractParam: public CProtocolTaskParam
+class COcvOCRTesseractParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvOCRTesseractParam() : CProtocolTaskParam(){}
+        COcvOCRTesseractParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -65,17 +65,17 @@ class COcvOCRTesseractParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvOCRTesseract -----//
 //-------------------------//
-class COcvOCRTesseract : public CImageProcess2d
+class COcvOCRTesseract : public C2dImageTask
 {
     public:
 
-        COcvOCRTesseract() : CImageProcess2d()
+        COcvOCRTesseract() : C2dImageTask()
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
         }
-        COcvOCRTesseract(const std::string name, const std::shared_ptr<COcvOCRTesseractParam>& pParam) : CImageProcess2d(name)
+        COcvOCRTesseract(const std::string name, const std::shared_ptr<COcvOCRTesseractParam>& pParam) : C2dImageTask(name)
         {
-            addOutput(std::make_shared<CGraphicsProcessOutput>());
+            addOutput(std::make_shared<CGraphicsOutput>());
             m_pParam = std::make_shared<COcvOCRTesseractParam>(*pParam);
         }
 
@@ -86,14 +86,14 @@ class COcvOCRTesseract : public CImageProcess2d
 
         void    makeRecognition(CMat& imgSrc)
         {
-            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsProcessOutput>(getOutput(getOutputCount() - 1));
+            auto pGraphicsOutput = std::dynamic_pointer_cast<CGraphicsOutput>(getOutput(getOutputCount() - 1));
             if(pGraphicsOutput == nullptr)
                 throw CException(CoreExCode::NULL_POINTER, "Invalid graphics output", __func__, __FILE__, __LINE__);
 
             pGraphicsOutput->setNewLayer(getName());
             pGraphicsOutput->setImageIndex(0);
 
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             if(pGraphicsInput == nullptr)
                 return;
 
@@ -139,7 +139,7 @@ class COcvOCRTesseract : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvOCRTesseractParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -172,7 +172,7 @@ class COcvOCRTesseract : public CImageProcess2d
         cv::Ptr<cv::text::OCRTesseract> m_pTesseract;
 };
 
-class COcvOCRTesseractFactory : public CProcessFactory
+class COcvOCRTesseractFactory : public CTaskFactory
 {
     public:
 
@@ -186,7 +186,7 @@ class COcvOCRTesseractFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d7/ddc/classcv_1_1text_1_1OCRTesseract.html";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pOCRTesseractParam = std::dynamic_pointer_cast<COcvOCRTesseractParam>(pParam);
             if(pOCRTesseractParam != nullptr)
@@ -194,7 +194,7 @@ class COcvOCRTesseractFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pOCRTesseractParam = std::make_shared<COcvOCRTesseractParam>();
             assert(pOCRTesseractParam != nullptr);

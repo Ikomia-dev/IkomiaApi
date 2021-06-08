@@ -153,7 +153,7 @@ macx: LIBS += -lomp
 macx {
     IKOMIA_LIBS = $$PWD/../Ikomia/Build/bin/Ikomia.app/Contents/Frameworks
 } else {
-    IKOMIA_LIBS = $$PWD/Build/Lib/Cpp
+    IKOMIA_LIBS = $$PWD/Build/Lib
 }
 
 ######################

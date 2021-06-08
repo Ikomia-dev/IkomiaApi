@@ -25,16 +25,16 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 
-class COcvWidgetAddWeighted : public CProtocolTaskWidget
+class COcvWidgetAddWeighted : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetAddWeighted(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAddWeighted(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetAddWeighted(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetAddWeighted(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvAddWeightedParam>(pParam);
             init();
@@ -96,7 +96,7 @@ class COcvWidgetAddWeightedFactory : public CWidgetFactory
             m_name = QObject::tr("Add Weighted").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetAddWeighted>(pParam);
         }

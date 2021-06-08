@@ -20,18 +20,18 @@
 #ifndef COCVCROP_HPP
 #define COCVCROP_HPP
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 #include "Graphics/CGraphicsRectangle.h"
 
 //-------------------------//
 //----- COcvCropParam -----//
 //-------------------------//
-class COcvCropParam: public CProtocolTaskParam
+class COcvCropParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvCropParam() : CProtocolTaskParam(){}
+        COcvCropParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -59,14 +59,14 @@ class COcvCropParam: public CProtocolTaskParam
 //--------------------//
 //----- COcvCrop -----//
 //--------------------//
-class COcvCrop : public CImageProcess2d
+class COcvCrop : public C2dImageTask
 {
     public:
 
-        COcvCrop() : CImageProcess2d()
+        COcvCrop() : C2dImageTask()
         {
         }
-        COcvCrop(const std::string name, const std::shared_ptr<COcvCropParam>& pParam) : CImageProcess2d(name)
+        COcvCrop(const std::string name, const std::shared_ptr<COcvCropParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvCropParam>(*pParam);
         }
@@ -79,8 +79,8 @@ class COcvCrop : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<COcvCropParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -119,7 +119,7 @@ class COcvCrop : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -128,7 +128,7 @@ class COcvCrop : public CImageProcess2d
 
     private:
 
-        cv::Rect    getGraphicsRoi(const GraphicsProcessInputPtr& pInput)
+        cv::Rect    getGraphicsRoi(const GraphicsInputPtr& pInput)
         {
             auto items = pInput->getItems();
             for(size_t i=0; i<items.size(); ++i)
@@ -141,7 +141,7 @@ class COcvCrop : public CImageProcess2d
         }
 };
 
-class COcvCropFactory : public CProcessFactory
+class COcvCropFactory : public CTaskFactory
 {
     public:
 
@@ -154,7 +154,7 @@ class COcvCropFactory : public CProcessFactory
             m_info.m_keywords = "crop";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pCropParam = std::dynamic_pointer_cast<COcvCropParam>(pParam);
             if(pCropParam != nullptr)
@@ -162,7 +162,7 @@ class COcvCropFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pCropParam = std::make_shared<COcvCropParam>();
             assert(pCropParam != nullptr);

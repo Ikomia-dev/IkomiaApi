@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetIlluminationChange : public CProtocolTaskWidget
+class COcvWidgetIlluminationChange : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetIlluminationChange(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetIlluminationChange(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetIlluminationChange(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetIlluminationChange(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvIlluminationChangeParam>(pParam);
             init();
@@ -74,7 +74,7 @@ class COcvWidgetIlluminationChangeFactory : public CWidgetFactory
             m_name = QObject::tr("IlluminationChange").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetIlluminationChange>(pParam);
         }

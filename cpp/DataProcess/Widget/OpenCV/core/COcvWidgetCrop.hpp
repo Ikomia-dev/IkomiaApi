@@ -24,16 +24,16 @@
 #include "Process/OpenCV/core/COcvCrop.hpp"
 #include <QSpinBox>
 
-class COcvWidgetCrop : public CProtocolTaskWidget
+class COcvWidgetCrop : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetCrop(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCrop(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetCrop(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetCrop(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvCropParam>(pParam);
             init();
@@ -114,7 +114,7 @@ class COcvWidgetCropFactory : public CWidgetFactory
             m_name = QObject::tr("Crop").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetCrop>(pParam);
         }

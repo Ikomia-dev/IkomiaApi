@@ -26,16 +26,16 @@
 #include <QCheckBox>
 #include <QLabel>
 
-class COcvWidgetRidgeFilter : public CProtocolTaskWidget
+class COcvWidgetRidgeFilter : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetRidgeFilter(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRidgeFilter(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetRidgeFilter(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetRidgeFilter(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvRidgeFilterParam>(pParam);
             init();
@@ -114,7 +114,7 @@ class COcvWidgetRidgeFilterFactory : public CWidgetFactory
             m_name = QObject::tr("Ridge Filter").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetRidgeFilter>(pParam);
         }

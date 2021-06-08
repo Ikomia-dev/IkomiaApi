@@ -21,17 +21,17 @@
 #define COCVDftInv_HPP
 
 
-#include "Core/CImageProcess2d.h"
-#include "IO/CImageProcessIO.h"
+#include "Core/C2dImageTask.h"
+#include "IO/CImageIO.h"
 
 //------------------------------//
 //----- COcvDftInvParam -----//
 //------------------------------//
-class COcvDftInvParam: public CProtocolTaskParam
+class COcvDftInvParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvDftInvParam() : CProtocolTaskParam(){}
+        COcvDftInvParam() : CWorkflowTaskParam(){}
 
         void setParamMap(const UMapString& paramMap) override
         {
@@ -56,18 +56,18 @@ class COcvDftInvParam: public CProtocolTaskParam
 //-------------------------//
 //----- COcvDftInv -----//
 //-------------------------//
-class COcvDftInv : public CImageProcess2d
+class COcvDftInv : public C2dImageTask
 {
     public:
 
-        COcvDftInv() : CImageProcess2d()
+        COcvDftInv() : C2dImageTask()
         {
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
-        COcvDftInv(const std::string name, const std::shared_ptr<COcvDftInvParam>& pParam) : CImageProcess2d(name)
+        COcvDftInv(const std::string name, const std::shared_ptr<COcvDftInvParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvDftInvParam>(*pParam);
-            insertInput(std::make_shared<CImageProcessIO>(), 1);
+            insertInput(std::make_shared<CImageIO>(), 1);
         }
 
         size_t  getProgressSteps() override
@@ -102,9 +102,9 @@ class COcvDftInv : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInputReal = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pInputComplex = std::dynamic_pointer_cast<CImageProcessIO>(getInput(1));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(2));
+            auto pInputReal = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pInputComplex = std::dynamic_pointer_cast<CImageIO>(getInput(1));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(2));
             auto pParam = std::dynamic_pointer_cast<COcvDftInvParam>(m_pParam);
 
             if(pInputReal == nullptr || pInputComplex == nullptr || pParam == nullptr)
@@ -167,7 +167,7 @@ class COcvDftInv : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -175,7 +175,7 @@ class COcvDftInv : public CImageProcess2d
         }
 };
 
-class COcvDftInvFactory : public CProcessFactory
+class COcvDftInvFactory : public CTaskFactory
 {
     public:
 
@@ -189,7 +189,7 @@ class COcvDftInvFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/3.4.3/d2/de8/group__core__array.html#gaa708aa2d2e57a508f968eb0f69aa5ff1";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDftInvParam = std::dynamic_pointer_cast<COcvDftInvParam>(pParam);
             if(pDftInvParam != nullptr)
@@ -197,7 +197,7 @@ class COcvDftInvFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDftInvParam = std::make_shared<COcvDftInvParam>();
             assert(pDftInvParam != nullptr);

@@ -20,7 +20,7 @@
 #ifndef CGMICAUTOBALANCE_HPP
 #define CGMICAUTOBALANCE_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 #include "Process/Gmic/CGmicTaskParam.hpp"
 #include "Process/Gmic/CGmicImageConverter.h"
 
@@ -74,14 +74,14 @@ class CGmicAutoBalanceParam: public CGmicTaskParam
 //----------------------------//
 //----- CGmicAutoBalance -----//
 //----------------------------//
-class CGmicAutoBalance : public CImageProcess2d
+class CGmicAutoBalance : public C2dImageTask
 {
     public:
 
-        CGmicAutoBalance() : CImageProcess2d()
+        CGmicAutoBalance() : C2dImageTask()
         {
         }
-        CGmicAutoBalance(const std::string name, const std::shared_ptr<CGmicAutoBalanceParam>& pParam) : CImageProcess2d(name)
+        CGmicAutoBalance(const std::string name, const std::shared_ptr<CGmicAutoBalanceParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<CGmicAutoBalanceParam>(*pParam);
         }
@@ -94,8 +94,8 @@ class CGmicAutoBalance : public CImageProcess2d
         void run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
-            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsProcessInput>(getInput(1));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
+            auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(1));
             auto pParam = std::dynamic_pointer_cast<CGmicAutoBalanceParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -138,7 +138,7 @@ class CGmicAutoBalance : public CImageProcess2d
 
             applyGraphicsMask(imgSrc, imgDst, 0);
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -146,7 +146,7 @@ class CGmicAutoBalance : public CImageProcess2d
         }
 };
 
-class CGmicAutoBalanceFactory : public CProcessFactory
+class CGmicAutoBalanceFactory : public CTaskFactory
 {
     public:
 
@@ -160,7 +160,7 @@ class CGmicAutoBalanceFactory : public CProcessFactory
             m_info.m_authors = "GarageCoder";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<CGmicAutoBalanceParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -168,7 +168,7 @@ class CGmicAutoBalanceFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pParam = std::make_shared<CGmicAutoBalanceParam>();
             assert(pParam != nullptr);

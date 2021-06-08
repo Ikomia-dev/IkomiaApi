@@ -20,16 +20,16 @@
 #ifndef COCVEXTRACTCHANNEL_HPP
 #define COCVEXTRACTCHANNEL_HPP
 
-#include "Core/CImageProcess2d.h"
+#include "Core/C2dImageTask.h"
 
 //-----------------------------------//
 //----- COcvExtractChannelParam -----//
 //-----------------------------------//
-class COcvExtractChannelParam: public CProtocolTaskParam
+class COcvExtractChannelParam: public CWorkflowTaskParam
 {
     public:
 
-        COcvExtractChannelParam() : CProtocolTaskParam(){}
+        COcvExtractChannelParam() : CWorkflowTaskParam(){}
 
         void        setParamMap(const UMapString& paramMap) override
         {
@@ -51,14 +51,14 @@ class COcvExtractChannelParam: public CProtocolTaskParam
 //------------------------------//
 //----- COcvExtractChannel -----//
 //------------------------------//
-class COcvExtractChannel : public CImageProcess2d
+class COcvExtractChannel : public C2dImageTask
 {
     public:
 
-        COcvExtractChannel() : CImageProcess2d(false)
+        COcvExtractChannel() : C2dImageTask(false)
         {
         }
-        COcvExtractChannel(const std::string name, const std::shared_ptr<COcvExtractChannelParam>& pParam) : CImageProcess2d(name, false)
+        COcvExtractChannel(const std::string name, const std::shared_ptr<COcvExtractChannelParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvExtractChannelParam>(*pParam);
         }
@@ -71,7 +71,7 @@ class COcvExtractChannel : public CImageProcess2d
         void    run() override
         {
             beginTaskRun();
-            auto pInput = std::dynamic_pointer_cast<CImageProcessIO>(getInput(0));
+            auto pInput = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pParam = std::dynamic_pointer_cast<COcvExtractChannelParam>(m_pParam);
 
             if(pInput == nullptr || pParam == nullptr)
@@ -100,7 +100,7 @@ class COcvExtractChannel : public CImageProcess2d
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CImageProcessIO>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CImageIO>(getOutput(0));
             if(pOutput)
                 pOutput->setImage(imgDst);
 
@@ -108,7 +108,7 @@ class COcvExtractChannel : public CImageProcess2d
         }
 };
 
-class COcvExtractChannelFactory : public CProcessFactory
+class COcvExtractChannelFactory : public CTaskFactory
 {
     public:
 
@@ -122,7 +122,7 @@ class COcvExtractChannelFactory : public CProcessFactory
             m_info.m_docLink = "https://docs.opencv.org/4.0.1/d2/de8/group__core__array.html#gacc6158574aa1f0281878c955bcf35642";
         }
 
-        virtual ProtocolTaskPtr create(const ProtocolTaskParamPtr& pParam) override
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
             auto pDerivedParam = std::dynamic_pointer_cast<COcvExtractChannelParam>(pParam);
             if(pDerivedParam != nullptr)
@@ -130,7 +130,7 @@ class COcvExtractChannelFactory : public CProcessFactory
             else
                 return create();
         }
-        virtual ProtocolTaskPtr create() override
+        virtual WorkflowTaskPtr create() override
         {
             auto pDerivedParam = std::make_shared<COcvExtractChannelParam>();
             assert(pDerivedParam != nullptr);

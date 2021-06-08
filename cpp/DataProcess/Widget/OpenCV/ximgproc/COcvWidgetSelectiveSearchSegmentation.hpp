@@ -23,16 +23,16 @@
 #include "Core/CWidgetFactory.hpp"
 #include "Process/OpenCV/ximgproc/COcvSelectiveSearchSegmentation.hpp"
 
-class COcvWidgetSelectiveSearchSegmentation : public CProtocolTaskWidget
+class COcvWidgetSelectiveSearchSegmentation : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetSelectiveSearchSegmentation(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSelectiveSearchSegmentation(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
             initConnections();
         }
-        COcvWidgetSelectiveSearchSegmentation(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetSelectiveSearchSegmentation(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvSelectiveSearchSegmentationParam>(pParam);
             init();
@@ -221,7 +221,7 @@ class COcvWidgetSelectiveSearchSegmentationFactory : public CWidgetFactory
             m_name = QObject::tr("Selective Search Segmentation").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetSelectiveSearchSegmentation>(pParam);
         }

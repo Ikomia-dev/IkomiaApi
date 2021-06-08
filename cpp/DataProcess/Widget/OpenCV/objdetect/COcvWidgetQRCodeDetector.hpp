@@ -26,16 +26,16 @@
 #include <QSlider>
 #include <QGridLayout>
 
-class COcvWidgetQRCodeDetector : public CProtocolTaskWidget
+class COcvWidgetQRCodeDetector : public CWorkflowTaskWidget
 {
     public:
 
-        COcvWidgetQRCodeDetector(QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetQRCodeDetector(QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             init();
         }
 
-        COcvWidgetQRCodeDetector(std::shared_ptr<CProtocolTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CProtocolTaskWidget(parent)
+        COcvWidgetQRCodeDetector(std::shared_ptr<CWorkflowTaskParam> pParam, QWidget *parent = Q_NULLPTR) : CWorkflowTaskWidget(parent)
         {
             m_pParam = std::dynamic_pointer_cast<COcvQRCodeDetectorParam>(pParam);
             init();
@@ -74,7 +74,7 @@ class COcvWidgetQRCodeDetectorFactory : public CWidgetFactory
             m_name = QObject::tr("QRCodeDetector").toStdString();
         }
 
-        virtual ProtocolTaskWidgetPtr   create(std::shared_ptr<CProtocolTaskParam> pParam)
+        virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
         {
             return std::make_shared<COcvWidgetQRCodeDetector>(pParam);
         }
