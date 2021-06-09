@@ -42,3 +42,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
                 self.registerTask(task_factory)
             break
+
+    def install_plugin(self, name):
+        pass
+
