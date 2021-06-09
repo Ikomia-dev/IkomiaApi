@@ -26,6 +26,11 @@
 #include "UtilsDefine.hpp"
 #include "UtilsTools.hpp"
 
+void translate_exception(const CException& e)
+{
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+}
+
 BOOST_PYTHON_MODULE(pyutils)
 {
     using namespace  Ikomia::Utils;
@@ -36,6 +41,9 @@ BOOST_PYTHON_MODULE(pyutils)
 
     // Set the docstring of the current module scope
     scope().attr("__doc__") = _moduleDocString;
+
+    // Register exception
+    register_exception_translator<CException>(&translate_exception);
 
     enum_<PluginState>("PluginState", "Enum - List of plugin states for version compatibility")
         .value("VALID", PluginState::VALID)
