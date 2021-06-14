@@ -51,6 +51,13 @@ BOOST_PYTHON_MODULE(pyutils)
         .value("UPDATED", PluginState::UPDATED)
     ;
 
+    enum_<OSType>("OSType", "Enum - List of possible OS targets for plugins")
+        .value("ALL", OSType::ALL)
+        .value("LINUX", OSType::LINUX)
+        .value("WIN", OSType::WIN)
+        .value("OSX", OSType::OSX)
+    ;
+
     def("getApiVersion", &Utils::IkomiaApp::getCurrentVersionNumber, _getCurrentVersionDocString);
     def("getCompatibilityState", &Utils::Plugin::getStdPythonState, _pythonStateDocString, args("version"));
 
