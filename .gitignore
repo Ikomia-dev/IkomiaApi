@@ -15,6 +15,7 @@ ikomia/dataio/pydataio.so
 ikomia/dataprocess/__pycache__
 ikomia/dataprocess/pydataprocess.so
 ikomia/dnn/__pycache__
+ikomia/dnn/torch/__pycache__
 ikomia/utils/__pycache__
 ikomia/utils/pyutils.so
 ikomia/lib
