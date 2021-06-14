@@ -1,7 +1,9 @@
 from ikomia import utils, dataprocess
+from ikomia.core import config, auth
 import os
 import sys
 import importlib
+import requests
 import logging
 
 logger = logging.getLogger(__name__)
@@ -42,6 +44,34 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
                 self.registerTask(task_factory)
             break
+
+    @auth.http_except
+    def get_online_algorithms(self):
+        if auth.api_token is None:
+            logger.error("Online algorithms retrieval failed, authentification required.")
+            return
+
+        url = config.main_cfg["marketplace"]["url"] + "/api/plugin/"
+        header = {"Authorization": "Token " + str(auth.api_token)}
+        r = requests.get(url, headers=header)
+        r.raise_for_status()
+        all_plugins = r.json()
+        platform_plugins = []
+        current_os = None
+
+        if sys.platform == "win32":
+            current_os = utils.OSType.WIN
+        elif sys.platform == "darwin":
+            current_os = utils.OSType.OSX
+        else:
+            current_os = utils.OSType.LINUX
+
+        for plugin in all_plugins:
+            plugin_os = plugin["os"]
+            if  plugin_os == utils.OSType.ALL or plugin_os == current_os:
+                platform_plugins.append(plugin)
+
+        return platform_plugins
 
     def install_plugin(self, name):
         pass
