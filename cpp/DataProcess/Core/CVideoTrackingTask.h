@@ -77,9 +77,9 @@ class DATAPROCESSSHARED_EXPORT CVideoTrackingTask : public CVideoTask
     /** @cond INTERNAL */
     protected:
 
-        cv::Rect2d                  m_trackedRect;
-        bool                        m_bInitRoi = false;
-        bool                        m_bVideoStarted = false;
+        cv::Rect    m_trackedRect;
+        bool        m_bInitRoi = false;
+        bool        m_bVideoStarted = false;
     /** @endcond */
 };
 

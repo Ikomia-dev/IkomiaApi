@@ -151,7 +151,7 @@ class COcvQRCodeDetector : public C2dImageTask
                 if(imgSrc.channels() == 3)
                 {
                     CMat imgLab, Lab[3];
-                    cv::cvtColor(imgSrc, imgLab, CV_RGB2Lab);
+                    cv::cvtColor(imgSrc, imgLab, cv::COLOR_RGB2Lab);
                     cv::split(imgLab, Lab);
                     img = Lab[0];
                 }

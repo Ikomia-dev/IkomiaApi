@@ -4,6 +4,8 @@
 #include <QObject>
 #include "DataProcess.hpp"
 #include "Core/CWorkflow.h"
+#include "CProcessRegistration.h"
+
 
 class CWorkflowTests : public QObject
 {

@@ -67,9 +67,9 @@ class COcvInpaintX : public C2dImageTask
                 if(imgSrc.channels() >= 3)
                 {
                     CMat srcTmp;
-                    cv::cvtColor(imgSrc, srcTmp, CV_RGB2Lab);
+                    cv::cvtColor(imgSrc, srcTmp, cv::COLOR_RGB2Lab);
                     cv::xphoto::inpaint(srcTmp, mask, imgDst, cv::xphoto::INPAINT_SHIFTMAP);
-                    cv::cvtColor(imgDst, imgDst, CV_Lab2RGB);
+                    cv::cvtColor(imgDst, imgDst, cv::COLOR_Lab2RGB);
                 }
                 else
                     cv::xphoto::inpaint(imgSrc, mask, imgDst, cv::xphoto::INPAINT_SHIFTMAP);

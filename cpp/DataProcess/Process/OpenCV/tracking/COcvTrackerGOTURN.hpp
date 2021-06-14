@@ -98,8 +98,7 @@ class COcvTrackerGOTURN : public CVideoTrackingTask
                         throw CException(CoreExCode::INVALID_PARAMETER, QObject::tr("The process needs a single rectangle as graphics input").toStdString(), __func__, __FILE__, __LINE__);
                     // Create tracker
                     m_pTracker = cv::TrackerGOTURN::create();
-                    if(!m_pTracker->init(imgSrc, m_trackedRect))
-                        throw CException(CoreExCode::INVALID_PARAMETER, QObject::tr("GOTURN tracker init failed").toStdString(), __func__, __FILE__, __LINE__);
+                    m_pTracker->init(imgSrc, m_trackedRect);
                 }
                 else
                 {

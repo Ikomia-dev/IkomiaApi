@@ -144,10 +144,10 @@ class COcvNiblackThreshold : public C2dImageTask
             {
                 source.convertTo(conformImg, CV_8U);
                 if(source.channels() != 1)
-                    cv::cvtColor(source, conformImg, CV_RGB2GRAY, 0);
+                    cv::cvtColor(source, conformImg, cv::COLOR_RGB2GRAY, 0);
             }
             else if(source.channels() != 1)
-                cv::cvtColor(source, conformImg, CV_RGB2GRAY, 0);
+                cv::cvtColor(source, conformImg, cv::COLOR_RGB2GRAY, 0);
             else
                 conformImg = source;
 
