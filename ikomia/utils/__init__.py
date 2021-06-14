@@ -19,11 +19,16 @@
 
 from .pyutils import *
 from .qtconversion import *
-from .pyqtutils import *
 from .plugindeps import *
 from .data import *
 import sys
 import logging
+
+from ikomia.core import config
+_load_pyqt = config.main_cfg["general"]["pyqt5"]
+
+if _load_pyqt:
+    from .pyqtutils import *
 
 
 def init_logging(rank=-1):
