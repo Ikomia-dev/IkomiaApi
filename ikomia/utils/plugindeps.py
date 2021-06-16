@@ -23,6 +23,10 @@ Internal use only
 
 import os
 import modulefinder
+import re
+import subprocess
+import sys
+
 
 SYSMODULES = [
     "__main__", "__future__", "string", "re",
@@ -110,6 +114,20 @@ def getPluginDependencies(pluginFolder):
 
     # Remove duplicates
     return list(set(good_modules)), list(set(bad_modules))
+
+
+def install_requirements(directory):
+    req_files = []
+    for root, subdirs, files in os.walk(directory, topdown=True):
+        for file in files:
+            if re.search("[rR]equirements[0-9]*.txt", file):
+                req_files.append(os.path.normpath(os.path.join(root, file)))
+        break
+
+    req_files.sort()
+
+    for file in req_files:
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
 
 
 if __name__ == "__main__":
