@@ -1,6 +1,7 @@
 import logging
+import ikomia
 from ikomia.dataprocess import store
-from ikomia.core import auth
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -13,15 +14,6 @@ def test_get_local_algorithms():
         logger.info(algos)
     except Exception as e:
         logger.error(e)
-
-
-def test_get_online_algorithms():
-    registry = store.IkomiaRegistry()
-    algos = registry.get_online_algorithms()
-    logger.info("Number of online algorithms:" + str(len(algos)))
-
-    for algo in algos:
-        logger.info(algo["name"])
 
 
 def test_local_instantiation():
@@ -42,8 +34,31 @@ def test_local_instantiation():
         logger.error(e)
 
 
+def test_get_online_algorithms():
+    registry = store.IkomiaRegistry()
+    algos = registry.get_online_algorithms()
+    logger.info("Number of online algorithms:" + str(len(algos)))
+
+    for algo in algos:
+        logger.info(algo["name"])
+
+
+def test_download_plugin():
+    registry = store.IkomiaRegistry()
+    logger.info("Downloading RAFTOpticalFlow...")
+    registry._download_plugin("RAFTOpticalFlow")
+
+
+def test_install_plugin():
+    registry = store.IkomiaRegistry()
+    logger.info("Installing RAFTOpticalFlow...")
+    registry.install_plugin("RAFTOpticalFlow")
+
+
 if __name__ == "__main__":
-    auth.authenticate("Ludo", "ludo?imageez")
-    test_get_local_algorithms()
-    test_get_online_algorithms()
-    test_local_instantiation()
+    ikomia.initialize("Ludo", "ludo?imageez")
+    #test_get_local_algorithms()
+    #test_local_instantiation()
+    #test_get_online_algorithms()
+    #test_download_plugin()
+    test_install_plugin()
