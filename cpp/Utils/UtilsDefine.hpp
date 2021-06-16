@@ -7,7 +7,8 @@ namespace Ikomia
     {
         VALID,
         DEPRECATED,
-        UPDATED
+        UPDATED,
+        INVALID
     };
 
     /**
@@ -20,6 +21,16 @@ namespace Ikomia
         LINUX,  /**< Linux */
         WIN,    /**< Windows 10 */
         OSX     /**< Mac OS X 10.13 or higher */
+    };
+
+    /**
+     * @enum Language
+     * @brief The Language enum defines the possible programming languages.
+     */
+    enum ApiLanguage
+    {
+        CPP,    /**< C++ */
+        PYTHON  /**< Python */
     };
 }
 

@@ -776,9 +776,18 @@ namespace Ikomia
 
                 return PluginState::VALID;
             }
-            inline PluginState  getStdPythonState(const std::string& version)
+            inline PluginState  getCompatibilityState(const std::string& version, ApiLanguage language)
             {
-                return getPythonState(QString::fromStdString(version));
+                if(language == ApiLanguage::CPP)
+                    return getCppState(QString::fromStdString(version));
+                else if(language == ApiLanguage::PYTHON)
+                    return getPythonState(QString::fromStdString(version));
+                else
+                    return PluginState::INVALID;
+            }
+            inline std::string  getCurrentApiVersion()
+            {
+                return "0.5.0";
             }
         }
 

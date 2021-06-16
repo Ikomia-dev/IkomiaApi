@@ -123,11 +123,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //---------------------//
     //----- CTaskInfo -----//
     //---------------------//
-    enum_<CTaskInfo::Language>("Language", "Enum - List of supported programming language")
-        .value("CPP", CTaskInfo::CPP)
-        .value("PYTHON", CTaskInfo::PYTHON)
-    ;
-
     class_<CTaskInfo>("CTaskInfo", _processInfoDocString, init<>("Default constructor"))
         .add_property("name", &CTaskInfo::getName, &CTaskInfo::setName, "Name of the plugin (mandatory - must be unique)")
         .add_property("path", &CTaskInfo::getPath, &CTaskInfo::setPath, "Path in the library tree view of Ikomia")

@@ -49,6 +49,7 @@ BOOST_PYTHON_MODULE(pyutils)
         .value("VALID", PluginState::VALID)
         .value("DEPRECATED", PluginState::DEPRECATED)
         .value("UPDATED", PluginState::UPDATED)
+        .value("INVALID", PluginState::INVALID)
     ;
 
     enum_<OSType>("OSType", "Enum - List of possible OS targets for plugins")
@@ -58,8 +59,13 @@ BOOST_PYTHON_MODULE(pyutils)
         .value("OSX", OSType::OSX)
     ;
 
-    def("getApiVersion", &Utils::IkomiaApp::getCurrentVersionNumber, _getCurrentVersionDocString);
-    def("getCompatibilityState", &Utils::Plugin::getStdPythonState, _pythonStateDocString, args("version"));
+    enum_<ApiLanguage>("ApiLanguage", "Enum - List of supported programming language")
+        .value("CPP", ApiLanguage::CPP)
+        .value("PYTHON", ApiLanguage::PYTHON)
+    ;
+
+    def("getApiVersion", &Utils::Plugin::getCurrentApiVersion, _getCurrentVersionDocString);
+    def("getCompatibilityState", &Utils::Plugin::getCompatibilityState, _pythonStateDocString, args("version", "language"));
 
     //----- Binding CException -----
     class_<CException>("CException", _exceptionDocString, init<>("Default constructor"))

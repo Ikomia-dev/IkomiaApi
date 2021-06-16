@@ -39,16 +39,6 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
     public:
 
         /**
-         * @enum Language
-         * @brief The Language enum defines the possible programming languages.
-         */
-        enum Language
-        {
-            CPP,    /**< C++ */
-            PYTHON  /**< Python */
-        };
-
-        /**
          * @brief Default constructor.
          */
         CTaskInfo();

@@ -122,7 +122,7 @@ void CIkomiaRegistry::loadCppPlugin(const QString &fileName)
                 return;
             }
             taskFactoryPtr->getInfo().setInternal(false);
-            taskFactoryPtr->getInfo().setLanguage(CTaskInfo::CPP);
+            taskFactoryPtr->getInfo().setLanguage(ApiLanguage::CPP);
             taskFactoryPtr->getInfo().setOS(Utils::OS::getCurrent());
 
             auto version = QString::fromStdString(taskFactoryPtr->getInfo().getIkomiaVersion());
