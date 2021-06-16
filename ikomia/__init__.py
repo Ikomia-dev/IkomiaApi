@@ -18,5 +18,14 @@
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from ikomia.utils import init_logging
+from ikomia.core.auth import LoginSession
+
+global api_session
+api_session = None
 
 init_logging()
+
+
+def initialize(username, pwd):
+    global api_session
+    api_session = LoginSession(username, pwd)
