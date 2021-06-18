@@ -26,6 +26,9 @@ import modulefinder
 import re
 import subprocess
 import sys
+import types
+import importlib
+import shutil
 
 
 SYSMODULES = [
@@ -74,7 +77,7 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
         self.run_script(self.name)
 
 
-def getPluginDependencies(pluginFolder):
+def get_plugin_dependencies(pluginFolder):
     good_modules = []
     bad_modules = []
     file_paths = []
@@ -130,9 +133,61 @@ def install_requirements(directory):
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
 
 
+def import_plugin_module(directory, name):
+    if is_module_imported(name):
+        for root, subdirs, files in os.walk(directory, topdown=True):
+            for file in files:
+                filename, file_extension = os.path.splitext(file)
+                if file_extension == ".py":
+                    unload_plugin_module(filename)
+
+    return importlib.import_module(name)
+
+
+def is_module_imported(name):
+    for n, val in globals().items():
+        if isinstance(val, types.ModuleType) and name == val.__name__:
+            return True
+
+    return False
+
+
+def unload_plugin_module(name):
+    modules_to_delete = [m for m in sys.modules.keys() if name == m]
+    for m in modules_to_delete: del(sys.modules[m])
+
+
+def conform_plugin_directory(directory, plugin):
+    good_dir_name = directory
+    base_name = os.path.basename(directory)
+
+    if plugin["language"] == 1:
+        # PYTHON
+        for root, subdirs, files in os.walk(directory, topdown=True):
+            for file in files:
+                match = re.search("([a-zA-Z0-9\-\._#@=]+)_process", file)
+                if match is not None:
+                    good_dir_name = directory.replace(base_name, match.group(1))
+                    break
+            break
+    else:
+        # C++
+        good_name = base_name.replace(" ", "")
+        good_name = good_name.replace(":", "-")
+        good_dir_name = directory.replace(base_name, good_name)
+
+    if good_dir_name != directory:
+        if os.path.isdir(good_dir_name):
+            shutil.rmtree(good_dir_name)
+
+        os.rename(directory, good_dir_name)
+
+    return good_dir_name
+
+
 if __name__ == "__main__":
     folder = '/home/yom/Ikomia/Plugins/Python/Yolact'
-    goodModules, badModules = getPluginDependencies(folder)
+    goodModules, badModules = get_plugin_dependencies(folder)
     print('Dependencies:\n')
     print(goodModules)
     print('\n\nMissing:\n')

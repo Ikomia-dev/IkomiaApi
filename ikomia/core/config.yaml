@@ -1,4 +1,2 @@
-general:
-  pyqt5 : False
 marketplace:
   url: https://ikomia.com
