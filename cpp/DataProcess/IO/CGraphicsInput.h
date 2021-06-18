@@ -48,28 +48,28 @@ class DATAPROCESSSHARED_EXPORT CGraphicsInput : public CWorkflowTaskIO
 
         virtual ~CGraphicsInput() = default;
 
-        CGraphicsInput&      operator=(const CGraphicsInput& in);
-        CGraphicsInput&      operator=(CGraphicsInput&& in);
-        CGraphicsInput&      operator=(const CGraphicsOutput& out);
+        CGraphicsInput&     operator=(const CGraphicsInput& in);
+        CGraphicsInput&     operator=(CGraphicsInput&& in);
+        CGraphicsInput&     operator=(const CGraphicsOutput& out);
 
-        void                        setLayer(CGraphicsLayer* pLayer);
-        void                        setItems(const std::vector<ProxyGraphicsItemPtr>& items);
+        void                setLayer(CGraphicsLayer* pLayer);
+        void                setItems(const std::vector<ProxyGraphicsItemPtr>& items);
 
         const CGraphicsLayer*               getLayer() const;
         std::vector<ProxyGraphicsItemPtr>   getItems() const;
         QRectF                              getBoundingRect() const;
 
-        bool                        isDataAvailable() const override;
+        bool                isDataAvailable() const override;
 
-        void                        clearData() override;
+        void                clearData() override;
 
-        void                        copy(const std::shared_ptr<CWorkflowTaskIO> &ioPtr) override;
+        void                copy(const std::shared_ptr<CWorkflowTaskIO> &ioPtr) override;
 
-        GraphicsInputPtr     clone() const;
+        GraphicsInputPtr    clone() const;
 
     private:
 
-        virtual WorkflowTaskIOPtr   cloneImp() const override;
+        virtual WorkflowTaskIOPtr cloneImp() const override;
 
     private:
 

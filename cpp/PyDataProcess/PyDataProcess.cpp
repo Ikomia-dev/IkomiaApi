@@ -227,6 +227,9 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------//
     //----- CImageIO -----//
     //--------------------//
+    void (CImageIO::*drawGraphicsIn)(const GraphicsInputPtr&) = &CImageIO::drawGraphics;
+    void (CImageIO::*drawGraphicsOut)(const GraphicsOutputPtr&) = &CImageIO::drawGraphics;
+
     class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const CMat&>(_ctor1imageProcessIODocString))
@@ -246,6 +249,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("isOverlayAvailable", &CImageIO::isOverlayAvailable, _isOverlayAvailableDocString, args("self"))
         .def("clearData", &CImageIO::clearData, &CImageIOWrap::default_clearData, _clearImageDataDocString, args("self"))
         .def("copyStaticData", &CImageIO::copyStaticData, &CImageIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
+        .def("drawGraphics", drawGraphicsIn, _drawGraphicsDocString, args("self", "graphics"))
+        .def("drawGraphics", drawGraphicsOut, _drawGraphicsDocString, args("self", "graphics"))
     ;
 
     //----------------------//

@@ -142,7 +142,7 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         size_t                          getProgressSteps() override;
         size_t                          getProgressStepsFrom(const WorkflowVertex& idFrom) const;
         size_t                          getProgressStepsTo(const WorkflowVertex& idTo) const;
-        GraphicsInputPtr         getGraphicsInput(const WorkflowTaskPtr& pTask);
+        GraphicsInputPtr                getGraphicsInput(const WorkflowTaskPtr& pTask);
         double                          getElapsedTimeTo(const WorkflowVertex& id);
         double                          getTotalElapsedTime() const;
         CDataInfoPtr                    getIOInfo(const WorkflowVertex& id, size_t index, bool bInput);

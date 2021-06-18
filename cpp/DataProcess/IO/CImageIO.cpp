@@ -233,6 +233,26 @@ void CImageIO::copyStaticData(const WorkflowTaskIOPtr &ioPtr)
         m_channelCount = imgIoPtr->getChannelCount();
 }
 
+void CImageIO::drawGraphics(const GraphicsInputPtr &graphics)
+{
+    if(m_image.data == nullptr)
+        return;
+
+    CGraphicsConversion graphicsConv((int)m_image.getNbCols(), (int)m_image.getNbRows());
+    for(auto it : graphics->getItems())
+        it->insertToImage(m_image, graphicsConv, false, false);
+}
+
+void CImageIO::drawGraphics(const GraphicsOutputPtr &graphics)
+{
+    if(m_image.data == nullptr)
+        return;
+
+    CGraphicsConversion graphicsConv((int)m_image.getNbCols(), (int)m_image.getNbRows());
+    for(auto it : graphics->getItems())
+        it->insertToImage(m_image, graphicsConv, false, false);
+}
+
 void CImageIO::save()
 {
     if( m_dataType == IODataType::VIDEO ||

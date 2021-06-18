@@ -82,7 +82,7 @@ class DATAPROCESSSHARED_EXPORT CGraphicsOutput : public CWorkflowTaskIO
 
         void                        copy(const WorkflowTaskIOPtr &ioPtr) override;
 
-        GraphicsOutputPtr    clone() const;
+        GraphicsOutputPtr           clone() const;
 
         void                        save() override;
         void                        save(const std::string &path) override;
@@ -97,6 +97,8 @@ class DATAPROCESSSHARED_EXPORT CGraphicsOutput : public CWorkflowTaskIO
         std::vector<ProxyGraphicsItemPtr>   m_items;
         int                                 m_imageIndex = 0;
 };
+
+using GraphicsOutputPtr = std::shared_ptr<CGraphicsOutput>;
 
 class DATAPROCESSSHARED_EXPORT CGraphicsOutputFactory: public CWorkflowTaskIOFactory
 {

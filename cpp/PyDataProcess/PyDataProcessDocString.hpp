@@ -321,6 +321,12 @@ constexpr auto _setOverlayMaskDocString =
         "Args:\n"
         "   image (Numpy array): image buffer (8 bits - 1 channel)\n";
 
+constexpr auto _drawGraphicsDocString =
+        "Draw given graphics items (input or output) in the image.\n\n"
+        "Args:\n"
+        "   graphics (:py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsInput` or "
+        "   :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput`)\n";
+
 //--------------------------//
 //----- CGraphicsInput -----//
 //--------------------------//

@@ -25,6 +25,8 @@
 #include "DataProcessGlobal.hpp"
 #include "Data/CMat.hpp"
 #include "Workflow/CWorkflowTaskIO.h"
+#include "CGraphicsInput.h"
+#include "CGraphicsOutput.h"
 
 /**
  * @ingroup groupDataProcess
@@ -170,6 +172,9 @@ class DATAPROCESSSHARED_EXPORT CImageIO : public CWorkflowTaskIO
          * @param ioPtr: input/output to copy static data from.
          */
         void            copyStaticData(const WorkflowTaskIOPtr& ioPtr) override;
+
+        void            drawGraphics(const GraphicsInputPtr& graphics);
+        void            drawGraphics(const GraphicsOutputPtr& graphics);
 
         void            save() override;
         void            save(const std::string &path) override;
