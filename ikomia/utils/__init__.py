@@ -18,17 +18,10 @@
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from .pyutils import *
-from .qtconversion import *
-from .plugindeps import *
+from .plugintools import *
 from .data import *
 import sys
 import logging
-
-from ikomia.core import config
-_load_pyqt = config.main_cfg["general"]["pyqt5"]
-
-if _load_pyqt:
-    from .pyqtutils import *
 
 
 def init_logging(rank=-1):
