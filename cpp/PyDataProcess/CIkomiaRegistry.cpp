@@ -36,6 +36,11 @@ std::string CIkomiaRegistry::getPluginsDirectory() const
     return m_pluginsDir;
 }
 
+CTaskInfo CIkomiaRegistry::getAlgorithmInfo(const std::string &name) const
+{
+    return m_processRegistrator.getProcessInfo(name);
+}
+
 WorkflowTaskPtr CIkomiaRegistry::createInstance(const std::string &processName)
 {
     return m_processRegistrator.createProcessObject(processName, nullptr);
@@ -62,7 +67,7 @@ void CIkomiaRegistry::loadCppPlugins()
 
     //Load plugins placed directly in the root folder
     foreach (QString fileName, pluginsDir.entryList(QDir::Files|QDir::NoSymLinks))
-        loadCppPlugin(pluginsDir.absoluteFilePath(fileName));
+        _loadCppPlugin(pluginsDir.absoluteFilePath(fileName));
 
     //Scan sub-directories
     foreach (QString directory, pluginsDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot))
@@ -76,7 +81,7 @@ void CIkomiaRegistry::loadCppPlugins()
 #endif
 
         foreach (QString fileName, pluginDir.entryList(QDir::Files|QDir::NoSymLinks))
-            loadCppPlugin(pluginDir.absoluteFilePath(fileName));
+            _loadCppPlugin(pluginDir.absoluteFilePath(fileName));
     }
 
 #ifdef Q_OS_WIN64
@@ -85,7 +90,14 @@ void CIkomiaRegistry::loadCppPlugins()
 #endif
 }
 
-void CIkomiaRegistry::loadCppPlugin(const QString &fileName)
+void CIkomiaRegistry::loadCppPlugin(const std::string& directory)
+{
+    QDir pluginDir(QString::fromStdString(directory));
+    foreach (QString fileName, pluginDir.entryList(QDir::Files|QDir::NoSymLinks))
+        _loadCppPlugin(pluginDir.absoluteFilePath(fileName));
+}
+
+void CIkomiaRegistry::_loadCppPlugin(const QString &fileName)
 {
     try
     {

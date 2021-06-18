@@ -45,30 +45,30 @@ class CTaskFactory
          * @brief Gets the metadata structure associated with the process task.
          * @return CTaskInfo reference.
          */
-        CTaskInfo&               getInfo(){ return m_info; }
+        CTaskInfo&              getInfo(){ return m_info; }
         /**
          * @brief Gets the metadata structure associated with the process task.
          * @return CTaskInfo object.
          */
-        CTaskInfo                getInfo() const { return m_info; }
+        CTaskInfo               getInfo() const { return m_info; }
 
         /**
          * @brief Sets the metadata structure associated with the process task.
          * @param info: see CTaskInfo for more details.
          */
-        void                        setInfo(const CTaskInfo& info){ m_info = info; }
+        void                    setInfo(const CTaskInfo& info){ m_info = info; }
 
         /**
          * @brief Pure virtual method to create new process task instance with the given parameters.
          * @param pParam: CWorkflowTaskParam based shared pointer.
          * @return CWorkflowTask based shared pointer.
          */
-        virtual WorkflowTaskPtr     create(const WorkflowTaskParamPtr& pParam) = 0;
+        virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) = 0;
         /**
          * @brief Pure virtual method to create new process task instance with default parameters.
          * @return CWorkflowTask based shared pointer.
          */
-        virtual WorkflowTaskPtr     create() = 0;
+        virtual WorkflowTaskPtr create() = 0;
 
     protected:
 
@@ -83,12 +83,12 @@ class CTaskAbstractFactory: public CAbstractFactory<std::string, WorkflowTaskPtr
 {
     public:
 
-        TaskFactories&   getList()
+        TaskFactories&  getList()
         {
             return m_factories;
         }
 
-        TaskFactoryPtr   getFactory(const std::string& name)
+        TaskFactoryPtr  getFactory(const std::string& name) const
         {
             auto it = std::find_if(m_factories.begin(),
                                    m_factories.end(),
@@ -96,7 +96,7 @@ class CTaskAbstractFactory: public CAbstractFactory<std::string, WorkflowTaskPtr
             return *it;
         }
 
-        void                remove(const std::string& name)
+        void            remove(const std::string& name)
         {
             m_factories.erase(std::remove_if(m_factories.begin(),
                                              m_factories.end(),
@@ -104,7 +104,7 @@ class CTaskAbstractFactory: public CAbstractFactory<std::string, WorkflowTaskPtr
                               m_factories.end());
         }
 
-        void                clear() override
+        void            clear() override
         {
             CAbstractFactory<std::string, WorkflowTaskPtr, const WorkflowTaskParamPtr>::clear();
             m_factories.clear();

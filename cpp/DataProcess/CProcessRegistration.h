@@ -35,6 +35,7 @@ class DATAPROCESSSHARED_EXPORT CProcessRegistration
 
         const CTaskAbstractFactory&     getProcessFactory() const;
         const CWidgetAbstractFactory&   getWidgetFactory() const;
+        CTaskInfo                       getProcessInfo(const std::string& name) const;
 
         void                            registerProcess(const std::shared_ptr<CTaskFactory>& pProcessFactory,
                                                         const std::shared_ptr<CWidgetFactory> &pWidgetFactory);

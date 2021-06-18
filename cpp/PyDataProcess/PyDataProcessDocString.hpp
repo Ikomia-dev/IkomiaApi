@@ -1136,6 +1136,13 @@ constexpr auto _getAlgorithmsDocString =
         "Returns:\n"
         "   string: list of algorithm names\n";
 
+constexpr auto _getAlgorithmInfoDocString =
+        "Get algorithm informations such as description, authors, documentation link...\n\n"
+        "Args:\n"
+        "   name (str): algorithm name\n"
+        "Returns:\n"
+        "   algorithm information (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo`)\n";
+
 constexpr auto _createInstance1DocString =
         "Instanciate algorithm of the Ikomia registry from its name with default parameters. The full list of available algorithms can be"
         "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
@@ -1158,5 +1165,10 @@ constexpr auto _registerTaskDocString =
         "and use it inside a workflow.\n\n"
         "Args:\n"
         "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
+
+constexpr auto _loadCppPluginDocString =
+        "Load C++ algorithm to Ikomia registry.\n\n"
+        "Args:\n"
+        "   path (str): path to shared library of the plugin\n";
 
 #endif // PYDATAPROCESSDOCSTRING_HPP

@@ -397,3 +397,9 @@ const CWidgetAbstractFactory& CProcessRegistration::getWidgetFactory() const
     CPyEnsureGIL gil;
     return m_widgetFactory;
 }
+
+CTaskInfo CProcessRegistration::getProcessInfo(const std::string &name) const
+{
+    auto factory = m_processFactory.getFactory(name);
+    return factory->getInfo();
+}

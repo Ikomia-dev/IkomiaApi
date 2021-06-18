@@ -140,6 +140,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .add_property("language", &CTaskInfo::getLanguage, &CTaskInfo::setLanguage, "Python")
         .add_property("license", &CTaskInfo::getLicense, &CTaskInfo::setLicense, "License of the plugin")
         .add_property("repository", &CTaskInfo::getRepository, &CTaskInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
+        .def_readonly("internal", &CTaskInfo::isInternal, "Indicate a built-in algorithm.")
     ;
 
     //------------------------//
@@ -568,8 +569,10 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("setPluginsDirectory", &CIkomiaRegistry::setPluginsDirectory, _setPluginsDirDocString, args("self", "directory"))
         .def("getPluginsDirectory", &CIkomiaRegistry::getPluginsDirectory, _getPluginsDirDocString, args("self"))
         .def("getAlgorithms", &CIkomiaRegistry::getAlgorithms, _getAlgorithmsDocString, args("self)"))
+        .def("getAlgorithmInfo", &CIkomiaRegistry::getAlgorithmInfo, _getAlgorithmInfoDocString, args("self", "name"))
         .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
         .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
         .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
+        .def("loadCppPlugin", &CIkomiaRegistry::loadCppPlugin, _loadCppPluginDocString, args("self", "path"))
     ;
 }

@@ -15,6 +15,7 @@ class CIkomiaRegistry
 
         std::vector<std::string>    getAlgorithms() const;
         std::string                 getPluginsDirectory() const;
+        CTaskInfo                   getAlgorithmInfo(const std::string& name) const;
 
         WorkflowTaskPtr             createInstance(const std::string& processName);
         WorkflowTaskPtr             createInstance(const std::string& processName, const WorkflowTaskParamPtr& paramPtr);
@@ -22,10 +23,11 @@ class CIkomiaRegistry
         void                        registerTask(const TaskFactoryPtr& factoryPtr);
 
         void                        loadCppPlugins();
+        void                        loadCppPlugin(const std::string &directory);
 
     private:
 
-        void                        loadCppPlugin(const QString& fileName);
+        void                        _loadCppPlugin(const QString &fileName);
 
     private:
 
