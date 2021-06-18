@@ -1,8 +1,20 @@
+import os
 import logging
 import ikomia
 from ikomia.dataprocess import store
+import cv2
 
 logger = logging.getLogger(__name__)
+
+
+def get_test_image_directory():
+    test_dir = os.path.dirname(os.path.abspath(__file__))
+    return test_dir + "/../cpp/UnitTests/Data/Images"
+
+
+def get_test_video_directory():
+    test_dir = os.path.dirname(os.path.abspath(__file__))
+    return test_dir + "/../cpp/UnitTests/Data/Videos"
 
 
 def test_get_local_algorithms():
@@ -82,6 +94,36 @@ def test_update():
     registry.update_algorithms()
 
 
+def test_execution():
+    registry = store.IkomiaRegistry()
+
+    # Load image
+    img_path = get_test_image_directory() + "/Lena.png"
+    img = cv2.imread(img_path)
+    cv2.imshow("Original", img)
+
+    # OpenCV CLAHE
+    algo = registry.create_algorithm("CLAHE")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    output = algo.getOutput(0)
+    img_out = output.getImage()
+    cv2.imshow("CLAHE", img_out)
+
+    # Marketplace FaceDetector
+    algo = registry.create_algorithm("Face Detector")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    output_img = algo.getOutput(0)
+    output_graphics = algo.getOutput(1)
+    output_img.drawGraphics(output_graphics)
+    img_out = output_img.getImage()
+    cv2.imshow("Face Detector", img_out)
+    cv2.waitKey(0)
+
+
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
     # test_get_local_algorithms()
@@ -90,4 +132,5 @@ if __name__ == "__main__":
     # test_install_plugin()
     # test_local_instantiation()
     # test_instantiation()
-    test_update()
+    # test_update()
+    test_execution()
