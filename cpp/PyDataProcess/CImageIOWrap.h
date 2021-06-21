@@ -33,6 +33,8 @@ class CImageIOWrap : public CImageIO, public wrapper<CImageIO>
         CImageIOWrap(const CMat& image);
         CImageIOWrap(IODataType dataType);
         CImageIOWrap(IODataType dataType, const CMat& image);
+        CImageIOWrap(const std::string& path);
+        CImageIOWrap(IODataType datatype, const std::string& path);
         CImageIOWrap(const CImageIO &io);
 
         virtual size_t  getUnitElementCount() const;

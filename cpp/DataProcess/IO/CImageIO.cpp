@@ -20,6 +20,9 @@
 #include "CImageIO.h"
 #include "Data/CDataImageInfo.h"
 #include "CDataImageIO.h"
+#include "CDataIO.hpp"
+
+using CImageDataIO = CDataIO<CDataImageIO, CMat>;
 
 CImageIO::CImageIO() : CWorkflowTaskIO(IODataType::IMAGE)
 {
@@ -55,6 +58,40 @@ CImageIO::CImageIO(IODataType data, const CMat &image) : CWorkflowTaskIO(data)
     m_dimCount = m_image.dims;
     m_channelCount = m_image.channels();
     m_bNewDataInfo = true;
+}
+
+CImageIO::CImageIO(const std::string &path) : CWorkflowTaskIO(IODataType::IMAGE)
+{
+    m_description = QObject::tr("2D or 3D images.\n"
+                                "Can be single frame from video or camera stream.").toStdString();
+    m_saveFormat = DataFileFormat::PNG;
+
+    CImageDataIO io(path);
+    m_image = io.read();
+
+    if(m_image.data != nullptr)
+    {
+        m_dimCount = m_image.dims;
+        m_channelCount = m_image.channels();
+        m_bNewDataInfo = true;
+    }
+}
+
+CImageIO::CImageIO(IODataType data, const std::string &path) : CWorkflowTaskIO(data)
+{
+    m_description = QObject::tr("2D or 3D images.\n"
+                                "Can be single frame from video or camera stream.").toStdString();
+    m_saveFormat = DataFileFormat::PNG;
+
+    CImageDataIO io(path);
+    m_image = io.read();
+
+    if(m_image.data != nullptr)
+    {
+        m_dimCount = m_image.dims;
+        m_channelCount = m_image.channels();
+        m_bNewDataInfo = true;
+    }
 }
 
 CImageIO::CImageIO(const CImageIO &io) : CWorkflowTaskIO(io)
