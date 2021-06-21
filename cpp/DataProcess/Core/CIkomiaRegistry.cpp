@@ -41,6 +41,16 @@ CTaskInfo CIkomiaRegistry::getAlgorithmInfo(const std::string &name) const
     return m_processRegistrator.getProcessInfo(name);
 }
 
+CProcessRegistration *CIkomiaRegistry::getTaskRegistrator()
+{
+    return &m_processRegistrator;
+}
+
+CTaskIORegistration *CIkomiaRegistry::getIORegistrator()
+{
+    return &m_ioRegistrator;
+}
+
 WorkflowTaskPtr CIkomiaRegistry::createInstance(const std::string &processName)
 {
     return m_processRegistrator.createProcessObject(processName, nullptr);

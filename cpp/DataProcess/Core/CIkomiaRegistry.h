@@ -1,9 +1,11 @@
 #ifndef CIKOMIAREGISTRY_H
 #define CIKOMIAREGISTRY_H
 
+#include "DataProcessGlobal.hpp"
 #include "CProcessRegistration.h"
+#include "IO/CTaskIORegistration.h"
 
-class CIkomiaRegistry
+class DATAPROCESSSHARED_EXPORT CIkomiaRegistry
 {
     public:
 
@@ -16,6 +18,8 @@ class CIkomiaRegistry
         std::vector<std::string>    getAlgorithms() const;
         std::string                 getPluginsDirectory() const;
         CTaskInfo                   getAlgorithmInfo(const std::string& name) const;
+        CProcessRegistration*       getTaskRegistrator();
+        CTaskIORegistration*        getIORegistrator();
 
         WorkflowTaskPtr             createInstance(const std::string& processName);
         WorkflowTaskPtr             createInstance(const std::string& processName, const WorkflowTaskParamPtr& paramPtr);
@@ -32,6 +36,7 @@ class CIkomiaRegistry
     private:
 
         CProcessRegistration            m_processRegistrator;
+        CTaskIORegistration             m_ioRegistrator;
         std::string                     m_pluginsDir;
         QMap<QString, QPluginLoader*>   m_loaders;
 };
