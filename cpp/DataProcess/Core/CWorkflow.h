@@ -88,15 +88,15 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         CWorkflow();
         CWorkflow(const std::string& name);
         CWorkflow(const std::string& name, CProcessRegistration* pTaskRegistration, CTaskIORegistration* pIORegistration, const GraphicsContextPtr &contextPtr);
-        CWorkflow(const CWorkflow& Workflow);
-        CWorkflow(const CWorkflow&& Workflow);
+        CWorkflow(const CWorkflow& workflow);
+        CWorkflow(const CWorkflow&& workflow);
 
         //Destructor
         ~CWorkflow();
 
         //Operators
-        CWorkflow&                      operator=(const CWorkflow& Workflow);
-        CWorkflow&                      operator=(const CWorkflow&& Workflow);
+        CWorkflow&                      operator=(const CWorkflow& workflow);
+        CWorkflow&                      operator=(const CWorkflow&& workflow);
         WorkflowTaskPtr                 operator[](WorkflowVertex v);
         WorkflowEdgePtr                 operator[](WorkflowEdge e);
 
@@ -111,6 +111,7 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         void                            setTaskActionFlag(const WorkflowVertex &id, ActionFlag action, bool bEnable);
         void                            setInputBatchState(size_t index, bool bBatch);
         void                            setCfgEntry(const std::string& key, const std::string& value);
+        void                            setAutoSave(bool bEnable);
 
         //Getters
         std::string                     getDescription() const;
@@ -260,6 +261,7 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         std::atomic<bool>       m_bStopped{false};
         bool                    m_bBatchMode = false;
         bool                    m_bForceBatchMode = false;
+        bool                    m_bAutoSave = false;
         CProcessRegistration*   m_pTaskRegistration = nullptr;
         CTaskIORegistration*    m_pTaskIORegistration = nullptr;
         GraphicsContextPtr      m_graphicsContextPtr = nullptr;

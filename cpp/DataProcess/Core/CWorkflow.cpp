@@ -68,30 +68,32 @@ CWorkflow::CWorkflow(const std::string &name, CProcessRegistration *pTaskRegistr
     m_graphicsContextPtr = contextPtr;
 }
 
-CWorkflow::CWorkflow(const CWorkflow &Workflow) : CWorkflowTask(Workflow)
+CWorkflow::CWorkflow(const CWorkflow &workflow) : CWorkflowTask(workflow)
 {
-    m_graph = Workflow.m_graph;
-    m_root = Workflow.m_root;
-    m_hashValue = Workflow.m_hashValue;
-    m_description = Workflow.m_description;
-    m_keywords = Workflow.m_keywords;
-    m_lastTaskAdded = Workflow.m_lastTaskAdded;
-    m_activeTask = Workflow.m_activeTask;
-    m_runningTask = Workflow.m_runningTask;
+    m_graph = workflow.m_graph;
+    m_root = workflow.m_root;
+    m_hashValue = workflow.m_hashValue;
+    m_description = workflow.m_description;
+    m_keywords = workflow.m_keywords;
+    m_lastTaskAdded = workflow.m_lastTaskAdded;
+    m_activeTask = workflow.m_activeTask;
+    m_runningTask = workflow.m_runningTask;
+    m_bAutoSave = workflow.m_bAutoSave;
     m_signalHandler = std::make_unique<CWorkflowSignalHandler>();
     m_runMgr.setCfg(&m_cfg);
 }
 
-CWorkflow::CWorkflow(const CWorkflow&& Workflow) : CWorkflowTask(Workflow)
+CWorkflow::CWorkflow(const CWorkflow&& workflow) : CWorkflowTask(workflow)
 {
-    m_graph = std::move(Workflow.m_graph);
-    m_root = std::move(Workflow.m_root);
-    m_hashValue = std::move(Workflow.m_hashValue);
-    m_description = std::move(Workflow.m_description);
-    m_keywords = std::move(Workflow.m_keywords);
-    m_lastTaskAdded = std::move(Workflow.m_lastTaskAdded);
-    m_activeTask = std::move(Workflow.m_activeTask);
-    m_runningTask = std::move(Workflow.m_runningTask);
+    m_graph = std::move(workflow.m_graph);
+    m_root = std::move(workflow.m_root);
+    m_hashValue = std::move(workflow.m_hashValue);
+    m_description = std::move(workflow.m_description);
+    m_keywords = std::move(workflow.m_keywords);
+    m_lastTaskAdded = std::move(workflow.m_lastTaskAdded);
+    m_activeTask = std::move(workflow.m_activeTask);
+    m_runningTask = std::move(workflow.m_runningTask);
+    m_bAutoSave = std::move(workflow.m_bAutoSave);
     m_signalHandler = std::make_unique<CWorkflowSignalHandler>();
     m_runMgr.setCfg(&m_cfg);
 }
@@ -102,31 +104,33 @@ CWorkflow::~CWorkflow()
     m_graph.clear();
 }
 
-CWorkflow &CWorkflow::operator=(const CWorkflow &Workflow)
+CWorkflow &CWorkflow::operator=(const CWorkflow &workflow)
 {
-    CWorkflowTask::operator=(Workflow);
-    m_graph = Workflow.m_graph;
-    m_root = Workflow.m_root;
-    m_hashValue = Workflow.m_hashValue;
-    m_description = Workflow.m_description;
-    m_keywords = Workflow.m_keywords;
-    m_lastTaskAdded = Workflow.m_lastTaskAdded;
-    m_activeTask = Workflow.m_activeTask;
-    m_runningTask = Workflow.m_runningTask;
+    CWorkflowTask::operator=(workflow);
+    m_graph = workflow.m_graph;
+    m_root = workflow.m_root;
+    m_hashValue = workflow.m_hashValue;
+    m_description = workflow.m_description;
+    m_keywords = workflow.m_keywords;
+    m_lastTaskAdded = workflow.m_lastTaskAdded;
+    m_activeTask = workflow.m_activeTask;
+    m_runningTask = workflow.m_runningTask;
+    m_bAutoSave = workflow.m_bAutoSave;
     return *this;
 }
 
-CWorkflow &CWorkflow::operator=(const CWorkflow&& Workflow)
+CWorkflow &CWorkflow::operator=(const CWorkflow&& workflow)
 {
-    CWorkflowTask::operator=(Workflow);
-    m_graph = std::move(Workflow.m_graph);
-    m_root = std::move(Workflow.m_root);
-    m_hashValue = std::move(Workflow.m_hashValue);
-    m_description = std::move(Workflow.m_description);
-    m_keywords = std::move(Workflow.m_keywords);
-    m_lastTaskAdded = std::move(Workflow.m_lastTaskAdded);
-    m_activeTask = std::move(Workflow.m_activeTask);
-    m_runningTask = std::move(Workflow.m_runningTask);
+    CWorkflowTask::operator=(workflow);
+    m_graph = std::move(workflow.m_graph);
+    m_root = std::move(workflow.m_root);
+    m_hashValue = std::move(workflow.m_hashValue);
+    m_description = std::move(workflow.m_description);
+    m_keywords = std::move(workflow.m_keywords);
+    m_lastTaskAdded = std::move(workflow.m_lastTaskAdded);
+    m_activeTask = std::move(workflow.m_activeTask);
+    m_runningTask = std::move(workflow.m_runningTask);
+    m_bAutoSave = std::move(workflow.m_bAutoSave);
     return *this;
 }
 
@@ -244,6 +248,11 @@ void CWorkflow::setInputBatchState(size_t index, bool bBatch)
 void CWorkflow::setCfgEntry(const std::string &key, const std::string &value)
 {
     m_cfg[key] = value;
+}
+
+void CWorkflow::setAutoSave(bool bEnable)
+{
+    m_bAutoSave = bEnable;
 }
 
 /***********/
@@ -1157,9 +1166,16 @@ void CWorkflow::runTask(const WorkflowVertex& id)
         // Update output folder
         auto baseFolder = taskPtr->getOutputFolder();
         taskPtr->setOutputFolder(baseFolder + m_startDate + "/" + taskPtr->getName() + "/");
+        // check global auto-save mode
+        if(m_bAutoSave)
+            taskPtr->setAutoSave(true);
+
         // Run task
         setRunningTask(id);
         m_runMgr.run(taskPtr, m_compositeInputName);
+        std::cout << taskPtr->getName() << std::endl;
+        std::cout << "Output folder:" << taskPtr->getOutputFolder() << std::endl;
+        std::cout << "Auto-save:" << taskPtr->isAutoSave() << std::endl;
         manageOutputs(id);
         // Restore output folder
         taskPtr->setOutputFolder(baseFolder);
@@ -1574,6 +1590,13 @@ void CWorkflow::saveJSON(const std::string& path)
     QJsonObject jsonWorkflow;
     QJsonArray jsonTasks, jsonEdges;
 
+    // Metadata
+    QJsonObject jsonMetadata;
+    jsonMetadata["name"] = QString::fromStdString(m_name);
+    jsonMetadata["description"] = QString::fromStdString(m_description);
+    jsonMetadata["keywords"] = QString::fromStdString(m_keywords);
+    jsonWorkflow["metadata"] = jsonMetadata;
+
     // Tasks
     auto vertexRangeIt = boost::vertices(m_graph);
     for(auto it=vertexRangeIt.first; it!=vertexRangeIt.second; ++it)
@@ -1638,6 +1661,15 @@ void CWorkflow::loadJSON(const std::string &path)
     QJsonObject jsonWorkflow = jsonDoc.object();
     if(jsonWorkflow.isEmpty())
         throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: empty JSON workflow", __func__, __FILE__, __LINE__);
+
+    // Metadata
+    QJsonObject jsonMetadata = jsonWorkflow["metadata"].toObject();
+    if(!jsonMetadata.isEmpty())
+    {
+        m_name = jsonMetadata["name"].toString().toStdString();
+        m_description = jsonMetadata["description"].toString().toStdString();
+        m_keywords = jsonMetadata["keywords"].toString().toStdString();
+    }
 
     // Load tasks
     QJsonArray jsonTasks = jsonWorkflow["tasks"].toArray();
