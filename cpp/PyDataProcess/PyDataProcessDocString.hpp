@@ -245,6 +245,27 @@ constexpr auto _ctor3imageProcessIODocString =
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
         "   arg3 (Numpy array): 2D/3D image\n";
 
+constexpr auto _ctor4imageProcessIODocString =
+        "Construct a CImageIO instance with the default image data type (:py:class:`~ikomia.core.pycore.IODataType.IMAGE)"
+        "and the image loaded from the given path.\n\n"
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (str): image path\n";
+
+constexpr auto _ctor5imageProcessIODocString =
+        "Construct a CImageIO instance with the given data type and the image loaded from the given path. "
+        "The data type must be one of these values:\n\n"
+        "- IODataType.IMAGE\n"
+        "- IODataType.IMAGE_BINARY\n"
+        "- IODataType.IMAGE_LABEL\n"
+        "- IODataType.VOLUME\n"
+        "- IODataType.VOLUME_BINARY\n"
+        "- IODataType.VOLUME_LABEL\n\n"
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
+        "   arg3 (str): image path\n";
+
 constexpr auto _clearImageDataDocString =
         "Clear image and overlay mask so that they become empty.\n";
 
@@ -1176,5 +1197,42 @@ constexpr auto _loadCppPluginDocString =
         "Load C++ algorithm to Ikomia registry.\n\n"
         "Args:\n"
         "   path (str): path to shared library of the plugin\n";
+
+//---------------------//
+//----- CWorkflow -----//
+//---------------------//
+constexpr auto _workflowDocString =
+        "";
+
+constexpr auto _ctor1WorkflowDocString =
+        "";
+
+constexpr auto _ctor2WorkflowDocString =
+        "";
+
+constexpr auto _wfSetOutputFolderDocString =
+        "";
+
+constexpr auto _wfSetAutoSaveDocString =
+        "";
+
+constexpr auto _wfGetTaskCountDocString =
+        "";
+
+constexpr auto _wfAddInputDocString =
+        "";
+
+constexpr auto _wfRunDocString =
+        "";
+
+constexpr auto _wfStopDocString =
+        "";
+
+constexpr auto _wfLoadDocString =
+        "";
+
+constexpr auto _wfSaveDocString =
+        "";
+
 
 #endif // PYDATAPROCESSDOCSTRING_HPP

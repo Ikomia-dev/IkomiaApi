@@ -24,11 +24,11 @@ SOURCES += \
         CDnnTrainTaskParamWrap.cpp \
         CDnnTrainTaskWrap.cpp \
         CGraphicsInputWrap.cpp \
-        CIkomiaRegistry.cpp \
         CImageIOWrap.cpp \
         CPathIOWrap.cpp \
         CVideoIOWrap.cpp \
         CWidgetOutputWrap.cpp \
+        CWorkflowWrap.cpp \
         PyDataProcess.cpp \
         CTaskFactoryWrap.cpp \
         CWidgetFactoryWrap.cpp \
@@ -47,11 +47,11 @@ HEADERS += \
         CDnnTrainTaskWrap.h \
         CFeatureIOWrap.hpp \
         CGraphicsInputWrap.h \
-        CIkomiaRegistry.h \
         CImageIOWrap.h \
         CPathIOWrap.h \
         CVideoIOWrap.h \
         CWidgetOutputWrap.h \
+        CWorkflowWrap.h \
         PyDataProcess.h \
         PyDataProcessDocString.hpp \
         PyDataProcessGlobal.h \

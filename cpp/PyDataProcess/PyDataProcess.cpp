@@ -39,7 +39,8 @@
 #include "CDatasetIOWrap.h"
 #include "CPathIOWrap.h"
 #include "CArrayIOWrap.h"
-#include "CIkomiaRegistry.h"
+#include "Core/CIkomiaRegistry.h"
+#include "CWorkflowWrap.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL IKOMIA_ARRAY_API
@@ -235,6 +236,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def(init<const CMat&>(_ctor1imageProcessIODocString))
         .def(init<IODataType>(_ctor2imageProcessIODocString))
         .def(init<IODataType, const CMat&>(_ctor3imageProcessIODocString))
+        .def(init<const std::string&>(_ctor4imageProcessIODocString))
+        .def(init<IODataType, const std::string&>(_ctor5imageProcessIODocString))
         .def(init<const CImageIO&>("Copy constructor"))
         .def("setImage", &CImageIO::setImage, _setImageDocString, args("self", "image"))
         .def("setOverlayMask", &CImageIO::setOverlayMask, _setOverlayMaskDocString, args("self", "mask"))
@@ -579,5 +582,26 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
         .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
         .def("loadCppPlugin", &CIkomiaRegistry::loadCppPlugin, _loadCppPluginDocString, args("self", "path"))
+    ;
+
+    //---------------------//
+    //----- CWorkflow -----//
+    //---------------------//
+    void (CWorkflowWrap::*addInputRef)(const WorkflowTaskIOPtr&) = &CWorkflowWrap::addInput;
+
+    class_<CWorkflowWrap, bases<CWorkflowTask>, std::shared_ptr<CWorkflowWrap>>("CWorkflow", _workflowDocString)
+        .def(init<>("Default constructor"))
+        .def(init<const std::string&>(_ctor1WorkflowDocString))
+        .def(init<const std::string&, const std::shared_ptr<CIkomiaRegistry>&>(_ctor2WorkflowDocString))
+        .add_property("description", &CWorkflowWrap::getDescription, &CWorkflow::setDescription, "Workflow description")
+        .add_property("keywords", &CWorkflowWrap::getKeywords, &CWorkflow::setKeywords, "Workflow associated keywords")
+        .def("setOutputFolder", &CWorkflowWrap::setOutputFolder, _wfSetOutputFolderDocString, args("self", "path"))
+        .def("setAutoSave", &CWorkflowWrap::setAutoSave, _wfSetAutoSaveDocString, args("self", "enable"))
+        .def("getTaskCount", &CWorkflowWrap::getTaskCount, _wfGetTaskCountDocString, args("self"))
+        .def("addInput", addInputRef, _wfAddInputDocString, args("self", "input"))
+        .def("run", &CWorkflowWrap::run, &CWorkflowWrap::default_run, _wfRunDocString, args("self"))
+        .def("stop", &CWorkflowWrap::stop, _wfStopDocString, args("self"))
+        .def("load", &CWorkflowWrap::load, _wfLoadDocString, args("self", "path"))
+        .def("save", &CWorkflowWrap::save, _wfSaveDocString, args("self", "path"))
     ;
 }

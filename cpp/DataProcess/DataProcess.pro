@@ -31,6 +31,7 @@ SOURCES += \
         Core/C2dImageInteractiveTask.cpp \
         Core/C2dImageTask.cpp \
         Core/CDnnTrainTask.cpp \
+        Core/CIkomiaRegistry.cpp \
         Core/CMlflowTrainTask.cpp \
         Core/CRunTaskManager.cpp \
         Core/CTaskInfo.cpp \
@@ -69,6 +70,7 @@ HEADERS += \
         Core/C2dImageInteractiveTask.h \
         Core/C2dImageTask.h \
         Core/CDnnTrainTask.h \
+        Core/CIkomiaRegistry.h \
         Core/CMlflowTrainTask.h \
         Core/CRunTaskManager.h \
         Core/CTaskFactory.hpp \
