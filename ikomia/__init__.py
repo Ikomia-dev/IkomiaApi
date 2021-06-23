@@ -17,8 +17,10 @@
 # along with this program; if not, write to the Free Software Foundation,
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import os
 from ikomia.utils import init_logging
 from ikomia.core.auth import LoginSession
+from ikomia.core import config
 
 global api_session
 api_session = None
@@ -29,3 +31,13 @@ init_logging()
 def initialize(username, pwd):
     global api_session
     api_session = LoginSession(username, pwd)
+    check_directories()
+
+
+def check_directories():
+    os.makedirs(config.main_cfg["registry"]["path"], exist_ok=True)
+    os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
+    os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
+    os.makedirs(config.main_cfg["mlflow"]["artifact_uri"], exist_ok=True)
+    os.makedirs(config.main_cfg["mlflow"]["store_uri"], exist_ok=True)
+    os.makedirs(config.main_cfg["tensorboard"]["log_uri"], exist_ok=True)
