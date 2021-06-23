@@ -296,7 +296,8 @@ class CWorkflowTaskIOFactory
         std::string m_name = "default";
 };
 
-using WorkflowTaskIOFactories = std::vector<std::shared_ptr<CWorkflowTaskIOFactory>>;
+using TaskIOFactoryPtr = std::shared_ptr<CWorkflowTaskIOFactory>;
+using WorkflowTaskIOFactories = std::vector<TaskIOFactoryPtr>;
 
 //----- Process abstract factory -----//
 class CWorkflowTaskIOAbstractFactory: public CAbstractFactory<std::string, WorkflowTaskIOPtr, IODataType>

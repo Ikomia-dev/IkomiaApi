@@ -34,7 +34,7 @@ class DATAPROCESSSHARED_EXPORT CTaskIORegistration
 
         const CWorkflowTaskIOAbstractFactory&   getFactory() const;
 
-        void                                    registerIO(const std::shared_ptr<CWorkflowTaskIOFactory>& pFactory);
+        void                                    registerIO(const TaskIOFactoryPtr& pFactory);
 
         void                                    reset();
 

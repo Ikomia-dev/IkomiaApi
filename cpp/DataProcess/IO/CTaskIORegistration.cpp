@@ -43,7 +43,7 @@ const CWorkflowTaskIOAbstractFactory &CTaskIORegistration::getFactory() const
     return m_factory;
 }
 
-void CTaskIORegistration::registerIO(const std::shared_ptr<CWorkflowTaskIOFactory> &pFactory)
+void CTaskIORegistration::registerIO(const TaskIOFactoryPtr &pFactory)
 {
     m_factory.getList().push_back(pFactory);
     //Passage par lambda -> pFactory par valeur pour assurer la portée du pointeur

@@ -20,6 +20,7 @@ DEFINES += PYCORE_LIBRARY BOOST_ALL_NO_LIB
 SOURCES += \
         ../Core/Data/CvMatNumpyArrayConverter.cpp \
         CGraphicsItemWrap.cpp \
+        CTaskIOFactoryWrap.cpp \
         PyCore.cpp \
         CWorkflowTaskIOWrap.cpp \
         CWorkflowTaskParamWrap.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 HEADERS += \
         ../Core/Data/CvMatNumpyArrayConverter.h \
         CGraphicsItemWrap.h \
+        CTaskIOFactoryWrap.h \
         PyCore.h \
         PyCoreDocString.hpp \
         PyCoreGlobal.h \

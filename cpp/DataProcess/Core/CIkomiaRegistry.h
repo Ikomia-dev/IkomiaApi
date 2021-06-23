@@ -25,6 +25,7 @@ class DATAPROCESSSHARED_EXPORT CIkomiaRegistry
         WorkflowTaskPtr             createInstance(const std::string& processName, const WorkflowTaskParamPtr& paramPtr);
 
         void                        registerTask(const TaskFactoryPtr& factoryPtr);
+        void                        registerIO(const TaskIOFactoryPtr& factoryPtr);
 
         void                        loadCppPlugins();
         void                        loadCppPlugin(const std::string &directory);

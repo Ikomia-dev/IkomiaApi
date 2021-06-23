@@ -66,6 +66,11 @@ void CIkomiaRegistry::registerTask(const TaskFactoryPtr &factoryPtr)
     m_processRegistrator.registerProcess(factoryPtr, nullptr);
 }
 
+void CIkomiaRegistry::registerIO(const TaskIOFactoryPtr &factoryPtr)
+{
+    m_ioRegistrator.registerIO(factoryPtr);
+}
+
 void CIkomiaRegistry::loadCppPlugins()
 {
     QDir pluginsDir(QString::fromStdString(m_pluginsDir + "/C++"));

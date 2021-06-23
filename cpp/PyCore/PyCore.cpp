@@ -26,6 +26,7 @@
 #include "CWorkflowTaskIOWrap.h"
 #include "CWorkflowTaskWrap.h"
 #include "CWorkflowTaskWidgetWrap.h"
+#include "CTaskIOFactoryWrap.h"
 #include "Data/CvMatNumpyArrayConverter.h"
 #include "CGraphicsItemWrap.h"
 #include "Graphics/CGraphicsComplexPolygon.h"
@@ -311,6 +312,13 @@ BOOST_PYTHON_MODULE(pycore)
         .def("setDisplayable", &CWorkflowTaskIO::setDisplayable, _setDisplayableDocString, args("self", "displayable"))
         .def("clearData", &CWorkflowTaskIO::clearData, &CWorkflowTaskIOWrap::default_clearData, _clearDataDocString, args("self"))
         .def("copyStaticData", &CWorkflowTaskIO::copyStaticData, &CWorkflowTaskIOWrap::default_copyStaticData, _copyStaticDataDocString, args("self", "io"))
+    ;
+
+    //----------------------------------//
+    //----- CWorkflowTaskIOFactory -----//
+    //----------------------------------//
+    class_<CTaskIOFactoryWrap, std::shared_ptr<CTaskIOFactoryWrap>, boost::noncopyable>("CWorkflowTaskIOFactory", _ioFactoryDocString)
+        .def("create", pure_virtual(&CTaskIOFactoryWrap::create), _ioFactoryCreateDocString, args("self", "datatype"))
     ;
 
     //-------------------------//

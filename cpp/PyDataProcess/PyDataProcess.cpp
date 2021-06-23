@@ -120,6 +120,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //Register std::vector<T> <-> python list converters
     registerStdVector<uchar>();
     registerStdVector<std::vector<uchar>>();
+    registerStdVector<IODataType>();
 
     //---------------------//
     //----- CTaskInfo -----//
@@ -581,6 +582,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
         .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
         .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
+        .def("registerIO", &CIkomiaRegistry::registerIO, _registerIODocString, args("self", "factory"))
         .def("loadCppPlugin", &CIkomiaRegistry::loadCppPlugin, _loadCppPluginDocString, args("self", "path"))
     ;
 
@@ -599,6 +601,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("setOutputFolder", &CWorkflowWrap::setOutputFolder, _wfSetOutputFolderDocString, args("self", "path"))
         .def("setAutoSave", &CWorkflowWrap::setAutoSave, _wfSetAutoSaveDocString, args("self", "enable"))
         .def("getTaskCount", &CWorkflowWrap::getTaskCount, _wfGetTaskCountDocString, args("self"))
+        .def("getRootTargetTypes", &CWorkflowWrap::getRootTargetTypes, _wfGetRootTargetTypesDocString, args("self"))
         .def("addInput", addInputRef, _wfAddInputDocString, args("self", "input"))
         .def("clearInputs", &CWorkflowWrap::clearInputs, _wfClearInputsDocString, args("self"))
         .def("run", &CWorkflowWrap::run, &CWorkflowWrap::default_run, _wfRunDocString, args("self"))

@@ -1193,6 +1193,12 @@ constexpr auto _registerTaskDocString =
         "Args:\n"
         "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
 
+constexpr auto _registerIODocString =
+        "Add new input/output factory to Ikomia registry. Once registered, you are able to instanciate input or ouput "
+        "and use it inside a task.\n\n"
+        "Args:\n"
+        "   I/O factory (:py:class:`~ikomia.core.pycore.CTaskIOFactory` based object)\n";
+
 constexpr auto _loadCppPluginDocString =
         "Load C++ algorithm to Ikomia registry.\n\n"
         "Args:\n"
@@ -1220,6 +1226,9 @@ constexpr auto _wfSetAutoSaveDocString =
         "";
 
 constexpr auto _wfGetTaskCountDocString =
+        "";
+
+constexpr auto _wfGetRootTargetTypesDocString =
         "";
 
 constexpr auto _wfAddInputDocString =

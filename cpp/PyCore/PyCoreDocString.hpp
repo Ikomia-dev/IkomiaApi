@@ -552,6 +552,23 @@ constexpr auto _copyStaticDataDocString =
         "Args:\n"
         "   io (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO`): input or ouput instance from which data is copied.\n";
 
+//----------------------------------//
+//----- CWorkflowTaskIOFactory -----//
+//----------------------------------//
+constexpr auto _ioFactoryDocString =
+        "Abstract class defining the core structure of the task I/O factory. "
+        "The system extensibility is based on the factory design pattern. "
+        "Each task input/output must implement a factory class derived from this class. "
+        "Then the system is able to instantiate dynamically a I/O object (even user-defined).\n\n";
+
+constexpr auto _ioFactoryCreateDocString =
+        "Pure virtual method to create new task I/O instance with the given data type. "
+        "Must be implemented.\n\n"
+        "Args:\n"
+        "   data type (:py:class:`~ikomia.core.pycore.IODataType`)"
+        "Returns:\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based object\n";
+
 //------------------------------//
 //----- CWorkflowTaskParam -----//
 //------------------------------//
