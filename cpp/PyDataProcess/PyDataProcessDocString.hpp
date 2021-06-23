@@ -1210,6 +1210,9 @@ constexpr auto _ctor1WorkflowDocString =
 constexpr auto _ctor2WorkflowDocString =
         "";
 
+constexpr auto _wfSetInputDocString =
+        "";
+
 constexpr auto _wfSetOutputFolderDocString =
         "";
 
@@ -1222,6 +1225,9 @@ constexpr auto _wfGetTaskCountDocString =
 constexpr auto _wfAddInputDocString =
         "";
 
+constexpr auto _wfClearInputsDocString =
+        "";
+
 constexpr auto _wfRunDocString =
         "";
 
@@ -1229,6 +1235,9 @@ constexpr auto _wfStopDocString =
         "";
 
 constexpr auto _wfLoadDocString =
+        "";
+
+constexpr auto _wfUpdateStartTimeDocString =
         "";
 
 constexpr auto _wfSaveDocString =
