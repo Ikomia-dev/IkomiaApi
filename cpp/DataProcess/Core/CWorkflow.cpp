@@ -253,6 +253,14 @@ void CWorkflow::setCfgEntry(const std::string &key, const std::string &value)
 void CWorkflow::setAutoSave(bool bEnable)
 {
     m_bAutoSave = bEnable;
+    auto vertexRangeIt = boost::vertices(m_graph);
+
+    for(auto it=vertexRangeIt.first; it!=vertexRangeIt.second; ++it)
+    {
+        WorkflowTaskPtr taskPtr = m_graph[*it];
+        if(*it != m_root && taskPtr)
+            taskPtr->setAutoSave(m_bAutoSave);
+    }
 }
 
 /***********/
@@ -835,6 +843,7 @@ WorkflowVertex CWorkflow::addTask(const WorkflowTaskPtr& pNewTask)
     connectSignals(pNewTask);
     pNewTask->setOutputFolder(m_outputFolder);
     pNewTask->setGraphicsContext(m_graphicsContextPtr);
+    pNewTask->setAutoSave(m_bAutoSave);
     m_lastTaskAdded = boost::add_vertex(pNewTask, m_graph);
     return m_lastTaskAdded;
 }
@@ -849,6 +858,7 @@ void CWorkflow::replaceTask(const WorkflowTaskPtr &pNewTask, const WorkflowVerte
         connectSignals(pNewTask);
         m_graph[id] = pNewTask;
         pNewTask->setOutputFolder(m_outputFolder);
+        pNewTask->setAutoSave(m_bAutoSave);
     }
 }
 
@@ -1166,16 +1176,9 @@ void CWorkflow::runTask(const WorkflowVertex& id)
         // Update output folder
         auto baseFolder = taskPtr->getOutputFolder();
         taskPtr->setOutputFolder(baseFolder + m_startDate + "/" + taskPtr->getName() + "/");
-        // check global auto-save mode
-        if(m_bAutoSave)
-            taskPtr->setAutoSave(true);
-
         // Run task
         setRunningTask(id);
         m_runMgr.run(taskPtr, m_compositeInputName);
-        std::cout << taskPtr->getName() << std::endl;
-        std::cout << "Output folder:" << taskPtr->getOutputFolder() << std::endl;
-        std::cout << "Auto-save:" << taskPtr->isAutoSave() << std::endl;
         manageOutputs(id);
         // Restore output folder
         taskPtr->setOutputFolder(baseFolder);
@@ -1533,31 +1536,40 @@ void CWorkflow::updateCompositeInputName()
     m_compositeInputName.clear();
     WorkflowTaskPtr rootTaskPtr = m_graph[m_root];
     auto edgeRange = getOutEdges(m_root);
+    std::map<int, std::string> inputNames;
 
     for(auto it=edgeRange.first; it!=edgeRange.second; ++it)
     {
         WorkflowEdgePtr edge = m_graph[*it];
-        auto inputPtr = rootTaskPtr->getInput(edge->getSourceIndex());
+        int sourceIndex = edge->getSourceIndex();
+        auto inputPtr = rootTaskPtr->getInput(sourceIndex);
 
-        if(inputPtr)
+        if(inputPtr && inputNames.find(sourceIndex) == inputNames.end())
         {
-            if(!m_compositeInputName.empty())
-                m_compositeInputName += "-";
-
-            // Input name
             std::string name = inputPtr->getName();
-            if(!name.empty())
-                m_compositeInputName += name;
-            else
+            if(name.empty())
             {
                 CDataInfoPtr infoPtr = inputPtr->getDataInfo();
                 if(infoPtr)
                 {
                     std::string basePath = Utils::File::getPathFromPattern(infoPtr->getFileName(), 0);
-                    m_compositeInputName += Utils::File::getFileNameWithoutExtension(basePath);
+                    name = Utils::File::getFileNameWithoutExtension(basePath);
                 }
             }
+
+            if(name.empty())
+                inputNames[sourceIndex] = "empty";
+            else
+                inputNames[sourceIndex] = name;
         }
+    }
+
+    for(auto it=inputNames.begin(); it!=inputNames.end(); ++it)
+    {
+        if(!m_compositeInputName.empty())
+            m_compositeInputName += "-";
+
+        m_compositeInputName += it->second;
     }
 }
 
@@ -1745,7 +1757,7 @@ void CWorkflow::manageOutputs(const WorkflowVertex& taskId)
     }
 
     // Auto-save outputs if in batch mode
-    if(m_bBatchMode)
+    if(m_bBatchMode || m_bAutoSave)
         pTask->saveOutputs(m_compositeInputName);
 }
 
