@@ -14,6 +14,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def __init__(self):
         dataprocess.CIkomiaRegistry.__init__(self)
+        plugin_folder = config.main_cfg["registry"]["path"]
+        self.setPluginsDirectory(plugin_folder)
         self._load_python_plugins()
 
     @utils.http.http_except
@@ -178,7 +180,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         # Download package
         url = config.main_cfg["marketplace"]["url"] + package_url
         file_path = self.getPluginsDirectory() + "/Transfer/" + os.path.basename(package_url)
-        utils.http.download_file(url, file_path)
+        utils.http.download_file(url, file_path, public=False)
 
         # Unzip
         language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"

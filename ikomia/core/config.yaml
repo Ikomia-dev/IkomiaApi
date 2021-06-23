@@ -1,2 +1,8 @@
 marketplace:
   url: https://ikomia.com
+registry:
+  path: /home/ludo/Ikomia/Plugins/
+workflow:
+  path: /home/ludo/Ikomia/Workflows/
+data:
+  path: /home/ludo/Ikomia/Data/

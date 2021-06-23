@@ -14,7 +14,7 @@ class LoginSession:
 
     @http.http_except
     def authenticate(self, username, pwd):
-        url = config.main_cfg["marketplace"]["url"] + "/api/rest-auth/login/"
+        url = config.main_cfg["api"]["url"] + "/api/rest-auth/login/"
         data = {"username": username, "password": pwd}
         r = self.session.post(url, json=data)
         r.raise_for_status()

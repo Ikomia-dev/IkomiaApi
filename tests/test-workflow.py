@@ -1,6 +1,7 @@
 import logging
 import os
 from ikomia.dataprocess import registry, workflow
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ def test_metadata():
     logger.info(wf.description)
     logger.info(wf.keywords)
     assert(wf.description == description)
-    assert (wf.keywords == keywords)
+    assert(wf.keywords == keywords)
 
 
 def test_load(reg):
@@ -49,16 +50,32 @@ def test_simple_run(reg):
     img_path = get_test_image_directory() + "/Lena.png"
     wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_load", reg)
-    wf.load(wf_path)
     wf.setAutoSave(True)
-    wf.add_image_input(img_path)
-    logger.info("----- Start running -----")
+    wf.load(wf_path)
+
+    # apply on local image
+    wf.set_image_input(path=img_path)
+    logger.info("Start workflow on local image...")
     wf.run()
-    logger.info("----- Finished successfully -----")
+    logger.info("Workflow finished successfully")
+
+    # apply on web image
+    img_url = "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
+    wf.set_image_input(index=0, url=img_url)
+    logger.info("Start workflow on image url...")
+    wf.run()
+    logger.info("Workflow finished successfully")
+
+    # apply on Numpy array
+    img_array = np.random.randint(low=0, high=255, size=(512, 512, 3), dtype=np.uint8)
+    wf.set_image_input(index=0, array=img_array)
+    logger.info("Start workflow on Numpy array...")
+    wf.run()
+    logger.info("Workflow finished successfully")
 
 
 if __name__ == "__main__":
     reg = registry.IkomiaRegistry()
     # test_metadata()
-    test_load(reg)
+    # test_load(reg)
     test_simple_run(reg)
