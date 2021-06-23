@@ -1,5 +1,6 @@
 import logging
 import os
+import ikomia
 from ikomia.dataprocess import registry, workflow
 import numpy as np
 
@@ -46,10 +47,10 @@ def test_load(reg):
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
-def test_simple_run(reg):
+def test_single_image_run(reg):
     img_path = get_test_image_directory() + "/Lena.png"
     wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_load", reg)
+    wf = workflow.Workflow("test_single_image_run", reg)
     wf.setAutoSave(True)
     wf.load(wf_path)
 
@@ -74,8 +75,34 @@ def test_simple_run(reg):
     logger.info("Workflow finished successfully")
 
 
+def test_directory_run(reg):
+    wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.Workflow("test_dir_run", reg)
+    wf.setAutoSave(True)
+    wf.load(wf_path)
+
+    dir_path = get_test_image_directory()
+    wf.set_directory_input(dir_path)
+    logger.info("Start workflow on image directory...")
+    wf.run()
+    logger.info("Workflow finished successfully")
+
+
+def test_resnet_train(reg, dataset_dir):
+    wf_path = get_test_workflow_directory() + "/WorkflowResNetTrain.json"
+    wf = workflow.Workflow("test_resnet", reg)
+    wf.load(wf_path)
+    wf.set_directory_input(dataset_dir)
+    logger.info("Start ResNet training...")
+    wf.run()
+    logger.info("Training finished successfully")
+
+
 if __name__ == "__main__":
+    ikomia.initialize("Ludo", "ludo?imageez")
     reg = registry.IkomiaRegistry()
     # test_metadata()
     # test_load(reg)
-    test_simple_run(reg)
+    # test_single_image_run(reg)
+    test_directory_run(reg)
+    # test_resnet_train(reg, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
