@@ -1,8 +1,15 @@
 marketplace:
   url: https://ikomia.com
 registry:
-  path: /home/ludo/Ikomia/Plugins/
+  path:
 workflow:
-  path: /home/ludo/Ikomia/Workflows/
+  path:
 data:
-  path: /home/ludo/Ikomia/Data/
+  path:
+mlflow:
+  tracking_uri: http://localhost:5000
+  artifact_uri:
+  store_uri:
+tensorboard:
+  tracking_uri: http://localhost:6006
+  log_uri:
