@@ -717,6 +717,22 @@ CDataInfoPtr CWorkflow::getIOInfo(const WorkflowVertex &id, size_t index, bool b
     return nullptr;
 }
 
+std::vector<IODataType> CWorkflow::getRootTargetTypes() const
+{
+    std::vector<IODataType> types;
+    auto outEdges = boost::out_edges(m_root, m_graph);
+
+    for(auto it=outEdges.first; it!=outEdges.second; ++it)
+    {
+        WorkflowVertex target = boost::target(*it, m_graph);
+        WorkflowTaskPtr targetTask = m_graph[target];
+        WorkflowEdgePtr edge = m_graph[*it];
+        IODataType type = targetTask->getOriginalInputDataType(edge->getTargetIndex());
+        types.push_back(type);
+    }
+    return types;
+}
+
 bool CWorkflow::isRoot(const WorkflowVertex &id) const
 {
     return id == m_root;

@@ -147,6 +147,7 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         double                          getElapsedTimeTo(const WorkflowVertex& id);
         double                          getTotalElapsedTime() const;
         CDataInfoPtr                    getIOInfo(const WorkflowVertex& id, size_t index, bool bInput);
+        std::vector<IODataType>         getRootTargetTypes() const;
 
         bool                            isRoot(const WorkflowVertex& id) const;
         bool                            isModified() const;
