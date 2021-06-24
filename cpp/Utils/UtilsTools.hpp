@@ -36,6 +36,7 @@
 #include <QFontMetrics>
 #include <QDir>
 #include <QCoreApplication>
+#include <QGuiApplication>
 #include <QDesktopServices>
 #include <QProcess>
 #include <opencv2/core/ocl.hpp>
@@ -159,11 +160,16 @@ namespace Ikomia
             {
                 return "0.5.0";
             }
+            inline bool         isStarted()
+            {
+                auto windows = QGuiApplication::allWindows();
+                return windows.size() > 0;
+            }
         }
 
         namespace OS
         {
-            inline int getCurrent()
+            inline int  getCurrent()
             {
                 #if defined(Q_OS_LINUX)
                     return OSType::LINUX;
@@ -174,6 +180,32 @@ namespace Ikomia
                 #else
                     return OSType::ALL;
                 #endif
+            }
+            inline void openUrl(const std::string& url)
+            {
+                bool bGuiStarted = Utils::IkomiaApp::isStarted();
+                if(bGuiStarted)
+                    QDesktopServices::openUrl(QUrl(QString::fromStdString(url)));
+                else
+                {
+                    QProcess proc;
+                    QStringList args;
+
+                    #if defined(Q_OS_LINUX)
+                        QString cmd = "/bin/sh";
+                        args << "xdg-open";
+                    #elif defined(Q_OS_WIN64)
+                        QString cmd = "cmd.exe";
+                        args << "/c" << "start";
+                    #elif defined(Q_OS_MACOS)
+                        QString cmd = "/bin/sh";
+                        args << "open";
+                    #endif
+
+                    args << QString::fromStdString(url);
+                    proc.start(cmd, args);
+                    proc.waitForFinished();
+                }
             }
         }
 

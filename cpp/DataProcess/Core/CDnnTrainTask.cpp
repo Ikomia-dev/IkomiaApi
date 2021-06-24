@@ -95,14 +95,14 @@ void CDnnTrainTask::beginTaskRun()
     //Show MLflow server UI once
     if(m_bOpenMlflow)
     {
-        QDesktopServices::openUrl(QUrl(QString::fromStdString(Utils::MLflow::getTrackingURI())));
+        Utils::OS::openUrl(Utils::MLflow::getTrackingURI());
         m_bOpenMlflow = false;
     }
 
     //Show Tensorbord server UI
     if(m_bOpenTensorboad)
     {
-        QDesktopServices::openUrl(QUrl(QString::fromStdString(Utils::Tensorboard::getTrackingURI())));
+        Utils::OS::openUrl(Utils::Tensorboard::getTrackingURI());
         m_bOpenTensorboad = false;
     }
 }
