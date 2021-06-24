@@ -34,10 +34,10 @@ def test_metadata():
     assert(wf.keywords == keywords)
 
 
-def test_load(reg):
+def test_load(registry):
     # load test workflow
     wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_load", reg)
+    wf = workflow.Workflow("test_load", registry)
     wf.load(wf_path)
     logger.info("----- Workflow information -----")
     logger.info(wf.name)
@@ -47,10 +47,10 @@ def test_load(reg):
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
-def test_single_image_run(reg):
+def test_single_image_run(registry):
     img_path = get_test_image_directory() + "/Lena.png"
     wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_single_image_run", reg)
+    wf = workflow.Workflow("test_single_image_run", registry)
     wf.setAutoSave(True)
     wf.load(wf_path)
 
@@ -75,9 +75,9 @@ def test_single_image_run(reg):
     logger.info("Workflow finished successfully")
 
 
-def test_directory_run(reg):
+def test_directory_run(registry):
     wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_dir_run", reg)
+    wf = workflow.Workflow("test_dir_run", registry)
     wf.setAutoSave(True)
     wf.load(wf_path)
 
@@ -88,9 +88,9 @@ def test_directory_run(reg):
     logger.info("Workflow finished successfully")
 
 
-def test_resnet_train(reg, dataset_dir):
+def test_resnet_train(registry, dataset_dir):
     wf_path = get_test_workflow_directory() + "/WorkflowResNetTrain.json"
-    wf = workflow.Workflow("test_resnet", reg)
+    wf = workflow.Workflow("test_resnet", registry)
     wf.load(wf_path)
     wf.set_directory_input(dataset_dir)
     logger.info("Start ResNet training...")
@@ -98,11 +98,22 @@ def test_resnet_train(reg, dataset_dir):
     logger.info("Training finished successfully")
 
 
+def test_yolov5_train(registry):
+    wf_path = get_test_workflow_directory() + "/WorkflowYoloV5Train.json"
+    wf = workflow.Workflow("test_yolov5", registry)
+    wf.load(wf_path)
+    logger.info("Start YoloV5 training...")
+    wf.run()
+    logger.info("Training finished successfully")
+
+
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
-    reg = registry.IkomiaRegistry()
+    ik_registry = registry.IkomiaRegistry()
     # test_metadata()
-    # test_load(reg)
-    # test_single_image_run(reg)
-    test_directory_run(reg)
-    # test_resnet_train(reg, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
+    # test_load(ik_registry)
+    # test_single_image_run(ik_registry)
+    # test_directory_run(ik_registry)
+    # test_resnet_train(ik_registry, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
+    # test_resnet_train(ik_registry, "/home/ludo/Images/Datasets/hymenoptera_data")
+    test_yolov5_train(ik_registry)
