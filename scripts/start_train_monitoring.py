@@ -5,7 +5,7 @@ from ikomia.core import config
 def start_mlflow():
     proc = subprocess.Popen(["mlflow", "server",
                              "--backend-store-uri", config.main_cfg["mlflow"]["store_uri"],
-                             "-- default-artifact-root", config.main_cfg["mlflow"]["artifact_uri"],
+                             "--default-artifact-root", config.main_cfg["mlflow"]["artifact_uri"],
                              "--host", "0.0.0.0"])
     poll = proc.poll()
     if poll is None:
