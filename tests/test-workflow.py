@@ -2,6 +2,7 @@ import logging
 import os
 import ikomia
 from ikomia.dataprocess import registry, workflow
+from ikomia.core import config
 import numpy as np
 
 logger = logging.getLogger(__name__)
@@ -107,6 +108,15 @@ def test_yolov5_train(registry):
     logger.info("Training finished successfully")
 
 
+def test_export_graphviz(registry):
+    wf_path = get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.Workflow("test_graphviz", registry)
+    wf.load(wf_path)
+    dot_file_name = wf.name + ".dot"
+    path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
+    wf.exportGraphviz(path)
+
+
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
     ik_registry = registry.IkomiaRegistry()
@@ -116,4 +126,5 @@ if __name__ == "__main__":
     # test_directory_run(ik_registry)
     # test_resnet_train(ik_registry, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
     # test_resnet_train(ik_registry, "/home/ludo/Images/Datasets/hymenoptera_data")
-    test_yolov5_train(ik_registry)
+    # test_yolov5_train(ik_registry)
+    test_export_graphviz(ik_registry)
