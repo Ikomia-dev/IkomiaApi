@@ -609,5 +609,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("updateStartTime", &CWorkflowWrap::updateStartTime, _wfUpdateStartTimeDocString, args("self"))
         .def("load", &CWorkflowWrap::load, _wfLoadDocString, args("self", "path"))
         .def("save", &CWorkflowWrap::save, _wfSaveDocString, args("self", "path"))
+        .def("exportGraphviz", &CWorkflowWrap::writeGraphviz, _wfExportGraphvizDocString, args("self", "path"))
     ;
 }
