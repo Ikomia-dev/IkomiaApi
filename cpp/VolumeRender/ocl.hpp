@@ -52,6 +52,7 @@ constexpr auto CL_GL_SHARING_EXT = "cl_khr_gl_sharing";
 #include <fstream>
 #include <cassert>
 #include "VolumeRenderGlobal.h"
+#include "UtilsTools.hpp"
 
 constexpr auto NVIDIA_PLATFORM = "NVIDIA";
 constexpr auto AMD_PLATFORM = "AMD";
@@ -206,7 +207,7 @@ namespace ocl
             }
         }
 
-        inline size_t         shrRoundUp(size_t group_size, size_t global_size)
+        inline size_t       shrRoundUp(size_t group_size, size_t global_size)
         {
             size_t r = global_size % group_size;
             if(r == 0)
@@ -868,7 +869,7 @@ namespace ocl
                     }
                     if(flagsStr.size() != 0)
                     {
-                        qDebug() << "Build Options are : " << flagsStr.c_str();
+                        Utils::print(std::string("Build Options are : ") + flagsStr, QtDebugMsg);
                     }
 
                     //create a cl program executable for all the devices specified
@@ -876,9 +877,9 @@ namespace ocl
                 }
                 catch(cl::Error& e)
                 {
-                    qCritical().noquote() << e.what() << "(" << e.err() << ")";
+                    Utils::print(e.what() + std::string("(") + std::to_string(e.err()) + std::string(")"), QtCriticalMsg);
                     std::string val = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device);
-                    qCritical().noquote() << "Log:\n" << QString::fromStdString(val);
+                    Utils::print("Log:\n" + val, QtCriticalMsg);
                     return SDK_FAILURE;
                 }
                 return SDK_SUCCESS;
@@ -995,7 +996,7 @@ namespace ocl
                 }
                 catch(cl::Error& /*e*/)
                 {
-                    qCritical().noquote() << "No GPU detected...";
+                    Utils::print("No GPU detected.", QtCriticalMsg);
                     // Try CPU
                     m_deviceType = CL_DEVICE_TYPE_CPU;
                     m_platform.getDevices(m_deviceType, &m_deviceList);
@@ -1011,9 +1012,9 @@ namespace ocl
                 {
                     m_deviceInfo.setDeviceInfo(it);
                     m_device = it;
-                    qInfo().noquote() << "Device Name: " << QString::fromStdString(m_deviceInfo.name);
-                    qInfo().noquote() << "OpenCL version: " <<QString::fromStdString(m_deviceInfo.openclCVersion);
-                    qInfo().noquote() << "Max CU: " << m_deviceInfo.maxComputeUnits;
+                    Utils::print(std::string("Device Name: ") + m_deviceInfo.name, QtInfoMsg);
+                    Utils::print(std::string("OpenCL version: ") + m_deviceInfo.openclCVersion, QtInfoMsg);
+                    Utils::print(std::string("Max CU: ") + std::to_string(m_deviceInfo.maxComputeUnits), QtInfoMsg);
                 }
             }
             inline void                initCLContext()
@@ -1060,11 +1061,11 @@ namespace ocl
                     {
                         m_device = cl::Device(clDevices[i]);
                         m_deviceInfo.setDeviceInfo(m_device);
-                        qDebug() << "Screen Device : " << QString::fromStdString(m_deviceInfo.name);
+                        Utils::print(std::string("Screen device: ") + m_deviceInfo.name, QtDebugMsg);
                     }*/
                     error = clGetGLContextInfoAPPLE(cl_gl_context, gl_context, CL_CGL_DEVICE_FOR_CURRENT_VIRTUAL_SCREEN_APPLE, sizeof(cl_device_id), &clDeviceId, nullptr);
                     if(error != CL_SUCCESS)
-                        qWarning().noquote() << "Failed to get OpenCL device for current screen: " << error;
+                        Utils::print("Failed to get OpenCL device for current screen: " + error, QtWarningMsg);
                     else
                     {
                         // Create a device with this GPU
@@ -1074,7 +1075,7 @@ namespace ocl
                     // Create a CL-GL Context for this GPU
                     if(checkExtnAvailability(m_device, CL_GL_SHARING_EXT))
                     {
-                        qInfo().noquote() << "OpenCL Device Name: " << QString::fromStdString(m_deviceInfo.name);
+                        Utils::print(std::string("OpenCL Device Name: ") + m_deviceInfo.name, QtInfoMsg);
                         cl::Context context(m_device, cps);
                         m_contextList.push_back(context);
                     }
@@ -1085,7 +1086,7 @@ namespace ocl
                 {
                     if(checkExtnAvailability(m_device, CL_GL_SHARING_EXT))
                     {
-                        qInfo().noquote() << "OpenCL Device Name: " << QString::fromStdString(m_deviceInfo.name);
+                        Utils::print(std::string("OpenCL Device Name: ") + m_deviceInfo.name, QtInfoMsg);
                         cl::Context context(m_device, cps);
                         m_contextList.push_back(context);
                     }
@@ -1116,8 +1117,8 @@ namespace ocl
                     0
                 };
 
-                qDebug() << "Current GLX context: " << glXGetCurrentContext();
-                qDebug() << "Current GLX Display: " << glXGetCurrentDisplay();
+                Utils::print(std::string("Current GLX context: ") + std::to_string(reinterpret_cast<intptr_t>(glXGetCurrentContext())), QtDebugMsg);
+                Utils::print(std::string("Current GLX Display: ") + std::to_string(reinterpret_cast<intptr_t>(glXGetCurrentDisplay())), QtDebugMsg);
 #endif
                 // Lookup current OpenCL device for current OpenGL context
                 cl_device_id gpuId;
@@ -1143,7 +1144,8 @@ namespace ocl
 
                 m_device = cl::Device(gpuId, false);
                 m_deviceInfo.setDeviceInfo(m_device);
-                qInfo().noquote() << "Device Name: " << QString::fromStdString(m_deviceInfo.name);
+                Utils::print(std::string("Device Name: ") + m_deviceInfo.name, QtInfoMsg);
+
                 if(checkExtnAvailability(m_device, CL_GL_SHARING_EXT))
                 {
                     cl::Context context(m_device, cps);
@@ -1165,7 +1167,7 @@ namespace ocl
                             m_device = it;
                             bInteropDevice = true;
                             m_deviceInfo.setDeviceInfo(it);
-                            qCritical().noquote() << "Device Name: " << QString::fromStdString(m_deviceInfo.name);
+                            Utils::print("Device Name: " + m_deviceInfo.name, QtCriticalMsg);
                             break;
                         }
                     }
@@ -1210,6 +1212,11 @@ namespace ocl
                 }
             }
 
+            inline std::string         strErrCode(const cl_int& error)
+            {
+                return std::string("(") + std::to_string(error) + std::string(")");
+            }
+
             inline cl::Platform        getPlatform(std::string pName, cl_int &error)
             {
                 using namespace cl;
@@ -1228,7 +1235,7 @@ namespace ocl
                         if (temp.find(pName)!=std::string::npos)
                         {
                             ret_val = it;
-                            qInfo().noquote() << "Found platform: " << QString::fromStdString(temp);
+                            Utils::print(std::string("Found platform: ") + temp, QtInfoMsg);
                             isFound = true;
                             break;
                         }
@@ -1236,13 +1243,13 @@ namespace ocl
                     if (!isFound)
                     {
                         // Going towards + numbers to avoid conflict with OpenCl error codes
-                        qInfo().noquote() << "Requested platform (" << QString::fromStdString(pName) << ") was not found.";
+                        Utils::print(std::string("Requested platform (") + pName + std::string(") was not found."), QtInfoMsg);
                         error = +1; // requested platform not found
                     }
                 }
                 catch(cl::Error& err)
                 {
-                    qCritical().noquote() << err.what() << "(" << err.err() << ")";
+                    Utils::print(err.what() + strErrCode(err.err()), QtCriticalMsg);
                     error = err.err();
                 }
                 return ret_val;
@@ -1263,7 +1270,7 @@ namespace ocl
                 }
                 catch (cl::Error& err)
                 {
-                    qCritical().noquote() << err.what() << "(" << err.err() << ")";
+                    Utils::print(err.what() + strErrCode(err.err()), QtCriticalMsg);
                 }
                 return ret_val;
             }
@@ -1282,7 +1289,7 @@ namespace ocl
                 }
                 catch (cl::Error& err)
                 {
-                    qCritical().noquote() << err.what() << "(" << err.err() << ")";
+                    Utils::print(err.what() + strErrCode(err.err()), QtCriticalMsg);
                 }
                 return ret_val;
             }

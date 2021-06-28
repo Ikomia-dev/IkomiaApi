@@ -944,6 +944,117 @@ namespace Ikomia
             }
         }
 
+        inline void print(const QString& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
+        {
+            if(IkomiaApp::isStarted())
+            {
+                switch(type)
+                {
+                    case QtDebugMsg:
+                        qDebug().noquote() << msg;
+                        break;
+
+                    case QtInfoMsg:
+                        qInfo().noquote() << msg;
+                        break;
+
+                    case QtWarningMsg:
+                        qWarning().noquote() << msg;
+                        break;
+
+                    case QtCriticalMsg:
+                        qCritical().noquote() << msg;
+                        break;
+
+                    case QtFatalMsg:
+                        qFatal(msg.toLatin1().constData());
+                        break;
+
+                    default:
+                        qInfo().noquote() << msg;
+                        break;
+                }
+            }
+            else
+            {
+                switch(type)
+                {
+                    case QtDebugMsg:
+                    case QtInfoMsg:
+                        std::cout << msg.toStdString() << std::endl;
+                        break;
+
+                    case QtWarningMsg:
+                    case QtCriticalMsg:
+                    case QtFatalMsg:
+                        std::cerr << msg.toStdString() << std::endl;
+                        break;
+
+                    default:
+                        std::cout << msg.toStdString() << std::endl;
+                        break;
+                }
+            }
+        }
+
+        inline void print(const std::string& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
+        {
+            if(IkomiaApp::isStarted())
+            {
+                switch(type)
+                {
+                    case QtDebugMsg:
+                        qDebug().noquote() << QString::fromStdString(msg);
+                        break;
+
+                    case QtInfoMsg:
+                        qInfo().noquote() << QString::fromStdString(msg);
+                        break;
+
+                    case QtWarningMsg:
+                        qWarning().noquote() << QString::fromStdString(msg);
+                        break;
+
+                    case QtCriticalMsg:
+                        qCritical().noquote() << QString::fromStdString(msg);
+                        break;
+
+                    case QtFatalMsg:
+                        qFatal(msg.c_str());
+                        break;
+
+                    default:
+                        qInfo().noquote() << QString::fromStdString(msg);
+                        break;
+                }
+            }
+            else
+            {
+                switch(type)
+                {
+                    case QtDebugMsg:
+                    case QtInfoMsg:
+                        std::cout << msg << std::endl;
+                        break;
+
+                    case QtWarningMsg:
+                    case QtCriticalMsg:
+                    case QtFatalMsg:
+                        std::cerr << msg << std::endl;
+                        break;
+
+                    default:
+                        std::cout << msg << std::endl;
+                        break;
+                }
+            }
+        }
+
+        inline void print(const char* msg, const QtMsgType type=QtMsgType::QtInfoMsg)
+        {
+            print(std::string(msg), type);
+        }
+
     #ifdef __linux__
         namespace linuxHelp
         {

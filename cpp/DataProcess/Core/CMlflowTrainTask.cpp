@@ -64,7 +64,7 @@ void CMlflowTrainTask::beginTaskRun()
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -81,7 +81,7 @@ void CMlflowTrainTask::endTaskRun()
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -100,7 +100,7 @@ void CMlflowTrainTask::logParam(const std::string &key, int value)
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -119,7 +119,7 @@ void CMlflowTrainTask::logParam(const std::string &key, float value)
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -139,7 +139,7 @@ void CMlflowTrainTask::logParam(const std::string &key, const std::string &value
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -166,7 +166,7 @@ void CMlflowTrainTask::logParams(const std::map<std::string, std::string> &param
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -185,7 +185,7 @@ void CMlflowTrainTask::logMetric(const std::string &key, float value, int step)
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -211,7 +211,7 @@ void CMlflowTrainTask::logMetrics(const std::map<std::string, float> &metrics, i
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -230,7 +230,7 @@ void CMlflowTrainTask::logArtifact(const std::string &path)
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -249,7 +249,7 @@ void CMlflowTrainTask::logArtifacts(const std::string &folderPath)
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }
 
@@ -270,6 +270,6 @@ void CMlflowTrainTask::initMlFlow()
     catch(error_already_set&)
     {
         //Not a critical error
-        qWarning().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtWarningMsg);
     }
 }

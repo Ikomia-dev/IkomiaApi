@@ -165,5 +165,5 @@ void COcvDnnProcess::displayLayers(const cv::dnn::Net& net)
 {
     auto layerNames = net.getLayerNames();
     for(size_t i=0; i<layerNames.size(); ++i)
-        qDebug() << QString(layerNames[i].c_str());
+        Utils::print(layerNames[i], QtDebugMsg);
 }

@@ -55,7 +55,7 @@ void CWorkflowTaskWidgetWrap::onApply()
     catch(boost::python::error_already_set&)
     {
         //Do not throw exceptions from slot
-        qCritical().noquote() << QString::fromStdString(Utils::Python::handlePythonException());
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
     }
 }
 

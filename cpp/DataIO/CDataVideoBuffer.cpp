@@ -534,7 +534,7 @@ void CDataVideoBuffer::updateStreamWrite()
     writer.open(m_path, m_fourcc, (double)m_fps, cv::Size(m_width, m_height));
     if(!writer.isOpened())
     {
-        qCritical().noquote() << "Failed to open video writer:" + QString::fromStdString(m_path);
+        Utils::print("Failed to open video writer:" + m_path, QtCriticalMsg);
         return;
     }
 
@@ -553,8 +553,8 @@ void CDataVideoBuffer::updateStreamWrite()
     }
     catch(std::exception& e)
     {
-        // Nothing more to process, we're done   
-        qInfo().noquote() << "Stream writing ended: " << QString::fromStdString(e.what());
+        // Nothing more to process, we're done
+        Utils::print(std::string("Stream writing ended: ") + e.what(), QtWarningMsg);
     }
 }
 
@@ -577,7 +577,7 @@ void CDataVideoBuffer::writeImageSequenceThread()
     catch(std::exception& e)
     {
         // Nothing more to process, we're done
-        qCritical().noquote() << QString::fromStdString(e.what());
+        Utils::print(e.what(), QtCriticalMsg);
     }
 }
 
@@ -592,7 +592,7 @@ void CDataVideoBuffer::writeVideoThread()
 
     if(!writer.isOpened())
     {
-        qCritical().noquote() << "Failed to open video writer:" + QString::fromStdString(m_path);
+        Utils::print("Failed to open video writer:" + m_path, QtCriticalMsg);
         return;
     }
 
@@ -615,7 +615,7 @@ void CDataVideoBuffer::writeVideoThread()
     catch(std::exception& /*e*/)
     {
         // Nothing more to process, we're done
-        qInfo().noquote() << "Write thread finished: no more images available";
+        Utils::print("Write thread finished: no more images available", QtWarningMsg);
     }
 }
 

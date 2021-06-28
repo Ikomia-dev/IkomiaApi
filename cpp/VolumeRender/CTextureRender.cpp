@@ -21,6 +21,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLShader>
 #include <QOpenGLTexture>
+#include "UtilsTools.hpp"
 
 CTextureRender::CTextureRender(bool bPboMode)
 {
@@ -80,7 +81,7 @@ void CTextureRender::render()
              m_pProgram->release();
          }
          else
-             qDebug() << m_pProgram->log();
+            Utils::print(m_pProgram->log(), QtDebugMsg);
     }
     else
     {
@@ -134,19 +135,19 @@ void CTextureRender::initGL()
 
     m_pVShader = new QOpenGLShader(QOpenGLShader::Vertex);
     if(!m_pVShader->compileSourceFile(":/Shaders/texturevshader.vert"))
-        qDebug() << m_pVShader->log();
+        Utils::print(m_pProgram->log(), QtDebugMsg);
 
     m_pFShader = new QOpenGLShader(QOpenGLShader::Fragment);
     if(!m_pFShader->compileSourceFile(":/Shaders/texturefshader.frag"))
-        qDebug() << m_pFShader->log();
+        Utils::print(m_pProgram->log(), QtDebugMsg);
 
     m_pProgram = new QOpenGLShaderProgram;
     if(!m_pProgram->addShader(m_pVShader))
-        qDebug() << m_pProgram->log();
+        Utils::print(m_pProgram->log(), QtDebugMsg);
     if(!m_pProgram->addShader(m_pFShader))
-        qDebug() << m_pProgram->log();
+        Utils::print(m_pProgram->log(), QtDebugMsg);
     if(!m_pProgram->link())
-        qDebug() << m_pProgram->log();
+        Utils::print(m_pProgram->log(), QtDebugMsg);
 
     m_modelViewProjMatId = m_pProgram->uniformLocation("modelViewProjMatrix");
     m_samplerId = m_pProgram->uniformLocation("texture");

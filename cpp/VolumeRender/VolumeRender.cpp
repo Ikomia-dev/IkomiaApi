@@ -106,7 +106,7 @@ RenderError CVolumeRender::initCL(const std::string name)
     }
     catch(cl::Error& e)
     {
-        qCritical().noquote() << e.what() << "(" << QString::fromStdString(ocl::utils::getOpenCLErrorCodeStr(e.err())) << ")";
+        Utils::print(e.what() + std::string("(") + ocl::utils::getOpenCLErrorCodeStr(e.err()) + std::string(")"), QtCriticalMsg);
         return RenderError::INIT_FAILED;
     }
     return RenderError::SUCCESS;

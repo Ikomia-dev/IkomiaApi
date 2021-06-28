@@ -156,17 +156,17 @@ class COcvCamShift : public CVideoTask
             auto items = pGraphicsInput->getItems();
             if(items.size() == 0)
             {
-                qCritical().noquote() << QObject::tr("CamShift algorithm requires rectangular object");
+                Utils::print(QObject::tr("CamShift algorithm requires rectangular object").toStdString(), QtCriticalMsg);
                 return;
             }
 
             if(items.size() > 1)
-                qWarning().noquote() << QObject::tr("CamShift algorithm can only track one rectangular object");
+                Utils::print(QObject::tr("CamShift algorithm can only track one rectangular object").toStdString(), QtWarningMsg);
 
             auto pItem = std::dynamic_pointer_cast<CProxyGraphicsRect>(items.back());
             if(pItem == nullptr)
             {
-                qCritical().noquote() << QObject::tr("CamShift algorithm can only track rectangular object");
+                Utils::print(QObject::tr("CamShift algorithm can only track rectangular object").toStdString(), QtCriticalMsg);
                 return;
             }
 

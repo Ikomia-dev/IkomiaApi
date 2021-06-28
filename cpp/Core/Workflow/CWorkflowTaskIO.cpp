@@ -301,7 +301,7 @@ void CWorkflowTaskIO::deleteTemporaryFiles()
         }
         catch (const boost::filesystem::filesystem_error& e)
         {
-            qWarning() << QString::fromStdString(e.code().message());
+            Utils::print(e.code().message(), QtWarningMsg);
         }
     }
 }

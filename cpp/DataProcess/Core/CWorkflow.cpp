@@ -28,9 +28,6 @@
 #include "Graphics/CGraphicsLayer.h"
 #include "IO/CGraphicsInput.h"
 
-// To activate log category
-Q_LOGGING_CATEGORY(logWorkflow, "Workflow")
-
 //-------------------//
 //- Class CWorkflow -//
 //-------------------//
@@ -1113,7 +1110,7 @@ void CWorkflow::runFrom(const WorkflowVertex &id)
     }
 
     //Traverse graph and run each task
-    qCDebug(logWorkflow) << "Workflow started";
+    Utils::print("Workflow started", QtMsgType::QtDebugMsg);
     clearOutputs();
     updateCompositeInputName();
 
@@ -1796,7 +1793,7 @@ void CWorkflow::writeGraphviz(const std::string &path)
     }
     catch(std::exception& e)
     {
-        qCCritical(logWorkflow).noquote() << QString::fromStdString(e.what());
+        Utils::print(e.what(), QtMsgType::QtCriticalMsg);
     }
 }
 

@@ -488,7 +488,7 @@ ObjectMeasures CBlobMeasure::computeBlobMeasures(const std::vector<cv::Point> &b
                 }
                 catch(std::exception& e)
                 {
-                    qDebug() << QString::fromStdString(e.what());
+                    Utils::print(e.what(), QtDebugMsg);
                 }
                 break;
             }

@@ -38,8 +38,6 @@
 #include "IO/CGraphicsInput.h"
 #include "CRunTaskManager.h"
 
-Q_DECLARE_LOGGING_CATEGORY(logWorkflow)
-
 using WorkflowGraph = boost::adjacency_list<boost::listS,
                                             boost::listS,
                                             boost::bidirectionalS,

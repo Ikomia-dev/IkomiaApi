@@ -51,7 +51,7 @@ namespace Ikomia
                     if (GL_NO_ERROR == err)
                         break;
 
-                    qCritical().noquote() << "GL Error: " << getGLErrorStr(err);
+                    Utils::print("GL Error: " + std::string(getGLErrorStr(err)), QtCriticalMsg);
                 }
             }
         }
