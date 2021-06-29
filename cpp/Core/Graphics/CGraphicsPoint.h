@@ -39,16 +39,18 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
         CProxyGraphicsPoint(const CPointF& point);
         CProxyGraphicsPoint(const CPointF& point, const GraphicsPointProperty& property);
 
-        void            setPoint(const CPointF& pt);
+        void                    setPoint(const CPointF& pt);
+        void                    setProperty(const GraphicsPointProperty& prop);
 
-        CPointF         getPoint() const;
-        QRectF          getBoundingRect() const override;
+        CPointF                 getPoint() const;
+        QRectF                  getBoundingRect() const override;
+        GraphicsPointProperty   getProperty() const;
 
-        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void            toJson(QJsonObject &obj) const override;
+        void                    toJson(QJsonObject &obj) const override;
 
     public:
 

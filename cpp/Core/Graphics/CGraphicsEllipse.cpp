@@ -71,6 +71,11 @@ void CProxyGraphicsEllipse::setHeight(float h)
     m_height = h;
 }
 
+void CProxyGraphicsEllipse::setProperty(const GraphicsEllipseProperty &prop)
+{
+    m_property = prop;
+}
+
 float CProxyGraphicsEllipse::getX() const
 {
     return m_x;
@@ -94,6 +99,11 @@ float CProxyGraphicsEllipse::getHeight() const
 QRectF CProxyGraphicsEllipse::getBoundingRect() const
 {
     return QRectF(m_x, m_y, m_width, m_height);
+}
+
+GraphicsEllipseProperty CProxyGraphicsEllipse::getProperty() const
+{
+    return m_property;
 }
 
 void CProxyGraphicsEllipse::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

@@ -57,6 +57,11 @@ void CProxyGraphicsPolygon::setPoints(const PolygonF &pts)
     m_points = pts;
 }
 
+void CProxyGraphicsPolygon::setProperty(const GraphicsPolygonProperty &prop)
+{
+    m_property = prop;
+}
+
 PolygonF CProxyGraphicsPolygon::getPoints() const
 {
     return m_points;
@@ -77,6 +82,11 @@ QRectF CProxyGraphicsPolygon::getBoundingRect() const
         ymax = std::max(ymax, m_points[i].m_y);
     }
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
+}
+
+GraphicsPolygonProperty CProxyGraphicsPolygon::getProperty() const
+{
+    return m_property;
 }
 
 void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

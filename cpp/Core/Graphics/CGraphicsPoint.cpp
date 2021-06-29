@@ -49,6 +49,11 @@ void CProxyGraphicsPoint::setPoint(const CPointF &pt)
     m_point = pt;
 }
 
+void CProxyGraphicsPoint::setProperty(const GraphicsPointProperty &prop)
+{
+    m_property = prop;
+}
+
 CPointF CProxyGraphicsPoint::getPoint() const
 {
     return m_point;
@@ -62,6 +67,11 @@ QRectF CProxyGraphicsPoint::getBoundingRect() const
 
     float radius = (float)prop.m_size / 2.0f;
     return QRectF(m_point.m_x - radius, m_point.m_y - radius, prop.m_size, prop.m_size);
+}
+
+GraphicsPointProperty CProxyGraphicsPoint::getProperty() const
+{
+    return m_property;
 }
 
 void CProxyGraphicsPoint::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

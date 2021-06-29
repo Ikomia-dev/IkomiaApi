@@ -41,10 +41,12 @@ class CORESHARED_EXPORT CProxyGraphicsComplexPoly: public CProxyGraphicsItem
 
         void                    setOuter(const PolygonF& poly);
         void                    setInners(const std::vector<PolygonF>& polygons);
+        void                    setProperty(const GraphicsPolygonProperty& prop);
 
         PolygonF                getOuter() const;
         std::vector<PolygonF>   getInners() const;
         QRectF                  getBoundingRect() const;
+        GraphicsPolygonProperty getProperty() const;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 

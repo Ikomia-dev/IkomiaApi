@@ -40,22 +40,24 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         CProxyGraphicsText(const std::string& text, float x, float y);
         CProxyGraphicsText(const std::string& text, float x, float y, const GraphicsTextProperty& property);
 
-        void            setX(float x);
-        void            setY(float x);
-        void            setText(const std::string& text);
+        void                    setX(float x);
+        void                    setY(float x);
+        void                    setText(const std::string& text);
+        void                    setProperty(const GraphicsTextProperty& prop);
 
-        float           getX() const;
-        float           getY() const;
-        std::string     getText() const;
-        QRectF          getBoundingRect() const override;
+        float                   getX() const;
+        float                   getY() const;
+        std::string             getText() const;
+        QRectF                  getBoundingRect() const override;
+        GraphicsTextProperty    getProperty() const;
 
-        bool            isTextItem() const override;
+        bool                    isTextItem() const override;
 
-        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void            toJson(QJsonObject &obj) const override;
+        void                    toJson(QJsonObject &obj) const override;
 
     public:
 

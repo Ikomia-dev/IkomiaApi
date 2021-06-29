@@ -57,6 +57,11 @@ void CProxyGraphicsComplexPoly::setInners(const std::vector<PolygonF> &polygons)
     m_inners = polygons;
 }
 
+void CProxyGraphicsComplexPoly::setProperty(const GraphicsPolygonProperty &prop)
+{
+    m_property = prop;
+}
+
 PolygonF CProxyGraphicsComplexPoly::getOuter() const
 {
     return m_outer;
@@ -82,6 +87,11 @@ QRectF CProxyGraphicsComplexPoly::getBoundingRect() const
         ymax = std::max(ymax, m_outer[i].m_y);
     }
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
+}
+
+GraphicsPolygonProperty CProxyGraphicsComplexPoly::getProperty() const
+{
+    return m_property;
 }
 
 void CProxyGraphicsComplexPoly::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

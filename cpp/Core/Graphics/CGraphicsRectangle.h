@@ -40,16 +40,18 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
         CProxyGraphicsRect(float x, float y, float w, float h, const GraphicsRectProperty& property);
 
         //Accessors are for Python binding
-        void            setX(float x);
-        void            setY(float y);
-        void            setWidth(float w);
-        void            setHeight(float h);
+        void                    setX(float x);
+        void                    setY(float y);
+        void                    setWidth(float w);
+        void                    setHeight(float h);
+        void                    setProperty(const GraphicsRectProperty& prop);
 
-        float           getX() const;
-        float           getY() const;
-        float           getWidth() const;
-        float           getHeight() const;
-        QRectF          getBoundingRect() const override;
+        float                   getX() const;
+        float                   getY() const;
+        float                   getWidth() const;
+        float                   getHeight() const;
+        QRectF                  getBoundingRect() const override;
+        GraphicsRectProperty    getProperty() const;
 
         void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 

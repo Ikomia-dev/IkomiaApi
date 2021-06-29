@@ -40,16 +40,18 @@ class CORESHARED_EXPORT CProxyGraphicsPolyline: public CProxyGraphicsItem
         CProxyGraphicsPolyline(const std::vector<CPointF>& points);
         CProxyGraphicsPolyline(const std::vector<CPointF>& points, const GraphicsPolylineProperty& property);
 
-        void            setPoints(const PolygonF& pts);
+        void                        setPoints(const PolygonF& pts);
+        void                        setProperty(const GraphicsPolylineProperty& prop);
 
-        PolygonF        getPoints() const;
-        QRectF          getBoundingRect() const override;
+        PolygonF                    getPoints() const;
+        QRectF                      getBoundingRect() const override;
+        GraphicsPolylineProperty    getProperty();
 
-        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void            toJson(QJsonObject &obj) const override;
+        void                        toJson(QJsonObject &obj) const override;
 
     public:
 

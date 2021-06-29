@@ -72,6 +72,11 @@ void CProxyGraphicsText::setText(const std::string& text)
     m_text = text;
 }
 
+void CProxyGraphicsText::setProperty(const GraphicsTextProperty &prop)
+{
+    m_property = prop;
+}
+
 float CProxyGraphicsText::getX() const
 {
     return m_x;
@@ -105,6 +110,11 @@ QRectF CProxyGraphicsText::getBoundingRect() const
     int width = fontMetrics.horizontalAdvance(QString::fromStdString(m_text));
     int height = fontMetrics.height();
     return QRect(m_x, m_y, width, height);
+}
+
+GraphicsTextProperty CProxyGraphicsText::getProperty() const
+{
+    return m_property;
 }
 
 bool CProxyGraphicsText::isTextItem() const

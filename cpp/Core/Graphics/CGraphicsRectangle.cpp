@@ -71,6 +71,11 @@ void CProxyGraphicsRect::setHeight(float h)
     m_height = h;
 }
 
+void CProxyGraphicsRect::setProperty(const GraphicsRectProperty &prop)
+{
+    m_property = prop;
+}
+
 float CProxyGraphicsRect::getX() const
 {
     return m_x;
@@ -94,6 +99,11 @@ float CProxyGraphicsRect::getHeight() const
 QRectF CProxyGraphicsRect::getBoundingRect() const
 {
     return QRectF(m_x, m_y, m_width, m_height);
+}
+
+GraphicsRectProperty CProxyGraphicsRect::getProperty() const
+{
+    return m_property;
 }
 
 void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
