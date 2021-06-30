@@ -139,6 +139,17 @@ def test_execution():
     output = algo.getOutput(0)
     img_out = output.getImage()
     cv2.imshow("scikit_threshold", img_out)
+
+    # Marketplace YoloV5Predict (Python)
+    img_path = get_test_image_directory() + "/example_05.jpg"
+    img = cv2.imread(img_path)
+    algo = reg.create_algorithm("YoloV5Predict")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    output_img = algo.getOutput(0)
+    output_img.drawGraphics(algo.getOutput(1))
+    cv2.imshow("YoloV5Predict", output_img.getImage())
     cv2.waitKey(0)
 
 
