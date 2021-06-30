@@ -64,19 +64,19 @@ class DATAPROCESSSHARED_EXPORT CGraphicsOutput : public CWorkflowTaskIO
 
         void                        addItem(const ProxyGraphicsItemPtr& itemPtr);
         ProxyGraphicsItemPtr        addPoint(const CPointF& pt);
-        ProxyGraphicsItemPtr        addPoint(const CPointF& pt, const GraphicsPointProperty& prop);
+        ProxyGraphicsItemPtr        addPoint(const CPointF& pt, const CGraphicsPointProperty& prop);
         ProxyGraphicsItemPtr        addRectangle(float x, float y, float width, float height);
-        ProxyGraphicsItemPtr        addRectangle(float x, float y, float width, float height, const GraphicsRectProperty& prop);
+        ProxyGraphicsItemPtr        addRectangle(float x, float y, float width, float height, const CGraphicsRectProperty& prop);
         ProxyGraphicsItemPtr        addEllipse(float x, float y, float width, float height);
-        ProxyGraphicsItemPtr        addEllipse(float x, float y, float width, float height, const GraphicsEllipseProperty& prop);
+        ProxyGraphicsItemPtr        addEllipse(float x, float y, float width, float height, const CGraphicsEllipseProperty& prop);
         ProxyGraphicsItemPtr        addPolygon(const std::vector<CPointF> &points);
-        ProxyGraphicsItemPtr        addPolygon(const std::vector<CPointF> &points, const GraphicsPolygonProperty& prop);
+        ProxyGraphicsItemPtr        addPolygon(const std::vector<CPointF> &points, const CGraphicsPolygonProperty& prop);
         ProxyGraphicsItemPtr        addPolyline(const std::vector<CPointF> &points);
-        ProxyGraphicsItemPtr        addPolyline(const std::vector<CPointF> &points, const GraphicsPolylineProperty& prop);
+        ProxyGraphicsItemPtr        addPolyline(const std::vector<CPointF> &points, const CGraphicsPolylineProperty& prop);
         ProxyGraphicsItemPtr        addComplexPolygon(const PolygonF& outer, const std::vector<PolygonF>& inners);
-        ProxyGraphicsItemPtr        addComplexPolygon(const PolygonF& outer, const std::vector<PolygonF>& inners, const GraphicsPolygonProperty& prop);
+        ProxyGraphicsItemPtr        addComplexPolygon(const PolygonF& outer, const std::vector<PolygonF>& inners, const CGraphicsPolygonProperty& prop);
         ProxyGraphicsItemPtr        addText(const std::string& text, float x, float y);
-        ProxyGraphicsItemPtr        addText(const std::string& text, float x, float y, const GraphicsTextProperty& prop);
+        ProxyGraphicsItemPtr        addText(const std::string& text, float x, float y, const CGraphicsTextProperty& prop);
 
         void                        clearData() override;
 

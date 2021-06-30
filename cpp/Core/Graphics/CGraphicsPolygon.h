@@ -38,14 +38,14 @@ class CORESHARED_EXPORT CProxyGraphicsPolygon: public CProxyGraphicsItem
 
         CProxyGraphicsPolygon();
         CProxyGraphicsPolygon(const std::vector<CPointF>& points);
-        CProxyGraphicsPolygon(const std::vector<CPointF>& points, const GraphicsPolygonProperty& property);
+        CProxyGraphicsPolygon(const std::vector<CPointF>& points, const CGraphicsPolygonProperty& property);
 
         void                    setPoints(const PolygonF& pts);
-        void                    setProperty(const GraphicsPolygonProperty& prop);
+        void                    setProperty(const CGraphicsPolygonProperty& prop);
 
         PolygonF                getPoints() const;
         QRectF                  getBoundingRect() const override;
-        GraphicsPolygonProperty getProperty() const;
+        CGraphicsPolygonProperty getProperty() const;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -58,7 +58,7 @@ class CORESHARED_EXPORT CProxyGraphicsPolygon: public CProxyGraphicsItem
     public:
 
         std::vector<CPointF>    m_points;
-        GraphicsPolygonProperty m_property;
+        CGraphicsPolygonProperty m_property;
 };
 
 //------------------------
@@ -71,8 +71,8 @@ class CORESHARED_EXPORT CGraphicsPolygon : public QGraphicsPolygonItem, public C
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::POLYGON) };
 
         CGraphicsPolygon(QGraphicsItem* pParent=nullptr);
-        CGraphicsPolygon(const GraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsPolygon(size_t id, const GraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsPolygon(const CGraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsPolygon(size_t id, const CGraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
         CGraphicsPolygon(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsPolygon> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsPolygon(const CGraphicsPolygon& polygon);
 

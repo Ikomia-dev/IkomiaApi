@@ -38,14 +38,14 @@ class CORESHARED_EXPORT CProxyGraphicsPolyline: public CProxyGraphicsItem
 
         CProxyGraphicsPolyline();
         CProxyGraphicsPolyline(const std::vector<CPointF>& points);
-        CProxyGraphicsPolyline(const std::vector<CPointF>& points, const GraphicsPolylineProperty& property);
+        CProxyGraphicsPolyline(const std::vector<CPointF>& points, const CGraphicsPolylineProperty& property);
 
         void                        setPoints(const PolygonF& pts);
-        void                        setProperty(const GraphicsPolylineProperty& prop);
+        void                        setProperty(const CGraphicsPolylineProperty& prop);
 
         PolygonF                    getPoints() const;
         QRectF                      getBoundingRect() const override;
-        GraphicsPolylineProperty    getProperty();
+        CGraphicsPolylineProperty    getProperty();
 
         void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -56,7 +56,7 @@ class CORESHARED_EXPORT CProxyGraphicsPolyline: public CProxyGraphicsItem
     public:
 
         std::vector<CPointF>        m_points;
-        GraphicsPolylineProperty    m_property;
+        CGraphicsPolylineProperty    m_property;
 };
 
 //-------------------------
@@ -69,8 +69,8 @@ class CORESHARED_EXPORT CGraphicsPolyline : public QGraphicsPathItem, public CGr
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::POLYLINE) };
 
         CGraphicsPolyline(QGraphicsItem* pParent=nullptr);
-        CGraphicsPolyline(const GraphicsPolylineProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsPolyline(size_t id, const GraphicsPolylineProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsPolyline(const CGraphicsPolylineProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsPolyline(size_t id, const CGraphicsPolylineProperty& property, QGraphicsItem* pParent=nullptr);
         CGraphicsPolyline(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsPolyline> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsPolyline(const CGraphicsPolyline& polyline);
 

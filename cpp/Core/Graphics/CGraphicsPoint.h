@@ -37,14 +37,14 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
 
         CProxyGraphicsPoint();
         CProxyGraphicsPoint(const CPointF& point);
-        CProxyGraphicsPoint(const CPointF& point, const GraphicsPointProperty& property);
+        CProxyGraphicsPoint(const CPointF& point, const CGraphicsPointProperty& property);
 
         void                    setPoint(const CPointF& pt);
-        void                    setProperty(const GraphicsPointProperty& prop);
+        void                    setProperty(const CGraphicsPointProperty& prop);
 
         CPointF                 getPoint() const;
         QRectF                  getBoundingRect() const override;
-        GraphicsPointProperty   getProperty() const;
+        CGraphicsPointProperty   getProperty() const;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -55,7 +55,7 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
     public:
 
         CPointF                 m_point;
-        GraphicsPointProperty   m_property;
+        CGraphicsPointProperty   m_property;
 };
 
 //----------------------
@@ -68,8 +68,8 @@ class CORESHARED_EXPORT CGraphicsPoint: public QGraphicsEllipseItem, public CGra
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::POINT) };
 
         CGraphicsPoint(QGraphicsItem* pParent=nullptr);
-        CGraphicsPoint(const QPointF& position, const GraphicsPointProperty& property , QGraphicsItem* pParent=nullptr);
-        CGraphicsPoint(size_t id, const QPointF& position, const GraphicsPointProperty& property , QGraphicsItem* pParent=nullptr);
+        CGraphicsPoint(const QPointF& position, const CGraphicsPointProperty& property , QGraphicsItem* pParent=nullptr);
+        CGraphicsPoint(size_t id, const QPointF& position, const CGraphicsPointProperty& property , QGraphicsItem* pParent=nullptr);
         CGraphicsPoint(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsPoint> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsPoint(const CGraphicsPoint& point);
 

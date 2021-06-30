@@ -61,7 +61,7 @@ QList<QGraphicsItem*> CGraphicsConversion::blobsToGraphics(const std::vector<std
 
     if(polygonArray.size() > 0)
     {
-        GraphicsPolygonProperty property;
+        CGraphicsPolygonProperty property;
         property.m_penColor = penColor;
         property.m_brushColor = brushColor;
         property.m_lineSize = lineSize;
@@ -110,7 +110,7 @@ std::vector<std::shared_ptr<CProxyGraphicsItem>> CGraphicsConversion::blobsToPro
 
     if(polygonArray.size() > 0)
     {
-        GraphicsPolygonProperty property;
+        CGraphicsPolygonProperty property;
         property.m_penColor = penColor;
         property.m_brushColor = brushColor;
         property.m_lineSize = lineSize;

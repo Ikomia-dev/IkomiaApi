@@ -123,7 +123,7 @@ void CBinaryToGraphics::computeBinary(const CMat &src)
     cv::findContours(tmp, m_blobs, m_hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_TC89_L1);
 
     //Create associated graphics
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     if(m_graphicsContextPtr)
         prop = m_graphicsContextPtr->getPolygonProperty();
 
@@ -136,7 +136,7 @@ void CBinaryToGraphics::computeLabel(const CMat &src)
     cv::minMaxLoc(src, &minVal, &maxVal);
 
     //Get graphics property : polygon
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     if(m_graphicsContextPtr)
         prop = m_graphicsContextPtr->getPolygonProperty();
 

@@ -40,7 +40,7 @@ CProxyGraphicsEllipse::CProxyGraphicsEllipse(float x, float y, float w, float h)
     m_height = h;
 }
 
-CProxyGraphicsEllipse::CProxyGraphicsEllipse(float x, float y, float w, float h, const GraphicsEllipseProperty &property)
+CProxyGraphicsEllipse::CProxyGraphicsEllipse(float x, float y, float w, float h, const CGraphicsEllipseProperty &property)
     : CProxyGraphicsItem(GraphicsItem::ELLIPSE)
 {
     m_x = x;
@@ -71,7 +71,7 @@ void CProxyGraphicsEllipse::setHeight(float h)
     m_height = h;
 }
 
-void CProxyGraphicsEllipse::setProperty(const GraphicsEllipseProperty &prop)
+void CProxyGraphicsEllipse::setProperty(const CGraphicsEllipseProperty &prop)
 {
     m_property = prop;
 }
@@ -101,7 +101,7 @@ QRectF CProxyGraphicsEllipse::getBoundingRect() const
     return QRectF(m_x, m_y, m_width, m_height);
 }
 
-GraphicsEllipseProperty CProxyGraphicsEllipse::getProperty() const
+CGraphicsEllipseProperty CProxyGraphicsEllipse::getProperty() const
 {
     return m_property;
 }
@@ -143,7 +143,7 @@ CGraphicsEllipse::CGraphicsEllipse(QGraphicsItem *pParent)
     setBrush(QBrush(QColor(255,0,0,10)));
 }
 
-CGraphicsEllipse::CGraphicsEllipse(const GraphicsEllipseProperty& property, QGraphicsItem *pParent)
+CGraphicsEllipse::CGraphicsEllipse(const CGraphicsEllipseProperty& property, QGraphicsItem *pParent)
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(GraphicsItem::ELLIPSE)
 {
@@ -159,7 +159,7 @@ CGraphicsEllipse::CGraphicsEllipse(const GraphicsEllipseProperty& property, QGra
     setBrush(Utils::Graphics::toQColor(property.m_brushColor));
 }
 
-CGraphicsEllipse::CGraphicsEllipse(size_t id, const GraphicsEllipseProperty &property, QGraphicsItem *pParent)
+CGraphicsEllipse::CGraphicsEllipse(size_t id, const CGraphicsEllipseProperty &property, QGraphicsItem *pParent)
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(id, GraphicsItem::ELLIPSE)
 {
@@ -179,7 +179,7 @@ CGraphicsEllipse::CGraphicsEllipse(const GraphicsContextPtr &globalContext, cons
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::ELLIPSE)
 {
-    GraphicsEllipseProperty prop;
+    CGraphicsEllipseProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getEllipseProperty();
     else
@@ -320,7 +320,7 @@ QByteArray CGraphicsEllipse::getJsonData(CGraphicsJSON &jsonMgr) const
 
 ProxyGraphicsItemPtr CGraphicsEllipse::createProxyGraphicsItem() const
 {
-    GraphicsEllipseProperty prop;
+    CGraphicsEllipseProperty prop;
     prop.m_category = getCategory().toStdString();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_lineSize = pen().width();

@@ -101,8 +101,8 @@ class COcvOCRTesseract : public C2dImageTask
             auto items = pGraphicsInput->getItems();
 
             // Load graphics properties
-            GraphicsRectProperty rectProp = m_graphicsContextPtr->getRectProperty();
-            GraphicsTextProperty textProp = m_graphicsContextPtr->getTextProperty();
+            CGraphicsRectProperty rectProp = m_graphicsContextPtr->getRectProperty();
+            CGraphicsTextProperty textProp = m_graphicsContextPtr->getTextProperty();
 
             // Custom properties
             rectProp.m_lineSize = 4;

@@ -40,7 +40,7 @@ CProxyGraphicsRect::CProxyGraphicsRect(float x, float y, float w, float h)
     m_height = h;
 }
 
-CProxyGraphicsRect::CProxyGraphicsRect(float x, float y, float w, float h, const GraphicsRectProperty &property)
+CProxyGraphicsRect::CProxyGraphicsRect(float x, float y, float w, float h, const CGraphicsRectProperty &property)
     : CProxyGraphicsItem(GraphicsItem::RECTANGLE)
 {
     m_x = x;
@@ -71,7 +71,7 @@ void CProxyGraphicsRect::setHeight(float h)
     m_height = h;
 }
 
-void CProxyGraphicsRect::setProperty(const GraphicsRectProperty &prop)
+void CProxyGraphicsRect::setProperty(const CGraphicsRectProperty &prop)
 {
     m_property = prop;
 }
@@ -101,7 +101,7 @@ QRectF CProxyGraphicsRect::getBoundingRect() const
     return QRectF(m_x, m_y, m_width, m_height);
 }
 
-GraphicsRectProperty CProxyGraphicsRect::getProperty() const
+CGraphicsRectProperty CProxyGraphicsRect::getProperty() const
 {
     return m_property;
 }
@@ -149,7 +149,7 @@ CGraphicsRectangle::CGraphicsRectangle(QGraphicsItem *pParent)
     setBrush(QBrush(QColor(255,0,0,10)));
 }
 
-CGraphicsRectangle::CGraphicsRectangle(const GraphicsRectProperty &property, QGraphicsItem *pParent)
+CGraphicsRectangle::CGraphicsRectangle(const CGraphicsRectProperty &property, QGraphicsItem *pParent)
     : QGraphicsRectItem(pParent),
       CGraphicsItem(GraphicsItem::RECTANGLE)
 {
@@ -165,7 +165,7 @@ CGraphicsRectangle::CGraphicsRectangle(const GraphicsRectProperty &property, QGr
     setBrush(Utils::Graphics::toQColor(property.m_brushColor));
 }
 
-CGraphicsRectangle::CGraphicsRectangle(size_t id, const GraphicsRectProperty &property, QGraphicsItem *pParent)
+CGraphicsRectangle::CGraphicsRectangle(size_t id, const CGraphicsRectProperty &property, QGraphicsItem *pParent)
     : QGraphicsRectItem(pParent),
       CGraphicsItem(id, GraphicsItem::RECTANGLE)
 {
@@ -200,7 +200,7 @@ CGraphicsRectangle::CGraphicsRectangle(const GraphicsContextPtr &globalContext, 
     : QGraphicsRectItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::RECTANGLE)
 {
-    GraphicsRectProperty prop;
+    CGraphicsRectProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getRectProperty();
     else
@@ -334,7 +334,7 @@ QByteArray CGraphicsRectangle::getJsonData(CGraphicsJSON &jsonMgr) const
 
 ProxyGraphicsItemPtr CGraphicsRectangle::createProxyGraphicsItem() const
 {
-    GraphicsRectProperty prop;
+    CGraphicsRectProperty prop;
     prop.m_category = getCategory().toStdString();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_lineSize = pen().width();

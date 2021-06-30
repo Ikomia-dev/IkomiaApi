@@ -88,8 +88,8 @@ class COcvQRCodeDetector : public C2dImageTask
                 return;
             }
 
-            GraphicsEllipseProperty ellipseProp = m_graphicsContextPtr->getEllipseProperty();
-            GraphicsTextProperty textProp = m_graphicsContextPtr->getTextProperty();
+            CGraphicsEllipseProperty ellipseProp = m_graphicsContextPtr->getEllipseProperty();
+            CGraphicsTextProperty textProp = m_graphicsContextPtr->getTextProperty();
 
             const int w = 15;
             const int h = 15;

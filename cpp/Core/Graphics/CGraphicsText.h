@@ -38,18 +38,18 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         CProxyGraphicsText();
         CProxyGraphicsText(const std::string& text);
         CProxyGraphicsText(const std::string& text, float x, float y);
-        CProxyGraphicsText(const std::string& text, float x, float y, const GraphicsTextProperty& property);
+        CProxyGraphicsText(const std::string& text, float x, float y, const CGraphicsTextProperty& property);
 
         void                    setX(float x);
         void                    setY(float x);
         void                    setText(const std::string& text);
-        void                    setProperty(const GraphicsTextProperty& prop);
+        void                    setProperty(const CGraphicsTextProperty& prop);
 
         float                   getX() const;
         float                   getY() const;
         std::string             getText() const;
         QRectF                  getBoundingRect() const override;
-        GraphicsTextProperty    getProperty() const;
+        CGraphicsTextProperty    getProperty() const;
 
         bool                    isTextItem() const override;
 
@@ -64,7 +64,7 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         float                   m_x = 0;
         float                   m_y = 0;
         std::string             m_text;
-        GraphicsTextProperty    m_property;
+        CGraphicsTextProperty    m_property;
 };
 
 //---------------------
@@ -78,9 +78,9 @@ class CORESHARED_EXPORT CGraphicsText : public QGraphicsTextItem, public CGraphi
 
         CGraphicsText(QGraphicsItem* pParent=nullptr);
         CGraphicsText(const QString& text, QGraphicsItem* pParent=nullptr);
-        CGraphicsText(const QString& text, const GraphicsTextProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsText(const QString& text, const GraphicsTextProperty& property, QPointF position, QGraphicsItem* pParent=nullptr);
-        CGraphicsText(size_t id, const QString& text, const GraphicsTextProperty& property, QPointF position, QGraphicsItem* pParent=nullptr);
+        CGraphicsText(const QString& text, const CGraphicsTextProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsText(const QString& text, const CGraphicsTextProperty& property, QPointF position, QGraphicsItem* pParent=nullptr);
+        CGraphicsText(size_t id, const QString& text, const CGraphicsTextProperty& property, QPointF position, QGraphicsItem* pParent=nullptr);
         CGraphicsText(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsText> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsText(const CGraphicsText& text);
 

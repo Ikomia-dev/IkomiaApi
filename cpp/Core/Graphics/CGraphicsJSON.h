@@ -59,12 +59,12 @@ class CORESHARED_EXPORT CGraphicsJSON
         static QJsonObject toJsonObject(const QColor& color);
         static QJsonObject toJsonObject(const QFont& font);
         static QJsonObject toJsonObject(const CColor& color);
-        static QJsonObject toJsonObject(const GraphicsPointProperty& prop);
-        static QJsonObject toJsonObject(const GraphicsRectProperty& prop);
-        static QJsonObject toJsonObject(const GraphicsEllipseProperty& prop);
-        static QJsonObject toJsonObject(const GraphicsPolygonProperty& prop);
-        static QJsonObject toJsonObject(const GraphicsPolylineProperty& prop);
-        static QJsonObject toJsonObject(const GraphicsTextProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsPointProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsRectProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsEllipseProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsPolygonProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsPolylineProperty& prop);
+        static QJsonObject toJsonObject(const CGraphicsTextProperty& prop);
 
         static void        buildObject(QGraphicsItem* pItem, QByteArray data);
         static void        buildObject(CGraphicsPoint* pItem, QByteArray data);

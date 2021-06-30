@@ -38,7 +38,7 @@ CProxyGraphicsComplexPoly::CProxyGraphicsComplexPoly(const PolygonF &outer, cons
     m_inners = inners;
 }
 
-CProxyGraphicsComplexPoly::CProxyGraphicsComplexPoly(const PolygonF &outer, const std::vector<PolygonF> &inners, const GraphicsPolygonProperty &property)
+CProxyGraphicsComplexPoly::CProxyGraphicsComplexPoly(const PolygonF &outer, const std::vector<PolygonF> &inners, const CGraphicsPolygonProperty &property)
     : CProxyGraphicsItem(GraphicsItem::COMPLEX_POLYGON)
 {
     m_outer = outer;
@@ -57,7 +57,7 @@ void CProxyGraphicsComplexPoly::setInners(const std::vector<PolygonF> &polygons)
     m_inners = polygons;
 }
 
-void CProxyGraphicsComplexPoly::setProperty(const GraphicsPolygonProperty &prop)
+void CProxyGraphicsComplexPoly::setProperty(const CGraphicsPolygonProperty &prop)
 {
     m_property = prop;
 }
@@ -89,7 +89,7 @@ QRectF CProxyGraphicsComplexPoly::getBoundingRect() const
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
 }
 
-GraphicsPolygonProperty CProxyGraphicsComplexPoly::getProperty() const
+CGraphicsPolygonProperty CProxyGraphicsComplexPoly::getProperty() const
 {
     return m_property;
 }
@@ -152,7 +152,7 @@ CGraphicsComplexPolygon::CGraphicsComplexPolygon(QGraphicsItem *pParent)
     setBrush(QBrush(QColor(255,0,0,10)));
 }
 
-CGraphicsComplexPolygon::CGraphicsComplexPolygon(const GraphicsPolygonProperty &property, QGraphicsItem *pParent)
+CGraphicsComplexPolygon::CGraphicsComplexPolygon(const CGraphicsPolygonProperty &property, QGraphicsItem *pParent)
     : QGraphicsPathItem(pParent),
       CGraphicsItem(GraphicsItem::COMPLEX_POLYGON)
 {
@@ -168,7 +168,7 @@ CGraphicsComplexPolygon::CGraphicsComplexPolygon(const GraphicsPolygonProperty &
     setBrush(Utils::Graphics::toQColor(property.m_brushColor));
 }
 
-CGraphicsComplexPolygon::CGraphicsComplexPolygon(size_t id, const GraphicsPolygonProperty &property, QGraphicsItem *pParent)
+CGraphicsComplexPolygon::CGraphicsComplexPolygon(size_t id, const CGraphicsPolygonProperty &property, QGraphicsItem *pParent)
     : QGraphicsPathItem(pParent),
       CGraphicsItem(id, GraphicsItem::COMPLEX_POLYGON)
 {
@@ -188,7 +188,7 @@ CGraphicsComplexPolygon::CGraphicsComplexPolygon(const GraphicsContextPtr &globa
     : QGraphicsPathItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::COMPLEX_POLYGON)
 {
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getPolygonProperty();
     else
@@ -300,7 +300,7 @@ void CGraphicsComplexPolygon::redraw()
 
 ProxyGraphicsItemPtr CGraphicsComplexPolygon::createProxyGraphicsItem() const
 {
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     prop.m_category = getCategory().toStdString();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_lineSize = pen().width();

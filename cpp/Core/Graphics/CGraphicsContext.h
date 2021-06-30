@@ -38,28 +38,28 @@ class CORESHARED_EXPORT CGraphicsContext
         void                        setCurrentCategory(const std::string &category);
 
         GraphicsShape               getTool() const;
-        GraphicsPointProperty*      getPointPropertyPtr();
-        GraphicsPointProperty       getPointProperty() const;
-        GraphicsEllipseProperty*    getEllipsePropertyPtr();
-        GraphicsEllipseProperty     getEllipseProperty() const;
-        GraphicsRectProperty*       getRectPropertyPtr();
-        GraphicsRectProperty        getRectProperty() const;
-        GraphicsPolygonProperty*    getPolygonPropertyPtr();
-        GraphicsPolygonProperty     getPolygonProperty() const;
-        GraphicsPolylineProperty*   getPolylinePropertyPtr();
-        GraphicsPolylineProperty    getPolylineProperty() const;
-        GraphicsTextProperty*       getTextPropertyPtr();
-        GraphicsTextProperty        getTextProperty() const;
+        CGraphicsPointProperty*      getPointPropertyPtr();
+        CGraphicsPointProperty       getPointProperty() const;
+        CGraphicsEllipseProperty*    getEllipsePropertyPtr();
+        CGraphicsEllipseProperty     getEllipseProperty() const;
+        CGraphicsRectProperty*       getRectPropertyPtr();
+        CGraphicsRectProperty        getRectProperty() const;
+        CGraphicsPolygonProperty*    getPolygonPropertyPtr();
+        CGraphicsPolygonProperty     getPolygonProperty() const;
+        CGraphicsPolylineProperty*   getPolylinePropertyPtr();
+        CGraphicsPolylineProperty    getPolylineProperty() const;
+        CGraphicsTextProperty*       getTextPropertyPtr();
+        CGraphicsTextProperty        getTextProperty() const;
 
     private:
 
         GraphicsShape               m_tool = GraphicsShape::SELECTION;
-        GraphicsPointProperty       m_pointProperty;
-        GraphicsEllipseProperty     m_ellipseProperty;
-        GraphicsRectProperty        m_rectProperty;
-        GraphicsPolygonProperty     m_polygonProperty;
-        GraphicsPolylineProperty    m_polylineProperty;
-        GraphicsTextProperty        m_textProperty;
+        CGraphicsPointProperty       m_pointProperty;
+        CGraphicsEllipseProperty     m_ellipseProperty;
+        CGraphicsRectProperty        m_rectProperty;
+        CGraphicsPolygonProperty     m_polygonProperty;
+        CGraphicsPolylineProperty    m_polylineProperty;
+        CGraphicsTextProperty        m_textProperty;
 };
 
 using GraphicsContextPtr = std::shared_ptr<CGraphicsContext>;

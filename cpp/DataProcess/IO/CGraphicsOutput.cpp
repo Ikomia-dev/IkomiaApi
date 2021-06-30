@@ -125,7 +125,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addPoint(const CPointF &pt)
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addPoint(const CPointF &pt, const GraphicsPointProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addPoint(const CPointF &pt, const CGraphicsPointProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsPoint>(pt, prop));
     return m_items.back();
@@ -137,7 +137,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addRectangle(float x, float y, float width
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addRectangle(float x, float y, float width, float height, const GraphicsRectProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addRectangle(float x, float y, float width, float height, const CGraphicsRectProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsRect>(x, y, width, height, prop));
     return m_items.back();
@@ -149,7 +149,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addEllipse(float x, float y, float width, 
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addEllipse(float x, float y, float width, float height, const GraphicsEllipseProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addEllipse(float x, float y, float width, float height, const CGraphicsEllipseProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsEllipse>(x, y, width, height, prop));
     return m_items.back();
@@ -161,7 +161,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addPolygon(const std::vector<CPointF> &poi
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addPolygon(const std::vector<CPointF> &points, const GraphicsPolygonProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addPolygon(const std::vector<CPointF> &points, const CGraphicsPolygonProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsPolygon>(points, prop));
     return m_items.back();
@@ -173,7 +173,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addPolyline(const std::vector<CPointF> &po
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addPolyline(const std::vector<CPointF> &points, const GraphicsPolylineProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addPolyline(const std::vector<CPointF> &points, const CGraphicsPolylineProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsPolyline>(points, prop));
     return m_items.back();
@@ -185,7 +185,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addComplexPolygon(const PolygonF &outer, c
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addComplexPolygon(const PolygonF &outer, const std::vector<PolygonF> &inners, const GraphicsPolygonProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addComplexPolygon(const PolygonF &outer, const std::vector<PolygonF> &inners, const CGraphicsPolygonProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsComplexPoly>(outer, inners, prop));
     return m_items.back();
@@ -197,7 +197,7 @@ ProxyGraphicsItemPtr CGraphicsOutput::addText(const std::string &text, float x, 
     return m_items.back();
 }
 
-ProxyGraphicsItemPtr CGraphicsOutput::addText(const std::string &text, float x, float y, const GraphicsTextProperty &prop)
+ProxyGraphicsItemPtr CGraphicsOutput::addText(const std::string &text, float x, float y, const CGraphicsTextProperty &prop)
 {
     m_items.push_back(std::make_shared<CProxyGraphicsText>(text, x, y, prop));
     return m_items.back();

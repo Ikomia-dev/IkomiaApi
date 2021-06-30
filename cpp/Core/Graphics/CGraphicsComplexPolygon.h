@@ -37,16 +37,16 @@ class CORESHARED_EXPORT CProxyGraphicsComplexPoly: public CProxyGraphicsItem
 
         CProxyGraphicsComplexPoly();
         CProxyGraphicsComplexPoly(const PolygonF& outer, const std::vector<PolygonF>& inners);
-        CProxyGraphicsComplexPoly(const PolygonF& outer, const std::vector<PolygonF>& inners, const GraphicsPolygonProperty& property);
+        CProxyGraphicsComplexPoly(const PolygonF& outer, const std::vector<PolygonF>& inners, const CGraphicsPolygonProperty& property);
 
         void                    setOuter(const PolygonF& poly);
         void                    setInners(const std::vector<PolygonF>& polygons);
-        void                    setProperty(const GraphicsPolygonProperty& prop);
+        void                    setProperty(const CGraphicsPolygonProperty& prop);
 
         PolygonF                getOuter() const;
         std::vector<PolygonF>   getInners() const;
         QRectF                  getBoundingRect() const;
-        GraphicsPolygonProperty getProperty() const;
+        CGraphicsPolygonProperty getProperty() const;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -58,7 +58,7 @@ class CORESHARED_EXPORT CProxyGraphicsComplexPoly: public CProxyGraphicsItem
 
         PolygonF                m_outer;
         std::vector<PolygonF>   m_inners;
-        GraphicsPolygonProperty m_property;
+        CGraphicsPolygonProperty m_property;
 };
 
 //-------------------------------
@@ -71,8 +71,8 @@ class CORESHARED_EXPORT CGraphicsComplexPolygon : public QGraphicsPathItem, publ
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::COMPLEX_POLYGON) };
 
         CGraphicsComplexPolygon(QGraphicsItem* pParent=nullptr);
-        CGraphicsComplexPolygon(const GraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsComplexPolygon(size_t id, const GraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsComplexPolygon(const CGraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsComplexPolygon(size_t id, const CGraphicsPolygonProperty& property, QGraphicsItem* pParent=nullptr);
         CGraphicsComplexPolygon(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsComplexPoly> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsComplexPolygon(const CGraphicsComplexPolygon& polygon);
 

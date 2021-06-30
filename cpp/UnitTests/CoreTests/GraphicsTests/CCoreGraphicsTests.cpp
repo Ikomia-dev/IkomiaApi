@@ -30,7 +30,7 @@ QList<QGraphicsItem*> CCoreGraphicsTests::createGraphicsScene()
     items.push_back(new CGraphicsRectangle(cv::Rect(120, 10, 50, 50)));
 
     //Polyline
-    GraphicsPolylineProperty lineProp;
+    CGraphicsPolylineProperty lineProp;
     lineProp.m_penColor = {255,255,255,255};
     auto pPolyline = new CGraphicsPolyline(lineProp);
     pPolyline->addPoint(QPointF(300, 30));
@@ -65,7 +65,7 @@ QList<QGraphicsItem*> CCoreGraphicsTests::createGraphicsScene()
     items.push_back(pCplxPoly);
 
     //Point
-    GraphicsPointProperty ptProp;
+    CGraphicsPointProperty ptProp;
     ptProp.m_penColor = {255,255,255,255};
     ptProp.m_brushColor = {255,255,255,255};
     ptProp.m_size = 5;
@@ -73,7 +73,7 @@ QList<QGraphicsItem*> CCoreGraphicsTests::createGraphicsScene()
     items.push_back(new CGraphicsPoint(QPointF(512,512), ptProp));
 
     //Text
-    GraphicsTextProperty txtProp;
+    CGraphicsTextProperty txtProp;
     txtProp.m_color = {255,255,255,255};
     txtProp.m_fontName = "Arial";
     txtProp.m_fontSize = 14;
@@ -96,7 +96,7 @@ void CCoreGraphicsTests::polygonTest()
     CGraphicsPolygon poly1(nullptr);
     QVERIFY(poly1.type() == CGraphicsPolygon::Type);
 
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_brushColor = {0,0,255,255};
     prop.m_lineSize = 2;
@@ -168,7 +168,7 @@ void CCoreGraphicsTests::complexPolygonTest()
     CGraphicsComplexPolygon poly1(nullptr);
     QVERIFY(poly1.type() == CGraphicsComplexPolygon::Type);
 
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_brushColor = {0,0,255,255};
     prop.m_lineSize = 2;
@@ -269,7 +269,7 @@ void CCoreGraphicsTests::polylineTest()
     CGraphicsPolyline poly1(nullptr);
     QVERIFY(poly1.type() == CGraphicsPolyline::Type);
 
-    GraphicsPolylineProperty prop;
+    CGraphicsPolylineProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_lineSize = 2;
     prop.m_category = "Test";
@@ -336,7 +336,7 @@ void CCoreGraphicsTests::ellipseTest()
     CGraphicsEllipse elli1(nullptr);
     QVERIFY(elli1.type() == CGraphicsEllipse::Type);
 
-    GraphicsEllipseProperty prop;
+    CGraphicsEllipseProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_brushColor = {0,0,255,255};
     prop.m_lineSize = 2;
@@ -396,7 +396,7 @@ void CCoreGraphicsTests::rectangleTest()
     CGraphicsRectangle rect1(nullptr);
     QVERIFY(rect1.type() == CGraphicsRectangle::Type);
 
-    GraphicsRectProperty prop;
+    CGraphicsRectProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_brushColor = {0,0,255,255};
     prop.m_lineSize = 2;
@@ -462,7 +462,7 @@ void CCoreGraphicsTests::pointTest()
     CGraphicsPoint pt1(nullptr);
     QVERIFY(pt1.type() == CGraphicsPoint::Type);
 
-    GraphicsPointProperty prop;
+    CGraphicsPointProperty prop;
     prop.m_penColor = {0,0,255,255};
     prop.m_brushColor = {0,0,255,255};
     prop.m_size = 5;
@@ -515,7 +515,7 @@ void CCoreGraphicsTests::textTest()
     CGraphicsText txt1(nullptr);
     QVERIFY(txt1.type() == CGraphicsText::Type);
 
-    GraphicsTextProperty prop;
+    CGraphicsTextProperty prop;
     prop.m_color = {0,0,255,255};
     prop.m_fontName = "Arial";
     prop.m_fontSize = 8;

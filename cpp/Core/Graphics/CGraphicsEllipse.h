@@ -37,21 +37,21 @@ class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
 
         CProxyGraphicsEllipse();
         CProxyGraphicsEllipse(float x, float y, float w, float h);
-        CProxyGraphicsEllipse(float x, float y, float w, float h, const GraphicsEllipseProperty& property);
+        CProxyGraphicsEllipse(float x, float y, float w, float h, const CGraphicsEllipseProperty& property);
 
         //Accessors are for Python binding
         void                    setX(float x);
         void                    setY(float y);
         void                    setWidth(float w);
         void                    setHeight(float h);
-        void                    setProperty(const GraphicsEllipseProperty& prop);
+        void                    setProperty(const CGraphicsEllipseProperty& prop);
 
         float                   getX() const;
         float                   getY() const;
         float                   getWidth() const;
         float                   getHeight() const;
         QRectF                  getBoundingRect() const override;
-        GraphicsEllipseProperty getProperty() const;
+        CGraphicsEllipseProperty getProperty() const;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -65,7 +65,7 @@ class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
         float                   m_y = 0.0;
         float                   m_width = 0.0;
         float                   m_height = 0.0;
-        GraphicsEllipseProperty m_property;
+        CGraphicsEllipseProperty m_property;
 };
 
 //------------------------
@@ -78,8 +78,8 @@ class CORESHARED_EXPORT CGraphicsEllipse : public QGraphicsEllipseItem, public C
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::ELLIPSE) };
 
         CGraphicsEllipse(QGraphicsItem* pParent=nullptr);
-        CGraphicsEllipse(const GraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsEllipse(size_t id, const GraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsEllipse(const CGraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsEllipse(size_t id, const CGraphicsEllipseProperty& property, QGraphicsItem* pParent=nullptr);
         CGraphicsEllipse(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsEllipse> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsEllipse(const CGraphicsEllipse& ellipse);
 

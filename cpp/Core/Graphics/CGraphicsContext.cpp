@@ -42,62 +42,62 @@ GraphicsShape CGraphicsContext::getTool() const
     return m_tool;
 }
 
-GraphicsPointProperty* CGraphicsContext::getPointPropertyPtr()
+CGraphicsPointProperty* CGraphicsContext::getPointPropertyPtr()
 {
     return &m_pointProperty;
 }
 
-GraphicsPointProperty CGraphicsContext::getPointProperty() const
+CGraphicsPointProperty CGraphicsContext::getPointProperty() const
 {
     return m_pointProperty;
 }
 
-GraphicsEllipseProperty *CGraphicsContext::getEllipsePropertyPtr()
+CGraphicsEllipseProperty *CGraphicsContext::getEllipsePropertyPtr()
 {
     return &m_ellipseProperty;
 }
 
-GraphicsEllipseProperty CGraphicsContext::getEllipseProperty() const
+CGraphicsEllipseProperty CGraphicsContext::getEllipseProperty() const
 {
     return m_ellipseProperty;
 }
 
-GraphicsRectProperty *CGraphicsContext::getRectPropertyPtr()
+CGraphicsRectProperty *CGraphicsContext::getRectPropertyPtr()
 {
     return &m_rectProperty;
 }
 
-GraphicsRectProperty CGraphicsContext::getRectProperty() const
+CGraphicsRectProperty CGraphicsContext::getRectProperty() const
 {
     return m_rectProperty;
 }
 
-GraphicsPolygonProperty *CGraphicsContext::getPolygonPropertyPtr()
+CGraphicsPolygonProperty *CGraphicsContext::getPolygonPropertyPtr()
 {
     return &m_polygonProperty;
 }
 
-GraphicsPolygonProperty CGraphicsContext::getPolygonProperty() const
+CGraphicsPolygonProperty CGraphicsContext::getPolygonProperty() const
 {
     return m_polygonProperty;
 }
 
-GraphicsPolylineProperty *CGraphicsContext::getPolylinePropertyPtr()
+CGraphicsPolylineProperty *CGraphicsContext::getPolylinePropertyPtr()
 {
     return &m_polylineProperty;
 }
 
-GraphicsPolylineProperty CGraphicsContext::getPolylineProperty() const
+CGraphicsPolylineProperty CGraphicsContext::getPolylineProperty() const
 {
     return m_polylineProperty;
 }
 
-GraphicsTextProperty *CGraphicsContext::getTextPropertyPtr()
+CGraphicsTextProperty *CGraphicsContext::getTextPropertyPtr()
 {
     return &m_textProperty;
 }
 
-GraphicsTextProperty CGraphicsContext::getTextProperty() const
+CGraphicsTextProperty CGraphicsContext::getTextProperty() const
 {
     return m_textProperty;
 }

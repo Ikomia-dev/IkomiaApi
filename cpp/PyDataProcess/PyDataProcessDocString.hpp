@@ -155,6 +155,11 @@ constexpr auto _getAllLabelListDocString =
         "Returns:\n"
         "   list of list of str: all labels\n";
 
+constexpr auto _getAllHeaderLabelsDocString =
+        "Get all header labels (column labels).\n\n"
+        "Returns:\n"
+        "   list of str\n";
+
 constexpr auto _getAllValueListDocString =
         "Get all value lists.\n\n"
         "Returns:\n"

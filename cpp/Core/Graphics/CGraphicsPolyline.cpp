@@ -38,7 +38,7 @@ CProxyGraphicsPolyline::CProxyGraphicsPolyline(const std::vector<CPointF> &point
     m_points = points;
 }
 
-CProxyGraphicsPolyline::CProxyGraphicsPolyline(const std::vector<CPointF> &points, const GraphicsPolylineProperty &property)
+CProxyGraphicsPolyline::CProxyGraphicsPolyline(const std::vector<CPointF> &points, const CGraphicsPolylineProperty &property)
     : CProxyGraphicsItem(GraphicsItem::POLYLINE)
 {
     m_points = points;
@@ -51,7 +51,7 @@ void CProxyGraphicsPolyline::setPoints(const PolygonF &pts)
     m_points = pts;
 }
 
-void CProxyGraphicsPolyline::setProperty(const GraphicsPolylineProperty &prop)
+void CProxyGraphicsPolyline::setProperty(const CGraphicsPolylineProperty &prop)
 {
     m_property = prop;
 }
@@ -78,7 +78,7 @@ QRectF CProxyGraphicsPolyline::getBoundingRect() const
     return QRectF(xmin, ymin, (xmax - xmin) + 1, (ymax - ymin) + 1);
 }
 
-GraphicsPolylineProperty CProxyGraphicsPolyline::getProperty()
+CGraphicsPolylineProperty CProxyGraphicsPolyline::getProperty()
 {
     return m_property;
 }
@@ -125,7 +125,7 @@ CGraphicsPolyline::CGraphicsPolyline(QGraphicsItem *pParent)
     setPen(pen);
 }
 
-CGraphicsPolyline::CGraphicsPolyline(const GraphicsPolylineProperty &property, QGraphicsItem *pParent)
+CGraphicsPolyline::CGraphicsPolyline(const CGraphicsPolylineProperty &property, QGraphicsItem *pParent)
     : QGraphicsPathItem(pParent),
       CGraphicsItem(GraphicsItem::POLYLINE)
 {
@@ -142,7 +142,7 @@ CGraphicsPolyline::CGraphicsPolyline(const GraphicsPolylineProperty &property, Q
     setPen(pen);
 }
 
-CGraphicsPolyline::CGraphicsPolyline(size_t id, const GraphicsPolylineProperty &property, QGraphicsItem *pParent)
+CGraphicsPolyline::CGraphicsPolyline(size_t id, const CGraphicsPolylineProperty &property, QGraphicsItem *pParent)
     : QGraphicsPathItem(pParent),
       CGraphicsItem(id, GraphicsItem::POLYLINE)
 {
@@ -163,7 +163,7 @@ CGraphicsPolyline::CGraphicsPolyline(const GraphicsContextPtr &globalContext, co
     : QGraphicsPathItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::POLYLINE)
 {
-    GraphicsPolylineProperty prop;
+    CGraphicsPolylineProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getPolylineProperty();
     else
@@ -306,7 +306,7 @@ void CGraphicsPolyline::updatePoint(int index, const QPointF &pt)
 
 ProxyGraphicsItemPtr CGraphicsPolyline::createProxyGraphicsItem() const
 {
-    GraphicsPolylineProperty prop;
+    CGraphicsPolylineProperty prop;
     prop.m_category = getCategory().toStdString();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_lineSize = pen().width();

@@ -37,21 +37,21 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
 
         CProxyGraphicsRect();
         CProxyGraphicsRect(float x, float y, float w, float h);
-        CProxyGraphicsRect(float x, float y, float w, float h, const GraphicsRectProperty& property);
+        CProxyGraphicsRect(float x, float y, float w, float h, const CGraphicsRectProperty& property);
 
         //Accessors are for Python binding
         void                    setX(float x);
         void                    setY(float y);
         void                    setWidth(float w);
         void                    setHeight(float h);
-        void                    setProperty(const GraphicsRectProperty& prop);
+        void                    setProperty(const CGraphicsRectProperty& prop);
 
         float                   getX() const;
         float                   getY() const;
         float                   getWidth() const;
         float                   getHeight() const;
         QRectF                  getBoundingRect() const override;
-        GraphicsRectProperty    getProperty() const;
+        CGraphicsRectProperty    getProperty() const;
 
         void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -67,7 +67,7 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
         float                   m_y = 0.0;
         float                   m_width = 0.0;
         float                   m_height = 0.0;
-        GraphicsRectProperty    m_property;
+        CGraphicsRectProperty    m_property;
 };
 
 //--------------------------
@@ -80,8 +80,8 @@ class CORESHARED_EXPORT CGraphicsRectangle : public QGraphicsRectItem, public CG
         enum { Type = UserType + static_cast<size_t>(GraphicsItem::RECTANGLE) };
 
         CGraphicsRectangle(QGraphicsItem* pParent=nullptr);
-        CGraphicsRectangle(const GraphicsRectProperty& property, QGraphicsItem* pParent=nullptr);
-        CGraphicsRectangle(size_t id, const GraphicsRectProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsRectangle(const CGraphicsRectProperty& property, QGraphicsItem* pParent=nullptr);
+        CGraphicsRectangle(size_t id, const CGraphicsRectProperty& property, QGraphicsItem* pParent=nullptr);
         CGraphicsRectangle(const cv::Rect& rect, QGraphicsItem* pParent=nullptr);
         CGraphicsRectangle(const GraphicsContextPtr &globalContext, const std::shared_ptr<CProxyGraphicsRect> &proxyItem, QGraphicsItem *pParent=nullptr);
         CGraphicsRectangle(const CGraphicsRectangle& rectangle);

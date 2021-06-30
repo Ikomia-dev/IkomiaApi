@@ -80,6 +80,7 @@ void exposeFeatureIO(const std::string& className)
         .def("getValueList", &CFeatureIO<Type>::getValueList, _getValueListDocString, args("self", "index"))
         .def("getAllValueList", &CFeatureIO<Type>::getAllValues, _getAllValueListDocString, args("self"))
         .def("getAllLabelList", &CFeatureIO<Type>::getAllValueLabels, _getAllLabelListDocString, args("self"))
+        .def("getAllHeaderLabels", &CFeatureIO<Type>::getAllHeaderLabels, _getAllHeaderLabelsDocString, args("self"))
         .def("getUnitElementCount", &CFeatureIO<Type>::getUnitElementCount, &CFeatureIOWrap<Type>::default_getUnitElementCount, _getUnitEltCountDerivedDocString, args("self"))
         .def("isDataAvailable", &CFeatureIO<Type>::isDataAvailable, &CFeatureIOWrap<Type>::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
         .def("clearData", &CFeatureIO<Type>::clearData, &CFeatureIOWrap<Type>::default_clearData, _clearDataDerivedDocString, args("self"))
@@ -120,6 +121,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //Register std::vector<T> <-> python list converters
     registerStdVector<uchar>();
     registerStdVector<std::vector<uchar>>();
+    registerStdVector<std::vector<std::string>>();
+    registerStdVector<std::vector<double>>();
     registerStdVector<IODataType>();
 
     //---------------------//
@@ -191,19 +194,19 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //----- CGraphicsOutput -----//
     //---------------------------//
     ProxyGraphicsItemPtr (CGraphicsOutput::*addPoint1)(const CPointF&) = &CGraphicsOutput::addPoint;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addPoint2)(const CPointF&, const GraphicsPointProperty&) = &CGraphicsOutput::addPoint;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPoint2)(const CPointF&, const CGraphicsPointProperty&) = &CGraphicsOutput::addPoint;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addRectangle1)(float, float, float, float) = &CGraphicsOutput::addRectangle;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addRectangle2)(float, float, float, float, const GraphicsRectProperty&) = &CGraphicsOutput::addRectangle;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addRectangle2)(float, float, float, float, const CGraphicsRectProperty&) = &CGraphicsOutput::addRectangle;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addEllipse1)(float, float, float, float) = &CGraphicsOutput::addEllipse;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addEllipse2)(float, float, float, float, const GraphicsEllipseProperty&) = &CGraphicsOutput::addEllipse;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addEllipse2)(float, float, float, float, const CGraphicsEllipseProperty&) = &CGraphicsOutput::addEllipse;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addPolygon1)(const std::vector<CPointF>&) = &CGraphicsOutput::addPolygon;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolygon2)(const std::vector<CPointF>&, const GraphicsPolygonProperty&) = &CGraphicsOutput::addPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolygon2)(const std::vector<CPointF>&, const CGraphicsPolygonProperty&) = &CGraphicsOutput::addPolygon;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addPolyline1)(const std::vector<CPointF>&) = &CGraphicsOutput::addPolyline;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolyline2)(const std::vector<CPointF>&, const GraphicsPolylineProperty&) = &CGraphicsOutput::addPolyline;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addPolyline2)(const std::vector<CPointF>&, const CGraphicsPolylineProperty&) = &CGraphicsOutput::addPolyline;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addComplexPolygon1)(const PolygonF&, const std::vector<PolygonF>&) = &CGraphicsOutput::addComplexPolygon;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addComplexPolygon2)(const PolygonF&, const std::vector<PolygonF>&, const GraphicsPolygonProperty&) = &CGraphicsOutput::addComplexPolygon;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addComplexPolygon2)(const PolygonF&, const std::vector<PolygonF>&, const CGraphicsPolygonProperty&) = &CGraphicsOutput::addComplexPolygon;
     ProxyGraphicsItemPtr (CGraphicsOutput::*addText1)(const std::string&, float x, float y) = &CGraphicsOutput::addText;
-    ProxyGraphicsItemPtr (CGraphicsOutput::*addText2)(const std::string&, float x, float y, const GraphicsTextProperty&) = &CGraphicsOutput::addText;
+    ProxyGraphicsItemPtr (CGraphicsOutput::*addText2)(const std::string&, float x, float y, const CGraphicsTextProperty&) = &CGraphicsOutput::addText;
 
     class_<CGraphicsOutput, bases<CWorkflowTaskIO>, std::shared_ptr<CGraphicsOutput>>("CGraphicsOutput", _graphicsOutputDocString)
         .def(init<>("Default constructor"))

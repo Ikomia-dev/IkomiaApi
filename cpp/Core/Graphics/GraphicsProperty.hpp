@@ -24,54 +24,96 @@
 
 /** @file GraphicsProperty.hpp */
 
-struct GraphicsEllipseProperty
+class CGraphicsEllipseProperty
 {
-    CColor      m_penColor = {255,0,0,255};
-    CColor      m_brushColor =  {255,0,0,0};
-    int         m_lineSize = 2;
-    std::string m_category = "Default";
+    public:
+
+        CColor      getPenColor() const { return m_penColor; }
+        CColor      getBrushColor() const { return m_brushColor; }
+
+        void        setPenColor(const CColor& color) { m_penColor = color; }
+        void        setBrushColor(const CColor& color) { m_brushColor = color; }
+
+        CColor      m_penColor = {255,0,0,255};
+        CColor      m_brushColor =  {255,0,0,0};
+        int         m_lineSize = 2;
+        std::string m_category = "Default";
 };
 
-struct GraphicsPointProperty
+class CGraphicsPointProperty
 {
-    CColor      m_penColor = {255,0,0,255};
-    CColor      m_brushColor = {255,0,0,255};
-    int         m_size = 3;
-    std::string m_category = "Default";
+    public:
+
+        CColor      getPenColor() const { return m_penColor; }
+        CColor      getBrushColor() const { return m_brushColor; }
+
+        void        setPenColor(const CColor& color) { m_penColor = color; }
+        void        setBrushColor(const CColor& color) { m_brushColor = color; }
+
+        CColor      m_penColor = {255,0,0,255};
+        CColor      m_brushColor = {255,0,0,255};
+        int         m_size = 3;
+        std::string m_category = "Default";
 };
 
-struct GraphicsPolygonProperty
+class CGraphicsPolygonProperty
 {
-    CColor      m_penColor = {255,0,0,255};
-    CColor      m_brushColor = {255,0,0,0};
-    int         m_lineSize = 2;
-    std::string m_category = "Default";
+    public:
+
+        CColor      getPenColor() const { return m_penColor; }
+        CColor      getBrushColor() const { return m_brushColor; }
+
+        void        setPenColor(const CColor& color) { m_penColor = color; }
+        void        setBrushColor(const CColor& color) { m_brushColor = color; }
+
+        CColor      m_penColor = {255,0,0,255};
+        CColor      m_brushColor = {255,0,0,0};
+        int         m_lineSize = 2;
+        std::string m_category = "Default";
 };
 
-struct GraphicsPolylineProperty
+class CGraphicsPolylineProperty
 {
-    CColor      m_penColor = {255,0,0,255};
-    int         m_lineSize = 2;
-    std::string m_category = "Default";
+    public:
+
+        CColor      getColor() const { return m_penColor; }
+        void        setColor(const CColor& color) { m_penColor = color; }
+
+        CColor      m_penColor = {255,0,0,255};
+        int         m_lineSize = 2;
+        std::string m_category = "Default";
 };
 
-struct GraphicsRectProperty
+class CGraphicsRectProperty
 {
-    CColor      m_penColor = {255,0,0,255};
-    CColor      m_brushColor = {255,0,0,0};
-    int         m_lineSize = 2;
-    std::string m_category = "Default";
+    public:
+
+        CColor      getPenColor() const { return m_penColor; }
+        CColor      getBrushColor() const { return m_brushColor; }
+
+        void        setPenColor(const CColor& color) { m_penColor = color; }
+        void        setBrushColor(const CColor& color) { m_brushColor = color; }
+
+        CColor      m_penColor = {255,0,0,255};
+        CColor      m_brushColor = {255,0,0,0};
+        int         m_lineSize = 2;
+        std::string m_category = "Default";
 };
 
-struct GraphicsTextProperty
+class CGraphicsTextProperty
 {
-    CColor      m_color = {255,0,0,255};
-    std::string m_fontName = "Helvetica";
-    int         m_fontSize = 12;
-    bool        m_bBold = false;
-    bool        m_bItalic = false;
-    bool        m_bUnderline = false;
-    bool        m_bStrikeOut = false;
+    public:
+
+        CColor      getColor() const { return m_color; }
+        void        setColor(const CColor& color) { m_color = color; }
+
+        CColor      m_color = {255,0,0,255};
+        std::string m_fontName = "Helvetica";
+        int         m_fontSize = 12;
+        bool        m_bBold = false;
+        bool        m_bItalic = false;
+        bool        m_bUnderline = false;
+        bool        m_bStrikeOut = false;
 };
 
 #endif // GRAPHICSPROPERTY_HPP

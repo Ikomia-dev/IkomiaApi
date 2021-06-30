@@ -40,7 +40,7 @@ CProxyGraphicsPolygon::CProxyGraphicsPolygon(const std::vector<CPointF> &points)
     m_points.push_back(points[0]);
 }
 
-CProxyGraphicsPolygon::CProxyGraphicsPolygon(const std::vector<CPointF> &points, const GraphicsPolygonProperty &property)
+CProxyGraphicsPolygon::CProxyGraphicsPolygon(const std::vector<CPointF> &points, const CGraphicsPolygonProperty &property)
     : CProxyGraphicsItem(GraphicsItem::POLYGON)
 {
     m_points = points;
@@ -57,7 +57,7 @@ void CProxyGraphicsPolygon::setPoints(const PolygonF &pts)
     m_points = pts;
 }
 
-void CProxyGraphicsPolygon::setProperty(const GraphicsPolygonProperty &prop)
+void CProxyGraphicsPolygon::setProperty(const CGraphicsPolygonProperty &prop)
 {
     m_property = prop;
 }
@@ -84,7 +84,7 @@ QRectF CProxyGraphicsPolygon::getBoundingRect() const
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
 }
 
-GraphicsPolygonProperty CProxyGraphicsPolygon::getProperty() const
+CGraphicsPolygonProperty CProxyGraphicsPolygon::getProperty() const
 {
     return m_property;
 }
@@ -141,7 +141,7 @@ CGraphicsPolygon::CGraphicsPolygon(QGraphicsItem *pParent)
     setBrush(QBrush(QColor(255,0,0,10)));
 }
 
-CGraphicsPolygon::CGraphicsPolygon(const GraphicsPolygonProperty &property, QGraphicsItem *pParent)
+CGraphicsPolygon::CGraphicsPolygon(const CGraphicsPolygonProperty &property, QGraphicsItem *pParent)
     : QGraphicsPolygonItem(pParent),
       CGraphicsItem(GraphicsItem::POLYGON)
 {
@@ -157,7 +157,7 @@ CGraphicsPolygon::CGraphicsPolygon(const GraphicsPolygonProperty &property, QGra
     setBrush(Utils::Graphics::toQColor(property.m_brushColor));
 }
 
-CGraphicsPolygon::CGraphicsPolygon(size_t id, const GraphicsPolygonProperty &property, QGraphicsItem *pParent)
+CGraphicsPolygon::CGraphicsPolygon(size_t id, const CGraphicsPolygonProperty &property, QGraphicsItem *pParent)
     : QGraphicsPolygonItem(pParent),
       CGraphicsItem(id, GraphicsItem::POLYGON)
 {
@@ -177,7 +177,7 @@ CGraphicsPolygon::CGraphicsPolygon(const GraphicsContextPtr &globalContext, cons
     : QGraphicsPolygonItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::POLYGON)
 {
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getPolygonProperty();
     else
@@ -319,7 +319,7 @@ QByteArray CGraphicsPolygon::getJsonData(CGraphicsJSON &jsonMgr) const
 
 ProxyGraphicsItemPtr CGraphicsPolygon::createProxyGraphicsItem() const
 {
-    GraphicsPolygonProperty prop;
+    CGraphicsPolygonProperty prop;
     prop.m_category = getCategory().toStdString();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_lineSize = pen().width();

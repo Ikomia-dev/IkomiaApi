@@ -84,7 +84,7 @@ class COcvObjectnessBING : public C2dImageTask
             pOutput->setNewLayer(getName());
             pOutput->setImageIndex(0);
 
-            GraphicsRectProperty prop = m_graphicsContextPtr->getRectProperty();
+            CGraphicsRectProperty prop = m_graphicsContextPtr->getRectProperty();
             int ndet = int(saliencyMap.size());
             // The result are sorted by objectness. We only use the first maxd boxes here.
             int maxd = pParam->m_nbBBox, step = 255 / maxd;

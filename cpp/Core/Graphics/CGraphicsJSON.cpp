@@ -244,7 +244,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const CColor &color)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPointProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsPointProperty &prop)
 {
     QJsonObject obj;
     obj["pen"] = toJsonObject(prop.m_penColor);
@@ -254,7 +254,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPointProperty &prop)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsRectProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsRectProperty &prop)
 {
     QJsonObject obj;
     obj["pen"] = toJsonObject(prop.m_penColor);
@@ -264,7 +264,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const GraphicsRectProperty &prop)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsEllipseProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsEllipseProperty &prop)
 {
     QJsonObject obj;
     obj["pen"] = toJsonObject(prop.m_penColor);
@@ -274,7 +274,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const GraphicsEllipseProperty &prop)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPolygonProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsPolygonProperty &prop)
 {
     QJsonObject obj;
     obj["pen"] = toJsonObject(prop.m_penColor);
@@ -284,7 +284,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPolygonProperty &prop)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPolylineProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsPolylineProperty &prop)
 {
     QJsonObject obj;
     obj["pen"] = toJsonObject(prop.m_penColor);
@@ -293,7 +293,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const GraphicsPolylineProperty &prop)
     return obj;
 }
 
-QJsonObject CGraphicsJSON::toJsonObject(const GraphicsTextProperty &prop)
+QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsTextProperty &prop)
 {
     QJsonObject obj;
     obj["color"] = toJsonObject(prop.m_color);

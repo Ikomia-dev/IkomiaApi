@@ -72,20 +72,21 @@ BOOST_PYTHON_MODULE(pycore)
     // Set the docstring of the current module scope
     scope().attr("__doc__") = _moduleDocString;
 
-    //Numpy initialization
+    // Numpy initialization
     init_numpy();
 
-    //CMat <-> Numpy NdArray converters
+    // CMat <-> Numpy NdArray converters
     to_python_converter<CMat, BoostCvMatToNumpyArrayConverter>();
     BoostNumpyArrayToCvMatConverter();
 
-    //Register smart pointers
+    // Register smart pointers
     register_ptr_to_python<std::shared_ptr<CProxyGraphicsItem>>();
     register_ptr_to_python<std::shared_ptr<CWorkflowTaskParam>>();
     register_ptr_to_python<std::shared_ptr<CWorkflowTaskIO>>();
     register_ptr_to_python<std::shared_ptr<CWorkflowTask>>();
     register_ptr_to_python<std::shared_ptr<CWorkflowTaskWidget>>();
 
+    // Register std::vector<T>
     registerStdVector<int>();
     registerStdVector<double>();
     registerStdVector<std::string>();
@@ -137,24 +138,24 @@ BOOST_PYTHON_MODULE(pycore)
     class_<CProxyGraphicsComplexPoly, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsComplexPoly>>("CGraphicsComplexPolygon", _graphicsComplexPolyDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::vector<CPoint<float>>, const std::vector<PolygonF>>(_ctor1GraphicsComplexPoly))
-        .def(init<const std::vector<CPoint<float>>, const std::vector<PolygonF>, const GraphicsPolygonProperty&>(_ctor2GraphicsComplexPoly))
+        .def(init<const std::vector<CPoint<float>>, const std::vector<PolygonF>, const CGraphicsPolygonProperty&>(_ctor2GraphicsComplexPoly))
         .add_property("outer", &CProxyGraphicsComplexPoly::getOuter, &CProxyGraphicsComplexPoly::setOuter, "Outer polygon (list of vertices)")
         .add_property("inners", &CProxyGraphicsComplexPoly::getInners, &CProxyGraphicsComplexPoly::setInners, "Inner polygons (list of inner polygons corresponding to holes)")
         .add_property("property", &CProxyGraphicsComplexPoly::getProperty, &CProxyGraphicsComplexPoly::setProperty, "Visual polygon properties. See :py:class:`~ikomia.core.PyCore.GraphicsPolygonProperty`.")
     ;
 
     //Ellipse
-    class_<GraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsEllipse` item.")
-        .def_readwrite("pen_color", &GraphicsEllipseProperty::m_penColor, "Outline color (list - rgba)")
-        .def_readwrite("brush_color", &GraphicsEllipseProperty::m_brushColor, "Fill color (list - rgba)")
-        .def_readwrite("line_size", &GraphicsEllipseProperty::m_lineSize, "Outline size")
-        .def_readwrite("category", &GraphicsEllipseProperty::m_category, "Graphics category")
+    class_<CGraphicsEllipseProperty>("GraphicsEllipseProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsEllipse` item.")
+        .add_property("pen_color", &CGraphicsEllipseProperty::getPenColor, &CGraphicsEllipseProperty::setPenColor, "Outline color (list - rgba)")
+        .add_property("brush_color", &CGraphicsEllipseProperty::getBrushColor, &CGraphicsEllipseProperty::setBrushColor, "Fill color (list - rgba)")
+        .def_readwrite("line_size", &CGraphicsEllipseProperty::m_lineSize, "Outline size")
+        .def_readwrite("category", &CGraphicsEllipseProperty::m_category, "Graphics category")
     ;
 
     class_<CProxyGraphicsEllipse, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsEllipse>>("CGraphicsEllipse", _graphicsEllipseDocString)
         .def(init<>("Default constructor"))
         .def(init<float, float, float, float>(_ctor1GraphicsEllipse))
-        .def(init<float, float, float, float, const GraphicsEllipseProperty&>(_ctor2GraphicsEllipse))
+        .def(init<float, float, float, float, const CGraphicsEllipseProperty&>(_ctor2GraphicsEllipse))
         .add_property("x", &CProxyGraphicsEllipse::getX, &CProxyGraphicsEllipse::setX, "x coordinate of top-left point")
         .add_property("y", &CProxyGraphicsEllipse::getY, &CProxyGraphicsEllipse::setY, "y coordinate of top-left point")
         .add_property("width", &CProxyGraphicsEllipse::getWidth, &CProxyGraphicsEllipse::setWidth, "Ellipse width")
@@ -163,64 +164,64 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Point
-    class_<GraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPoint` item.")
-        .def_readwrite("pen_color", &GraphicsPointProperty::m_penColor, "Outline color (list - rgba)")
-        .def_readwrite("brush_color", &GraphicsPointProperty::m_brushColor, "Fill color (list - rgba)")
-        .def_readwrite("size", &GraphicsPointProperty::m_size, "Size")
-        .def_readwrite("category", &GraphicsPointProperty::m_category, "Graphics category")
+    class_<CGraphicsPointProperty>("GraphicsPointProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPoint` item.")
+        .add_property("pen_color", &CGraphicsPointProperty::getPenColor, &CGraphicsPointProperty::setPenColor, "Outline color (list - rgba)")
+        .add_property("brush_color", &CGraphicsPointProperty::getBrushColor, &CGraphicsPointProperty::setBrushColor, "Fill color (list - rgba)")
+        .def_readwrite("size", &CGraphicsPointProperty::m_size, "Size")
+        .def_readwrite("category", &CGraphicsPointProperty::m_category, "Graphics category")
     ;
 
     class_<CProxyGraphicsPoint, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsPoint>>("CGraphicsPoint", _graphicsPointDocString)
         .def(init<>("Default constructor"))
         .def(init<const CPoint<float>&>(_ctor1GraphicsPoint))
-        .def(init<const CPoint<float>&, const GraphicsPointProperty&>(_ctor2GraphicsPoint))
+        .def(init<const CPoint<float>&, const CGraphicsPointProperty&>(_ctor2GraphicsPoint))
         .add_property("point", &CProxyGraphicsPoint::getPoint, &CProxyGraphicsPoint::setPoint, "2D point coordinates (:py:class:`CPointF`)")
         .add_property("property", &CProxyGraphicsPoint::getProperty, &CProxyGraphicsPoint::setProperty, "Visual point properties. See :py:class:`~ikomia.core.PyCore.GraphicsPointProperty`.")
     ;
 
     //Polygon
-    class_<GraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolygon` item.")
-        .def_readwrite("pen_color", &GraphicsPolygonProperty::m_penColor, "Outline color (list - rgba)")
-        .def_readwrite("brush_color", &GraphicsPolygonProperty::m_brushColor, "Fill color (list - rgba)")
-        .def_readwrite("line_size", &GraphicsPolygonProperty::m_lineSize, "Outline size")
-        .def_readwrite("category", &GraphicsPolygonProperty::m_category, "Graphics category")
+    class_<CGraphicsPolygonProperty>("GraphicsPolygonProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolygon` item.")
+        .add_property("pen_color", &CGraphicsPolygonProperty::getPenColor, &CGraphicsPolygonProperty::setPenColor, "Outline color (list - rgba)")
+        .add_property("brush_color", &CGraphicsPolygonProperty::getBrushColor, &CGraphicsPolygonProperty::setBrushColor, "Fill color (list - rgba)")
+        .def_readwrite("line_size", &CGraphicsPolygonProperty::m_lineSize, "Outline size")
+        .def_readwrite("category", &CGraphicsPolygonProperty::m_category, "Graphics category")
     ;
 
     class_<CProxyGraphicsPolygon, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsPolygon>>("CGraphicsPolygon", _graphicsPolygonDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::vector<CPoint<float>>>(_ctor1GraphicsPolygon))
-        .def(init<const std::vector<CPoint<float>>, const GraphicsPolygonProperty&>(_ctor2GraphicsPolygon))
+        .def(init<const std::vector<CPoint<float>>, const CGraphicsPolygonProperty&>(_ctor2GraphicsPolygon))
         .add_property("points", &CProxyGraphicsPolygon::getPoints, &CProxyGraphicsPolygon::setPoints, "List of polygon vertices (:py:class:`CPointF`)")
         .add_property("property", &CProxyGraphicsPolygon::getProperty, &CProxyGraphicsPolygon::setProperty, "Visual point properties. See :py:class:`~ikomia.core.PyCore.GraphicsPolygonProperty`.")
     ;
 
     //Polyline
-    class_<GraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolyline` item.")
-        .def_readwrite("pen_color", &GraphicsPolylineProperty::m_penColor, "Outline color (list - rgba)")
-        .def_readwrite("line_size", &GraphicsPolylineProperty::m_lineSize, "Outline size")
-        .def_readwrite("category", &GraphicsPolylineProperty::m_category, "Graphics category")
+    class_<CGraphicsPolylineProperty>("GraphicsPolylineProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsPolyline` item.")
+        .add_property("pen_color", &CGraphicsPolylineProperty::getColor, &CGraphicsPolylineProperty::setColor, "Outline color (list - rgba)")
+        .def_readwrite("line_size", &CGraphicsPolylineProperty::m_lineSize, "Outline size")
+        .def_readwrite("category", &CGraphicsPolylineProperty::m_category, "Graphics category")
     ;
 
     class_<CProxyGraphicsPolyline, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsPolyline>>("CGraphicsPolyline", _graphicsPolylineDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::vector<CPoint<float>>>(_ctor1GraphicsPolyline))
-        .def(init<const std::vector<CPoint<float>>, const GraphicsPolylineProperty&>(_ctor2GraphicsPolyline))
+        .def(init<const std::vector<CPoint<float>>, const CGraphicsPolylineProperty&>(_ctor2GraphicsPolyline))
         .add_property("points", &CProxyGraphicsPolyline::getPoints, &CProxyGraphicsPolyline::setPoints, "List of polyline vertices (:py:class:`CPointF`)")
         .add_property("property", &CProxyGraphicsPolyline::getProperty, &CProxyGraphicsPolyline::setProperty, "Visual point properties. See :py:class:`~ikomia.core.PyCore.GraphicsPolylineProperty`.")
     ;
 
     //Rectangle
-    class_<GraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsRectangle` item.")
-        .def_readwrite("pen_color", &GraphicsRectProperty::m_penColor, "Outline color (list - rgba)")
-        .def_readwrite("brush_color", &GraphicsRectProperty::m_brushColor, "Fill color (list - rgba)")
-        .def_readwrite("line_size", &GraphicsRectProperty::m_lineSize, "Outline size")
-        .def_readwrite("category", &GraphicsRectProperty::m_category, "Graphics category")
+    class_<CGraphicsRectProperty>("GraphicsRectProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsRectangle` item.")
+        .add_property("pen_color", &CGraphicsRectProperty::getPenColor, &CGraphicsRectProperty::setPenColor, "Outline color (list - rgba)")
+        .add_property("brush_color", &CGraphicsRectProperty::getBrushColor, &CGraphicsRectProperty::setBrushColor, "Fill color (list - rgba)")
+        .def_readwrite("line_size", &CGraphicsRectProperty::m_lineSize, "Outline size")
+        .def_readwrite("category", &CGraphicsRectProperty::m_category, "Graphics category")
     ;
 
     class_<CProxyGraphicsRect, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsRect>>("CGraphicsRectangle", _graphicsRectangleDocString)
         .def(init<>("Default constructor"))
         .def(init<float, float, float, float>(_ctor1GraphicsRectangle))
-        .def(init<float, float, float, float, const GraphicsRectProperty&>(_ctor2GraphicsRectangle))
+        .def(init<float, float, float, float, const CGraphicsRectProperty&>(_ctor2GraphicsRectangle))
         .add_property("x", &CProxyGraphicsRect::getX, &CProxyGraphicsRect::setX, "x coordinate of top-left point")
         .add_property("y", &CProxyGraphicsRect::getY, &CProxyGraphicsRect::setY, "y coordinate of top-left point")
         .add_property("width", &CProxyGraphicsRect::getWidth, &CProxyGraphicsRect::setWidth, "Rectangle width")
@@ -229,21 +230,21 @@ BOOST_PYTHON_MODULE(pycore)
     ;
 
     //Text
-    class_<GraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsText` item.")
-        .def_readwrite("color", &GraphicsTextProperty::m_color, "Text color (list - rgba)")
-        .def_readwrite("font_name", &GraphicsTextProperty::m_fontName, "Font family name")
-        .def_readwrite("font_size", &GraphicsTextProperty::m_fontSize, "Font size")
-        .def_readwrite("bold", &GraphicsTextProperty::m_bBold, "Bold (boolean)")
-        .def_readwrite("italic", &GraphicsTextProperty::m_bItalic, "Italic (boolean)")
-        .def_readwrite("underline", &GraphicsTextProperty::m_bUnderline, "Underline (boolean)")
-        .def_readwrite("strikeout", &GraphicsTextProperty::m_bStrikeOut, "Strikeout (boolean)")
+    class_<CGraphicsTextProperty>("GraphicsTextProperty", "Visual properties for :py:class:`~ikomia.core.PyCore.CGraphicsText` item.")
+        .add_property("color", &CGraphicsTextProperty::getColor, &CGraphicsTextProperty::setColor, "Text color (list - rgba)")
+        .def_readwrite("font_name", &CGraphicsTextProperty::m_fontName, "Font family name")
+        .def_readwrite("font_size", &CGraphicsTextProperty::m_fontSize, "Font size")
+        .def_readwrite("bold", &CGraphicsTextProperty::m_bBold, "Bold (boolean)")
+        .def_readwrite("italic", &CGraphicsTextProperty::m_bItalic, "Italic (boolean)")
+        .def_readwrite("underline", &CGraphicsTextProperty::m_bUnderline, "Underline (boolean)")
+        .def_readwrite("strikeout", &CGraphicsTextProperty::m_bStrikeOut, "Strikeout (boolean)")
     ;
 
     class_<CProxyGraphicsText, bases<CProxyGraphicsItem>, std::shared_ptr<CProxyGraphicsText>>("CGraphicsText", _graphicsTextDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctor1GraphicsText))
         .def(init<const std::string&, float, float>(_ctor2GraphicsText))
-        .def(init<const std::string&, float, float, const GraphicsTextProperty&>(_ctor3GraphicsText))
+        .def(init<const std::string&, float, float, const CGraphicsTextProperty&>(_ctor3GraphicsText))
         .add_property("x", &CProxyGraphicsText::getX, &CProxyGraphicsText::setX, "x coordinate of top-left point")
         .add_property("y", &CProxyGraphicsText::getY, &CProxyGraphicsText::setY, "y coordinate of top-left point")
         .add_property("text", &CProxyGraphicsText::getText, &CProxyGraphicsText::setText, "Text string")

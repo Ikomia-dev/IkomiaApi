@@ -47,7 +47,7 @@ CProxyGraphicsText::CProxyGraphicsText(const std::string &text, float x, float y
     m_y = y;
 }
 
-CProxyGraphicsText::CProxyGraphicsText(const std::string &text, float x, float y, const GraphicsTextProperty &property)
+CProxyGraphicsText::CProxyGraphicsText(const std::string &text, float x, float y, const CGraphicsTextProperty &property)
     : CProxyGraphicsItem(GraphicsItem::TEXT)
 {
     m_text = text;
@@ -72,7 +72,7 @@ void CProxyGraphicsText::setText(const std::string& text)
     m_text = text;
 }
 
-void CProxyGraphicsText::setProperty(const GraphicsTextProperty &prop)
+void CProxyGraphicsText::setProperty(const CGraphicsTextProperty &prop)
 {
     m_property = prop;
 }
@@ -94,7 +94,7 @@ std::string CProxyGraphicsText::getText() const
 
 QRectF CProxyGraphicsText::getBoundingRect() const
 {
-    GraphicsTextProperty prop;
+    CGraphicsTextProperty prop;
     if(m_bUseGlobalContext == false)
         prop = m_property;
 
@@ -112,7 +112,7 @@ QRectF CProxyGraphicsText::getBoundingRect() const
     return QRect(m_x, m_y, width, height);
 }
 
-GraphicsTextProperty CProxyGraphicsText::getProperty() const
+CGraphicsTextProperty CProxyGraphicsText::getProperty() const
 {
     return m_property;
 }
@@ -172,7 +172,7 @@ CGraphicsText::CGraphicsText(const QString &text, QGraphicsItem *pParent)
     setPlainText(text);
 }
 
-CGraphicsText::CGraphicsText(const QString &text, const GraphicsTextProperty &property, QGraphicsItem *pParent)
+CGraphicsText::CGraphicsText(const QString &text, const CGraphicsTextProperty &property, QGraphicsItem *pParent)
     : QGraphicsTextItem(pParent),
       CGraphicsItem(GraphicsItem::TEXT)
 {
@@ -194,7 +194,7 @@ CGraphicsText::CGraphicsText(const QString &text, const GraphicsTextProperty &pr
     setPlainText(text);
 }
 
-CGraphicsText::CGraphicsText(const QString& text, const GraphicsTextProperty &property, QPointF position, QGraphicsItem *pParent)
+CGraphicsText::CGraphicsText(const QString& text, const CGraphicsTextProperty &property, QPointF position, QGraphicsItem *pParent)
     : QGraphicsTextItem(pParent),
       CGraphicsItem(GraphicsItem::TEXT)
 {
@@ -217,7 +217,7 @@ CGraphicsText::CGraphicsText(const QString& text, const GraphicsTextProperty &pr
     setPos(position);
 }
 
-CGraphicsText::CGraphicsText(size_t id, const QString &text, const GraphicsTextProperty &property, QPointF position, QGraphicsItem *pParent)
+CGraphicsText::CGraphicsText(size_t id, const QString &text, const CGraphicsTextProperty &property, QPointF position, QGraphicsItem *pParent)
     : QGraphicsTextItem(pParent),
       CGraphicsItem(id, GraphicsItem::TEXT)
 {
@@ -244,7 +244,7 @@ CGraphicsText::CGraphicsText(const GraphicsContextPtr &globalContext, const std:
     : QGraphicsTextItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::TEXT)
 {
-    GraphicsTextProperty prop;
+    CGraphicsTextProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getTextProperty();
     else
@@ -319,7 +319,7 @@ ProxyGraphicsItemPtr CGraphicsText::createProxyGraphicsItem() const
 {
     std::string text = toPlainText().toStdString();
 
-    GraphicsTextProperty prop;
+    CGraphicsTextProperty prop;
     QFont f = font();
     prop.m_fontName = f.family().toStdString();
     prop.m_fontSize = f.pointSize();

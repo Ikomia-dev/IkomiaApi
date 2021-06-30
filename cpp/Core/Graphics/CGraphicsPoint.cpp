@@ -36,7 +36,7 @@ CProxyGraphicsPoint::CProxyGraphicsPoint(const CPointF &point)
     m_point = point;
 }
 
-CProxyGraphicsPoint::CProxyGraphicsPoint(const CPointF &point, const GraphicsPointProperty &property)
+CProxyGraphicsPoint::CProxyGraphicsPoint(const CPointF &point, const CGraphicsPointProperty &property)
     : CProxyGraphicsItem(GraphicsItem::POINT)
 {
     m_point = point;
@@ -49,7 +49,7 @@ void CProxyGraphicsPoint::setPoint(const CPointF &pt)
     m_point = pt;
 }
 
-void CProxyGraphicsPoint::setProperty(const GraphicsPointProperty &prop)
+void CProxyGraphicsPoint::setProperty(const CGraphicsPointProperty &prop)
 {
     m_property = prop;
 }
@@ -61,7 +61,7 @@ CPointF CProxyGraphicsPoint::getPoint() const
 
 QRectF CProxyGraphicsPoint::getBoundingRect() const
 {
-    GraphicsPointProperty prop;
+    CGraphicsPointProperty prop;
     if(!m_bUseGlobalContext)
         prop = m_property;
 
@@ -69,7 +69,7 @@ QRectF CProxyGraphicsPoint::getBoundingRect() const
     return QRectF(m_point.m_x - radius, m_point.m_y - radius, prop.m_size, prop.m_size);
 }
 
-GraphicsPointProperty CProxyGraphicsPoint::getProperty() const
+CGraphicsPointProperty CProxyGraphicsPoint::getProperty() const
 {
     return m_property;
 }
@@ -107,7 +107,7 @@ CGraphicsPoint::CGraphicsPoint(QGraphicsItem* pParent)
     setRect(-1, 1, 3, 3);
 }
 
-CGraphicsPoint::CGraphicsPoint(const QPointF &position, const GraphicsPointProperty &property, QGraphicsItem *pParent)
+CGraphicsPoint::CGraphicsPoint(const QPointF &position, const CGraphicsPointProperty &property, QGraphicsItem *pParent)
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(GraphicsItem::POINT)
 {
@@ -121,7 +121,7 @@ CGraphicsPoint::CGraphicsPoint(const QPointF &position, const GraphicsPointPrope
     setCategory(QString::fromStdString(property.m_category));
 }
 
-CGraphicsPoint::CGraphicsPoint(size_t id, const QPointF &position, const GraphicsPointProperty &property, QGraphicsItem *pParent)
+CGraphicsPoint::CGraphicsPoint(size_t id, const QPointF &position, const CGraphicsPointProperty &property, QGraphicsItem *pParent)
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(id, GraphicsItem::POINT)
 {
@@ -139,7 +139,7 @@ CGraphicsPoint::CGraphicsPoint(const GraphicsContextPtr &globalContext, const st
     : QGraphicsEllipseItem(pParent),
       CGraphicsItem(proxyItem->getId(), GraphicsItem::POINT)
 {
-    GraphicsPointProperty prop;
+    CGraphicsPointProperty prop;
     if(proxyItem->isUsedGlobalContext())
         prop = globalContext->getPointProperty();
     else
@@ -226,7 +226,7 @@ QByteArray CGraphicsPoint::getJsonData(CGraphicsJSON &jsonMgr) const
 ProxyGraphicsItemPtr CGraphicsPoint::createProxyGraphicsItem() const
 {
     QRectF rc = mapRectToScene(rect());
-    GraphicsPointProperty prop;
+    CGraphicsPointProperty prop;
     prop.m_size = rc.width();
     prop.m_penColor = Utils::Graphics::toCColor(pen().color());
     prop.m_category = getCategory().toStdString();
