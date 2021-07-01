@@ -162,8 +162,19 @@ class COcvCalcHist : public C2dImageTask
                 assert(valuesByChannels.size() == namesByChannels.size());
                 pOutput->clearData();
 
+                std::vector<std::string> channelNames;
+                if(imgSrc.channels() == 1)
+                    channelNames = {"Graylevel"};
+                else if(imgSrc.channels() == 3)
+                    channelNames = {"Red", "Green", "Blue"};
+                else
+                {
+                    for(int i=0; i<imgSrc.channels(); ++i)
+                        channelNames.push_back("Channel" + std::to_string(i+1));
+                }
+
                 for(size_t i=0; i<valuesByChannels.size(); ++i)
-                    pOutput->addValueList(valuesByChannels[i], namesByChannels[i]);
+                    pOutput->addValueList(valuesByChannels[i], channelNames[i], namesByChannels[i]);
 
                 pOutput->setOutputType(NumericOutputType::PLOT);
                 pOutput->setPlotType(PlotType::HISTOGRAM);
