@@ -15,7 +15,6 @@ def test_display_image():
     img = cv2.imread(img_path)
     io = dataprocess.CImageIO(core.IODataType.IMAGE, img)
     displayIO.display(io, label="Lena.png")
-    cv2.waitKey(0)
 
 
 def test_display_graphics():
@@ -42,16 +41,44 @@ def test_display_table():
     # initialize Ikomia registry
     reg = registry.IkomiaRegistry()
     # run ResNet classification
-    algo = reg.create_algorithm("YoloV5Predict")
+    algo = reg.create_algorithm("ResNet")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
     # display table output
-    displayIO.display(algo.getOutput(2), label="Inception classification")
+    displayIO.display(algo.getOutput(2), label="ResNet classification")
+
+
+def test_display_plot():
+    # load image
+    img_path = get_test_image_directory() + "/example_05.jpg"
+    img = cv2.imread(img_path)
+    # initialize Ikomia registry
+    reg = registry.IkomiaRegistry()
+    # run CalcHist
+    algo = reg.create_algorithm("CalcHist")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    # display plot output
+    feature_io = algo.getOutput(1)
+    displayIO.display(feature_io, label="CalcHist Histogram")
+    feature_io.setPlotType(dataprocess.PlotType.CURVE)
+    displayIO.display(feature_io, label="CalcHist Curves")
+    feature_io.setPlotType(dataprocess.PlotType.MULTIBAR)
+    displayIO.display(feature_io, label="CalcHist Multi-bar")
+    feature_io.setPlotType(dataprocess.PlotType.PIE)
+    displayIO.display(feature_io, label="CalcHist Pie chart")
+
+
+def test_display_task():
+    pass
 
 
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
-    #test_display_image()
-    #test_display_graphics()
-    test_display_table()
+    # test_display_image()
+    # test_display_graphics()
+    # test_display_table()
+    test_display_plot()
+    test_display_task()

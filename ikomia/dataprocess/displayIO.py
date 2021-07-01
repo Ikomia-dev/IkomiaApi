@@ -1,6 +1,5 @@
 import sys
 import logging
-import cv2
 import numpy as np
 from functools import singledispatch
 from ikomia import core, dataprocess
@@ -24,14 +23,13 @@ def display(obj, label="", **kwargs):
 
 @display.register
 def _(obj: dataprocess.CImageIO, label="", **kwargs):
-    img = obj.getImage()
-
-    if img is None:
-        logger.error("Image display error: image is empty.")
-    else:
-        cv2.imshow(label, img)
-
-    cv2.waitKey(0)
+    matplotlib.use("TkAgg")
+    fig, ax = plt.subplots(1, 1)
+    ax.set_title(label)
+    ax.imshow(obj.getImage())
+    ax.axis("off")
+    fig.tight_layout()
+    plt.show()
 
 
 @display.register
@@ -137,14 +135,24 @@ def _(obj: dataprocess.CGraphicsOutput, label="", **kwargs):
 @display.register
 def _(obj: dataprocess.CDblFeatureIO, label="", **kwargs):
     matplotlib.use("TkAgg")
-    fig, ax = plt.subplots(1, 1)
-    ax.set_title(label)
+    if "parent" in kwargs:
+        fig = kwargs["parent"]
+    else:
+        fig = None
+
+    labels = obj.getAllLabelList()
+    col_labels = obj.getAllHeaderLabels()
+    values = obj.getAllValueList()
     out_type = obj.getOutputType()
 
     if out_type == dataprocess.NumericOutputType.TABLE:
-        labels = obj.getAllLabelList()
-        col_labels = obj.getAllHeaderLabels()
-        values = obj.getAllValueList()
+        if fig is None:
+            fig, ax = plt.subplots(1, 1)
+        else:
+            ax = fig.subplots(1, 1)
+
+        ax.set_title(label)
+        cell_length_limit = 50
         rows_count = len(values[0])
         cols_count = len(values)
         np_values = np.asarray(values)
@@ -155,10 +163,112 @@ def _(obj: dataprocess.CDblFeatureIO, label="", **kwargs):
         else:
             row_labels = labels[0]
 
-        ax.set_axis_off()
-        ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels, cellLoc="center", loc="upper left")
-        plt.box(on=None)
-    elif out_type == dataprocess.NumericOutputType.PLOT:
-        pass
+        for i, label in enumerate(row_labels):
+            label = (label[:cell_length_limit] + '..') if len(label) > cell_length_limit else label
+            row_labels[i] = label
 
+        col_width = [1 / (cols_count + 1)] * cols_count
+        ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels, cellLoc="center", loc="upper right",
+                 colWidths=col_width)
+        ax.axis("off")
+
+    elif out_type == dataprocess.NumericOutputType.PLOT:
+        plot_type = obj.getPlotType()
+
+        # HISTOGRAM
+        if plot_type == dataprocess.PlotType.HISTOGRAM or plot_type == dataprocess.PlotType.BAR:
+            if fig is None:
+                fig, ax = plt.subplots(1, 1)
+            else:
+                ax = fig.subplots(1, 1)
+
+            has_x_values = len(labels) > 0
+
+            for i in range(len(values)):
+                if len(col_labels) == 0 or len(col_labels) != len(values):
+                    name = "serie" + str(i+1)
+                else:
+                    name = col_labels[i]
+
+                if not has_x_values:
+                    x = []
+                    for j in range(len(values[i])):
+                        x.append(j)
+
+                    ax.bar(x, values[i], label=name)
+                elif i >= len(labels):
+                    ax.bar(labels[0], values[i], label=name)
+                else:
+                    ax.bar(labels[i], values[i], label=name)
+            ax.legend()
+        # CURVE
+        elif plot_type == dataprocess.PlotType.CURVE:
+            if fig is None:
+                fig, ax = plt.subplots(1, 1)
+            else:
+                ax = fig.subplots(1, 1)
+
+            has_x_values = len(labels) > 0
+
+            for i in range(len(values)):
+                if len(col_labels) == 0 or len(col_labels) != len(values):
+                    name = "serie" + str(i + 1)
+                else:
+                    name = col_labels[i]
+
+                if not has_x_values:
+                    x = []
+                    for j in range(len(values[i])):
+                        x.append(j)
+
+                    ax.plot(x, values[i], label=name)
+                elif i >= len(labels):
+                    ax.plot(labels[0], values[i], label=name)
+                else:
+                    ax.plot(labels[i], values[i], label=name)
+            ax.legend()
+        # MULTI-BAR
+        elif plot_type == dataprocess.PlotType.MULTIBAR:
+            if fig is None:
+                fig, ax = plt.subplots(1, len(values))
+            else:
+                ax = fig.subplots(1, len(values))
+
+            has_x_values = len(labels) > 0
+
+            for i in range(len(values)):
+                if len(col_labels) == 0 or len(col_labels) != len(values):
+                    name = "serie" + str(i + 1)
+                else:
+                    name = col_labels[i]
+
+                ax[i].set_title(name)
+
+                if not has_x_values:
+                    x = []
+                    for j in range(len(values[i])):
+                        x.append(j)
+
+                    ax[i].bar(x, values[i])
+                elif i >= len(labels):
+                    ax[i].bar(labels[0], values[i])
+                else:
+                    ax[i].bar(labels[i], values[i])
+        # PIE CHART
+        elif plot_type == dataprocess.PlotType.PIE:
+            if fig is None:
+                fig, ax = plt.subplots(1, len(values))
+            else:
+                ax = fig.subplots(1, len(values))
+
+            has_labels = len(labels) > 0
+
+            for i in range(len(values)):
+                if not has_labels or i >= len(labels):
+                    ax[i].pie(values[i], shadow=True)
+                else:
+                    ax[i].pie(x=values[i], labels=labels[i], shadow=True)
+
+    fig.suptitle(label)
+    fig.tight_layout()
     plt.show()
