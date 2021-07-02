@@ -72,7 +72,18 @@ def test_display_plot():
 
 
 def test_display_task():
-    pass
+    # load image
+    img_path = get_test_image_directory() + "/example_05.jpg"
+    img = cv2.imread(img_path)
+    # initialize Ikomia registry
+    reg = registry.IkomiaRegistry()
+    # run MaskRCNN
+    algo = reg.create_algorithm("Mask RCNN")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    # display task I/O
+    displayIO.display(algo, "Mask RCNN")
 
 
 if __name__ == "__main__":
@@ -80,5 +91,5 @@ if __name__ == "__main__":
     # test_display_image()
     # test_display_graphics()
     # test_display_table()
-    test_display_plot()
+    #test_display_plot()
     test_display_task()
