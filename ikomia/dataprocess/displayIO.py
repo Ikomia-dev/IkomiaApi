@@ -9,6 +9,7 @@ import matplotlib.patches as patches
 from matplotlib.cbook import flatten
 
 logger = logging.getLogger(__name__)
+matplotlib.use("TkAgg")
 
 
 def _to_plot_color(color):
@@ -17,25 +18,45 @@ def _to_plot_color(color):
 
 
 @singledispatch
-def display(obj, label="", **kwargs):
+def display(obj, label="", fig=None, **kwargs):
     raise NotImplementedError("Unsupported type")
 
 
 @display.register
-def _(obj: dataprocess.CImageIO, label="", **kwargs):
+def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
+    if not obj.isDataAvailable:
+        return
+
     matplotlib.use("TkAgg")
-    fig, ax = plt.subplots(1, 1)
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        fig, ax = plt.subplots(1, 1)
+
     ax.set_title(label)
     ax.imshow(obj.getImage())
     ax.axis("off")
-    fig.tight_layout()
-    plt.show()
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
 
 
 @display.register
-def _(obj: dataprocess.CGraphicsOutput, label="", **kwargs):
+def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
+    if not obj.isDataAvailable:
+        return
+
     matplotlib.use("TkAgg")
-    fig, ax = plt.subplots(1, 1)
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        fig, ax = plt.subplots(1, 1)
+
     ax.set_title(label)
     items = obj.getItems()
     x_min = y_min = sys.maxsize
@@ -129,17 +150,23 @@ def _(obj: dataprocess.CGraphicsOutput, label="", **kwargs):
     ax.set_ylim(y_min, y_max)
     ax.invert_yaxis()
     plt.gca().set_aspect('equal', adjustable='box')
-    plt.show()
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
 
 
 @display.register
-def _(obj: dataprocess.CDblFeatureIO, label="", **kwargs):
-    matplotlib.use("TkAgg")
-    if "parent" in kwargs:
-        fig = kwargs["parent"]
-    else:
-        fig = None
+def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
+    if not obj.isDataAvailable:
+        return
 
+    if fig is None:
+        child = False
+    else:
+        child = True
+
+    matplotlib.use("TkAgg")
     labels = obj.getAllLabelList()
     col_labels = obj.getAllHeaderLabels()
     values = obj.getAllValueList()
@@ -270,5 +297,42 @@ def _(obj: dataprocess.CDblFeatureIO, label="", **kwargs):
                     ax[i].pie(x=values[i], labels=labels[i], shadow=True)
 
     fig.suptitle(label)
-    fig.tight_layout()
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
+
+
+@display.register
+def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
+    matplotlib.use("TkAgg")
+
+    # inputs
+    inputs = obj.getInputs()
+    in_fig = plt.figure(num=1, constrained_layout=True)
+    in_fig.suptitle(label + " inputs")
+    in_sub_figs = in_fig.subfigures(len(inputs), 1, wspace=0.07)
+
+    for i, task_input in enumerate(inputs):
+        try:
+            display(task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs)
+        except NotImplementedError:
+            logger.error("No display function available for input " + str(i))
+
+    # outputs
+    outputs = obj.getOutputs()
+    out_fig = plt.figure(num=2, constrained_layout=True)
+    out_fig.suptitle(label + " outputs")
+    out_sub_figs = out_fig.subfigures(len(outputs), 1, wspace=0.07)
+
+    for i, task_output in enumerate(outputs):
+        try:
+            display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
+        except NotImplementedError:
+            logger.error("No display function available for input " + str(i))
+
     plt.show()
+
+
+
+
