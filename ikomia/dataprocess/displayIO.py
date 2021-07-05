@@ -178,7 +178,6 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
         else:
             ax = fig.subplots(1, 1)
 
-        ax.set_title(label)
         cell_length_limit = 50
         rows_count = len(values[0])
         cols_count = len(values)
@@ -304,6 +303,41 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
 
 
 @display.register
+def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
+    if not obj.isDataAvailable:
+        return
+
+    matplotlib.use("TkAgg")
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        fig, ax = plt.subplots(1, 1)
+
+    measures = obj.getMeasures()
+    row_labels = list(range(len(measures)))
+    col_labels = []
+
+    # for blob_measures in measures:
+    #     for measure in blob_measures:
+    #         measure_info = measure.getMeasureInfo()
+    #         if measure_info.name not in col_labels:
+    #             col_labels.append(measure_info.name)
+    #
+    #
+    # ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels, cellLoc="center", loc="upper right",
+    #          colWidths=col_width)
+    ax.axis("off")
+
+    fig.suptitle(label)
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
+
+
+@display.register
 def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     matplotlib.use("TkAgg")
 
@@ -329,7 +363,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
         try:
             display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
         except NotImplementedError:
-            logger.error("No display function available for input " + str(i))
+            logger.error("No display function available for output " + str(i))
 
     plt.show()
 

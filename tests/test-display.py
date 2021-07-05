@@ -48,6 +48,14 @@ def test_display_table():
     # display table output
     displayIO.display(algo.getOutput(2), label="ResNet classification")
 
+    # run YoloV4 detection
+    algo = reg.create_algorithm("YoloV4")
+    input_img = algo.getInput(0)
+    input_img.setImage(img)
+    algo.run()
+    # display table output
+    displayIO.display(algo.getOutput(2), label="YoloV4 detection")
+
 
 def test_display_plot():
     # load image
@@ -90,6 +98,6 @@ if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
     # test_display_image()
     # test_display_graphics()
-    # test_display_table()
-    #test_display_plot()
-    test_display_task()
+    test_display_table()
+    # test_display_plot()
+    # test_display_task()
