@@ -641,4 +641,35 @@ constexpr auto _emitSetGraphicsCategoryDocString =
         "Args:\n"
         "   category (str): category name\n";
 
+//--------------------//
+//----- CMeasure -----//
+//--------------------//
+constexpr auto _measureDocString =
+        "Class to handle available measures that can be computed on blob object in image. "
+        "Here is the list of possible measures (:py:class:`~ikomia.core.pycore.MeasureId):` \n"
+        "   - Surface: `cv::contourArea <https://docs.opencv.org/4.5.2/d3/dc0/group__imgproc__shape.html#ga2c759ed9f497d4a618048a2f56dc97f1>`_\n"
+        "   - Perimeter: `cv::arcLength <https://docs.opencv.org/4.5.2/d3/dc0/group__imgproc__shape.html#ga8d26483c636be6b35c3ec6335798a47c>`_\n"
+        "   - Centroid: computed from moments or average on points coordinates if moments are not available `cv::Moments <https://docs.opencv.org/4.5.2/d8/d23/classcv_1_1Moments.html>`_\n"
+        "   - Bbox: `cv::boundingRect <https://docs.opencv.org/4.5.2/d3/dc0/group__imgproc__shape.html#ga103fcbda2f540f3ef1c042d6a9b35ac7>`_\n"
+        "   - Oriented bbox: `cv::minAreaRect <https://docs.opencv.org/4.5.2/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9>`_\n"
+        "   - Equivalent diameter: estimation based on blob surface\n"
+        "   - Elongation: computed from R. Mukundan and K.R. Ramakrishnan. Moment Functions in Image Analysis –Theory and Applications. World Scientific, 1998\n"
+        "   - Circularity: computed from surface and perimeter -> circularity = (4*PI*surface) / (perimeter²)\n"
+        "   - Solidity: computed from the convex hull -> solidity = surface / hullSurface\n";
+
+constexpr auto _ctor1MeasureDocString =
+        "Construct a measure with the given identifier.\n\n"
+        "Args:\n"
+        "   id: :py:class:`~ikomia.core.pycore.MeasureId";
+
+constexpr auto _getAvailableMeasuresDocString =
+        "Get available measures (static method).\n"
+        "Returns:"
+        "   list of CMeasure\n";
+
+constexpr auto _getNameDocString =
+        "Get measure name from its identifier (static method).\n"
+        "Returns:"
+        "   measure name (str)\n";
+
 #endif

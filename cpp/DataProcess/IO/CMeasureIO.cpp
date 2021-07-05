@@ -28,7 +28,7 @@ CObjectMeasure::CObjectMeasure()
 {
 }
 
-CObjectMeasure::CObjectMeasure(CMeasure measure, const double &value, size_t graphicsId, const std::string& label)
+CObjectMeasure::CObjectMeasure(const CMeasure &measure, double value, size_t graphicsId, const std::string& label)
 {
     m_measure = measure;
     m_values.push_back(value);
@@ -36,12 +36,35 @@ CObjectMeasure::CObjectMeasure(CMeasure measure, const double &value, size_t gra
     m_label = label;
 }
 
-CObjectMeasure::CObjectMeasure(CMeasure measure, std::initializer_list<double> values, size_t graphicsId, const std::string &label)
+CObjectMeasure::CObjectMeasure(const CMeasure &measure, const std::vector<double> &values, size_t graphicsId, const std::string &label)
+{
+    m_measure = measure;
+    m_values = values;
+    m_graphicsId = graphicsId;
+    m_label = label;
+}
+
+CObjectMeasure::CObjectMeasure(const CMeasure &measure, std::initializer_list<double> values, size_t graphicsId, const std::string &label)
 {
     m_measure = measure;
     m_values.insert(m_values.end(), values);
     m_graphicsId = graphicsId;
     m_label = label;
+}
+
+CMeasure CObjectMeasure::getMeasureInfo() const
+{
+    return m_measure;
+}
+
+std::vector<double> CObjectMeasure::getValues() const
+{
+    return m_values;
+}
+
+void CObjectMeasure::setValues(const std::vector<double> &values)
+{
+    m_values = values;
 }
 
 //-----------------------------------//
@@ -143,7 +166,7 @@ std::set<std::string> CMeasureIO::getMeasuresNames() const
     {
         //Iterate throw object measures (ie columns)
         for(size_t j=0; j<m_measures[i].size(); ++j)
-            names.insert(m_measures[i][j].m_measure.getName());
+            names.insert(m_measures[i][j].m_measure.m_name);
     }
     return names;
 }
@@ -180,7 +203,7 @@ void CMeasureIO::saveCSV(const std::string &path) const
                 if(k != measure.m_values.size() - 1)
                     strValues += "-";
             }
-            mapNameValues.insert(std::make_pair(m_measures[i][j].m_measure.getName(), strValues));
+            mapNameValues.insert(std::make_pair(m_measures[i][j].m_measure.m_name, strValues));
         }
 
         for(auto it=names.begin(); it!=names.end(); ++it)

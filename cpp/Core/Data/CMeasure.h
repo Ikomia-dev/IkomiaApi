@@ -53,7 +53,6 @@ class CORESHARED_EXPORT CMeasure
 
         static std::vector<CMeasure>    getAvailableMeasures();
         static std::string              getName(int id);
-        std::string                     getName() const;
 
     public:
 

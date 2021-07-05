@@ -28,6 +28,7 @@
 #include "CWorkflowTaskWidgetWrap.h"
 #include "CTaskIOFactoryWrap.h"
 #include "Data/CvMatNumpyArrayConverter.h"
+#include "Data/CMeasure.h"
 #include "CGraphicsItemWrap.h"
 #include "Graphics/CGraphicsComplexPolygon.h"
 #include "Graphics/CGraphicsEllipse.h"
@@ -94,6 +95,7 @@ BOOST_PYTHON_MODULE(pycore)
     registerStdVector<std::vector<CPoint<float>>>();
     registerStdVector<ProxyGraphicsItemPtr>();
     registerStdVector<std::shared_ptr<CWorkflowTaskIO>>();
+    registerStdVector<CMeasure>();
 
     //--------------------//
     //----- Graphics -----//
@@ -419,5 +421,32 @@ BOOST_PYTHON_MODULE(pycore)
         .def("emitSendProcessAction", &CWorkflowTaskWidgetWrap::emitSendProcessAction, _emitSendProcessActionDocString, args("self", "action"))
         .def("emitSetGraphicsTool", &CWorkflowTaskWidgetWrap::emitSetGraphicsTool, _emitSetGraphicsToolDocString, args("self", "tool"))
         .def("emitSetGraphicsCategory", &CWorkflowTaskWidgetWrap::emitSetGraphicsCategory, _emitSetGraphicsCategoryDocString, args("self", "category"))
+    ;
+
+    //--------------------//
+    //----- CMeasure -----//
+    //--------------------//
+    enum_<CMeasure::Id>("MeasureId", "Enum - List of available measures")
+        .value("SURFACE", CMeasure::Id::SURFACE)
+        .value("PERIMETER", CMeasure::Id::PERIMETER)
+        .value("CENTROID", CMeasure::Id::CENTROID)
+        .value("BBOX", CMeasure::Id::BBOX)
+        .value("ORIENTED_BBOX", CMeasure::Id::ORIENTED_BBOX)
+        .value("EQUIVALENT_DIAMETER", CMeasure::Id::EQUIVALENT_DIAMETER)
+        .value("ELONGATION", CMeasure::Id::ELONGATION)
+        .value("CIRCULARITY", CMeasure::Id::CIRCULARITY)
+        .value("SOLIDITY", CMeasure::Id::SOLIDITY)
+        .value("CUSTOM", CMeasure::Id::CUSTOM)
+    ;
+
+    class_<CMeasure>("CMeasure", _measureDocString)
+        .def(init<>("Default constructor"))
+        .def(init<int>(_ctor1MeasureDocString))
+        .def("getAvailableMeasures", &CMeasure::getAvailableMeasures, _getAvailableMeasuresDocString)
+        .staticmethod("getAvailableMeasures")
+        .def("getName", &CMeasure::getName, _getNameDocString, args("id"))
+        .staticmethod("getName")
+        .def_readwrite("id", &CMeasure::m_id, "Measure identifier")
+        .def_readwrite("name", &CMeasure::m_name, "Measure name")
     ;
 }

@@ -124,6 +124,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     registerStdVector<std::vector<std::string>>();
     registerStdVector<std::vector<double>>();
     registerStdVector<IODataType>();
+    registerStdVector<CObjectMeasure>();
+    registerStdVector<std::vector<CObjectMeasure>>();
 
     //---------------------//
     //----- CTaskInfo -----//
@@ -176,6 +178,33 @@ BOOST_PYTHON_MODULE(pydataprocess)
     class_<CPluginProcessInterfaceWrap, boost::noncopyable>("CPluginProcessInterface", _pluginInterfaceDocString)
         .def("getProcessFactory", pure_virtual(&CPluginProcessInterface::getProcessFactory), _getProcessFactoryDocString, args("self"))
         .def("getWidgetFactory", pure_virtual(&CPluginProcessInterface::getWidgetFactory), _getWidgetFactoryDocString, args("self"))
+    ;
+
+    //--------------------------//
+    //----- CObjectMeasure -----//
+    //--------------------------//
+    class_<CObjectMeasure>("CObjectMeasure", _objectMeasureDocString)
+        .def(init<>("Default constructor"))
+        .def(init<const CMeasure&, double, size_t, const std::string&>(_ctor1ObjMeasureDocString, args("self", "measure", "value", "graphicsId", "label")))
+        .def(init<const CMeasure&, const std::vector<double>&, size_t, const std::string&>(_ctor2ObjMeasureDocString))
+        .def("getMeasureInfo", &CObjectMeasure::getMeasureInfo, _getMeasureInfoDocString, args("self"))
+        .add_property("values", &CObjectMeasure::getValues, &CObjectMeasure::setValues, "Values of the measure")
+        .def_readwrite("graphicsId", &CObjectMeasure::m_graphicsId, "Identifier of the associated graphics item")
+        .def_readwrite("label", &CObjectMeasure::m_label, "Label of the measure")
+    ;
+
+    //----------------------//
+    //----- CMeasureIO -----//
+    //----------------------//
+    class_<CMeasureIO, bases<CWorkflowTaskIO>, std::shared_ptr<CMeasureIO>>("CMeasureIO", _measureIODocString)
+        .def(init<>("Default constructor"))
+        .def(init<const CMeasureIO&>("Copy constructor"))
+        .def("setObjectMeasure", &CMeasureIO::setObjectMeasure, _setObjMeasureDocString, args("self", "index", "measure"))
+        .def("getMeasures", &CMeasureIO::getMeasures, _getMeasuresDocString, args("self"))
+        .def("isDataAvailable", &CMeasureIO::isDataAvailable, _isMeasureDataAvailableDocString, args("self"))
+        .def("addObjectMeasure", &CMeasureIO::addObjectMeasure, _addObjMeasureDocString, args("self", "measure"))
+        .def("addObjectMeasures", &CMeasureIO::addObjectMeasures, _addObjMeasuresDocString, args("self", "measures"))
+        .def("clearData", &CMeasureIO::clearData, _clearDataDerivedDocString, args("self"))
     ;
 
     //--------------------------//

@@ -109,6 +109,72 @@ constexpr auto _getWidgetFactoryDocString =
         "Returns:\n"
         "   factory: :py:class:`CWidgetFactory` based object\n";
 
+//--------------------------//
+//----- CObjectMeasure -----//
+//--------------------------//
+constexpr auto _objectMeasureDocString =
+        "Store values of a given measure computed on a single blob of an image. "
+        "Available measures are listed here: :py:class:`~ikomia.core.pycore.MeasureId. "
+        "It can also maps this measure with the associated graphics item (by its identifier). "
+        "Store grahics item in a :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput` object "
+        "is the classical way to handle graphics items.\n";
+
+constexpr auto _ctor1ObjMeasureDocString =
+        "Construct a CObjectMeasure instance with a single value.\n"
+        "Args:\n"
+        "   measure (:py:class:`~ikomia.core.pycore.CMeasure`): basic information about the computed measure.\n\n"
+        "   value (double): value of the measure\n\n"
+        "   graphicsId (int): graphics item identifier, -1 if no item is associated\n\n"
+        "   label (str)\n";
+
+constexpr auto _ctor2ObjMeasureDocString =
+        "Construct a CObjectMeasure instance with multiple values.\n"
+        "Args:\n"
+        "   measure (:py:class:`~ikomia.core.pycore.CMeasure`): basic information about the computed measure.\n\n"
+        "   values (list of double): values of the measure (example Bbox needs 4 values)\n\n"
+        "   graphicsId (int): graphics item identifier, -1 if no item is associated\n\n"
+        "   label (str)\n";
+
+constexpr auto _getMeasureInfoDocString =
+        "Get measure information (identifier + name). See :py:class:`~ikomia.core.pycore.CMeasure`.\n";
+
+//----------------------//
+//----- CMeasureIO -----//
+//----------------------//
+constexpr auto _measureIODocString =
+        "Define input or output for a task dedicated to manage blob measures (ie connected components). "
+        "It is possible to compute and store several measures for a single blob. A CMeasureIO instance "
+        "stores a list of measures for each blob of an image, so you have a list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure` list. "
+        "Please note that it is possible to map each blob with its associated graphics item stored in a :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput` instance. "
+        "You just need to pass the graphics item identifier to the object measure\n. "
+        "Blob measures can also be handled by :py:class:`~ikomia.dataprocess.pycdataprocess.CDblFeatureIO`. "
+        "Although CDblFeatureIO is more generic, it can't map measure values with graphics item, which can be useful "
+        "to give visual information from object measures to users.\n";
+
+constexpr auto _setObjMeasureDocString =
+        "Set measure for the blob specified by the given index.\n"
+        "Args:\n"
+        "   index (int): zeo-based index in the blob list\n\n"
+        "   measure (:py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+
+constexpr auto _getMeasuresDocString =
+        "Get measures for all blobs.\n"
+        "Returns:\n"
+        "   measures (list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure` list)\n";
+
+constexpr auto _isMeasureDataAvailableDocString =
+        "Return True if there is at least one measure for one blob, False otherwise.\n";
+
+constexpr auto _addObjMeasureDocString =
+        "Add a new blob measure. Use this method if only one measure is computed for a blob.\n"
+        "Args:\n"
+        "   measure (:py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+
+constexpr auto _addObjMeasuresDocString =
+        "Add a new list of measures for a blob.\n"
+        "Args:\n"
+        "measures (list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+
 //----------------------//
 //----- CFeatureIO -----//
 //----------------------//

@@ -34,6 +34,7 @@ CMeasure::CMeasure()
 CMeasure::CMeasure(int id)
 {
     m_id = id;
+    m_name = getName(id);
 }
 
 CMeasure::CMeasure(int id, const std::string &name)
@@ -96,9 +97,4 @@ std::string CMeasure::getName(int id)
         case Id::CUSTOM: name = QObject::tr("Custom measure").toStdString(); break;
     }
     return name;
-}
-
-std::string CMeasure::getName() const
-{
-    return getName(m_id);
 }

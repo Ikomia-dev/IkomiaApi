@@ -31,8 +31,14 @@ class DATAPROCESSSHARED_EXPORT CObjectMeasure
     public:
 
         CObjectMeasure();
-        CObjectMeasure(CMeasure measure, const double& value, size_t graphicsId, const std::string& label);
-        CObjectMeasure(CMeasure measure, std::initializer_list<double> values, size_t graphicsId, const std::string& label);
+        CObjectMeasure(const CMeasure& measure, double value, size_t graphicsId, const std::string& label);
+        CObjectMeasure(const CMeasure& measure, const std::vector<double>& values, size_t graphicsId, const std::string& label);
+        CObjectMeasure(const CMeasure& measure, std::initializer_list<double> values, size_t graphicsId, const std::string& label);
+
+        CMeasure            getMeasureInfo() const;
+        std::vector<double> getValues() const;
+
+        void                setValues(const std::vector<double>& values);
 
     public:
 
