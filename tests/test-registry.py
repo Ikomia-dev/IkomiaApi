@@ -1,20 +1,10 @@
-import os
 import logging
 import ikomia
 from ikomia.dataprocess import registry
+from ikomia.utils import tests
 import cv2
 
 logger = logging.getLogger(__name__)
-
-
-def get_test_image_directory():
-    test_dir = os.path.dirname(os.path.abspath(__file__))
-    return test_dir + "/../cpp/UnitTests/Data/Images"
-
-
-def get_test_video_directory():
-    test_dir = os.path.dirname(os.path.abspath(__file__))
-    return test_dir + "/../cpp/UnitTests/Data/Videos"
 
 
 def test_get_local_algorithms():
@@ -98,7 +88,7 @@ def test_execution():
     reg = registry.IkomiaRegistry()
 
     # Load image
-    img_path = get_test_image_directory() + "/Lena.png"
+    img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
     cv2.imshow("Original", img)
 
@@ -141,7 +131,7 @@ def test_execution():
     cv2.imshow("scikit_threshold", img_out)
 
     # Marketplace YoloV5Predict (Python)
-    img_path = get_test_image_directory() + "/example_05.jpg"
+    img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     algo = reg.create_algorithm("YoloV5Predict")
     input_img = algo.getInput(0)
@@ -156,10 +146,10 @@ def test_execution():
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
     test_get_local_algorithms()
-    # test_get_online_algorithms()
-    # test_download_plugin()
-    # test_install_plugin()
-    # test_local_instantiation()
-    # test_instantiation()
-    # test_update()
+    test_get_online_algorithms()
+    test_download_plugin()
+    test_install_plugin()
+    test_local_instantiation()
+    test_instantiation()
+    test_update()
     test_execution()
