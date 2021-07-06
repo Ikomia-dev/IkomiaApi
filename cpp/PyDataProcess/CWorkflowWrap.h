@@ -36,6 +36,9 @@ class CWorkflowWrap: public CWorkflow, public wrapper<CWorkflow>
 
         CWorkflowWrap(const CWorkflow &workflow);
 
+        std::vector<std::intptr_t>  getTaskIDs();
+        WorkflowTaskPtr             getTask(std::intptr_t id);
+
         void    run() override;
         void    default_run();
 };

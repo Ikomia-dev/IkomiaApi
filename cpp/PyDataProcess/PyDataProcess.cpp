@@ -622,6 +622,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //---------------------//
     //----- CWorkflow -----//
     //---------------------//
+    registerStdVector<std::intptr_t>();
+
     void (CWorkflowWrap::*addInputRef)(const WorkflowTaskIOPtr&) = &CWorkflowWrap::addInput;
 
     class_<CWorkflowWrap, bases<CWorkflowTask>, std::shared_ptr<CWorkflowWrap>>("CWorkflow", _workflowDocString)
@@ -634,7 +636,10 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("setOutputFolder", &CWorkflowWrap::setOutputFolder, _wfSetOutputFolderDocString, args("self", "path"))
         .def("setAutoSave", &CWorkflowWrap::setAutoSave, _wfSetAutoSaveDocString, args("self", "enable"))
         .def("getTaskCount", &CWorkflowWrap::getTaskCount, _wfGetTaskCountDocString, args("self"))
+        .def("getTaskIDs", &CWorkflowWrap::getTaskIDs)
+        .def("getTask", &CWorkflowWrap::getTask)
         .def("getRootTargetTypes", &CWorkflowWrap::getRootTargetTypes, _wfGetRootTargetTypesDocString, args("self"))
+        .def("getTotalElapsedTime", &CWorkflowWrap::getTotalElapsedTime, _wfGetTotalElapsedTimeDocString, args("self"))
         .def("addInput", addInputRef, _wfAddInputDocString, args("self", "input"))
         .def("clearInputs", &CWorkflowWrap::clearInputs, _wfClearInputsDocString, args("self"))
         .def("run", &CWorkflowWrap::run, &CWorkflowWrap::default_run, _wfRunDocString, args("self"))

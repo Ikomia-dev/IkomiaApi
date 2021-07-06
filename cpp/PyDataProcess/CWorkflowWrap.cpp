@@ -17,6 +17,23 @@ CWorkflowWrap::CWorkflowWrap(const CWorkflow &workflow): CWorkflow(workflow)
 {
 }
 
+std::vector<std::intptr_t> CWorkflowWrap::getTaskIDs()
+{
+    std::vector<std::intptr_t> nodes;
+    auto vertices = getVertices();
+
+    for(auto it=vertices.first; it!=vertices.second; ++it)
+        nodes.push_back(reinterpret_cast<std::intptr_t>(*it));
+
+    return nodes;
+}
+
+WorkflowTaskPtr CWorkflowWrap::getTask(intptr_t id)
+{
+    WorkflowVertex vertex = reinterpret_cast<WorkflowVertex>(id);
+    return CWorkflow::getTask(vertex);
+}
+
 void CWorkflowWrap::run()
 {
     CPyEnsureGIL gil;

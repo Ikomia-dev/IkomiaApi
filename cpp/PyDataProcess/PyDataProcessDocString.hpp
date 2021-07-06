@@ -1302,6 +1302,9 @@ constexpr auto _wfGetTaskCountDocString =
 constexpr auto _wfGetRootTargetTypesDocString =
         "";
 
+constexpr auto _wfGetTotalElapsedTimeDocString =
+        "";
+
 constexpr auto _wfAddInputDocString =
         "";
 
