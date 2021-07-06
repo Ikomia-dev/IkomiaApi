@@ -1,4 +1,5 @@
 import sys
+import os
 import logging
 import numpy as np
 from functools import singledispatch
@@ -397,5 +398,12 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     plt.show()
 
 
-
+@display.register
+def _(obj: dataprocess.CWorkflow, label="", **kwargs):
+    from graphviz import Source
+    dot_file_name = obj.name + ".dot"
+    path = os.path.join(core.config.main_cfg["data"]["path"], dot_file_name)
+    obj.exportGraphviz(path)
+    s = Source.from_file(path)
+    s.view()
 
