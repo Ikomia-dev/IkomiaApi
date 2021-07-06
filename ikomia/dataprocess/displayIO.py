@@ -194,8 +194,10 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
             row_labels[i] = label
 
         col_width = [1 / (cols_count + 1)] * cols_count
-        ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels, cellLoc="center", loc="upper right",
-                 colWidths=col_width)
+        table = ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels,
+                         cellLoc="left", loc="upper right", colWidths=col_width)
+        table.auto_set_font_size(False)
+        table.set_fontsize(10)
         ax.axis("off")
 
     elif out_type == dataprocess.NumericOutputType.PLOT:
@@ -317,19 +319,46 @@ def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
 
     measures = obj.getMeasures()
     row_labels = list(range(len(measures)))
-    col_labels = []
+    col_labels = ["Graphics ID", "Label"]
+    max_value_length = 9
 
-    # for blob_measures in measures:
-    #     for measure in blob_measures:
-    #         measure_info = measure.getMeasureInfo()
-    #         if measure_info.name not in col_labels:
-    #             col_labels.append(measure_info.name)
-    #
-    #
-    # ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels, cellLoc="center", loc="upper right",
-    #          colWidths=col_width)
+    for blob_measures in measures:
+        for measure in blob_measures:
+            measure_info = measure.getMeasureInfo()
+
+            if measure_info.name not in col_labels:
+                col_labels.append(measure_info.name)
+
+    cols_count = len(col_labels)
+    values = [[None for _ in range(cols_count)] for _ in range(len(measures))]
+
+    for i, blob_measures in enumerate(measures):
+        for measure in blob_measures:
+            measure_info = measure.getMeasureInfo()
+            values[i][0] = str(measure.graphicsId)
+            values[i][1] = str(measure.label)
+
+            try:
+                j = col_labels.index(measure_info.name)
+                if len(measure.values) == 1:
+                    str_val = str(measure.values[0])
+                    values[i][j] = (str_val[:max_value_length] + '...') if len(str_val) > max_value_length else str_val
+                else:
+                    measure_val = ""
+                    for value in measure.values:
+                        str_val = str(value)
+                        str_val = (str_val[:max_value_length] + '...') if len(str_val) > max_value_length else str_val
+                        measure_val += str_val + ";"
+                    values[i][j] = measure_val
+            except ValueError:
+                continue
+
+    col_width = [1 / (cols_count + 1)] * cols_count
+    table = ax.table(cellText=values, colLabels=col_labels, rowLabels=row_labels,
+                     cellLoc="left", loc="upper left", colWidths=col_width)
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
     ax.axis("off")
-
     fig.suptitle(label)
 
     if not child:
