@@ -34,6 +34,12 @@ WorkflowTaskPtr CWorkflowWrap::getTask(intptr_t id)
     return CWorkflow::getTask(vertex);
 }
 
+double CWorkflowWrap::getElapsedTimeTo(intptr_t id)
+{
+    WorkflowVertex vertex = reinterpret_cast<WorkflowVertex>(id);
+    return CWorkflow::getElapsedTimeTo(vertex);
+}
+
 void CWorkflowWrap::run()
 {
     CPyEnsureGIL gil;

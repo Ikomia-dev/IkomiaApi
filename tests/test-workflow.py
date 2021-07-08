@@ -126,7 +126,7 @@ def test_time_metrics(ik_registry):
     ids = wf.getTaskIDs()
     for task_id in ids:
         task = wf.getTask(task_id)
-        logger.info(task.name + ":" + str(task.getElapsedTime()))
+        logger.info(task.name + ":" + str(task.getElapsedTime()) + " - From start: " + str(wf.getElapsedTimeTo(task_id)))
 
 
 if __name__ == "__main__":

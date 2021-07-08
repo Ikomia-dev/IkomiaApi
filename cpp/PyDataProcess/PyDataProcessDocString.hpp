@@ -429,7 +429,7 @@ constexpr auto _graphicsInputDocString =
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _setItemsDocString =
-        "Fill input with the given graphics item list.\n\n"
+        "Fill input/output with the given graphics item list.\n\n"
         "Args:\n"
         "   items (list): list of :py:class:`~ikomia.core.pycore.CGraphicsItem` based objects\n";
 
@@ -1299,10 +1299,19 @@ constexpr auto _wfSetAutoSaveDocString =
 constexpr auto _wfGetTaskCountDocString =
         "";
 
+constexpr auto _wfGetTaskIDsDocString =
+        "";
+
+constexpr auto _wfGetTaskDocString =
+        "";
+
 constexpr auto _wfGetRootTargetTypesDocString =
         "";
 
 constexpr auto _wfGetTotalElapsedTimeDocString =
+        "";
+
+constexpr auto _wfGetElapsedTimeToDocString =
         "";
 
 constexpr auto _wfAddInputDocString =
