@@ -94,6 +94,11 @@ void CGraphicsOutput::setImageIndex(int index)
     m_imageIndex = index;
 }
 
+void CGraphicsOutput::setItems(const std::vector<ProxyGraphicsItemPtr> &items)
+{
+    m_items = items;
+}
+
 int CGraphicsOutput::getImageIndex() const
 {
     return m_imageIndex;

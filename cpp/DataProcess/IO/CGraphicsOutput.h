@@ -54,6 +54,7 @@ class DATAPROCESSSHARED_EXPORT CGraphicsOutput : public CWorkflowTaskIO
 
         void                        setNewLayer(const std::string name);
         void                        setImageIndex(int index);
+        void                        setItems(const std::vector<ProxyGraphicsItemPtr>& items);
 
         int                                 getImageIndex() const;
         std::vector<ProxyGraphicsItemPtr>   getItems() const;
