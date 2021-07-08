@@ -21,6 +21,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             dataprocess.CWorkflow.__init__(self, name, registry)
 
+        self.registry = registry
         output_folder = config.main_cfg["workflow"]["path"]
         self.setOutputFolder(output_folder)
 
@@ -50,6 +51,28 @@ class Workflow(dataprocess.CWorkflow):
             self.addInput(dir_input)
         else:
             self.setInput(dir_input, index, True)
+
+    def get_time_metrics(self):
+        metrics = {"total_time": self.getTotalElapsedTime()}
+        ids = self.getTaskIDs()
+
+        for task_id in ids:
+            task = self.getTask(task_id)
+            task_metrics = {"task_time": task.getElapsedTime(), "time_from_start": self.getElapsedTimeTo(task_id)}
+            metrics[task.name] = task_metrics
+
+        return metrics
+
+    def add_task(self, name, param=None):
+        algo = self.registry.create_algorithm(name, param)
+        return self.addTask(algo)
+
+    def connect_tasks(self, src, target, edges=None):
+        if edges is None:
+            self.connect(src, target, -1, -1)
+        else:
+            for edge in edges:
+                self.connect(src, target, edge[0], edge[1])
 
     def run(self):
         self.updateStartTime()

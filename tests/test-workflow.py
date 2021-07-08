@@ -1,7 +1,7 @@
 import logging
 import os
 import ikomia
-from ikomia.dataprocess import registry, workflow
+from ikomia.dataprocess import registry, workflow, displayIO
 from ikomia.core import config
 from ikomia.utils import tests
 import numpy as np
@@ -114,6 +114,52 @@ def test_graph_structure(ik_registry):
         logger.info("Id:" + str(task_id) + " Name:" + task.name)
 
 
+def test_graph_build(ik_registry):
+    wf = workflow.Workflow("FromScratch", ik_registry)
+
+    # branch with auto-connection
+    box_filter_id = wf.add_task("Box Filter")
+    wf.connect_tasks(wf.getRootID(), box_filter_id)
+
+    clahe_id = wf.add_task("CLAHE")
+    wf.connect_tasks(box_filter_id, clahe_id)
+
+    dtfilterenhance_id = wf.add_task("DTFilterEnhance")
+    wf.connect_tasks(clahe_id, dtfilterenhance_id)
+
+    lsc_id = wf.add_task("SuperpixelLSC")
+    wf.connect_tasks(dtfilterenhance_id, lsc_id)
+
+    # branch with manual connection
+    bilateral_id = wf.add_task("Bilateral Filter")
+    wf.connect_tasks(wf.getRootID(), bilateral_id, [(0, 0)])
+
+    equalize_id = wf.add_task("Equalize histogram")
+    wf.connect_tasks(bilateral_id, equalize_id, [(0, 0)])
+
+    dtfilter_id = wf.add_task("DTFilter")
+    wf.connect_tasks(equalize_id, dtfilter_id, [(0, 0), (0, 1)])
+
+    convert_id = wf.add_task("ConvertTo")
+    wf.connect_tasks(dtfilter_id, convert_id, [(0, 0)])
+
+    seeds_id = wf.add_task("SuperpixelSEEDS")
+    wf.connect_tasks(convert_id, seeds_id, [(0, 0)])
+
+    # visualization
+    displayIO.display(wf, "Manually built workflow")
+
+    # run
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    wf.set_image_input(path=img_path)
+    wf.run()
+
+    # check results
+    leaf_tasks = wf.getFinalTasks()
+    for task in leaf_tasks:
+        displayIO.display(task, task.name)
+
+
 def test_time_metrics(ik_registry):
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
@@ -123,10 +169,14 @@ def test_time_metrics(ik_registry):
     wf.run()
     logger.info("Workflow running time (ms): " + str(wf.getTotalElapsedTime()))
 
+    # manual retrieval
     ids = wf.getTaskIDs()
     for task_id in ids:
         task = wf.getTask(task_id)
         logger.info(task.name + ":" + str(task.getElapsedTime()) + " - From start: " + str(wf.getElapsedTimeTo(task_id)))
+
+    # tool function
+    logger.info(wf.get_time_metrics())
 
 
 if __name__ == "__main__":
@@ -140,5 +190,6 @@ if __name__ == "__main__":
     # test_resnet_train(reg, "/home/ludo/Images/Datasets/hymenoptera_data")
     # test_yolov5_train(reg)
     # test_export_graphviz(reg)
-    test_graph_structure(reg)
+    # test_graph_structure(reg)
     test_time_metrics(reg)
+    # test_graph_build(reg)
