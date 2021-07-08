@@ -17,6 +17,11 @@ CWorkflowWrap::CWorkflowWrap(const CWorkflow &workflow): CWorkflow(workflow)
 {
 }
 
+intptr_t CWorkflowWrap::getRootID()
+{
+    return reinterpret_cast<std::intptr_t>(getRootId());
+}
+
 std::vector<std::intptr_t> CWorkflowWrap::getTaskIDs()
 {
     std::vector<std::intptr_t> nodes;
@@ -38,6 +43,28 @@ double CWorkflowWrap::getElapsedTimeTo(intptr_t id)
 {
     WorkflowVertex vertex = reinterpret_cast<WorkflowVertex>(id);
     return CWorkflow::getElapsedTimeTo(vertex);
+}
+
+intptr_t CWorkflowWrap::addTaskWrap(const WorkflowTaskPtr &taskPtr)
+{
+    auto vertex = addTask(taskPtr);
+    return reinterpret_cast<std::intptr_t>(vertex);
+}
+
+void CWorkflowWrap::connectWrap(const std::intptr_t &src, const std::intptr_t &target, int srcIndex, int targetIndex)
+{
+    auto srcVertex = reinterpret_cast<WorkflowVertex>(src);
+    auto targetVertex = reinterpret_cast<WorkflowVertex>(target);
+
+    if(srcIndex == -1 && targetIndex == -1)
+    {
+        // Auto connection
+        connect(srcVertex, targetVertex);
+    }
+    else
+    {
+        connect(srcVertex, srcIndex, targetVertex, targetIndex);
+    }
 }
 
 void CWorkflowWrap::run()

@@ -900,6 +900,12 @@ std::vector<WorkflowEdge> CWorkflow::connect(const WorkflowVertex &src, const Wo
         WorkflowTaskPtr taskPtr = getTask(source);
         if(source != m_root || taskPtr->getInputCount() > 0)
             throw CException(CoreExCode::INVALID_CONNECTION, QObject::tr("No valid connection available, please check input/output data types.").toStdString(), __func__, __FILE__, __LINE__);
+        else
+        {
+            // Connect to root port 0
+            auto connection = connect(source, 0, target, 0);
+            connections.push_back(connection);
+        }
     }
     return connections;
 }

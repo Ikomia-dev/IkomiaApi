@@ -36,12 +36,17 @@ class CWorkflowWrap: public CWorkflow, public wrapper<CWorkflow>
 
         CWorkflowWrap(const CWorkflow &workflow);
 
+        std::intptr_t               getRootID();
         std::vector<std::intptr_t>  getTaskIDs();
         WorkflowTaskPtr             getTask(std::intptr_t id);
         double                      getElapsedTimeTo(std::intptr_t id);
 
-        void    run() override;
-        void    default_run();
+        std::intptr_t               addTaskWrap(const WorkflowTaskPtr &taskPtr);
+
+        void                        connectWrap(const std::intptr_t& src, const std::intptr_t& target, int srcIndex, int targetIndex);
+
+        void                        run() override;
+        void                        default_run();
 };
 
 #endif // CWORKFLOWWRAP_H

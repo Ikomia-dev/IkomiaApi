@@ -1299,10 +1299,16 @@ constexpr auto _wfSetAutoSaveDocString =
 constexpr auto _wfGetTaskCountDocString =
         "";
 
+constexpr auto _wfGetRootIDDocString =
+        "";
+
 constexpr auto _wfGetTaskIDsDocString =
         "";
 
 constexpr auto _wfGetTaskDocString =
+        "";
+
+constexpr auto _wfGetFinalTasks =
         "";
 
 constexpr auto _wfGetRootTargetTypesDocString =
@@ -1315,6 +1321,12 @@ constexpr auto _wfGetElapsedTimeToDocString =
         "";
 
 constexpr auto _wfAddInputDocString =
+        "";
+
+constexpr auto _wfAddTaskDocString =
+        "";
+
+constexpr auto _wfConnectDocString =
         "";
 
 constexpr auto _wfClearInputsDocString =

@@ -95,6 +95,7 @@ BOOST_PYTHON_MODULE(pycore)
     registerStdVector<std::vector<CPoint<float>>>();
     registerStdVector<ProxyGraphicsItemPtr>();
     registerStdVector<std::shared_ptr<CWorkflowTaskIO>>();
+    registerStdVector<std::shared_ptr<CWorkflowTask>>();
     registerStdVector<CMeasure>();
 
     //--------------------//
