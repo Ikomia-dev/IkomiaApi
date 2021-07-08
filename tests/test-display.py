@@ -13,6 +13,36 @@ def test_display_image():
 
 
 def test_display_graphics():
+    # graphics input
+    items = []
+    io = dataprocess.CGraphicsInput()
+    graphics_pt = core.CGraphicsPoint(core.CPointF(150, 80))
+    graphics_ellipse = core.CGraphicsEllipse(0, 0, 100, 50)
+    graphics_rect = core.CGraphicsRectangle(0, 60, 100, 50)
+    graphics_polyline = core.CGraphicsPolyline([core.CPointF(0, 0),
+                                                core.CPointF(30, 30),
+                                                core.CPointF(100, 30),
+                                                core.CPointF(130, 100)])
+    graphics_polygon = core.CGraphicsPolygon([core.CPointF(50, 10),
+                                              core.CPointF(100, 100),
+                                              core.CPointF(80, 150),
+                                              core.CPointF(20, 120),
+                                              core.CPointF(20, 60)])
+    graphics_text = core.CGraphicsText("This is a text", 200, 10)
+    graphics_complexpoly = core.CGraphicsComplexPolygon(
+        [core.CPointF(250, 10), core.CPointF(300, 100), core.CPointF(280, 150), core.CPointF(220, 120), core.CPointF(220, 60)],
+        [[core.CPointF(250, 100), core.CPointF(270, 70), core.CPointF(240, 40)]])
+
+    items.append(graphics_pt)
+    items.append(graphics_ellipse)
+    items.append(graphics_rect)
+    items.append(graphics_polyline)
+    items.append(graphics_polygon)
+    items.append(graphics_text)
+    items.append(graphics_complexpoly)
+    io.setItems(items)
+    displayIO.display(io, label="Input graphics scene")
+
     # graphics output
     io = dataprocess.CGraphicsOutput()
     io.addPoint(core.CPointF(150, 80))
@@ -26,7 +56,7 @@ def test_display_graphics():
     pts_poly = [core.CPointF(250, 10), core.CPointF(300, 100), core.CPointF(280, 150), core.CPointF(220, 120), core.CPointF(220, 60)]
     pts_inner = [[core.CPointF(250, 100), core.CPointF(270, 70), core.CPointF(240, 40)]]
     io.addComplexPolygon(pts_poly, pts_inner)
-    displayIO.display(io, label="Graphics scene")
+    displayIO.display(io, label="Output graphics scene")
 
 
 def test_display_table(ik_registry):
@@ -95,9 +125,9 @@ if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
     # initialize Ikomia registry
     reg = registry.IkomiaRegistry()
-    # test_display_image()
-    # test_display_graphics()
-    # test_display_table(reg)
-    # test_display_plot(reg)
+    test_display_image()
+    test_display_graphics()
+    test_display_table(reg)
+    test_display_plot(reg)
     test_display_task(reg)
     test_display_workflow(reg)
