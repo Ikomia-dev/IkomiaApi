@@ -122,7 +122,7 @@ def test_display_workflow(ik_registry):
 
 
 if __name__ == "__main__":
-    ikomia.initialize("Ludo", "ludo?imageez")
+    ikomia.initialize()
     # initialize Ikomia registry
     reg = registry.IkomiaRegistry()
     test_display_image()

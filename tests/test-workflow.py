@@ -245,7 +245,7 @@ def test_time_metrics(ik_registry):
 
 
 if __name__ == "__main__":
-    ikomia.initialize("Ludo", "ludo?imageez")
+    ikomia.initialize()
     reg = registry.IkomiaRegistry()
     # test_metadata()
     # test_load(reg)

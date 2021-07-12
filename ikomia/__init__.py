@@ -21,6 +21,7 @@ import os
 from ikomia.utils import init_logging
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
+from dotenv import load_dotenv
 
 global api_session
 api_session = None
@@ -28,7 +29,10 @@ api_session = None
 init_logging()
 
 
-def initialize(username, pwd):
+def initialize():
+    load_dotenv()
+    username = os.environ.get("IKOMIA_USER")
+    pwd = os.environ.get("IKOMIA_PWD")
     global api_session
     api_session = LoginSession(username, pwd)
     check_directories()

@@ -136,7 +136,7 @@ def test_execution():
 
 
 if __name__ == "__main__":
-    ikomia.initialize("Ludo", "ludo?imageez")
+    ikomia.initialize()
     # test_get_local_algorithms()
     # test_get_online_algorithms()
     # test_download_plugin()

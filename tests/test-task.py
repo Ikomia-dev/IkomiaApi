@@ -29,6 +29,6 @@ def test_task_parameters(ik_registry):
 
 
 if __name__ == "__main__":
-    ikomia.initialize("Ludo", "ludo?imageez")
+    ikomia.initialize()
     reg = registry.IkomiaRegistry()
     test_task_parameters(reg)

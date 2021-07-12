@@ -8,6 +8,7 @@ cpp/Doc/Internal/latex
 .idea
 ikomia/__pycache__
 ikomia/.idea
+ikomia/.env
 ikomia/core/__pycache__
 ikomia/core/pycore.so
 ikomia.dataio/__pycache__
