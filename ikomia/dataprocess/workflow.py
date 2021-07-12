@@ -67,6 +67,17 @@ class Workflow(dataprocess.CWorkflow):
         algo = self.registry.create_algorithm(name, param)
         return self.addTask(algo)
 
+    def find_task(self, name: str):
+        tasks = []
+        ids = self.getTaskIDs()
+
+        for task_id in ids:
+            task = self.getTask(task_id)
+            if task.name == name:
+                tasks.append((task_id, task))
+
+        return tasks
+
     def connect_tasks(self, src, target, edges=None):
         if edges is None:
             self.connect(src, target, -1, -1)
