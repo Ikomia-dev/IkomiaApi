@@ -512,9 +512,16 @@ constexpr auto _WorkflowTaskIODocString =
         "Base class for the management of task inputs and outputs. "
         "Each task can have as many inputs and outputs, and each must be derived from this class.\n\n";
 
-constexpr auto _ctorWorkflowTaskIODocString =
+constexpr auto _ctor1WorkflowTaskIODocString =
         "Constructor with parameters\n\n"
-        "arg1 (:py:class:`~ikomia.core.pycore.IODataType`): Data type\n";
+        "Args:\n"
+        "   data type (:py:class:`~ikomia.core.pycore.IODataType`)\n";
+
+constexpr auto _ctor2WorkflowTaskIODocString =
+        "Constructor with parameters\n\n"
+        "Args:\n"
+        "   data type (:py:class:`~ikomia.core.pycore.IODataType`)\n\n"
+        "   name (str)\n";
 
 constexpr auto _getUnitElementCountDocString =
         "Get the number of unit element in terms of processing scheme. "

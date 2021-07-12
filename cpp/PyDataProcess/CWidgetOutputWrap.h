@@ -31,6 +31,7 @@ class CWidgetOutputWrap : public CWidgetOutput, public wrapper<CWidgetOutput>
 
         CWidgetOutputWrap();
         CWidgetOutputWrap(IODataType dataType);
+        CWidgetOutputWrap(IODataType dataType, const std::string& name);
         CWidgetOutputWrap(const CWidgetOutput& out);
 
         void            setWidget(long long widgetPtr);

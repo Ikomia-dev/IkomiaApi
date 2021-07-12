@@ -27,6 +27,10 @@ CWidgetOutputWrap::CWidgetOutputWrap(IODataType dataType) : CWidgetOutput(dataTy
 {
 }
 
+CWidgetOutputWrap::CWidgetOutputWrap(IODataType dataType, const std::string &name) : CWidgetOutput(dataType, name)
+{
+}
+
 CWidgetOutputWrap::CWidgetOutputWrap(const CWidgetOutput &out) : CWidgetOutput(out)
 {
 }

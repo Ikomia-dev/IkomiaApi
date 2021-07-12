@@ -31,6 +31,7 @@ class CWorkflowTaskIOWrap : public CWorkflowTaskIO, public wrapper<CWorkflowTask
 
         CWorkflowTaskIOWrap();
         CWorkflowTaskIOWrap(IODataType dataType);
+        CWorkflowTaskIOWrap(IODataType dataType, const std::string& name);
         CWorkflowTaskIOWrap(const CWorkflowTaskIO& io);
 
         virtual size_t  getUnitElementCount() const;

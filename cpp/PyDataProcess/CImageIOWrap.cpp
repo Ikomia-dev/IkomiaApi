@@ -23,10 +23,6 @@ CImageIOWrap::CImageIOWrap() : CImageIO()
 {
 }
 
-CImageIOWrap::CImageIOWrap(const CMat &image) : CImageIO(image)
-{
-}
-
 CImageIOWrap::CImageIOWrap(IODataType dataType) : CImageIO(dataType)
 {
 }
@@ -35,11 +31,15 @@ CImageIOWrap::CImageIOWrap(IODataType dataType, const CMat &image) : CImageIO(da
 {
 }
 
-CImageIOWrap::CImageIOWrap(const std::string &path) : CImageIO(path)
+CImageIOWrap::CImageIOWrap(IODataType dataType, const CMat &image, const std::string& name) : CImageIO(dataType, image, name)
 {
 }
 
 CImageIOWrap::CImageIOWrap(IODataType datatype, const std::string &path) : CImageIO(datatype, path)
+{
+}
+
+CImageIOWrap::CImageIOWrap(IODataType datatype, const std::string& name, const std::string &path) : CImageIO(datatype, path, name)
 {
 }
 

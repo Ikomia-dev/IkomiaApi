@@ -23,6 +23,10 @@ CGraphicsInputWrap::CGraphicsInputWrap() : CGraphicsInput()
 {    
 }
 
+CGraphicsInputWrap::CGraphicsInputWrap(const std::string &name) : CGraphicsInput(name)
+{
+}
+
 CGraphicsInputWrap::CGraphicsInputWrap(const CGraphicsInput &io) : CGraphicsInput(io)
 {
 }

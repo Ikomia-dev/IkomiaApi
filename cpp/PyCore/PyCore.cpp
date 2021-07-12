@@ -89,6 +89,7 @@ BOOST_PYTHON_MODULE(pycore)
 
     // Register std::vector<T>
     registerStdVector<int>();
+    registerStdVector<size_t>();
     registerStdVector<double>();
     registerStdVector<std::string>();
     registerStdVector<CPoint<float>>();
@@ -276,6 +277,7 @@ BOOST_PYTHON_MODULE(pycore)
     class_<CWorkflowTaskParamWrap, std::shared_ptr<CWorkflowTaskParamWrap>>("CWorkflowTaskParam", _WorkflowTaskParamDocString)
         .enable_pickling()
         .def(init<>("Default constructor"))
+        .def(self_ns::str(self_ns::self))
         .def("__copy__", &generic_copy<CWorkflowTaskParamWrap>)
         .def("__deepcopy__", &generic_deepcopy<CWorkflowTaskParamWrap>)
         .def("setParamMap", &CWorkflowTaskParam::setParamMap, &CWorkflowTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
@@ -313,11 +315,13 @@ BOOST_PYTHON_MODULE(pycore)
 
     class_<CWorkflowTaskIOWrap, std::shared_ptr<CWorkflowTaskIOWrap>>("CWorkflowTaskIO", _WorkflowTaskIODocString)
         .def(init<>("Default constructor"))
-        .def(init<IODataType>(_ctorWorkflowTaskIODocString))
+        .def(init<IODataType>(_ctor1WorkflowTaskIODocString))
+        .def(init<IODataType, const std::string&>(_ctor2WorkflowTaskIODocString))
         .def(init<const CWorkflowTaskIO&>("Copy constructor"))
         .add_property("dataType", &CWorkflowTaskIO::getDataType, &CWorkflowTaskIO::setDataType, "I/O data type")
         .add_property("dimCount", &CWorkflowTaskIO::getDimensionCount, &CWorkflowTaskIO::setDimensionCount, "Number of dimensions")
         .add_property("description", &CWorkflowTaskIO::getDescription, &CWorkflowTaskIO::setDescription, "Custom description to explain input/output type and use")
+        .def(self_ns::str(self_ns::self))
         .def("getUnitElementCount", &CWorkflowTaskIO::getUnitElementCount, &CWorkflowTaskIOWrap::default_getUnitElementCount, _getUnitElementCountDocString, args("self"))
         .def("isDataAvailable", &CWorkflowTaskIO::isDataAvailable, &CWorkflowTaskIOWrap::default_isDataAvailable, _isDataAvailableDocString, args("self"))
         .def("isAutoInput", &CWorkflowTaskIO::isAutoInput, &CWorkflowTaskIOWrap::default_isAutoInput, _isAutoInputDocString, args("self"))
@@ -366,6 +370,7 @@ BOOST_PYTHON_MODULE(pycore)
         .def(init<const CWorkflowTask&>("Copy constructor"))
         .add_property("type", &CWorkflowTask::getType, "Main purpose or data type on which the task is dedicated to.")
         .add_property("name", &CWorkflowTask::getName, &CWorkflowTask::setName, "Task name (must be unique)")
+        .def(self_ns::str(self_ns::self))
         .def("setInputDataType", &CWorkflowTask::setInputDataType, &CWorkflowTaskWrap::default_setInputDataType, _setInputDataTypeDocString, args("self", "data_type", "index"))
         .def("setInput", &CWorkflowTask::setInput, &CWorkflowTaskWrap::default_setInput, _setInputDocString, args("self", "input", "index", "is_new_sequence"))
         .def("setInputs", &CWorkflowTask::setInputs, &CWorkflowTaskWrap::default_setInputs, _setInputsDocString, args("self", "inputs", "is_new_sequence"))

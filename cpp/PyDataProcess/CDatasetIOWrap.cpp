@@ -23,7 +23,11 @@ CDatasetIOWrap::CDatasetIOWrap() : CDatasetIO()
 {
 }
 
-CDatasetIOWrap::CDatasetIOWrap(const std::string &sourceFormat): CDatasetIO(sourceFormat)
+CDatasetIOWrap::CDatasetIOWrap(const std::string& name): CDatasetIO(name)
+{
+}
+
+CDatasetIOWrap::CDatasetIOWrap(const std::string& name, const std::string &sourceFormat): CDatasetIO(name, sourceFormat)
 {
 }
 

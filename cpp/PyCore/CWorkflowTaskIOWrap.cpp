@@ -27,6 +27,10 @@ CWorkflowTaskIOWrap::CWorkflowTaskIOWrap(IODataType dataType) : CWorkflowTaskIO(
 {
 }
 
+CWorkflowTaskIOWrap::CWorkflowTaskIOWrap(IODataType dataType, const std::string &name) : CWorkflowTaskIO(dataType, name)
+{
+}
+
 CWorkflowTaskIOWrap::CWorkflowTaskIOWrap(const CWorkflowTaskIO &io) : CWorkflowTaskIO(io)
 {
 }

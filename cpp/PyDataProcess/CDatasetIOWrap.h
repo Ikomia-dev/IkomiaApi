@@ -31,7 +31,8 @@ class CDatasetIOWrap : public CDatasetIO, public wrapper<CDatasetIO>
     public:
 
         CDatasetIOWrap();
-        CDatasetIOWrap(const std::string& sourceFormat);
+        CDatasetIOWrap(const std::string& name);
+        CDatasetIOWrap(const std::string& name, const std::string& sourceFormat);
 
         std::vector<std::string>            getImagePaths() const override;
         std::vector<std::string>            default_getImagePaths() const;

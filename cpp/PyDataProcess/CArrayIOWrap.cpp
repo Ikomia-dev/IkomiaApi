@@ -23,7 +23,11 @@ CArrayIOWrap::CArrayIOWrap() : CArrayIO()
 {
 }
 
-CArrayIOWrap::CArrayIOWrap(const CMat &array) : CArrayIO(array)
+CArrayIOWrap::CArrayIOWrap(const std::string &name) : CArrayIO(name)
+{
+}
+
+CArrayIOWrap::CArrayIOWrap(const CMat &array, const std::string &name) : CArrayIO(array, name)
 {
 }
 

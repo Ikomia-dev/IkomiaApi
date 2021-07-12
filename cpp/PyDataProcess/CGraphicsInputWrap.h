@@ -30,6 +30,7 @@ class CGraphicsInputWrap : public CGraphicsInput, public wrapper<CGraphicsInput>
     public:
 
         CGraphicsInputWrap();
+        CGraphicsInputWrap(const std::string& name);
         CGraphicsInputWrap(const CGraphicsInput &io);
 
         virtual bool    isDataAvailable() const;

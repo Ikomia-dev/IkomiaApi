@@ -31,7 +31,8 @@ class CArrayIOWrap : public CArrayIO, public wrapper<CArrayIO>
     public:
 
         CArrayIOWrap();
-        CArrayIOWrap(const CMat& array);
+        CArrayIOWrap(const std::string& name);
+        CArrayIOWrap(const CMat& array, const std::string& name="CArrayIO");
         CArrayIOWrap(const CArrayIO &io);
 
         size_t  getUnitElementCount() const override;
