@@ -107,11 +107,76 @@ def test_graph_structure(ik_registry):
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_single_image_run", ik_registry)
     wf.load(wf_path)
-    ids = wf.getTaskIDs()
 
+    # browse tasks
+    ids = wf.getTaskIDs()
     for task_id in ids:
         task = wf.getTask(task_id)
-        logger.info("Id:" + str(task_id) + " Name:" + task.name)
+        logger.info("===== Id:" + str(task_id) + " Name:" + task.name + " =====")
+        logger.info(task)
+
+    # get root and retrieve its child tasks
+    root_id = wf.getRootID()
+    assert(root_id in ids)
+    childs = wf.getChilds(root_id)
+    assert(len(childs) == 2)
+    logger.info("Childs of root are: " + wf.getTask(childs[0]).name + " and " + wf.getTask(childs[1]).name)
+
+    # find task from name
+    found_task = wf.find_task("CLAHE")
+    assert(len(found_task) == 1)
+
+    # get parents
+    parents = wf.getParents(found_task[0][0])
+    logger.info("Parent of CLAHE is " + wf.getTask(parents[0]).name)
+
+    # get final tasks(leafs)
+    msg = "Final tasks are: "
+    final_tasks = wf.getFinalTasks()
+
+    for task in final_tasks:
+        msg += task.name + ","
+
+    logger.info(msg)
+
+    # input edges of a task
+    found_task = wf.find_task("DTFilter")
+    assert (len(found_task) == 1)
+    in_edges = wf.getInEdges(found_task[0][0])
+    logger.info("Input edges of DTFilter: " + str(len(in_edges)))
+
+    for edge in in_edges:
+        logger.info("Edge port index: " + str(wf.getEdgeInfo(edge)))
+
+    # output edges of a task
+    found_task = wf.find_task("Equalize histogram")
+    assert (len(found_task) == 1)
+    out_edges = wf.getOutEdges(found_task[0][0])
+    logger.info("Output edges of Equalize histogram: " + str(len(out_edges)))
+
+    for edge in out_edges:
+        logger.info("Edge port index: " + str(wf.getEdgeInfo(edge)))
+
+    # edge source and target
+    src_task_id = wf.getEdgeSource(out_edges[0])
+    logger.info("Source task of edge #" + str(out_edges[0]) + " is " + wf.getTask(src_task_id).name)
+    target_task_id = wf.getEdgeTarget(out_edges[0])
+    logger.info("Target task of edge #" + str(out_edges[0]) + " is " + wf.getTask(target_task_id).name)
+
+    # delete edge
+    wf.deleteEdge(out_edges[0])
+    out_edges = wf.getOutEdges(found_task[0][0])
+    assert (len(out_edges) == 1)
+
+    # delete task
+    count_before = len(wf.getTaskIDs())
+    logger.info("Task count before delete: " + str(count_before))
+    wf.deleteTask(found_task[0][0])
+    count_after = len(wf.getTaskIDs())
+    logger.info("Task count after delete: " + str(count_after))
+    assert(count_before == count_after + 1)
+    found_task = wf.find_task("Equalize histogram")
+    assert(len(found_task) == 0)
 
 
 def test_graph_build(ik_registry):
@@ -190,6 +255,6 @@ if __name__ == "__main__":
     # test_resnet_train(reg, "/home/ludo/Images/Datasets/hymenoptera_data")
     # test_yolov5_train(reg)
     # test_export_graphviz(reg)
-    # test_graph_structure(reg)
-    test_time_metrics(reg)
+    test_graph_structure(reg)
+    # test_time_metrics(reg)
     # test_graph_build(reg)
