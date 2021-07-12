@@ -19,6 +19,7 @@
 
 #include "CDataInfo.h"
 #include <QObject>
+#include "Main/CoreTools.hpp"
 
 CDataInfo::CDataInfo(IODataType type)
 {
@@ -64,6 +65,20 @@ CDataInfo &CDataInfo::operator=(CDataInfo &&data)
     m_fileName = std::move(data.m_fileName);
     m_elementSize = std::move(data.m_elementSize);
     return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const CDataInfo& info)
+{
+    os << "Data type: " << Utils::Workflow::getIODataName(info.m_type).toStdString() << std::endl;
+    os << "File name: " << info.m_fileName << std::endl;
+
+    if(!info.m_metadata.empty())
+    {
+        os << "----- Metadata -----" << std::endl;
+        for(auto it : info.m_metadata)
+            os << it.first << it.second;
+    }
+    return os;
 }
 
 void CDataInfo::setFileName(const std::string &fileName)

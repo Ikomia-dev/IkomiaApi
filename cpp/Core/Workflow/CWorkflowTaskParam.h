@@ -60,6 +60,8 @@ class CORESHARED_EXPORT CWorkflowTaskParam
          * The system uses this method de determine if process configuration has changed.
          */
         virtual uint        getHashValue() const;
+
+        friend std::ostream& operator<<(std::ostream& os, const CWorkflowTaskParam& param);
 };
 
 using WorkflowTaskParamPtr = std::shared_ptr<CWorkflowTaskParam>;

@@ -43,9 +43,13 @@ class CORESHARED_EXPORT CWorkflowTaskIO
          */
         CWorkflowTaskIO();
         /**
-         * @brief Constructor with the given data type (::Data).
+         * @brief Constructor with the given data type (::IODataType).
          */
         CWorkflowTaskIO(IODataType dataType);
+        /**
+         * @brief Constructor with the given data type (::IODataType) and name.
+         */
+        CWorkflowTaskIO(IODataType dataType, const std::string& name);
         /**
          * @brief Copy constructor.
          */
@@ -63,6 +67,8 @@ class CORESHARED_EXPORT CWorkflowTaskIO
          * @brief Universal reference assignement operator.
          */
         CWorkflowTaskIO&    operator=(const CWorkflowTaskIO&& io);
+
+        friend std::ostream& operator<<(std::ostream& os, const CWorkflowTaskIO& io);
 
         virtual ~CWorkflowTaskIO();
 

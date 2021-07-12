@@ -46,6 +46,8 @@ class CORESHARED_EXPORT CDataInfo
         CDataInfo&                  operator=(const CDataInfo& data);
         CDataInfo&                  operator=(CDataInfo&& data);
 
+        friend std::ostream&        operator<<(std::ostream& os, const CDataInfo& info);
+
         //Setters
         void                        setFileName(const std::string& fileName);
         void                        setElementSize(int size);

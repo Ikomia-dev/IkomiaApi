@@ -19,6 +19,7 @@
 
 #include "CWorkflowTaskIO.h"
 #include "Main/CoreTools.hpp"
+#include <ostream>
 
 CWorkflowTaskIO::CWorkflowTaskIO()
 {
@@ -27,6 +28,12 @@ CWorkflowTaskIO::CWorkflowTaskIO()
 CWorkflowTaskIO::CWorkflowTaskIO(IODataType dataType)
 {
     m_dataType = dataType;
+}
+
+CWorkflowTaskIO::CWorkflowTaskIO(IODataType dataType, const std::string &name)
+{
+    m_dataType = dataType;
+    m_name = name;
 }
 
 CWorkflowTaskIO::CWorkflowTaskIO(const CWorkflowTaskIO& io)
@@ -81,6 +88,24 @@ CWorkflowTaskIO &CWorkflowTaskIO::operator=(const CWorkflowTaskIO&& io)
     m_bAutoSave = std::move(io.m_bAutoSave);
     m_bDisplayable = std::move(io.m_bDisplayable);
     return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const CWorkflowTaskIO& io)
+{
+    os << "Name: " << io.m_name << std::endl;
+    os << "Description: " << io.m_description << std::endl;
+    os << "Save folder: " << io.m_saveFolder << std::endl;
+    os << "Auto-save: " << io.m_bAutoSave << std::endl;
+    os << "Data type: " << Utils::Workflow::getIODataName(io.m_dataType).toStdString() << std::endl;
+    os << "Save format: " << Utils::Data::getFileFormatExtension(io.m_saveFormat) << std::endl;
+    os << "Dimension count: " << io.m_dimCount << std::endl;
+
+    if(io.m_infoPtr)
+    {
+        os << "----- I/O data info -----" << std::endl;
+        os << *(io.m_infoPtr);
+    }
+    return os;
 }
 
 CWorkflowTaskIO::~CWorkflowTaskIO()

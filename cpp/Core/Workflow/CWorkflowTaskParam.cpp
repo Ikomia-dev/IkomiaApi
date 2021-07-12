@@ -19,6 +19,7 @@
 
 #include "CWorkflowTaskParam.h"
 #include <QHash>
+#include <ostream>
 
 CWorkflowTaskParam::CWorkflowTaskParam()
 {
@@ -43,4 +44,13 @@ uint CWorkflowTaskParam::getHashValue() const
         values.push_back(QString::fromStdString(it->second));
 
     return qHashRange(values.begin(), values.end());
+}
+
+std::ostream& operator<<(std::ostream& os, const CWorkflowTaskParam& param)
+{
+    auto params = param.getParamMap();
+    for(auto it=params.begin(); it!=params.end(); ++it)
+        os << it->first << ":" << it->second << std::endl;
+
+    return os;
 }
