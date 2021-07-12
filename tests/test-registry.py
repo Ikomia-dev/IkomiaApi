@@ -1,6 +1,6 @@
 import logging
 import ikomia
-from ikomia.dataprocess import registry
+from ikomia.dataprocess import registry, displayIO
 from ikomia.utils import tests
 import cv2
 
@@ -97,18 +97,14 @@ def test_execution():
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
-    output = algo.getOutput(0)
-    img_out = output.getImage()
-    cv2.imshow("CLAHE", img_out)
+    displayIO.display(algo, algo.name)
 
     # OpenCV Canny (C++)
     algo = reg.create_algorithm("Canny")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
-    output = algo.getOutput(0)
-    img_out = output.getImage()
-    cv2.imshow("Canny", img_out)
+    displayIO.display(algo, algo.name)
 
     # Marketplace FaceDetector (C++)
     algo = reg.create_algorithm("Face Detector")
@@ -118,17 +114,14 @@ def test_execution():
     output_img = algo.getOutput(0)
     output_graphics = algo.getOutput(1)
     output_img.drawGraphics(output_graphics)
-    img_out = output_img.getImage()
-    cv2.imshow("Face Detector", img_out)
+    displayIO.display(algo, algo.name)
 
     # Marketplace scikit_threshold (Python)
     algo = reg.create_algorithm("scikit_threshold")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
-    output = algo.getOutput(0)
-    img_out = output.getImage()
-    cv2.imshow("scikit_threshold", img_out)
+    displayIO.display(algo, algo.name)
 
     # Marketplace YoloV5Predict (Python)
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
@@ -139,17 +132,16 @@ def test_execution():
     algo.run()
     output_img = algo.getOutput(0)
     output_img.drawGraphics(algo.getOutput(1))
-    cv2.imshow("YoloV5Predict", output_img.getImage())
-    cv2.waitKey(0)
+    displayIO.display(algo, algo.name)
 
 
 if __name__ == "__main__":
     ikomia.initialize("Ludo", "ludo?imageez")
-    test_get_local_algorithms()
-    test_get_online_algorithms()
-    test_download_plugin()
-    test_install_plugin()
-    test_local_instantiation()
-    test_instantiation()
-    test_update()
+    # test_get_local_algorithms()
+    # test_get_online_algorithms()
+    # test_download_plugin()
+    # test_install_plugin()
+    # test_local_instantiation()
+    # test_instantiation()
+    # test_update()
     test_execution()
