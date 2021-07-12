@@ -485,27 +485,41 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
 
     # inputs
     inputs = obj.getInputs()
+    input_count = len(inputs)
     in_fig = plt.figure(num=1, constrained_layout=True)
     in_fig.suptitle(label + " inputs")
-    in_sub_figs = in_fig.subfigures(len(inputs), 1, wspace=0.07)
+    in_sub_figs = in_fig.subfigures(input_count, 1, wspace=0.07)
 
-    for i, task_input in enumerate(inputs):
+    if input_count == 1:
         try:
-            display(task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs)
+            display(inputs[0], type(inputs[0]).__name__, fig=in_sub_figs, **kwargs)
         except NotImplementedError:
-            logger.error("No display function available for input " + str(i))
+            logger.error("No display function available for input 1")
+    else:
+        for i, task_input in enumerate(inputs):
+            try:
+                display(task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs)
+            except NotImplementedError:
+                logger.error("No display function available for input " + str(i))
 
     # outputs
     outputs = obj.getOutputs()
+    output_count = len(outputs)
     out_fig = plt.figure(num=2, constrained_layout=True)
     out_fig.suptitle(label + " outputs")
-    out_sub_figs = out_fig.subfigures(len(outputs), 1, wspace=0.07)
+    out_sub_figs = out_fig.subfigures(output_count, 1, wspace=0.07)
 
-    for i, task_output in enumerate(outputs):
+    if output_count == 1:
         try:
-            display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
+            display(outputs[0], type(outputs[0]).__name__, fig=out_sub_figs, **kwargs)
         except NotImplementedError:
-            logger.error("No display function available for output " + str(i))
+            logger.error("No display function available for output 1")
+    else:
+        for i, task_output in enumerate(outputs):
+            try:
+                display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
+            except NotImplementedError:
+                logger.error("No display function available for output " + str(i))
 
     plt.show()
 
