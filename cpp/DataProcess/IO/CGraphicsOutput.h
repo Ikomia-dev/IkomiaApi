@@ -42,15 +42,16 @@ class DATAPROCESSSHARED_EXPORT CGraphicsOutput : public CWorkflowTaskIO
         using GraphicsOutputPtr = std::shared_ptr<CGraphicsOutput>;
 
         CGraphicsOutput();
+        CGraphicsOutput(const std::string& name);
         CGraphicsOutput(const CGraphicsOutput& out);
         CGraphicsOutput(CGraphicsOutput&& out);
         CGraphicsOutput(const CGraphicsInput& in);
 
         virtual ~CGraphicsOutput();
 
-        CGraphicsOutput&     operator=(const CGraphicsOutput& out);
-        CGraphicsOutput&     operator=(CGraphicsOutput&& out);
-        CGraphicsOutput&     operator=(const CGraphicsInput& in);
+        CGraphicsOutput&            operator=(const CGraphicsOutput& out);
+        CGraphicsOutput&            operator=(CGraphicsOutput&& out);
+        CGraphicsOutput&            operator=(const CGraphicsInput& in);
 
         void                        setNewLayer(const std::string name);
         void                        setImageIndex(int index);

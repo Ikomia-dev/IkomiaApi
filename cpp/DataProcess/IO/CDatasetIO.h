@@ -33,7 +33,8 @@ class DATAPROCESSSHARED_EXPORT CDatasetIO: public CWorkflowTaskIO
     public:
 
         CDatasetIO();
-        CDatasetIO(const std::string& srcFormat);
+        CDatasetIO(const std::string& name);
+        CDatasetIO(const std::string& name, const std::string& srcFormat);
 
         virtual ~CDatasetIO() = default;
 

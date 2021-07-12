@@ -47,6 +47,13 @@ class DATAPROCESSSHARED_EXPORT CWidgetOutput : public CWorkflowTaskIO
          * @param data: data type.
          */
         CWidgetOutput(IODataType data);
+        /**
+         * @brief Constructs a CWidgetOutput instance with the data type and the name.
+         * @details By default, the widget data type is ::Data::WIDGET.
+         * @param data: data type.
+         * @param name: output name.
+         */
+        CWidgetOutput(IODataType data, const std::string& name);
 
         virtual ~CWidgetOutput();
 

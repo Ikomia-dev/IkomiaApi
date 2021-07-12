@@ -30,8 +30,8 @@ class DATAPROCESSSHARED_EXPORT CPathIO : public CWorkflowTaskIO
     public:
 
         CPathIO();
-        CPathIO(IODataType data);
         CPathIO(IODataType data, const std::string& path);
+        CPathIO(IODataType data, const std::string& path, const std::string& name);
         CPathIO(const CPathIO& in);
         CPathIO(CPathIO&& in);
 
@@ -71,7 +71,7 @@ class DATAPROCESSSHARED_EXPORT CPathIOFactory: public CWorkflowTaskIOFactory
 
         virtual WorkflowTaskIOPtr   create(IODataType dataType)
         {
-            return std::make_shared<CPathIO>(dataType);
+            return std::make_shared<CPathIO>(dataType, m_name);
         }
 };
 

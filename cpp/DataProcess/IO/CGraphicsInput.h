@@ -41,7 +41,8 @@ class DATAPROCESSSHARED_EXPORT CGraphicsInput : public CWorkflowTaskIO
         using GraphicsInputPtr = std::shared_ptr<CGraphicsInput>;
 
         CGraphicsInput();
-        CGraphicsInput(CGraphicsLayer* pLayer);
+        CGraphicsInput(const std::string& name);
+        CGraphicsInput(CGraphicsLayer* pLayer, const std::string& name="CGraphicsInput");
         CGraphicsInput(const CGraphicsInput& in);
         CGraphicsInput(CGraphicsInput&& in);
         CGraphicsInput(const CGraphicsOutput &out);

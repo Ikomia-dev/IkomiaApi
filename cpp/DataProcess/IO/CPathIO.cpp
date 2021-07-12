@@ -21,19 +21,19 @@
 #include <boost/filesystem.hpp>
 #include "CPathIO.h"
 
-CPathIO::CPathIO() : CWorkflowTaskIO(IODataType::FILE_PATH)
+CPathIO::CPathIO() : CWorkflowTaskIO(IODataType::FILE_PATH, "CPathIO")
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(IODataType data) : CWorkflowTaskIO(data)
+CPathIO::CPathIO(IODataType data, const std::string &path) : CWorkflowTaskIO(data, "CPathIO")
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_infoPtr = std::make_shared<CDataInfo>(m_dataType, m_path);
 }
 
-CPathIO::CPathIO(IODataType data, const std::string &path) : CWorkflowTaskIO(data)
+CPathIO::CPathIO(IODataType data, const std::string &path, const std::string &name) : CWorkflowTaskIO(data, name)
 {
     m_description = QObject::tr("File system path (file or folder).").toStdString();
     m_path = path;

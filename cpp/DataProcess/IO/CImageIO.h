@@ -48,25 +48,27 @@ class DATAPROCESSSHARED_EXPORT CImageIO : public CWorkflowTaskIO
          */
         CImageIO();
         /**
-         * @brief Constructs a CImageIO instance with the given image.
-         * @details By default, the image output type is set to the standard one. See ::IODataType for details.
-         * @param image: CMat object for C++ and Numpy array for Python.
-         */
-        CImageIO(const CMat& image);
-        /**
          * @brief Constructs a CImageIO instance with the given image output type.
          * @param data: see ::IODataType for details.
          */
         CImageIO(IODataType data);
         /**
+         * @brief Constructs a CImageIO instance with the given image output type and the name.
+         * @param data: see ::IODataType for details.
+         */
+        CImageIO(IODataType data, const CMat& image);
+        /**
          * @brief Constructs a CImageIO instance with the given image output type and the given image.
          * @param data: see ::IODataType for details.
          * @param image: CMat object for C++ and Numpy array for Python.
          */
-        CImageIO(IODataType data, const CMat& image);
-
-        CImageIO(const std::string& path);
-        CImageIO(IODataType data, const std::string& path);
+        CImageIO(IODataType data, const CMat& image, const std::string& name);
+        /**
+         * @brief Constructs a CImageIO instance with the given image output type and the image path.
+         * @param data: see ::IODataType for details.
+         * @param image: CMat object for C++ and Numpy array for Python.
+         */
+        CImageIO(IODataType data, const std::string& path, const std::string& name="CImageIO");
         /**
          * @brief Copy constructor.
          */

@@ -27,7 +27,13 @@ CWidgetOutput::CWidgetOutput() : CWorkflowTaskIO(IODataType::WIDGET)
     m_saveFormat = DataFileFormat::JPG;
 }
 
-CWidgetOutput::CWidgetOutput(IODataType data): CWorkflowTaskIO(data)
+CWidgetOutput::CWidgetOutput(IODataType data) : CWorkflowTaskIO(data, "CWidgetOutput")
+{
+    m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
+    m_saveFormat = DataFileFormat::JPG;
+}
+
+CWidgetOutput::CWidgetOutput(IODataType data, const std::string &name) : CWorkflowTaskIO(data, name)
 {
     m_description = QObject::tr("Generic widget for custom display.\nAny Qt-based window (ex: Matplotlib canvas).").toStdString();
     m_saveFormat = DataFileFormat::JPG;

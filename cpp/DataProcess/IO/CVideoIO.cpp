@@ -22,25 +22,25 @@
 #include "CDataVideoIO.h"
 #include "UtilsTools.hpp"
 
-CVideoIO::CVideoIO() : CImageIO(IODataType::VIDEO)
+CVideoIO::CVideoIO() : CImageIO(IODataType::VIDEO, "CVideoIO")
 {
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
-CVideoIO::CVideoIO(CMat image) : CImageIO(IODataType::VIDEO, image)
+CVideoIO::CVideoIO(IODataType data) : CImageIO(data, "CVideoIO")
 {
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
-CVideoIO::CVideoIO(IODataType data) : CImageIO(data)
+CVideoIO::CVideoIO(IODataType data, const CMat &image) : CImageIO(data, image, "CVideoIO")
 {
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;
 }
 
-CVideoIO::CVideoIO(IODataType data, const CMat& image) : CImageIO(data, image)
+CVideoIO::CVideoIO(IODataType data, const CMat& image, const std::string& name) : CImageIO(data, image, name)
 {
     m_description = QObject::tr("Video with read/write capabilities.").toStdString();
     m_saveFormat = DataFileFormat::AVI;

@@ -58,7 +58,10 @@ class CFeatureIOBase: public CWorkflowTaskIO
         using StringVector = std::vector<std::string>;
         using VectorOfStringVector = std::vector<std::vector<std::string>>;
 
-        CFeatureIOBase(): CWorkflowTaskIO(IODataType::NUMERIC_VALUES)
+        CFeatureIOBase(): CWorkflowTaskIO(IODataType::NUMERIC_VALUES, "CFeatureIO")
+        {
+        }
+        CFeatureIOBase(const std::string& name): CWorkflowTaskIO(IODataType::NUMERIC_VALUES, name)
         {
         }
         CFeatureIOBase(const CFeatureIOBase& io) : CWorkflowTaskIO(io)
@@ -199,6 +202,13 @@ class CFeatureIO : public CFeatureIOBase
          * @brief Default constructor
          */
         CFeatureIO() : CFeatureIOBase()
+        {
+            m_description = QObject::tr("Numerical values structured as table data (headers, labels and values).\n"
+                                        "Can be displayed as table or plot.").toStdString();
+            m_saveFormat = DataFileFormat::CSV;
+        }
+
+        CFeatureIO(const std::string& name) : CFeatureIOBase(name)
         {
             m_description = QObject::tr("Numerical values structured as table data (headers, labels and values).\n"
                                         "Can be displayed as table or plot.").toStdString();

@@ -3,14 +3,21 @@
 
 std::set<std::string> CDatasetIO::m_formats = { "other" };
 
-CDatasetIO::CDatasetIO() : CWorkflowTaskIO(IODataType::DNN_DATASET)
+CDatasetIO::CDatasetIO() : CWorkflowTaskIO(IODataType::DNN_DATASET, "CDatasetIO")
 {
     m_srcFormat = "other";
     m_description = QObject::tr("Annotated image dataset in Ikomia format (for Deep Learning).").toStdString();
     m_saveFormat = DataFileFormat::JSON;
 }
 
-CDatasetIO::CDatasetIO(const std::string& srcFormat) : CWorkflowTaskIO(IODataType::DNN_DATASET)
+CDatasetIO::CDatasetIO(const std::string& name) : CWorkflowTaskIO(IODataType::DNN_DATASET, name)
+{
+    m_srcFormat = "other";
+    m_description = QObject::tr("Annotated image dataset in Ikomia format (for Deep Learning).").toStdString();
+    m_saveFormat = DataFileFormat::JSON;
+}
+
+CDatasetIO::CDatasetIO(const std::string &name, const std::string &srcFormat) : CWorkflowTaskIO(IODataType::DNN_DATASET, name)
 {
     const std::string srcFormatTmp = boost::algorithm::to_lower_copy(srcFormat);
     auto it = m_formats.find(srcFormatTmp);

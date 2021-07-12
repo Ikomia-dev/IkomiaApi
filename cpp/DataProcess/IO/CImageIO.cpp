@@ -24,32 +24,21 @@
 
 using CImageDataIO = CDataIO<CDataImageIO, CMat>;
 
-CImageIO::CImageIO() : CWorkflowTaskIO(IODataType::IMAGE)
+CImageIO::CImageIO() : CWorkflowTaskIO(IODataType::IMAGE, "CImageIO")
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
 }
 
-CImageIO::CImageIO(const CMat &image) : CWorkflowTaskIO(IODataType::IMAGE)
-{
-    m_description = QObject::tr("2D or 3D images.\n"
-                                "Can be single frame from video or camera stream.").toStdString();
-    m_saveFormat = DataFileFormat::PNG;
-    m_image = image;
-    m_dimCount = m_image.dims;
-    m_channelCount = m_image.channels();
-    m_bNewDataInfo = true;
-}
-
-CImageIO::CImageIO(IODataType data) : CWorkflowTaskIO(data)
+CImageIO::CImageIO(IODataType data) : CWorkflowTaskIO(data, "CImageIO")
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
 }
 
-CImageIO::CImageIO(IODataType data, const CMat &image) : CWorkflowTaskIO(data)
+CImageIO::CImageIO(IODataType data, const CMat &image) : CWorkflowTaskIO(data, "CImageIO")
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
@@ -60,25 +49,18 @@ CImageIO::CImageIO(IODataType data, const CMat &image) : CWorkflowTaskIO(data)
     m_bNewDataInfo = true;
 }
 
-CImageIO::CImageIO(const std::string &path) : CWorkflowTaskIO(IODataType::IMAGE)
+CImageIO::CImageIO(IODataType data, const CMat &image, const std::string& name) : CWorkflowTaskIO(data, name)
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();
     m_saveFormat = DataFileFormat::PNG;
-    m_name = Utils::File::getFileNameWithoutExtension(path);
-
-    CImageDataIO io(path);
-    m_image = io.read();
-
-    if(m_image.data != nullptr)
-    {
-        m_dimCount = m_image.dims;
-        m_channelCount = m_image.channels();
-        m_bNewDataInfo = true;
-    }
+    m_image = image;
+    m_dimCount = m_image.dims;
+    m_channelCount = m_image.channels();
+    m_bNewDataInfo = true;
 }
 
-CImageIO::CImageIO(IODataType data, const std::string &path) : CWorkflowTaskIO(data)
+CImageIO::CImageIO(IODataType data, const std::string& path, const std::string &name) : CWorkflowTaskIO(data, name)
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();

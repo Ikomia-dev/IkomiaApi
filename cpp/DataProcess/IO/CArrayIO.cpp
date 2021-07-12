@@ -21,12 +21,17 @@
 #include "Data/CDataArrayInfo.h"
 #include <QObject>
 
-CArrayIO::CArrayIO() : CWorkflowTaskIO(IODataType::ARRAY)
+CArrayIO::CArrayIO() : CWorkflowTaskIO(IODataType::ARRAY, "CArrayIO")
 {
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
 }
 
-CArrayIO::CArrayIO(const CMat &array) : CWorkflowTaskIO(IODataType::ARRAY)
+CArrayIO::CArrayIO(const std::string &name) : CWorkflowTaskIO(IODataType::ARRAY, name)
+{
+    m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
+}
+
+CArrayIO::CArrayIO(const CMat &array, const std::string& name) : CWorkflowTaskIO(IODataType::ARRAY, name)
 {
     m_description = QObject::tr("Generic multi-dimensional array.\n").toStdString();
     m_array = array;

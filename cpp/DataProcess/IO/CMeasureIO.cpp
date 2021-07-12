@@ -70,7 +70,13 @@ void CObjectMeasure::setValues(const std::vector<double> &values)
 //-----------------------------------//
 //----- class CMeasureIO -----//
 //-----------------------------------//
-CMeasureIO::CMeasureIO() : CWorkflowTaskIO(IODataType::BLOB_VALUES)
+CMeasureIO::CMeasureIO() : CWorkflowTaskIO(IODataType::BLOB_VALUES, "CMeasureIO")
+{
+    m_description = QObject::tr("Predefined measures computed from connected components (Surface, perimeter...).").toStdString();
+    m_saveFormat = DataFileFormat::CSV;
+}
+
+CMeasureIO::CMeasureIO(const std::string &name) : CWorkflowTaskIO(IODataType::BLOB_VALUES, name)
 {
     m_description = QObject::tr("Predefined measures computed from connected components (Surface, perimeter...).").toStdString();
     m_saveFormat = DataFileFormat::CSV;

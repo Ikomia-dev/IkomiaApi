@@ -30,7 +30,14 @@
 #include "Graphics/CGraphicsText.h"
 #include "CGraphicsInput.h"
 
-CGraphicsOutput::CGraphicsOutput() : CWorkflowTaskIO(IODataType::OUTPUT_GRAPHICS)
+CGraphicsOutput::CGraphicsOutput() : CWorkflowTaskIO(IODataType::OUTPUT_GRAPHICS, "CGraphicsOutput")
+{
+    m_description = QObject::tr("Graphics items organized in layer.\n"
+                                "Represent shapes and types of objects extracted from image.").toStdString();
+    m_saveFormat = DataFileFormat::JSON;
+}
+
+CGraphicsOutput::CGraphicsOutput(const std::string &name) : CWorkflowTaskIO(IODataType::OUTPUT_GRAPHICS, name)
 {
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects extracted from image.").toStdString();

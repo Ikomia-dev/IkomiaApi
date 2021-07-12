@@ -21,7 +21,7 @@
 #include "Graphics/CGraphicsLayer.h"
 #include "CGraphicsOutput.h"
 
-CGraphicsInput::CGraphicsInput() : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS)
+CGraphicsInput::CGraphicsInput() : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS, "CGraphicsInput")
 {
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects in image.\n"
@@ -29,7 +29,15 @@ CGraphicsInput::CGraphicsInput() : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS)
     m_saveFormat = DataFileFormat::JSON;
 }
 
-CGraphicsInput::CGraphicsInput(CGraphicsLayer *pLayer) : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS)
+CGraphicsInput::CGraphicsInput(const std::string &name) : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS, name)
+{
+    m_description = QObject::tr("Graphics items organized in layer.\n"
+                                "Represent shapes and types of objects in image.\n"
+                                "Graphics can be created interactively by user.").toStdString();
+    m_saveFormat = DataFileFormat::JSON;
+}
+
+CGraphicsInput::CGraphicsInput(CGraphicsLayer *pLayer, const std::string &name) : CWorkflowTaskIO(IODataType::INPUT_GRAPHICS, name)
 {
     m_description = QObject::tr("Graphics items organized in layer.\n"
                                 "Represent shapes and types of objects in image.\n"

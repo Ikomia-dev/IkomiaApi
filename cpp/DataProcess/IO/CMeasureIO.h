@@ -56,6 +56,7 @@ class DATAPROCESSSHARED_EXPORT CMeasureIO : public CWorkflowTaskIO
     public:
 
         CMeasureIO();
+        CMeasureIO(const std::string& name);
         CMeasureIO(const CMeasureIO& io);
         CMeasureIO(const CMeasureIO&& io);
 

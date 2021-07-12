@@ -42,10 +42,15 @@ class DATAPROCESSSHARED_EXPORT CArrayIO : public CWorkflowTaskIO
          */
         CArrayIO();
         /**
+         * @brief Construct a CArrayIO instance with the given name.
+         * @param name: std::string.
+         */
+        CArrayIO(const std::string& name);
+        /**
          * @brief Construct a CArrayIO instance with the given array.
          * @param array: CMat object for C++ and Numpy array for Python.
          */
-        CArrayIO(const CMat& array);
+        CArrayIO(const CMat& array, const std::string& name="CArrayIO");
         /**
          * @brief Copy constructor.
          */
