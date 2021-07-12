@@ -151,6 +151,11 @@ constexpr auto _measureIODocString =
         "Although CDblFeatureIO is more generic, it can't map measure values with graphics item, which can be useful "
         "to give visual information from object measures to users.\n";
 
+constexpr auto _ctorMeasureIODocString =
+        "Construct a CMeasureIO instance with the given name.\n\n"
+        "Args:\n"
+        "   arg1 (str): input or output name\n";
+
 constexpr auto _setObjMeasureDocString =
         "Set measure for the blob specified by the given index.\n"
         "Args:\n"
@@ -185,6 +190,11 @@ constexpr auto _featureProcessIODocString =
         "it consists on a list of float values, a list of associated labels and a display type (see :py:class:`NumericOutputType`). "
         "For the specific case of plot display, a plot type property is available (see :py:class:`PlotType`). "
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`\n\n";
+
+constexpr auto _ctorFeatureIODocString =
+        "Construct a CFeatureIO instance with the given name.\n\n"
+        "Args:\n"
+        "   arg1 (str): input or output name\n";
 
 constexpr auto _addValueList1DocString =
         "Append a new value list.\n\n"
@@ -282,14 +292,6 @@ constexpr auto _imageProcessIODocString =
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1imageProcessIODocString =
-        "Construct a CImageIO instance with the given image. "
-        "By default, the image output type is set to the standard one (IODataType.IMAGE). "
-        "See :py:class:`~ikomia.core.pycore.IODataType` for details.\n\n"
-        "Args:\n"
-        "   arg1: self\n\n"
-        "   arg2 (Numpy array): 2D/3D image\n";
-
-constexpr auto _ctor2imageProcessIODocString =
         "Construct a CImageIO instance with the given data type. The data type must be one of these values:\n\n"
         "- IODataType.IMAGE\n"
         "- IODataType.IMAGE_BINARY\n"
@@ -302,8 +304,22 @@ constexpr auto _ctor2imageProcessIODocString =
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n";
 
+constexpr auto _ctor2imageProcessIODocString =
+        "Construct a CImageIO instance with the given data type and the given image. The data type must be one of these values:\n\n"
+        "- IODataType.IMAGE\n"
+        "- IODataType.IMAGE_BINARY\n"
+        "- IODataType.IMAGE_LABEL\n"
+        "- IODataType.VOLUME\n"
+        "- IODataType.VOLUME_BINARY\n"
+        "- IODataType.VOLUME_LABEL\n\n"
+        "Please note that internal image structure is empty\n\n"
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
+        "   arg3 (Numpy array): 2D/3D image\n";
+
 constexpr auto _ctor3imageProcessIODocString =
-        "Construct a CImageIO instance with the given data type and the given image. "
+        "Construct a CImageIO instance with the given data type, name and image. "
         "The data type must be one of these values:\n\n"
         "- IODataType.IMAGE\n"
         "- IODataType.IMAGE_BINARY\n"
@@ -314,17 +330,11 @@ constexpr auto _ctor3imageProcessIODocString =
         "Args:\n"
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
-        "   arg3 (Numpy array): 2D/3D image\n";
+        "   arg3 (Numpy array): 2D/3D image\n\n"
+        "   arg4 (str): input or output name\n";
 
 constexpr auto _ctor4imageProcessIODocString =
-        "Construct a CImageIO instance with the default image data type (:py:class:`~ikomia.core.pycore.IODataType.IMAGE)"
-        "and the image loaded from the given path.\n\n"
-        "Args:\n"
-        "   arg1: self\n\n"
-        "   arg2 (str): image path\n";
-
-constexpr auto _ctor5imageProcessIODocString =
-        "Construct a CImageIO instance with the given data type and the image loaded from the given path. "
+        "Construct a CImageIO instance with the given data type, name and the image loaded from the given path. "
         "The data type must be one of these values:\n\n"
         "- IODataType.IMAGE\n"
         "- IODataType.IMAGE_BINARY\n"
@@ -336,6 +346,21 @@ constexpr auto _ctor5imageProcessIODocString =
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
         "   arg3 (str): image path\n";
+
+constexpr auto _ctor5imageProcessIODocString =
+        "Construct a CImageIO instance with the given data type, name and the image loaded from the given path. "
+        "The data type must be one of these values:\n\n"
+        "- IODataType.IMAGE\n"
+        "- IODataType.IMAGE_BINARY\n"
+        "- IODataType.IMAGE_LABEL\n"
+        "- IODataType.VOLUME\n"
+        "- IODataType.VOLUME_BINARY\n"
+        "- IODataType.VOLUME_LABEL\n\n"
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
+        "   arg3 (str): image path\n\n"
+        "   arg4 (str): input or output name\n";
 
 constexpr auto _clearImageDataDocString =
         "Clear image and overlay mask so that they become empty.\n";
@@ -428,6 +453,11 @@ constexpr auto _graphicsInputDocString =
         "This kind of input is used to manage user-defined ROI or to forward graphics items generated by a previous task in your workflow. "
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
+constexpr auto _ctorGraphicsInDocString =
+        "Construct a CGraphicsInput instance with the given name.\n\n"
+        "Args:\n"
+        "   arg1 (str): input name\n";
+
 constexpr auto _setItemsDocString =
         "Fill input/output with the given graphics item list.\n\n"
         "Args:\n"
@@ -456,6 +486,11 @@ constexpr auto _graphicsOutputDocString =
         "Ikomia software displays it as an overlay layer on top of images or videos. "
         "Graphics items can then be forwarded as input of workflow's following tasks. "
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
+
+constexpr auto _ctorGraphicsOutDocString =
+        "Construct a CGraphicsOutput instance with the given name.\n\n"
+        "Args:\n"
+        "   arg1 (str): output name\n";
 
 constexpr auto _setNewLayerDocString =
         "Initiate a new graphics layer for the output with the given name. The method clears all graphics items that was previously generated.\n\n"
@@ -599,12 +634,17 @@ constexpr auto _videoProcessIODocString =
         "Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`.\n\n";
 
 constexpr auto _ctor1VideoProcessIODocString =
-        "Construct a CVideoIO instance with the given image. "
-        "By default, the image output type is set to the standard one (IODataType.IMAGE). "
-        "See :py:class:`~ikomia.core.pycore.IODataType` for details.\n\n"
+        "Construct a CVideoIO instance with the given data type. The data type must be one of these values:\n\n"
+        "- IODataType.VIDEO\n"
+        "- IODataType.VIDEO_BINARY\n"
+        "- IODataType.VIDEO_LABEL\n"
+        "- IODataType.LIVE_STREAM\n"
+        "- IODataType.LIVE_STREAM_BINARY\n"
+        "- IODataType.LIVE_STREAM_LABEL\n\n"
+        "Please note that internal image structure is empty\n\n"
         "Args:\n"
         "   arg1: self\n\n"
-        "   arg2 (Numpy array): 2D image\n";
+        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n";
 
 constexpr auto _ctor2VideoProcessIODocString =
         "Construct a CVideoIO instance with the given data type. The data type must be one of these values:\n\n"
@@ -617,7 +657,8 @@ constexpr auto _ctor2VideoProcessIODocString =
         "Please note that internal image structure is empty\n\n"
         "Args:\n"
         "   arg1: self\n\n"
-        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n";
+        "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
+        "   arg3 (Numpy array): 2D image\n";
 
 constexpr auto _ctor3VideoProcessIODocString =
         "Construct a CVideoIO instance with the given data type and the given image. "
@@ -631,7 +672,8 @@ constexpr auto _ctor3VideoProcessIODocString =
         "Args:\n"
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
-        "   arg3 (Numpy array): 2D image\n";
+        "   arg3 (Numpy array): 2D image\n\n"
+        "   arg4 (str): input or output name\n";
 
 constexpr auto _setVideoPathDocString =
         "Set the source path of the video.\n\n"
@@ -725,8 +767,12 @@ constexpr auto _widgetOutputDocString =
         "A widget must be a derived object from QWidget of the Qt framework (PyQt5 or PySide2).\n"
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
-constexpr auto _ctorWidgetOutputDocString =
+constexpr auto _ctor1WidgetOutputDocString =
         "Construct a CWidgetOutput instance with the given data type."
+        "By default, the widget data type is IODataType.WIDGET (see :py:class:`~ikomia.core.pycore.IODataType`).\n";
+
+constexpr auto _ctor2WidgetOutputDocString =
+        "Construct a CWidgetOutput instance with the given data type and name."
         "By default, the widget data type is IODataType.WIDGET (see :py:class:`~ikomia.core.pycore.IODataType`).\n";
 
 constexpr auto _setWidgetDocString =
@@ -750,11 +796,11 @@ constexpr auto _pathIODocString =
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1PathIODocString =
-        "Construct a CPathIO instance with the given data type. "
+        "Construct a CPathIO instance with the given data type and path. "
         "Data type can be either a file or folder path (see :py:class:`~ikomia.core.pycore.IODataType`).\n\n";
 
 constexpr auto _ctor2PathIODocString =
-        "Construct a CPathIO instance with the given data type and the given path. "
+        "Construct a CPathIO instance with the given data type, path and name. "
         "Data type can be either a file or folder path (see :py:class:`~ikomia.core.pycore.IODataType`).\n\n";
 
 constexpr auto _setPathDocString =
@@ -799,9 +845,15 @@ constexpr auto _datasetIODocString =
         "are connected and the color to use for the line between them.\n\n";
 
 constexpr auto _ctor1DatasetIODocString =
-        "Construct a CDatasetIO object specifying the source format.\n\n"
+        "Construct a CDatasetIO object specifying the input or output name.\n\n"
         "Args:\n"
-        "   str: unique string identifier.\n\n";
+        "   str: name\n";
+
+constexpr auto _ctor2DatasetIODocString =
+        "Construct a CDatasetIO object specifying the name and the source format.\n\n"
+        "Args:\n"
+        "   str: name\n\n"
+        "   str: unique string identifier\n";
 
 constexpr auto _getImagePathsDocStr =
         "Virtual method to reimplement, return the file path list of all images contained in the dataset.\n\n"
@@ -851,7 +903,14 @@ constexpr auto _ctor1ArrayIODocString =
         "Construct a CArrayIO instance with the given array. "
         "Args:\n"
         "   arg1: self\n\n"
-        "   arg2 (Numpy array): nd array\n";
+        "   arg2 (str): I/O name\n";
+
+constexpr auto _ctor2ArrayIODocString =
+        "Construct a CArrayIO instance with the given array. "
+        "Args:\n"
+        "   arg1: self\n\n"
+        "   arg2 (Numpy array): nd array\n\n"
+        "   arg3 (str): I/O name\n";
 
 constexpr auto _clearArrayDataDocString =
         "Clear array so that it becomes empty.\n";
@@ -1308,6 +1367,27 @@ constexpr auto _wfGetTaskIDsDocString =
 constexpr auto _wfGetTaskDocString =
         "";
 
+constexpr auto _wfGetParentsDocString =
+        "";
+
+constexpr auto _wfGetChildsDocString =
+        "";
+
+constexpr auto _wfGetInEdgesDocString =
+        "";
+
+constexpr auto _wfGetOutEdgesDocString =
+        "";
+
+constexpr auto _wfGetEdgeInfoDocString =
+        "";
+
+constexpr auto _wfGetEdgeSourceDocString =
+        "";
+
+constexpr auto _wfGetEdgeTargetDocString =
+        "";
+
 constexpr auto _wfGetFinalTasks =
         "";
 
@@ -1329,7 +1409,22 @@ constexpr auto _wfAddTaskDocString =
 constexpr auto _wfConnectDocString =
         "";
 
+constexpr auto _wfRemoveInputDocString =
+        "";
+
 constexpr auto _wfClearInputsDocString =
+        "";
+
+constexpr auto _wfClearOutputDataDocString =
+        "";
+
+constexpr auto _wfClearDocString =
+        "";
+
+constexpr auto _wfDeleteTaskDocString =
+        "";
+
+constexpr auto _wfDeleteEdgeDocString =
         "";
 
 constexpr auto _wfRunDocString =

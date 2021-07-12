@@ -40,13 +40,38 @@ class CWorkflowWrap: public CWorkflow, public wrapper<CWorkflow>
         std::vector<std::intptr_t>  getTaskIDs();
         WorkflowTaskPtr             getTask(std::intptr_t id);
         double                      getElapsedTimeTo(std::intptr_t id);
+        std::vector<std::intptr_t>  getParents(std::intptr_t id);
+        std::vector<std::intptr_t>  getChilds(std::intptr_t id);
+        std::vector<size_t>         getInEdges(std::intptr_t id);
+        std::vector<size_t>         getOutEdges(std::intptr_t id);
+        boost::python::tuple        getEdgeInfo(size_t id);
+        std::intptr_t               getEdgeSource(size_t id);
+        std::intptr_t               getEdgeTarget(size_t id);
 
         std::intptr_t               addTaskWrap(const WorkflowTaskPtr &taskPtr);
 
         void                        connectWrap(const std::intptr_t& src, const std::intptr_t& target, int srcIndex, int targetIndex);
 
+        void                        deleteTaskWrap(std::intptr_t id);
+        void                        deleteEdgeWrap(size_t id);
+
         void                        run() override;
         void                        default_run();
+
+        void                        clearWrap();
+
+        void                        loadWrap(const std::string& path);
+
+    private:
+
+        std::pair<bool, WorkflowEdge>   getEdgeDescriptor(size_t index) const;
+
+        void                            removeEdgeIndex(const WorkflowEdge &edge);
+
+    private:
+
+        size_t                          m_edgeIndex = 0;
+        std::map<WorkflowEdge, size_t>  m_edgeDescToIndex;
 };
 
 #endif // CWORKFLOWWRAP_H
