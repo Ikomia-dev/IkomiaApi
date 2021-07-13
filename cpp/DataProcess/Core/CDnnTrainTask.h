@@ -26,27 +26,6 @@
 #include "Workflow/CWorkflowTask.h"
 #include "CException.h"
 
-//------------------------------//
-//----- CDnnTrainTaskParam -----//
-//------------------------------//
-class DATAPROCESSSHARED_EXPORT CDnnTrainTaskParam: public CWorkflowTaskParam
-{
-    public:
-
-        CDnnTrainTaskParam();
-
-        virtual ~CDnnTrainTaskParam() = default;
-
-        virtual void        setParamMap(const UMapString& paramMap) override;
-
-        virtual UMapString  getParamMap() const override;
-        virtual uint        getHashValue() const override;
-
-    public:
-
-        std::map<std::string,std::string>   m_cfg;
-};
-
 //-------------------------//
 //----- CDnnTrainTask -----//
 //-------------------------//
@@ -56,7 +35,7 @@ class DATAPROCESSSHARED_EXPORT CDnnTrainTask : public CWorkflowTask
 
         CDnnTrainTask();
         CDnnTrainTask(const std::string& name);
-        CDnnTrainTask(const std::string& name, const std::shared_ptr<CDnnTrainTaskParam>& pParam);
+        CDnnTrainTask(const std::string& name, const std::shared_ptr<CWorkflowTaskParam>& pParam);
 
         ~CDnnTrainTask() = default;
 

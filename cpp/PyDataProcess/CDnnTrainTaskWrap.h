@@ -31,7 +31,7 @@ class CDnnTrainTaskWrap : public CDnnTrainTask, public wrapper<CDnnTrainTask>
     public:
 
         CDnnTrainTaskWrap();
-        CDnnTrainTaskWrap(const std::string& name, const std::shared_ptr<CDnnTrainTaskParam>& pParam);
+        CDnnTrainTaskWrap(const std::string& name, const std::shared_ptr<CWorkflowTaskParam>& pParam);
         CDnnTrainTaskWrap(const CDnnTrainTask& process);
 
         ~CDnnTrainTaskWrap() = default;

@@ -21,7 +21,6 @@ SOURCES += \
         ../Core/Data/CvMatNumpyArrayConverter.cpp \
         CArrayIOWrap.cpp \
         CDatasetIOWrap.cpp \
-        CDnnTrainTaskParamWrap.cpp \
         CDnnTrainTaskWrap.cpp \
         CGraphicsInputWrap.cpp \
         CImageIOWrap.cpp \
@@ -43,7 +42,6 @@ HEADERS += \
         ../Core/Data/CvMatNumpyArrayConverter.h \
         CArrayIOWrap.h \
         CDatasetIOWrap.h \
-        CDnnTrainTaskParamWrap.h \
         CDnnTrainTaskWrap.h \
         CFeatureIOWrap.hpp \
         CGraphicsInputWrap.h \

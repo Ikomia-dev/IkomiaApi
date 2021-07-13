@@ -21,56 +21,29 @@
 #include <QDesktopServices>
 #include "UtilsTools.hpp"
 
-//---------------------------------//
-//----- CDnnTrainTaskParam -----//
-//---------------------------------//
-CDnnTrainTaskParam::CDnnTrainTaskParam() : CWorkflowTaskParam()
-{
-}
-
-void CDnnTrainTaskParam::setParamMap(const UMapString &paramMap)
-{
-    for(auto it : paramMap)
-        m_cfg[it.first] = it.second;
-}
-
-UMapString CDnnTrainTaskParam::getParamMap() const
-{
-    UMapString map;
-    for(auto it : m_cfg)
-        map[it.first] = it.second;
-
-    return map;
-}
-
-uint CDnnTrainTaskParam::getHashValue() const
-{
-    return CWorkflowTaskParam::getHashValue();
-}
-
 //----------------------------//
 //----- CDnnTrainTask -----//
 //----------------------------//
 CDnnTrainTask::CDnnTrainTask() : CWorkflowTask()
 {
     m_type = CWorkflowTask::Type::DNN_TRAIN;
-    m_pParam = std::make_shared<CDnnTrainTaskParam>();
+    m_pParam = std::make_shared<CWorkflowTaskParam>();
 }
 
 CDnnTrainTask::CDnnTrainTask(const std::string &name): CWorkflowTask(name)
 {
     m_type = CWorkflowTask::Type::DNN_TRAIN;
-    m_pParam = std::make_shared<CDnnTrainTaskParam>();
+    m_pParam = std::make_shared<CWorkflowTaskParam>();
 }
 
-CDnnTrainTask::CDnnTrainTask(const std::string &name, const std::shared_ptr<CDnnTrainTaskParam> &pParam) : CWorkflowTask(name)
+CDnnTrainTask::CDnnTrainTask(const std::string &name, const std::shared_ptr<CWorkflowTaskParam> &pParam) : CWorkflowTask(name)
 {
     m_type = CWorkflowTask::Type::DNN_TRAIN;
 
     if(pParam)
-        m_pParam = std::make_shared<CDnnTrainTaskParam>(*pParam);
+        m_pParam = std::make_shared<CWorkflowTaskParam>(*pParam);
     else
-        m_pParam = std::make_shared<CDnnTrainTaskParam>();
+        m_pParam = std::make_shared<CWorkflowTaskParam>();
 }
 
 std::string CDnnTrainTask::getTensorboardLogDir() const

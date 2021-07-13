@@ -30,7 +30,6 @@
 #include "CVideoOFTaskWrap.h"
 #include "CVideoTrackingTaskWrap.h"
 #include "CDnnTrainTaskWrap.h"
-#include "CDnnTrainTaskParamWrap.h"
 #include "CFeatureIOWrap.hpp"
 #include "CGraphicsInputWrap.h"
 #include "CImageIOWrap.h"
@@ -117,7 +116,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
     register_ptr_to_python<std::shared_ptr<CVideoOFTask>>();
     register_ptr_to_python<std::shared_ptr<CVideoTrackingTask>>();
     register_ptr_to_python<std::shared_ptr<CDnnTrainTask>>();
-    register_ptr_to_python<std::shared_ptr<CDnnTrainTaskParam>>();
 
     //Register std::vector<T> <-> python list converters
     registerStdVector<uchar>();
@@ -579,7 +577,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     class_<CDnnTrainTaskWrap, bases<CWorkflowTask>, std::shared_ptr<CDnnTrainTaskWrap>>("CDnnTrainTask", _dnnTrainProcessDocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctor1DnnTrainProcessDocString))
-        .def(init<const std::string&, const std::shared_ptr<CDnnTrainTaskParam>&>(_ctor2DnnTrainProcessDocString))
+        .def(init<const std::string&, const std::shared_ptr<CWorkflowTaskParam>&>(_ctor2DnnTrainProcessDocString))
         .def("setActive", &CDnnTrainTask::setActive, &CDnnTrainTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("beginTaskRun", &CDnnTrainTask::beginTaskRun, &CDnnTrainTaskWrap::default_beginTaskRun, _beginTaskRunDocString, args("self"))
         .def("endTaskRun", &CDnnTrainTask::endTaskRun, &CDnnTrainTaskWrap::default_endTaskRun, _endTaskRunDocString, args("self"))
@@ -593,19 +591,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("emitOutputChanged", &CDnnTrainTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
         .def("enableMlflow", &CDnnTrainTask::enableMlflow, _enableMlflowDocString, args("self", "enable"))
         .def("enableTensorboard", &CDnnTrainTask::enableTensorboard, _enableTensorboardDocString, args("self", "enable"))
-    ;
-
-    //------------------------------//
-    //----- CDnnTrainTaskParam -----//
-    //------------------------------//
-    class_<CDnnTrainTaskParamWrap, bases<CWorkflowTaskParam>, std::shared_ptr<CDnnTrainTaskParamWrap>>("CDnnTrainTaskParam", _dnnTrainProcessParamDocString)
-        .enable_pickling()
-        .def(init<>("Default constructor"))
-        .def("__copy__", &generic_copy<CDnnTrainTaskParamWrap>)
-        .def("__deepcopy__", &generic_deepcopy<CDnnTrainTaskParamWrap>)
-        .def("setParamMap", &CDnnTrainTaskParam::setParamMap, &CDnnTrainTaskParamWrap::default_setParamMap, _setParamMapDocString, args("self", "params"))
-        .def("getParamMap", &CDnnTrainTaskParam::getParamMap, &CDnnTrainTaskParamWrap::default_getParamMap, _getParamMapDocString, args("self"))
-        .def("getHashValue", &CDnnTrainTaskParam::getHashValue, &CDnnTrainTaskParamWrap::default_getHashValue, _getHashValueDocString, args("self"))
     ;
 
     //---------------------------//

@@ -25,17 +25,17 @@ using namespace boost::python;
 
 CMlflowTrainTask::CMlflowTrainTask(): CDnnTrainTask()
 {
-    m_pParam = std::make_shared<CDnnTrainTaskParam>();
+    m_pParam = std::make_shared<CWorkflowTaskParam>();
     initMlFlow();
 }
 
 CMlflowTrainTask::CMlflowTrainTask(const std::string &name): CDnnTrainTask(name)
 {
-    m_pParam = std::make_shared<CDnnTrainTaskParam>();
+    m_pParam = std::make_shared<CWorkflowTaskParam>();
     initMlFlow();
 }
 
-CMlflowTrainTask::CMlflowTrainTask(const std::string &name, const std::shared_ptr<CDnnTrainTaskParam>& pParam): CDnnTrainTask(name, pParam)
+CMlflowTrainTask::CMlflowTrainTask(const std::string &name, const std::shared_ptr<CWorkflowTaskParam> &pParam): CDnnTrainTask(name, pParam)
 {
     initMlFlow();
 }
@@ -58,7 +58,7 @@ void CMlflowTrainTask::beginTaskRun()
         str strId(m_experimentId);
         mlflow.attr("start_run")(none, strId, strTaskName, false);
 
-        auto paramPtr = std::static_pointer_cast<CDnnTrainTaskParam>(m_pParam);
+        auto paramPtr = std::static_pointer_cast<CWorkflowTaskParam>(m_pParam);
         logParams(paramPtr->m_cfg);
     }
     catch(error_already_set&)

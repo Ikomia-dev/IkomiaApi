@@ -23,7 +23,7 @@ CDnnTrainTaskWrap::CDnnTrainTaskWrap() : CDnnTrainTask()
 {
 }
 
-CDnnTrainTaskWrap::CDnnTrainTaskWrap(const std::string &name, const std::shared_ptr<CDnnTrainTaskParam>& pParam) :  CDnnTrainTask(name, pParam)
+CDnnTrainTaskWrap::CDnnTrainTaskWrap(const std::string &name, const std::shared_ptr<CWorkflowTaskParam> &pParam) :  CDnnTrainTask(name, pParam)
 {
 }
 

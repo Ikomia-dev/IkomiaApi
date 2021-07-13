@@ -62,6 +62,10 @@ class CORESHARED_EXPORT CWorkflowTaskParam
         virtual uint        getHashValue() const;
 
         friend std::ostream& operator<<(std::ostream& os, const CWorkflowTaskParam& param);
+
+    public:
+
+        std::map<std::string,std::string>   m_cfg;
 };
 
 using WorkflowTaskParamPtr = std::shared_ptr<CWorkflowTaskParam>;

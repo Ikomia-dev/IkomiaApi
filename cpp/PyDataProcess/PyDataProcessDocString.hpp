@@ -1246,30 +1246,6 @@ constexpr auto _enableTensorboardDocString =
         "Args:"
         "   enable (boolean): True or False\n";
 
-//------------------------------//
-//----- CDnnTrainTaskParam -----//
-//------------------------------//
-constexpr auto _dnnTrainProcessParamDocString =
-        "Base class defining common deep learning hyper-parameters.\n\n"
-        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.";
-
-constexpr auto _setParamMapDocString =
-        "Set task parameter names and values from the given :py:class:`~ikomia.core.pycore.ParamMap` object (same use as Python dict).\n\n"
-        "Args:\n"
-        "   params (:py:class:`~ikomia.core.pycore.ParamMap`): pairs of string (parameter name, parameter value)\n"
-        "       Numeric values must be converted from str to the desired numeric type before use\n\n";
-
-constexpr auto _getParamMapDocString =
-        "Get task parameter names and values.\n\n"
-        "Returns:\n"
-        "   :py:class:`ParamMap`: dict-like structure storing pairs of string (parameter name, parameter value)\n";
-
-constexpr auto _getHashValueDocString =
-        "Get hash value from parameters values. "
-        "The system uses this method to determine if task configuration has changed. \n\n"
-        "Returns:\n"
-        "   int: hash value\n";
-
 //---------------------------//
 //----- CIkomiaRegistry -----//
 //---------------------------//

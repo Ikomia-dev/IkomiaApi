@@ -27,12 +27,15 @@ CWorkflowTaskParam::CWorkflowTaskParam()
 
 void CWorkflowTaskParam::setParamMap(const UMapString &paramMap)
 {
-    Q_UNUSED(paramMap);
+    for(auto it : paramMap)
+        m_cfg[it.first] = it.second;
 }
 
 UMapString CWorkflowTaskParam::getParamMap() const
 {
-    return UMapString();
+    UMapString map;
+    for(auto it : m_cfg)
+        map[it.first] = it.second;
 }
 
 uint CWorkflowTaskParam::getHashValue() const

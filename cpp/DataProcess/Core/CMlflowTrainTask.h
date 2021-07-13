@@ -31,7 +31,7 @@ class DATAPROCESSSHARED_EXPORT CMlflowTrainTask: public CDnnTrainTask
 
         CMlflowTrainTask();
         CMlflowTrainTask(const std::string& name);
-        CMlflowTrainTask(const std::string& name, const std::shared_ptr<CDnnTrainTaskParam>& pParam);
+        CMlflowTrainTask(const std::string& name, const std::shared_ptr<CWorkflowTaskParam>& pParam);
 
         void    beginTaskRun() override;
         void    endTaskRun() override;
