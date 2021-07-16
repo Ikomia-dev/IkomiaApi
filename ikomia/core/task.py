@@ -5,6 +5,8 @@ class TaskParam(core.CWorkflowTaskParam):
     """
     Base class to manage Deep Learning training parameters.
     It includes a dict structure to store parameter values.
+
+    :ivar cfg: parameters dict
     """
     def __init__(self):
         """

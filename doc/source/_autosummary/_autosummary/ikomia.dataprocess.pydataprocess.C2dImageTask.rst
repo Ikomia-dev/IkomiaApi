@@ -8,7 +8,7 @@
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import C2dImageTask
 
 
    .. rubric:: Methods
@@ -17,6 +17,7 @@
       ~C2dImageTask.applyGraphicsMask
       ~C2dImageTask.applyGraphicsMaskToBinary
       ~C2dImageTask.createGraphicsMask
+      ~C2dImageTask.emitAddSubProgressSteps
       ~C2dImageTask.emitGraphicsContextChanged
       ~C2dImageTask.emitOutputChanged
       ~C2dImageTask.emitStepProgress
@@ -77,6 +78,7 @@
    .. automethod:: applyGraphicsMaskToBinary
    .. automethod:: beginTaskRun
    .. automethod:: createGraphicsMask
+   .. automethod:: emitAddSubProgressSteps
    .. automethod:: emitGraphicsContextChanged
    .. automethod:: emitOutputChanged
    .. automethod:: emitStepProgress

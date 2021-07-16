@@ -1,4 +1,4 @@
-CTimer
+﻿CTimer
 ======
 
 .. currentmodule:: ikomia.utils.pyutils
@@ -8,11 +8,11 @@ CTimer
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import utils
+         from ikomia.utils import CTimer
 
    .. rubric:: Methods
    .. autosummary::
-   
+
       ~CTimer.__init__
       ~CTimer.get_elapsed_ms
       ~CTimer.get_elapsed_ns

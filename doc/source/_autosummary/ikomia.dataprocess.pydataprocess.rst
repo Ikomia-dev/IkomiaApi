@@ -24,6 +24,8 @@
       CDatasetIO
       CPathIO
       CArrayIO
+      CMeasureIO
+      CObjectMeasure
       NumericOutputType
       PlotType
       MapIntStr
@@ -39,10 +41,11 @@
       CVideoTrackingTask
       CDnnTrainTask
       CTaskInfo
-      Language
+      CIkomiaRegistry
+      CWorkflow
 
-   .. rubric:: Parameters management
+   .. rubric:: Widget management
    .. autosummary::
       :toctree: _autosummaryv
 
-      CDnnTrainTaskParam
+      CWidgetFactory

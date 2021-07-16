@@ -8,7 +8,7 @@ GraphicsTextProperty
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import GraphicsTextProperty
 
    .. rubric:: Attributes
    .. autosummary::

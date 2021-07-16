@@ -9,9 +9,9 @@ Example:
 
    .. code:: python
 
-      from ikomia import core
+      from ikomia.dataprocess import MapIntStr
 
-      categories = core.MapIntStr()
+      categories = MapIntStr()
       categories[0] = "boat"
       categories[1] = "kyte"
       categories[2] = "windsurf"

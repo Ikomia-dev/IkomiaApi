@@ -8,7 +8,7 @@ CGraphicsOutput
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CGraphicsOutput
 
    .. rubric:: Methods
    .. autosummary::
@@ -21,7 +21,9 @@ CGraphicsOutput
       ~CGraphicsOutput.addPolyline
       ~CGraphicsOutput.addRectangle
       ~CGraphicsOutput.addText
+      ~CGraphicsOutput.getItems
       ~CGraphicsOutput.setImageIndex
+      ~CGraphicsOutput.setItems
       ~CGraphicsOutput.setNewLayer
 
    .. rubric:: Overridden methods
@@ -34,6 +36,7 @@ CGraphicsOutput
       ~CGraphicsOutput.copyStaticData
       ~CGraphicsOutput.getUnitElementCount
       ~CGraphicsOutput.isAutoInput
+      ~CGraphicsOutput.setDisplayable
 
    .. rubric:: Attributes
    .. autosummary::

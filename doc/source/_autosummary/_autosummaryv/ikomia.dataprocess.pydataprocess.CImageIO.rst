@@ -8,11 +8,13 @@ CImageIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CImageIO
+
 
    .. rubric:: Methods
    .. autosummary::
       ~CImageIO.__init__
+      ~CImageIO.drawGraphics
       ~CImageIO.getChannelCount
       ~CImageIO.getData
       ~CImageIO.getImage
@@ -33,6 +35,7 @@ CImageIO
    .. rubric:: Inherited methods
    .. autosummary::
       ~CImageIO.isAutoInput
+      ~CImageIO.setDisplayable
    
    .. rubric:: Attributes
    .. autosummary::
@@ -43,6 +46,7 @@ CImageIO
    .. automethod:: __init__
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: drawGraphics
    .. automethod:: getChannelCount
    .. automethod:: getData
    .. automethod:: getImage
@@ -53,6 +57,7 @@ CImageIO
    .. automethod:: isOverlayAvailable
    .. automethod:: setChannelCount
    .. automethod:: setCurrentImage
+   .. automethod:: setDisplayable
    .. automethod:: setImage
    .. automethod:: setOverlayMask
    

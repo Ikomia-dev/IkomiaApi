@@ -8,12 +8,13 @@ CDblFeatureIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CDblFeatureIO
 
    .. rubric:: Methods
    .. autosummary::
       ~CDblFeatureIO.__init__
       ~CDblFeatureIO.addValueList
+      ~CDblFeatureIO.getAllHeaderLabels
       ~CDblFeatureIO.getAllLabelList
       ~CDblFeatureIO.getAllValueList
       ~CDblFeatureIO.getOutputType
@@ -32,6 +33,7 @@ CDblFeatureIO
       ~CDblFeatureIO.copyStaticData
       ~CDblFeatureIO.getUnitElementCount
       ~CDblFeatureIO.isAutoInput
+      ~CDblFeatureIO.setDisplayable
 
    .. rubric:: Attributes
    .. autosummary::

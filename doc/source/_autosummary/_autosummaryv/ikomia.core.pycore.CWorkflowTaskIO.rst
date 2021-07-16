@@ -8,7 +8,8 @@ CWorkflowTaskIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import CWorkflowTaskIO
+
 
    .. rubric:: Methods
    .. autosummary::   

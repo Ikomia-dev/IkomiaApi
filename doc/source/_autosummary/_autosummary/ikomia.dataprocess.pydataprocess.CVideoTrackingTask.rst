@@ -8,7 +8,7 @@ CVideoTrackingTask
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CVideoTrackingTask
 
    .. rubric:: Methods
    .. autosummary::
@@ -29,6 +29,7 @@ CVideoTrackingTask
       ~CVideoTrackingTask.applyGraphicsMaskToBinary
       ~CVideoTrackingTask.beginTaskRun
       ~CVideoTrackingTask.createGraphicsMask
+      ~CVideoTrackingTask.emitAddSubProgressSteps
       ~CVideoTrackingTask.emitGraphicsContextChanged
       ~CVideoTrackingTask.emitOutputChanged
       ~CVideoTrackingTask.emitStepProgress
@@ -79,6 +80,7 @@ CVideoTrackingTask
    .. automethod:: applyGraphicsMaskToBinary
    .. automethod:: beginTaskRun
    .. automethod:: createGraphicsMask
+   .. automethod:: emitAddSubProgressSteps
    .. automethod:: emitGraphicsContextChanged
    .. automethod:: emitOutputChanged
    .. automethod:: emitStepProgress

@@ -1,10 +1,17 @@
-PyQtUtils
+﻿PyQtUtils
 =========
 
 .. automodule:: ikomia.utils.pyqtutils
 
+   .. rubric:: Import
+   .. code-block:: python
+
+         from ikomia.utils import pyqtutils
+
+
    .. rubric:: Functions
-   .. autosummary::   
+   .. autosummary::
+   
       add_browse_file
       append_browse_file
       add_check
@@ -19,8 +26,8 @@ PyQtUtils
       append_radio
       add_slider
       append_slider
-      
-   .. rubric:: Classes
-   .. autosummary::   
-      BrowseFileWidget
    
+   .. rubric:: Classes
+   .. autosummary::
+
+      BrowseFileWidget

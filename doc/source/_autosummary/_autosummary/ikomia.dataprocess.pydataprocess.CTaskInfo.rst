@@ -8,7 +8,7 @@ CTaskInfo
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import  CTaskInfo
 
    .. rubric:: Methods
    .. autosummary::
@@ -21,6 +21,8 @@ CTaskInfo
       ~CTaskInfo.description
       ~CTaskInfo.documentationLink
       ~CTaskInfo.iconPath
+      ~CTaskInfo.ikomia_version
+      ~CTaskInfo.internal
       ~CTaskInfo.journal
       ~CTaskInfo.keywords
       ~CTaskInfo.language

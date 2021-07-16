@@ -8,7 +8,7 @@ C2dImageInteractiveTask
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import C2dImageInteractiveTask
 
    .. rubric:: Methods
    .. autosummary::
@@ -16,6 +16,7 @@ C2dImageInteractiveTask
       ~C2dImageInteractiveTask.clearInteractionLayer
       ~C2dImageInteractiveTask.computeBlobs
       ~C2dImageInteractiveTask.createInteractionMask
+      ~C2dImageInteractiveTask.emitAddSubProgressSteps
       ~C2dImageInteractiveTask.emitGraphicsContextChanged
       ~C2dImageInteractiveTask.emitOutputChanged
       ~C2dImageInteractiveTask.emitStepProgress
@@ -84,6 +85,7 @@ C2dImageInteractiveTask
    .. automethod:: computeBlobs
    .. automethod:: createGraphicsMask
    .. automethod:: createInteractionMask
+   .. automethod:: emitAddSubProgressSteps
    .. automethod:: emitGraphicsContextChanged
    .. automethod:: emitOutputChanged
    .. automethod:: emitStepProgress

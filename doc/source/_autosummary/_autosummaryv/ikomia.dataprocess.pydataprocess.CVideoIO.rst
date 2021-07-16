@@ -8,7 +8,8 @@ CVideoIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CVideoIO
+
 
    .. rubric:: Methods
    .. autosummary::
@@ -38,6 +39,7 @@ CVideoIO
    .. rubric:: Inherited methods
    .. autosummary::
       ~CVideoIO.copyStaticData
+      ~CVideoIO.drawGraphics
       ~CVideoIO.getChannelCount
       ~CVideoIO.getData
       ~CVideoIO.getOverlayMask
@@ -45,6 +47,7 @@ CVideoIO
       ~CVideoIO.isOverlayAvailable
       ~CVideoIO.setChannelCount
       ~CVideoIO.setCurrentImage
+      ~CVideoIO.setDisplayable
       ~CVideoIO.setImage
       ~CVideoIO.setOverlayMask
 

@@ -8,10 +8,10 @@ CDatasetIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CDatasetIO
 
-   **Note**: a default implementation is provided in the pure Python API.
-   See :py:mod:`~ikomia.dnn.datasetio` for details.
+   .. note:: A default implementation is provided in the pure Python API. See :py:mod:`~ikomia.dnn.datasetio` for details.
+
 
    .. rubric:: Methods
    .. autosummary::
@@ -21,6 +21,7 @@ CDatasetIO
       ~CDatasetIO.getGraphicsAnnotations
       ~CDatasetIO.getImagePaths
       ~CDatasetIO.getMaskPath
+      ~CDatasetIO.getSourceFormat
 
    .. rubric:: Overridden methods
    .. autosummary::
@@ -33,6 +34,7 @@ CDatasetIO
    .. autosummary::
       ~CDatasetIO.copyStaticData
       ~CDatasetIO.getUnitElementCount
+      ~CDatasetIO.setDisplayable
    
    .. rubric:: Attributes
    .. autosummary::

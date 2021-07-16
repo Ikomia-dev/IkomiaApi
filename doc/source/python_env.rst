@@ -14,21 +14,15 @@ The Python environment configuration may vary among your operating system:
 
 - Version: *3.8*
 - Path: *c:\\Users\\{username}\Ikomia\Python*
-- Installed packages: *pip, numpy=1.19.0, requests, PyQt5=5.15.2, opencv=4.5.0, MLflow=1.14.1*
+- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.3, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
 
 **Linux**
 
 - Version: *3.7*
 - Path: *~/Ikomia/Python*
-- Installed packages: *pip, numpy=1.19.0, requests, PyQt5=5.15.2, sip, opencv=4.5.0, MLflow=1.14.1*
+- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.3, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
 
-**Mac OS X**
-
-- Version: *3.7*
-- Path: *~/Ikomia/Python*
-- Installed packages: *pip, numpy, requests, PyQt5=5.11.2, sip, opencv=4.2.0*
-
-**Note**: to ensure interoperability with Qt, the PyQt5 package **must not** be updated with pip or other package manager.
+.. Note:: To ensure interoperability with Qt, the PyQt5 package **must not** be updated with pip or other package manager.
 
 Package management
 ------------------
@@ -44,7 +38,7 @@ Windows
     cd c:\Users\{username}\Ikomia\Python
     python.exe -m pip install {your_package}
 
-Linux and Mac OS X
+Linux
 
 .. code-block:: bash
 
@@ -66,5 +60,3 @@ Then you can select a package and make the following actions:
 
 
 .. image:: _static/plugin_manager.jpg
-
-

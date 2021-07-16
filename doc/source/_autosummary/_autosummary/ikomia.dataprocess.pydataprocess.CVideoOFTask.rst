@@ -8,7 +8,7 @@ CVideoOFTask
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CVideoOFTask
 
    .. rubric:: Methods
    .. autosummary::
@@ -23,7 +23,8 @@ CVideoOFTask
       ~CVideoOFTask.applyGraphicsMask
       ~CVideoOFTask.applyGraphicsMaskToBinary
       ~CVideoOFTask.beginTaskRun
-      ~CVideoOFTask.createGraphicsMask      
+      ~CVideoOFTask.createGraphicsMask
+      ~CVideoOFTask.emitAddSubProgressSteps
       ~CVideoOFTask.emitGraphicsContextChanged
       ~CVideoOFTask.emitOutputChanged
       ~CVideoOFTask.emitStepProgress
@@ -78,6 +79,7 @@ CVideoOFTask
    .. automethod:: beginTaskRun
    .. automethod:: createGraphicsMask
    .. automethod:: drawOptFlowMap
+   .. automethod:: emitAddSubProgressSteps
    .. automethod:: emitGraphicsContextChanged
    .. automethod:: emitOutputChanged
    .. automethod:: emitStepProgress

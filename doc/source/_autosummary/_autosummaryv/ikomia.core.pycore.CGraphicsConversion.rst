@@ -8,7 +8,7 @@ CGraphicsConversion
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import CGraphicsConversion
 
    .. rubric:: Methods
    .. autosummary::

@@ -20,7 +20,7 @@ Ikomia dependency management is fully based on pip. Please consult the pip offic
 to know about all features:
 
 - `pip user guide <https://pip.pypa.io/en/stable/user_guide/>`_
-- `requirements file format <https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format>`_
+- `requirements file format <https://pip.pypa.io/en/stable/cli/pip_install/#requirements-file-format>`_
 
 
 Multi-steps installation
@@ -52,4 +52,7 @@ Limitations
 The standard way to manage dependencies in Python and its pip package installer is to provide a valid *setup.py* script.
 Then, Python package can either be distributed from Wheel or from source. For the moment, Ikomia software can only install
 dependencies available in the official Python Package Index (PyPI) or via a git repository. Support for manual installation
-through direct call to *setup.py* script (setuptools) inside the plugin is in our roadmap and will be available soon.
+through direct call to *setup.py* script (setuptools) inside the plugin is not yet available.
+
+
+.. important:: While implementing your own algorithm, you may need to add dependencies with C extensions. So you should have installed on your own a valid C/C++ compiler for your system.

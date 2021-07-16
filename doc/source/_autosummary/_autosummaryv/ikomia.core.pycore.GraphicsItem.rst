@@ -8,7 +8,7 @@ GraphicsItem
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import GraphicsItem
 
    .. rubric:: Attributes
 

@@ -1,4 +1,4 @@
-CMemoryInfo
+﻿CMemoryInfo
 ===========
 
 .. currentmodule:: ikomia.utils.pyutils
@@ -8,7 +8,7 @@ CMemoryInfo
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import utils
+         from ikomia.utils import CMemoryInfo
 
    .. rubric:: Methods
    .. autosummary::
@@ -23,4 +23,3 @@ CMemoryInfo
    .. automethod:: availableMemory
    .. automethod:: memoryLoad
    .. automethod:: totalMemory
-   

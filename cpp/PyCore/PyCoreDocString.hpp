@@ -108,7 +108,8 @@ constexpr auto _graphicsEllipseDocString =
         "Such graphics item is defined by:\n\n"
         "- top-left point of the bounding box (x,y)\n"
         "- width (float)\n"
-        "- height (float)\n\n";
+        "- height (float)\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsEllipse =
         "Construct an ellipse item with the given dimensions.\n\n"
@@ -134,7 +135,8 @@ constexpr auto _ctor2GraphicsEllipse =
 //--------------------------//
 constexpr auto _graphicsPointDocString =
         "Graphics item to display point in the overlay layer of an image. "
-        "Such graphics is defined by a 2D point (x,y)\n\n";
+        "Such graphics is defined by a 2D point (x,y)\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsPoint =
         "Construct a point graphics with the given 2D point.\n\n"
@@ -154,7 +156,8 @@ constexpr auto _ctor2GraphicsPoint =
 //----------------------------//
 constexpr auto _graphicsPolygonDocString =
         "Graphics item to display polygon in the overlay layer of an image. "
-        "Such graphics is defined by a list of 2D points (x,y) corresponding to vertices.\n\n";
+        "Such graphics is defined by a list of 2D points (x,y) corresponding to vertices.\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsPolygon =
         "Construct a polygon graphics with the given vertices.\n\n"
@@ -174,7 +177,8 @@ constexpr auto _ctor2GraphicsPolygon =
 //------------------------------//
 constexpr auto _graphicsPolylineDocString =
         "Graphics item to display polyline in the overlay layer of an image. "
-        "Such graphics is defined by a list of 2D points (x,y) corresponding to vertices.\n\n";
+        "Such graphics is defined by a list of 2D points (x,y) corresponding to vertices.\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsPolyline =
         "Construct a polyline graphics with the given vertices.\n\n"
@@ -197,7 +201,8 @@ constexpr auto _graphicsRectangleDocString =
         "Such graphics is defined by:\n\n"
         "- top-left point (x,y)\n"
         "- width (float)\n"
-        "- height (float)\n\n";
+        "- height (float)\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsRectangle =
         "Construct a rectangle graphics with the given dimensions.\n\n"
@@ -225,7 +230,8 @@ constexpr auto _graphicsTextDocString =
         "Graphics item to display text in the overlay layer of an image. "
         "Such graphics is defined by:\n\n"
         "- top-left position (x,y)\n"
-        "- text (str) \n\n";
+        "- text (str) \n"
+        "Derived from :py:class:`~ikomia.core.pycore.CGraphicsItem`.\n\n";
 
 constexpr auto _ctor1GraphicsText =
         "Construct a graphics item with the given text.\n\n"

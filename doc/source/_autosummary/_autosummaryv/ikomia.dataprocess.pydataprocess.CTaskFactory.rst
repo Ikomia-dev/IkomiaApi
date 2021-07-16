@@ -8,7 +8,8 @@ CTaskFactory
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CTaskFactory
+
 
    .. rubric:: Methods
    .. autosummary::

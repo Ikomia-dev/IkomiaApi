@@ -3,16 +3,34 @@ API Modules
 
 List of Ikomia Python modules
 
+.. rubric:: Utils module
+.. autosummary::
+    :toctree: _autosummary
 
-.. rubric:: Bindings from C++ libraries
+    ikomia.utils.pyutils
+    ikomia.utils.pyqtutils
+    ikomia.utils.qtconversion
+
+
+.. rubric:: Core module
 .. autosummary::
     :toctree: _autosummary
 
     ikomia.core.pycore
-    ikomia.dataprocess.pydataprocess
-    ikomia.utils.pyutils
+    ikomia.core.task
 
-.. rubric:: Python API
+
+.. rubric:: DataProcess module
+.. autosummary::
+    :toctree: _autosummary
+
+    ikomia.dataprocess.pydataprocess
+    ikomia.dataprocess.registry
+    ikomia.dataprocess.workflow
+    ikomia.dataprocess.displayIO
+
+
+.. rubric:: DNN module
 .. autosummary::
     :toctree: _autosummary
 
@@ -21,5 +39,3 @@ List of Ikomia Python modules
     ikomia.dnn.dataset
     ikomia.dnn.torch.models
     ikomia.dnn.torch.datasetmapper
-    ikomia.utils.qtconversion
-    ikomia.utils.pyqtutils

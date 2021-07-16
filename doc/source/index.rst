@@ -3,54 +3,46 @@ Welcome to Ikomia's documentation
 
 :Current version: |version|
 
-The aim of this API is to offer a simple interface to add user-defined plugin into the Ikomia platform. A plugin is a Python implementation of an algorithm executed on image based data.
+The Ikomia platform is made up of three components:
 
-The software gives the possibility to build custom image processing pipelines through the use of a graph-based editor called **workflow**. A workflow is thus composed of several connected tasks that get inputs, process them and give results through outputs. When you create your own task (i.e. plugin), there are some few essential components to deal with:
+    - **Ikomia Marketplace**: centralized place where you can find plug'n'play algorithms of Computer Vision
+    - **Ikomia Studio**: free desktop software (Linux and Windows) for easy algorithm evaluation and fast prototyping
+    - **Ikomia API**: Python API to leverage state of the art algorithms for your own computer vision application and/or create plugins for Ikomia Studio and the Marketplace
 
-    - :Task: algorithm implementation
-    - :Parameters: to setup the algorithm
-    - :Metadata: information attached to the task (description, icon, authors, articles...)
-    - :Inputs: required input data
-    - :Outputs: produced output data
-    - :Widget: user interaction interface (to adjust parameters for example)
+.. note:: Ikomia API is built around core C++ libraries with Python bindings. It contains also pure Python modules for high-level features.
 
-Each of these components is implemented by a specific class. We use inheritance and factory design pattern to build the interface between Ikomia software and plugins. Once implemented, you will be able to handle your plugin like all others internal processes. It means that you will be able to add it to a workflow and visualize your outputs directly.
-
-The API is divided into modules addressing specific features:
-    - **Utils**: module offering various helper tools organized in different submodules
-        - :py:mod:`~ikomia.utils.pyutils`: helper classes which are bindings from C++ libraries
-        - :py:mod:`~ikomia.utils.pyqtutils`: helper functions simplifying widgets creation
-        - :py:mod:`~ikomia.utils.qtconversion`: helper functions providing conversion from Python Qt framework (PyQt or PySide2) to C++ Qt
-    - **Core**: module offering essential base classes to implement input/ouput, task, parameters and widget.
-        - :py:mod:`~ikomia.core.pycore`: bindings from C++ libraries
-    - **DataProcess**:module offering the main interface structure to plug user-defined task and several class specializations to facilitate common process implementation.
-        - :py:mod:`~ikomia.dataprocess.pydataprocess`: bindings from C++ libraries
-    - **DNN**: module providing features for Deep Learning tasks. More details :doc:`here<modules>`
+.. important:: Ikomia Studio and Ikomia API are Open-Source projects, AGPLv3 and LGPLv3 respectively.
 
 
-Getting started
-===============
-This section will help you understand the API structure and will guide you through the creation of your first plugins.
+Choose your API usage
+---------------------
+As an Ikomia user, you will be led to use this API for two reasons:
+
+    - **Create plugins for Ikomia Studio**: with a little wrap around your Python code, you are able to integrate your algorithm in a user friendly and powerful software. Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
+    - **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms and those from the Marketplace directly in your application. Run single algorithm or workflows with few lines of code.
+
 
 .. toctree::
     :maxdepth: 1
 
-    python_env
-    dependencies
+    index_plugin
+    index_api
 
 
-Tutorials
+Useful links
+------------
 
-.. toctree::
-    :maxdepth: 1
+`Ikomia GitHub repository <https://github.com/Ikomia-dev/>`_
 
-    hello_world_plugin
-    opencv_plugin
-    interactive_plugin
+`Ikomia Marketplace <https://ikomia.com/en/marketplace-en/>`_
+
+`Ikomia blog <https://blog.ikomia.com/>`_
+
+`Ikomia web site <https://ikomia.com/en/>`_
 
 
 API Reference
-=============
+-------------
 This section provides the auto-generated documentation from the Python code. You will find all the implementation details and
 the comprehensive list of available functions.
 
@@ -59,18 +51,9 @@ the comprehensive list of available functions.
 
    modules
 
-Examples
-========
-Here are source codes associated with the tutorials.
-
-.. toctree::
-    :maxdepth: 2
-
-    examples
-
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

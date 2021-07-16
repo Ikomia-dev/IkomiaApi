@@ -8,7 +8,7 @@ TaskType
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import TaskType
 
    .. rubric:: Attributes
 

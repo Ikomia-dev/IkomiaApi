@@ -114,9 +114,9 @@ constexpr auto _getWidgetFactoryDocString =
 //--------------------------//
 constexpr auto _objectMeasureDocString =
         "Store values of a given measure computed on a single blob of an image. "
-        "Available measures are listed here: :py:class:`~ikomia.core.pycore.MeasureId. "
+        "Available measures are listed here: :py:class:`~ikomia.core.pycore.MeasureId`. "
         "It can also maps this measure with the associated graphics item (by its identifier). "
-        "Store grahics item in a :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput` object "
+        "Store graphics item in a :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` object "
         "is the classical way to handle graphics items.\n";
 
 constexpr auto _ctor1ObjMeasureDocString =
@@ -144,12 +144,13 @@ constexpr auto _getMeasureInfoDocString =
 constexpr auto _measureIODocString =
         "Define input or output for a task dedicated to manage blob measures (ie connected components). "
         "It is possible to compute and store several measures for a single blob. A CMeasureIO instance "
-        "stores a list of measures for each blob of an image, so you have a list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure` list. "
-        "Please note that it is possible to map each blob with its associated graphics item stored in a :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput` instance. "
+        "stores a list of measures for each blob of an image, so you have a list of :py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure` list. "
+        "Please note that it is possible to map each blob with its associated graphics item stored in a :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` instance. "
         "You just need to pass the graphics item identifier to the object measure\n. "
-        "Blob measures can also be handled by :py:class:`~ikomia.dataprocess.pycdataprocess.CDblFeatureIO`. "
+        "Blob measures can also be handled by :py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`. "
         "Although CDblFeatureIO is more generic, it can't map measure values with graphics item, which can be useful "
-        "to give visual information from object measures to users.\n";
+        "to give visual information from object measures to users.\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`\n\n";
 
 constexpr auto _ctorMeasureIODocString =
         "Construct a CMeasureIO instance with the given name.\n\n"
@@ -1263,8 +1264,9 @@ constexpr auto _getPluginsDirDocString =
         "   str: full path to Ikomia plugins directory\n";
 
 constexpr auto _getAlgorithmsDocString =
-        "Get all available algorithms from the Ikomia registry. Before using an algorithm, you must instanciate it "
-        "from its name using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
+        "Get all available algorithms from the Ikomia registry.\n"
+        "Before using an algorithm, you must instanciate it from its name using "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
         "You can only instanciate algorithms whose name is in the returned list.\n\n"
         "Returns:\n"
         "   string: list of algorithm names\n";
@@ -1277,16 +1279,18 @@ constexpr auto _getAlgorithmInfoDocString =
         "   algorithm information (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo`)\n";
 
 constexpr auto _createInstance1DocString =
-        "Instanciate algorithm of the Ikomia registry from its name with default parameters. The full list of available algorithms can be"
-        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Instanciate algorithm of the Ikomia registry from its name with default parameters.\n"
+        "The full list of available algorithms can be retrieved using "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
         "Args:\n"
         "   algorithm name(str): unique name\n\n"
         "Returns:\n"
         "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
 
 constexpr auto _createInstance2DocString =
-        "Instanciate algorithm of the Ikomia registry from its name with the given parameters. The full list of available algorithms can be"
-        "retrieved using :py:method:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
+        "Instanciate algorithm of the Ikomia registry from its name with the given parameters.\n"
+        "The full list of available algorithms can be retrieved using "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
         "Args:\n"
         "   algorithm name(str): unique name\n\n"
         "   parameters object(:py:class:`~ikomia.core.pycore.CWorkflowTaskParam`): associated parameters\n\n"
@@ -1294,14 +1298,14 @@ constexpr auto _createInstance2DocString =
         "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
 
 constexpr auto _registerTaskDocString =
-        "Add new algorithm factory to Ikomia registry. Once registered, you are able to instanciate algorithm object "
-        "and use it inside a workflow.\n\n"
+        "Add new algorithm factory to Ikomia registry.\n"
+        "Once registered, you are able to instanciate algorithm object and use it inside a workflow.\n\n"
         "Args:\n"
         "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
 
 constexpr auto _registerIODocString =
-        "Add new input/output factory to Ikomia registry. Once registered, you are able to instanciate input or ouput "
-        "and use it inside a task.\n\n"
+        "Add new input/output factory to Ikomia registry.\n"
+        "Once registered, you are able to instanciate input or ouput and use it inside a task.\n\n"
         "Args:\n"
         "   I/O factory (:py:class:`~ikomia.core.pycore.CTaskIOFactory` based object)\n";
 

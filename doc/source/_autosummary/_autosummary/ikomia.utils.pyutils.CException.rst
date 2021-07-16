@@ -1,22 +1,23 @@
-CException
+﻿CException
 ==========
 
 .. currentmodule:: ikomia.utils.pyutils
 
 .. autoclass:: CException
 
-   .. rubric:: Import
-   .. code-block:: python
+    .. rubric:: Import
+    .. code-block:: python
 
-         from ikomia import utils
+        from ikomia.utils import CException
 
-   .. rubric:: Methods
-   .. autosummary::
+    .. rubric:: Methods
+    .. autosummary::
       ~CException.__init__
       ~CException.message
 
-   .. rubric:: Details
+    .. rubric:: Details
 
-   .. automethod:: __init__
-   .. automethod:: message
+    .. automethod:: __init__
+    .. automethod:: message
+
    

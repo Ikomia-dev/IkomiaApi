@@ -8,7 +8,7 @@ ActionFlag
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import ActionFlag
    
    .. rubric:: Attributes
 

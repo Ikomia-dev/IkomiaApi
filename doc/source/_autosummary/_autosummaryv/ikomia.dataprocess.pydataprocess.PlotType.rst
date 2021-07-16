@@ -8,10 +8,9 @@ PlotType
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import PlotType
 
    .. rubric:: Attributes
-
    .. autosummary::
    
       ~PlotType.BAR

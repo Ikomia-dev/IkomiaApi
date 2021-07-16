@@ -8,7 +8,7 @@ CWorkflowTaskParam
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import CWorkflowTaskParam
 
    .. rubric:: Methods
    .. autosummary::

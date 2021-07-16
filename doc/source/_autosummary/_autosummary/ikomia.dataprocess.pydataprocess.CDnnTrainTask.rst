@@ -1,57 +1,67 @@
 CDnnTrainTask
-================
+=============
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
 .. autoclass:: CDnnTrainTask
 
-   .. rubric:: Import
-   .. code-block:: python
+    .. rubric:: Import
+    .. code-block:: python
 
-         from ikomia import dataprocess
+        from ikomia.dataprocess import CDnnTrainTask
 
-   .. rubric:: Methods
-   .. autosummary::
-      ~CDnnTrainTask.__init__
-      ~CDnnTrainTask.addInput
-      ~CDnnTrainTask.addOutput
-      ~CDnnTrainTask.beginTaskRun
-      ~CDnnTrainTask.emitGraphicsContextChanged
-      ~CDnnTrainTask.emitOutputChanged
-      ~CDnnTrainTask.emitStepProgress
-      ~CDnnTrainTask.endTaskRun
-      ~CDnnTrainTask.executeActions
-      ~CDnnTrainTask.getElapsedTime
-      ~CDnnTrainTask.getInput
-      ~CDnnTrainTask.getInputCount
-      ~CDnnTrainTask.getInputDataType
-      ~CDnnTrainTask.getInputs
-      ~CDnnTrainTask.getOutput
-      ~CDnnTrainTask.getOutputCount
-      ~CDnnTrainTask.getOutputDataType
-      ~CDnnTrainTask.getOutputs
-      ~CDnnTrainTask.getParam
-      ~CDnnTrainTask.getProgressSteps
-      ~CDnnTrainTask.globalInputChanged
-      ~CDnnTrainTask.graphicsChanged
-      ~CDnnTrainTask.isGraphicsChangedListening
-      ~CDnnTrainTask.parametersModified
-      ~CDnnTrainTask.removeInput
-      ~CDnnTrainTask.run
-      ~CDnnTrainTask.setActionFlag
-      ~CDnnTrainTask.setActive
-      ~CDnnTrainTask.setInput
-      ~CDnnTrainTask.setInputDataType
-      ~CDnnTrainTask.setInputs
-      ~CDnnTrainTask.setOutput
-      ~CDnnTrainTask.setOutputDataType
-      ~CDnnTrainTask.setOutputs
-      ~CDnnTrainTask.setParam
-      ~CDnnTrainTask.stop
-      ~CDnnTrainTask.updateStaticOutputs
 
-   .. rubric:: Attributes
-   .. autosummary::
-      ~CDnnTrainTask.name
-      ~CDnnTrainTask.type
-   
+    .. rubric:: Methods
+    .. autosummary::
+
+        ~CDnnTrainTask.__init__
+        ~CDnnTrainTask.enableMlflow
+        ~CDnnTrainTask.enableTensorboard
+        ~CDnnTrainTask.getTensorboardLogDir
+
+    .. rubric:: Inherited methods
+    .. autosummary::
+
+        ~CDnnTrainTask.addInput
+        ~CDnnTrainTask.addOutput
+        ~CDnnTrainTask.beginTaskRun
+        ~CDnnTrainTask.emitAddSubProgressSteps
+        ~CDnnTrainTask.emitGraphicsContextChanged
+        ~CDnnTrainTask.emitOutputChanged
+        ~CDnnTrainTask.emitStepProgress
+        ~CDnnTrainTask.endTaskRun
+        ~CDnnTrainTask.executeActions
+        ~CDnnTrainTask.getElapsedTime
+        ~CDnnTrainTask.getInput
+        ~CDnnTrainTask.getInputCount
+        ~CDnnTrainTask.getInputDataType
+        ~CDnnTrainTask.getInputs
+        ~CDnnTrainTask.getOutput
+        ~CDnnTrainTask.getOutputCount
+        ~CDnnTrainTask.getOutputDataType
+        ~CDnnTrainTask.getOutputs
+        ~CDnnTrainTask.getParam
+        ~CDnnTrainTask.getProgressSteps
+        ~CDnnTrainTask.globalInputChanged
+        ~CDnnTrainTask.graphicsChanged
+        ~CDnnTrainTask.isGraphicsChangedListening
+        ~CDnnTrainTask.parametersModified
+        ~CDnnTrainTask.removeInput
+        ~CDnnTrainTask.run
+        ~CDnnTrainTask.setActionFlag
+        ~CDnnTrainTask.setActive
+        ~CDnnTrainTask.setInput
+        ~CDnnTrainTask.setInputDataType
+        ~CDnnTrainTask.setInputs
+        ~CDnnTrainTask.setOutput
+        ~CDnnTrainTask.setOutputDataType
+        ~CDnnTrainTask.setOutputs
+        ~CDnnTrainTask.setParam
+        ~CDnnTrainTask.stop
+        ~CDnnTrainTask.updateStaticOutputs
+
+    .. rubric:: Attributes
+    .. autosummary::
+
+        ~CDnnTrainTask.name
+        ~CDnnTrainTask.type

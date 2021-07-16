@@ -8,7 +8,7 @@ GraphicsPolylineProperty
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import GraphicsPolylineProperty
 
    .. rubric:: Attributes
    .. autosummary::

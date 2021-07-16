@@ -8,7 +8,7 @@ GraphicsEllipseProperty
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import core
+         from ikomia.core import GraphicsEllipseProperty
 
    .. rubric:: Attributes
    .. autosummary::

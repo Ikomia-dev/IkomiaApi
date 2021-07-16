@@ -8,7 +8,7 @@ CPathIO
    .. rubric:: Import
    .. code-block:: python
 
-         from ikomia import dataprocess
+         from ikomia.dataprocess import CPathIO
 
    .. rubric:: Methods
    .. autosummary::

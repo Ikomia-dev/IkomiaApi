@@ -1,11 +1,18 @@
-DnnTrain
+﻿DnnTrain
 ========
 
 .. automodule:: ikomia.dnn.dnntrain
    
-   .. rubric:: Classes
-   .. autosummary::
-      :toctree: _autosummaryv
+    .. rubric:: Classes
+    .. autosummary::
    
-      TrainParam
-      TrainProcess
+        TrainProcess
+   
+   
+
+   
+   
+   
+
+
+
