@@ -1251,7 +1251,12 @@ constexpr auto _enableTensorboardDocString =
 //----- CIkomiaRegistry -----//
 //---------------------------//
 constexpr auto _ikomiaRegistryDocString =
-        "Algorithms registry of the Ikomia platform.";
+        "Algorithms registry of the Ikomia platform.\n\n"
+        "Class that enables to instanciate every algorithm from its name. CIkomiaRegistry objects communicate "
+        "automatically with the Ikomia Marketplace to download algorithm package if necessary. It also include "
+        "dedicated function to register new algorithms\n\n"
+        ".. Note:: A pure Python derived class is also implemented to add higher level features. See "
+        ":py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for more information.\n";
 
 constexpr auto _setPluginsDirDocString =
         "Set directory where Ikomia plugins are stored.\n\n"
@@ -1318,112 +1323,236 @@ constexpr auto _loadCppPluginDocString =
 //----- CWorkflow -----//
 //---------------------//
 constexpr auto _workflowDocString =
-        "";
+        "Workflow management of Computer Vision tasks.\n"
+        "Implement features to create, modify and run graph-based pipeline of "
+        ":py:class:`~ikomia.core.pycore.CWorkflowTask` objects or derived. Workflows can be created from scratch "
+        "by using :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` to instanciate and connect task objects. "
+        "Workflows can also be loaded from JSON file created with the interactive designer of Ikomia Studio.\n"
+        "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTask`.\n\n"
+        ".. Note:: A pure Python derived class is also implemented to add higher level features. See "
+        ":py:class:`~ikomia.dataprocess.workflow.Workflow` for more information.\n";
 
 constexpr auto _ctor1WorkflowDocString =
-        "";
+        "Construct a new workflow object with the given name.\n\n"
+        "Args:\n\n"
+        "   name (str): workflow name\n";
 
 constexpr auto _ctor2WorkflowDocString =
-        "";
+        "Construct a new workflow object with the given name and Ikomia registry. You should use this constructor "
+        "if you intend to instanciate tasks from the Ikomia registry (built-in algorithms and Marketplace).\n\n"
+        "Args:\n\n"
+        "   name (str): workflow name\n\n"
+        "   registry (:py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`): algorithms registry\n";
 
 constexpr auto _wfSetInputDocString =
-        "";
+        "Set workflow input at position *index*.\n"
+        "If *index* is greater than the input count, the function adds the right number of inputs automatically.\n"
+        "Derived class that handles common data type already exists: "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CVideoIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CMeasureIO`.\n\n"
+        "Args:\n\n"
+        "   input (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO` object or derived): global input of the workflow\n\n"
+        "   index (int): zero-based index\n\n"
+        "   new_sequence (bool): True if it is a new input sequence, False if it is just a new frame of a video or "
+        "camera stream\n";
 
 constexpr auto _wfSetOutputFolderDocString =
-        "";
+        "Set workflow output folder.\n"
+        "If auto-save mode is activated (see :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.setAutoSave`) "
+        "outputs of each tasks of the workflow will be saved automatically in this folder. Behind the scene, each task "
+        "implements a *save()* function that calls sequentially the *save()* function of all these outputs.\n\n"
+        "Args:\n\n"
+        "   path (str): path to the desired directory\n";
 
 constexpr auto _wfSetAutoSaveDocString =
-        "";
+        "Activate/deactivate auto-save mode. If activated, outputs of each tasks of the workflow will be saved in "
+        "the workflow output folder (see :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.setOutputFolder` "
+        "to set your custom folder). By default, outputs are saved in *user_folder/Ikomia/Workflows*.\n\n"
+        "Args:\n\n"
+        "   enable (bool): True or False\n";
 
 constexpr auto _wfGetTaskCountDocString =
-        "";
+        "Get the number of tasks in the workflow.\n\n"
+        "Returns:\n\n"
+        "   int: task count\n";
 
 constexpr auto _wfGetRootIDDocString =
-        "";
+        "Get unique identifier of the root node.\n\n"
+        "Returns:\n\n"
+        "   int: root node ID\n";
 
 constexpr auto _wfGetTaskIDsDocString =
-        "";
+        "Get the list of all task identifiers.\n"
+        "You can then retrieve task object from ID with the function "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.getTask`.\n";
 
 constexpr auto _wfGetTaskDocString =
-        "";
+        "Get the task object from the given ID.\n"
+        "Unique task identifiers can be retrieved with the functions "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.getTaskIDs` or "
+        ":py:meth:`~ikomia.dataprocess.workflow.Workflow.find_task`.\n\n"
+        "Returns:\n\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived\n";
 
 constexpr auto _wfGetParentsDocString =
-        "";
+        "Get parent task identifiers of the task specified by the given identifier.\n"
+        "Task connected to the inputs of a given task is designated as parent or source.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier on which to get parents\n\n"
+        "Returns:\n\n"
+        "   int list: parent identifiers\n";
 
 constexpr auto _wfGetChildsDocString =
-        "";
+        "Get child task identifiers of the task specified by the given identifier.\n"
+        "Task connected to the outputs of a given task is designated as child or target.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier on which to get childs\n\n"
+        "Returns:\n\n"
+        "   int list: child identifiers\n";
 
 constexpr auto _wfGetInEdgesDocString =
-        "";
+        "Get input connections (in-edges) of the task specified by the given identifier.\n"
+        "Edge information can then be retrieved by the function "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.getEdgeInfo`.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier\n\n"
+        "Returns:\n\n"
+        "   int list: edge identifiers\n";
 
 constexpr auto _wfGetOutEdgesDocString =
-        "";
+        "Get output connections (out-edges) of the task specified by the given identifier.\n"
+        "Edge information can then be retrieved by the function "
+        ":py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.getEdgeInfo`.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier\n\n"
+        "Returns:\n\n"
+        "   int list: edge identifiers\n";
 
 constexpr auto _wfGetEdgeInfoDocString =
-        "";
+        "Get connection information (edge) from its unique identifier.\n\n"
+        "Args:\n\n"
+        "   id (int): edge identifier\n\n"
+        "Returns:\n\n"
+        "   tuple (int): pair composed by the output index of the source/parent task and the input index of the target/child task\n";
 
 constexpr auto _wfGetEdgeSourceDocString =
-        "";
+        "Get source/parent task identifier of a given edge.\n\n"
+        "Args:\n\n"
+        "   id (int): edge identifier\n\n"
+        "Returns:\n\n"
+        "   id (int): task identifier\n";
 
 constexpr auto _wfGetEdgeTargetDocString =
-        "";
+        "Get target/child task identifier of a given edge.\n\n"
+        "Args:\n\n"
+        "   id (int): edge identifier\n\n"
+        "Returns:\n\n"
+        "   id (int): task identifier\n";
 
 constexpr auto _wfGetFinalTasks =
-        "";
+        "Get all final or leaf tasks of the workflow.\n\n"
+        "Returns:\n\n"
+        "   int list: leaf task identifiers\n";
 
 constexpr auto _wfGetRootTargetTypesDocString =
-        "";
+        "Get all input data types of the tasks connected to the root node.\n\n"
+        "Returns:\n\n"
+        "   list of :py:class:`~ikomia.core.pycore.IODataType`: data types\n";
 
 constexpr auto _wfGetTotalElapsedTimeDocString =
-        "";
+        "Get the total workflow running time in milliseconds\n\n"
+        "Returns:\n\n"
+        "   float: elapsed time\n";
 
 constexpr auto _wfGetElapsedTimeToDocString =
-        "";
+        "Get the workflow running time in milliseconds from the start to the given task.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier\n\n"
+        "Returns:\n\n"
+        "   float: elapsed time\n";
 
 constexpr auto _wfAddInputDocString =
-        "";
+        "Add global input to the workflow.\n\n"
+        "Args:\n\n"
+        "   input (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO` or derived)\n";
 
 constexpr auto _wfAddTaskDocString =
-        "";
+        "Add new task to the workflow.\n\n"
+        "Args:\n\n"
+        "   task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived)\n";
 
 constexpr auto _wfConnectDocString =
-        "";
+        "Connect tasks.\n\n"
+        "Args:\n\n"
+        "   source (int): source/parent task identifier\n"
+        "   target (int): target/child task identifier\n"
+        "   source_index (int): output index of the source task\n"
+        "   target_index (int): input index of the target task\n";
 
 constexpr auto _wfRemoveInputDocString =
-        "";
+        "Remove global workflow input at the given *index*.\n\n"
+        "Args:\n\n"
+        "   index (int): zero-based index of the input to remove\n";
 
 constexpr auto _wfClearInputsDocString =
-        "";
+        "Remove all inputs of the workflow.\n";
 
 constexpr auto _wfClearOutputDataDocString =
-        "";
+        "Clear output data for all the tasks of the workflow.\n";
 
 constexpr auto _wfClearDocString =
-        "";
+        "Remove all tasks and connections from the workflow. The workflow is thus empty after that.\n";
 
 constexpr auto _wfDeleteTaskDocString =
-        "";
+        "Remove the given task from the workflow. The identifier becomes invalid after this operation.\n\n"
+        "Args:\n\n"
+        "   id (int): task identifier\n";
 
 constexpr auto _wfDeleteEdgeDocString =
-        "";
+        "Remove the given connection/edge from the workflow. The identifier becomes invalid after this operation.\n\n"
+        "Args:\n\n"
+        "   id (int): edge identifier\n";
 
 constexpr auto _wfRunDocString =
-        "";
+        "Launch workflow execution.\n"
+        "Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived must "
+        "reimplement the *run()* function that will be called in the right order by the workflow. "
+        "Please note that global inputs should be set before calling this function.\n";
 
 constexpr auto _wfStopDocString =
-        "";
+        "Stop workflow execution.\n"
+        "Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived must "
+        "reimplement the *stop()* function that will be called by the workflow. "
+        "Depending on the process implementation, stop may not be instantaneous.\n";
 
 constexpr auto _wfLoadDocString =
-        "";
+        "Load a workflow previously saved as JSON file. Common usage is to use Ikomia Studio to create your workflow "
+        "interactively and without code. With this method, it is very easy and fast to build your pipeline, "
+        "visualize outputs on test data and save the workflow. But you can also create your workflow from scratch with "
+        "this API and use the dedicated function :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.save`.\n\n"
+        "Args:\n\n"
+        "   path (str): path of the JSON file\n";
 
 constexpr auto _wfUpdateStartTimeDocString =
-        "";
+        "Reset the starting point for the computation of the running time.\n"
+        "This feature could be interesting if you want to process a list of images and monitor the time per image.\n";
 
 constexpr auto _wfSaveDocString =
-        "";
+        "Save the workflow as a JSON file.\n\n"
+        "Args:\n\n"
+        "   path (str): path where the JSON is saved\n";
 
 constexpr auto _wfExportGraphvizDocString =
-        "";
+        "Export the workflow structure as Graphviz *.dot* file.\n"
+        "You can then visualize it with the *dot* command or with Graphviz Python package.\n\n"
+        "Args:\n\n"
+        "   path (str): path where the *.dot* file is saved\n";
 
 
 #endif // PYDATAPROCESSDOCSTRING_HPP

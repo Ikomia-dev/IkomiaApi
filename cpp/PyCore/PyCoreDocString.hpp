@@ -17,8 +17,8 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef pycoreDOCSTRING_HPP
-#define pycoreDOCSTRING_HPP
+#ifndef PYCOREDOCSTRING_HPP
+#define PYCOREDOCSTRING_HPP
 
 constexpr auto _moduleDocString =
         "Module offering core features to handle **tasks**, **I/O**, **parameters** and **widgets**.\n\n"

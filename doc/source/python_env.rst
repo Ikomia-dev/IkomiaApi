@@ -13,7 +13,7 @@ The Python environment configuration may vary among your operating system:
 **Windows 10**
 
 - Version: *3.8*
-- Path: *c:\\Users\\{username}\Ikomia\Python*
+- Path: *c:\\Users\\{username}\\Ikomia\\Python*
 - Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.3, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
 
 **Linux**
