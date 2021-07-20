@@ -19,6 +19,11 @@
 
 """
 Model providing helper funtions to create TorchVision Deep Learning models.
+
+TorchVision pages:
+
+- `Torchvision classication <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+- `Torchvision object detection and segmentation <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
 """
 
 import torch
@@ -36,7 +41,7 @@ def resnet(model_name='resnet50', train_mode=False, use_pretrained=False, featur
     Create Torchvision ResNet model for training or inference.
 
     Args:
-        model_name (str): model name, consult `Torchvision page <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
@@ -81,7 +86,7 @@ def resnext(model_name='resnext50', train_mode=False, use_pretrained=False, feat
     Create Torchvision ResNeXt model for training or inference.
 
     Args:
-        model_name (str): model name, consult `Torchvision page <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
@@ -120,7 +125,7 @@ def mnasnet(train_mode=False, use_pretrained=False, feature_extract=False, class
     Create Torchvision MnasNet model for training or inference.
 
     Args:
-        model_name (str): model name, consult `Torchvision page <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
@@ -151,7 +156,7 @@ def faster_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2
     Create Torchvision Faster RCNN model for training or inference.
 
     Args:
-        model_name (str): model name, consult `Torchvision page <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
+        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
@@ -180,7 +185,7 @@ def mask_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2):
     Create Torchvision Mask RCNN model for training or inference.
 
     Args:
-        model_name (str): model name, consult `Torchvision page <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
+        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
