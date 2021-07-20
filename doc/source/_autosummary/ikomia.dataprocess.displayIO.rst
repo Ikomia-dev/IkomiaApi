@@ -8,18 +8,6 @@
    
         display
 
+    .. rubric:: Details
+
     .. autofunction:: display
-
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

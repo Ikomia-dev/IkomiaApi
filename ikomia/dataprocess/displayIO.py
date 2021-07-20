@@ -1,3 +1,28 @@
+#!/usr/bin/env python
+# Copyright (C) 2021 Ikomia SAS
+# Contact: https://www.ikomia.com
+#
+# This file is part of the Ikomia API libraries.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# -*- coding: utf-8 -*-
+"""
+Module dedicated to the visualization of workflow components. The idea is to propose a list of basic visualization
+functions for each type of components: workflow, task, input and output (for debug purpose essentially).
+"""
 import sys
 import os
 import logging
@@ -20,11 +45,17 @@ def _to_plot_color(color):
 
 @singledispatch
 def display(obj, label="", fig=None, **kwargs):
+    """
+    Display function for various workflow components.
+    """
     raise NotImplementedError("Unsupported type")
 
 
 @display.register
 def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
+    """
+    Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
+    """
     if not obj.isDataAvailable:
         return
 
@@ -47,6 +78,10 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
 
 @display.register
 def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
+    """
+    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
+    in a Matplotlib figure.
+    """
     if not obj.isDataAvailable:
         return
 
@@ -159,6 +194,10 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
 
 @display.register
 def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
+    """
+    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
+    in a Matplotlib figure.
+    """
     if not obj.isDataAvailable:
         return
 
@@ -271,6 +310,10 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
 
 @display.register
 def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
+    """
+    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`)
+    as a table in a Matplotlib figure.
+    """
     if not obj.isDataAvailable:
         return
 
@@ -419,6 +462,10 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
 
 @display.register
 def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
+    """
+    Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CMeasureIO`)
+    as a table in a Matplotlib figure.
+    """
     if not obj.isDataAvailable:
         return
 
@@ -481,6 +528,9 @@ def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
 
 @display.register
 def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
+    """
+    Display task inputs and outputs (:py:class:`~ikomia.core.pycore.CWorkflowTask`) in two separate Matplotlib figures.
+    """
     matplotlib.use("TkAgg")
 
     # inputs
@@ -526,6 +576,9 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
 
 @display.register
 def _(obj: dataprocess.CWorkflow, label="", **kwargs):
+    """
+    Display Graphviz representation of a workflow (:py:class:`~ikomia.dataprocess.pydataprocess.CWorkflow`).
+    """
     from graphviz import Source
     dot_file_name = obj.name + ".dot"
     path = os.path.join(core.config.main_cfg["data"]["path"], dot_file_name)
