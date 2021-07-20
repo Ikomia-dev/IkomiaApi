@@ -29,7 +29,7 @@ from datetime import datetime
 class TrainProcess(dataprocess.CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
-    It includes MLflow framework and handle connections with it:
+    It includes MLflow framework and Tensorboard and handle connections with them:
 
         - experiment creation
         - runs management
@@ -37,7 +37,8 @@ class TrainProcess(dataprocess.CDnnTrainTask):
         - metrics logging
         - training dashboard
 
-    It must be use with :py:class:`~ikomia.dnn.dnntrain.TrainParam` or derived for parameters.
+    It must be use with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
+    Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDnnTrainTask`.
     """
     def __init__(self, name, param):
         """
@@ -45,7 +46,7 @@ class TrainProcess(dataprocess.CDnnTrainTask):
 
         Args:
             name (str): task name
-            param (:py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`): task parameters
+            param (:py:class:`~ikomia.core.task.TaskParam`): task parameters
         """
         dataprocess.CDnnTrainTask.__init__(self, name, param)
         self.experiment_id = -1
