@@ -19,3 +19,7 @@
     .. autosummary::
    
         set_parameter
+
+    .. rubric:: Details
+
+   .. autofunction:: set_parameter

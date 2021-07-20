@@ -1,9 +1,12 @@
+"""
+Module dedicated to high-level features around task management.
+"""
 from ikomia import core
 
 
 class TaskParam(core.CWorkflowTaskParam):
     """
-    Base class to manage Deep Learning training parameters.
+    Base class to manage task parameters.
     It includes a dict structure to store parameter values.
 
     :ivar cfg: parameters dict
@@ -33,6 +36,13 @@ class TaskParam(core.CWorkflowTaskParam):
 
 
 def set_parameter(task, params: dict):
+    """
+    Set parameters of the given task from a dict structure.
+
+    Args:
+        task (int): unique task identifier
+        params (dict): pair of key, value for each parameter. The key will be treated as str.
+    """
     if task is None:
         return
 
