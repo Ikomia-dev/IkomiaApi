@@ -1,3 +1,29 @@
+#!/usr/bin/env python
+# Copyright (C) 2021 Ikomia SAS
+# Contact: https://www.ikomia.com
+#
+# This file is part of the Ikomia API libraries.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# -*- coding: utf-8 -*-
+"""
+Module dedicated to workflow management. It implements the Workflow class that offers high-level features
+based on a C++ implementation. You will be able to create, modify, load and run workflows composed by built-in
+Ikomia algorithms or any of those available in the Marketplace.
+"""
 import os
 import logging
 import enum
@@ -9,13 +35,24 @@ logger = logging.getLogger(__name__)
 
 
 class Workflow(dataprocess.CWorkflow):
-
+    """
+    Workflow management of Computer Vision tasks. Implement features to create, modify and run graph-based pipeline of
+    :py:class:`~ikomia.core.pycore.CWorkflowTask` objects or derived. Workflows can be created from scratch
+    by using :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` to instanciate and connect task objects.
+    Workflows can also be loaded from JSON file created with the interactive designer of Ikomia Studio.
+    Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CWorkflow`.
+    """
     @enum.unique
     class RunMode(enum.Enum):
         SINGLE = 1
         DIRECTORY = 2
 
     def __init__(self, name="Untitled", registry=None):
+        """
+        Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
+        object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
+        you are able to use any Ikomia algorithms (built-in and Marketplace) in your workflow.
+        """
         if registry is None:
             dataprocess.CWorkflow.__init__(self, name)
         else:
@@ -26,6 +63,17 @@ class Workflow(dataprocess.CWorkflow):
         self.setOutputFolder(output_folder)
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
+        """
+        Set image as global input of the workflow. Image can be specified by a Numpy array, a path or an URL thanks to
+        keyword arguments, you have to choose one of them.
+
+        Args:
+            array: image input as Numpy array
+            path (str): image input as file path (valid formats are those managed by OpenCV)
+            url (str): valid URL to image file (valid formats are those managed by OpenCV)
+            index (int): zero-based input index, if -1 a new input is added
+            datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
+        """
         if array is not None:
             img_input = dataprocess.CImageIO(datatype, array)
         elif path:
@@ -42,6 +90,14 @@ class Workflow(dataprocess.CWorkflow):
             self.setInput(img_input, index, True)
 
     def set_directory_input(self, folder="", index=-1):
+        """
+        Set folder as global input of the workflow. For image-based workflows, all images inside the directory
+        (recursively) will be processed.
+
+        Args:
+            folder (str): images folder
+            index (int): zero-based input index, if -1 a new input is added
+        """
         if not os.path.isdir(folder):
             logger.error("Directory input not set: you must pass an existing directory.")
             return
@@ -53,6 +109,13 @@ class Workflow(dataprocess.CWorkflow):
             self.setInput(dir_input, index, True)
 
     def get_time_metrics(self):
+        """
+        Get metrics around workflow execution time. This includes the total execution time of the workflow, and for
+        each task, the execution time and the execution time from the start.
+
+        Returns:
+             dict: metrics
+        """
         metrics = {"total_time": self.getTotalElapsedTime()}
         ids = self.getTaskIDs()
 
@@ -64,10 +127,30 @@ class Workflow(dataprocess.CWorkflow):
         return metrics
 
     def add_task(self, name, param=None):
+        """
+        Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
+        firstly downloaded and installed from the Marketplace.
+
+        Args:
+            name (str): algorithm unique name
+            param (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` or derived): algorithm parameters
+
+        Returns:
+            int: unique task identifier
+        """
         algo = self.registry.create_algorithm(name, param)
         return self.addTask(algo)
 
     def find_task(self, name: str):
+        """
+        Get identifiers of tasks with the given name in the workflow.
+
+        Args:
+             name (str): algorithm name
+
+        Returns:
+            list of int: task identifiers
+        """
         tasks = []
         ids = self.getTaskIDs()
 
@@ -79,6 +162,16 @@ class Workflow(dataprocess.CWorkflow):
         return tasks
 
     def connect_tasks(self, src, target, edges=None):
+        """
+        Connect two tasks of the workflow. Depending of the inputs/outputs configuration, multiple connections between
+        the two tasks can be set. A connection is a pair (ie tuple) composed by the output index of the source task
+        and the input index of the target task.
+
+        Args:
+            src (int): source task identifier
+            target (int): target task identifier
+            edges (list of pair): connections. If *None* is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
+        """
         if edges is None:
             self.connect(src, target, -1, -1)
         else:
@@ -86,6 +179,14 @@ class Workflow(dataprocess.CWorkflow):
                 self.connect(src, target, edge[0], edge[1])
 
     def run(self):
+        """
+        Start workflow execution on global input. Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived
+        must reimplement the *run()* function that will be called in the right order by the workflow. Please note that
+        global inputs should be set before calling this function (see
+        :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.setInput`,
+        :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_image_input`,
+        :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`).
+        """
         self.updateStartTime()
         run_mode = self._get_run_mode()
 
