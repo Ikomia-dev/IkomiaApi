@@ -6,7 +6,8 @@
    
     .. rubric:: Classes
     .. autosummary::
-   
+        :toctree: _autosummary
+
         Workflow
    
    

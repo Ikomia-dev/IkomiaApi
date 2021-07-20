@@ -3,19 +3,20 @@
 
 .. automodule:: ikomia.utils.pyutils
 
-   .. rubric:: Functions
-   .. autosummary::
-   
-      getApiVersion
-      getCompatibilityState
+    .. rubric:: Functions
+    .. autosummary::
+
+        getApiVersion
+        getCompatibilityState
 
    
-   .. rubric:: Classes
-   .. autosummary::
-   
-      ApiLanguage
-      CException
-      CMemoryInfo
-      CTimer
-      OSType
-      PluginState
+    .. rubric:: Classes
+    .. autosummary::
+        :toctree: _autosummary
+
+        ApiLanguage
+        CException
+        CMemoryInfo
+        CTimer
+        OSType
+        PluginState

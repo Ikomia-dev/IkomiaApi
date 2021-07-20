@@ -1,5 +1,5 @@
-﻿ikomia.dnn.dnntrain.TrainProcess
-================================
+﻿TrainProcess
+============
 
 .. currentmodule:: ikomia.dnn.dnntrain
 

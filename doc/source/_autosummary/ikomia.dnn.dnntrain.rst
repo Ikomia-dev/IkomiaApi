@@ -5,7 +5,8 @@
    
     .. rubric:: Classes
     .. autosummary::
-   
+        :toctree: _autosummaryv
+
         TrainProcess
    
    

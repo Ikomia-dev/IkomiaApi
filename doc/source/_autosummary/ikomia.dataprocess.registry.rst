@@ -5,6 +5,7 @@
 
     .. rubric:: Classes
     .. autosummary::
+        :toctree: _autosummary
 
         IkomiaRegistry
    

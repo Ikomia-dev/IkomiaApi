@@ -11,6 +11,7 @@
 
     .. rubric:: Classes
     .. autosummary::
+        :toctree: _autosummaryv
 
         TaskParam
    
