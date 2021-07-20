@@ -1,3 +1,29 @@
+#!/usr/bin/env python
+# Copyright (C) 2021 Ikomia SAS
+# Contact: https://www.ikomia.com
+#
+# This file is part of the Ikomia API libraries.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# -*- coding: utf-8 -*-
+"""
+Module dedicated to algorithms management from the Ikomia platform.
+It implements IkomiaRegistry class that offers features to install, update and instanciate
+algorithms from the built-in environment or the Marketplace.
+"""
 import ikomia
 from ikomia import utils, dataprocess
 from ikomia.core import config
@@ -11,7 +37,11 @@ logger = logging.getLogger(__name__)
 
 
 class IkomiaRegistry(dataprocess.CIkomiaRegistry):
-
+    """
+    Registry for all Ikomia algorithms (built-in and Marketplace). It stores all algorithms references and allows to
+    install, update and instanciate any of these algorithms.
+    Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
+    """
     def __init__(self):
         dataprocess.CIkomiaRegistry.__init__(self)
         plugin_folder = config.main_cfg["registry"]["path"]
@@ -20,6 +50,15 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     @utils.http.http_except
     def get_online_algorithms(self):
+        """
+        Get the list of available algorithms from the Ikomia Marketplace.
+        Each algorithm is identified by a unique name.
+        Each algorithm can then be instanciated from this name with the function
+        :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
+
+        Returns:
+             list of str: list of algorithms names
+        """
         s = ikomia.api_session
         if s.token is None:
             logger.error("Online algorithms retrieval failed, authentication required.")
@@ -47,6 +86,19 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return platform_plugins
 
     def create_algorithm(self, name, parameters=None):
+        """
+        Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.getAlgorithms` or
+        :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
+        If algorithm is already in the registry, an object instance is directly returned. Otherwise,
+        the function tries to install it from the Marketplace and add it to the registry if installation success.
+        Finally the object instance is returned.
+
+        Args:
+            name (str): unique algorithm name
+
+        Returns:
+            :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
+        """
         algo = None
         available_algos = self.getAlgorithms()
 
@@ -64,6 +116,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return algo
 
     def update_algorithms(self):
+        """
+        Launch automatic update of all algorithms in the registry. It only concerns algorithms of the Marketplace.
+        The function checks version compatibility.
+        """
         local_algos = self.getAlgorithms()
         for algo in local_algos:
             info = self.getAlgorithmInfo(algo)
@@ -71,6 +127,13 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 self.update_algorithm(algo)
 
     def update_algorithm(self, name):
+        """
+        Launch update of the given algorithm. It only concerns algorithms of the Marketplace.
+        The function checks version compatibility.
+
+        Args:
+             name (str): algorithm unique name
+        """
         local_algos = self.getAlgorithms()
         if name not in local_algos:
             logger.error("Plugin " + name + " can't be updated as it is not installed.")

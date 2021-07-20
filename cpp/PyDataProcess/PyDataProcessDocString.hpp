@@ -121,18 +121,18 @@ constexpr auto _objectMeasureDocString =
 
 constexpr auto _ctor1ObjMeasureDocString =
         "Construct a CObjectMeasure instance with a single value.\n"
-        "Args:\n"
+        "Args:\n\n"
         "   measure (:py:class:`~ikomia.core.pycore.CMeasure`): basic information about the computed measure.\n\n"
         "   value (double): value of the measure\n\n"
-        "   graphicsId (int): graphics item identifier, -1 if no item is associated\n\n"
+        "   graphicsId (int): graphics item identifier, -1 if no associated item\n\n"
         "   label (str)\n";
 
 constexpr auto _ctor2ObjMeasureDocString =
         "Construct a CObjectMeasure instance with multiple values.\n"
-        "Args:\n"
+        "Args:\n\n"
         "   measure (:py:class:`~ikomia.core.pycore.CMeasure`): basic information about the computed measure.\n\n"
         "   values (list of double): values of the measure (example Bbox needs 4 values)\n\n"
-        "   graphicsId (int): graphics item identifier, -1 if no item is associated\n\n"
+        "   graphicsId (int): graphics item identifier, -1 if no associated item\n\n"
         "   label (str)\n";
 
 constexpr auto _getMeasureInfoDocString =
@@ -1260,12 +1260,12 @@ constexpr auto _ikomiaRegistryDocString =
 
 constexpr auto _setPluginsDirDocString =
         "Set directory where Ikomia plugins are stored.\n\n"
-        "Args:\n"
+        "Args:\n\n"
         "   directory (str)\n";
 
 constexpr auto _getPluginsDirDocString =
         "Get the current Ikomia plugins directory.\n\n"
-        "Returns:\n"
+        "Returns:\n\n"
         "   str: full path to Ikomia plugins directory\n";
 
 constexpr auto _getAlgorithmsDocString =
@@ -1273,50 +1273,50 @@ constexpr auto _getAlgorithmsDocString =
         "Before using an algorithm, you must instanciate it from its name using "
         ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.createInstance`."
         "You can only instanciate algorithms whose name is in the returned list.\n\n"
-        "Returns:\n"
+        "Returns:\n\n"
         "   string: list of algorithm names\n";
 
 constexpr auto _getAlgorithmInfoDocString =
         "Get algorithm informations such as description, authors, documentation link...\n\n"
-        "Args:\n"
+        "Args:\n\n"
         "   name (str): algorithm name\n"
-        "Returns:\n"
-        "   algorithm information (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo`)\n";
+        "Returns:\n\n"
+        "   :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo`: algorithm information\n";
 
 constexpr auto _createInstance1DocString =
         "Instanciate algorithm of the Ikomia registry from its name with default parameters.\n"
         "The full list of available algorithms can be retrieved using "
         ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
-        "Args:\n"
+        "Args:\n\n"
         "   algorithm name(str): unique name\n\n"
-        "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+        "Returns:\n\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance\n";
 
 constexpr auto _createInstance2DocString =
         "Instanciate algorithm of the Ikomia registry from its name with the given parameters.\n"
         "The full list of available algorithms can be retrieved using "
         ":py:meth:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry.getAlgorithms`.\n\n"
-        "Args:\n"
+        "Args:\n\n"
         "   algorithm name(str): unique name\n\n"
         "   parameters object(:py:class:`~ikomia.core.pycore.CWorkflowTaskParam`): associated parameters\n\n"
-        "Returns:\n"
-        "   :py:class:`~ikomia.core.pycore.CWorkflowTask`-based object: algorithm instance\n";
+        "Returns:\n\n"
+        "   :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance\n";
 
 constexpr auto _registerTaskDocString =
         "Add new algorithm factory to Ikomia registry.\n"
         "Once registered, you are able to instanciate algorithm object and use it inside a workflow.\n\n"
-        "Args:\n"
-        "   task factory (:py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` based object)\n";
+        "Args:\n\n"
+        "   :py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory` or derived: task factory\n";
 
 constexpr auto _registerIODocString =
         "Add new input/output factory to Ikomia registry.\n"
         "Once registered, you are able to instanciate input or ouput and use it inside a task.\n\n"
-        "Args:\n"
-        "   I/O factory (:py:class:`~ikomia.core.pycore.CTaskIOFactory` based object)\n";
+        "Args:\n\n"
+        "   :py:class:`~ikomia.core.pycore.CTaskIOFactory` or derived: I/O factory\n";
 
 constexpr auto _loadCppPluginDocString =
         "Load C++ algorithm to Ikomia registry.\n\n"
-        "Args:\n"
+        "Args:\n\n"
         "   path (str): path to shared library of the plugin\n";
 
 //---------------------//
