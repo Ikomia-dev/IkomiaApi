@@ -143,7 +143,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return ""
 
-    def getAnnotationGraphics(self, img_path):
+    def getGraphicsAnnotations(self, img_path):
         """
         Return a list of Ikomia graphics items corresponding
         to the annotations of a given image (bounding box, polygons).

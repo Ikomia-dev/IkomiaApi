@@ -15,7 +15,6 @@ IkDatasetIO
     .. autosummary::
         ~IkDatasetIO.__init__
         ~IkDatasetIO.clearData
-        ~IkDatasetIO.getAnnotationGraphics
         ~IkDatasetIO.getCategories
         ~IkDatasetIO.getCategoryCount
         ~IkDatasetIO.getGraphicsAnnotations
@@ -28,7 +27,7 @@ IkDatasetIO
     .. rubric:: Details
     .. automethod:: __init__
     .. automethod:: clearData
-    .. automethod:: getAnnotationGraphics
+    .. automethod:: getGraphicsAnnotations
     .. automethod:: getCategories
     .. automethod:: getCategoryCount
     .. automethod:: getImagePaths
