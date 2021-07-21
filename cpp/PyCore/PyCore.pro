@@ -43,8 +43,14 @@ HEADERS += \
 #macx:QMAKE_RPATHDIR += @executable_path/../Frameworks
 
 #Make install directive
-target.path = ../../ikomia/core
+target.path = ../Build/Lib
 INSTALLS += target
+
+unix {
+symlink.path = ../Build/Lib
+symlink.extra = ln -sf $$PWD/../Build/Lib/pycore.so $$PWD/../../ikomia/core
+INSTALLS += symlink
+}
 
 #Python
 win32: INCLUDEPATH += ../../../numpy/numpy/core/include
