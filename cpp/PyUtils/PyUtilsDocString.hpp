@@ -36,6 +36,9 @@ constexpr auto _pythonStateDocString =
         "Returns:\n"
         "   :py:class:`utils.pyutils.PluginState`: state\n";
 
+constexpr auto _getIkomiaFolderDocString =
+        "Get Ikomia root folder for API and Ikomia Studio.\n";
+
 //----------------------
 //----- CException -----
 //-----------------------
