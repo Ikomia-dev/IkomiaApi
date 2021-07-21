@@ -124,11 +124,11 @@ namespace Ikomia
 
         namespace IkomiaApp
         {
-            inline std::string  getAppFolder()
+            inline std::string  getIkomiaFolder()
             {
                 return QDir::homePath().toStdString() + "/Ikomia";
             }
-            inline QString      getQAppFolder()
+            inline QString      getQIkomiaFolder()
             {
                 return QDir::homePath() + "/Ikomia";
             }
@@ -774,11 +774,11 @@ namespace Ikomia
         {
             inline std::string  getPythonPath()
             {
-                return IkomiaApp::getAppFolder() + "/Plugins/Python";
+                return IkomiaApp::getIkomiaFolder() + "/Plugins/Python";
             }
             inline std::string  getCppPath()
             {
-                return IkomiaApp::getAppFolder() + "/Plugins/C++";
+                return IkomiaApp::getIkomiaFolder() + "/Plugins/C++";
             }
             inline PluginState  getCppState(const QString& version)
             {
@@ -924,11 +924,11 @@ namespace Ikomia
             }
             inline std::string getBackendStoreURI()
             {
-                return Utils::IkomiaApp::getAppFolder() + "/MLflow";
+                return Utils::IkomiaApp::getIkomiaFolder() + "/MLflow";
             }
             inline std::string getArtifactURI()
             {
-                return Utils::IkomiaApp::getAppFolder() + "/MLflow";
+                return Utils::IkomiaApp::getIkomiaFolder() + "/MLflow";
             }
         }
 
@@ -940,7 +940,7 @@ namespace Ikomia
             }
             inline std::string getLogDirUri()
             {
-                return Utils::IkomiaApp::getAppFolder() + "/Tensorboard";
+                return Utils::IkomiaApp::getIkomiaFolder() + "/Tensorboard";
             }
         }
 

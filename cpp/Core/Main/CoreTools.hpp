@@ -183,7 +183,7 @@ namespace Ikomia
             inline QString  getMainPath()
             {
                 QDir dir;
-                QString path = IkomiaApp::getQAppFolder();
+                QString path = IkomiaApp::getQIkomiaFolder();
                 dir.mkpath(path);
                 path += "/Ikomia.pcl";
                 return path;

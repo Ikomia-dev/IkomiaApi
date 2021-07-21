@@ -120,7 +120,7 @@ class COcvObjectnessBING : public C2dImageTask
                 if(m_pSaliency.get() == nullptr)
                     m_pSaliency = cv::saliency::ObjectnessBING::create();
 
-                std::string trainingPath = Utils::IkomiaApp::getAppFolder() + "/models/ObjectnessTrainedModel";
+                std::string trainingPath = Utils::IkomiaApp::getIkomiaFolder() + "/models/ObjectnessTrainedModel";
                 m_pSaliency->setTrainingPath(trainingPath);
                 m_pSaliency->setBBResDir( "Results" );
 

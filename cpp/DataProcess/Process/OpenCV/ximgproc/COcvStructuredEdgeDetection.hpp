@@ -47,7 +47,7 @@ class COcvStructuredEdgeDetectionParam: public CWorkflowTaskParam
 
     public:
 
-        std::string     m_modelPath = Utils::IkomiaApp::getAppFolder() + "/Resources/StructuredEdgeDetection/model.yml.gz";
+        std::string     m_modelPath = Utils::IkomiaApp::getIkomiaFolder() + "/Resources/StructuredEdgeDetection/model.yml.gz";
 };
 
 //-----------------------//
