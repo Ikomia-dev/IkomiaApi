@@ -24,14 +24,8 @@ HEADERS += \
         PyUtilsGlobal.h
 
 #Make install directive
-target.path = ../Build/Lib
+target.path = ../../ikomia/utils
 INSTALLS += target
-
-unix {
-symlink.path = ../Build/Lib
-symlink.extra = ln -sf $$PWD/../Build/Lib/pyutils.so $$PWD/../../ikomia/utils
-INSTALLS += symlink
-}
 
 LIBS += $$link_python()
 

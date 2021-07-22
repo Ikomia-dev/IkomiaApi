@@ -31,14 +31,8 @@ HEADERS += \
         PyDataIOGlobal.hpp
 
 #Make install directive
-target.path = ../Build/Lib
+target.path = ../../ikomia/dataio
 INSTALLS += target
-
-unix {
-symlink.path = ../Build/Lib
-symlink.extra = ln -sf $$PWD/../Build/Lib/pydataio.so $$PWD/../../ikomia/dataio
-INSTALLS += symlink
-}
 
 LIBS += $$link_python()
 

@@ -65,33 +65,29 @@ else
   make install
   echo "----- Build done-----"
 
-  cd ../..
-  python_lib_dir="ikomia/lib"
-  if [ ! -d $python_lib_dir ]
-  then
-    mkdir $python_lib_dir
-  fi
-
-  echo "----- Copy C++ libs to Python package -----"
-  cp -R cpp/Build/Lib/. $python_lib_dir
-  echo "----- Copy done -----"
-
-  echo "----- Bundle dependencies -----"
-  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pyutils.so -bundle-non-qt-libs
-  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pycore.so -bundle-non-qt-libs
-  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataio.so -bundle-non-qt-libs
-  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataprocess.so -bundle-non-qt-libs
-  echo "----- Bundle dependencies done -----"
-
-  echo "----- Update symbolic links to Python binding libs -----"
-  ln -sf $PWD/ikomia/lib/pyutils.so $PWD/ikomia/utils
-  ln -sf $PWD/ikomia/lib/pycore.so $PWD/ikomia/core
-  ln -sf $PWD/ikomia/lib/pydataio.so $PWD/ikomia/dataio
-  ln -sf $PWD/ikomia/lib/pydataprocess.so $PWD/ikomia/dataprocess
-  echo "----- Symbolic links done -----"
-
   if [ $build_wheel = 1 ]
   then
+    cd ../..
+    python_lib_dir="ikomia/lib"
+    if [ ! -d $python_lib_dir ]
+    then
+      mkdir $python_lib_dir
+    fi
+
+     echo "----- Copy C++ libs to Python package -----"
+    cp cpp/Build/Lib/libikUtils* $python_lib_dir
+    cp cpp/Build/Lib/libikCore* $python_lib_dir
+    cp cpp/Build/Lib/libikDataIO* $python_lib_dir
+    cp cpp/Build/Lib/libikDataProcess* $python_lib_dir
+    echo "----- Copy done -----"
+
+    echo "----- Bundle dependencies -----"
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pyutils.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pycore.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataio.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataprocess.so -bundle-non-qt-libs
+    echo "----- Bundle dependencies done -----"
+
     echo "----- Generating Python wheel -----"
     python setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
     echo "----- Python wheel done -----"

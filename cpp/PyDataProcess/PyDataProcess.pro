@@ -64,14 +64,8 @@ HEADERS += \
         CVideoTrackingTaskWrap.h
 
 #Make install directive
-target.path = ../Build/Lib
+target.path = ../../ikomia/dataprocess
 INSTALLS += target
-
-unix {
-symlink.path = ../Build/Lib
-symlink.extra = ln -sf $$PWD/../Build/Lib/pydataprocess.so $$PWD/../../ikomia/dataprocess
-INSTALLS += symlink
-}
 
 LIBS += $$link_python()
 

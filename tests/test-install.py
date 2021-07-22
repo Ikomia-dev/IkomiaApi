@@ -1,6 +1,7 @@
 import logging
 import numpy as np
 from ikomia import utils, core, dataprocess, dnn
+from ikomia.core.task import TaskParam
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +77,7 @@ def test_dataprocess():
 def test_dnn():
     print("----- DNN module -----")
     try:
-        train_param = dnn.TrainParam()
+        train_param = TaskParam()
         train_task = dnn.TrainProcess("Train-task", train_param)
         logger.info("Task name:" + train_task.name)
 
