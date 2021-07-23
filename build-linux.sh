@@ -1,19 +1,20 @@
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 [-m clean|build] [-r remote] [-b branch name] [-v python version tag] [-p platform name] [-w]"
+   echo "Usage: $0 [-m clean|build] [-r remote] [-b branch name] [-v python version suffix] [-t python version tag] [-p platform name] [-w]"
    exit 1 # Exit script after printing help
 }
 
 build_wheel=0
 
-while getopts "m:r:b:v:p:w" opt
+while getopts "m:r:b:v:t:p:w" opt
 do
    case "$opt" in
       m ) method="$OPTARG" ;;
       r ) remote="$OPTARG" ;;
       b ) branch="$OPTARG" ;;
-      v ) pytag="$OPTARG" ;;
+      v ) pyversion="$OPTARG" ;;
+      t ) pytag="$OPTARG" ;;
       p ) platform="$OPTARG" ;;
       w ) build_wheel=1 ;;
    esac
@@ -32,6 +33,11 @@ fi
 if [ -z "$branch" ]
 then
    branch="main"
+fi
+
+if [ -z "$pyversion" ]
+then
+   pyversion="3"
 fi
 
 if [ -z "$pytag" ]
@@ -74,7 +80,7 @@ else
       mkdir $python_lib_dir
     fi
 
-     echo "----- Copy C++ libs to Python package -----"
+    echo "----- Copy C++ libs to Python package -----"
     cp cpp/Build/Lib/libikUtils* $python_lib_dir
     cp cpp/Build/Lib/libikCore* $python_lib_dir
     cp cpp/Build/Lib/libikDataIO* $python_lib_dir
@@ -82,14 +88,35 @@ else
     echo "----- Copy done -----"
 
     echo "----- Bundle dependencies -----"
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pyutils.so -bundle-non-qt-libs
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pycore.so -bundle-non-qt-libs
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataio.so -bundle-non-qt-libs
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/ikomia/lib linuxdeployqt $PWD/ikomia/lib/pydataprocess.so -bundle-non-qt-libs
+    cd $python_lib_dir
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt libikUtils.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt libikCore.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt libikDataIO.so -bundle-non-qt-libs
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt libikDataProcess.so -bundle-non-qt-libs
+    cp -f /work/shared/local/lib/python3.7/site-packages/cv2/python-3.7/cv2.cpython-37m-x86_64-linux-gnu.so .
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt cv2.cpython-37m-x86_64-linux-gnu.so -bundle-non-qt-libs
+    mv lib/* .
+    rm -rf lib
+    mv cv2.cpython-37m-x86_64-linux-gnu.so ..
     echo "----- Bundle dependencies done -----"
 
+    echo "----- Update Ikomia libs RPATH -----"
+    patchelf --set-rpath "\$ORIGIN" libikUtils.so
+    patchelf --set-rpath "\$ORIGIN" libikCore.so
+    patchelf --set-rpath "\$ORIGIN" libikDataIO.so
+    patchelf --set-rpath "\$ORIGIN" libikDataProcess.so
+    cd ..
+    patchelf --set-rpath "\$ORIGIN/../lib" utils/pyutils.so
+    patchelf --set-rpath "\$ORIGIN/../lib" core/pycore.so
+    patchelf --set-rpath "\$ORIGIN/../lib" dataio/pydataio.so
+    patchelf --set-rpath "\$ORIGIN/../lib" dataprocess/pydataprocess.so
+
+    patchelf --set-rpath "\$ORIGIN/lib" cv2.cpython-37m-x86_64-linux-gnu.so
+    echo "----- Patch Python libs done -----"
+
     echo "----- Generating Python wheel -----"
-    python setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
+    cd ..
+    python$pyversion setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
     echo "----- Python wheel done -----"
   fi
 fi

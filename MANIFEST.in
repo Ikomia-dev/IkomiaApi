@@ -1,4 +1,6 @@
+recursive-include ikomia *.so
 recursive-include ikomia/core *.so
+recursive-include ikomia/core *.yaml
 recursive-include ikomia/dataio *.so
 recursive-include ikomia/dataprocess *.so
 recursive-include ikomia/utils *.so
