@@ -31,10 +31,9 @@ The first thing to do in our *OCVBasics_process.py* is importing OpenCV package 
 
 .. code-block:: python
     
-    from ikomia import core, dataprocess
+    from ikomia import core, dataprocess, cv2
     import copy
     # Your imports below
-    import cv2
 
 In the *run* method, we now have to retrieve source image from input, add OpenCV calls and set the output:
 

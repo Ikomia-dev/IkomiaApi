@@ -80,13 +80,12 @@ Import statements in *scikit_MorphoSnakes_process.py*:
 
 .. code-block:: python
 
-    from ikomia import core, dataprocess
+    from ikomia import core, dataprocess, cv2
     import copy
     # your imports below
     from skimage.segmentation import (morphological_geodesic_active_contour, inverse_gaussian_gradient, morphological_chan_vese)
     from skimage import img_as_float
     import numpy as np
-    import cv2
 
 .. _inputs:
 

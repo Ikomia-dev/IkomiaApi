@@ -1,5 +1,5 @@
-import cv2
 import ikomia
+from ikomia import cv2
 from ikomia import core, dataprocess
 from ikomia.dataprocess import registry, displayIO, workflow
 from ikomia.utils import tests

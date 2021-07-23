@@ -2,7 +2,7 @@ import logging
 import ikomia
 from ikomia.dataprocess import registry, displayIO
 from ikomia.utils import tests
-import cv2
+from ikomia import cv2
 
 logger = logging.getLogger(__name__)
 
