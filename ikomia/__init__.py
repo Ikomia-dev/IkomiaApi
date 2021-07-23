@@ -26,8 +26,6 @@ from dotenv import load_dotenv
 global api_session
 api_session = None
 
-init_logging()
-
 
 def initialize():
     load_dotenv()
@@ -36,9 +34,11 @@ def initialize():
     global api_session
     api_session = LoginSession(username, pwd)
     check_directories()
+    init_logging()
 
 
 def check_directories():
+    os.makedirs(os.path.join(os.path.expanduser("~"), "Ikomia/"), exist_ok=True)
     os.makedirs(config.main_cfg["registry"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
