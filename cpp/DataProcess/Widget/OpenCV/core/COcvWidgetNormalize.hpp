@@ -41,47 +41,50 @@ class COcvWidgetNormalize : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvNormalizeParam>();
 
-            auto pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha);
-            auto pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta);
-            auto pCombo = addCombo(2, tr("Norm type"));
-            pCombo->addItem(tr("NORM_INF"), cv::NORM_INF);
-            pCombo->addItem(tr("NORM_L1"), cv::NORM_L1);
-            pCombo->addItem(tr("NORM_L2"), cv::NORM_L2);
-            pCombo->addItem(tr("NORM_L2SQR"), cv::NORM_L2SQR);
-            pCombo->addItem(tr("NORM_HAMMING"), cv::NORM_HAMMING);
-            pCombo->addItem(tr("NORM_HAMMING2"), cv::NORM_HAMMING2);
-            pCombo->addItem(tr("NORM_TYPE_MASK"), cv::NORM_TYPE_MASK);
-            pCombo->addItem(tr("NORM_MINMAX"), cv::NORM_MINMAX);
-            pCombo->addItem(tr("NORM_RELATIVE"), cv::NORM_RELATIVE);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_norm_type));
+            m_pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha);
+            m_pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta);
+            m_pCombo = addCombo(2, tr("Norm type"));
+            m_pCombo->addItem(tr("NORM_INF"), cv::NORM_INF);
+            m_pCombo->addItem(tr("NORM_L1"), cv::NORM_L1);
+            m_pCombo->addItem(tr("NORM_L2"), cv::NORM_L2);
+            m_pCombo->addItem(tr("NORM_L2SQR"), cv::NORM_L2SQR);
+            m_pCombo->addItem(tr("NORM_HAMMING"), cv::NORM_HAMMING);
+            m_pCombo->addItem(tr("NORM_HAMMING2"), cv::NORM_HAMMING2);
+            m_pCombo->addItem(tr("NORM_TYPE_MASK"), cv::NORM_TYPE_MASK);
+            m_pCombo->addItem(tr("NORM_MINMAX"), cv::NORM_MINMAX);
+            m_pCombo->addItem(tr("NORM_RELATIVE"), cv::NORM_RELATIVE);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_norm_type));
 
-            auto pComboDepth = addCombo(3, tr("Depth"));
-            pComboDepth->addItem("Default", -1);
-            pComboDepth->addItem("CV_8U", CV_8U);
-            pComboDepth->addItem("CV_16U", CV_16U);
-            pComboDepth->addItem("CV_32F", CV_32F);
-            pComboDepth->addItem("CV_64F", CV_64F);
-            pComboDepth->setCurrentIndex(pComboDepth->findData(m_pParam->m_dtype));
+            m_pComboDepth = addCombo(3, tr("Depth"));
+            m_pComboDepth->addItem("Default", -1);
+            m_pComboDepth->addItem("CV_8U", CV_8U);
+            m_pComboDepth->addItem("CV_16U", CV_16U);
+            m_pComboDepth->addItem("CV_32F", CV_32F);
+            m_pComboDepth->addItem("CV_64F", CV_64F);
+            m_pComboDepth->setCurrentIndex(m_pComboDepth->findData(m_pParam->m_dtype));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_beta = pSpinBeta->value();
-                m_pParam->m_norm_type = pCombo->currentData().toInt();
-                m_pParam->m_dtype = pComboDepth->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_beta = m_pSpinBeta->value();
+            m_pParam->m_norm_type = m_pCombo->currentData().toInt();
+            m_pParam->m_dtype = m_pComboDepth->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvNormalizeParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBeta = nullptr;
+        QComboBox* m_pCombo = nullptr;
+        QComboBox* m_pComboDepth = nullptr;
 };
 
 class COcvWidgetNormalizeFactory : public CWidgetFactory

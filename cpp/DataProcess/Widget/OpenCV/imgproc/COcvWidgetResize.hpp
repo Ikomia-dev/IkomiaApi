@@ -71,7 +71,6 @@ class COcvWidgetResize : public CWorkflowTaskWidget
             m_pComboInterpolation->addItem(tr("Exact bilinear"), cv::INTER_LINEAR_EXACT);
             m_pComboInterpolation->setCurrentIndex(m_pComboInterpolation->findData(m_pParam->m_interpolation));
 
-            
             m_pLayout->addWidget(pLabelUnit, 0, 0);
             m_pLayout->addWidget(m_pComboUnit, 0, 1);
             m_pLayout->addWidget(pLabelWidth, 1, 0);
@@ -80,34 +79,28 @@ class COcvWidgetResize : public CWorkflowTaskWidget
             m_pLayout->addWidget(m_pEditHeight, 2, 1);
             m_pLayout->addWidget(pLabelInterpolation, 3, 0);
             m_pLayout->addWidget(m_pComboInterpolation, 3, 1);
-            
-
-            initConnections();
         }
 
-        void initConnections()
+        void onApply() override
         {
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
+            if(m_pComboUnit->currentIndex() == 0)
             {
-                if(m_pComboUnit->currentIndex() == 0)
-                {
-                    m_pParam->m_bPixelUnit = true;
-                    m_pParam->m_fx = 0;
-                    m_pParam->m_fy = 0;
-                    m_pParam->m_newWidth = m_pEditWidth->text().toInt();
-                    m_pParam->m_newHeight = m_pEditHeight->text().toInt();
-                }
-                else
-                {
-                    m_pParam->m_bPixelUnit = false;
-                    m_pParam->m_newWidth = 0;
-                    m_pParam->m_newHeight = 0;
-                    m_pParam->m_fx = m_pEditWidth->text().toDouble() / 100;
-                    m_pParam->m_fy = m_pEditHeight->text().toDouble() / 100;
-                }
-                m_pParam->m_interpolation = m_pComboInterpolation->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+                m_pParam->m_bPixelUnit = true;
+                m_pParam->m_fx = 0;
+                m_pParam->m_fy = 0;
+                m_pParam->m_newWidth = m_pEditWidth->text().toInt();
+                m_pParam->m_newHeight = m_pEditHeight->text().toInt();
+            }
+            else
+            {
+                m_pParam->m_bPixelUnit = false;
+                m_pParam->m_newWidth = 0;
+                m_pParam->m_newHeight = 0;
+                m_pParam->m_fx = m_pEditWidth->text().toDouble() / 100;
+                m_pParam->m_fy = m_pEditHeight->text().toDouble() / 100;
+            }
+            m_pParam->m_interpolation = m_pComboInterpolation->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

@@ -39,27 +39,27 @@ class COcvWidgetDenoiseTVL1 : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDenoiseTVL1Param>();
 
-            auto pSpinLambda = addDoubleSpin(0, tr("Lambda"), m_pParam->m_lambda);
-            auto pSpinIter = addSpin(1, tr("Iterations"), m_pParam->m_niters);
+            m_pSpinLambda = addDoubleSpin(0, tr("Lambda"), m_pParam->m_lambda);
+            m_pSpinIter = addSpin(1, tr("Iterations"), m_pParam->m_niters);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_lambda = pSpinLambda->value();
-                m_pParam->m_niters = pSpinIter->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_lambda = m_pSpinLambda->value();
+            m_pParam->m_niters = m_pSpinIter->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvDenoiseTVL1Param> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinLambda = nullptr;
+        QSpinBox*       m_pSpinIter = nullptr;
 };
 
 class COcvWidgetDenoiseTVL1Factory : public CWidgetFactory

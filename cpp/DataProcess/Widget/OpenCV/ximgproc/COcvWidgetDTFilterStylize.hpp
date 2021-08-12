@@ -44,29 +44,30 @@ class COcvWidgetDTFilterStylize : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDTFilterStylizeParam>();
 
-            auto pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
-            auto pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
-            auto pSpinEdges = addSpin(2, tr("Edges gamma"), m_pParam->m_edgesGamma);
+            m_pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
+            m_pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
+            m_pSpinEdges = addSpin(2, tr("Edges gamma"), m_pParam->m_edgesGamma);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigmaColor = pSpinColor->value();
-                m_pParam->m_sigmaSpatial = pSpinSpatial->value();
-                m_pParam->m_edgesGamma = pSpinEdges->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_sigmaColor = m_pSpinColor->value();
+            m_pParam->m_sigmaSpatial = m_pSpinSpatial->value();
+            m_pParam->m_edgesGamma = m_pSpinEdges->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvDTFilterStylizeParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinColor = nullptr;
+        QDoubleSpinBox* m_pSpinSpatial = nullptr;
+        QSpinBox*       m_pSpinEdges = nullptr;
 };
 
 class COcvWidgetDTFilterStylizeFactory : public CWidgetFactory
@@ -83,4 +84,5 @@ class COcvWidgetDTFilterStylizeFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetDTFilterStylize>(pParam);
         }
 };
+
 #endif // COCVWIDGETDTFILTERSTYLIZE_HPP

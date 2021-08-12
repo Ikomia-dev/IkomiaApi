@@ -40,29 +40,30 @@ class CGmicWidgetRedEye : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicRedEyeParam>();
 
-            auto pSpinThreshold = addSpin(0, tr("Threshold"), m_pParam->m_threshold, 0, 100, 1);
-            auto pSpinSmoothness = addDoubleSpin(1, tr("Smoothness"), m_pParam->m_smoothness);
-            auto pSpinAttenuation = addDoubleSpin(2, tr("Attenuation"), m_pParam->m_attenuation);
+            m_pSpinThreshold = addSpin(0, tr("Threshold"), m_pParam->m_threshold, 0, 100, 1);
+            m_pSpinSmoothness = addDoubleSpin(1, tr("Smoothness"), m_pParam->m_smoothness);
+            m_pSpinAttenuation = addDoubleSpin(2, tr("Attenuation"), m_pParam->m_attenuation);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_threshold = pSpinThreshold->value();
-                m_pParam->m_smoothness = pSpinSmoothness->value();
-                m_pParam->m_attenuation = pSpinAttenuation->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            m_pParam->m_smoothness = m_pSpinSmoothness->value();
+            m_pParam->m_attenuation = m_pSpinAttenuation->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicRedEyeParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSmoothness = nullptr;
+        QDoubleSpinBox* m_pSpinAttenuation = nullptr;
+        QSpinBox*       m_pSpinThreshold = nullptr;
 };
 
 class CGmicWidgetRedEyeFactory : public CWidgetFactory

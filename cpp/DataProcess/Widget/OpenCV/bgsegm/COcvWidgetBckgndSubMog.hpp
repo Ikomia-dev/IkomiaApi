@@ -40,31 +40,33 @@ class COcvWidgetBckgndSubMog : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBckgndSubMogParam>();
 
-            auto pSpinHistory = addSpin(0, tr("Length of history"), m_pParam->m_history);
-            auto pSpinMixtures = addSpin(1, tr("Number of Gaussian mixtures"), m_pParam->m_mixturesCount);
-            auto pSpinRatio = addDoubleSpin(2, tr("Background ratio"), m_pParam->m_bckRatio, 0.0, 10.0, 0.1, 1);
-            auto pSpinSigma = addDoubleSpin(3, tr("Noise strength (standard deviation)"), m_pParam->m_noiseSigma, 0.0, 255.0, 1.0, 1);
+            m_pSpinHistory = addSpin(0, tr("Length of history"), m_pParam->m_history);
+            m_pSpinMixtures = addSpin(1, tr("Number of Gaussian mixtures"), m_pParam->m_mixturesCount);
+            m_pSpinRatio = addDoubleSpin(2, tr("Background ratio"), m_pParam->m_bckRatio, 0.0, 10.0, 0.1, 1);
+            m_pSpinSigma = addDoubleSpin(3, tr("Noise strength (standard deviation)"), m_pParam->m_noiseSigma, 0.0, 255.0, 1.0, 1);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_history = pSpinHistory->value();
-                m_pParam->m_mixturesCount = pSpinMixtures->value();
-                m_pParam->m_bckRatio = pSpinRatio->value();
-                m_pParam->m_noiseSigma = pSpinSigma->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_history = m_pSpinHistory->value();
+            m_pParam->m_mixturesCount = m_pSpinMixtures->value();
+            m_pParam->m_bckRatio = m_pSpinRatio->value();
+            m_pParam->m_noiseSigma = m_pSpinSigma->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBckgndSubMogParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRatio = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QSpinBox*       m_pSpinHistory = nullptr;
+        QSpinBox*       m_pSpinMixtures = nullptr;
 };
 
 class COcvWidgetBckgndSubMogFactory : public CWidgetFactory

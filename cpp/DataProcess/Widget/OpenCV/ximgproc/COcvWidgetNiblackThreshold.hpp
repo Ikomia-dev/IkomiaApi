@@ -39,61 +39,63 @@ class COcvWidgetNiblackThreshold : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvNiblackThresholdParam>();
 
             auto pLabelMethod = new QLabel(QObject::tr("Binarization method"));
-            auto pComboMethod = new QComboBox;
-            pComboMethod->addItem(tr("Niblack"), cv::ximgproc::BINARIZATION_NIBLACK);
-            pComboMethod->addItem(tr("Sauvola"), cv::ximgproc::BINARIZATION_SAUVOLA);
-            pComboMethod->addItem(tr("Wolf"), cv::ximgproc::BINARIZATION_WOLF);
-            pComboMethod->addItem(tr("Nick"), cv::ximgproc::BINARIZATION_NICK);
-            pComboMethod->setCurrentIndex(pComboMethod->findData(m_pParam->m_binaryMethod));
+            m_pComboMethod = new QComboBox;
+            m_pComboMethod->addItem(tr("Niblack"), cv::ximgproc::BINARIZATION_NIBLACK);
+            m_pComboMethod->addItem(tr("Sauvola"), cv::ximgproc::BINARIZATION_SAUVOLA);
+            m_pComboMethod->addItem(tr("Wolf"), cv::ximgproc::BINARIZATION_WOLF);
+            m_pComboMethod->addItem(tr("Nick"), cv::ximgproc::BINARIZATION_NICK);
+            m_pComboMethod->setCurrentIndex(m_pComboMethod->findData(m_pParam->m_binaryMethod));
 
             auto pLabelThreshType = new QLabel(QObject::tr("Threshold type"));
-            auto pComboThreshType = new QComboBox;
-            pComboThreshType->addItem(tr("Binary"), cv::THRESH_BINARY);
-            pComboThreshType->addItem(tr("Inverse binary"), cv::THRESH_BINARY_INV);
-            pComboThreshType->setCurrentIndex(pComboMethod->findData(m_pParam->m_thresholdType));
+            m_pComboThreshType = new QComboBox;
+            m_pComboThreshType->addItem(tr("Binary"), cv::THRESH_BINARY);
+            m_pComboThreshType->addItem(tr("Inverse binary"), cv::THRESH_BINARY_INV);
+            m_pComboThreshType->setCurrentIndex(m_pComboMethod->findData(m_pParam->m_thresholdType));
 
             auto pLabelBlockSize = new QLabel(QObject::tr("Block size"));
-            auto pSpinBlockSize = new QDoubleSpinBox;
-            pSpinBlockSize->setSingleStep(2);
-            pSpinBlockSize->setRange(1, INT_MAX - 1);
-            pSpinBlockSize->setValue(m_pParam->m_blockSize);
+            m_pSpinBlockSize = new QDoubleSpinBox;
+            m_pSpinBlockSize->setSingleStep(2);
+            m_pSpinBlockSize->setRange(1, INT_MAX - 1);
+            m_pSpinBlockSize->setValue(m_pParam->m_blockSize);
 
             auto pLabelK = new QLabel(QObject::tr("K"));
-            auto pSpinK = new QDoubleSpinBox;
-            pSpinK->setValue(m_pParam->m_k);
-            pSpinK->setRange(-1.0, 1.0);
-            pSpinK->setSingleStep(0.1);
-
+            m_pSpinK = new QDoubleSpinBox;
+            m_pSpinK->setValue(m_pParam->m_k);
+            m_pSpinK->setRange(-1.0, 1.0);
+            m_pSpinK->setSingleStep(0.1);
             
             m_pLayout->addWidget(pLabelMethod, 0, 0);
-            m_pLayout->addWidget(pComboMethod, 0, 1);
+            m_pLayout->addWidget(m_pComboMethod, 0, 1);
             m_pLayout->addWidget(pLabelThreshType, 1, 0);
-            m_pLayout->addWidget(pComboThreshType, 1, 1);
+            m_pLayout->addWidget(m_pComboThreshType, 1, 1);
             m_pLayout->addWidget(pLabelBlockSize, 2, 0);
-            m_pLayout->addWidget(pSpinBlockSize, 2, 1);
+            m_pLayout->addWidget(m_pSpinBlockSize, 2, 1);
             m_pLayout->addWidget(pLabelK, 3, 0);
-            m_pLayout->addWidget(pSpinK, 3, 1);
-            
+            m_pLayout->addWidget(m_pSpinK, 3, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_binaryMethod = pComboMethod->currentData().toInt();
-                m_pParam->m_thresholdType = pComboThreshType->currentData().toInt();
-                m_pParam->m_blockSize = pSpinBlockSize->value();
-                m_pParam->m_k = pSpinK->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_binaryMethod = m_pComboMethod->currentData().toInt();
+            m_pParam->m_thresholdType = m_pComboThreshType->currentData().toInt();
+            m_pParam->m_blockSize = m_pSpinBlockSize->value();
+            m_pParam->m_k = m_pSpinK->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvNiblackThresholdParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinBlockSize = nullptr;
+        QDoubleSpinBox* m_pSpinK = nullptr;
+        QComboBox*      m_pComboMethod = nullptr;
+        QComboBox*      m_pComboThreshType = nullptr;
 };
 
 class COcvWidgetNiblackThresholdFactory : public CWidgetFactory

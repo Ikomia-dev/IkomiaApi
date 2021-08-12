@@ -43,20 +43,21 @@ class COcvWidgetGradientDeriche : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGradientDericheParam>();
 
-            QGroupBox* pBox = new QGroupBox("Orientation");
-            QGridLayout* pBoxLayout = new QGridLayout;
-            QRadioButton* pRadioX = new QRadioButton("X");
-            QRadioButton* pRadioY = new QRadioButton("Y");
-            pBoxLayout->addWidget(pRadioX);
+            auto pBox = new QGroupBox("Orientation");
+            auto pBoxLayout = new QGridLayout;
+            m_pRadioX = new QRadioButton("X");
+            auto pRadioY = new QRadioButton("Y");
+            pBoxLayout->addWidget(m_pRadioX);
             pBoxLayout->addWidget(pRadioY);
             pBox->setLayout(pBoxLayout);
+
             if(m_pParam->m_orientation == COcvGradientDericheParam::orientation::X)
-                pRadioX->setChecked(true);
+                m_pRadioX->setChecked(true);
             else
                 pRadioY->setChecked(true);
 
@@ -72,31 +73,29 @@ class COcvWidgetGradientDeriche : public CWorkflowTaskWidget
             m_pDblSpinMean->setSingleStep(0.1);
             m_pDblSpinMean->setValue(m_pParam->m_alphaMean);
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_orientation = pRadioX->isChecked() ? COcvGradientDericheParam::orientation::X : COcvGradientDericheParam::orientation::Y;
-                m_pParam->m_alphaDerive = m_pDblSpinDerive->value();
-                m_pParam->m_alphaMean = m_pDblSpinMean->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
             m_pLayout->addWidget(pBox, 0, 0, 1, 2);
 
             m_pLayout->addWidget(pLabelSpinDerive, 1, 0);
             m_pLayout->addWidget(m_pDblSpinDerive, 1, 1);
 
             m_pLayout->addWidget(pLabelSpinMean, 2, 0);
-            m_pLayout->addWidget(m_pDblSpinMean, 2, 1);
+            m_pLayout->addWidget(m_pDblSpinMean, 2, 1);  
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_orientation = m_pRadioX->isChecked() ? COcvGradientDericheParam::orientation::X : COcvGradientDericheParam::orientation::Y;
+            m_pParam->m_alphaDerive = m_pDblSpinDerive->value();
+            m_pParam->m_alphaMean = m_pDblSpinMean->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvGradientDericheParam> m_pParam = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinDerive = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinMean = nullptr;
+        QDoubleSpinBox* m_pDblSpinDerive = nullptr;
+        QDoubleSpinBox* m_pDblSpinMean = nullptr;
+        QRadioButton*   m_pRadioX = nullptr;
 };
 
 class COcvWidgetGradientDericheFactory : public CWidgetFactory

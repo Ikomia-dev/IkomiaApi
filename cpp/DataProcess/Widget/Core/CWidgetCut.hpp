@@ -40,25 +40,24 @@ class CWidgetCut : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CCutParam>();
 
-            auto pSpinSize = addSpin(0, tr("Size"), m_pParam->m_size);
+            m_pSpinSize = addSpin(0, tr("Size"), m_pParam->m_size);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_size = pSpinSize->value();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_size = m_pSpinSize->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CCutParam> m_pParam = nullptr;
+        QSpinBox* m_pSpinSize = nullptr;
 };
 
 class CWidgetCutFactory : public CWidgetFactory

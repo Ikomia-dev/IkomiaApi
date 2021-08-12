@@ -41,7 +41,7 @@ class COcvWidgetAdaptiveThreshold : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvAdaptiveThresholdParam>();
@@ -76,16 +76,6 @@ class COcvWidgetAdaptiveThreshold : public CWorkflowTaskWidget
             m_pSpinOffset = new QDoubleSpinBox;
             m_pSpinOffset->setValue(m_pParam->m_offset);
             m_pSpinOffset->setRange(-255, 255);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_adaptiveMethod = m_pComboMethod->currentIndex() == 0 ? cv::ADAPTIVE_THRESH_MEAN_C : cv::ADAPTIVE_THRESH_GAUSSIAN_C;
-                m_pParam->m_thresholdType = m_pComboThreshType->currentIndex() == 0 ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
-                m_pParam->m_blockSize = m_pSpinBlockSize->value();
-                m_pParam->m_offset = m_pSpinOffset->value();
-                emit doApplyProcess(m_pParam);
-            });
-
             
             m_pLayout->addWidget(pLabelMethod, 0, 0);
             m_pLayout->addWidget(m_pComboMethod, 0, 1);
@@ -94,8 +84,16 @@ class COcvWidgetAdaptiveThreshold : public CWorkflowTaskWidget
             m_pLayout->addWidget(pLabelBlockSize, 2, 0);
             m_pLayout->addWidget(m_pSpinBlockSize, 2, 1);
             m_pLayout->addWidget(pLabelOffset, 3, 0);
-            m_pLayout->addWidget(m_pSpinOffset, 3, 1);
-            
+            m_pLayout->addWidget(m_pSpinOffset, 3, 1);   
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_adaptiveMethod = m_pComboMethod->currentIndex() == 0 ? cv::ADAPTIVE_THRESH_MEAN_C : cv::ADAPTIVE_THRESH_GAUSSIAN_C;
+            m_pParam->m_thresholdType = m_pComboThreshType->currentIndex() == 0 ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
+            m_pParam->m_blockSize = m_pSpinBlockSize->value();
+            m_pParam->m_offset = m_pSpinOffset->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

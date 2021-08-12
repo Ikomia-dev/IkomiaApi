@@ -41,25 +41,24 @@ class COcvWidgetCLAHE : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCLAHEParam>();
 
-            auto pSpinClipLimit = addDoubleSpin(0, tr("Threshold for contrast limiting"), m_pParam->m_clipLimit);
+            m_pSpinClipLimit = addDoubleSpin(0, tr("Threshold for contrast limiting"), m_pParam->m_clipLimit);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_clipLimit = pSpinClipLimit->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_clipLimit = m_pSpinClipLimit->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvCLAHEParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinClipLimit = nullptr;
 };
 
 class COcvWidgetCLAHEFactory : public CWidgetFactory

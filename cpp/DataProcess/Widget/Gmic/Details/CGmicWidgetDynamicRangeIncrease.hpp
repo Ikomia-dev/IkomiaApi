@@ -40,37 +40,42 @@ class CGmicWidgetDynamicRangeIncrease : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicDynamicRangeIncreaseParam>();
 
-            auto pSpinMapTones = addDoubleSpin(0, tr("Map tones"), m_pParam->m_mapTones, 0, 1);
-            auto pSpinShadows = addDoubleSpin(1, tr("Recover shadows"), m_pParam->m_recoverShadows, 0, 1);
-            auto pSpinHighlights = addDoubleSpin(2, tr("Recover highlights"), m_pParam->m_recoverHighligths, 0, 1);
-            auto pSpinDetails = addDoubleSpin(3, tr("Enhance details"), m_pParam->m_enhanceDetails, 0, 5);
-            auto pSpinDetailStrength = addDoubleSpin(4, tr("Detail strength"), m_pParam->m_detailStrength, 0, 1);
-            auto pCheckMapTones = addCheck(5, tr("Map tones"), m_pParam->m_bMapTones);
-            auto pCheckDetails = addCheck(6, tr("Enhance details"), m_pParam->m_bEnhanceDetails);
+            m_pSpinMapTones = addDoubleSpin(0, tr("Map tones"), m_pParam->m_mapTones, 0, 1);
+            m_pSpinShadows = addDoubleSpin(1, tr("Recover shadows"), m_pParam->m_recoverShadows, 0, 1);
+            m_pSpinHighlights = addDoubleSpin(2, tr("Recover highlights"), m_pParam->m_recoverHighligths, 0, 1);
+            m_pSpinDetails = addDoubleSpin(3, tr("Enhance details"), m_pParam->m_enhanceDetails, 0, 5);
+            m_pSpinDetailStrength = addDoubleSpin(4, tr("Detail strength"), m_pParam->m_detailStrength, 0, 1);
+            m_pCheckMapTones = addCheck(5, tr("Map tones"), m_pParam->m_bMapTones);
+            m_pCheckDetails = addCheck(6, tr("Enhance details"), m_pParam->m_bEnhanceDetails);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_mapTones = pSpinMapTones->value();
-                m_pParam->m_recoverShadows = pSpinShadows->value();
-                m_pParam->m_recoverHighligths = pSpinHighlights->value();
-                m_pParam->m_enhanceDetails = pSpinDetails->value();
-                m_pParam->m_detailStrength = pSpinDetailStrength->value();
-                m_pParam->m_bMapTones = pCheckMapTones->isChecked();
-                m_pParam->m_bEnhanceDetails = pCheckDetails->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_mapTones = m_pSpinMapTones->value();
+            m_pParam->m_recoverShadows = m_pSpinShadows->value();
+            m_pParam->m_recoverHighligths = m_pSpinHighlights->value();
+            m_pParam->m_enhanceDetails = m_pSpinDetails->value();
+            m_pParam->m_detailStrength = m_pSpinDetailStrength->value();
+            m_pParam->m_bMapTones = m_pCheckMapTones->isChecked();
+            m_pParam->m_bEnhanceDetails = m_pCheckDetails->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicDynamicRangeIncreaseParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinMapTones = nullptr;
+        QDoubleSpinBox* m_pSpinShadows = nullptr;
+        QDoubleSpinBox* m_pSpinHighlights = nullptr;
+        QDoubleSpinBox* m_pSpinDetails = nullptr;
+        QDoubleSpinBox* m_pSpinDetailStrength = nullptr;
+        QCheckBox*      m_pCheckMapTones = nullptr;
+        QCheckBox*      m_pCheckDetails = nullptr;
 };
 
 class CGmicWidgetDynamicRangeIncreaseFactory : public CWidgetFactory

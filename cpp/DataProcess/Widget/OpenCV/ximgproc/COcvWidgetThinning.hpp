@@ -42,32 +42,31 @@ class COcvWidgetThinning : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvThinningParam>();
 
             auto pLabel = new QLabel(tr("Type"));
-            auto pCombo = new QComboBox;
-            pCombo->addItem("Zhang-Suen", cv::ximgproc::THINNING_ZHANGSUEN);
-            pCombo->addItem("Guo-Hall", cv::ximgproc::THINNING_GUOHALL);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_type));
-
+            m_pCombo = new QComboBox;
+            m_pCombo->addItem("Zhang-Suen", cv::ximgproc::THINNING_ZHANGSUEN);
+            m_pCombo->addItem("Guo-Hall", cv::ximgproc::THINNING_GUOHALL);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_type));
             
             m_pLayout->addWidget(pLabel, 0, 0);
-            m_pLayout->addWidget(pCombo, 0, 1);
-            
+            m_pLayout->addWidget(m_pCombo, 0, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_type = pCombo->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_type = m_pCombo->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvThinningParam> m_pParam = nullptr;
+        QComboBox* m_pCombo = nullptr;
 };
 
 class COcvWidgetThinningFactory : public CWidgetFactory

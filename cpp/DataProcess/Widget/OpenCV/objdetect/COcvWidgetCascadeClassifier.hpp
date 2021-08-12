@@ -43,26 +43,26 @@ class COcvWidgetCascadeClassifier : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCascadeClassifierParam>();
 
-            QDir dirHaarcascades = QDir::home();
-            dirHaarcascades.cd("Ikomia/Resources/CascadeClassifier/haarcascades");
+            m_dirHaarcascades = QDir::home();
+            m_dirHaarcascades.cd("Ikomia/Resources/CascadeClassifier/haarcascades");
 
-            QDir dirLbpcascades = QDir::home();
-            dirLbpcascades.cd("Ikomia/Resources/CascadeClassifier/lbpcascades");
+            m_dirLbpcascades = QDir::home();
+            m_dirLbpcascades.cd("Ikomia/Resources/CascadeClassifier/lbpcascades");
 
             QStringList filters;
             filters << "*.xml";
 
             auto pGroupHaar = new QGroupBox(tr("Haarcascades"));
-            auto pHaarLayout = new QVBoxLayout(pGroupHaar);
-            foreach ( QString file, dirHaarcascades.entryList(filters, QDir::Files) )
+            m_pHaarLayout = new QVBoxLayout(pGroupHaar);
+            foreach ( QString file, m_dirHaarcascades.entryList(filters, QDir::Files) )
             {
                 auto pCheck = new QCheckBox(file);
-                pHaarLayout->addWidget(pCheck);
+                m_pHaarLayout->addWidget(pCheck);
                 if(std::find_if(m_pParam->m_modelFiles.begin(), m_pParam->m_modelFiles.end(), [file](const std::string& str) { return str.find(file.toStdString()) != std::string::npos; }) != m_pParam->m_modelFiles.end())
                     pCheck->setChecked(true);
                 else
@@ -70,48 +70,52 @@ class COcvWidgetCascadeClassifier : public CWorkflowTaskWidget
             }
 
             auto pGroupLbp = new QGroupBox(tr("Lbpcascades"));
-            auto pLbpLayout = new QVBoxLayout(pGroupLbp);
-            foreach ( QString file, dirLbpcascades.entryList(filters, QDir::Files) )
+            m_pLbpLayout = new QVBoxLayout(pGroupLbp);
+            foreach ( QString file, m_dirLbpcascades.entryList(filters, QDir::Files) )
             {
                 auto pCheck = new QCheckBox(file);
-                pLbpLayout->addWidget(pCheck);
+                m_pLbpLayout->addWidget(pCheck);
                 if(std::find_if(m_pParam->m_modelFiles.begin(), m_pParam->m_modelFiles.end(), [file](const std::string& str) { return str.find(file.toStdString()) != std::string::npos; }) != m_pParam->m_modelFiles.end())
                     pCheck->setChecked(true);
                 else
                     pCheck->setChecked(false);
             }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_modelFiles.clear();
-                for(int i=0; i<pHaarLayout->count(); ++i)
-                {
-                    auto pCheck = qobject_cast<QCheckBox*>(pHaarLayout->itemAt(i)->widget());
-                    if(pCheck->isChecked())
-                    {
-                        auto path = dirHaarcascades.absolutePath() + "/" + pCheck->text();
-                        m_pParam->m_modelFiles.push_back(path.toStdString());
-                    }
-                }
-                for(int i=0; i<pLbpLayout->count(); ++i)
-                {
-                    auto pCheck = qobject_cast<QCheckBox*>(pLbpLayout->itemAt(i)->widget());
-                    if(pCheck->isChecked())
-                    {
-                        auto path = dirHaarcascades.absolutePath() + "/" + pCheck->text();
-                        m_pParam->m_modelFiles.push_back(path.toStdString());
-                    }
-                }
-                emit doApplyProcess(m_pParam); } );
-
-            
             m_pLayout->addWidget(pGroupHaar, 0, 0);
-            m_pLayout->addWidget(pGroupLbp, 0, 1);
-            
+            m_pLayout->addWidget(pGroupLbp, 0, 1);            
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_modelFiles.clear();
+            for(int i=0; i<m_pHaarLayout->count(); ++i)
+            {
+                auto pCheck = qobject_cast<QCheckBox*>(m_pHaarLayout->itemAt(i)->widget());
+                if(pCheck->isChecked())
+                {
+                    auto path = m_dirHaarcascades.absolutePath() + "/" + pCheck->text();
+                    m_pParam->m_modelFiles.push_back(path.toStdString());
+                }
+            }
+            for(int i=0; i<m_pLbpLayout->count(); ++i)
+            {
+                auto pCheck = qobject_cast<QCheckBox*>(m_pLbpLayout->itemAt(i)->widget());
+                if(pCheck->isChecked())
+                {
+                    auto path = m_dirLbpcascades.absolutePath() + "/" + pCheck->text();
+                    m_pParam->m_modelFiles.push_back(path.toStdString());
+                }
+            }
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvCascadeClassifierParam> m_pParam = nullptr;
+        QVBoxLayout*    m_pHaarLayout = nullptr;
+        QVBoxLayout*    m_pLbpLayout = nullptr;
+        QDir            m_dirHaarcascades;
+        QDir            m_dirLbpcascades;
 };
 
 class COcvWidgetCascadeClassifierFactory : public CWidgetFactory

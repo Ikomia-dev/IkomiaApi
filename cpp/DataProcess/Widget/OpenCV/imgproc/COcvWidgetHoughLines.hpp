@@ -39,43 +39,48 @@ class COcvWidgetHoughLines : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvHoughLinesParam>();
 
-            auto pCheckProba = addCheck(0, tr("Probabilistic method"), m_pParam->m_bProbabilistic);
-            auto pSpinRho = addDoubleSpin(1, "Rho", m_pParam->m_rho, 1.0, DBL_MAX, 1.0, 1);
-            auto pSpinTheta = addDoubleSpin(2, "Theta", m_pParam->m_theta, 0.0, 2*CV_PI/180.0, 1.0, 5);
-            auto pSpinThreshold = addSpin(3, tr("Accumulator threshold"), m_pParam->m_threshold, 0, INT_MAX, 1);
-            auto pSpinMinLength = addDoubleSpin(4, tr("Minimum length"), m_pParam->m_minLength, 0.0, DBL_MAX, 1.0, 1);
-            auto pSpinMaxGap = addDoubleSpin(5, tr("Maximum gap"), m_pParam->m_maxGap, 0.0, DBL_MAX, 1.0, 1);
+            m_pCheckProba = addCheck(0, tr("Probabilistic method"), m_pParam->m_bProbabilistic);
+            m_pSpinRho = addDoubleSpin(1, "Rho", m_pParam->m_rho, 1.0, DBL_MAX, 1.0, 1);
+            m_pSpinTheta = addDoubleSpin(2, "Theta", m_pParam->m_theta, 0.0, 2*CV_PI/180.0, 1.0, 5);
+            m_pSpinThreshold = addSpin(3, tr("Accumulator threshold"), m_pParam->m_threshold, 0, INT_MAX, 1);
+            m_pSpinMinLength = addDoubleSpin(4, tr("Minimum length"), m_pParam->m_minLength, 0.0, DBL_MAX, 1.0, 1);
+            m_pSpinMaxGap = addDoubleSpin(5, tr("Maximum gap"), m_pParam->m_maxGap, 0.0, DBL_MAX, 1.0, 1);
             
+            m_pSpinMinLength->setEnabled(m_pParam->m_bProbabilistic);
+            m_pSpinMaxGap->setEnabled(m_pParam->m_bProbabilistic);
 
-            pSpinMinLength->setEnabled(m_pParam->m_bProbabilistic);
-            pSpinMaxGap->setEnabled(m_pParam->m_bProbabilistic);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
+            connect(m_pCheckProba, &QCheckBox::clicked, [&](bool bChecked)
             {
-                m_pParam->m_bProbabilistic = pCheckProba->isChecked();
-                m_pParam->m_rho = pSpinRho->value();
-                m_pParam->m_theta = pSpinTheta->value();
-                m_pParam->m_threshold = pSpinThreshold->value();
-                m_pParam->m_minLength = pSpinMinLength->value();
-                m_pParam->m_maxGap = pSpinMaxGap->value();
-                emit doApplyProcess(m_pParam);
+                m_pSpinMinLength->setEnabled(bChecked);
+                m_pSpinMaxGap->setEnabled(bChecked);
             });
+        }
 
-            connect(pCheckProba, &QCheckBox::clicked, [=](bool bChecked)
-            {
-                pSpinMinLength->setEnabled(bChecked);
-                pSpinMaxGap->setEnabled(bChecked);
-            });
+        void onApply() override
+        {
+            m_pParam->m_bProbabilistic = m_pCheckProba->isChecked();
+            m_pParam->m_rho = m_pSpinRho->value();
+            m_pParam->m_theta = m_pSpinTheta->value();
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            m_pParam->m_minLength = m_pSpinMinLength->value();
+            m_pParam->m_maxGap = m_pSpinMaxGap->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvHoughLinesParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRho = nullptr;
+        QDoubleSpinBox* m_pSpinTheta = nullptr;
+        QDoubleSpinBox* m_pSpinMinLength = nullptr;
+        QDoubleSpinBox* m_pSpinMaxGap = nullptr;
+        QSpinBox*       m_pSpinThreshold = nullptr;
+        QCheckBox*      m_pCheckProba = nullptr;
 };
 
 class COcvWidgetHoughLinesFactory : public CWidgetFactory

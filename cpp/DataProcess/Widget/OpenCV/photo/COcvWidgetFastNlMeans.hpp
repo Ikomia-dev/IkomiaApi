@@ -39,7 +39,7 @@ class COcvWidgetFastNlMeans : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvFastNlMeansParam>();
@@ -62,22 +62,20 @@ class COcvWidgetFastNlMeans : public CWorkflowTaskWidget
             m_pSpinSearchSize->setSingleStep(2);
             m_pSpinSearchSize->setRange(1, INT_MAX - 1);
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_h = m_pSpinH->value();
-                m_pParam->m_blockSize = m_pSpinBlockSize->value();
-                m_pParam->m_searchSize = m_pSpinSearchSize->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
             m_pLayout->addWidget(pLabelH, 0, 0);
             m_pLayout->addWidget(m_pSpinH, 0, 1);
             m_pLayout->addWidget(pLabelBlockSize, 1, 0);
             m_pLayout->addWidget(m_pSpinBlockSize, 1, 1);
             m_pLayout->addWidget(pLabelSearchSize, 2, 0);
             m_pLayout->addWidget(m_pSpinSearchSize, 2, 1);
-            
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_h = m_pSpinH->value();
+            m_pParam->m_blockSize = m_pSpinBlockSize->value();
+            m_pParam->m_searchSize = m_pSpinSearchSize->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

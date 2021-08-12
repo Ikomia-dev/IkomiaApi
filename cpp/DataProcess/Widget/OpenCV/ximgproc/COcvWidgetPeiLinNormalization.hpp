@@ -44,30 +44,29 @@ class COcvWidgetPeiLinNormalization : public CWorkflowTaskWidget
                 m_pParam = std::make_shared<COcvPeiLinNormalizationParam>();
 
             auto pLabelInterpolation = new QLabel(tr("Interpolation"));
-            auto pComboInterpolation = new QComboBox;
-            pComboInterpolation->addItem(tr("Nearest neighbor"), cv::INTER_NEAREST);
-            pComboInterpolation->addItem(tr("Bilinear"), cv::INTER_LINEAR);
-            pComboInterpolation->addItem(tr("Cubic"), cv::INTER_CUBIC);
-            pComboInterpolation->addItem(tr("Area"), cv::INTER_AREA);
-            pComboInterpolation->addItem(tr("Lanczos 4"), cv::INTER_LANCZOS4);
-            pComboInterpolation->addItem(tr("Exact bilinear"), cv::INTER_LINEAR_EXACT);
-            pComboInterpolation->setCurrentIndex(pComboInterpolation->findData(m_pParam->m_interpolation));
+            m_pComboInterpolation = new QComboBox;
+            m_pComboInterpolation->addItem(tr("Nearest neighbor"), cv::INTER_NEAREST);
+            m_pComboInterpolation->addItem(tr("Bilinear"), cv::INTER_LINEAR);
+            m_pComboInterpolation->addItem(tr("Cubic"), cv::INTER_CUBIC);
+            m_pComboInterpolation->addItem(tr("Area"), cv::INTER_AREA);
+            m_pComboInterpolation->addItem(tr("Lanczos 4"), cv::INTER_LANCZOS4);
+            m_pComboInterpolation->addItem(tr("Exact bilinear"), cv::INTER_LINEAR_EXACT);
+            m_pComboInterpolation->setCurrentIndex(m_pComboInterpolation->findData(m_pParam->m_interpolation));
 
-            
             m_pLayout->addWidget(pLabelInterpolation, 0, 0);
-            m_pLayout->addWidget(pComboInterpolation, 0, 1);
-            
+            m_pLayout->addWidget(m_pComboInterpolation, 0, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_interpolation = pComboInterpolation->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_interpolation = m_pComboInterpolation->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvPeiLinNormalizationParam>  m_pParam = nullptr;
+        QComboBox*  m_pComboInterpolation = nullptr;
 };
 
 class COcvWidgetPeiLinNormalizationFactory : public CWidgetFactory

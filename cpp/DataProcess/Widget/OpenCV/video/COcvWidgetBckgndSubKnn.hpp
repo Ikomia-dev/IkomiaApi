@@ -40,46 +40,47 @@ class COcvWidgetBckgndSubKnn : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBckgndSubKnnParam>();
 
             auto pLabelHistory = new QLabel(tr("History"));
-            auto pSpinHistory = new QSpinBox;
-            pSpinHistory->setSingleStep(1);
-            pSpinHistory->setRange(1, 10000);
-            pSpinHistory->setValue(m_pParam->m_history);
+            m_pSpinHistory = new QSpinBox;
+            m_pSpinHistory->setSingleStep(1);
+            m_pSpinHistory->setRange(1, 10000);
+            m_pSpinHistory->setValue(m_pParam->m_history);
 
             auto pLabelDistThresh = new QLabel(tr("Distance threshold"));
-            auto pSpinDistThresh = new QDoubleSpinBox;
-            pSpinDistThresh->setSingleStep(1.0);
-            pSpinDistThresh->setRange(1, 1000);
-            pSpinDistThresh->setValue(m_pParam->m_distanceThreshold);
+            m_pSpinDistThresh = new QDoubleSpinBox;
+            m_pSpinDistThresh->setSingleStep(1.0);
+            m_pSpinDistThresh->setRange(1, 1000);
+            m_pSpinDistThresh->setValue(m_pParam->m_distanceThreshold);
 
-            auto pCheckDetectShadow = new QCheckBox(tr("Detect shadow"));
-            pCheckDetectShadow->setChecked(m_pParam->m_bDetectShadow);
+            m_pCheckDetectShadow = new QCheckBox(tr("Detect shadow"));
+            m_pCheckDetectShadow->setChecked(m_pParam->m_bDetectShadow);
 
-            
             m_pLayout->addWidget(pLabelHistory, 0, 0);
-            m_pLayout->addWidget(pSpinHistory, 0, 1);
+            m_pLayout->addWidget(m_pSpinHistory, 0, 1);
             m_pLayout->addWidget(pLabelDistThresh, 1, 0);
-            m_pLayout->addWidget(pSpinDistThresh, 1, 1);
-            m_pLayout->addWidget(pCheckDetectShadow, 2, 0, 1, 2);
-            
+            m_pLayout->addWidget(m_pSpinDistThresh, 1, 1);
+            m_pLayout->addWidget(m_pCheckDetectShadow, 2, 0, 1, 2);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_history = pSpinHistory->value();
-                m_pParam->m_distanceThreshold = pSpinDistThresh->value();
-                m_pParam->m_bDetectShadow = pCheckDetectShadow->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_history = m_pSpinHistory->value();
+            m_pParam->m_distanceThreshold = m_pSpinDistThresh->value();
+            m_pParam->m_bDetectShadow = m_pCheckDetectShadow->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBckgndSubKnnParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinDistThresh = nullptr;
+        QSpinBox*       m_pSpinHistory = nullptr;
+        QCheckBox*      m_pCheckDetectShadow = nullptr;
 };
 
 class COcvWidgetBckgndSubKnnFactory : public CWidgetFactory

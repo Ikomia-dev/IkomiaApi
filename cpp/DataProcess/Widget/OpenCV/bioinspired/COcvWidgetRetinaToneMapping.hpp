@@ -41,16 +41,15 @@ class COcvWidgetRetinaToneMapping : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvRetinaToneMappingParam>();
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            emit doApplyProcess(m_pParam);
         }
 
     private:
@@ -72,4 +71,5 @@ class COcvWidgetRetinaToneMappingFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetRetinaToneMapping>(pParam);
         }
 };
+
 #endif // COCVWIDGETRETINATONEMAPPING_HPP

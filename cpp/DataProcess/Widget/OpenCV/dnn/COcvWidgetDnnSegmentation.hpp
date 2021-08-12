@@ -37,7 +37,7 @@ class COcvWidgetDnnSegmentation: public COcvWidgetDnnProcess
             init();
         }
 
-        void init() override
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDnnSegmentationParam>();

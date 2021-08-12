@@ -39,33 +39,37 @@ class CWidgetGraphicsToBinary : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGraphicsToBinaryParam>();
 
-            auto pCheckFit = addCheck(tr("Fit to content"), m_pParam->m_bFitToContent);
-            auto pSpinWidth = addSpin(tr("Image width"), m_pParam->m_width);
-            auto pSpinHeight = addSpin(tr("Image width"), m_pParam->m_width);
-            pSpinWidth->setEnabled(!m_pParam->m_bFitToContent);
-            pSpinHeight->setEnabled(!m_pParam->m_bFitToContent);
+            m_pCheckFit = addCheck(tr("Fit to content"), m_pParam->m_bFitToContent);
+            m_pSpinWidth = addSpin(tr("Image width"), m_pParam->m_width);
+            m_pSpinWidth->setEnabled(!m_pParam->m_bFitToContent);
+            m_pSpinHeight = addSpin(tr("Image width"), m_pParam->m_width);
+            m_pSpinHeight->setEnabled(!m_pParam->m_bFitToContent);
 
-            connect(pCheckFit, &QCheckBox::clicked, [=](bool checked){
-                pSpinWidth->setEnabled(!checked);
-                pSpinHeight->setEnabled(!checked);
+            connect(m_pCheckFit, &QCheckBox::clicked, [&](bool checked){
+                m_pSpinWidth->setEnabled(!checked);
+                m_pSpinHeight->setEnabled(!checked);
             });
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-               m_pParam->m_bFitToContent = pCheckFit->isChecked();
-               m_pParam->m_width = pSpinWidth->value();
-               m_pParam->m_height = pSpinHeight->value();
-               emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_bFitToContent = m_pCheckFit->isChecked();
+            m_pParam->m_width = m_pSpinWidth->value();
+            m_pParam->m_height = m_pSpinHeight->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGraphicsToBinaryParam> m_pParam = nullptr;
+        QCheckBox*  m_pCheckFit = nullptr;
+        QSpinBox*   m_pSpinWidth = nullptr;
+        QSpinBox*   m_pSpinHeight = nullptr;
 };
 
 class CWidgetGraphicsToBinaryFactory : public CWidgetFactory

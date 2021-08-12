@@ -42,7 +42,7 @@ class COcvWidgetInpaint : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvInpaintParam>();
@@ -62,20 +62,18 @@ class COcvWidgetInpaint : public CWorkflowTaskWidget
                 m_pComboMethod->setCurrentIndex(0);
             else
                 m_pComboMethod->setCurrentIndex(0);
-
             
             m_pLayout->addWidget(pLabelRadius, 0, 0);
             m_pLayout->addWidget(m_pSpinRadius, 0, 1);
             m_pLayout->addWidget(pLabelMethod, 1, 0);
             m_pLayout->addWidget(m_pComboMethod, 1, 1);
-            
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_radius = m_pSpinRadius->value();
-                m_pParam->m_method = m_pComboMethod->currentIndex();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_radius = m_pSpinRadius->value();
+            m_pParam->m_method = m_pComboMethod->currentIndex();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

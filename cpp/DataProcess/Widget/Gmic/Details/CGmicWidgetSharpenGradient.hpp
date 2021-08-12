@@ -40,31 +40,34 @@ class CGmicWidgetSharpenGradient : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicSharpenGradientParam>();
 
-            auto pSpinAmount = addDoubleSpin(0, tr("Amount"), m_pParam->m_amount, 0, 2, 0.1);
-            auto pSpinScale = addDoubleSpin(1, tr("Scale"), m_pParam->m_scale, 0.1, 2, 0.1);
+            m_pSpinAmount = addDoubleSpin(0, tr("Amount"), m_pParam->m_amount, 0, 2, 0.1);
+            m_pSpinScale = addDoubleSpin(1, tr("Scale"), m_pParam->m_scale, 0.1, 2, 0.1);
 
-            auto pComboValues = addCombo(2, tr("Values"));
-            pComboValues->addItem(tr("Cut"), CGmicSharpenGradientParam::CUT);
-            pComboValues->addItem(tr("Normalize luma"), CGmicSharpenGradientParam::NORMALYZE);
-            pComboValues->setCurrentIndex(pComboValues->findData(m_pParam->m_values));
+            m_pComboValues = addCombo(2, tr("Values"));
+            m_pComboValues->addItem(tr("Cut"), CGmicSharpenGradientParam::CUT);
+            m_pComboValues->addItem(tr("Normalize luma"), CGmicSharpenGradientParam::NORMALYZE);
+            m_pComboValues->setCurrentIndex(m_pComboValues->findData(m_pParam->m_values));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_amount = pSpinAmount->value();
-                m_pParam->m_scale = pSpinScale->value();
-                m_pParam->m_values = pComboValues->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_amount = m_pSpinAmount->value();
+            m_pParam->m_scale = m_pSpinScale->value();
+            m_pParam->m_values = m_pComboValues->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicSharpenGradientParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAmount = nullptr;
+        QDoubleSpinBox* m_pSpinScale = nullptr;
+        QComboBox*      m_pComboValues = nullptr;
 };
 
 class CGmicWidgetSharpenGradientFactory : public CWidgetFactory

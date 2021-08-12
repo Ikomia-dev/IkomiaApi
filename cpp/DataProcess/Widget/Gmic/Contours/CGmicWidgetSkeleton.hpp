@@ -40,29 +40,31 @@ class CGmicWidgetSkeleton : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicSkeletonParam>();
 
-            auto pComboMethod = addCombo(0, tr("Method"));
-            pComboMethod->addItem(tr("Distance(Fast)"), CGmicSkeletonParam::DISTANCE);
-            pComboMethod->addItem(tr("Thinning(Slow)"), CGmicSkeletonParam::THINNING);
-            pComboMethod->setCurrentIndex(pComboMethod->findData(m_pParam->m_method));
+            m_pComboMethod = addCombo(0, tr("Method"));
+            m_pComboMethod->addItem(tr("Distance(Fast)"), CGmicSkeletonParam::DISTANCE);
+            m_pComboMethod->addItem(tr("Thinning(Slow)"), CGmicSkeletonParam::THINNING);
+            m_pComboMethod->setCurrentIndex(m_pComboMethod->findData(m_pParam->m_method));
 
-            auto pSpinSmooth = addDoubleSpin(1, tr("Smoothness"), m_pParam->m_smoothness, 0, 10, 0.5);
+            m_pSpinSmooth = addDoubleSpin(1, tr("Smoothness"), m_pParam->m_smoothness, 0, 10, 0.5);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_method = pComboMethod->currentData().toInt();
-                m_pParam->m_smoothness = pSpinSmooth->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_method = m_pComboMethod->currentData().toInt();
+            m_pParam->m_smoothness = m_pSpinSmooth->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicSkeletonParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSmooth = nullptr;
+        QComboBox*      m_pComboMethod = nullptr;
 };
 
 class CGmicWidgetSkeletonFactory : public CWidgetFactory

@@ -40,32 +40,31 @@ class CGmicWidgetBoostChroma : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicBoostChromaParam>();
 
-            auto pSpinAmplitude = addSpin(0, tr("Amplitude(%)"), m_pParam->m_amplitude, 0, 100);
-            auto pComboColorSpace = addCombo(1, tr("Color space"));
-            pComboColorSpace->addItem(tr("YCbCr(distinct)"), CGmicBoostChromaParam::YCBCR);
-            pComboColorSpace->addItem(tr("YCbCr(Mixed)"), CGmicBoostChromaParam::YCBCR_MIXED);
-            pComboColorSpace->addItem(tr("Lab(distinct)"), CGmicBoostChromaParam::LAB);
-            pComboColorSpace->addItem(tr("Lab(Mixed)"), CGmicBoostChromaParam::LAB_MIXED);
+            m_pSpinAmplitude = addSpin(0, tr("Amplitude(%)"), m_pParam->m_amplitude, 0, 100);
+            m_pComboColorSpace = addCombo(1, tr("Color space"));
+            m_pComboColorSpace->addItem(tr("YCbCr(distinct)"), CGmicBoostChromaParam::YCBCR);
+            m_pComboColorSpace->addItem(tr("YCbCr(Mixed)"), CGmicBoostChromaParam::YCBCR_MIXED);
+            m_pComboColorSpace->addItem(tr("Lab(distinct)"), CGmicBoostChromaParam::LAB);
+            m_pComboColorSpace->addItem(tr("Lab(Mixed)"), CGmicBoostChromaParam::LAB_MIXED);
+        }
 
-
-
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_amplitude = pSpinAmplitude->value();
-                m_pParam->m_colorSpace = pComboColorSpace->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_amplitude = m_pSpinAmplitude->value();
+            m_pParam->m_colorSpace = m_pComboColorSpace->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicBoostChromaParam> m_pParam = nullptr;
+        QSpinBox*   m_pSpinAmplitude = nullptr;
+        QComboBox*  m_pComboColorSpace = nullptr;
 };
 
 class CGmicWidgetBoostChromaFactory : public CWidgetFactory

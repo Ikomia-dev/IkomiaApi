@@ -43,20 +43,21 @@ class COcvWidgetGradientPaillou : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGradientPaillouParam>();
 
             QGroupBox* pBox = new QGroupBox("Orientation");
             QGridLayout* pBoxLayout = new QGridLayout;
-            QRadioButton* pRadioX = new QRadioButton("X");
+            m_pRadioX = new QRadioButton("X");
             QRadioButton* pRadioY = new QRadioButton("Y");
-            pBoxLayout->addWidget(pRadioX);
+            pBoxLayout->addWidget(m_pRadioX);
             pBoxLayout->addWidget(pRadioY);
             pBox->setLayout(pBoxLayout);
+
             if(m_pParam->m_orientation == COcvGradientPaillouParam::orientation::X)
-                pRadioX->setChecked(true);
+                m_pRadioX->setChecked(true);
             else
                 pRadioY->setChecked(true);
 
@@ -71,15 +72,6 @@ class COcvWidgetGradientPaillou : public CWorkflowTaskWidget
             m_pDblSpinOmega->setRange(0, 4);
             m_pDblSpinOmega->setSingleStep(0.1);
             m_pDblSpinOmega->setValue(m_pParam->m_omega);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_orientation = pRadioX->isChecked() ? COcvGradientPaillouParam::orientation::X : COcvGradientPaillouParam::orientation::Y;
-                m_pParam->m_alpha = m_pDblSpinAlpha->value();
-                m_pParam->m_omega = m_pDblSpinOmega->value();
-                emit doApplyProcess(m_pParam);
-            });
-
             
             m_pLayout->addWidget(pBox, 0, 0, 1, 2);
 
@@ -87,16 +79,23 @@ class COcvWidgetGradientPaillou : public CWorkflowTaskWidget
             m_pLayout->addWidget(m_pDblSpinAlpha, 1, 1);
 
             m_pLayout->addWidget(pLabelSpinOmega, 2, 0);
-            m_pLayout->addWidget(m_pDblSpinOmega, 2, 1);
+            m_pLayout->addWidget(m_pDblSpinOmega, 2, 1);            
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_orientation = m_pRadioX->isChecked() ? COcvGradientPaillouParam::orientation::X : COcvGradientPaillouParam::orientation::Y;
+            m_pParam->m_alpha = m_pDblSpinAlpha->value();
+            m_pParam->m_omega = m_pDblSpinOmega->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvGradientPaillouParam> m_pParam = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinAlpha = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinOmega = nullptr;
+        QDoubleSpinBox* m_pDblSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pDblSpinOmega = nullptr;
+        QRadioButton*   m_pRadioX = nullptr;
 };
 
 class COcvWidgetGradientPaillouFactory : public CWidgetFactory
@@ -113,4 +112,5 @@ class COcvWidgetGradientPaillouFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetGradientPaillou>(pParam);
         }
 };
+
 #endif // COCVWIDGETGRADIENTPAILLOU_HPP

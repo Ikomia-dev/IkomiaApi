@@ -40,40 +40,45 @@ class CGmicWidgetAutoBalance : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicAutoBalanceParam>();
 
-            auto pSpinArea = addSpin(0, tr("Area"), m_pParam->m_area);
-            auto pSpinSmooth = addDoubleSpin(1, tr("Smooth"), m_pParam->m_smooth);
+            m_pSpinArea = addSpin(0, tr("Area"), m_pParam->m_area);
+            m_pSpinSmooth = addDoubleSpin(1, tr("Smooth"), m_pParam->m_smooth);
 
-            auto pComboColorSpace = addCombo(2, tr("Color space"));
-            pComboColorSpace->addItem("HSI", CGmicAutoBalanceParam::HSI);
-            pComboColorSpace->addItem("HSV", CGmicAutoBalanceParam::HSV);
-            pComboColorSpace->addItem("Lab", CGmicAutoBalanceParam::LAB);
-            pComboColorSpace->addItem("Linear RGB", CGmicAutoBalanceParam::LINEAR_RGB);
-            pComboColorSpace->addItem("RGB", CGmicAutoBalanceParam::RGB);
-            pComboColorSpace->addItem("YCrCb", CGmicAutoBalanceParam::YCBCR);
-            pComboColorSpace->setCurrentIndex(pComboColorSpace->findData(m_pParam->m_colorSpace));
+            m_pComboColorSpace = addCombo(2, tr("Color space"));
+            m_pComboColorSpace->addItem("HSI", CGmicAutoBalanceParam::HSI);
+            m_pComboColorSpace->addItem("HSV", CGmicAutoBalanceParam::HSV);
+            m_pComboColorSpace->addItem("Lab", CGmicAutoBalanceParam::LAB);
+            m_pComboColorSpace->addItem("Linear RGB", CGmicAutoBalanceParam::LINEAR_RGB);
+            m_pComboColorSpace->addItem("RGB", CGmicAutoBalanceParam::RGB);
+            m_pComboColorSpace->addItem("YCrCb", CGmicAutoBalanceParam::YCBCR);
+            m_pComboColorSpace->setCurrentIndex(m_pComboColorSpace->findData(m_pParam->m_colorSpace));
 
-            auto pCheckBalance = addCheck(3, "sRGB balance", m_pParam->m_bBalance);
-            auto pCheckReduceRAM = addCheck(4, tr("Reduce RAM"), m_pParam->m_bReduceRAM);
+            m_pCheckBalance = addCheck(3, "sRGB balance", m_pParam->m_bBalance);
+            m_pCheckReduceRAM = addCheck(4, tr("Reduce RAM"), m_pParam->m_bReduceRAM);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_area = pSpinArea->value();
-                m_pParam->m_smooth = pSpinSmooth->value();
-                m_pParam->m_colorSpace = pComboColorSpace->currentData().toInt();
-                m_pParam->m_bBalance = pCheckBalance->isChecked();
-                m_pParam->m_bReduceRAM = pCheckReduceRAM->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_area = m_pSpinArea->value();
+            m_pParam->m_smooth = m_pSpinSmooth->value();
+            m_pParam->m_colorSpace = m_pComboColorSpace->currentData().toInt();
+            m_pParam->m_bBalance = m_pCheckBalance->isChecked();
+            m_pParam->m_bReduceRAM = m_pCheckReduceRAM->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicAutoBalanceParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSmooth = nullptr;
+        QSpinBox*       m_pSpinArea = nullptr;
+        QComboBox*      m_pComboColorSpace = nullptr;
+        QCheckBox*      m_pCheckBalance = nullptr;
+        QCheckBox*      m_pCheckReduceRAM = nullptr;
 };
 
 class CGmicWidgetAutoBalanceFactory : public CWidgetFactory

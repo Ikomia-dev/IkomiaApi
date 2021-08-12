@@ -42,49 +42,50 @@ class COcvWidgetAddWeighted : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvAddWeightedParam>();
 
             auto pLabelAlpha = new QLabel(tr("Alpha"));
-            auto pSpinAlpha = new QDoubleSpinBox;
+            m_pSpinAlpha = new QDoubleSpinBox;
             auto pLabelBeta = new QLabel(tr("Beta"));
-            auto pSpinBeta = new QDoubleSpinBox;
+            m_pSpinBeta = new QDoubleSpinBox;
             auto pLabelGamma = new QLabel(tr("Gamma"));
-            auto pSpinGamma = new QDoubleSpinBox;
+            m_pSpinGamma = new QDoubleSpinBox;
 
-            pSpinAlpha->setSingleStep(0.1);
-            pSpinBeta->setSingleStep(0.1);
-            pSpinGamma->setSingleStep(0.1);
+            m_pSpinAlpha->setSingleStep(0.1);
+            m_pSpinBeta->setSingleStep(0.1);
+            m_pSpinGamma->setSingleStep(0.1);
 
-            pSpinAlpha->setValue(m_pParam->m_alpha);
-            pSpinBeta->setValue(m_pParam->m_beta);
-            pSpinGamma->setValue(m_pParam->m_gamma);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_beta = pSpinBeta->value();
-                m_pParam->m_gamma = pSpinGamma->value();
-                emit doApplyProcess(m_pParam);
-            } );
-
+            m_pSpinAlpha->setValue(m_pParam->m_alpha);
+            m_pSpinBeta->setValue(m_pParam->m_beta);
+            m_pSpinGamma->setValue(m_pParam->m_gamma);
             
             m_pLayout->addWidget(pLabelAlpha, 0, 0);
-            m_pLayout->addWidget(pSpinAlpha, 0, 1);
+            m_pLayout->addWidget(m_pSpinAlpha, 0, 1);
 
             m_pLayout->addWidget(pLabelBeta, 1, 0);
-            m_pLayout->addWidget(pSpinBeta, 1, 1);
+            m_pLayout->addWidget(m_pSpinBeta, 1, 1);
 
             m_pLayout->addWidget(pLabelGamma, 2, 0);
-            m_pLayout->addWidget(pSpinGamma, 2, 1);
+            m_pLayout->addWidget(m_pSpinGamma, 2, 1);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_beta = m_pSpinBeta->value();
+            m_pParam->m_gamma = m_pSpinGamma->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvAddWeightedParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBeta = nullptr;
+        QDoubleSpinBox* m_pSpinGamma = nullptr;
 };
 
 class COcvWidgetAddWeightedFactory : public CWidgetFactory

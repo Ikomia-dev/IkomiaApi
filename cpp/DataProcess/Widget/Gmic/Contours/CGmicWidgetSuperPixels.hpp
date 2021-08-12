@@ -40,38 +40,44 @@ class CGmicWidgetSuperPixels : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicSuperPixelsParam>();
 
-            auto pSpinSize = addSpin(0, tr("Size"), m_pParam->m_size, 4, 64);
-            auto pSpinRegularity = addSpin(1, tr("Regularity"), m_pParam->m_regularity, 0, 128);
-            auto pSpinIteration = addSpin(2, tr("Iterations"), m_pParam->m_iterations, 1, 16);
+            m_pSpinSize = addSpin(0, tr("Size"), m_pParam->m_size, 4, 64);
+            m_pSpinRegularity = addSpin(1, tr("Regularity"), m_pParam->m_regularity, 0, 128);
+            m_pSpinIteration = addSpin(2, tr("Iterations"), m_pParam->m_iterations, 1, 16);
 
-            auto pComboColors = addCombo(3, tr("Colors"));
-            pComboColors->addItem(tr("Average"), CGmicSuperPixelsParam::AVERAGE);
-            pComboColors->addItem(tr("Random"), CGmicSuperPixelsParam::RANDOM);
-            pComboColors->setCurrentIndex(pComboColors->findData(m_pParam->m_colors));
+            m_pComboColors = addCombo(3, tr("Colors"));
+            m_pComboColors->addItem(tr("Average"), CGmicSuperPixelsParam::AVERAGE);
+            m_pComboColors->addItem(tr("Random"), CGmicSuperPixelsParam::RANDOM);
+            m_pComboColors->setCurrentIndex(m_pComboColors->findData(m_pParam->m_colors));
 
-            auto pSpinOpacity = addDoubleSpin(4, tr("Border opacity"), m_pParam->m_borderOpacity, 0, 1, 0.1);
-            auto pColorBtn = addColorButton(5, tr("Border color"), m_pParam->m_borderColor);
+            m_pSpinOpacity = addDoubleSpin(4, tr("Border opacity"), m_pParam->m_borderOpacity, 0, 1, 0.1);
+            m_pColorBtn = addColorButton(5, tr("Border color"), m_pParam->m_borderColor);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_size = pSpinSize->value();
-                m_pParam->m_regularity = pSpinRegularity->value();
-                m_pParam->m_iterations = pSpinIteration->value();
-                m_pParam->m_colors = pComboColors->currentData().toInt();
-                m_pParam->m_borderOpacity = pSpinOpacity->value();
-                m_pParam->m_borderColor = pColorBtn->getColor();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_size = m_pSpinSize->value();
+            m_pParam->m_regularity = m_pSpinRegularity->value();
+            m_pParam->m_iterations = m_pSpinIteration->value();
+            m_pParam->m_colors = m_pComboColors->currentData().toInt();
+            m_pParam->m_borderOpacity = m_pSpinOpacity->value();
+            m_pParam->m_borderColor = m_pColorBtn->getColor();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicSuperPixelsParam> m_pParam = nullptr;
+        QDoubleSpinBox*     m_pSpinOpacity = nullptr;
+        QSpinBox*           m_pSpinSize = nullptr;
+        QSpinBox*           m_pSpinRegularity = nullptr;
+        QSpinBox*           m_pSpinIteration = nullptr;
+        QComboBox*          m_pComboColors = nullptr;
+        CColorPushButton*   m_pColorBtn = nullptr;
 };
 
 class CGmicWidgetSuperPixelsFactory : public CWidgetFactory

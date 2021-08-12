@@ -44,47 +44,43 @@ class COcvWidgetSobel : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSobelParam>();
 
-            /*auto pSpinDepth = addSpin(0, tr("Depth"), m_pParam->m_ddepth);
-            pSpinDepth->setMinimum(-1);*/
-            auto pSpinX = addSpin(0, tr("x-derivative order"), m_pParam->m_dx);
-            pSpinX->setRange(0,3);
+            m_pSpinX = addSpin(0, tr("x-derivative order"), m_pParam->m_dx, 0, 3);
+            m_pSpinY = addSpin(1, tr("y-derivative order"), m_pParam->m_dy, 0, 3);
+            m_pSpinSize = addSpin(2, tr("Kernel size"), m_pParam->m_ksize, 1, INT_MAX);
+            m_pDblSpinScale = addDoubleSpin(3, tr("Scale"), m_pParam->m_scale);
+            m_pDblSpinDelta = addDoubleSpin(4, tr("Delta"), m_pParam->m_delta);
 
-            auto pSpinY = addSpin(1, tr("y-derivative order"), m_pParam->m_dy);
-            pSpinY->setRange(0,3);
+            m_pComboBorder = addCombo(5, "Border type");
+            m_pComboBorder->addItem("Default", cv::BORDER_DEFAULT);
+            m_pComboBorder->addItem("Replicate", cv::BORDER_REPLICATE);
+            m_pComboBorder->setCurrentIndex(m_pComboBorder->findData(m_pParam->m_border));
+        }
 
-            auto pSpinSize = addSpin(2, tr("Kernel size"), m_pParam->m_ksize);
-            pSpinSize->setMinimum(1);
-
-            auto pDblSpinScale = addDoubleSpin(3, tr("Scale"), m_pParam->m_scale);
-            auto pDblSpinDelta = addDoubleSpin(4, tr("Delta"), m_pParam->m_delta);
-
-            auto pComboBorder = addCombo(5, "Border type");
-            pComboBorder->addItem("Default", cv::BORDER_DEFAULT);
-            pComboBorder->addItem("Replicate", cv::BORDER_REPLICATE);
-            pComboBorder->setCurrentIndex(pComboBorder->findData(m_pParam->m_border));
-
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_dx = pSpinX->value();
-                m_pParam->m_dy = pSpinY->value();
-                m_pParam->m_ksize = pSpinSize->value();
-                m_pParam->m_scale = pDblSpinScale->value();
-                m_pParam->m_delta = pDblSpinDelta->value();
-                m_pParam->m_border = pComboBorder->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_dx = m_pSpinX->value();
+            m_pParam->m_dy = m_pSpinY->value();
+            m_pParam->m_ksize = m_pSpinSize->value();
+            m_pParam->m_scale = m_pDblSpinScale->value();
+            m_pParam->m_delta = m_pDblSpinDelta->value();
+            m_pParam->m_border = m_pComboBorder->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSobelParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pDblSpinScale = nullptr;
+        QDoubleSpinBox* m_pDblSpinDelta = nullptr;
+        QSpinBox*       m_pSpinX = nullptr;
+        QSpinBox*       m_pSpinY = nullptr;
+        QSpinBox*       m_pSpinSize = nullptr;
+        QComboBox*      m_pComboBorder = nullptr;
 };
 
 class COcvWidgetSobelFactory : public CWidgetFactory

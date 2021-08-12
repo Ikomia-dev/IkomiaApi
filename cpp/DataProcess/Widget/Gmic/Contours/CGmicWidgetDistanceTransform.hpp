@@ -40,41 +40,45 @@ class CGmicWidgetDistanceTransform : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicDistanceTransformParam>();
 
-            auto pSpinValue = addSpin(0, tr("Value"), m_pParam->m_value, 0, 5, 0.1);
+            m_pSpinValue = addSpin(0, tr("Value"), m_pParam->m_value, 0, 5, 0.1);
 
-            auto pComboMetric = addCombo(1, tr("Metric"));
-            pComboMetric->addItem(tr("Chebyshev"), CGmicDistanceTransformParam::CHEBYSHEV);
-            pComboMetric->addItem(tr("Manhattan"), CGmicDistanceTransformParam::MANHATTAN);
-            pComboMetric->addItem(tr("Euclidean"), CGmicDistanceTransformParam::EUCLIDEAN);
-            pComboMetric->addItem(tr("Square-euclidean"), CGmicDistanceTransformParam::SQUARE_EUCLIDEAN);
-            pComboMetric->setCurrentIndex(pComboMetric->findData(m_pParam->m_metric));
+            m_pComboMetric = addCombo(1, tr("Metric"));
+            m_pComboMetric->addItem(tr("Chebyshev"), CGmicDistanceTransformParam::CHEBYSHEV);
+            m_pComboMetric->addItem(tr("Manhattan"), CGmicDistanceTransformParam::MANHATTAN);
+            m_pComboMetric->addItem(tr("Euclidean"), CGmicDistanceTransformParam::EUCLIDEAN);
+            m_pComboMetric->addItem(tr("Square-euclidean"), CGmicDistanceTransformParam::SQUARE_EUCLIDEAN);
+            m_pComboMetric->setCurrentIndex(m_pComboMetric->findData(m_pParam->m_metric));
 
-            auto pComboNorm = addCombo(2, tr("Normalization"));
-            pComboNorm->addItem(tr("Cut"), CGmicDistanceTransformParam::CUT);
-            pComboNorm->addItem(tr("Normalize"), CGmicDistanceTransformParam::NORMALIZE);
-            pComboNorm->addItem(tr("Modulo"), CGmicDistanceTransformParam::MODULO);
-            pComboMetric->setCurrentIndex(pComboMetric->findData(m_pParam->m_normalization));
+            m_pComboNorm = addCombo(2, tr("Normalization"));
+            m_pComboNorm->addItem(tr("Cut"), CGmicDistanceTransformParam::CUT);
+            m_pComboNorm->addItem(tr("Normalize"), CGmicDistanceTransformParam::NORMALIZE);
+            m_pComboNorm->addItem(tr("Modulo"), CGmicDistanceTransformParam::MODULO);
+            m_pComboMetric->setCurrentIndex(m_pComboMetric->findData(m_pParam->m_normalization));
 
-            auto pSpinModulo = addSpin(0, tr("Modulo"), m_pParam->m_modulo, 1, 255);
+            m_pSpinModulo = addSpin(0, tr("Modulo"), m_pParam->m_modulo, 1, 255);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_value = pSpinValue->value();
-                m_pParam->m_metric = pComboMetric->currentData().toInt();
-                m_pParam->m_normalization = pComboNorm->currentData().toInt();
-                m_pParam->m_modulo = pSpinModulo->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_value = m_pSpinValue->value();
+            m_pParam->m_metric = m_pComboMetric->currentData().toInt();
+            m_pParam->m_normalization = m_pComboNorm->currentData().toInt();
+            m_pParam->m_modulo = m_pSpinModulo->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicDistanceTransformParam> m_pParam = nullptr;
+        QComboBox*  m_pComboMetric = nullptr;
+        QComboBox*  m_pComboNorm = nullptr;
+        QSpinBox*   m_pSpinValue = nullptr;
+        QSpinBox*   m_pSpinModulo = nullptr;
 };
 
 class CGmicWidgetDistanceTransformFactory : public CWidgetFactory

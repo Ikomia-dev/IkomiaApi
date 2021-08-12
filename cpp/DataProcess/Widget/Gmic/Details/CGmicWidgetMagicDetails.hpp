@@ -40,40 +40,44 @@ class CGmicWidgetMagicDetails : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicMagicDetailsParam>();
 
-            auto pSpinAmplitude = addDoubleSpin(0, tr("Amplitude"), m_pParam->m_amplitude, 0, 30);
-            auto pSpinSpatialScale = addDoubleSpin(1, tr("Spatial scale"), m_pParam->m_spatialScale, 0, 10);
-            auto pSpinValueScale = addDoubleSpin(2, tr("Value scale"), m_pParam->m_valueScale, 0, 20);
-            auto pSpinEdges = addDoubleSpin(3, tr("Edges"), m_pParam->m_edges, -3, 3);
-            auto pSpinSmoothness = addDoubleSpin(4, tr("Smoothness"), m_pParam->m_smoothness, 0, 20);
+            m_pSpinAmplitude = addDoubleSpin(0, tr("Amplitude"), m_pParam->m_amplitude, 0, 30);
+            m_pSpinSpatialScale = addDoubleSpin(1, tr("Spatial scale"), m_pParam->m_spatialScale, 0, 10);
+            m_pSpinValueScale = addDoubleSpin(2, tr("Value scale"), m_pParam->m_valueScale, 0, 20);
+            m_pSpinEdges = addDoubleSpin(3, tr("Edges"), m_pParam->m_edges, -3, 3);
+            m_pSpinSmoothness = addDoubleSpin(4, tr("Smoothness"), m_pParam->m_smoothness, 0, 20);
 
-            auto pComboChannels = addCombo(5, tr("Channels"));
+            m_pComboChannels = addCombo(5, tr("Channels"));
             for(size_t i=0; i<m_pParam->m_channels.size(); ++i)
-                pComboChannels->addItem(QString::fromStdString(m_pParam->m_channels[i]));
+                m_pComboChannels->addItem(QString::fromStdString(m_pParam->m_channels[i]));
 
-            pComboChannels->setCurrentIndex(m_pParam->m_channel);
+            m_pComboChannels->setCurrentIndex(m_pParam->m_channel);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_amplitude = pSpinAmplitude->value();
-                m_pParam->m_spatialScale = pSpinSpatialScale->value();
-                m_pParam->m_valueScale = pSpinValueScale->value();
-                m_pParam->m_edges = pSpinEdges->value();
-                m_pParam->m_smoothness = pSpinSmoothness->value();
-                m_pParam->m_channel = pComboChannels->currentIndex();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_amplitude = m_pSpinAmplitude->value();
+            m_pParam->m_spatialScale = m_pSpinSpatialScale->value();
+            m_pParam->m_valueScale = m_pSpinValueScale->value();
+            m_pParam->m_edges = m_pSpinEdges->value();
+            m_pParam->m_smoothness = m_pSpinSmoothness->value();
+            m_pParam->m_channel = m_pComboChannels->currentIndex();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicMagicDetailsParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAmplitude = nullptr;
+        QDoubleSpinBox* m_pSpinSpatialScale = nullptr;
+        QDoubleSpinBox* m_pSpinValueScale = nullptr;
+        QDoubleSpinBox* m_pSpinEdges = nullptr;
+        QDoubleSpinBox* m_pSpinSmoothness = nullptr;
+        QComboBox*      m_pComboChannels = nullptr;
 };
 
 class CGmicWidgetMagicDetailsFactory : public CWidgetFactory

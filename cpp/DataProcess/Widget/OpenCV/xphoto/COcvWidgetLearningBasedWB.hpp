@@ -41,30 +41,30 @@ class COcvWidgetLearningBasedWB : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvLearningBasedWBParam>();
 
-            auto pSpinBin = addSpin(0, tr("Hist bin number"), m_pParam->m_histBinNum);
-            auto pSpinMax = addSpin(1, tr("Max value"), m_pParam->m_rangeMaxVal);
-            auto pSpinThresh = addDoubleSpin(2, tr("Saturation threshold"), m_pParam->m_satThreshold, 0, 1, 0.1);
+            m_pSpinBin = addSpin(0, tr("Hist bin number"), m_pParam->m_histBinNum);
+            m_pSpinMax = addSpin(1, tr("Max value"), m_pParam->m_rangeMaxVal);
+            m_pSpinThresh = addDoubleSpin(2, tr("Saturation threshold"), m_pParam->m_satThreshold, 0, 1, 0.1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_histBinNum = pSpinBin->value();
-                m_pParam->m_rangeMaxVal = pSpinMax->value();
-                m_pParam->m_satThreshold = pSpinThresh->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_histBinNum = m_pSpinBin->value();
+            m_pParam->m_rangeMaxVal = m_pSpinMax->value();
+            m_pParam->m_satThreshold = m_pSpinThresh->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvLearningBasedWBParam>   m_pParam = nullptr;
-        QDoubleSpinBox*                         m_pDblSpinSat = nullptr;
+        QDoubleSpinBox* m_pSpinThresh = nullptr;
+        QSpinBox*       m_pSpinBin = nullptr;
+        QSpinBox*       m_pSpinMax = nullptr;
 };
 
 class COcvWidgetLearningBasedWBFactory : public CWidgetFactory
@@ -81,4 +81,5 @@ class COcvWidgetLearningBasedWBFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetLearningBasedWB>(pParam);
         }
 };
+
 #endif // COCVWIDGETLEARNINGBASEDWB_HPP

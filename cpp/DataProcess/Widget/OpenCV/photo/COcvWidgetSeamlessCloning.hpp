@@ -43,27 +43,28 @@ class COcvWidgetSeamlessCloning : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSeamlessCloningParam>();
 
-            auto pCombo = addCombo(0, tr("Cloning method"));
-            pCombo->addItem(tr("NORMAL_CLONE"), cv::NORMAL_CLONE);
-            pCombo->addItem(tr("MIXED_CLONE"), cv::MIXED_CLONE);
-            pCombo->addItem(tr("MONOCHROME_TRANSFER"), cv::MONOCHROME_TRANSFER);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_flags));
+            m_pCombo = addCombo(0, tr("Cloning method"));
+            m_pCombo->addItem(tr("NORMAL_CLONE"), cv::NORMAL_CLONE);
+            m_pCombo->addItem(tr("MIXED_CLONE"), cv::MIXED_CLONE);
+            m_pCombo->addItem(tr("MONOCHROME_TRANSFER"), cv::MONOCHROME_TRANSFER);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_flags));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_flags = pCombo->currentData().toInt();
-                emit doApplyProcess(m_pParam); } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_flags = m_pCombo->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSeamlessCloningParam> m_pParam = nullptr;
+        QComboBox* m_pCombo = nullptr;
 };
 
 class COcvWidgetSeamlessCloningFactory : public CWidgetFactory

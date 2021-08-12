@@ -43,26 +43,27 @@ class COcvWidgetIlluminationChange : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvIlluminationChangeParam>();
 
-            auto pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha, 0, 2, 0.1);
-            auto pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta, 0, 2, 0.1);
+            m_pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha, 0, 2, 0.1);
+            m_pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta, 0, 2, 0.1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_beta = pSpinBeta->value();
-                emit doApplyProcess(m_pParam); } );
-
-            
-            
+        void onApply() override
+        {
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_beta = m_pSpinBeta->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvIlluminationChangeParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBeta = nullptr;
 };
 
 class COcvWidgetIlluminationChangeFactory : public CWidgetFactory

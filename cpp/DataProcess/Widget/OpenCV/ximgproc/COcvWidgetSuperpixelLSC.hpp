@@ -44,29 +44,30 @@ class COcvWidgetSuperpixelLSC : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSuperpixelLSCParam>();
 
-            auto pSpinSize = addSpin(0, tr("Region size"), m_pParam->m_regions_size);
-            auto pSpinRatio = addDoubleSpin(1, tr("Ratio"), m_pParam->m_ratio, 0, 1, 0.001, 3);
-            auto pSpinIter = addSpin(2, tr("Iterations"), m_pParam->m_num_iterations);
+            m_pSpinSize = addSpin(0, tr("Region size"), m_pParam->m_regions_size);
+            m_pSpinRatio = addDoubleSpin(1, tr("Ratio"), m_pParam->m_ratio, 0, 1, 0.001, 3);
+            m_pSpinIter = addSpin(2, tr("Iterations"), m_pParam->m_num_iterations);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_regions_size = pSpinSize->value();
-                m_pParam->m_ratio = pSpinRatio->value();
-                m_pParam->m_num_iterations = pSpinIter->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_regions_size = m_pSpinSize->value();
+            m_pParam->m_ratio = m_pSpinRatio->value();
+            m_pParam->m_num_iterations = m_pSpinIter->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSuperpixelLSCParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRatio = nullptr;
+        QSpinBox*       m_pSpinSize = nullptr;
+        QSpinBox*       m_pSpinIter = nullptr;
 };
 
 class COcvWidgetSuperpixelLSCFactory : public CWidgetFactory
@@ -83,4 +84,5 @@ class COcvWidgetSuperpixelLSCFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSuperpixelLSC>(pParam);
         }
 };
+
 #endif // COCVWIDGETSUPERPIXELLSC_HPP

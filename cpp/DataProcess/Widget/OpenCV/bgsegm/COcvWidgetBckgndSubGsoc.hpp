@@ -40,49 +40,58 @@ class COcvWidgetBckgndSubGsoc : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBckgndSubGsocParam>();
 
-            auto pComboMotion = addCombo(0, tr("Motion compensation"));
-            pComboMotion->addItem(tr("None"), cv::bgsegm::LSBP_CAMERA_MOTION_COMPENSATION_NONE);
-            pComboMotion->addItem(tr("LK"), cv::bgsegm::LSBP_CAMERA_MOTION_COMPENSATION_LK);
-            pComboMotion->setCurrentIndex(pComboMotion->findData(m_pParam->m_motionComp));
+            m_pComboMotion = addCombo(0, tr("Motion compensation"));
+            m_pComboMotion->addItem(tr("None"), cv::bgsegm::LSBP_CAMERA_MOTION_COMPENSATION_NONE);
+            m_pComboMotion->addItem(tr("LK"), cv::bgsegm::LSBP_CAMERA_MOTION_COMPENSATION_LK);
+            m_pComboMotion->setCurrentIndex(m_pComboMotion->findData(m_pParam->m_motionComp));
 
-            auto pSpinSamples = addSpin(1, tr("Samples count"), m_pParam->m_samples);
-            auto pSpinReplaceRate = addDoubleSpin(2, tr("Replace rate"), m_pParam->m_replaceRate, 0.0, 1.0, 0.001, 3);
-            auto pSpinPropagationRate = addDoubleSpin(3, tr("Propagation rate"), m_pParam->m_propagationRate, 0.0, 1.0, 0.01, 2);
-            auto pSpinHitsThreshold = addSpin(4, tr("Hits threshold"), m_pParam->m_hitsThreshold);
-            auto pSpinAlpha = addDoubleSpin(5, tr("Alpha"), m_pParam->m_alpha, 0.0, 10.0, 0.01, 2);
-            auto pSpinBeta = addDoubleSpin(6, tr("Beta"), m_pParam->m_beta, 0.0, 10.0, 0.001, 4);
-            auto pSpinBlinkingSupDecay = addDoubleSpin(7, tr("Blinking suppression decay"), m_pParam->m_blinkingSupressionDecay, 0.0, 10.0, 0.1, 1);
-            auto pSpinBlinkingSupMult = addDoubleSpin(8, tr("Blinking suppression multiplier"), m_pParam->m_blinkingSupressionMultiplier, 0.0, 10.0, 0.1, 1);
-            auto pSpinNoiseRemoveBG = addDoubleSpin(9, tr("Strength of the noise removal for background points"), m_pParam->m_noiseRemovalThresholdFacBG, 0.0, 1.0, 0.0001, 4);
-            auto pSpinNoiseRemoveFG = addDoubleSpin(10, tr("Strength of the noise removal for foreground points"), m_pParam->m_noiseRemovalThresholdFacFG, 0.0, 1.0, 0.0001, 4);
+            m_pSpinSamples = addSpin(1, tr("Samples count"), m_pParam->m_samples);
+            m_pSpinReplaceRate = addDoubleSpin(2, tr("Replace rate"), m_pParam->m_replaceRate, 0.0, 1.0, 0.001, 3);
+            m_pSpinPropagationRate = addDoubleSpin(3, tr("Propagation rate"), m_pParam->m_propagationRate, 0.0, 1.0, 0.01, 2);
+            m_pSpinHitsThreshold = addSpin(4, tr("Hits threshold"), m_pParam->m_hitsThreshold);
+            m_pSpinAlpha = addDoubleSpin(5, tr("Alpha"), m_pParam->m_alpha, 0.0, 10.0, 0.01, 2);
+            m_pSpinBeta = addDoubleSpin(6, tr("Beta"), m_pParam->m_beta, 0.0, 10.0, 0.001, 4);
+            m_pSpinBlinkingSupDecay = addDoubleSpin(7, tr("Blinking suppression decay"), m_pParam->m_blinkingSupressionDecay, 0.0, 10.0, 0.1, 1);
+            m_pSpinBlinkingSupMult = addDoubleSpin(8, tr("Blinking suppression multiplier"), m_pParam->m_blinkingSupressionMultiplier, 0.0, 10.0, 0.1, 1);
+            m_pSpinNoiseRemoveBG = addDoubleSpin(9, tr("Strength of the noise removal for background points"), m_pParam->m_noiseRemovalThresholdFacBG, 0.0, 1.0, 0.0001, 4);
+            m_pSpinNoiseRemoveFG = addDoubleSpin(10, tr("Strength of the noise removal for foreground points"), m_pParam->m_noiseRemovalThresholdFacFG, 0.0, 1.0, 0.0001, 4);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_motionComp = pComboMotion->currentData().toInt();
-                m_pParam->m_samples = pSpinSamples->value();
-                m_pParam->m_replaceRate = pSpinReplaceRate->value();
-                m_pParam->m_propagationRate = pSpinPropagationRate->value();
-                m_pParam->m_hitsThreshold = pSpinHitsThreshold->value();
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_beta = pSpinBeta->value();
-                m_pParam->m_blinkingSupressionDecay = pSpinBlinkingSupDecay->value();
-                m_pParam->m_blinkingSupressionMultiplier = pSpinBlinkingSupMult->value();
-                m_pParam->m_noiseRemovalThresholdFacBG = pSpinNoiseRemoveBG->value();
-                m_pParam->m_noiseRemovalThresholdFacFG = pSpinNoiseRemoveFG->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_motionComp = m_pComboMotion->currentData().toInt();
+            m_pParam->m_samples = m_pSpinSamples->value();
+            m_pParam->m_replaceRate = m_pSpinReplaceRate->value();
+            m_pParam->m_propagationRate = m_pSpinPropagationRate->value();
+            m_pParam->m_hitsThreshold = m_pSpinHitsThreshold->value();
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_beta = m_pSpinBeta->value();
+            m_pParam->m_blinkingSupressionDecay = m_pSpinBlinkingSupDecay->value();
+            m_pParam->m_blinkingSupressionMultiplier = m_pSpinBlinkingSupMult->value();
+            m_pParam->m_noiseRemovalThresholdFacBG = m_pSpinNoiseRemoveBG->value();
+            m_pParam->m_noiseRemovalThresholdFacFG = m_pSpinNoiseRemoveFG->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBckgndSubGsocParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinReplaceRate = nullptr;
+        QDoubleSpinBox* m_pSpinPropagationRate = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBeta = nullptr;
+        QDoubleSpinBox* m_pSpinBlinkingSupDecay = nullptr;
+        QDoubleSpinBox* m_pSpinBlinkingSupMult = nullptr;
+        QDoubleSpinBox* m_pSpinNoiseRemoveBG = nullptr;
+        QDoubleSpinBox* m_pSpinNoiseRemoveFG = nullptr;
+        QSpinBox*       m_pSpinSamples = nullptr;
+        QSpinBox*       m_pSpinHitsThreshold = nullptr;
+        QComboBox*      m_pComboMotion = nullptr;
 };
 
 class COcvWidgetBckgndSubGsocFactory : public CWidgetFactory

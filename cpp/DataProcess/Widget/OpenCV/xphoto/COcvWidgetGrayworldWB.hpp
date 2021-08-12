@@ -41,7 +41,7 @@ class COcvWidgetGrayworldWB : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGrayworldWBParam>();
@@ -50,17 +50,14 @@ class COcvWidgetGrayworldWB : public CWorkflowTaskWidget
             m_pDblSpinSat = new QDoubleSpinBox;
             m_pDblSpinSat->setValue(m_pParam->m_satThreshold);
             m_pDblSpinSat->setSingleStep(0.1f);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_satThreshold = m_pDblSpinSat->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-
             m_pLayout->addWidget(pLabelSpinSat, 0, 0);
             m_pLayout->addWidget(m_pDblSpinSat, 0, 1);
+        }
 
+        void onApply() override
+        {
+            m_pParam->m_satThreshold = m_pDblSpinSat->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
@@ -83,4 +80,5 @@ class COcvWidgetGrayworldWBFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetGrayworldWB>(pParam);
         }
 };
+
 #endif // COCVWIDGETGRAYWORLDWB_HPP

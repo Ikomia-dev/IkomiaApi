@@ -43,24 +43,24 @@ class COcvWidgetMedian : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvMedianParam>();
 
-            auto pSpinSize = addSpin(0, tr("Filter size"), m_pParam->m_ksize, 1, INT_MAX, 2);
-            
+            m_pSpinSize = addSpin(0, tr("Filter size"), m_pParam->m_ksize, 1, INT_MAX, 2);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_ksize = pSpinSize->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_ksize = m_pSpinSize->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvMedianParam> m_pParam = nullptr;
+        QSpinBox*   m_pSpinSize = nullptr;
 };
 
 class COcvWidgetMedianFactory : public CWidgetFactory

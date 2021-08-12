@@ -29,46 +29,17 @@ CWorkflowTaskWidgetWrap::CWorkflowTaskWidgetWrap(QWidget *parent) : CWorkflowTas
 {
 }
 
-void CWorkflowTaskWidgetWrap::init()
-{
-    CPyEnsureGIL gil;
-    try
-    {
-        this->get_override("init")();
-    }
-    catch(boost::python::error_already_set&)
-    {
-        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
-    }
-}
-
 void CWorkflowTaskWidgetWrap::onApply()
 {
     CPyEnsureGIL gil;
     try
     {
-        if(override onApplyOver = this->get_override("onApply"))
-            onApplyOver();
-        else
-            CWorkflowTaskWidget::onApply();
+        this->get_override("onApply")();
     }
     catch(boost::python::error_already_set&)
     {
         //Do not throw exceptions from slot
         Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
-    }
-}
-
-void CWorkflowTaskWidgetWrap::default_onApply()
-{
-    CPyEnsureGIL gil;
-    try
-    {
-        this->CWorkflowTaskWidget::onApply();
-    }
-    catch(boost::python::error_already_set&)
-    {
-        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
     }
 }
 

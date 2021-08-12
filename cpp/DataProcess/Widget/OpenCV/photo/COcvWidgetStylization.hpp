@@ -43,7 +43,7 @@ class COcvWidgetStylization : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvStylizationParam>();
@@ -51,35 +51,36 @@ class COcvWidgetStylization : public CWorkflowTaskWidget
             auto pLabelSigmaS = new QLabel(tr("Sigma spatial"));
             auto pLabelSigmaR = new QLabel(tr("Sigma range"));
 
-            auto pSpinSigmaS = new QDoubleSpinBox;
-            auto pSpinSigmaR = new QDoubleSpinBox;
+            m_pSpinSigmaS = new QDoubleSpinBox;
+            m_pSpinSigmaR = new QDoubleSpinBox;
 
-            pSpinSigmaS->setValue(m_pParam->m_sigmaS);
-            pSpinSigmaS->setRange(0, 100);
-            pSpinSigmaS->setSingleStep(1);
+            m_pSpinSigmaS->setValue(m_pParam->m_sigmaS);
+            m_pSpinSigmaS->setRange(0, 100);
+            m_pSpinSigmaS->setSingleStep(1);
 
-            pSpinSigmaR->setValue(m_pParam->m_sigmaR);
-            pSpinSigmaR->setRange(0, 1);
-            pSpinSigmaR->setSingleStep(0.01);
+            m_pSpinSigmaR->setValue(m_pParam->m_sigmaR);
+            m_pSpinSigmaR->setRange(0, 1);
+            m_pSpinSigmaR->setSingleStep(0.01);
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_sigmaS = pSpinSigmaS->value();
-                m_pParam->m_sigmaR = pSpinSigmaR->value();
-                emit doApplyProcess(m_pParam); } );
-
-            
             m_pLayout->addWidget(pLabelSigmaS, 0, 0);
-            m_pLayout->addWidget(pSpinSigmaS, 0, 1);
+            m_pLayout->addWidget(m_pSpinSigmaS, 0, 1);
 
             m_pLayout->addWidget(pLabelSigmaR, 1, 0);
-            m_pLayout->addWidget(pSpinSigmaR, 1, 1);
+            m_pLayout->addWidget(m_pSpinSigmaR, 1, 1);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_sigmaS = m_pSpinSigmaS->value();
+            m_pParam->m_sigmaR = m_pSpinSigmaR->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvStylizationParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaS = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaR = nullptr;
 };
 
 class COcvWidgetStylizationFactory : public CWidgetFactory

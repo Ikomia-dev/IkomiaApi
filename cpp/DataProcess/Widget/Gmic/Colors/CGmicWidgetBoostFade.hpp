@@ -40,30 +40,29 @@ class CGmicWidgetBoostFade : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicBoostFadeParam>();
 
-            auto pSpinAmplitude = addSpin(0, tr("Amplitude"), m_pParam->m_amplitude, 0, 10);
-            auto pComboColorSpace = addCombo(1, tr("Color space"));
-            pComboColorSpace->addItem(tr("YCbCr"), CGmicBoostFadeParam::YCBCR);
-            pComboColorSpace->addItem(tr("Lab"), CGmicBoostFadeParam::LAB);
+            m_pSpinAmplitude = addSpin(0, tr("Amplitude"), m_pParam->m_amplitude, 0, 10);
+            m_pComboColorSpace = addCombo(1, tr("Color space"));
+            m_pComboColorSpace->addItem(tr("YCbCr"), CGmicBoostFadeParam::YCBCR);
+            m_pComboColorSpace->addItem(tr("Lab"), CGmicBoostFadeParam::LAB);
+        }
 
-            
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_amplitude = pSpinAmplitude->value();
-                m_pParam->m_colorSpace = pComboColorSpace->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_amplitude = m_pSpinAmplitude->value();
+            m_pParam->m_colorSpace = m_pComboColorSpace->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicBoostFadeParam> m_pParam = nullptr;
+        QSpinBox*   m_pSpinAmplitude = nullptr;
+        QComboBox*  m_pComboColorSpace = nullptr;
 };
 
 class CGmicWidgetBoostFadeFactory : public CWidgetFactory

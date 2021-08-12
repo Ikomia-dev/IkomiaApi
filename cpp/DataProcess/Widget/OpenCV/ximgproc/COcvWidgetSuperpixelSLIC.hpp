@@ -44,35 +44,37 @@ class COcvWidgetSuperpixelSLIC : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSuperpixelSLICParam>();
 
-            auto pCombo = addCombo(0, tr("Algorithm"));
-            pCombo->addItem("SLIC", cv::ximgproc::SLIC);
-            pCombo->addItem("SLICO", cv::ximgproc::SLICO);
-            pCombo->addItem("MSLIC", cv::ximgproc::MSLIC);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_algorithm));
-            auto pSpinSize = addSpin(1, tr("Region size"), m_pParam->m_region_size);
-            auto pSpinRuler = addDoubleSpin(2, tr("Ruler"), m_pParam->m_ruler);
-            auto pSpinIter = addSpin(3, tr("Iterations"), m_pParam->m_num_iterations);
+            m_pCombo = addCombo(0, tr("Algorithm"));
+            m_pCombo->addItem("SLIC", cv::ximgproc::SLIC);
+            m_pCombo->addItem("SLICO", cv::ximgproc::SLICO);
+            m_pCombo->addItem("MSLIC", cv::ximgproc::MSLIC);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_algorithm));
+            m_pSpinSize = addSpin(1, tr("Region size"), m_pParam->m_region_size);
+            m_pSpinRuler = addDoubleSpin(2, tr("Ruler"), m_pParam->m_ruler);
+            m_pSpinIter = addSpin(3, tr("Iterations"), m_pParam->m_num_iterations);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_region_size = pSpinSize->value();
-                m_pParam->m_ruler = pSpinRuler->value();
-                m_pParam->m_num_iterations = pSpinIter->value();
-                m_pParam->m_algorithm = pCombo->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_region_size = m_pSpinSize->value();
+            m_pParam->m_ruler = m_pSpinRuler->value();
+            m_pParam->m_num_iterations = m_pSpinIter->value();
+            m_pParam->m_algorithm = m_pCombo->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSuperpixelSLICParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRuler = nullptr;
+        QSpinBox*       m_pSpinSize = nullptr;
+        QSpinBox*       m_pSpinIter = nullptr;
+        QComboBox*      m_pCombo = nullptr;
 };
 
 class COcvWidgetSuperpixelSLICFactory : public CWidgetFactory
@@ -89,4 +91,5 @@ class COcvWidgetSuperpixelSLICFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSuperpixelSLIC>(pParam);
         }
 };
+
 #endif // COCVWIDGETSUPERPIXELSLIC_HPP

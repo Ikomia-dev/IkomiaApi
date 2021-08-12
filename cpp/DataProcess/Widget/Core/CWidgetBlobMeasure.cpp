@@ -71,7 +71,6 @@ void CWidgetBlobMeasure::init()
 void CWidgetBlobMeasure::initConnections()
 {
     connect(m_pListView, &QListWidget::itemChanged, this, &CWidgetBlobMeasure::onItemChanged);
-    connect(m_pApplyBtn, &QPushButton::clicked, [&]{ emit doApplyProcess(m_pParam); } );
 }
 
 void CWidgetBlobMeasure::fillMeasuresListView()
@@ -104,4 +103,9 @@ int CWidgetBlobMeasure::getMeasureIndex(const std::string &name) const
             return i;
     }
     return -1;
+}
+
+void CWidgetBlobMeasure::onApply()
+{
+    emit doApplyProcess(m_pParam);
 }

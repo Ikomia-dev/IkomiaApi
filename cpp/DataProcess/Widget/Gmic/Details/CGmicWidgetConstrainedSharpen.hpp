@@ -40,47 +40,52 @@ class CGmicWidgetConstrainedSharpen : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicConstrainedSharpenParam>();
 
-            auto pSpinRadius = addDoubleSpin(0, tr("Sharpen radius"), m_pParam->m_radius, 0, 10);
-            auto pSpinAmount = addDoubleSpin(1, tr("Amount"), m_pParam->m_amount, 0, 10);
-            auto pSpinThreshold = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold, 0, 50);
-            auto pSpinConstraintRadius = addSpin(3, tr("Constraint radius"), m_pParam->m_constraintRadius, 0, 10);
-            auto pSpinOvershoot = addDoubleSpin(4, tr("Overshoot"), m_pParam->m_overshoot, 0, 50);
+            m_pSpinRadius = addDoubleSpin(0, tr("Sharpen radius"), m_pParam->m_radius, 0, 10);
+            m_pSpinAmount = addDoubleSpin(1, tr("Amount"), m_pParam->m_amount, 0, 10);
+            m_pSpinThreshold = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold, 0, 50);
+            m_pSpinConstraintRadius = addSpin(3, tr("Constraint radius"), m_pParam->m_constraintRadius, 0, 10);
+            m_pSpinOvershoot = addDoubleSpin(4, tr("Overshoot"), m_pParam->m_overshoot, 0, 50);
 
-            auto pComboChannels = addCombo(5, tr("Channels"));
+            m_pComboChannels = addCombo(5, tr("Channels"));
             for(size_t i=0; i<m_pParam->m_channels.size(); ++i)
-                pComboChannels->addItem(QString::fromStdString(m_pParam->m_channels[i]));
+                m_pComboChannels->addItem(QString::fromStdString(m_pParam->m_channels[i]));
 
-            pComboChannels->setCurrentIndex(m_pParam->m_channel);
+            m_pComboChannels->setCurrentIndex(m_pParam->m_channel);
 
-            auto pComboValueAction = addCombo(6, tr("Value action"));
-            pComboValueAction->addItem(tr("None"), CGmicConstrainedSharpenParam::NONE);
-            pComboValueAction->addItem(tr("Cut"), CGmicConstrainedSharpenParam::CUT);
-            pComboValueAction->addItem(tr("Normalize"), CGmicConstrainedSharpenParam::NORMALIZE);
-            pComboValueAction->setCurrentIndex(pComboValueAction->findData(m_pParam->m_valueAction));
+            m_pComboValueAction = addCombo(6, tr("Value action"));
+            m_pComboValueAction->addItem(tr("None"), CGmicConstrainedSharpenParam::NONE);
+            m_pComboValueAction->addItem(tr("Cut"), CGmicConstrainedSharpenParam::CUT);
+            m_pComboValueAction->addItem(tr("Normalize"), CGmicConstrainedSharpenParam::NORMALIZE);
+            m_pComboValueAction->setCurrentIndex(m_pComboValueAction->findData(m_pParam->m_valueAction));
+        }
 
-
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_radius = pSpinRadius->value();
-                m_pParam->m_amount = pSpinAmount->value();
-                m_pParam->m_threshold = pSpinThreshold->value();
-                m_pParam->m_constraintRadius = pSpinConstraintRadius->value();
-                m_pParam->m_overshoot = pSpinOvershoot->value();
-                m_pParam->m_channel = pComboChannels->currentIndex();
-                m_pParam->m_valueAction = pComboValueAction->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_radius = m_pSpinRadius->value();
+            m_pParam->m_amount = m_pSpinAmount->value();
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            m_pParam->m_constraintRadius = m_pSpinConstraintRadius->value();
+            m_pParam->m_overshoot = m_pSpinOvershoot->value();
+            m_pParam->m_channel = m_pComboChannels->currentIndex();
+            m_pParam->m_valueAction = m_pComboValueAction->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicConstrainedSharpenParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRadius = nullptr;
+        QDoubleSpinBox* m_pSpinAmount = nullptr;
+        QDoubleSpinBox* m_pSpinThreshold = nullptr;
+        QDoubleSpinBox* m_pSpinOvershoot = nullptr;
+        QSpinBox*       m_pSpinConstraintRadius = nullptr;
+        QComboBox*      m_pComboChannels = nullptr;
+        QComboBox*      m_pComboValueAction = nullptr;
 };
 
 class CGmicWidgetConstrainedSharpenFactory : public CWidgetFactory

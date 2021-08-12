@@ -39,50 +39,51 @@ class COcvWidgetAnisotropicDiffusion : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvAnisotropicDiffusionParam>();
 
             auto pLabelAlpha = new QLabel(QObject::tr("Alpha [0 - 1]"));
-            auto pSpinAlpha = new QDoubleSpinBox;
-            pSpinAlpha->setValue(m_pParam->m_alpha);
-            pSpinAlpha->setRange(0.1, 1.0);
-            pSpinAlpha->setSingleStep(0.1);
+            m_pSpinAlpha = new QDoubleSpinBox;
+            m_pSpinAlpha->setValue(m_pParam->m_alpha);
+            m_pSpinAlpha->setRange(0.1, 1.0);
+            m_pSpinAlpha->setSingleStep(0.1);
 
             auto pLabelK = new QLabel(QObject::tr("Sensitivity to edges K"));
-            auto pSpinK = new QDoubleSpinBox;
-            pSpinK->setValue(m_pParam->m_k);
-            pSpinK->setRange(0.1, 100.0);
-            pSpinK->setSingleStep(0.1);
+            m_pSpinK = new QDoubleSpinBox;
+            m_pSpinK->setValue(m_pParam->m_k);
+            m_pSpinK->setRange(0.1, 100.0);
+            m_pSpinK->setSingleStep(0.1);
 
             auto pLabelIteration = new QLabel(QObject::tr("Number of iteration"));
-            auto pSpinIteration = new QSpinBox;
-            pSpinIteration->setRange(1, 100);
-            pSpinIteration->setValue(m_pParam->m_nbIter);
-            pSpinIteration->setSingleStep(1);
-
+            m_pSpinIteration = new QSpinBox;
+            m_pSpinIteration->setRange(1, 100);
+            m_pSpinIteration->setValue(m_pParam->m_nbIter);
+            m_pSpinIteration->setSingleStep(1);
             
             m_pLayout->addWidget(pLabelAlpha, 0, 0);
-            m_pLayout->addWidget(pSpinAlpha, 0, 1);
+            m_pLayout->addWidget(m_pSpinAlpha, 0, 1);
             m_pLayout->addWidget(pLabelK, 1, 0);
-            m_pLayout->addWidget(pSpinK, 1, 1);
+            m_pLayout->addWidget(m_pSpinK, 1, 1);
             m_pLayout->addWidget(pLabelIteration, 2, 0);
-            m_pLayout->addWidget(pSpinIteration, 2, 1);
-            
+            m_pLayout->addWidget(m_pSpinIteration, 2, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_k = pSpinK->value();
-                m_pParam->m_nbIter = pSpinIteration->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_k = m_pSpinK->value();
+            m_pParam->m_nbIter = m_pSpinIteration->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvAnisotropicDiffusionParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinK = nullptr;
+        QSpinBox*       m_pSpinIteration = nullptr;
 };
 
 class COcvWidgetAnisotropicDiffusionFactory : public CWidgetFactory

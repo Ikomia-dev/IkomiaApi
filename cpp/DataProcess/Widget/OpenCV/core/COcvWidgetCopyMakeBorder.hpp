@@ -45,38 +45,41 @@ class COcvWidgetCopyMakeBorder : public CWorkflowTaskWidget
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCopyMakeBorderParam>();
 
-            auto pSpinTop = addSpin(0, tr("Top"), m_pParam->m_top, 0, 10000, 1);
-            auto pSpinBottom = addSpin(1, tr("Bottom"), m_pParam->m_bottom, 0, 10000, 1);
-            auto pSpinLeft = addSpin(2, tr("Left"), m_pParam->m_left, 0, 10000, 1);
-            auto pSpinRight = addSpin(3, tr("Right"), m_pParam->m_right, 0, 10000, 1);
+            m_pSpinTop = addSpin(0, tr("Top"), m_pParam->m_top, 0, 10000, 1);
+            m_pSpinBottom = addSpin(1, tr("Bottom"), m_pParam->m_bottom, 0, 10000, 1);
+            m_pSpinLeft = addSpin(2, tr("Left"), m_pParam->m_left, 0, 10000, 1);
+            m_pSpinRight = addSpin(3, tr("Right"), m_pParam->m_right, 0, 10000, 1);
 
-            auto pComboBorder = addCombo(4, tr("Border type"));
-            pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
-            //pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
-            pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
-            pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
-            pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
-            pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
-            pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
-            pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
-            pComboBorder->setCurrentIndex(pComboBorder->findData(m_pParam->m_borderType));
+            m_pComboBorder = addCombo(4, tr("Border type"));
+            m_pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
+            //m_pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
+            m_pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
+            m_pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
+            m_pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
+            m_pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
+            m_pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
+            m_pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
+            m_pComboBorder->setCurrentIndex(m_pComboBorder->findData(m_pParam->m_borderType));
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_top = pSpinTop->value();
-                m_pParam->m_bottom = pSpinBottom->value();
-                m_pParam->m_left = pSpinLeft->value();
-                m_pParam->m_right = pSpinRight->value();
-                m_pParam->m_borderType = pComboBorder->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_top = m_pSpinTop->value();
+            m_pParam->m_bottom = m_pSpinBottom->value();
+            m_pParam->m_left = m_pSpinLeft->value();
+            m_pParam->m_right = m_pSpinRight->value();
+            m_pParam->m_borderType = m_pComboBorder->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvCopyMakeBorderParam>  m_pParam = nullptr;
+        QSpinBox*   m_pSpinTop = nullptr;
+        QSpinBox*   m_pSpinBottom = nullptr;
+        QSpinBox*   m_pSpinLeft = nullptr;
+        QSpinBox*   m_pSpinRight = nullptr;
+        QComboBox*  m_pComboBorder = nullptr;
 };
 
 class COcvWidgetCopyMakeBorderFactory : public CWidgetFactory

@@ -77,11 +77,11 @@ class COcvWidgetFlip : public CWorkflowTaskWidget
                 if(checked == true)
                     m_pParam->m_flipCode = -1;
             });
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            emit doApplyProcess(m_pParam);
         }
 
     private:

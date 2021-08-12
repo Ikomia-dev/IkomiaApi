@@ -41,7 +41,7 @@ class COcvWidgetL0Smooth : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvL0SmoothParam>();
@@ -57,22 +57,19 @@ class COcvWidgetL0Smooth : public CWorkflowTaskWidget
             m_pDblSpinKappa = new QDoubleSpinBox;
             m_pDblSpinKappa->setRange(0, 100);
             m_pDblSpinKappa->setValue(m_pParam->m_kappa);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_lambda = m_pDblSpinLambda->value();
-                m_pParam->m_kappa = m_pDblSpinKappa->value();
-                emit doApplyProcess(m_pParam);
-            });
-
             
             m_pLayout->addWidget(pLabelSpinLambda, 0, 0);
             m_pLayout->addWidget(m_pDblSpinLambda, 0, 1);
 
             m_pLayout->addWidget(pLabelSpinKappa, 1, 0);
-            m_pLayout->addWidget(m_pDblSpinKappa, 1, 1);
+            m_pLayout->addWidget(m_pDblSpinKappa, 1, 1); 
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_lambda = m_pDblSpinLambda->value();
+            m_pParam->m_kappa = m_pDblSpinKappa->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
@@ -96,4 +93,5 @@ class COcvWidgetL0SmoothFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetL0Smooth>(pParam);
         }
 };
+
 #endif // COCVWIDGETL0SMOOTH_HPP

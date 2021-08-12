@@ -44,33 +44,36 @@ class COcvWidgetSuperpixelSEEDS : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSuperpixelSEEDSParam>();
 
-            auto pSpinPixels = addSpin(0, tr("Superpixels"), m_pParam->m_num_superpixels);
-            auto pSpinLevels = addSpin(1, tr("Levels"), m_pParam->m_num_levels, 0, 10);
-            auto pSpinPrior = addSpin(2, tr("Prior"), m_pParam->m_prior, 0, 5);
-            auto pSpinBins = addSpin(3, tr("Histogram bins"), m_pParam->m_histogram_bins);
-            auto pSpinIter = addSpin(4, tr("Iterations"), m_pParam->m_num_iterations, 0, 12);
+            m_pSpinPixels = addSpin(0, tr("Superpixels"), m_pParam->m_num_superpixels);
+            m_pSpinLevels = addSpin(1, tr("Levels"), m_pParam->m_num_levels, 0, 10);
+            m_pSpinPrior = addSpin(2, tr("Prior"), m_pParam->m_prior, 0, 5);
+            m_pSpinBins = addSpin(3, tr("Histogram bins"), m_pParam->m_histogram_bins);
+            m_pSpinIter = addSpin(4, tr("Iterations"), m_pParam->m_num_iterations, 0, 12);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_num_superpixels = pSpinPixels->value();
-                m_pParam->m_num_levels = pSpinLevels->value();
-                m_pParam->m_prior = pSpinPrior->value();
-                m_pParam->m_histogram_bins = pSpinBins->value();
-                m_pParam->m_num_iterations = pSpinIter->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_num_superpixels = m_pSpinPixels->value();
+            m_pParam->m_num_levels = m_pSpinLevels->value();
+            m_pParam->m_prior = m_pSpinPrior->value();
+            m_pParam->m_histogram_bins = m_pSpinBins->value();
+            m_pParam->m_num_iterations = m_pSpinIter->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSuperpixelSEEDSParam> m_pParam = nullptr;
+        QSpinBox* m_pSpinPixels = nullptr;
+        QSpinBox* m_pSpinLevels = nullptr;
+        QSpinBox* m_pSpinPrior = nullptr;
+        QSpinBox* m_pSpinBins = nullptr;
+        QSpinBox* m_pSpinIter = nullptr;
 };
 
 class COcvWidgetSuperpixelSEEDSFactory : public CWidgetFactory
@@ -87,4 +90,5 @@ class COcvWidgetSuperpixelSEEDSFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSuperpixelSEEDS>(pParam);
         }
 };
+
 #endif // COCVWIDGETSUPERPIXELSEEDS_HPP

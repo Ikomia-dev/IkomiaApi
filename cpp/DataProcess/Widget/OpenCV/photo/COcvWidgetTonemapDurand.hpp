@@ -44,7 +44,7 @@ class COcvWidgetTonemapDurand : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvTonemapDurandParam>();
@@ -54,60 +54,67 @@ class COcvWidgetTonemapDurand : public CWorkflowTaskWidget
             auto pLabelSat = new QLabel(tr("Saturation"));
             auto pLabelSigmaS = new QLabel(tr("Sigma spatial"));
             auto pLabelSigmaR = new QLabel(tr("Sigma color"));
-            auto pSpinSigmaS = new QDoubleSpinBox;
-            auto pSpinSigmaR = new QDoubleSpinBox;
-            auto pSpinGamma = new QDoubleSpinBox;
-            auto pSpinContrast = new QDoubleSpinBox;
-            auto pSpinSat = new QDoubleSpinBox;
+            m_pSpinSigmaS = new QDoubleSpinBox;
+            m_pSpinSigmaR = new QDoubleSpinBox;
+            m_pSpinGamma = new QDoubleSpinBox;
+            m_pSpinContrast = new QDoubleSpinBox;
+            m_pSpinSat = new QDoubleSpinBox;
 
-            pSpinGamma->setValue(m_pParam->m_gamma);
-            pSpinGamma->setRange(0, 100);
-            pSpinGamma->setSingleStep(0.1);
+            m_pSpinGamma->setValue(m_pParam->m_gamma);
+            m_pSpinGamma->setRange(0, 100);
+            m_pSpinGamma->setSingleStep(0.1);
 
-            pSpinContrast->setValue(m_pParam->m_contrast);
-            pSpinContrast->setRange(0, 100);
-            pSpinContrast->setSingleStep(0.1);
+            m_pSpinContrast->setValue(m_pParam->m_contrast);
+            m_pSpinContrast->setRange(0, 100);
+            m_pSpinContrast->setSingleStep(0.1);
 
-            pSpinSat->setValue(m_pParam->m_saturation);
-            pSpinSat->setRange(0, 100);
-            pSpinSat->setSingleStep(0.1);
+            m_pSpinSat->setValue(m_pParam->m_saturation);
+            m_pSpinSat->setRange(0, 100);
+            m_pSpinSat->setSingleStep(0.1);
 
-            pSpinSigmaS->setSingleStep(1);
-            pSpinSigmaR->setSingleStep(1);
+            m_pSpinSigmaS->setSingleStep(1);
+            m_pSpinSigmaR->setSingleStep(1);
 
-            pSpinSigmaS->setRange(0, 100);
-            pSpinSigmaR->setRange(0, 100);
+            m_pSpinSigmaS->setRange(0, 100);
+            m_pSpinSigmaR->setRange(0, 100);
 
-            pSpinSigmaS->setValue(m_pParam->m_sigmaSpace);
-            pSpinSigmaR->setValue(m_pParam->m_sigmaColor);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_gamma = pSpinGamma->value();
-                m_pParam->m_contrast = pSpinContrast->value();
-                m_pParam->m_saturation = pSpinSat->value();
-                m_pParam->m_sigmaSpace = pSpinSigmaS->value();
-                m_pParam->m_sigmaColor = pSpinSigmaR->value();
-                emit doApplyProcess(m_pParam); } );
+            m_pSpinSigmaS->setValue(m_pParam->m_sigmaSpace);
+            m_pSpinSigmaR->setValue(m_pParam->m_sigmaColor);
 
             m_pLayout->addWidget(pLabelGamma, 0, 0);
-            m_pLayout->addWidget(pSpinGamma, 0, 1);
+            m_pLayout->addWidget(m_pSpinGamma, 0, 1);
 
             m_pLayout->addWidget(pLabelContrast, 1, 0);
-            m_pLayout->addWidget(pSpinContrast, 1, 1);
+            m_pLayout->addWidget(m_pSpinContrast, 1, 1);
 
             m_pLayout->addWidget(pLabelSat, 2, 0);
-            m_pLayout->addWidget(pSpinSat, 2, 1);
+            m_pLayout->addWidget(m_pSpinSat, 2, 1);
 
             m_pLayout->addWidget(pLabelSigmaS, 3, 0);
-            m_pLayout->addWidget(pSpinSigmaS, 3, 1);
+            m_pLayout->addWidget(m_pSpinSigmaS, 3, 1);
 
             m_pLayout->addWidget(pLabelSigmaR, 4, 0);
-            m_pLayout->addWidget(pSpinSigmaR, 4, 1);
+            m_pLayout->addWidget(m_pSpinSigmaR, 4, 1);
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_gamma = m_pSpinGamma->value();
+            m_pParam->m_contrast = m_pSpinContrast->value();
+            m_pParam->m_saturation = m_pSpinSat->value();
+            m_pParam->m_sigmaSpace = m_pSpinSigmaS->value();
+            m_pParam->m_sigmaColor = m_pSpinSigmaR->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvTonemapDurandParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaS = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaR = nullptr;
+        QDoubleSpinBox* m_pSpinGamma = nullptr;
+        QDoubleSpinBox* m_pSpinContrast = nullptr;
+        QDoubleSpinBox* m_pSpinSat = nullptr;
 };
 
 class COcvWidgetTonemapDurandFactory : public CWidgetFactory

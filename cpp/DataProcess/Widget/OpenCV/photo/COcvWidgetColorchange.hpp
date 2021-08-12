@@ -43,27 +43,30 @@ class COcvWidgetColorchange : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvColorchangeParam>();
 
-            auto pSpinRed = addDoubleSpin(0, tr("Red factor"), m_pParam->m_red_mul, 0.5, 2.5, 0.1);
-            auto pSpinGreen = addDoubleSpin(1, tr("Green factor"), m_pParam->m_green_mul, 0.5, 2.5, 0.1);
-            auto pSpinBlue = addDoubleSpin(2, tr("Blue factor"), m_pParam->m_blue_mul, 0.5, 2.5, 0.1);
+            m_pSpinRed = addDoubleSpin(0, tr("Red factor"), m_pParam->m_red_mul, 0.5, 2.5, 0.1);
+            m_pSpinGreen = addDoubleSpin(1, tr("Green factor"), m_pParam->m_green_mul, 0.5, 2.5, 0.1);
+            m_pSpinBlue = addDoubleSpin(2, tr("Blue factor"), m_pParam->m_blue_mul, 0.5, 2.5, 0.1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_red_mul = pSpinRed->value();
-                m_pParam->m_green_mul = pSpinGreen->value();
-                m_pParam->m_blue_mul = pSpinBlue->value();
-                emit doApplyProcess(m_pParam); } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_red_mul = m_pSpinRed->value();
+            m_pParam->m_green_mul = m_pSpinGreen->value();
+            m_pParam->m_blue_mul = m_pSpinBlue->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvColorchangeParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRed = nullptr;
+        QDoubleSpinBox* m_pSpinGreen = nullptr;
+        QDoubleSpinBox* m_pSpinBlue = nullptr;
 };
 
 class COcvWidgetColorchangeFactory : public CWidgetFactory

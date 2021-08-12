@@ -44,35 +44,37 @@ class COcvWidgetDTFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDTFilterParam>();
 
-            auto pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
-            auto pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
-            auto pSpinIter = addSpin(2, tr("Iterations"), m_pParam->m_numIters);
-            auto pCombo = addCombo(3, tr("Mode"));
-            pCombo->addItem("DTF_NC", cv::ximgproc::DTF_NC);
-            pCombo->addItem("DTF_IC", cv::ximgproc::DTF_IC);
-            pCombo->addItem("DTF_RF", cv::ximgproc::DTF_RF);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_mode));
+            m_pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
+            m_pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
+            m_pSpinIter = addSpin(2, tr("Iterations"), m_pParam->m_numIters);
+            m_pCombo = addCombo(3, tr("Mode"));
+            m_pCombo->addItem("DTF_NC", cv::ximgproc::DTF_NC);
+            m_pCombo->addItem("DTF_IC", cv::ximgproc::DTF_IC);
+            m_pCombo->addItem("DTF_RF", cv::ximgproc::DTF_RF);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_mode));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigmaColor = pSpinColor->value();
-                m_pParam->m_sigmaSpatial = pSpinSpatial->value();
-                m_pParam->m_numIters = pSpinIter->value();
-                m_pParam->m_mode = pCombo->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_sigmaColor = m_pSpinColor->value();
+            m_pParam->m_sigmaSpatial = m_pSpinSpatial->value();
+            m_pParam->m_numIters = m_pSpinIter->value();
+            m_pParam->m_mode = m_pCombo->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvDTFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinColor = nullptr;
+        QDoubleSpinBox* m_pSpinSpatial = nullptr;
+        QSpinBox*       m_pSpinIter = nullptr;
+        QComboBox*      m_pCombo = nullptr;
 };
 
 class COcvWidgetDTFilterFactory : public CWidgetFactory
@@ -89,4 +91,5 @@ class COcvWidgetDTFilterFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetDTFilter>(pParam);
         }
 };
+
 #endif // COCVWIDGETDTFILTER_HPP

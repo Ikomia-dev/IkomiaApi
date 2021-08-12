@@ -40,36 +40,38 @@ class CGmicWidgetSharpenLucy : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicSharpenLucyParam>();
 
-            auto pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.5, 10, 0.1);
-            auto pSpinIteration = addSpin(1, tr("Iterations"), m_pParam->m_iteration, 1, 100);
+            m_pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.5, 10, 0.1);
+            m_pSpinIteration = addSpin(1, tr("Iterations"), m_pParam->m_iteration, 1, 100);
 
-            auto pComboBlur = addCombo(2, tr("Blur"));
-            pComboBlur->addItem(tr("Exponential"), CGmicSharpenLucyParam::EXPONENTIAL);
-            pComboBlur->addItem(tr("Gaussian"), CGmicSharpenLucyParam::GAUSSIAN);
-            pComboBlur->setCurrentIndex(pComboBlur->findData(m_pParam->m_blur));
+            m_pComboBlur = addCombo(2, tr("Blur"));
+            m_pComboBlur->addItem(tr("Exponential"), CGmicSharpenLucyParam::EXPONENTIAL);
+            m_pComboBlur->addItem(tr("Gaussian"), CGmicSharpenLucyParam::GAUSSIAN);
+            m_pComboBlur->setCurrentIndex(m_pComboBlur->findData(m_pParam->m_blur));
 
-            auto pCheckCut = addCheck(3, tr("Cut"), m_pParam->m_bCut);
+            m_pCheckCut = addCheck(3, tr("Cut"), m_pParam->m_bCut);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigma = pSpinSigma->value();
-                m_pParam->m_iteration = pSpinIteration->value();
-                m_pParam->m_blur = pComboBlur->currentData().toInt();
-                m_pParam->m_bCut = pCheckCut->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_sigma = m_pSpinSigma->value();
+            m_pParam->m_iteration = m_pSpinIteration->value();
+            m_pParam->m_blur = m_pComboBlur->currentData().toInt();
+            m_pParam->m_bCut = m_pCheckCut->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicSharpenLucyParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QSpinBox*       m_pSpinIteration = nullptr;
+        QComboBox*      m_pComboBlur = nullptr;
+        QCheckBox*      m_pCheckCut = nullptr;
 };
 
 class CGmicWidgetSharpenLucyFactory : public CWidgetFactory

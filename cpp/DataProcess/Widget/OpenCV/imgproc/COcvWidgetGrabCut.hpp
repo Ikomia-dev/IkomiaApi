@@ -43,7 +43,7 @@ class COcvWidgetGrabCut : public CWorkflowTaskWidget
 
     protected:
 
-        void    init() override
+        void    init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGrabCutParam>();
@@ -70,13 +70,11 @@ class COcvWidgetGrabCut : public CWorkflowTaskWidget
             m_pClearBtn = new QPushButton(tr("Clear segmentation"));
             m_pClearBtn->setDefault(false);
 
-            
             m_pLayout->addWidget(pLabelIteration, 0, 0, 1, 1);
             m_pLayout->addWidget(m_pSpinIteration, 0, 1, 1, 1);
             m_pLayout->addWidget(pGroupBox, 1, 0, 1, 2);
             m_pLayout->addWidget(m_pClearBtn, 2, 0, 1, 2);
             
-
             initConnections();
         }
         void    initConnections()
@@ -115,12 +113,12 @@ class COcvWidgetGrabCut : public CWorkflowTaskWidget
                     emit doSetGraphicsCategory("PossibleFgnd");
                 }
             });
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_iterationCount = m_pSpinIteration->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_iterationCount = m_pSpinIteration->value();
+            emit doApplyProcess(m_pParam);
         }
 
         void    showEvent(QShowEvent* event) override

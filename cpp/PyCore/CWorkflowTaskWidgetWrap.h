@@ -33,8 +33,6 @@ class CWorkflowTaskWidgetWrap : public CWorkflowTaskWidget, public wrapper<CWork
         CWorkflowTaskWidgetWrap(QWidget *parent);
         virtual ~CWorkflowTaskWidgetWrap() = default;
 
-        void            init();
-
         void            setLayout(long long layoutPtr);
 
         void            emitApply(const WorkflowTaskParamPtr &paramPtr);
@@ -42,8 +40,7 @@ class CWorkflowTaskWidgetWrap : public CWorkflowTaskWidget, public wrapper<CWork
         void            emitSetGraphicsTool(GraphicsShape tool);
         void            emitSetGraphicsCategory(const std::string& category);
 
-        virtual void    onApply();
-        void            default_onApply();
+        void            onApply();
 };
 
 #endif // CWORKFLOWTASKWIDGETWRAP_H

@@ -37,7 +37,7 @@ class COcvWidgetDnnClassifier: public COcvWidgetDnnProcess
             init();
         }
 
-        void init() override
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDnnClassifierParam>();

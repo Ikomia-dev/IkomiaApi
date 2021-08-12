@@ -44,50 +44,52 @@ class COcvWidgetBRISK : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBRISKParam>();
 
-            auto pSpinThresh = addSpin(0, tr("Threshold"), m_pParam->m_thresh);
-            pSpinThresh->setRange(0, INT_MAX);
-            auto pSpinOctaves = addSpin(1, tr("Octaves"), m_pParam->m_octaves);
-            auto pSpinScale = addDoubleSpin(2, tr("Pattern scale"), m_pParam->m_patternScale);
-            pSpinScale->setSingleStep(0.1);
-            auto pCheck = addCheck(3, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
-            auto pCheckDetect = addCheck(8, tr("Detect"), m_pParam->m_bDetect);
-            pCheckDetect->setEnabled(false);
-            auto pCheckCompute = addCheck(9, tr("Compute"), m_pParam->m_bCompute);
+            m_pSpinThresh = addSpin(0, tr("Threshold"), m_pParam->m_thresh, 0, INT_MAX);
+            m_pSpinOctaves = addSpin(1, tr("Octaves"), m_pParam->m_octaves);
+            m_pSpinScale = addDoubleSpin(2, tr("Pattern scale"), m_pParam->m_patternScale, 0.0, DBL_MAX, 0.1);
+            m_pCheck = addCheck(3, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
+            m_pCheckDetect = addCheck(8, tr("Detect"), m_pParam->m_bDetect);
+            m_pCheckDetect->setEnabled(false);
+            m_pCheckCompute = addCheck(9, tr("Compute"), m_pParam->m_bCompute);
 
-            connect(pCheck, &QCheckBox::clicked, [=](bool checked){
+            connect(m_pCheck, &QCheckBox::clicked, [&](bool checked){
                 if(checked)
                 {
-                    pCheckDetect->setEnabled(true);
+                    m_pCheckDetect->setEnabled(true);
                 }
                 else
                 {
-                    pCheckDetect->setChecked(true);
-                    pCheckDetect->setEnabled(false);
+                    m_pCheckDetect->setChecked(true);
+                    m_pCheckDetect->setEnabled(false);
                 }
             });
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_thresh = pSpinThresh->value();
-                m_pParam->m_octaves = pSpinOctaves->value();
-                m_pParam->m_patternScale = pSpinScale->value();
-                m_pParam->m_bUseProvidedKeypoints = pCheck->isChecked();
-                m_pParam->m_bDetect = pCheckDetect->isChecked();
-                m_pParam->m_bCompute = pCheckCompute->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_thresh = m_pSpinThresh->value();
+            m_pParam->m_octaves = m_pSpinOctaves->value();
+            m_pParam->m_patternScale = m_pSpinScale->value();
+            m_pParam->m_bUseProvidedKeypoints = m_pCheck->isChecked();
+            m_pParam->m_bDetect = m_pCheckDetect->isChecked();
+            m_pParam->m_bCompute = m_pCheckCompute->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBRISKParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinScale = nullptr;
+        QSpinBox*       m_pSpinThresh = nullptr;
+        QSpinBox*       m_pSpinOctaves = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
+        QCheckBox*      m_pCheckDetect = nullptr;
+        QCheckBox*      m_pCheckCompute = nullptr;
 };
 
 class COcvWidgetBRISKFactory : public CWidgetFactory

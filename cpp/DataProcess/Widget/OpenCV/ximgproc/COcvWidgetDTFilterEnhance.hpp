@@ -44,33 +44,36 @@ class COcvWidgetDTFilterEnhance : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDTFilterEnhanceParam>();
 
-            auto pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
-            auto pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
-            auto pSpinContrast = addSpin(2, tr("Contrast"), m_pParam->m_contrastBase);
-            auto pSpinDetails = addSpin(3, tr("Sigmoid coefficient"), m_pParam->m_detailsLevel);
-            auto pSpinLayers = addSpin(4, tr("Layers"), m_pParam->m_numLayer, 1);
+            m_pSpinColor = addDoubleSpin(0, tr("Sigma color"), m_pParam->m_sigmaColor, 0, DBL_MAX, 0.1);
+            m_pSpinSpatial = addDoubleSpin(1, tr("Sigma spatial"), m_pParam->m_sigmaSpatial);
+            m_pSpinContrast = addSpin(2, tr("Contrast"), m_pParam->m_contrastBase);
+            m_pSpinDetails = addSpin(3, tr("Sigmoid coefficient"), m_pParam->m_detailsLevel);
+            m_pSpinLayers = addSpin(4, tr("Layers"), m_pParam->m_numLayer, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigmaColor = pSpinColor->value();
-                m_pParam->m_sigmaSpatial = pSpinSpatial->value();
-                m_pParam->m_contrastBase = pSpinContrast->value();
-                m_pParam->m_detailsLevel = pSpinDetails->value();
-                m_pParam->m_numLayer = pSpinLayers->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_sigmaColor = m_pSpinColor->value();
+            m_pParam->m_sigmaSpatial = m_pSpinSpatial->value();
+            m_pParam->m_contrastBase = m_pSpinContrast->value();
+            m_pParam->m_detailsLevel = m_pSpinDetails->value();
+            m_pParam->m_numLayer = m_pSpinLayers->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvDTFilterEnhanceParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinColor = nullptr;
+        QDoubleSpinBox* m_pSpinSpatial = nullptr;
+        QSpinBox*       m_pSpinContrast = nullptr;
+        QSpinBox*       m_pSpinDetails = nullptr;
+        QSpinBox*       m_pSpinLayers = nullptr;
 };
 
 class COcvWidgetDTFilterEnhanceFactory : public CWidgetFactory
@@ -87,4 +90,5 @@ class COcvWidgetDTFilterEnhanceFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetDTFilterEnhance>(pParam);
         }
 };
+
 #endif // COCVWIDGETDTFILTERENHANCE_HPP

@@ -39,59 +39,61 @@ class COcvWidgetFastGlobalSmootherFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvFastGlobalSmootherFilterParam>();
 
             auto pLabelLambda = new QLabel(QObject::tr("Lambda"));
-            auto pSpinLambda = new QDoubleSpinBox;
-            pSpinLambda->setValue(m_pParam->m_lambda);
-            pSpinLambda->setRange(0.0, 100.0);
-            pSpinLambda->setSingleStep(0.1);
+            m_pSpinLambda = new QDoubleSpinBox;
+            m_pSpinLambda->setValue(m_pParam->m_lambda);
+            m_pSpinLambda->setRange(0.0, 100.0);
+            m_pSpinLambda->setSingleStep(0.1);
 
             auto pLabelSigmaC = new QLabel(QObject::tr("Sigma color"));
-            auto pSpinSigmaC = new QDoubleSpinBox;
-            pSpinSigmaC->setValue(m_pParam->m_sigmaColor);
-            pSpinSigmaC->setRange(0.0, 100.0);
-            pSpinSigmaC->setSingleStep(0.1);
+            m_pSpinSigmaC = new QDoubleSpinBox;
+            m_pSpinSigmaC->setValue(m_pParam->m_sigmaColor);
+            m_pSpinSigmaC->setRange(0.0, 100.0);
+            m_pSpinSigmaC->setSingleStep(0.1);
 
             auto pLabelLambdaAtt = new QLabel(QObject::tr("Lambda attenuation"));
-            auto pSpinLambdaAtt = new QDoubleSpinBox;
-            pSpinLambdaAtt->setValue(m_pParam->m_lambdaAttenuation);
-            pSpinLambdaAtt->setRange(0.0, 1.0);
-            pSpinLambdaAtt->setSingleStep(0.1);
+            m_pSpinLambdaAtt = new QDoubleSpinBox;
+            m_pSpinLambdaAtt->setValue(m_pParam->m_lambdaAttenuation);
+            m_pSpinLambdaAtt->setRange(0.0, 1.0);
+            m_pSpinLambdaAtt->setSingleStep(0.1);
 
             auto pLabelIteration = new QLabel(QObject::tr("Number of iteration"));
-            auto pSpinIteration = new QSpinBox;
-            pSpinIteration->setRange(1, 100);
-            pSpinIteration->setValue(m_pParam->m_nbIter);
-            pSpinIteration->setSingleStep(1);
+            m_pSpinIteration = new QSpinBox;
+            m_pSpinIteration->setRange(1, 100);
+            m_pSpinIteration->setValue(m_pParam->m_nbIter);
+            m_pSpinIteration->setSingleStep(1);
 
-            
             m_pLayout->addWidget(pLabelLambda, 0, 0);
-            m_pLayout->addWidget(pSpinLambda, 0, 1);
+            m_pLayout->addWidget(m_pSpinLambda, 0, 1);
             m_pLayout->addWidget(pLabelSigmaC, 1, 0);
-            m_pLayout->addWidget(pSpinSigmaC, 1, 1);
+            m_pLayout->addWidget(m_pSpinSigmaC, 1, 1);
             m_pLayout->addWidget(pLabelLambdaAtt, 2, 0);
-            m_pLayout->addWidget(pSpinLambdaAtt, 2, 1);
+            m_pLayout->addWidget(m_pSpinLambdaAtt, 2, 1);
             m_pLayout->addWidget(pLabelIteration, 3, 0);
-            m_pLayout->addWidget(pSpinIteration, 3, 1);
-            
+            m_pLayout->addWidget(m_pSpinIteration, 3, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_lambda = pSpinLambda->value();
-                m_pParam->m_sigmaColor = pSpinSigmaC->value();
-                m_pParam->m_lambdaAttenuation = pSpinLambdaAtt->value();
-                m_pParam->m_nbIter = pSpinIteration->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_lambda = m_pSpinLambda->value();
+            m_pParam->m_sigmaColor = m_pSpinSigmaC->value();
+            m_pParam->m_lambdaAttenuation = m_pSpinLambdaAtt->value();
+            m_pParam->m_nbIter = m_pSpinIteration->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvFastGlobalSmootherFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinLambda = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaC = nullptr;
+        QDoubleSpinBox* m_pSpinLambdaAtt = nullptr;
+        QSpinBox*       m_pSpinIteration = nullptr;
 };
 
 class COcvWidgetFastGlobalSmootherFilterFactory : public CWidgetFactory

@@ -44,65 +44,80 @@ class COcvWidgetORB : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvORBParam>();
 
-            auto pSpinFeatures = addSpin(0, tr("Features"), m_pParam->m_nfeatures);
-            pSpinFeatures->setRange(0, INT_MAX);
-            pSpinFeatures->setValue(m_pParam->m_nfeatures);
-            auto pSpinScale = addDoubleSpin(1, tr("Scale factor"), m_pParam->m_scaleFactor);
-            pSpinScale->setSingleStep(0.1);
-            auto pSpinLevels = addSpin(2, tr("Levels"), m_pParam->m_nlevels);
-            auto pSpinEdgeThresh = addSpin(3, tr("Edge threshold"), m_pParam->m_edgeThreshold);
-            auto pSpinFirstLevel = addSpin(2, tr("First level"), m_pParam->m_firstLevel);
-            auto pSpinWTA = addSpin(4, tr("WTA_K"), m_pParam->m_WTA_K);
-            auto pCombo = addCombo(5, tr("Score Type"));
-            pCombo->addItem("HARRIS_SCORE", cv::ORB::HARRIS_SCORE);
-            pCombo->addItem("FAST_SCORE", cv::ORB::FAST_SCORE);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_scoreType));
-            auto pSpinPatch = addSpin(6, tr("Patch size"), m_pParam->m_patchSize);
-            auto pSpinFastThresh = addSpin(7, tr("Fast threshold"), m_pParam->m_fastThreshold);
-            auto pCheck = addCheck(8, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
-            auto pCheckDetect = addCheck(9, tr("Detect"), m_pParam->m_bDetect);
-            pCheckDetect->setEnabled(false);
-            auto pCheckCompute = addCheck(10, tr("Compute"), m_pParam->m_bCompute);
+            m_pSpinFeatures = addSpin(0, tr("Features"), m_pParam->m_nfeatures);
+            m_pSpinFeatures->setRange(0, INT_MAX);
+            m_pSpinFeatures->setValue(m_pParam->m_nfeatures);
 
-            connect(pCheck, &QCheckBox::clicked, [=](bool checked){
+            m_pSpinScale = addDoubleSpin(1, tr("Scale factor"), m_pParam->m_scaleFactor);
+            m_pSpinScale->setSingleStep(0.1);
+
+            m_pSpinLevels = addSpin(2, tr("Levels"), m_pParam->m_nlevels);
+            m_pSpinEdgeThresh = addSpin(3, tr("Edge threshold"), m_pParam->m_edgeThreshold);
+            m_pSpinFirstLevel = addSpin(2, tr("First level"), m_pParam->m_firstLevel);
+            m_pSpinWTA = addSpin(4, tr("WTA_K"), m_pParam->m_WTA_K);
+
+            m_pCombo = addCombo(5, tr("Score Type"));
+            m_pCombo->addItem("HARRIS_SCORE", cv::ORB::HARRIS_SCORE);
+            m_pCombo->addItem("FAST_SCORE", cv::ORB::FAST_SCORE);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_scoreType));
+
+            m_pSpinPatch = addSpin(6, tr("Patch size"), m_pParam->m_patchSize);
+            m_pSpinFastThresh = addSpin(7, tr("Fast threshold"), m_pParam->m_fastThreshold);
+            m_pCheck = addCheck(8, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
+            m_pCheckDetect = addCheck(9, tr("Detect"), m_pParam->m_bDetect);
+            m_pCheckDetect->setEnabled(false);
+            m_pCheckCompute = addCheck(10, tr("Compute"), m_pParam->m_bCompute);
+
+            connect(m_pCheck, &QCheckBox::clicked, [&](bool checked){
                 if(checked)
                 {
-                    pCheckDetect->setEnabled(true);
+                    m_pCheckDetect->setEnabled(true);
                 }
                 else
                 {
-                    pCheckDetect->setChecked(true);
-                    pCheckDetect->setEnabled(false);
+                    m_pCheckDetect->setChecked(true);
+                    m_pCheckDetect->setEnabled(false);
                 }
             });
-            
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_nfeatures = pSpinFeatures->value();
-                m_pParam->m_scaleFactor = pSpinScale->value();
-                m_pParam->m_nlevels = pSpinLevels->value();
-                m_pParam->m_edgeThreshold = pSpinEdgeThresh->value();
-                m_pParam->m_firstLevel = pSpinFirstLevel->value();
-                m_pParam->m_WTA_K = pSpinWTA->value();
-                m_pParam->m_scoreType = pCombo->currentData().toInt();
-                m_pParam->m_patchSize = pSpinPatch->value();
-                m_pParam->m_fastThreshold = pSpinFastThresh->value();
-                m_pParam->m_bUseProvidedKeypoints = pCheck->isChecked();
-                m_pParam->m_bDetect = pCheckDetect->isChecked();
-                m_pParam->m_bCompute = pCheckCompute->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_nfeatures = m_pSpinFeatures->value();
+            m_pParam->m_scaleFactor = m_pSpinScale->value();
+            m_pParam->m_nlevels = m_pSpinLevels->value();
+            m_pParam->m_edgeThreshold = m_pSpinEdgeThresh->value();
+            m_pParam->m_firstLevel = m_pSpinFirstLevel->value();
+            m_pParam->m_WTA_K = m_pSpinWTA->value();
+            m_pParam->m_scoreType = m_pCombo->currentData().toInt();
+            m_pParam->m_patchSize = m_pSpinPatch->value();
+            m_pParam->m_fastThreshold = m_pSpinFastThresh->value();
+            m_pParam->m_bUseProvidedKeypoints = m_pCheck->isChecked();
+            m_pParam->m_bDetect = m_pCheckDetect->isChecked();
+            m_pParam->m_bCompute = m_pCheckCompute->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvORBParam> m_pParam = nullptr;
+        QSpinBox*       m_pSpinFeatures = nullptr;
+        QSpinBox*       m_pSpinLevels = nullptr;
+        QSpinBox*       m_pSpinEdgeThresh = nullptr;
+        QSpinBox*       m_pSpinFirstLevel = nullptr;
+        QSpinBox*       m_pSpinWTA = nullptr;
+        QSpinBox*       m_pSpinPatch = nullptr;
+        QSpinBox*       m_pSpinFastThresh = nullptr;
+        QDoubleSpinBox* m_pSpinScale = nullptr;
+        QComboBox*      m_pCombo = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
+        QCheckBox*      m_pCheckDetect = nullptr;
+        QCheckBox*      m_pCheckCompute = nullptr;
 };
 
 class COcvWidgetORBFactory : public CWidgetFactory

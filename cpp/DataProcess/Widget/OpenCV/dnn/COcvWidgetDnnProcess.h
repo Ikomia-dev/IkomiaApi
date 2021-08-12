@@ -34,30 +34,30 @@ class DATAPROCESSSHARED_EXPORT COcvWidgetDnnProcess : public COcvWidgetDnnCore
 
     protected:
 
-        virtual void    init() override;
+        void    init();
 
-        void            clearFiles();
+        void    clearFiles();
 
     private slots:
 
-        void            onFrameworkChanged(int index);
-        void            onSelectModelFile();
-        void            onSelectStructFile();
-        void            onSelectLabelsFile();
-        void            onApply();
+        void    onFrameworkChanged(int index);
+        void    onSelectModelFile();
+        void    onSelectStructFile();
+        void    onSelectLabelsFile();
+        void    onApply();
 
     private:
 
-        void            initConnections();
-        void            initFramework(int framework);
+        void    initConnections();
+        void    initFramework(int framework);
 
     protected:
 
-        QVBoxLayout*                            m_pVBoxLayout = nullptr;
-        QComboBox*                              m_pComboFramework = nullptr;
-        CBrowseFileWidget*                      m_pBrowseStructFile = nullptr;
-        CBrowseFileWidget*                      m_pBrowseModelFile = nullptr;
-        CBrowseFileWidget*                      m_pBrowseLabelFile = nullptr;
+        QVBoxLayout*        m_pVBoxLayout = nullptr;
+        QComboBox*          m_pComboFramework = nullptr;
+        CBrowseFileWidget*  m_pBrowseStructFile = nullptr;
+        CBrowseFileWidget*  m_pBrowseModelFile = nullptr;
+        CBrowseFileWidget*  m_pBrowseLabelFile = nullptr;
 };
 
 #endif // COCVWIDGETDNNPROCESS_H

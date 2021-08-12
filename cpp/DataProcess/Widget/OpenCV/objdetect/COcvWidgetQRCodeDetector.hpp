@@ -43,26 +43,27 @@ class COcvWidgetQRCodeDetector : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvQRCodeDetectorParam>();
 
-            auto pSpinEpsX = addDoubleSpin(0, tr("Eps x"), m_pParam->m_eps_x, 0, DBL_MAX, 0.1);
-            auto pSpinEpsY = addDoubleSpin(1, tr("Eps y"), m_pParam->m_eps_y, 0, DBL_MAX, 0.1);
+            m_pSpinEpsX = addDoubleSpin(0, tr("Eps x"), m_pParam->m_eps_x, 0, DBL_MAX, 0.1);
+            m_pSpinEpsY = addDoubleSpin(1, tr("Eps y"), m_pParam->m_eps_y, 0, DBL_MAX, 0.1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_eps_x = pSpinEpsX->value();
-                m_pParam->m_eps_y = pSpinEpsY->value();
-                emit doApplyProcess(m_pParam); } );
-
-            
-            
+        void onApply() override
+        {
+            m_pParam->m_eps_x = m_pSpinEpsX->value();
+            m_pParam->m_eps_y = m_pSpinEpsY->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvQRCodeDetectorParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinEpsX = nullptr;
+        QDoubleSpinBox* m_pSpinEpsY = nullptr;
 };
 
 class COcvWidgetQRCodeDetectorFactory : public CWidgetFactory
@@ -79,4 +80,5 @@ class COcvWidgetQRCodeDetectorFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetQRCodeDetector>(pParam);
         }
 };
+
 #endif // COCVWIDGETQRCODEDETECTOR_HPP

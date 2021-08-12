@@ -41,7 +41,7 @@ class COcvWidgetRollingGuidanceFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvRollingGuidanceFilterParam>();
@@ -65,16 +65,6 @@ class COcvWidgetRollingGuidanceFilter : public CWorkflowTaskWidget
             m_pDblSpinSpace = new QDoubleSpinBox;
             m_pDblSpinSpace->setRange(0, 100);
             m_pDblSpinSpace->setValue(m_pParam->m_sigmaSpace);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_d = m_pSpin->value();
-                m_pParam->m_numOfIter = m_pDblSpinIter->value();
-                m_pParam->m_sigmaColor = m_pDblSpinColor->value();
-                m_pParam->m_sigmaSpace = m_pDblSpinSpace->value();
-                emit doApplyProcess(m_pParam);
-            });
-
             
             m_pLayout->addWidget(pLabelSpin, 0, 0);
             m_pLayout->addWidget(m_pSpin, 0, 1);
@@ -87,8 +77,15 @@ class COcvWidgetRollingGuidanceFilter : public CWorkflowTaskWidget
 
             m_pLayout->addWidget(pLabelSpinSpace, 3, 0);
             m_pLayout->addWidget(m_pDblSpinSpace, 3, 1);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_d = m_pSpin->value();
+            m_pParam->m_numOfIter = m_pDblSpinIter->value();
+            m_pParam->m_sigmaColor = m_pDblSpinColor->value();
+            m_pParam->m_sigmaSpace = m_pDblSpinSpace->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

@@ -40,50 +40,51 @@ class COcvWidgetEdgePreservingFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvEdgePreservingFilterParam>();
 
             auto pLabelFilterType = new QLabel(tr("Filter type"));
-            auto pComboFilterType = new QComboBox;
-            pComboFilterType->addItem("Recursive", cv::RECURS_FILTER);
-            pComboFilterType->addItem("Normalized convolution", cv::NORMCONV_FILTER);
-            pComboFilterType->setCurrentIndex(pComboFilterType->findData(m_pParam->m_flag));
+            m_pComboFilterType = new QComboBox;
+            m_pComboFilterType->addItem("Recursive", cv::RECURS_FILTER);
+            m_pComboFilterType->addItem("Normalized convolution", cv::NORMCONV_FILTER);
+            m_pComboFilterType->setCurrentIndex(m_pComboFilterType->findData(m_pParam->m_flag));
 
             auto pLabelSigmaS = new QLabel(tr("Sigma S"));
-            auto pSpinSigmaS = new QDoubleSpinBox;
-            pSpinSigmaS->setSingleStep(1.0);
-            pSpinSigmaS->setRange(0.0, 200.0);
-            pSpinSigmaS->setValue(m_pParam->m_sigmaS);
+            m_pSpinSigmaS = new QDoubleSpinBox;
+            m_pSpinSigmaS->setSingleStep(1.0);
+            m_pSpinSigmaS->setRange(0.0, 200.0);
+            m_pSpinSigmaS->setValue(m_pParam->m_sigmaS);
 
             auto pLabelSigmaR = new QLabel(tr("Sigma R"));
-            auto pSpinSigmaR = new QDoubleSpinBox;
-            pSpinSigmaR->setSingleStep(0.1);
-            pSpinSigmaR->setRange(0.0, 1.0);
-            pSpinSigmaR->setValue(m_pParam->m_sigmaR);
-
+            m_pSpinSigmaR = new QDoubleSpinBox;
+            m_pSpinSigmaR->setSingleStep(0.1);
+            m_pSpinSigmaR->setRange(0.0, 1.0);
+            m_pSpinSigmaR->setValue(m_pParam->m_sigmaR);
             
             m_pLayout->addWidget(pLabelFilterType, 0, 0);
-            m_pLayout->addWidget(pComboFilterType, 0, 1);
+            m_pLayout->addWidget(m_pComboFilterType, 0, 1);
             m_pLayout->addWidget(pLabelSigmaS, 1, 0);
-            m_pLayout->addWidget(pSpinSigmaS, 1, 1);
+            m_pLayout->addWidget(m_pSpinSigmaS, 1, 1);
             m_pLayout->addWidget(pLabelSigmaR, 2, 0);
-            m_pLayout->addWidget(pSpinSigmaR, 2, 1);
-            
+            m_pLayout->addWidget(m_pSpinSigmaR, 2, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_flag = pComboFilterType->currentData().toInt();
-                m_pParam->m_sigmaS = pSpinSigmaS->value();
-                m_pParam->m_sigmaR = pSpinSigmaR->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_flag = m_pComboFilterType->currentData().toInt();
+            m_pParam->m_sigmaS = m_pSpinSigmaS->value();
+            m_pParam->m_sigmaR = m_pSpinSigmaR->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvEdgePreservingFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaS = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaR = nullptr;
+        QComboBox*      m_pComboFilterType = nullptr;
 };
 
 class COcvWidgetEdgePreservingFilterFactory : public CWidgetFactory

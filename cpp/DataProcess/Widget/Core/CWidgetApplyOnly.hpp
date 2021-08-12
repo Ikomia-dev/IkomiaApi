@@ -38,7 +38,7 @@ class CWidgetApplyOnly : public CWorkflowTaskWidget
 
     protected:
 
-        void init() final
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CWorkflowTaskParam>();
@@ -51,8 +51,11 @@ class CWidgetApplyOnly : public CWorkflowTaskWidget
                 pLayout->insertStretch(0, 1);
                 m_pScrollArea->deleteLater();
             }
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]{ emit doApplyProcess(m_pParam); } );
+        void onApply() final
+        {
+            emit doApplyProcess(m_pParam);
         }
 
     private:

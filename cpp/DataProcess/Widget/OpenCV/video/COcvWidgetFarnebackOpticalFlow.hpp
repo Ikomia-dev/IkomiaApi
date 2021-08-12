@@ -45,41 +45,46 @@ class COcvWidgetFarnebackOF : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvFarnebackOFParam>();
 
-            auto pSpinLevels = addSpin(0, tr("Levels"), m_pParam->m_numLevels);
-            auto pSpinScale = addDoubleSpin(1, tr("Pyramid scale"), m_pParam->m_pyrScale);
-            auto pCheckFastPyr = addCheck(2, tr("Fast pyramids"), m_pParam->m_fastPyramids);
-            auto pSpinSize = addSpin(3, tr("Window size"), m_pParam->m_winSize);
-            auto pSpinIter = addSpin(4, tr("Iterations"), m_pParam->m_numIters);
-            auto pSpinPolyN = addSpin(5, tr("PolyN"), m_pParam->m_polyN);
-            auto pSpinSigma = addDoubleSpin(6, tr("PolySigma"), m_pParam->m_polySigma);
+            m_pSpinLevels = addSpin(0, tr("Levels"), m_pParam->m_numLevels);
+            m_pSpinScale = addDoubleSpin(1, tr("Pyramid scale"), m_pParam->m_pyrScale);
+            m_pCheckFastPyr = addCheck(2, tr("Fast pyramids"), m_pParam->m_fastPyramids);
+            m_pSpinSize = addSpin(3, tr("Window size"), m_pParam->m_winSize);
+            m_pSpinIter = addSpin(4, tr("Iterations"), m_pParam->m_numIters);
+            m_pSpinPolyN = addSpin(5, tr("PolyN"), m_pParam->m_polyN);
+            m_pSpinSigma = addDoubleSpin(6, tr("PolySigma"), m_pParam->m_polySigma);
 
-            auto pCheck = addCheck(7, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+            m_pCheck = addCheck(7, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_numLevels = pSpinLevels->value();
-                m_pParam->m_pyrScale = pSpinScale->value();
-                m_pParam->m_fastPyramids = pCheckFastPyr->isChecked();
-                m_pParam->m_winSize = pSpinSize->value();
-                m_pParam->m_numIters = pSpinIter->value();
-                m_pParam->m_polyN = pSpinPolyN->value();
-                m_pParam->m_polySigma = pSpinSigma->value();
-                m_pParam->m_bUseOCL = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_numLevels = m_pSpinLevels->value();
+            m_pParam->m_pyrScale = m_pSpinScale->value();
+            m_pParam->m_fastPyramids = m_pCheckFastPyr->isChecked();
+            m_pParam->m_winSize = m_pSpinSize->value();
+            m_pParam->m_numIters = m_pSpinIter->value();
+            m_pParam->m_polyN = m_pSpinPolyN->value();
+            m_pParam->m_polySigma = m_pSpinSigma->value();
+            m_pParam->m_bUseOCL = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvFarnebackOFParam> m_pParam = nullptr;
-        //QSpinBox*                           m_pSpin = nullptr;
+        QDoubleSpinBox* m_pSpinScale = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QSpinBox*       m_pSpinLevels = nullptr;
+        QSpinBox*       m_pSpinSize = nullptr;
+        QSpinBox*       m_pSpinIter = nullptr;
+        QSpinBox*       m_pSpinPolyN = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
+        QCheckBox*      m_pCheckFastPyr = nullptr;
 };
 
 class COcvWidgetFarnebackOFFactory : public CWidgetFactory

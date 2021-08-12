@@ -45,7 +45,7 @@ class COcvWidgetDftInv : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDftInvParam>();
@@ -59,18 +59,15 @@ class COcvWidgetDftInv : public CWorkflowTaskWidget
             pComboFlags->addItem("DFT_COMPLEX_OUTPUT", cv::DFT_COMPLEX_OUTPUT);
             pComboFlags->addItem("DFT_REAL_OUTPUT", cv::DFT_REAL_OUTPUT);
             pComboFlags->addItem("DFT_COMPLEX_INPUT", cv::DFT_COMPLEX_INPUT);
-
             pComboFlags->setCurrentIndex(pComboFlags->findData(m_pParam->m_flags));
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                emit doApplyProcess(m_pParam);
-            });
-
-            
             m_pLayout->addWidget(pLabelFlags, 0, 0);
-            m_pLayout->addWidget(pComboFlags, 0, 1);
-            
+            m_pLayout->addWidget(pComboFlags, 0, 1);       
+        }
+
+        void onApply() override
+        {
+            emit doApplyProcess(m_pParam);
         }
 
     private:

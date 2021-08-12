@@ -40,66 +40,76 @@ class CGmicWidgetColorPresets : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicColorPresetsParam>();
 
-            auto pComboCategory = addCombo(0, tr("Category"));
+            m_pComboCategory = addCombo(0, tr("Category"));
             for(size_t i=0; i<m_pParam->m_categories.size(); ++i)
-                pComboCategory->addItem(QString::fromStdString(m_pParam->m_categories[i]));
+                m_pComboCategory->addItem(QString::fromStdString(m_pParam->m_categories[i]));
 
-            pComboCategory->setCurrentIndex(m_pParam->m_category);
+            m_pComboCategory->setCurrentIndex(m_pParam->m_category);
 
-            auto pComboPreset = addCombo(1, tr("Presets"));
+            m_pComboPreset = addCombo(1, tr("Presets"));
             for(size_t i=0; i<m_pParam->m_presets[0].size(); ++i)
-                pComboPreset->addItem(QString::fromStdString(m_pParam->m_presets[0][i]));
+                m_pComboPreset->addItem(QString::fromStdString(m_pParam->m_presets[0][i]));
 
-            pComboPreset->setCurrentIndex(m_pParam->m_preset);
+            m_pComboPreset->setCurrentIndex(m_pParam->m_preset);
 
-            auto pSpinThumbSize = addSpin(2, tr("Thumbnail size"), m_pParam->m_thumbSize, 0, 1024);
-            auto pSpinStrength = addDoubleSpin(3, tr("Strength(%)"), m_pParam->m_strenght, 0, 100, 1.0);
-            auto pSpinBrightness = addDoubleSpin(4, tr("Brightness(%)"), m_pParam->m_brightness, -100, 100, 1.0);
-            auto pSpinContrast = addDoubleSpin(5, tr("Contrast(%)"), m_pParam->m_contrast, -100, 100, 1.0);
-            auto pSpinGamma = addDoubleSpin(6, tr("Gamma(%)"), m_pParam->m_gamma, -100, 100, 1.0);
-            auto pSpinHue = addDoubleSpin(7, tr("Hue(%)"), m_pParam->m_hue, -100, 100, 1.0);
-            auto pSpinSaturation = addDoubleSpin(8, tr("Saturation(%)"), m_pParam->m_saturation, -100, 100, 1.0);
+            m_pSpinThumbSize = addSpin(2, tr("Thumbnail size"), m_pParam->m_thumbSize, 0, 1024);
+            m_pSpinStrength = addDoubleSpin(3, tr("Strength(%)"), m_pParam->m_strenght, 0, 100, 1.0);
+            m_pSpinBrightness = addDoubleSpin(4, tr("Brightness(%)"), m_pParam->m_brightness, -100, 100, 1.0);
+            m_pSpinContrast = addDoubleSpin(5, tr("Contrast(%)"), m_pParam->m_contrast, -100, 100, 1.0);
+            m_pSpinGamma = addDoubleSpin(6, tr("Gamma(%)"), m_pParam->m_gamma, -100, 100, 1.0);
+            m_pSpinHue = addDoubleSpin(7, tr("Hue(%)"), m_pParam->m_hue, -100, 100, 1.0);
+            m_pSpinSaturation = addDoubleSpin(8, tr("Saturation(%)"), m_pParam->m_saturation, -100, 100, 1.0);
 
-            auto pComboNormColors = addCombo(9, tr("Normalize colors"));
-            pComboNormColors->addItem(tr("None"), CGmicColorPresetsParam::NONE);
-            pComboNormColors->addItem(tr("Pre-normalyze"), CGmicColorPresetsParam::PRE_NORMALIZE);
-            pComboNormColors->addItem(tr("Post-normalyze"), CGmicColorPresetsParam::POST_NORMALIZE);
-            pComboNormColors->addItem(tr("Both"), CGmicColorPresetsParam::BOTH);
+            m_pComboNormColors = addCombo(9, tr("Normalize colors"));
+            m_pComboNormColors->addItem(tr("None"), CGmicColorPresetsParam::NONE);
+            m_pComboNormColors->addItem(tr("Pre-normalyze"), CGmicColorPresetsParam::PRE_NORMALIZE);
+            m_pComboNormColors->addItem(tr("Post-normalyze"), CGmicColorPresetsParam::POST_NORMALIZE);
+            m_pComboNormColors->addItem(tr("Both"), CGmicColorPresetsParam::BOTH);
 
-            connect(pComboCategory, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index)
+            connect(m_pComboCategory, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index)
             {
-                 pComboPreset->clear();
+                 m_pComboPreset->clear();
 
                  for(size_t i=0; i<m_pParam->m_presets[index].size(); ++i)
-                     pComboPreset->addItem(QString::fromStdString(m_pParam->m_presets[index][i]));
+                     m_pComboPreset->addItem(QString::fromStdString(m_pParam->m_presets[index][i]));
 
-                 pComboPreset->setCurrentIndex(1);
+                 m_pComboPreset->setCurrentIndex(1);
             });
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_category = pComboCategory->currentIndex();
-                m_pParam->m_preset = pComboPreset->currentIndex();
-                m_pParam->m_thumbSize = pSpinThumbSize->value();
-                m_pParam->m_strenght = pSpinStrength->value();
-                m_pParam->m_brightness = pSpinBrightness->value();
-                m_pParam->m_contrast = pSpinContrast->value();
-                m_pParam->m_gamma = pSpinGamma->value();
-                m_pParam->m_hue = pSpinHue->value();
-                m_pParam->m_saturation = pSpinSaturation->value();
-                m_pParam->m_normalizeColors = pComboNormColors->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_category = m_pComboCategory->currentIndex();
+            m_pParam->m_preset = m_pComboPreset->currentIndex();
+            m_pParam->m_thumbSize = m_pSpinThumbSize->value();
+            m_pParam->m_strenght = m_pSpinStrength->value();
+            m_pParam->m_brightness = m_pSpinBrightness->value();
+            m_pParam->m_contrast = m_pSpinContrast->value();
+            m_pParam->m_gamma = m_pSpinGamma->value();
+            m_pParam->m_hue = m_pSpinHue->value();
+            m_pParam->m_saturation = m_pSpinSaturation->value();
+            m_pParam->m_normalizeColors = m_pComboNormColors->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicColorPresetsParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinStrength = nullptr;
+        QDoubleSpinBox* m_pSpinBrightness = nullptr;
+        QDoubleSpinBox* m_pSpinContrast = nullptr;
+        QDoubleSpinBox* m_pSpinGamma = nullptr;
+        QDoubleSpinBox* m_pSpinHue = nullptr;
+        QDoubleSpinBox* m_pSpinSaturation = nullptr;
+        QSpinBox*       m_pSpinThumbSize = nullptr;
+        QComboBox*      m_pComboCategory = nullptr;
+        QComboBox*      m_pComboPreset = nullptr;
+        QComboBox*      m_pComboNormColors = nullptr;
 };
 
 class CGmicWidgetColorPresetsFactory : public CWidgetFactory

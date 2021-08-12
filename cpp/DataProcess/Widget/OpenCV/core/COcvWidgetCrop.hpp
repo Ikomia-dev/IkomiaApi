@@ -69,7 +69,6 @@ class COcvWidgetCrop : public CWorkflowTaskWidget
             m_pSpinHeight->setRange(0, 10000);
             m_pSpinHeight->setSingleStep(1);
             m_pSpinHeight->setValue(m_pParam->m_cropRect.height);
-
             
             m_pLayout->addWidget(pLabelLeft, 0, 0);
             m_pLayout->addWidget(m_pSpinLeft, 0, 1);
@@ -79,21 +78,15 @@ class COcvWidgetCrop : public CWorkflowTaskWidget
             m_pLayout->addWidget(m_pSpinWidth, 2, 1);
             m_pLayout->addWidget(pLabelHeight, 3, 0);
             m_pLayout->addWidget(m_pSpinHeight, 3, 1);
-            
-
-            initConnections();
         }
 
-        void initConnections()
+        void onApply() override
         {
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_cropRect.x = m_pSpinLeft->value();
-                m_pParam->m_cropRect.y = m_pSpinTop->value();
-                m_pParam->m_cropRect.width = m_pSpinWidth->value();
-                m_pParam->m_cropRect.height = m_pSpinHeight->value();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pParam->m_cropRect.x = m_pSpinLeft->value();
+            m_pParam->m_cropRect.y = m_pSpinTop->value();
+            m_pParam->m_cropRect.width = m_pSpinWidth->value();
+            m_pParam->m_cropRect.height = m_pSpinHeight->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

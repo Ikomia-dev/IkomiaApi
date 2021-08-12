@@ -43,23 +43,24 @@ class COcvWidgetObjectnessBING : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvObjectnessBINGParam>();
 
-            auto pSpinBB = addSpin(0, tr("N best bounding boxes"), m_pParam->m_nbBBox);
+            m_pSpinBB = addSpin(0, tr("N best bounding boxes"), m_pParam->m_nbBBox);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_nbBBox = pSpinBB->value();
-                emit doApplyProcess(m_pParam); } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_nbBBox = m_pSpinBB->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvObjectnessBINGParam> m_pParam = nullptr;
+        QSpinBox* m_pSpinBB = nullptr;
 };
 
 class COcvWidgetObjectnessBINGFactory : public CWidgetFactory
@@ -76,4 +77,5 @@ class COcvWidgetObjectnessBINGFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetObjectnessBING>(pParam);
         }
 };
+
 #endif // COCVWIDGETOBJECTNESSBING_HPP

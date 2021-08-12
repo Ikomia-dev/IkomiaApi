@@ -57,7 +57,9 @@ class CORESHARED_EXPORT CWorkflowTaskWidget : public QWidget
          */
         void            setApplyBtnHidden(bool bHidden);
 
-        virtual void    onApply();
+    public slots:
+
+        virtual void    onApply() = 0;
 
     signals:
 
@@ -85,11 +87,6 @@ class CORESHARED_EXPORT CWorkflowTaskWidget : public QWidget
         void            doSetGraphicsCategory(const QString& category);
 
     protected:
-
-        /**
-         * @brief Initialization of the widget. Must be overriden.
-         */
-        virtual void    init() = 0;
 
         /**
          * @brief Tool method to add combo box into the internal grid layout.

@@ -40,41 +40,41 @@ class COcvWidgetBckgndSubGmg : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBckgndSubGmgParam>();
 
             auto pLabelInitFrames = new QLabel(tr("Number of initialization frames"));
-            auto pSpinInitFrames = new QSpinBox;
-            pSpinInitFrames->setSingleStep(1);
-            pSpinInitFrames->setRange(1, 10000);
-            pSpinInitFrames->setValue(m_pParam->m_initializationFrames);
+            m_pSpinInitFrames = new QSpinBox;
+            m_pSpinInitFrames->setSingleStep(1);
+            m_pSpinInitFrames->setRange(1, 10000);
+            m_pSpinInitFrames->setValue(m_pParam->m_initializationFrames);
 
             auto pLabelThreshold = new QLabel(tr("Decision threshold"));
-            auto pSpinThreshold = new QDoubleSpinBox;
-            pSpinThreshold->setSingleStep(0.1);
-            pSpinThreshold->setRange(0.0, 1.0);
-            pSpinThreshold->setValue(m_pParam->m_threshold);
-
+            m_pSpinThreshold = new QDoubleSpinBox;
+            m_pSpinThreshold->setSingleStep(0.1);
+            m_pSpinThreshold->setRange(0.0, 1.0);
+            m_pSpinThreshold->setValue(m_pParam->m_threshold);
             
             m_pLayout->addWidget(pLabelInitFrames, 0, 0);
-            m_pLayout->addWidget(pSpinInitFrames, 0, 1);
+            m_pLayout->addWidget(m_pSpinInitFrames, 0, 1);
             m_pLayout->addWidget(pLabelThreshold, 1, 0);
-            m_pLayout->addWidget(pSpinThreshold, 1, 1);
-            
+            m_pLayout->addWidget(m_pSpinThreshold, 1, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_initializationFrames = pSpinInitFrames->value();
-                m_pParam->m_threshold = pSpinThreshold->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_initializationFrames = m_pSpinInitFrames->value();
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBckgndSubGmgParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinThreshold = nullptr;
+        QSpinBox*       m_pSpinInitFrames = nullptr;
 };
 
 class COcvWidgetBckgndSubGmgFactory : public CWidgetFactory

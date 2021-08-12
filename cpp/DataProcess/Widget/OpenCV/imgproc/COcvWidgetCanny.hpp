@@ -44,36 +44,38 @@ class COcvWidgetCanny : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCannyParam>();
 
-            auto pSpinTh1 = addDoubleSpin(0, tr("Threshold 1"), m_pParam->m_threshold1);
-            auto pSpinTh2 = addDoubleSpin(1, tr("Threshold 2"), m_pParam->m_threshold2);
-            auto pComboAperture = addCombo(2, tr("Aperture size"));
-            pComboAperture->addItem("3", 3);
-            pComboAperture->addItem("5", 5);
-            pComboAperture->addItem("7", 7);
-            pComboAperture->setCurrentIndex(pComboAperture->findData(m_pParam->m_apertureSize));
+            m_pSpinTh1 = addDoubleSpin(0, tr("Threshold 1"), m_pParam->m_threshold1);
+            m_pSpinTh2 = addDoubleSpin(1, tr("Threshold 2"), m_pParam->m_threshold2);
+            m_pComboAperture = addCombo(2, tr("Aperture size"));
+            m_pComboAperture->addItem("3", 3);
+            m_pComboAperture->addItem("5", 5);
+            m_pComboAperture->addItem("7", 7);
+            m_pComboAperture->setCurrentIndex(m_pComboAperture->findData(m_pParam->m_apertureSize));
 
-            auto pCheck = addCheck(3, tr("Use L2 gradient"), m_pParam->m_L2gradient);
+            m_pCheck = addCheck(3, tr("Use L2 gradient"), m_pParam->m_L2gradient);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_threshold1 = pSpinTh1->value();
-                m_pParam->m_threshold2 = pSpinTh2->value();
-                m_pParam->m_apertureSize = pComboAperture->currentData().toInt();
-                m_pParam->m_L2gradient = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_threshold1 = m_pSpinTh1->value();
+            m_pParam->m_threshold2 = m_pSpinTh2->value();
+            m_pParam->m_apertureSize = m_pComboAperture->currentData().toInt();
+            m_pParam->m_L2gradient = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvCannyParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinTh1 = nullptr;
+        QDoubleSpinBox* m_pSpinTh2 = nullptr;
+        QComboBox*      m_pComboAperture = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
 };
 
 class COcvWidgetCannyFactory : public CWidgetFactory

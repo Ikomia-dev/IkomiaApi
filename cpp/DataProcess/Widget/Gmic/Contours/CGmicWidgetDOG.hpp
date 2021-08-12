@@ -40,31 +40,36 @@ class CGmicWidgetDoG : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicDoGParam>();
 
-            auto pSpinVariance1 = addDoubleSpin(0, tr("1st variance"), m_pParam->m_variance1, 0, 5, 0.1);
-            auto pSpinVariance2 = addDoubleSpin(1, tr("2nd variance"), m_pParam->m_variance2, 0, 5, 0.1);
-            auto pSpinThreshold = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold, 0, 49, 0.5);
-            auto pCheckNegative = addCheck(3, tr("Negative colors"), m_pParam->m_bNegativeColors);
-            auto pCheckMonochrome = addCheck(4, tr("Monochrome"), m_pParam->m_bMonochrome);
+            m_pSpinVariance1 = addDoubleSpin(0, tr("1st variance"), m_pParam->m_variance1, 0, 5, 0.1);
+            m_pSpinVariance2 = addDoubleSpin(1, tr("2nd variance"), m_pParam->m_variance2, 0, 5, 0.1);
+            m_pSpinThreshold = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold, 0, 49, 0.5);
+            m_pCheckNegative = addCheck(3, tr("Negative colors"), m_pParam->m_bNegativeColors);
+            m_pCheckMonochrome = addCheck(4, tr("Monochrome"), m_pParam->m_bMonochrome);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_variance1 = pSpinVariance1->value();
-                m_pParam->m_variance2 = pSpinVariance2->value();
-                m_pParam->m_threshold = pSpinThreshold->value();
-                m_pParam->m_bNegativeColors = pCheckNegative->isChecked();
-                m_pParam->m_bMonochrome = pCheckMonochrome->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_variance1 = m_pSpinVariance1->value();
+            m_pParam->m_variance2 = m_pSpinVariance2->value();
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            m_pParam->m_bNegativeColors = m_pCheckNegative->isChecked();
+            m_pParam->m_bMonochrome = m_pCheckMonochrome->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicDoGParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinVariance1 = nullptr;
+        QDoubleSpinBox* m_pSpinVariance2 = nullptr;
+        QDoubleSpinBox* m_pSpinThreshold = nullptr;
+        QCheckBox*      m_pCheckNegative = nullptr;
+        QCheckBox*      m_pCheckMonochrome = nullptr;
 };
 
 class CGmicWidgetDoGFactory : public CWidgetFactory

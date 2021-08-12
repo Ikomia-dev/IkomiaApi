@@ -41,92 +41,72 @@ class COcvWidgetSelectiveSearchSegmentation : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSelectiveSearchSegmentationParam>();
 
-            auto pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
-            auto pSpinBaseK = addDoubleSpin(1, tr("First K value"), m_pParam->m_baseK);
-            auto pSpinStepK = addSpin(2, tr("Step for K value"), m_pParam->m_stepK);
-            auto pSpinRectCount = addSpin(3, tr("Number of objects"), m_pParam->m_nbRects);
+            m_pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
+            m_pSpinBaseK = addDoubleSpin(1, tr("First K value"), m_pParam->m_baseK);
+            m_pSpinStepK = addSpin(2, tr("Step for K value"), m_pParam->m_stepK);
+            m_pSpinRectCount = addSpin(3, tr("Number of objects"), m_pParam->m_nbRects);
 
-            auto pComboInit = addCombo(4, "Initialization method");
-            pComboInit->addItem("Single", COcvSelectiveSearchSegmentationParam::SINGLE);
-            pComboInit->addItem("Fast", COcvSelectiveSearchSegmentationParam::FAST);
-            pComboInit->addItem("Quality", COcvSelectiveSearchSegmentationParam::QUALITY);
-            pComboInit->setCurrentIndex(pComboInit->findData(m_pParam->m_initMethod));
+            m_pComboInit = addCombo(4, "Initialization method");
+            m_pComboInit->addItem("Single", COcvSelectiveSearchSegmentationParam::SINGLE);
+            m_pComboInit->addItem("Fast", COcvSelectiveSearchSegmentationParam::FAST);
+            m_pComboInit->addItem("Quality", COcvSelectiveSearchSegmentationParam::QUALITY);
+            m_pComboInit->setCurrentIndex(m_pComboInit->findData(m_pParam->m_initMethod));
 
             m_pCheckDefaultStrategy = new QCheckBox(tr("Default strategy"));
             m_pCheckDefaultStrategy->setChecked(m_pParam->m_bDefaultStrategy);
 
             m_pCheckColorStrategy = new QCheckBox(tr("Color strategy"));
             m_pCheckColorStrategy->setChecked(m_pParam->m_bColorStrategy);
-            auto pSpinColorStrategy = new QDoubleSpinBox;
-            pSpinColorStrategy->setDecimals(2);
-            pSpinColorStrategy->setRange(0.0, 1.0);
-            pSpinColorStrategy->setSingleStep(0.25);
-            pSpinColorStrategy->setValue(m_pParam->m_colorWeight);
+            m_pSpinColorStrategy = new QDoubleSpinBox;
+            m_pSpinColorStrategy->setDecimals(2);
+            m_pSpinColorStrategy->setRange(0.0, 1.0);
+            m_pSpinColorStrategy->setSingleStep(0.25);
+            m_pSpinColorStrategy->setValue(m_pParam->m_colorWeight);
 
             m_pCheckFillStrategy = new QCheckBox(tr("Fill strategy"));
             m_pCheckFillStrategy->setChecked(m_pParam->m_bColorStrategy);
-            auto pSpinFillStrategy = new QDoubleSpinBox;
-            pSpinFillStrategy->setDecimals(2);
-            pSpinFillStrategy->setRange(0.0, 1.0);
-            pSpinFillStrategy->setSingleStep(0.25);
-            pSpinFillStrategy->setValue(m_pParam->m_fillWeight);
+            m_pSpinFillStrategy = new QDoubleSpinBox;
+            m_pSpinFillStrategy->setDecimals(2);
+            m_pSpinFillStrategy->setRange(0.0, 1.0);
+            m_pSpinFillStrategy->setSingleStep(0.25);
+            m_pSpinFillStrategy->setValue(m_pParam->m_fillWeight);
 
             m_pCheckSizeStrategy = new QCheckBox(tr("Size strategy"));
             m_pCheckSizeStrategy->setChecked(m_pParam->m_bColorStrategy);
-            auto pSpinSizeStrategy = new QDoubleSpinBox;
-            pSpinSizeStrategy->setDecimals(2);
-            pSpinSizeStrategy->setRange(0.0, 1.0);
-            pSpinSizeStrategy->setSingleStep(0.25);
-            pSpinSizeStrategy->setValue(m_pParam->m_sizeWeight);
+            m_pSpinSizeStrategy = new QDoubleSpinBox;
+            m_pSpinSizeStrategy->setDecimals(2);
+            m_pSpinSizeStrategy->setRange(0.0, 1.0);
+            m_pSpinSizeStrategy->setSingleStep(0.25);
+            m_pSpinSizeStrategy->setValue(m_pParam->m_sizeWeight);
 
             m_pCheckTextureStrategy = new QCheckBox(tr("Texture strategy"));
             m_pCheckTextureStrategy->setChecked(m_pParam->m_bColorStrategy);
-            auto pSpinTextureStrategy = new QDoubleSpinBox;
-            pSpinTextureStrategy->setDecimals(2);
-            pSpinTextureStrategy->setRange(0.0, 1.0);
-            pSpinTextureStrategy->setSingleStep(0.25);
-            pSpinTextureStrategy->setValue(m_pParam->m_sizeWeight);
+            m_pSpinTextureStrategy = new QDoubleSpinBox;
+            m_pSpinTextureStrategy->setDecimals(2);
+            m_pSpinTextureStrategy->setRange(0.0, 1.0);
+            m_pSpinTextureStrategy->setSingleStep(0.25);
+            m_pSpinTextureStrategy->setValue(m_pParam->m_sizeWeight);
 
             auto pStrategyLayout = new QGridLayout;
             pStrategyLayout->addWidget(m_pCheckDefaultStrategy, 0, 0, 1, 2);
             pStrategyLayout->addWidget(m_pCheckColorStrategy, 1, 0);
-            pStrategyLayout->addWidget(pSpinColorStrategy, 1, 1);
+            pStrategyLayout->addWidget(m_pSpinColorStrategy, 1, 1);
             pStrategyLayout->addWidget(m_pCheckFillStrategy, 2, 0);
-            pStrategyLayout->addWidget(pSpinFillStrategy, 2, 1);
+            pStrategyLayout->addWidget(m_pSpinFillStrategy, 2, 1);
             pStrategyLayout->addWidget(m_pCheckSizeStrategy, 3, 0);
-            pStrategyLayout->addWidget(pSpinSizeStrategy, 3, 1);
+            pStrategyLayout->addWidget(m_pSpinSizeStrategy, 3, 1);
             pStrategyLayout->addWidget(m_pCheckTextureStrategy, 4, 0);
-            pStrategyLayout->addWidget(pSpinTextureStrategy, 4, 1);
+            pStrategyLayout->addWidget(m_pSpinTextureStrategy, 4, 1);
 
             auto pGroupBox = new QGroupBox(tr("Strategy: choose one or several of them"));
             pGroupBox->setLayout(pStrategyLayout);
 
             m_pLayout->addWidget(pGroupBox, 5, 0, 1, 2);
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigma = pSpinSigma->value();
-                m_pParam->m_baseK = pSpinBaseK->value();
-                m_pParam->m_stepK = pSpinStepK->value();
-                m_pParam->m_nbRects = pSpinRectCount->value();
-                m_pParam->m_initMethod = pComboInit->currentData().toInt();
-                m_pParam->m_bDefaultStrategy = m_pCheckDefaultStrategy->isChecked();
-                m_pParam->m_bColorStrategy = m_pCheckColorStrategy->isChecked();
-                m_pParam->m_colorWeight = pSpinColorStrategy->value();
-                m_pParam->m_bFillStrategy = m_pCheckFillStrategy->isChecked();
-                m_pParam->m_fillWeight = pSpinFillStrategy->value();
-                m_pParam->m_bSizeStrategy = m_pCheckSizeStrategy->isChecked();
-                m_pParam->m_sizeWeight = pSpinSizeStrategy->value();
-                m_pParam->m_bTextureStrategy = m_pCheckTextureStrategy->isChecked();
-                m_pParam->m_textureWeight = pSpinTextureStrategy->value();
-                emit doApplyProcess(m_pParam);
-            });
         }
 
         void    initConnections()
@@ -202,14 +182,42 @@ class COcvWidgetSelectiveSearchSegmentation : public CWorkflowTaskWidget
             });
         }
 
+        void onApply() override
+        {
+            m_pParam->m_sigma = m_pSpinSigma->value();
+            m_pParam->m_baseK = m_pSpinBaseK->value();
+            m_pParam->m_stepK = m_pSpinStepK->value();
+            m_pParam->m_nbRects = m_pSpinRectCount->value();
+            m_pParam->m_initMethod = m_pComboInit->currentData().toInt();
+            m_pParam->m_bDefaultStrategy = m_pCheckDefaultStrategy->isChecked();
+            m_pParam->m_bColorStrategy = m_pCheckColorStrategy->isChecked();
+            m_pParam->m_colorWeight = m_pSpinColorStrategy->value();
+            m_pParam->m_bFillStrategy = m_pCheckFillStrategy->isChecked();
+            m_pParam->m_fillWeight = m_pSpinFillStrategy->value();
+            m_pParam->m_bSizeStrategy = m_pCheckSizeStrategy->isChecked();
+            m_pParam->m_sizeWeight = m_pSpinSizeStrategy->value();
+            m_pParam->m_bTextureStrategy = m_pCheckTextureStrategy->isChecked();
+            m_pParam->m_textureWeight = m_pSpinTextureStrategy->value();
+            emit doApplyProcess(m_pParam);
+        }
+
     private:
 
         std::shared_ptr<COcvSelectiveSearchSegmentationParam> m_pParam = nullptr;
-        QCheckBox* m_pCheckDefaultStrategy = nullptr;
-        QCheckBox* m_pCheckColorStrategy = nullptr;
-        QCheckBox* m_pCheckFillStrategy = nullptr;
-        QCheckBox* m_pCheckSizeStrategy = nullptr;
-        QCheckBox* m_pCheckTextureStrategy = nullptr;
+        QCheckBox*      m_pCheckDefaultStrategy = nullptr;
+        QCheckBox*      m_pCheckColorStrategy = nullptr;
+        QCheckBox*      m_pCheckFillStrategy = nullptr;
+        QCheckBox*      m_pCheckSizeStrategy = nullptr;
+        QCheckBox*      m_pCheckTextureStrategy = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QDoubleSpinBox* m_pSpinBaseK = nullptr;
+        QDoubleSpinBox* m_pSpinColorStrategy = nullptr;
+        QDoubleSpinBox* m_pSpinFillStrategy = nullptr;
+        QDoubleSpinBox* m_pSpinSizeStrategy = nullptr;
+        QDoubleSpinBox* m_pSpinTextureStrategy = nullptr;
+        QSpinBox*       m_pSpinStepK = nullptr;
+        QSpinBox*       m_pSpinRectCount = nullptr;
+        QComboBox*      m_pComboInit = nullptr;
 };
 
 class COcvWidgetSelectiveSearchSegmentationFactory : public CWidgetFactory

@@ -54,22 +54,14 @@ class COcvWidgetLogicalOp : public CWorkflowTaskWidget
             m_pOpComboBox->addItem("Xor", COcvLogicalOpParam::XOR);
             m_pOpComboBox->setCurrentIndex(m_pOpComboBox->findData(m_pParam->m_op));
 
-            
             m_pLayout->addWidget(pLabel, 0, 0);
             m_pLayout->addWidget(m_pOpComboBox, 0, 1);
-
-            
-
-            initConnections();
         }
 
-        void initConnections()
+        void onApply() override
         {
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_op = m_pOpComboBox->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pParam->m_op = m_pOpComboBox->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

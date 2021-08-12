@@ -43,66 +43,73 @@ class COcvWidgetRidgeFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvRidgeFilterParam>();
 
-            auto pComboDepth = addCombo(0, tr("Output depth"));
-            pComboDepth->addItem("Default", -1);
-            pComboDepth->addItem("CV_8U", CV_8U);
-            pComboDepth->addItem("CV_8S", CV_8S);
-            pComboDepth->addItem("CV_16U", CV_16U);
-            pComboDepth->addItem("CV_16S", CV_16S);
-            pComboDepth->addItem("CV_32S", CV_32S);
-            pComboDepth->addItem("CV_32F", CV_32F);
-            pComboDepth->addItem("CV_64F", CV_64F);
-            pComboDepth->setCurrentIndex(pComboDepth->findData(m_pParam->m_ddepth));
-            auto pSpinDx = addSpin(1, tr("dx"), m_pParam->m_dx);
-            auto pSpinDy = addSpin(2, tr("dy"), m_pParam->m_dy);
-            auto pSpinSize = addSpin(3, tr("ksize"), m_pParam->m_ksize);
-            auto pComboType = addCombo(4, tr("Out dtype"));
-            pComboType->addItem("Default", -1);
-            pComboType->addItem("CV_8U", CV_8U);
-            pComboType->addItem("CV_8S", CV_8S);
-            pComboType->addItem("CV_16U", CV_16U);
-            pComboType->addItem("CV_16S", CV_16S);
-            pComboType->addItem("CV_32S", CV_32S);
-            pComboType->addItem("CV_32F", CV_32F);
-            pComboType->addItem("CV_64F", CV_64F);
-            pComboType->setCurrentIndex(pComboDepth->findData(m_pParam->m_out_dtype));
-            auto pSpinScale = addDoubleSpin(5, tr("Scale"), m_pParam->m_scale);
-            auto pSpinDelta = addDoubleSpin(6, tr("Delta"), m_pParam->m_delta);
-            auto pComboBorder = addCombo(7, tr("Border type"));
-            pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
-            pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
-            pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
-            pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
-            pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
-            pComboBorder->addItem("BORDER_REFLECT101", cv::BORDER_REFLECT101);
-            pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
-            pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
-            pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
-            pComboBorder->setCurrentIndex(pComboBorder->findData(m_pParam->m_borderType));
+            m_pComboDepth = addCombo(0, tr("Output depth"));
+            m_pComboDepth->addItem("Default", -1);
+            m_pComboDepth->addItem("CV_8U", CV_8U);
+            m_pComboDepth->addItem("CV_8S", CV_8S);
+            m_pComboDepth->addItem("CV_16U", CV_16U);
+            m_pComboDepth->addItem("CV_16S", CV_16S);
+            m_pComboDepth->addItem("CV_32S", CV_32S);
+            m_pComboDepth->addItem("CV_32F", CV_32F);
+            m_pComboDepth->addItem("CV_64F", CV_64F);
+            m_pComboDepth->setCurrentIndex(m_pComboDepth->findData(m_pParam->m_ddepth));
+            m_pSpinDx = addSpin(1, tr("dx"), m_pParam->m_dx);
+            m_pSpinDy = addSpin(2, tr("dy"), m_pParam->m_dy);
+            m_pSpinSize = addSpin(3, tr("ksize"), m_pParam->m_ksize);
+            m_pComboType = addCombo(4, tr("Out dtype"));
+            m_pComboType->addItem("Default", -1);
+            m_pComboType->addItem("CV_8U", CV_8U);
+            m_pComboType->addItem("CV_8S", CV_8S);
+            m_pComboType->addItem("CV_16U", CV_16U);
+            m_pComboType->addItem("CV_16S", CV_16S);
+            m_pComboType->addItem("CV_32S", CV_32S);
+            m_pComboType->addItem("CV_32F", CV_32F);
+            m_pComboType->addItem("CV_64F", CV_64F);
+            m_pComboType->setCurrentIndex(m_pComboDepth->findData(m_pParam->m_out_dtype));
+            m_pSpinScale = addDoubleSpin(5, tr("Scale"), m_pParam->m_scale);
+            m_pSpinDelta = addDoubleSpin(6, tr("Delta"), m_pParam->m_delta);
+            m_pComboBorder = addCombo(7, tr("Border type"));
+            m_pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
+            m_pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
+            m_pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
+            m_pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
+            m_pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
+            m_pComboBorder->addItem("BORDER_REFLECT101", cv::BORDER_REFLECT101);
+            m_pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
+            m_pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
+            m_pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
+            m_pComboBorder->setCurrentIndex(m_pComboBorder->findData(m_pParam->m_borderType));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_ddepth = pComboDepth->currentData().toInt();
-                m_pParam->m_dx= pSpinDx->value();
-                m_pParam->m_dy = pSpinDy->value();
-                m_pParam->m_ksize = pSpinSize->value();
-                m_pParam->m_out_dtype = pComboType->currentData().toInt();
-                m_pParam->m_scale= pSpinScale->value();
-                m_pParam->m_delta= pSpinDelta->value();
-                m_pParam->m_borderType = pComboBorder->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_ddepth = m_pComboDepth->currentData().toInt();
+            m_pParam->m_dx= m_pSpinDx->value();
+            m_pParam->m_dy = m_pSpinDy->value();
+            m_pParam->m_ksize = m_pSpinSize->value();
+            m_pParam->m_out_dtype = m_pComboType->currentData().toInt();
+            m_pParam->m_scale= m_pSpinScale->value();
+            m_pParam->m_delta= m_pSpinDelta->value();
+            m_pParam->m_borderType = m_pComboBorder->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvRidgeFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinScale = nullptr;
+        QDoubleSpinBox* m_pSpinDelta = nullptr;
+        QSpinBox*       m_pSpinDx = nullptr;
+        QSpinBox*       m_pSpinDy = nullptr;
+        QSpinBox*       m_pSpinSize = nullptr;
+        QComboBox*      m_pComboDepth = nullptr;
+        QComboBox*      m_pComboType = nullptr;
+        QComboBox*      m_pComboBorder = nullptr;
 };
 
 class COcvWidgetRidgeFilterFactory : public CWidgetFactory
@@ -119,4 +126,5 @@ class COcvWidgetRidgeFilterFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetRidgeFilter>(pParam);
         }
 };
+
 #endif // COCVWIDGETRIDGEFILTER_HPP

@@ -44,24 +44,24 @@ class COcvWidgetSparseToDenseOF : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSparseToDenseOFParam>();
 
-            auto pCheck = addCheck(0, tr("Use OpenCL"), m_pParam->m_bUseOCL);
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_bUseOCL = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pCheck = addCheck(0, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_bUseOCL = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSparseToDenseOFParam> m_pParam = nullptr;
+        QCheckBox*  m_pCheck = nullptr;
 };
 
 class COcvWidgetSparseToDenseOFFactory : public CWidgetFactory
@@ -78,4 +78,5 @@ class COcvWidgetSparseToDenseOFFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSparseToDenseOF>(pParam);
         }
 };
+
 #endif // COCVWIDGETSPARSETODENSEOF_HPP

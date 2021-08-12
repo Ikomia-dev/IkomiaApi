@@ -44,28 +44,28 @@ class CWidgetPlotMerge : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void    init()
+        void    init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CPlotMergeParam>();
 
-            auto pSpin = new QSpinBox;
             auto pLabel = new QLabel(tr("Number of inputs"));
-
-            pSpin->setValue(m_pParam->m_inputCount);
-
+            m_pSpinInputs = new QSpinBox;
+            m_pSpinInputs->setValue(m_pParam->m_inputCount);
             m_pLayout->addWidget(pLabel, 0, 0);
-            m_pLayout->addWidget(pSpin, 0, 1);
-            
+            m_pLayout->addWidget(m_pSpinInputs, 0, 1);
+        }
 
-             connect(m_pApplyBtn, &QPushButton::clicked, [this, pSpin]{
-                 m_pParam->m_inputCount = pSpin->value();
-                 emit doApplyProcess(m_pParam); } );
+        void    onApply() override
+        {
+            m_pParam->m_inputCount = m_pSpinInputs->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
-        std::shared_ptr<CPlotMergeParam>  m_pParam = nullptr;
+        std::shared_ptr<CPlotMergeParam>    m_pParam = nullptr;
+        QSpinBox*                           m_pSpinInputs = nullptr;
 };
 
 class CWidgetPlotMergeFactory : public CWidgetFactory

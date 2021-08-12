@@ -66,7 +66,6 @@ class COcvWidgetRotateEx : public CWorkflowTaskWidget
             m_pComboInterpolation->addItem(tr("Lanczos 4"), cv::INTER_LANCZOS4);
             m_pComboInterpolation->addItem(tr("Exact bilinear"), cv::INTER_LINEAR_EXACT);
             m_pComboInterpolation->setCurrentIndex(m_pComboInterpolation->findData(m_pParam->m_interpolation));
-
             
             m_pLayout->addWidget(pLabelAngle, 0, 0);
             m_pLayout->addWidget(m_pSpinAngle, 0, 1);
@@ -74,20 +73,14 @@ class COcvWidgetRotateEx : public CWorkflowTaskWidget
             m_pLayout->addWidget(m_pSpinScale, 1, 1);
             m_pLayout->addWidget(pLabelInterpolation, 2, 0);
             m_pLayout->addWidget(m_pComboInterpolation, 2, 1);
-            
-
-            initConnections();
         }
 
-        void initConnections()
+        void onApply() override
         {
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_angle = -m_pSpinAngle->value();
-                m_pParam->m_scale = m_pSpinScale->value();
-                m_pParam->m_interpolation = m_pComboInterpolation->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pParam->m_angle = -m_pSpinAngle->value();
+            m_pParam->m_scale = m_pSpinScale->value();
+            m_pParam->m_interpolation = m_pComboInterpolation->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

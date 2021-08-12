@@ -39,41 +39,43 @@ class COcvWidgetJointBilateralFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvJointBilateralFilterParam>();
 
-            auto pSpinDiameter = addSpin(0, tr("Diameter"), m_pParam->m_diameter);
-            auto pSpinSigmaColor = addDoubleSpin(1, tr("Sigma color"), m_pParam->m_sigmaColor);
-            auto pSpinSigmaSpace = addDoubleSpin(2, tr("Sigma space"), m_pParam->m_sigmaSpace);
+            m_pSpinDiameter = addSpin(0, tr("Diameter"), m_pParam->m_diameter);
+            m_pSpinSigmaColor = addDoubleSpin(1, tr("Sigma color"), m_pParam->m_sigmaColor);
+            m_pSpinSigmaSpace = addDoubleSpin(2, tr("Sigma space"), m_pParam->m_sigmaSpace);
 
-            auto pComboBorder = addCombo(3, tr("Border type"));
-            pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
-            pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
-            pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
-            pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
-            pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
-            pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
-            pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
-            pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
-            pComboBorder->setCurrentIndex(pComboBorder->findData(m_pParam->m_borderType));
+            m_pComboBorder = addCombo(3, tr("Border type"));
+            m_pComboBorder->addItem("BORDER_DEFAULT", cv::BORDER_DEFAULT);
+            m_pComboBorder->addItem("BORDER_CONSTANT", cv::BORDER_CONSTANT);
+            m_pComboBorder->addItem("BORDER_REFLECT", cv::BORDER_REFLECT);
+            m_pComboBorder->addItem("BORDER_WRAP", cv::BORDER_WRAP);
+            m_pComboBorder->addItem("BORDER_REFLECT_101", cv::BORDER_REFLECT_101);
+            m_pComboBorder->addItem("BORDER_TRANSPARENT", cv::BORDER_TRANSPARENT);
+            m_pComboBorder->addItem("BORDER_ISOLATED", cv::BORDER_ISOLATED);
+            m_pComboBorder->addItem("BORDER_REPLICATE", cv::BORDER_REPLICATE);
+            m_pComboBorder->setCurrentIndex(m_pComboBorder->findData(m_pParam->m_borderType));
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_diameter = pSpinDiameter->value();
-                m_pParam->m_sigmaColor = pSpinSigmaColor->value();
-                m_pParam->m_sigmaSpace = pSpinSigmaSpace->value();
-                m_pParam->m_borderType = pComboBorder->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_diameter = m_pSpinDiameter->value();
+            m_pParam->m_sigmaColor = m_pSpinSigmaColor->value();
+            m_pParam->m_sigmaSpace = m_pSpinSigmaSpace->value();
+            m_pParam->m_borderType = m_pComboBorder->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvJointBilateralFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaColor = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaSpace = nullptr;
+        QSpinBox*       m_pSpinDiameter = nullptr;
+        QComboBox*      m_pComboBorder = nullptr;
 };
 
 class COcvWidgetJointBilateralFilterFactory : public CWidgetFactory

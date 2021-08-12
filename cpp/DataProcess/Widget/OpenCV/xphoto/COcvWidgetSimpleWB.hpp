@@ -41,34 +41,36 @@ class COcvWidgetSimpleWB : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSimpleWBParam>();
 
-            auto pSpinInMin = addDoubleSpin(0, tr("Input min"), m_pParam->m_inputMin);
-            auto pSpinInMax = addDoubleSpin(1, tr("Input max"), m_pParam->m_inputMax);
-            auto pSpinOutMin = addDoubleSpin(2, tr("Output min"), m_pParam->m_outputMin);
-            auto pSpinOutMax = addDoubleSpin(3, tr("Output max"), m_pParam->m_outputMax);
-            auto pSpinP = addDoubleSpin(4, tr("% of top/bottom to ignore"), m_pParam->m_P);
+            m_pSpinInMin = addDoubleSpin(0, tr("Input min"), m_pParam->m_inputMin);
+            m_pSpinInMax = addDoubleSpin(1, tr("Input max"), m_pParam->m_inputMax);
+            m_pSpinOutMin = addDoubleSpin(2, tr("Output min"), m_pParam->m_outputMin);
+            m_pSpinOutMax = addDoubleSpin(3, tr("Output max"), m_pParam->m_outputMax);
+            m_pSpinP = addDoubleSpin(4, tr("% of top/bottom to ignore"), m_pParam->m_P);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_inputMin = pSpinInMin->value();
-                m_pParam->m_inputMax = pSpinInMax->value();
-                m_pParam->m_outputMin = pSpinOutMin->value();
-                m_pParam->m_outputMax = pSpinOutMax->value();
-                m_pParam->m_P = pSpinP->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_inputMin = m_pSpinInMin->value();
+            m_pParam->m_inputMax = m_pSpinInMax->value();
+            m_pParam->m_outputMin = m_pSpinOutMin->value();
+            m_pParam->m_outputMax = m_pSpinOutMax->value();
+            m_pParam->m_P = m_pSpinP->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSimpleWBParam>   m_pParam = nullptr;
-        QDoubleSpinBox*                         m_pDblSpinSat = nullptr;
+        QDoubleSpinBox* m_pSpinInMin = nullptr;
+        QDoubleSpinBox* m_pSpinInMax = nullptr;
+        QDoubleSpinBox* m_pSpinOutMin = nullptr;
+        QDoubleSpinBox* m_pSpinOutMax = nullptr;
+        QDoubleSpinBox* m_pSpinP = nullptr;
 };
 
 class COcvWidgetSimpleWBFactory : public CWidgetFactory
@@ -85,4 +87,5 @@ class COcvWidgetSimpleWBFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSimpleWB>(pParam);
         }
 };
+
 #endif // COCVWIDGETSIMPLEWB_HPP

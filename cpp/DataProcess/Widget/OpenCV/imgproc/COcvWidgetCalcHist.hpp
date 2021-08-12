@@ -43,29 +43,23 @@ class COcvWidgetCalcHist : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCalcHistParam>();
 
-
             m_pSpin = new QSpinBox;
             m_pSpin->setMaximum(INT_MAX);
             m_pSpin->setValue(m_pParam->m_histSize[0]);
-
-            QLabel* pLabelSpin = new QLabel(tr("Number of bins"));
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_histSize[0] = m_pSpin->value();
-
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+            QLabel* pLabelSpin = new QLabel(tr("Number of bins"));            
             m_pLayout->addWidget(pLabelSpin, 2, 0);
-            m_pLayout->addWidget(m_pSpin, 2, 1);
-            
+            m_pLayout->addWidget(m_pSpin, 2, 1);       
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_histSize[0] = m_pSpin->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

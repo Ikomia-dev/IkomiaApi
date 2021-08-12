@@ -43,37 +43,39 @@ class COcvWidgetGuidedFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGuidedFilterParam>();
 
-            auto pSpinRadius = addSpin(0, tr("Radius"), m_pParam->m_radius);
-            auto pSpinEps = addDoubleSpin(1, tr("Epsilon"), m_pParam->m_eps, 0, 1, 0.1);
-            auto pComboDepth = addCombo(2, tr("Depth"));
-            pComboDepth->addItem("Default", -1);
-            pComboDepth->addItem("CV_8U", CV_8U);
-            pComboDepth->addItem("CV_8S", CV_8S);
-            pComboDepth->addItem("CV_16U", CV_16U);
-            pComboDepth->addItem("CV_16S", CV_16S);
-            pComboDepth->addItem("CV_32S", CV_32S);
-            pComboDepth->addItem("CV_32F", CV_32F);
-            pComboDepth->addItem("CV_64F", CV_64F);
-            pComboDepth->setCurrentIndex(pComboDepth->findData(m_pParam->m_ddepth));
+            m_pSpinRadius = addSpin(0, tr("Radius"), m_pParam->m_radius);
+            m_pSpinEps = addDoubleSpin(1, tr("Epsilon"), m_pParam->m_eps, 0, 1, 0.1);
+            m_pComboDepth = addCombo(2, tr("Depth"));
+            m_pComboDepth->addItem("Default", -1);
+            m_pComboDepth->addItem("CV_8U", CV_8U);
+            m_pComboDepth->addItem("CV_8S", CV_8S);
+            m_pComboDepth->addItem("CV_16U", CV_16U);
+            m_pComboDepth->addItem("CV_16S", CV_16S);
+            m_pComboDepth->addItem("CV_32S", CV_32S);
+            m_pComboDepth->addItem("CV_32F", CV_32F);
+            m_pComboDepth->addItem("CV_64F", CV_64F);
+            m_pComboDepth->setCurrentIndex(m_pComboDepth->findData(m_pParam->m_ddepth));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_radius = pSpinRadius->value();
-                m_pParam->m_eps = pSpinEps->value();
-                m_pParam->m_ddepth = pComboDepth->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_radius = m_pSpinRadius->value();
+            m_pParam->m_eps = m_pSpinEps->value();
+            m_pParam->m_ddepth = m_pComboDepth->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvGuidedFilterParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinEps = nullptr;
+        QSpinBox*       m_pSpinRadius = nullptr;
+        QComboBox*      m_pComboDepth = nullptr;
 };
 
 class COcvWidgetGuidedFilterFactory : public CWidgetFactory
@@ -90,4 +92,5 @@ class COcvWidgetGuidedFilterFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetGuidedFilter>(pParam);
         }
 };
+
 #endif // COCVWIDGETGUIDEDFILTER_HPP

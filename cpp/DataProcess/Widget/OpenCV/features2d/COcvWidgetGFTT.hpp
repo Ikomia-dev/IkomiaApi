@@ -44,38 +44,39 @@ class COcvWidgetGFTT : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGFTTParam>();
 
-            auto pSpinCorners = addSpin(0, tr("Max corners"), m_pParam->m_maxCorners);
-            pSpinCorners->setRange(0, INT_MAX);
-            pSpinCorners->setValue(m_pParam->m_maxCorners);
-            auto pSpinQuality = addDoubleSpin(1, tr("Quality level"), m_pParam->m_qualityLevel);
-            pSpinQuality->setSingleStep(0.01);
-            auto pSpinDist = addDoubleSpin(2, tr("Min distance"), m_pParam->m_minDistance);
-            auto pSpinBlockSize = addSpin(3, tr("Block size"), m_pParam->m_blockSize);
-            auto pCheckHarris = addCheck(4, tr("Use Harris"), m_pParam->m_bUseHarrisDetector);
-            auto pSpinCoeff = addDoubleSpin(5, tr("Harris coefficient"), m_pParam->m_k);
+            m_pSpinCorners = addSpin(0, tr("Max corners"), m_pParam->m_maxCorners, 0, INT_MAX);
+            m_pSpinQuality = addDoubleSpin(1, tr("Quality level"), m_pParam->m_qualityLevel, 0.0, DBL_MAX, 0.01);
+            m_pSpinDist = addDoubleSpin(2, tr("Min distance"), m_pParam->m_minDistance);
+            m_pSpinBlockSize = addSpin(3, tr("Block size"), m_pParam->m_blockSize);
+            m_pCheckHarris = addCheck(4, tr("Use Harris"), m_pParam->m_bUseHarrisDetector);
+            m_pSpinCoeff = addDoubleSpin(5, tr("Harris coefficient"), m_pParam->m_k);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_maxCorners = pSpinCorners->value();
-                m_pParam->m_qualityLevel = pSpinQuality->value();
-                m_pParam->m_minDistance = pSpinDist->value();
-                m_pParam->m_blockSize = pSpinBlockSize->value();
-                m_pParam->m_bUseHarrisDetector = pCheckHarris->isChecked();
-                m_pParam->m_k = pSpinCoeff->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_maxCorners = m_pSpinCorners->value();
+            m_pParam->m_qualityLevel = m_pSpinQuality->value();
+            m_pParam->m_minDistance = m_pSpinDist->value();
+            m_pParam->m_blockSize = m_pSpinBlockSize->value();
+            m_pParam->m_bUseHarrisDetector = m_pCheckHarris->isChecked();
+            m_pParam->m_k = m_pSpinCoeff->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvGFTTParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinQuality = nullptr;
+        QDoubleSpinBox* m_pSpinDist = nullptr;
+        QDoubleSpinBox* m_pSpinCoeff = nullptr;
+        QSpinBox*       m_pSpinCorners = nullptr;
+        QSpinBox*       m_pSpinBlockSize = nullptr;
+        QCheckBox*      m_pCheckHarris = nullptr;
 };
 
 class COcvWidgetGFTTFactory : public CWidgetFactory

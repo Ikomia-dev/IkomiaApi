@@ -44,35 +44,34 @@ class COcvWidgetFAST : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvFASTParam>();
 
-            auto pSpinThresh = addSpin(0, tr("Threshold"), m_pParam->m_threshold);
-            pSpinThresh->setRange(0, INT_MAX);
-            auto pCombo = addCombo(1, tr("Type"));
-            pCombo->addItem("TYPE_5_8", cv::FastFeatureDetector::TYPE_5_8);
-            pCombo->addItem("TYPE_7_12", cv::FastFeatureDetector::TYPE_7_12);
-            pCombo->addItem("TYPE_9_16", cv::FastFeatureDetector::TYPE_9_16);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_type));
-            auto pCheck = addCheck(2, tr("Non maximum suppression"), m_pParam->m_bNonmaxSuppression);
+            m_pSpinThresh = addSpin(0, tr("Threshold"), m_pParam->m_threshold, 0, INT_MAX);
+            m_pCombo = addCombo(1, tr("Type"));
+            m_pCombo->addItem("TYPE_5_8", cv::FastFeatureDetector::TYPE_5_8);
+            m_pCombo->addItem("TYPE_7_12", cv::FastFeatureDetector::TYPE_7_12);
+            m_pCombo->addItem("TYPE_9_16", cv::FastFeatureDetector::TYPE_9_16);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_type));
+            m_pCheck = addCheck(2, tr("Non maximum suppression"), m_pParam->m_bNonmaxSuppression);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_threshold = pSpinThresh->value();
-                m_pParam->m_type = pCombo->currentData().toInt();
-                m_pParam->m_bNonmaxSuppression = pCheck->isChecked();
-
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_threshold = m_pSpinThresh->value();
+            m_pParam->m_type = m_pCombo->currentData().toInt();
+            m_pParam->m_bNonmaxSuppression = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvFASTParam> m_pParam = nullptr;
+        QSpinBox*   m_pSpinThresh = nullptr;
+        QComboBox*  m_pCombo = nullptr;
+        QCheckBox*  m_pCheck = nullptr;
 };
 
 class COcvWidgetFASTFactory : public CWidgetFactory

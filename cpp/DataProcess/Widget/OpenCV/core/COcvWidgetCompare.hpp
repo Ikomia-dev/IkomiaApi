@@ -40,33 +40,31 @@ class COcvWidgetCompare : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvCompareParam>();
 
-            auto pComboOp = addCombo(1, tr("Operation"));
-            pComboOp->addItem(tr("Equal"), cv::CMP_EQ);
-            pComboOp->addItem(tr("Greater"), cv::CMP_GT);
-            pComboOp->addItem(tr("Greater or equal"), cv::CMP_GE);
-            pComboOp->addItem(tr("Less"), cv::CMP_LT);
-            pComboOp->addItem(tr("Less or equal"), cv::CMP_LE);
-            pComboOp->addItem(tr("Unequal"), cv::CMP_NE);
-            pComboOp->setCurrentIndex(pComboOp->findData(m_pParam->m_operation));
+            m_pComboOp = addCombo(1, tr("Operation"));
+            m_pComboOp->addItem(tr("Equal"), cv::CMP_EQ);
+            m_pComboOp->addItem(tr("Greater"), cv::CMP_GT);
+            m_pComboOp->addItem(tr("Greater or equal"), cv::CMP_GE);
+            m_pComboOp->addItem(tr("Less"), cv::CMP_LT);
+            m_pComboOp->addItem(tr("Less or equal"), cv::CMP_LE);
+            m_pComboOp->addItem(tr("Unequal"), cv::CMP_NE);
+            m_pComboOp->setCurrentIndex(m_pComboOp->findData(m_pParam->m_operation));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_operation = pComboOp->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
-            
+        void onApply() override
+        {
+            m_pParam->m_operation = m_pComboOp->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvCompareParam> m_pParam = nullptr;
+        QComboBox* m_pComboOp = nullptr;
 };
 
 class COcvWidgetCompareFactory : public CWidgetFactory

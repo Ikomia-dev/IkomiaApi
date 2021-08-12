@@ -47,68 +47,71 @@ class COcvWidgetKMeans : public CWorkflowTaskWidget
                 m_pParam = std::make_shared<COcvKMeansParam>();
 
             auto pLabelClassNb = new QLabel(tr("Number of classes"));
-            auto pSpinClassNb = new QSpinBox;
-            pSpinClassNb->setRange(1, 255);
-            pSpinClassNb->setValue(m_pParam->m_k);
+            m_pSpinClassNb = new QSpinBox;
+            m_pSpinClassNb->setRange(1, 255);
+            m_pSpinClassNb->setValue(m_pParam->m_k);
 
             auto pLabelTermCriteria = new QLabel(tr("Stop condition"));
-            auto pComboTermCriteria = new QComboBox;
-            pComboTermCriteria->addItem(tr("Precision"), cv::TermCriteria::EPS);
-            pComboTermCriteria->addItem(tr("Number of iteration"), cv::TermCriteria::MAX_ITER);
-            pComboTermCriteria->addItem(tr("Precision or iteration"), cv::TermCriteria::EPS+cv::TermCriteria::MAX_ITER);
-            pComboTermCriteria->setCurrentIndex(pComboTermCriteria->findData(m_pParam->m_termType));
+            m_pComboTermCriteria = new QComboBox;
+            m_pComboTermCriteria->addItem(tr("Precision"), cv::TermCriteria::EPS);
+            m_pComboTermCriteria->addItem(tr("Number of iteration"), cv::TermCriteria::MAX_ITER);
+            m_pComboTermCriteria->addItem(tr("Precision or iteration"), cv::TermCriteria::EPS+cv::TermCriteria::MAX_ITER);
+            m_pComboTermCriteria->setCurrentIndex(m_pComboTermCriteria->findData(m_pParam->m_termType));
 
             auto pLabelTermEps = new QLabel(tr("Precision"));
-            auto pEditPrecision = new QLineEdit;
-            pEditPrecision->setText(QString::number(m_pParam->m_termEpsilon));
+            m_pEditPrecision = new QLineEdit;
+            m_pEditPrecision->setText(QString::number(m_pParam->m_termEpsilon));
 
             auto pLabelTermIter = new QLabel(tr("Number of iterations"));
-            auto pSpinTermIter = new QSpinBox;
-            pSpinTermIter->setRange(1, 1000);
-            pSpinTermIter->setValue(m_pParam->m_termMaxCount);
+            m_pSpinTermIter = new QSpinBox;
+            m_pSpinTermIter->setRange(1, 1000);
+            m_pSpinTermIter->setValue(m_pParam->m_termMaxCount);
 
             auto pLabelAttempts = new QLabel(tr("Number of attempts"));
-            auto pSpinAttempts = new QSpinBox;
-            pSpinAttempts->setRange(1, 20);
-            pSpinAttempts->setValue(m_pParam->m_attempts);
+            m_pSpinAttempts = new QSpinBox;
+            m_pSpinAttempts->setRange(1, 20);
+            m_pSpinAttempts->setValue(m_pParam->m_attempts);
 
             auto pLabelInitMethod = new QLabel(tr("Initialization method"));
-            auto pComboInitMethod = new QComboBox;
-            pComboInitMethod->addItem(tr("Random centers"), cv::KmeansFlags::KMEANS_RANDOM_CENTERS);
-            pComboInitMethod->addItem(tr("K-means++"), cv::KmeansFlags::KMEANS_PP_CENTERS);
-            pComboInitMethod->setCurrentIndex(pComboInitMethod->findData(m_pParam->m_flags));
-
+            m_pComboInitMethod = new QComboBox;
+            m_pComboInitMethod->addItem(tr("Random centers"), cv::KmeansFlags::KMEANS_RANDOM_CENTERS);
+            m_pComboInitMethod->addItem(tr("K-means++"), cv::KmeansFlags::KMEANS_PP_CENTERS);
+            m_pComboInitMethod->setCurrentIndex(m_pComboInitMethod->findData(m_pParam->m_flags));
             
             m_pLayout->addWidget(pLabelClassNb, 0, 0);
-            m_pLayout->addWidget(pSpinClassNb, 0, 1);
+            m_pLayout->addWidget(m_pSpinClassNb, 0, 1);
             m_pLayout->addWidget(pLabelTermCriteria, 1, 0);
-            m_pLayout->addWidget(pComboTermCriteria, 1, 1);
+            m_pLayout->addWidget(m_pComboTermCriteria, 1, 1);
             m_pLayout->addWidget(pLabelTermEps, 2, 0);
-            m_pLayout->addWidget(pEditPrecision, 2, 1);
+            m_pLayout->addWidget(m_pEditPrecision, 2, 1);
             m_pLayout->addWidget(pLabelTermIter, 3, 0);
-            m_pLayout->addWidget(pSpinTermIter, 3, 1);
+            m_pLayout->addWidget(m_pSpinTermIter, 3, 1);
             m_pLayout->addWidget(pLabelAttempts, 4, 0);
-            m_pLayout->addWidget(pSpinAttempts, 4, 1);
+            m_pLayout->addWidget(m_pSpinAttempts, 4, 1);
             m_pLayout->addWidget(pLabelInitMethod, 5, 0);
-            m_pLayout->addWidget(pComboInitMethod, 5, 1);
-            
+            m_pLayout->addWidget(m_pComboInitMethod, 5, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_k = pSpinClassNb->value();
-                m_pParam->m_termType = pComboTermCriteria->currentData().toInt();
-                m_pParam->m_termEpsilon = pEditPrecision->text().toDouble();
-                m_pParam->m_termMaxCount = pSpinTermIter->value();
-                m_pParam->m_attempts = pSpinAttempts->value();
-                m_pParam->m_flags = pComboInitMethod->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
-
+        void onApply() override
+        {
+            m_pParam->m_k = m_pSpinClassNb->value();
+            m_pParam->m_termType = m_pComboTermCriteria->currentData().toInt();
+            m_pParam->m_termEpsilon = m_pEditPrecision->text().toDouble();
+            m_pParam->m_termMaxCount = m_pSpinTermIter->value();
+            m_pParam->m_attempts = m_pSpinAttempts->value();
+            m_pParam->m_flags = m_pComboInitMethod->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvKMeansParam>    m_pParam = nullptr;
+        QSpinBox*   m_pSpinClassNb = nullptr;
+        QSpinBox*   m_pSpinTermIter = nullptr;
+        QSpinBox*   m_pSpinAttempts = nullptr;
+        QComboBox*  m_pComboTermCriteria = nullptr;
+        QComboBox*  m_pComboInitMethod = nullptr;
+        QLineEdit*  m_pEditPrecision = nullptr;
 };
 
 class COcvWidgetKMeansFactory : public CWidgetFactory

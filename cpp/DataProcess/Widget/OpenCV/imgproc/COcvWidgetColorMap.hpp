@@ -42,43 +42,42 @@ class COcvWidgetColorMap : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvColorMapParam>();
 
             auto pLabel = new QLabel(tr("Colormap type"));
-            auto pCombo = new QComboBox;
-            pCombo->addItem("Autumn", cv::COLORMAP_AUTUMN);
-            pCombo->addItem("Bone", cv::COLORMAP_BONE);
-            pCombo->addItem("Jet", cv::COLORMAP_JET);
-            pCombo->addItem("Winter", cv::COLORMAP_WINTER);
-            pCombo->addItem("Rainbow", cv::COLORMAP_RAINBOW);
-            pCombo->addItem("Ocean", cv::COLORMAP_OCEAN);
-            pCombo->addItem("Summer", cv::COLORMAP_SUMMER);
-            pCombo->addItem("Spring", cv::COLORMAP_SPRING);
-            pCombo->addItem("Cool", cv::COLORMAP_COOL);
-            pCombo->addItem("Hsv", cv::COLORMAP_HSV);
-            pCombo->addItem("Pink", cv::COLORMAP_PINK);
-            pCombo->addItem("Hot", cv::COLORMAP_HOT);
-            pCombo->addItem("Parula", cv::COLORMAP_PARULA);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_type));
+            m_pCombo = new QComboBox;
+            m_pCombo->addItem("Autumn", cv::COLORMAP_AUTUMN);
+            m_pCombo->addItem("Bone", cv::COLORMAP_BONE);
+            m_pCombo->addItem("Jet", cv::COLORMAP_JET);
+            m_pCombo->addItem("Winter", cv::COLORMAP_WINTER);
+            m_pCombo->addItem("Rainbow", cv::COLORMAP_RAINBOW);
+            m_pCombo->addItem("Ocean", cv::COLORMAP_OCEAN);
+            m_pCombo->addItem("Summer", cv::COLORMAP_SUMMER);
+            m_pCombo->addItem("Spring", cv::COLORMAP_SPRING);
+            m_pCombo->addItem("Cool", cv::COLORMAP_COOL);
+            m_pCombo->addItem("Hsv", cv::COLORMAP_HSV);
+            m_pCombo->addItem("Pink", cv::COLORMAP_PINK);
+            m_pCombo->addItem("Hot", cv::COLORMAP_HOT);
+            m_pCombo->addItem("Parula", cv::COLORMAP_PARULA);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_type));
 
-            
             m_pLayout->addWidget(pLabel, 0, 0);
-            m_pLayout->addWidget(pCombo, 0, 1);
-            
+            m_pLayout->addWidget(m_pCombo, 0, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_type = pCombo->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_type = m_pCombo->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvColorMapParam> m_pParam = nullptr;
+        QComboBox*  m_pCombo = nullptr;
 };
 
 class COcvWidgetColorMapFactory : public CWidgetFactory

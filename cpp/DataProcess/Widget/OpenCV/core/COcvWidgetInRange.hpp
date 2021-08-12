@@ -45,26 +45,28 @@ class COcvWidgetInRange : public CWorkflowTaskWidget
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvInRangeParam>();
 
-            auto pCheckLowerScalar = addCheck(0, tr("Lower scalar input"), m_pParam->m_bLowerScalar);
-            auto pSpinLowerScalar = addDoubleSpin(1, tr("Lower scalar value"), m_pParam->m_lower[0]);
-            auto pCheckUpperScalar = addCheck(2, tr("Upper scalar input"), m_pParam->m_bUpperScalar);
-            auto pSpinUpperScalar = addDoubleSpin(3, tr("Upper scalar value"), m_pParam->m_upper[0]);
+            m_pCheckLowerScalar = addCheck(0, tr("Lower scalar input"), m_pParam->m_bLowerScalar);
+            m_pSpinLowerScalar = addDoubleSpin(1, tr("Lower scalar value"), m_pParam->m_lower[0]);
+            m_pCheckUpperScalar = addCheck(2, tr("Upper scalar input"), m_pParam->m_bUpperScalar);
+            m_pSpinUpperScalar = addDoubleSpin(3, tr("Upper scalar value"), m_pParam->m_upper[0]);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_bLowerScalar = pCheckLowerScalar->isChecked();
-                m_pParam->m_lower= cv::Scalar::all(pSpinLowerScalar->value());
-                m_pParam->m_bUpperScalar = pCheckUpperScalar->isChecked();
-                m_pParam->m_upper= cv::Scalar::all(pSpinUpperScalar->value());
-                emit doApplyProcess(m_pParam);
-            } );
+        void onApply() override
+        {
+            m_pParam->m_bLowerScalar = m_pCheckLowerScalar->isChecked();
+            m_pParam->m_lower= cv::Scalar::all(m_pSpinLowerScalar->value());
+            m_pParam->m_bUpperScalar = m_pCheckUpperScalar->isChecked();
+            m_pParam->m_upper= cv::Scalar::all(m_pSpinUpperScalar->value());
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvInRangeParam> m_pParam = nullptr;
+        QCheckBox*      m_pCheckLowerScalar = nullptr;
+        QCheckBox*      m_pCheckUpperScalar = nullptr;
+        QDoubleSpinBox* m_pSpinLowerScalar = nullptr;
+        QDoubleSpinBox* m_pSpinUpperScalar = nullptr;
 };
 
 class COcvWidgetInRangeFactory : public CWidgetFactory

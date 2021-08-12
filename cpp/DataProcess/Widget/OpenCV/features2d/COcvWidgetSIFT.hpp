@@ -41,51 +41,59 @@ class COcvWidgetSIFT : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSIFTParam>();
 
-            auto pSpinFeatures = addSpin(tr("Features count"), m_pParam->m_featuresCount);
-            auto pSpinOctaveLayer = addSpin(tr("Octave layers count"), m_pParam->m_octaveLayersCount);
-            auto pSpinContrastThresh = addDoubleSpin(tr("Contrast threshold"), m_pParam->m_contrastThreshold, 0.0, 1.0, 0.01, 2);
-            auto pSpinEdgeThresh = addDoubleSpin(tr("Edge threshold"), m_pParam->m_edgeThreshold, 0.0, DBL_MAX, 1, 1);
-            auto pSpinSigma = addDoubleSpin(tr("Gaussian sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
-            auto pCheckKeyPts = addCheck(tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
-            auto pCheckDetect = addCheck(tr("Detect"), m_pParam->m_bDetect);
-            pCheckDetect->setEnabled(!m_pParam->m_bUseProvidedKeypoints);
-            auto pCheckCompute = addCheck(tr("Compute"), m_pParam->m_bCompute);
+            m_pSpinFeatures = addSpin(tr("Features count"), m_pParam->m_featuresCount);
+            m_pSpinOctaveLayer = addSpin(tr("Octave layers count"), m_pParam->m_octaveLayersCount);
+            m_pSpinContrastThresh = addDoubleSpin(tr("Contrast threshold"), m_pParam->m_contrastThreshold, 0.0, 1.0, 0.01, 2);
+            m_pSpinEdgeThresh = addDoubleSpin(tr("Edge threshold"), m_pParam->m_edgeThreshold, 0.0, DBL_MAX, 1, 1);
+            m_pSpinSigma = addDoubleSpin(tr("Gaussian sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
+            m_pCheckKeyPts = addCheck(tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
+            m_pCheckDetect = addCheck(tr("Detect"), m_pParam->m_bDetect);
+            m_pCheckDetect->setEnabled(!m_pParam->m_bUseProvidedKeypoints);
+            m_pCheckCompute = addCheck(tr("Compute"), m_pParam->m_bCompute);
 
-            connect(pCheckKeyPts, &QCheckBox::clicked, [=](bool checked)
+            connect(m_pCheckKeyPts, &QCheckBox::clicked, [&](bool checked)
             {
                 if(checked)
                 {
-                    pCheckDetect->setEnabled(true);
+                    m_pCheckDetect->setEnabled(true);
                 }
                 else
                 {
-                    pCheckDetect->setChecked(true);
-                    pCheckDetect->setEnabled(false);
+                    m_pCheckDetect->setChecked(true);
+                    m_pCheckDetect->setEnabled(false);
                 }
             });
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_featuresCount = pSpinFeatures->value();
-                m_pParam->m_octaveLayersCount = pSpinOctaveLayer->value();
-                m_pParam->m_contrastThreshold = pSpinContrastThresh->value();
-                m_pParam->m_edgeThreshold = pSpinEdgeThresh->value();
-                m_pParam->m_sigma = pSpinSigma->value();
-                m_pParam->m_bUseProvidedKeypoints = pCheckKeyPts->isChecked();
-                m_pParam->m_bDetect = pCheckDetect->isChecked();
-                m_pParam->m_bCompute = pCheckCompute->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_featuresCount = m_pSpinFeatures->value();
+            m_pParam->m_octaveLayersCount = m_pSpinOctaveLayer->value();
+            m_pParam->m_contrastThreshold = m_pSpinContrastThresh->value();
+            m_pParam->m_edgeThreshold = m_pSpinEdgeThresh->value();
+            m_pParam->m_sigma = m_pSpinSigma->value();
+            m_pParam->m_bUseProvidedKeypoints = m_pCheckKeyPts->isChecked();
+            m_pParam->m_bDetect = m_pCheckDetect->isChecked();
+            m_pParam->m_bCompute = m_pCheckCompute->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSIFTParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinContrastThresh = nullptr;
+        QDoubleSpinBox* m_pSpinEdgeThresh = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QSpinBox*       m_pSpinFeatures = nullptr;
+        QSpinBox*       m_pSpinOctaveLayer = nullptr;
+        QCheckBox*      m_pCheckKeyPts = nullptr;
+        QCheckBox*      m_pCheckDetect = nullptr;
+        QCheckBox*      m_pCheckCompute = nullptr;
 };
 
 class COcvWidgetSIFTFactory : public CWidgetFactory

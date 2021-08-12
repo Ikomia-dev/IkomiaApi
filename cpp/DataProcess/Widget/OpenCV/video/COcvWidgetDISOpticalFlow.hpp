@@ -44,32 +44,31 @@ class COcvWidgetDISOF : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvDISOFParam>();
 
-            auto pCombo = addCombo(0, tr("Preset mode"));
-            pCombo->addItem("PRESET_MEDIUM", cv::DISOpticalFlow::PRESET_MEDIUM);
-            pCombo->addItem("PRESET_FAST", cv::DISOpticalFlow::PRESET_FAST);
-            pCombo->addItem("PRESET_ULTRAFAST", cv::DISOpticalFlow::PRESET_ULTRAFAST);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_preset));
-            auto pCheck = addCheck(1, tr("Use OpenCL"), m_pParam->m_bUseOCL);
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_preset = pCombo->currentData().toInt();
-                m_pParam->m_bUseOCL = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pCombo = addCombo(0, tr("Preset mode"));
+            m_pCombo->addItem("PRESET_MEDIUM", cv::DISOpticalFlow::PRESET_MEDIUM);
+            m_pCombo->addItem("PRESET_FAST", cv::DISOpticalFlow::PRESET_FAST);
+            m_pCombo->addItem("PRESET_ULTRAFAST", cv::DISOpticalFlow::PRESET_ULTRAFAST);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_preset));
+            m_pCheck = addCheck(1, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+        }
 
-            
-            
+        void onApply() override
+        {
+            m_pParam->m_preset = m_pCombo->currentData().toInt();
+            m_pParam->m_bUseOCL = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvDISOFParam> m_pParam = nullptr;
-        //QSpinBox*                           m_pSpin = nullptr;
+        QComboBox*  m_pCombo = nullptr;
+        QCheckBox*  m_pCheck = nullptr;
 };
 
 class COcvWidgetDISOFFactory : public CWidgetFactory

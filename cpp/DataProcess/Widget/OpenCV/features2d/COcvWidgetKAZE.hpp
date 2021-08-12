@@ -44,63 +44,68 @@ class COcvWidgetKAZE : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvKAZEParam>();
 
-            auto pCheckExt = addCheck(0, tr("Extended"), m_pParam->m_bExtended);
-            auto pCheckUpright = addCheck(1, tr("Upright"), m_pParam->m_bUpright);
+            m_pCheckExt = addCheck(0, tr("Extended"), m_pParam->m_bExtended);
+            m_pCheckUpright = addCheck(1, tr("Upright"), m_pParam->m_bUpright);
+            m_pSpinThresh = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold, 0.0, DBL_MAX, 0.001, 3);
+            m_pSpinOctaves = addSpin(3, tr("Octaves"), m_pParam->m_nOctaves);
+            m_pSpinOctaveLayers = addSpin(4, tr("Octave layers"), m_pParam->m_nOctaveLayers);
 
-            auto pSpinThresh = addDoubleSpin(2, tr("Threshold"), m_pParam->m_threshold);
-            pSpinThresh->setDecimals(3);
-            pSpinThresh->setSingleStep(0.001);
-            pSpinThresh->setValue(m_pParam->m_threshold);
-            auto pSpinOctaves = addSpin(3, tr("Octaves"), m_pParam->m_nOctaves);
-            auto pSpinOctaveLayers = addSpin(4, tr("Octave layers"), m_pParam->m_nOctaveLayers);
-            auto pComboDiff = addCombo(5, tr("Diffusivity"));
-            pComboDiff->addItem("DIFF_PM_G1", cv::KAZE::DIFF_PM_G1);
-            pComboDiff->addItem("DIFF_PM_G2", cv::KAZE::DIFF_PM_G2);
-            pComboDiff->addItem("DIFF_WEICKERT", cv::KAZE::DIFF_WEICKERT);
-            pComboDiff->addItem("DIFF_CHARBONNIER", cv::KAZE::DIFF_CHARBONNIER);
-            pComboDiff->setCurrentIndex(pComboDiff->findData(m_pParam->m_diffusivity));
-            auto pCheck = addCheck(6, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
-            auto pCheckDetect = addCheck(7, tr("Detect"), m_pParam->m_bDetect);
-            pCheckDetect->setEnabled(false);
-            auto pCheckCompute = addCheck(8, tr("Compute"), m_pParam->m_bCompute);
+            m_pComboDiff = addCombo(5, tr("Diffusivity"));
+            m_pComboDiff->addItem("DIFF_PM_G1", cv::KAZE::DIFF_PM_G1);
+            m_pComboDiff->addItem("DIFF_PM_G2", cv::KAZE::DIFF_PM_G2);
+            m_pComboDiff->addItem("DIFF_WEICKERT", cv::KAZE::DIFF_WEICKERT);
+            m_pComboDiff->addItem("DIFF_CHARBONNIER", cv::KAZE::DIFF_CHARBONNIER);
+            m_pComboDiff->setCurrentIndex(m_pComboDiff->findData(m_pParam->m_diffusivity));
 
-            connect(pCheck, &QCheckBox::clicked, [=](bool checked){
+            m_pCheck = addCheck(6, tr("Use provided keypoints"), m_pParam->m_bUseProvidedKeypoints);
+            m_pCheckDetect = addCheck(7, tr("Detect"), m_pParam->m_bDetect);
+            m_pCheckDetect->setEnabled(false);
+            m_pCheckCompute = addCheck(8, tr("Compute"), m_pParam->m_bCompute);
+
+            connect(m_pCheck, &QCheckBox::clicked, [&](bool checked){
                 if(checked)
                 {
-                    pCheckDetect->setEnabled(true);
+                    m_pCheckDetect->setEnabled(true);
                 }
                 else
                 {
-                    pCheckDetect->setChecked(true);
-                    pCheckDetect->setEnabled(false);
+                    m_pCheckDetect->setChecked(true);
+                    m_pCheckDetect->setEnabled(false);
                 }
             });
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_bExtended = pCheckExt->isChecked();
-                m_pParam->m_bUpright = pCheckUpright->isChecked();
-                m_pParam->m_threshold = pSpinThresh->value();
-                m_pParam->m_nOctaves = pSpinOctaves->value();
-                m_pParam->m_nOctaveLayers = pSpinOctaveLayers->value();
-                m_pParam->m_diffusivity = pComboDiff->currentData().toInt();
-                m_pParam->m_bUseProvidedKeypoints = pCheck->isChecked();
-                m_pParam->m_bDetect = pCheckDetect->isChecked();
-                m_pParam->m_bCompute = pCheckCompute->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_bExtended = m_pCheckExt->isChecked();
+            m_pParam->m_bUpright = m_pCheckUpright->isChecked();
+            m_pParam->m_threshold = m_pSpinThresh->value();
+            m_pParam->m_nOctaves = m_pSpinOctaves->value();
+            m_pParam->m_nOctaveLayers = m_pSpinOctaveLayers->value();
+            m_pParam->m_diffusivity = m_pComboDiff->currentData().toInt();
+            m_pParam->m_bUseProvidedKeypoints = m_pCheck->isChecked();
+            m_pParam->m_bDetect = m_pCheckDetect->isChecked();
+            m_pParam->m_bCompute = m_pCheckCompute->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvKAZEParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinThresh = nullptr;
+        QSpinBox*       m_pSpinOctaves = nullptr;
+        QSpinBox*       m_pSpinOctaveLayers = nullptr;
+        QComboBox*      m_pComboDiff = nullptr;
+        QCheckBox*      m_pCheckExt = nullptr;
+        QCheckBox*      m_pCheckUpright = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
+        QCheckBox*      m_pCheckDetect = nullptr;
+        QCheckBox*      m_pCheckCompute = nullptr;
 };
 
 class COcvWidgetKAZEFactory : public CWidgetFactory

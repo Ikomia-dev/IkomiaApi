@@ -40,49 +40,57 @@ class COcvWidgetSuperResBTVL1 : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvSuperResBTVL1Param>();
 
-            auto pSpinScale = addSpin(0, tr("Scale factor"), m_pParam->m_scale);
-            auto pSpinIterations = addSpin(1, tr("Number of iterations"), m_pParam->m_iterations);
-            auto pSpinTau = addDoubleSpin(2, tr("Tau"), m_pParam->m_tau, 0.0, DBL_MAX, 0.1, 1);
-            auto pSpinLambda = addDoubleSpin(3, tr("Lambda"), m_pParam->m_lambda, 0.0, DBL_MAX, 0.01, 2);
-            auto pSpinAlpha = addDoubleSpin(4, tr("Alpha"), m_pParam->m_alpha, 0.0, DBL_MAX, 0.1, 1);
-            auto pSpinBTVKernelSize = addSpin(5, tr("Bilateral TV kernel size"), m_pParam->m_btvKernelSize, 1, INT_MAX, 2);
-            auto pSpinBlurKernelSize = addDoubleSpin(6, tr("Gaussian kernel size"), m_pParam->m_blurKernelSize, 1, INT_MAX, 2);
-            auto pSpinBlurSigma = addDoubleSpin(7, tr("Gaussian sigma"), m_pParam->m_blurSigma, 0.0, DBL_MAX, 0.1, 1);
-            auto pSpinTemporalRadius = addSpin(8, tr("Radius of temporal search area"), m_pParam->m_temporalAreaRadius, 1, INT_MAX, 1);
+            m_pSpinScale = addSpin(0, tr("Scale factor"), m_pParam->m_scale);
+            m_pSpinIterations = addSpin(1, tr("Number of iterations"), m_pParam->m_iterations);
+            m_pSpinTau = addDoubleSpin(2, tr("Tau"), m_pParam->m_tau, 0.0, DBL_MAX, 0.1, 1);
+            m_pSpinLambda = addDoubleSpin(3, tr("Lambda"), m_pParam->m_lambda, 0.0, DBL_MAX, 0.01, 2);
+            m_pSpinAlpha = addDoubleSpin(4, tr("Alpha"), m_pParam->m_alpha, 0.0, DBL_MAX, 0.1, 1);
+            m_pSpinBTVKernelSize = addSpin(5, tr("Bilateral TV kernel size"), m_pParam->m_btvKernelSize, 1, INT_MAX, 2);
+            m_pSpinBlurKernelSize = addDoubleSpin(6, tr("Gaussian kernel size"), m_pParam->m_blurKernelSize, 1, INT_MAX, 2);
+            m_pSpinBlurSigma = addDoubleSpin(7, tr("Gaussian sigma"), m_pParam->m_blurSigma, 0.0, DBL_MAX, 0.1, 1);
+            m_pSpinTemporalRadius = addSpin(8, tr("Radius of temporal search area"), m_pParam->m_temporalAreaRadius, 1, INT_MAX, 1);
 
-            auto pComboOptFlow = addCombo(9, tr("Optical flow"));
-            pComboOptFlow->addItem(tr("Brox"), COcvSuperResBTVL1Param::BROX);
-            pComboOptFlow->addItem(tr("DualTVL1"), COcvSuperResBTVL1Param::DUAL_TVL1);
-            pComboOptFlow->addItem(tr("Farneback"), COcvSuperResBTVL1Param::FARNEBACK);
-            pComboOptFlow->addItem(tr("PyrLK"), COcvSuperResBTVL1Param::PYR_LK);
-            pComboOptFlow->setCurrentIndex(pComboOptFlow->findData(m_pParam->m_opticalFlowType));
+            m_pComboOptFlow = addCombo(9, tr("Optical flow"));
+            m_pComboOptFlow->addItem(tr("Brox"), COcvSuperResBTVL1Param::BROX);
+            m_pComboOptFlow->addItem(tr("DualTVL1"), COcvSuperResBTVL1Param::DUAL_TVL1);
+            m_pComboOptFlow->addItem(tr("Farneback"), COcvSuperResBTVL1Param::FARNEBACK);
+            m_pComboOptFlow->addItem(tr("PyrLK"), COcvSuperResBTVL1Param::PYR_LK);
+            m_pComboOptFlow->setCurrentIndex(m_pComboOptFlow->findData(m_pParam->m_opticalFlowType));
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_scale = pSpinScale->value();
-                m_pParam->m_iterations = pSpinIterations->value();
-                m_pParam->m_tau = pSpinTau->value();
-                m_pParam->m_lambda = pSpinLambda->value();
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_btvKernelSize = pSpinBTVKernelSize->value();
-                m_pParam->m_blurKernelSize = pSpinBlurKernelSize->value();
-                m_pParam->m_blurSigma = pSpinBlurSigma->value();
-                m_pParam->m_temporalAreaRadius = pSpinTemporalRadius->value();
-                m_pParam->m_opticalFlowType = pComboOptFlow->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_scale = m_pSpinScale->value();
+            m_pParam->m_iterations = m_pSpinIterations->value();
+            m_pParam->m_tau = m_pSpinTau->value();
+            m_pParam->m_lambda = m_pSpinLambda->value();
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_btvKernelSize = m_pSpinBTVKernelSize->value();
+            m_pParam->m_blurKernelSize = m_pSpinBlurKernelSize->value();
+            m_pParam->m_blurSigma = m_pSpinBlurSigma->value();
+            m_pParam->m_temporalAreaRadius = m_pSpinTemporalRadius->value();
+            m_pParam->m_opticalFlowType = m_pComboOptFlow->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvSuperResBTVL1Param> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinTau = nullptr;
+        QDoubleSpinBox* m_pSpinLambda = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBlurKernelSize = nullptr;
+        QDoubleSpinBox* m_pSpinBlurSigma = nullptr;
+        QSpinBox*       m_pSpinScale = nullptr;
+        QSpinBox*       m_pSpinIterations = nullptr;
+        QSpinBox*       m_pSpinBTVKernelSize = nullptr;
+        QSpinBox*       m_pSpinTemporalRadius = nullptr;
+        QComboBox*      m_pComboOptFlow = nullptr;
 };
 
 class COcvWidgetSuperResBTVL1Factory : public CWidgetFactory

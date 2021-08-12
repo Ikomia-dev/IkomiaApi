@@ -42,7 +42,7 @@ class COcvWidgetInpaintFuzzy : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvInpaintFuzzyParam>();
@@ -66,26 +66,24 @@ class COcvWidgetInpaintFuzzy : public CWorkflowTaskWidget
             else
                 m_pComboMethod->setCurrentIndex(2);
 
-            
             m_pLayout->addWidget(pLabelRadius, 0, 0);
             m_pLayout->addWidget(m_pSpinRadius, 0, 1);
             m_pLayout->addWidget(pLabelMethod, 1, 0);
             m_pLayout->addWidget(m_pComboMethod, 1, 1);
-            
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
+        void onApply() override
+        {
+            m_pParam->m_radius = m_pSpinRadius->value();
+
+            int index = m_pComboMethod->currentIndex();
+            switch(index)
             {
-                m_pParam->m_radius = m_pSpinRadius->value();
-
-                int index = m_pComboMethod->currentIndex();
-                switch(index)
-                {
-                    case 0: m_pParam->m_method = cv::ft::ONE_STEP; break;
-                    case 1: m_pParam->m_method = cv::ft::MULTI_STEP; break;
-                    case 2: m_pParam->m_method = cv::ft::ITERATIVE; break;
-                }
-                emit doApplyProcess(m_pParam);
-            });
+                case 0: m_pParam->m_method = cv::ft::ONE_STEP; break;
+                case 1: m_pParam->m_method = cv::ft::MULTI_STEP; break;
+                case 2: m_pParam->m_method = cv::ft::ITERATIVE; break;
+            }
+            emit doApplyProcess(m_pParam);
         }
 
     private:

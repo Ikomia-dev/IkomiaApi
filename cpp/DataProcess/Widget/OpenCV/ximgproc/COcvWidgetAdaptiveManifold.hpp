@@ -44,65 +44,69 @@ class COcvWidgetAdaptiveManifold : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvAdaptiveManifoldParam>();
 
             auto pLabelSigmaS = new QLabel(tr("Sigma Spatial"));
-            auto pSpinSigmaS = new QDoubleSpinBox;
+            m_pSpinSigmaS = new QDoubleSpinBox;
             auto pLabelSigmaR = new QLabel(tr("Sigma Color Space"));
-            auto pSpinSigmaR = new QDoubleSpinBox;
+            m_pSpinSigmaR = new QDoubleSpinBox;
             auto pLabelTreeHeight = new QLabel(tr("Tree Height"));
-            auto pSpinTreeHeight = new QSpinBox;
+            m_pSpinTreeHeight = new QSpinBox;
             auto pLabelNumPCA = new QLabel(tr("Iterations"));
-            auto pSpinNumPCA = new QSpinBox;
-            auto pCheckOutliers = new QCheckBox(tr("Adjust Outliers"));
-            auto pCheckRng = new QCheckBox(tr("Use RNG"));
+            m_pSpinNumPCA = new QSpinBox;
+            m_pCheckOutliers = new QCheckBox(tr("Adjust Outliers"));
+            m_pCheckRng = new QCheckBox(tr("Use RNG"));
 
-            pSpinSigmaS->setSingleStep(0.1);
-            pSpinSigmaR->setSingleStep(0.1);
-            pSpinTreeHeight->setMinimum(-1);
+            m_pSpinSigmaS->setSingleStep(0.1);
+            m_pSpinSigmaR->setSingleStep(0.1);
+            m_pSpinTreeHeight->setMinimum(-1);
 
-            pSpinSigmaS->setValue(m_pParam->m_sigmaS);
-            pSpinSigmaR->setValue(m_pParam->m_sigmaR);
-            pSpinTreeHeight->setValue(m_pParam->m_treeHeight);
-            pSpinNumPCA->setValue(m_pParam->m_numPcaIterations);
-            pCheckOutliers->setChecked(m_pParam->m_bAdjustOutliers);
-            pCheckRng->setChecked(m_pParam->m_bUseRNG);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_sigmaS = pSpinSigmaS->value();
-                m_pParam->m_sigmaR = pSpinSigmaR->value();
-                m_pParam->m_treeHeight = pSpinTreeHeight->value();
-                m_pParam->m_numPcaIterations = pSpinNumPCA->value();
-                m_pParam->m_bAdjustOutliers = pCheckOutliers->isChecked();
-                m_pParam->m_bUseRNG = pCheckRng->isChecked();
-                emit doApplyProcess(m_pParam);
-            } );
-
+            m_pSpinSigmaS->setValue(m_pParam->m_sigmaS);
+            m_pSpinSigmaR->setValue(m_pParam->m_sigmaR);
+            m_pSpinTreeHeight->setValue(m_pParam->m_treeHeight);
+            m_pSpinNumPCA->setValue(m_pParam->m_numPcaIterations);
+            m_pCheckOutliers->setChecked(m_pParam->m_bAdjustOutliers);
+            m_pCheckRng->setChecked(m_pParam->m_bUseRNG);
             
             m_pLayout->addWidget(pLabelSigmaS, 0, 0);
-            m_pLayout->addWidget(pSpinSigmaS, 0, 1);
+            m_pLayout->addWidget(m_pSpinSigmaS, 0, 1);
 
             m_pLayout->addWidget(pLabelSigmaR, 1, 0);
-            m_pLayout->addWidget(pSpinSigmaR, 1, 1);
+            m_pLayout->addWidget(m_pSpinSigmaR, 1, 1);
 
             m_pLayout->addWidget(pLabelTreeHeight, 2, 0);
-            m_pLayout->addWidget(pSpinTreeHeight, 2, 1);
+            m_pLayout->addWidget(m_pSpinTreeHeight, 2, 1);
 
             m_pLayout->addWidget(pLabelNumPCA, 3, 0);
-            m_pLayout->addWidget(pSpinNumPCA, 3, 1);
+            m_pLayout->addWidget(m_pSpinNumPCA, 3, 1);
 
-            m_pLayout->addWidget(pCheckOutliers, 4, 0);
-            m_pLayout->addWidget(pCheckRng, 5, 0);
+            m_pLayout->addWidget(m_pCheckOutliers, 4, 0);
+            m_pLayout->addWidget(m_pCheckRng, 5, 0);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_sigmaS = m_pSpinSigmaS->value();
+            m_pParam->m_sigmaR = m_pSpinSigmaR->value();
+            m_pParam->m_treeHeight = m_pSpinTreeHeight->value();
+            m_pParam->m_numPcaIterations = m_pSpinNumPCA->value();
+            m_pParam->m_bAdjustOutliers = m_pCheckOutliers->isChecked();
+            m_pParam->m_bUseRNG = m_pCheckRng->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvAdaptiveManifoldParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaS = nullptr;
+        QDoubleSpinBox* m_pSpinSigmaR = nullptr;
+        QSpinBox*       m_pSpinTreeHeight = nullptr;
+        QSpinBox*       m_pSpinNumPCA = nullptr;
+        QCheckBox*      m_pCheckOutliers = nullptr;
+        QCheckBox*      m_pCheckRng = nullptr;
 };
 
 class COcvWidgetAdaptiveManifoldFactory : public CWidgetFactory

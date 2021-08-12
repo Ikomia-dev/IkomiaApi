@@ -39,40 +39,46 @@ class COcvWidgetHoughCircles : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvHoughCirclesParam>();
 
-            auto pComboMethod = addCombo(tr("Method"));
-            pComboMethod->addItem("Hough gradient", cv::HOUGH_GRADIENT);
-            pComboMethod->addItem("Hough gradient variant", cv::HOUGH_GRADIENT_ALT);
-            pComboMethod->setCurrentIndex(pComboMethod->findData(m_pParam->m_method));
+            m_pComboMethod = addCombo(tr("Method"));
+            m_pComboMethod->addItem("Hough gradient", cv::HOUGH_GRADIENT);
+            m_pComboMethod->addItem("Hough gradient variant", cv::HOUGH_GRADIENT_ALT);
+            m_pComboMethod->setCurrentIndex(m_pComboMethod->findData(m_pParam->m_method));
 
-            auto pSpinDp = addDoubleSpin(tr("Accumulator ratio"), m_pParam->m_dp, 0.0, DBL_MAX, 1.0, 1);
-            auto pSpinMinDst = addDoubleSpin(tr("Min distance between centers"), m_pParam->m_minDist, 0.0, DBL_MAX, 1.0, 1);
-            auto pSpinParam1 = addDoubleSpin(tr("Canny high threshold"), m_pParam->m_param1, 0.0, DBL_MAX, 1.0, 1);
-            auto pSpinParam2 = addDoubleSpin(tr("Accumulator threshold"), m_pParam->m_param2, 0.0, DBL_MAX, 1.0, 1);
-            auto pSpinMinRaduis = addSpin(tr("Minimum radius"), m_pParam->m_minRadius, 0, INT_MAX, 1);
-            auto pSpinMaxRaduis = addSpin(tr("Maximum radius"), m_pParam->m_maxRadius, 0, INT_MAX, 1);
-            
+            m_pSpinDp = addDoubleSpin(tr("Accumulator ratio"), m_pParam->m_dp, 0.0, DBL_MAX, 1.0, 1);
+            m_pSpinMinDst = addDoubleSpin(tr("Min distance between centers"), m_pParam->m_minDist, 0.0, DBL_MAX, 1.0, 1);
+            m_pSpinParam1 = addDoubleSpin(tr("Canny high threshold"), m_pParam->m_param1, 0.0, DBL_MAX, 1.0, 1);
+            m_pSpinParam2 = addDoubleSpin(tr("Accumulator threshold"), m_pParam->m_param2, 0.0, DBL_MAX, 1.0, 1);
+            m_pSpinMinRaduis = addSpin(tr("Minimum radius"), m_pParam->m_minRadius, 0, INT_MAX, 1);
+            m_pSpinMaxRaduis = addSpin(tr("Maximum radius"), m_pParam->m_maxRadius, 0, INT_MAX, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_method = pComboMethod->currentData().toInt();
-                m_pParam->m_dp = pSpinDp->value();
-                m_pParam->m_minDist = pSpinMinDst->value();
-                m_pParam->m_param1 = pSpinParam1->value();
-                m_pParam->m_param2 = pSpinParam2->value();
-                m_pParam->m_minRadius = pSpinMinRaduis->value();
-                m_pParam->m_maxRadius = pSpinMaxRaduis->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_method = m_pComboMethod->currentData().toInt();
+            m_pParam->m_dp = m_pSpinDp->value();
+            m_pParam->m_minDist = m_pSpinMinDst->value();
+            m_pParam->m_param1 = m_pSpinParam1->value();
+            m_pParam->m_param2 = m_pSpinParam2->value();
+            m_pParam->m_minRadius = m_pSpinMinRaduis->value();
+            m_pParam->m_maxRadius = m_pSpinMaxRaduis->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvHoughCirclesParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinDp = nullptr;
+        QDoubleSpinBox* m_pSpinMinDst = nullptr;
+        QDoubleSpinBox* m_pSpinParam1 = nullptr;
+        QDoubleSpinBox* m_pSpinParam2 = nullptr;
+        QSpinBox*       m_pSpinMinRaduis = nullptr;
+        QSpinBox*       m_pSpinMaxRaduis = nullptr;
+        QComboBox*      m_pComboMethod = nullptr;
 };
 
 class COcvWidgetHoughCirclesFactory : public CWidgetFactory

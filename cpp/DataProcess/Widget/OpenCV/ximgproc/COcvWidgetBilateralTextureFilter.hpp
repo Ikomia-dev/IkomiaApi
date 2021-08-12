@@ -41,7 +41,7 @@ class COcvWidgetBilateralTextureFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBilateralTextureFilterParam>();
@@ -65,16 +65,6 @@ class COcvWidgetBilateralTextureFilter : public CWorkflowTaskWidget
             m_pDblSpinAvg = new QDoubleSpinBox;
             m_pDblSpinAvg->setRange(-1, 100);
             m_pDblSpinAvg->setValue(m_pParam->m_sigmaAvg);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_fr = m_pSpin->value();
-                m_pParam->m_numIter = m_pDblSpinIter->value();
-                m_pParam->m_sigmaAlpha = m_pDblSpinAlpha->value();
-                m_pParam->m_sigmaAvg = m_pDblSpinAvg->value();
-                emit doApplyProcess(m_pParam);
-            });
-
             
             m_pLayout->addWidget(pLabelSpin, 0, 0);
             m_pLayout->addWidget(m_pSpin, 0, 1);
@@ -86,18 +76,25 @@ class COcvWidgetBilateralTextureFilter : public CWorkflowTaskWidget
             m_pLayout->addWidget(m_pDblSpinAlpha, 2, 1);
 
             m_pLayout->addWidget(pLabelSpinAvg, 3, 0);
-            m_pLayout->addWidget(m_pDblSpinAvg, 3, 1);
+            m_pLayout->addWidget(m_pDblSpinAvg, 3, 1); 
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_fr = m_pSpin->value();
+            m_pParam->m_numIter = m_pDblSpinIter->value();
+            m_pParam->m_sigmaAlpha = m_pDblSpinAlpha->value();
+            m_pParam->m_sigmaAvg = m_pDblSpinAvg->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBilateralTextureFilterParam> m_pParam = nullptr;
-        QSpinBox*                           m_pSpin = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinIter = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinAlpha = nullptr;
-        QDoubleSpinBox*                     m_pDblSpinAvg = nullptr;
+        QSpinBox*       m_pSpin = nullptr;
+        QDoubleSpinBox* m_pDblSpinIter = nullptr;
+        QDoubleSpinBox* m_pDblSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pDblSpinAvg = nullptr;
 };
 
 class COcvWidgetBilateralTextureFilterFactory : public CWidgetFactory

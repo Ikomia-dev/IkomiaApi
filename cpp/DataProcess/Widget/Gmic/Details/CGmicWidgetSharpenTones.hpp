@@ -40,31 +40,34 @@ class CGmicWidgetSharpenTones : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicSharpenTonesParam>();
 
-            auto pSpinAmount = addDoubleSpin(0, tr("Amount"), m_pParam->m_amount, 0, 4, 0.1);
-            auto pSpinCentre = addSpin(1, tr("Centre"), m_pParam->m_centre, 0, 255);
+            m_pSpinAmount = addDoubleSpin(0, tr("Amount"), m_pParam->m_amount, 0, 4, 0.1);
+            m_pSpinCentre = addSpin(1, tr("Centre"), m_pParam->m_centre, 0, 255);
 
-            auto pComboValues = addCombo(2, tr("Values"));
-            pComboValues->addItem(tr("Cut"), CGmicSharpenTonesParam::CUT);
-            pComboValues->addItem(tr("Normalize luma"), CGmicSharpenTonesParam::NORMALYZE);
-            pComboValues->setCurrentIndex(pComboValues->findData(m_pParam->m_values));
+            m_pComboValues = addCombo(2, tr("Values"));
+            m_pComboValues->addItem(tr("Cut"), CGmicSharpenTonesParam::CUT);
+            m_pComboValues->addItem(tr("Normalize luma"), CGmicSharpenTonesParam::NORMALYZE);
+            m_pComboValues->setCurrentIndex(m_pComboValues->findData(m_pParam->m_values));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_amount = pSpinAmount->value();
-                m_pParam->m_centre = pSpinCentre->value();
-                m_pParam->m_values = pComboValues->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_amount = m_pSpinAmount->value();
+            m_pParam->m_centre = m_pSpinCentre->value();
+            m_pParam->m_values = m_pComboValues->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicSharpenTonesParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinAmount = nullptr;
+        QSpinBox*       m_pSpinCentre = nullptr;
+        QComboBox*      m_pComboValues = nullptr;
 };
 
 class CGmicWidgetSharpenTonesFactory : public CWidgetFactory

@@ -46,7 +46,7 @@ class COcvWidgetHfsSegment : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvHfsSegmentParam>();
@@ -65,84 +65,80 @@ class COcvWidgetHfsSegment : public CWorkflowTaskWidget
 
             /* STAGE 1 */
             auto pLabelNumSlicIter = new QLabel(tr("NumSlicIter"));
-            auto pSpinNumIter = new QSpinBox;
-
-            pSpinNumIter->setValue(m_pParam->m_numSlicIter);
+            m_pSpinNumIter = new QSpinBox;
+            m_pSpinNumIter->setValue(m_pParam->m_numSlicIter);
             pLayout1->addWidget(pLabelNumSlicIter, 0, 0);
-            pLayout1->addWidget(pSpinNumIter, 0, 1);
+            pLayout1->addWidget(m_pSpinNumIter, 0, 1);
 
             auto pLabelSlicS = new QLabel(tr("SlicSpixelSize"));
-            auto pSpinSlicS = new QSpinBox;
-
-            pSpinSlicS->setValue(m_pParam->m_slicSpixelSize);
+            m_pSpinSlicS = new QSpinBox;
+            m_pSpinSlicS->setValue(m_pParam->m_slicSpixelSize);
             pLayout1->addWidget(pLabelSlicS, 1, 0);
-            pLayout1->addWidget(pSpinSlicS, 1, 1);
+            pLayout1->addWidget(m_pSpinSlicS, 1, 1);
 
             auto pLabelWeight = new QLabel(tr("Spatial weight"));
-            auto pSpinWeight = new QDoubleSpinBox;
-
-            pSpinWeight->setValue(m_pParam->m_spatialWeight);
+            m_pSpinWeight = new QDoubleSpinBox;
+            m_pSpinWeight->setValue(m_pParam->m_spatialWeight);
             pLayout1->addWidget(pLabelWeight, 2, 0);
-            pLayout1->addWidget(pSpinWeight, 2, 1);
+            pLayout1->addWidget(m_pSpinWeight, 2, 1);
 
             /* STAGE 2 */
             auto pLabelMinRegionSizeI =new QLabel(tr("MinRegionSizeI"));
-            auto pSpinSizeI = new QSpinBox;
-
-            pSpinSizeI->setRange(1, INT_MAX);
-            pSpinSizeI->setValue(m_pParam->m_minRegionSizeI);
+            m_pSpinSizeI = new QSpinBox;
+            m_pSpinSizeI->setRange(1, INT_MAX);
+            m_pSpinSizeI->setValue(m_pParam->m_minRegionSizeI);
             pLayout2->addWidget(pLabelMinRegionSizeI, 0, 0);
-            pLayout2->addWidget(pSpinSizeI, 0, 1);
+            pLayout2->addWidget(m_pSpinSizeI, 0, 1);
 
             auto pLabelSegEgbThresholdI =new QLabel(tr("SegEgbThresholdI"));
-            auto pSpinThresholdI = new QDoubleSpinBox;
-
-            pSpinThresholdI->setValue(m_pParam->m_segEgbThresholdI);
-            pSpinThresholdI->setSingleStep(0.1);
+            m_pSpinThresholdI = new QDoubleSpinBox;
+            m_pSpinThresholdI->setValue(m_pParam->m_segEgbThresholdI);
+            m_pSpinThresholdI->setSingleStep(0.1);
             pLayout2->addWidget(pLabelSegEgbThresholdI, 1, 0);
-            pLayout2->addWidget(pSpinThresholdI, 1, 1);
+            pLayout2->addWidget(m_pSpinThresholdI, 1, 1);
 
             /* STAGE 3 */
             auto pLabelMinRegionSizeII =new QLabel(tr("MinRegionSizeII"));
-            auto pSpinSizeII = new QSpinBox;
-
-            pSpinSizeII->setRange(1, INT_MAX);
-            pSpinSizeII->setValue(m_pParam->m_minRegionSizeII);
+            m_pSpinSizeII = new QSpinBox;
+            m_pSpinSizeII->setRange(1, INT_MAX);
+            m_pSpinSizeII->setValue(m_pParam->m_minRegionSizeII);
             pLayout3->addWidget(pLabelMinRegionSizeII, 0, 0);
-            pLayout3->addWidget(pSpinSizeII, 0, 1);
+            pLayout3->addWidget(m_pSpinSizeII, 0, 1);
 
             auto pLabelSegEgbThresholdII =new QLabel(tr("SegEgbThresholdII"));
-            auto pSpinThresholdII = new QDoubleSpinBox;
-
-            pSpinThresholdII->setValue(m_pParam->m_segEgbThresholdII);
-            pSpinThresholdII->setSingleStep(0.1);
+            m_pSpinThresholdII = new QDoubleSpinBox;
+            m_pSpinThresholdII->setValue(m_pParam->m_segEgbThresholdII);
+            m_pSpinThresholdII->setSingleStep(0.1);
             pLayout3->addWidget(pLabelSegEgbThresholdII, 1, 0);
-            pLayout3->addWidget(pSpinThresholdII, 1, 1);
+            pLayout3->addWidget(m_pSpinThresholdII, 1, 1);
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_minRegionSizeI = pSpinSizeI->value();
-                m_pParam->m_minRegionSizeII = pSpinSizeII->value();
-                m_pParam->m_numSlicIter = pSpinNumIter->value();
-                m_pParam->m_segEgbThresholdI = pSpinThresholdI->value();
-                m_pParam->m_segEgbThresholdII = pSpinThresholdII->value();
-                m_pParam->m_slicSpixelSize = pSpinSlicS->value();
-                m_pParam->m_spatialWeight = pSpinWeight->value();
-
-                emit doApplyProcess(m_pParam);
-            });
-
-            
             m_pLayout->addWidget(pGroup1, 0, 0);
             m_pLayout->addWidget(pGroup2, 0, 1);
             m_pLayout->addWidget(pGroup3, 0, 2);
+        }
 
-            
+        void onApply() override
+        {
+            m_pParam->m_minRegionSizeI = m_pSpinSizeI->value();
+            m_pParam->m_minRegionSizeII = m_pSpinSizeII->value();
+            m_pParam->m_numSlicIter = m_pSpinNumIter->value();
+            m_pParam->m_segEgbThresholdI = m_pSpinThresholdI->value();
+            m_pParam->m_segEgbThresholdII = m_pSpinThresholdII->value();
+            m_pParam->m_slicSpixelSize = m_pSpinSlicS->value();
+            m_pParam->m_spatialWeight = m_pSpinWeight->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
-        std::shared_ptr<COcvHfsSegmentParam> m_pParam = nullptr;
+        std::shared_ptr<COcvHfsSegmentParam>    m_pParam = nullptr;
+        QSpinBox*                               m_pSpinSizeI = nullptr;
+        QSpinBox*                               m_pSpinSizeII = nullptr;
+        QSpinBox*                               m_pSpinNumIter = nullptr;
+        QDoubleSpinBox*                         m_pSpinThresholdI = nullptr;
+        QDoubleSpinBox*                         m_pSpinThresholdII = nullptr;
+        QSpinBox*                               m_pSpinSlicS = nullptr;
+        QDoubleSpinBox*                         m_pSpinWeight = nullptr;
 };
 
 class COcvWidgetHfsSegmentFactory : public CWidgetFactory

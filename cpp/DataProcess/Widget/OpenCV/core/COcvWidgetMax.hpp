@@ -40,27 +40,27 @@ class COcvWidgetMax : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvMaxParam>();
 
-            auto pCheckScalar = addCheck(0, tr("Scalar operation"), m_pParam->m_bScalar);
-            auto pSpinScalar = addDoubleSpin(1, tr("Scalar value"), m_pParam->m_scalar[0]);
-            
-            
+            m_pCheckScalar = addCheck(0, tr("Scalar operation"), m_pParam->m_bScalar);
+            m_pSpinScalar = addDoubleSpin(1, tr("Scalar value"), m_pParam->m_scalar[0]);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_bScalar = pCheckScalar->isChecked();
-                m_pParam->m_scalar= cv::Scalar::all(pSpinScalar->value());
-                emit doApplyProcess(m_pParam);
-            } );
+        void onApply() override
+        {
+            m_pParam->m_bScalar = m_pCheckScalar->isChecked();
+            m_pParam->m_scalar= cv::Scalar::all(m_pSpinScalar->value());
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvMaxParam> m_pParam = nullptr;
+        QCheckBox*      m_pCheckScalar = nullptr;
+        QDoubleSpinBox* m_pSpinScalar = nullptr;
 };
 
 class COcvWidgetMaxFactory : public CWidgetFactory

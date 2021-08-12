@@ -37,16 +37,18 @@ class CWidgetBlobMeasure : public CWorkflowTaskWidget
 
     public slots:
 
-        void            onItemChanged(QListWidgetItem* pItem);
+        void    onItemChanged(QListWidgetItem* pItem);
 
     protected:
 
-        virtual void    init();
-        void            initConnections();
+        void    init();
+        void    initConnections();
 
-        void            fillMeasuresListView();
+        void    fillMeasuresListView();
 
-        int             getMeasureIndex(const std::string &name) const;
+        int     getMeasureIndex(const std::string &name) const;
+
+        void    onApply() override;
 
     private:
 

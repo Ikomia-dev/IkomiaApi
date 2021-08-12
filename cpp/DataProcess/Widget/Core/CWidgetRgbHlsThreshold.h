@@ -37,7 +37,8 @@ class CWidgetRgbHlsThreshold : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void    init() override;
+        void    init();
+        void    onApply() override;
 
     private:
 

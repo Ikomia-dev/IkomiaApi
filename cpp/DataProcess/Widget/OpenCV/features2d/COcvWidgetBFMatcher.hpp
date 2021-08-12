@@ -41,38 +41,38 @@ class COcvWidgetBFMatcher : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBFMatcherParam>();
 
-            auto pCombo = addCombo(0, tr("Norm type"));
-            pCombo->addItem(tr("NORM_INF"), cv::NORM_INF);
-            pCombo->addItem(tr("NORM_L1"), cv::NORM_L1);
-            pCombo->addItem(tr("NORM_L2"), cv::NORM_L2);
-            pCombo->addItem(tr("NORM_L2SQR"), cv::NORM_L2SQR);
-            pCombo->addItem(tr("NORM_HAMMING"), cv::NORM_HAMMING);
-            pCombo->addItem(tr("NORM_HAMMING2"), cv::NORM_HAMMING2);
-            pCombo->addItem(tr("NORM_TYPE_MASK"), cv::NORM_TYPE_MASK);
-            pCombo->addItem(tr("NORM_MINMAX"), cv::NORM_MINMAX);
-            pCombo->addItem(tr("NORM_RELATIVE"), cv::NORM_RELATIVE);
-            pCombo->setCurrentIndex(pCombo->findData(m_pParam->m_normType));
+            m_pCombo = addCombo(0, tr("Norm type"));
+            m_pCombo->addItem(tr("NORM_INF"), cv::NORM_INF);
+            m_pCombo->addItem(tr("NORM_L1"), cv::NORM_L1);
+            m_pCombo->addItem(tr("NORM_L2"), cv::NORM_L2);
+            m_pCombo->addItem(tr("NORM_L2SQR"), cv::NORM_L2SQR);
+            m_pCombo->addItem(tr("NORM_HAMMING"), cv::NORM_HAMMING);
+            m_pCombo->addItem(tr("NORM_HAMMING2"), cv::NORM_HAMMING2);
+            m_pCombo->addItem(tr("NORM_TYPE_MASK"), cv::NORM_TYPE_MASK);
+            m_pCombo->addItem(tr("NORM_MINMAX"), cv::NORM_MINMAX);
+            m_pCombo->addItem(tr("NORM_RELATIVE"), cv::NORM_RELATIVE);
+            m_pCombo->setCurrentIndex(m_pCombo->findData(m_pParam->m_normType));
 
-            auto pCheck = addCheck(1, tr("Cross check"), m_pParam->m_bCrossCheck);
+            m_pCheck = addCheck(1, tr("Cross check"), m_pParam->m_bCrossCheck);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_normType = pCombo->currentData().toInt();
-                m_pParam->m_bCrossCheck = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
-            
+        void onApply() override
+        {
+            m_pParam->m_normType = m_pCombo->currentData().toInt();
+            m_pParam->m_bCrossCheck = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBFMatcherParam> m_pParam = nullptr;
+        QComboBox*  m_pCombo = nullptr;
+        QCheckBox*  m_pCheck = nullptr;
 };
 
 class COcvWidgetBFMatcherFactory : public CWidgetFactory

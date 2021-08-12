@@ -44,38 +44,44 @@ class COcvWidgetPCAOF : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvPCAOFParam>();
 
-            auto pSpinSizeW = addSpin(0, tr("Basis width"), m_pParam->m_basisSize.width);
-            auto pSpinSizeH = addSpin(1, tr("Basis height"), m_pParam->m_basisSize.height);
-            auto pSpinRate = addDoubleSpin(2, tr("Sparse rate"), m_pParam->m_sparseRate, 0, 1, 0.001, 3);
-            auto pSpinCorners = addDoubleSpin(3, tr("Corners fraction"), m_pParam->m_retainedCornersFraction, 0, 1, 0.1, 1);
-            auto pSpinOccTh = addDoubleSpin(4, tr("Occlusions threshold"), m_pParam->m_occlusionsThreshold, 0, 1, 0.0001, 4);
-            auto pSpinDamp = addDoubleSpin(5, tr("Damping factor"), m_pParam->m_dampingFactor, 0, 1, 0.00001, 5);
-            auto pSpinClahe = addSpin(6, tr("Clahe clip"), m_pParam->m_claheClip);
-            auto pCheck = addCheck(7, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+            m_pSpinSizeW = addSpin(0, tr("Basis width"), m_pParam->m_basisSize.width);
+            m_pSpinSizeH = addSpin(1, tr("Basis height"), m_pParam->m_basisSize.height);
+            m_pSpinRate = addDoubleSpin(2, tr("Sparse rate"), m_pParam->m_sparseRate, 0, 1, 0.001, 3);
+            m_pSpinCorners = addDoubleSpin(3, tr("Corners fraction"), m_pParam->m_retainedCornersFraction, 0, 1, 0.1, 1);
+            m_pSpinOccTh = addDoubleSpin(4, tr("Occlusions threshold"), m_pParam->m_occlusionsThreshold, 0, 1, 0.0001, 4);
+            m_pSpinDamp = addDoubleSpin(5, tr("Damping factor"), m_pParam->m_dampingFactor, 0, 1, 0.00001, 5);
+            m_pSpinClahe = addSpin(6, tr("Clahe clip"), m_pParam->m_claheClip);
+            m_pCheck = addCheck(7, tr("Use OpenCL"), m_pParam->m_bUseOCL);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_basisSize = cv::Size(pSpinSizeW->value(), pSpinSizeH->value());
-                m_pParam->m_sparseRate = pSpinRate->value();
-                m_pParam->m_retainedCornersFraction = pSpinCorners->value();
-                m_pParam->m_occlusionsThreshold = pSpinOccTh->value();
-                m_pParam->m_dampingFactor = pSpinDamp->value();
-                m_pParam->m_claheClip = pSpinClahe->value();
-                m_pParam->m_bUseOCL = pCheck->isChecked();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+        void onApply() override
+        {
+            m_pParam->m_basisSize = cv::Size(m_pSpinSizeW->value(), m_pSpinSizeH->value());
+            m_pParam->m_sparseRate = m_pSpinRate->value();
+            m_pParam->m_retainedCornersFraction = m_pSpinCorners->value();
+            m_pParam->m_occlusionsThreshold = m_pSpinOccTh->value();
+            m_pParam->m_dampingFactor = m_pSpinDamp->value();
+            m_pParam->m_claheClip = m_pSpinClahe->value();
+            m_pParam->m_bUseOCL = m_pCheck->isChecked();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvPCAOFParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinRate = nullptr;
+        QDoubleSpinBox* m_pSpinCorners = nullptr;
+        QDoubleSpinBox* m_pSpinOccTh = nullptr;
+        QDoubleSpinBox* m_pSpinDamp = nullptr;
+        QSpinBox*       m_pSpinSizeW = nullptr;
+        QSpinBox*       m_pSpinSizeH = nullptr;
+        QSpinBox*       m_pSpinClahe = nullptr;
+        QCheckBox*      m_pCheck = nullptr;
 };
 
 class COcvWidgetPCAOFFactory : public CWidgetFactory
@@ -92,4 +98,5 @@ class COcvWidgetPCAOFFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetPCAOF>(pParam);
         }
 };
+
 #endif // COCVWIDGETPCAOPTICALFLOW_HPP

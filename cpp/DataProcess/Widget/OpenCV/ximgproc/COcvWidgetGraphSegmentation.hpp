@@ -39,29 +39,30 @@ class COcvWidgetGraphSegmentation : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvGraphSegmentationParam>();
 
-            auto pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
-            auto pSpinK = addDoubleSpin(1, tr("K"), m_pParam->m_k);
-            auto pSpinMinSize = addSpin(2, tr("Minimum size"), m_pParam->m_minSize);
+            m_pSpinSigma = addDoubleSpin(0, tr("Sigma"), m_pParam->m_sigma, 0.0, DBL_MAX, 0.1, 2);
+            m_pSpinK = addDoubleSpin(1, tr("K"), m_pParam->m_k);
+            m_pSpinMinSize = addSpin(2, tr("Minimum size"), m_pParam->m_minSize);
+        }
 
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_sigma = pSpinSigma->value();
-                m_pParam->m_k = pSpinK->value();
-                m_pParam->m_minSize = pSpinMinSize->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_sigma = m_pSpinSigma->value();
+            m_pParam->m_k = m_pSpinK->value();
+            m_pParam->m_minSize = m_pSpinMinSize->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvGraphSegmentationParam> m_pParam = nullptr;
+        QDoubleSpinBox* m_pSpinSigma = nullptr;
+        QDoubleSpinBox* m_pSpinK = nullptr;
+        QSpinBox*       m_pSpinMinSize = nullptr;
 };
 
 class COcvWidgetGraphSegmentationFactory : public CWidgetFactory

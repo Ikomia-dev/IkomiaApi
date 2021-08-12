@@ -47,26 +47,23 @@ class COcvWidgetMerge : public CWorkflowTaskWidget
                 m_pParam = std::make_shared<COcvMergeParam>();
 
             auto pLabel = new QLabel(tr("Number of input images"));
-            auto pSpin = new QSpinBox;
-
-            pSpin->setMinimum(1);
-            pSpin->setValue(m_pParam->m_inputCount);
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_inputCount = pSpin->value();
-                emit doApplyProcess(m_pParam);
-            });
-
-            
+            m_pSpin = new QSpinBox;
+            m_pSpin->setMinimum(1);
+            m_pSpin->setValue(m_pParam->m_inputCount);
             m_pLayout->addWidget(pLabel, 0, 0);
-            m_pLayout->addWidget(pSpin, 0, 1);
-            
+            m_pLayout->addWidget(m_pSpin, 0, 1);
+        }
+
+        void onApply() override
+        {
+            m_pParam->m_inputCount = m_pSpin->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvMergeParam> m_pParam = nullptr;
+        QSpinBox*                       m_pSpin = nullptr;
 };
 
 class COcvWidgetMergeFactory : public CWidgetFactory

@@ -52,21 +52,14 @@ class COcvWidgetRotate : public CWorkflowTaskWidget
             m_pComboAngle->addItem(tr("270°"), cv::ROTATE_90_COUNTERCLOCKWISE);
             m_pComboAngle->setCurrentIndex(m_pComboAngle->findData(m_pParam->m_rotateCode));
 
-            
             m_pLayout->addWidget(pLabelAngle, 0, 0);
             m_pLayout->addWidget(m_pComboAngle, 0, 1);
-            
-
-            initConnections();
         }
 
-        void initConnections()
+        void onApply() override
         {
-            connect(m_pApplyBtn, &QPushButton::clicked, [&]
-            {
-                m_pParam->m_rotateCode = m_pComboAngle->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
+            m_pParam->m_rotateCode = m_pComboAngle->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:

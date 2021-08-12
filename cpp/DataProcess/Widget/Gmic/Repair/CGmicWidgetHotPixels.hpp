@@ -40,28 +40,27 @@ class CGmicWidgetHotPixels : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<CGmicHotPixelsParam>();
 
-            auto pSpinMaskSize = addSpin(0, tr("Mask size"), m_pParam->m_maskSize);
-            auto pSpinThreshold = addSpin(1, tr("Threshold(%)"), m_pParam->m_threshold);
+            m_pSpinMaskSize = addSpin(0, tr("Mask size"), m_pParam->m_maskSize);
+            m_pSpinThreshold = addSpin(1, tr("Threshold(%)"), m_pParam->m_threshold);
+        }
 
-            
-            
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_maskSize = pSpinMaskSize->value();
-                m_pParam->m_threshold = pSpinThreshold->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_maskSize = m_pSpinMaskSize->value();
+            m_pParam->m_threshold = m_pSpinThreshold->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<CGmicHotPixelsParam> m_pParam = nullptr;
+        QSpinBox*   m_pSpinMaskSize = nullptr;
+        QSpinBox*   m_pSpinThreshold = nullptr;
 };
 
 class CGmicWidgetHotPixelsFactory : public CWidgetFactory

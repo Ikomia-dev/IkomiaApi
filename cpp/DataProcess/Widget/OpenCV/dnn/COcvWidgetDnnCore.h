@@ -34,13 +34,13 @@ class DATAPROCESSSHARED_EXPORT COcvWidgetDnnCore : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void    init() override;
+        void    init();
 
     private:
 
-        void            initConnections();
-        void            fillComboTarget(cv::dnn::Backend backend);
-        QString         getTargetName(const cv::dnn::Target& target) const;
+        void    initConnections();
+        void    fillComboTarget(cv::dnn::Backend backend);
+        QString getTargetName(const cv::dnn::Target& target) const;
 
     protected:
 

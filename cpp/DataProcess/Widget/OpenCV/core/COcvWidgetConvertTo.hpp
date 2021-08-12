@@ -41,38 +41,40 @@ class COcvWidgetConvertTo : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvConvertToParam>();
 
-            auto pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha);
-            auto pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta);
+            m_pSpinAlpha = addDoubleSpin(0, tr("Alpha"), m_pParam->m_alpha);
+            m_pSpinBeta = addDoubleSpin(1, tr("Beta"), m_pParam->m_beta);
 
-            auto pComboDepth = addCombo(2, tr("Depth"));
-            pComboDepth->addItem("Default", -1);
-            pComboDepth->addItem("CV_8U", CV_8U);
-            pComboDepth->addItem("CV_8S", CV_8S);
-            pComboDepth->addItem("CV_16U", CV_16U);
-            pComboDepth->addItem("CV_16S", CV_16S);
-            pComboDepth->addItem("CV_32S", CV_32S);
-            pComboDepth->addItem("CV_32F", CV_32F);
-            pComboDepth->addItem("CV_64F", CV_64F);
-            pComboDepth->setCurrentIndex(pComboDepth->findData(m_pParam->m_dtype));
+            m_pComboDepth = addCombo(2, tr("Depth"));
+            m_pComboDepth->addItem("Default", -1);
+            m_pComboDepth->addItem("CV_8U", CV_8U);
+            m_pComboDepth->addItem("CV_8S", CV_8S);
+            m_pComboDepth->addItem("CV_16U", CV_16U);
+            m_pComboDepth->addItem("CV_16S", CV_16S);
+            m_pComboDepth->addItem("CV_32S", CV_32S);
+            m_pComboDepth->addItem("CV_32F", CV_32F);
+            m_pComboDepth->addItem("CV_64F", CV_64F);
+            m_pComboDepth->setCurrentIndex(m_pComboDepth->findData(m_pParam->m_dtype));
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]{
-                m_pParam->m_dtype = pComboDepth->currentData().toInt();
-                m_pParam->m_alpha = pSpinAlpha->value();
-                m_pParam->m_beta = pSpinBeta->value();
-                emit doApplyProcess(m_pParam);
-            } );
-
-            
+        void onApply() override
+        {
+            m_pParam->m_dtype = m_pComboDepth->currentData().toInt();
+            m_pParam->m_alpha = m_pSpinAlpha->value();
+            m_pParam->m_beta = m_pSpinBeta->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvConvertToParam> m_pParam = nullptr;
+        QComboBox*      m_pComboDepth = nullptr;
+        QDoubleSpinBox* m_pSpinAlpha = nullptr;
+        QDoubleSpinBox* m_pSpinBeta = nullptr;
 };
 
 class COcvWidgetConvertToFactory : public CWidgetFactory

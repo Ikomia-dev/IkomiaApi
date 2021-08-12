@@ -57,11 +57,6 @@ void CWorkflowTaskWidget::setApplyBtnHidden(bool bHidden)
     m_pApplyBtn->setHidden(bHidden);
 }
 
-void CWorkflowTaskWidget::onApply()
-{
-    return;
-}
-
 QComboBox *CWorkflowTaskWidget::addCombo(int row, const QString &title)
 {
     auto pLabel = new QLabel(title);

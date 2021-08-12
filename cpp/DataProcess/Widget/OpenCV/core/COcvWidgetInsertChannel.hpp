@@ -40,24 +40,24 @@ class COcvWidgetInsertChannel : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvInsertChannelParam>();
 
-            auto pSpinIndex = addSpin(0, tr("Channel index (zero-based)"), m_pParam->m_index, 0, 4, 1);
-            
+            m_pSpinIndex = addSpin(0, tr("Channel index (zero-based)"), m_pParam->m_index, 0, 4, 1);
+        }
 
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_index = pSpinIndex->value();
-                emit doApplyProcess(m_pParam);
-            });
+        void onApply() override
+        {
+            m_pParam->m_index = m_pSpinIndex->value();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvInsertChannelParam> m_pParam = nullptr;
+        QSpinBox* m_pSpinIndex = nullptr;
 };
 
 class COcvWidgetInsertChannelFactory : public CWidgetFactory

@@ -45,7 +45,7 @@ class COcvWidgetBoxFilter : public CWorkflowTaskWidget
 
     protected:
 
-        virtual void init()
+        void init()
         {
             if(m_pParam == nullptr)
                 m_pParam = std::make_shared<COcvBoxFilterParam>();
@@ -54,36 +54,36 @@ class COcvWidgetBoxFilter : public CWorkflowTaskWidget
             m_pSpin->setValue(m_pParam->m_ksize.width);
             QLabel* pLabelSpin = new QLabel(tr("Filter size d"));
 
-            auto pCheckNormalize = new QCheckBox("Normalize");
-            pCheckNormalize->setChecked(m_pParam->m_bNormalize);
+            m_pCheckNormalize = new QCheckBox("Normalize");
+            m_pCheckNormalize->setChecked(m_pParam->m_bNormalize);
 
             auto pLabelBorder = new QLabel(tr("Border type"));
-            auto pComboBorder = new QComboBox;
-            pComboBorder->addItem("Default", cv::BORDER_DEFAULT);
-            pComboBorder->addItem("Replicate", cv::BORDER_REPLICATE);
-            pComboBorder->setCurrentIndex(pComboBorder->findData(m_pParam->m_borderType));
-
-            connect(m_pApplyBtn, &QPushButton::clicked, [=]
-            {
-                m_pParam->m_ksize = cv::Size(m_pSpin->value(), m_pSpin->value());
-                m_pParam->m_bNormalize = pCheckNormalize->isChecked();
-                m_pParam->m_borderType = pComboBorder->currentData().toInt();
-                emit doApplyProcess(m_pParam);
-            });
-
+            m_pComboBorder = new QComboBox;
+            m_pComboBorder->addItem("Default", cv::BORDER_DEFAULT);
+            m_pComboBorder->addItem("Replicate", cv::BORDER_REPLICATE);
+            m_pComboBorder->setCurrentIndex(m_pComboBorder->findData(m_pParam->m_borderType));
 
             m_pLayout->addWidget(pLabelSpin, 0, 0);
             m_pLayout->addWidget(m_pSpin, 0, 1);
-            m_pLayout->addWidget(pCheckNormalize, 1, 0);
+            m_pLayout->addWidget(m_pCheckNormalize, 1, 0);
             m_pLayout->addWidget(pLabelBorder, 2, 0);
-            m_pLayout->addWidget(pComboBorder, 2, 1);
+            m_pLayout->addWidget(m_pComboBorder, 2, 1);
+        }
 
+        void onApply() override
+        {
+            m_pParam->m_ksize = cv::Size(m_pSpin->value(), m_pSpin->value());
+            m_pParam->m_bNormalize = m_pCheckNormalize->isChecked();
+            m_pParam->m_borderType = m_pComboBorder->currentData().toInt();
+            emit doApplyProcess(m_pParam);
         }
 
     private:
 
         std::shared_ptr<COcvBoxFilterParam> m_pParam = nullptr;
         QSpinBox*                           m_pSpin = nullptr;
+        QCheckBox*                          m_pCheckNormalize = nullptr;
+        QComboBox*                          m_pComboBorder = nullptr;
 };
 
 class COcvWidgetBoxFilterFactory : public CWidgetFactory
