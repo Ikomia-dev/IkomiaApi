@@ -33,7 +33,7 @@ class CImageIOWrap : public CImageIO, public wrapper<CImageIO>
         CImageIOWrap(IODataType dataType);
         CImageIOWrap(IODataType dataType, const CMat& image);
         CImageIOWrap(IODataType dataType, const CMat& image, const std::string& name);
-        CImageIOWrap(IODataType datatype, const std::string& path);
+        CImageIOWrap(IODataType datatype, const std::string& name);
         CImageIOWrap(IODataType datatype, const std::string& name, const std::string& path);
         CImageIOWrap(const CImageIO &io);
 

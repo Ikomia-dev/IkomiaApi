@@ -60,7 +60,14 @@ CImageIO::CImageIO(IODataType data, const CMat &image, const std::string& name) 
     m_bNewDataInfo = true;
 }
 
-CImageIO::CImageIO(IODataType data, const std::string& path, const std::string &name) : CWorkflowTaskIO(data, name)
+CImageIO::CImageIO(IODataType data, const std::string &name) : CWorkflowTaskIO(data, name)
+{
+    m_description = QObject::tr("2D or 3D images.\n"
+                                "Can be single frame from video or camera stream.").toStdString();
+    m_saveFormat = DataFileFormat::PNG;
+}
+
+CImageIO::CImageIO(IODataType data, const std::string& name, const std::string &path) : CWorkflowTaskIO(data, name)
 {
     m_description = QObject::tr("2D or 3D images.\n"
                                 "Can be single frame from video or camera stream.").toStdString();

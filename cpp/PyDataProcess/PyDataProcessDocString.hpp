@@ -346,7 +346,7 @@ constexpr auto _ctor4imageProcessIODocString =
         "Args:\n"
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
-        "   arg3 (str): image path\n";
+        "   arg3 (str): input or output name\n";
 
 constexpr auto _ctor5imageProcessIODocString =
         "Construct a CImageIO instance with the given data type, name and the image loaded from the given path. "
@@ -360,8 +360,8 @@ constexpr auto _ctor5imageProcessIODocString =
         "Args:\n"
         "   arg1: self\n\n"
         "   arg2 (:py:class:`~ikomia.core.pycore.IODataType`): data type\n\n"
-        "   arg3 (str): image path\n\n"
-        "   arg4 (str): input or output name\n";
+        "   arg3 (str): input or output name\n\n"
+        "   arg4 (str): image path\n";
 
 constexpr auto _clearImageDataDocString =
         "Clear image and overlay mask so that they become empty.\n";
