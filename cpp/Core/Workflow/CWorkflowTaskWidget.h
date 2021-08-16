@@ -252,6 +252,7 @@ class CORESHARED_EXPORT CWorkflowTaskWidget : public QWidget
 
         QPushButton*    m_pApplyBtn = nullptr;
         QGridLayout*    m_pLayout = nullptr;
+        QVBoxLayout*    m_pContainerLayout = nullptr;
         QScrollArea*    m_pScrollArea = nullptr;
 };
 

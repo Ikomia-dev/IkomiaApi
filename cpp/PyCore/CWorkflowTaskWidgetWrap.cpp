@@ -49,8 +49,7 @@ void CWorkflowTaskWidgetWrap::setLayout(long long layoutPtr)
     try
     {
         auto pLayout = reinterpret_cast<QLayout*>(layoutPtr);
-        m_pLayout->addLayout(pLayout, 0, 0);
-        //this->CWorkflowTaskWidget::setLayout(pLayout);
+        m_pContainerLayout->insertLayout(0, pLayout);
     }
     catch(boost::python::error_already_set&)
     {

@@ -18,25 +18,27 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "CWorkflowTaskWidget.h"
+#include "PythonThread.hpp"
 
 CWorkflowTaskWidget::CWorkflowTaskWidget(QWidget *parent) : QWidget(parent)
 {
+    // Internal grid layout -> for internal process or C++ plugin
     m_pLayout = new QGridLayout;
+
+    // General Apply button
     m_pApplyBtn = new QPushButton(tr("Apply"));
     m_pApplyBtn->setObjectName("CProcessBtn");
     m_pApplyBtn->setDefault(true);
 
-    connect(m_pApplyBtn, &QPushButton::clicked, this, &CWorkflowTaskWidget::onApply);
-
     // Create layout to keep gridlayout widgets close to each other
-    QVBoxLayout* pContainerLayout = new QVBoxLayout;
-    pContainerLayout->addLayout(m_pLayout);
-    pContainerLayout->addStretch(0);
+    m_pContainerLayout = new QVBoxLayout;
+    m_pContainerLayout->addLayout(m_pLayout);
+    m_pContainerLayout->addStretch(0);
 
     // Create widget containing gridlayout
     QWidget* pWidget = new QWidget;
     pWidget->setObjectName("CWidget");
-    pWidget->setLayout(pContainerLayout);
+    pWidget->setLayout(m_pContainerLayout);
 
     // Put this widget in a scroll area
     m_pScrollArea = new QScrollArea;
@@ -50,6 +52,8 @@ CWorkflowTaskWidget::CWorkflowTaskWidget(QWidget *parent) : QWidget(parent)
     pLayout->addWidget(m_pScrollArea);
     pLayout->addWidget(m_pApplyBtn);
     setLayout(pLayout);
+
+    connect(m_pApplyBtn, &QPushButton::clicked, this, &CWorkflowTaskWidget::onApply);
 }
 
 void CWorkflowTaskWidget::setApplyBtnHidden(bool bHidden)
