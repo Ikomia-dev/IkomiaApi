@@ -27,3 +27,4 @@ build
 Build
 dist
 /ikomia/*.so
+/ikomia/opencv/*.so

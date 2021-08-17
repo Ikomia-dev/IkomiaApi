@@ -18,10 +18,14 @@
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
+import sys
 from ikomia.utils import init_logging
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
 from dotenv import load_dotenv
+
+# Add built-in OpenCV to Python path
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
 
 global api_session
 api_session = None

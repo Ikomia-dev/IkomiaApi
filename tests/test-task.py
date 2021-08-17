@@ -1,6 +1,6 @@
 import ikomia
 import logging
-from ikomia import cv2
+import cv2
 from ikomia.utils import tests
 from ikomia.core import task, ParamMap
 from ikomia.dataprocess import registry, displayIO

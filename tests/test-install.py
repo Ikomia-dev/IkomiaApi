@@ -52,7 +52,7 @@ def test_dataprocess():
         graphics_in = dataprocess.CGraphicsInput()
         graphics_out = dataprocess.CGraphicsOutput()
         path_io = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, "/home")
-        array_io = dataprocess.CArrayIO(np.arange(20))
+        array_io = dataprocess.CArrayIO(np.arange(20), "numpy array")
 
         categories = dataprocess.MapIntStr()
         categories[0] = "boat"

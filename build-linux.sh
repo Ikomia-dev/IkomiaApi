@@ -97,7 +97,7 @@ else
     LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt cv2.cpython-37m-x86_64-linux-gnu.so -bundle-non-qt-libs
     mv lib/* .
     rm -rf lib
-    mv cv2.cpython-37m-x86_64-linux-gnu.so ..
+    mv cv2.cpython-37m-x86_64-linux-gnu.so ../opencv
     echo "----- Bundle dependencies done -----"
 
     echo "----- Update Ikomia libs RPATH -----"
@@ -111,7 +111,7 @@ else
     patchelf --set-rpath "\$ORIGIN/../lib" dataio/pydataio.so
     patchelf --set-rpath "\$ORIGIN/../lib" dataprocess/pydataprocess.so
 
-    patchelf --set-rpath "\$ORIGIN/lib" cv2.cpython-37m-x86_64-linux-gnu.so
+    patchelf --set-rpath "\$ORIGIN/../lib" opencv/cv2.cpython-37m-x86_64-linux-gnu.so
     echo "----- Patch Python libs done -----"
 
     echo "----- Generating Python wheel -----"
