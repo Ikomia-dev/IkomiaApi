@@ -30,12 +30,46 @@ import numpy as np
 from functools import singledispatch
 from ikomia import core, dataprocess
 import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.cbook import flatten
 
+# Matplotlib backend choice
+_backend_name = None
+_valid_backend = True
+_gui_backend = True
+
+try:
+    matplotlib.use("Qt5Agg")
+    import matplotlib.pyplot as plt
+    _backend_name = "Qt5Agg"
+except ImportError:
+    try:
+        matplotlib.use("GTK3Agg")
+        import matplotlib.pyplot as plt
+        _backend_name = "GTK3Agg"
+    except ImportError:
+        try:
+            matplotlib.use("TkAgg")
+            import matplotlib.pyplot as plt
+            _backend_name = "TkAgg"
+        except ImportError:
+            try:
+                matplotlib.use("agg")
+                import matplotlib.pyplot as plt
+                _backend_name = "agg"
+                _gui_backend = False
+            except ImportError:
+                _valid_backend = False
+
 logger = logging.getLogger(__name__)
-matplotlib.use("TkAgg")
+
+
+def _check_backend():
+    if not _valid_backend:
+        raise RuntimeError("No valid Matplotlib backend found.")
+
+    if plt.get_backend() != _backend_name:
+        matplotlib.use(_backend_name)
 
 
 def _to_plot_color(color):
@@ -56,10 +90,11 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
     """
     Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
     """
+    _check_backend()
+
     if not obj.isDataAvailable:
         return
 
-    matplotlib.use("TkAgg")
     if fig is not None:
         child = True
         ax = fig.subplots(1, 1)
@@ -82,10 +117,11 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
     Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
     in a Matplotlib figure.
     """
+    _check_backend()
+
     if not obj.isDataAvailable:
         return
 
-    matplotlib.use("TkAgg")
     if fig is not None:
         child = True
         ax = fig.subplots(1, 1)
@@ -198,10 +234,11 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
     Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
     in a Matplotlib figure.
     """
+    _check_backend()
+
     if not obj.isDataAvailable:
         return
 
-    matplotlib.use("TkAgg")
     if fig is not None:
         child = True
         ax = fig.subplots(1, 1)
@@ -314,6 +351,8 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
     Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`)
     as a table in a Matplotlib figure.
     """
+    _check_backend()
+
     if not obj.isDataAvailable:
         return
 
@@ -322,7 +361,6 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
     else:
         child = True
 
-    matplotlib.use("TkAgg")
     labels = obj.getAllLabelList()
     col_labels = obj.getAllHeaderLabels()
     values = obj.getAllValueList()
@@ -466,10 +504,11 @@ def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
     Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CMeasureIO`)
     as a table in a Matplotlib figure.
     """
+    _check_backend()
+
     if not obj.isDataAvailable:
         return
 
-    matplotlib.use("TkAgg")
     if fig is not None:
         child = True
         ax = fig.subplots(1, 1)
@@ -531,7 +570,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     """
     Display task inputs and outputs (:py:class:`~ikomia.core.pycore.CWorkflowTask`) in two separate Matplotlib figures.
     """
-    matplotlib.use("TkAgg")
+    _check_backend()
 
     # inputs
     inputs = obj.getInputs()
