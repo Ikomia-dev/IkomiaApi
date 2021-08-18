@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_get_local_algorithms():
+    logger.info("===== Test::get list of local algorithms =====")
     reg = registry.IkomiaRegistry()
     algos = reg.getAlgorithms()
     logger.info("Number of algorithms:" + str(len(algos)))
@@ -15,6 +16,7 @@ def test_get_local_algorithms():
 
 
 def test_get_online_algorithms():
+    logger.info("===== Test::get list of online algorithms =====")
     reg = registry.IkomiaRegistry()
     algos = reg.get_online_algorithms()
     logger.info("Number of online algorithms:" + str(len(algos)))
@@ -24,12 +26,14 @@ def test_get_online_algorithms():
 
 
 def test_download_plugin():
+    logger.info("===== Test::download online algorithm =====")
     reg = registry.IkomiaRegistry()
     logger.info("Downloading RAFTOpticalFlow...")
     reg._download_plugin("RAFTOpticalFlow")
 
 
 def test_install_plugin():
+    logger.info("===== Test::install online algorithms =====")
     reg = registry.IkomiaRegistry()
     logger.info("Installing RAFTOpticalFlow...")
     reg._install_plugin("RAFTOpticalFlow")
@@ -38,6 +42,7 @@ def test_install_plugin():
 
 
 def test_local_instantiation():
+    logger.info("===== Test::instanciate local algorithms =====")
     reg = registry.IkomiaRegistry()
     algo_names = reg.getAlgorithms()
     algos = []
@@ -55,6 +60,7 @@ def test_local_instantiation():
 
 
 def test_instantiation():
+    logger.info("===== Test::instanciate online algorithms =====")
     reg = registry.IkomiaRegistry()
     # Local C++ algo
     logger.info("Instantiate CLAHE algorithm...")
@@ -77,6 +83,7 @@ def test_instantiation():
 
 
 def test_update():
+    logger.info("===== Test::update algorithms =====")
     reg = registry.IkomiaRegistry()
     logger.info("Updating ResNet Train algorithm...")
     reg.update_algorithm("ResNet Train")
@@ -85,6 +92,7 @@ def test_update():
 
 
 def test_execution():
+    logger.info("===== Test::execute local and online algorithms =====")
     reg = registry.IkomiaRegistry()
 
     # Load image

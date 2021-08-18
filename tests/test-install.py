@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_utils():
-    print("----- Utils module -----")
+    logger.info("===== Test::Utils module =====")
     try:
         cpp_exc = utils.CException()
 
@@ -25,7 +25,7 @@ def test_utils():
 
 
 def test_core():
-    print("----- Core module -----")
+    logger.info("===== Test::Core module =====")
     try:
         io = core.CWorkflowTaskIO()
         task = core.CWorkflowTask("NewTask")
@@ -44,7 +44,7 @@ def test_core():
 
 
 def test_dataprocess():
-    print("----- DataProcess module -----")
+    logger.info("===== Test::DataProcess module =====")
     try:
         image_io = dataprocess.CImageIO(core.IODataType.IMAGE)
         video_io = dataprocess.CVideoIO(core.IODataType.VIDEO)
@@ -75,7 +75,7 @@ def test_dataprocess():
 
 
 def test_dnn():
-    print("----- DNN module -----")
+    logger.info("===== Test::DNN module =====")
     try:
         train_param = TaskParam()
         train_task = dnn.TrainProcess("Train-task", train_param)

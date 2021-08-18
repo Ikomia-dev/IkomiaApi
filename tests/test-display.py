@@ -1,11 +1,15 @@
+import logging
 import ikomia
 import cv2
 from ikomia import core, dataprocess
 from ikomia.dataprocess import registry, displayIO, workflow
 from ikomia.utils import tests
 
+logger = logging.getLogger(__name__)
+
 
 def test_display_image():
+    logger.info("===== Test::display image IO =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
     io = dataprocess.CImageIO(core.IODataType.IMAGE, img)
@@ -13,6 +17,7 @@ def test_display_image():
 
 
 def test_display_graphics():
+    logger.info("===== Test::display graphics IO =====")
     # graphics input
     items = []
     io = dataprocess.CGraphicsInput()
@@ -60,6 +65,7 @@ def test_display_graphics():
 
 
 def test_display_table(ik_registry):
+    logger.info("===== Test::display measure IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
@@ -81,6 +87,7 @@ def test_display_table(ik_registry):
 
 
 def test_display_plot(ik_registry):
+    logger.info("===== Test::display numeric IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
@@ -101,6 +108,7 @@ def test_display_plot(ik_registry):
 
 
 def test_display_task(ik_registry):
+    logger.info("===== Test::display task =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
@@ -115,6 +123,7 @@ def test_display_task(ik_registry):
 
 
 def test_display_workflow(ik_registry):
+    logger.info("===== Test::display workflow =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("Test Workflow", ik_registry)
     wf.load(wf_path)

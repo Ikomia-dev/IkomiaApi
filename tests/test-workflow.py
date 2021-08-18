@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_metadata():
+    logger.info("===== Test::set workflow metadata =====")
     wf = workflow.Workflow("test_metadata")
     description = "This is a test workflow"
     keywords = "ikomia,test,empty"
@@ -23,10 +24,11 @@ def test_metadata():
 
 def test_load(registry):
     # load test workflow
+    logger.info("===== Test::load workflow from JSON =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_load", registry)
     wf.load(wf_path)
-    logger.info("----- Workflow information -----")
+    logger.info("----- Workflow information:")
     logger.info(wf.name)
     logger.info(wf.description)
     logger.info(wf.keywords)
@@ -35,6 +37,7 @@ def test_load(registry):
 
 
 def test_single_image_run(ik_registry):
+    logger.info("===== Test::execute workflow on single image =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_single_image_run", ik_registry)
@@ -63,6 +66,7 @@ def test_single_image_run(ik_registry):
 
 
 def test_directory_run(ik_registry):
+    logger.info("===== Test::execute workflow on folder =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_dir_run", ik_registry)
     wf.setAutoSave(True)
@@ -76,6 +80,7 @@ def test_directory_run(ik_registry):
 
 
 def test_resnet_train(ik_registry, dataset_dir):
+    logger.info("===== Test::launch ResNet training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowResNetTrain.json"
     wf = workflow.Workflow("test_resnet", ik_registry)
     wf.load(wf_path)
@@ -86,6 +91,7 @@ def test_resnet_train(ik_registry, dataset_dir):
 
 
 def test_yolov5_train(ik_registry):
+    logger.info("===== Test::launch YoloV5 training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowYoloV5Train.json"
     wf = workflow.Workflow("test_yolov5", ik_registry)
     wf.load(wf_path)
@@ -95,6 +101,7 @@ def test_yolov5_train(ik_registry):
 
 
 def test_export_graphviz(ik_registry):
+    logger.info("===== Test::export workflow as Graphviz =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_graphviz", ik_registry)
     wf.load(wf_path)
@@ -104,6 +111,7 @@ def test_export_graphviz(ik_registry):
 
 
 def test_graph_structure(ik_registry):
+    logger.info("===== Test::workflow introspection =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_single_image_run", ik_registry)
     wf.load(wf_path)
@@ -112,7 +120,7 @@ def test_graph_structure(ik_registry):
     ids = wf.getTaskIDs()
     for task_id in ids:
         task = wf.getTask(task_id)
-        logger.info("===== Id:" + str(task_id) + " Name:" + task.name + " =====")
+        logger.info("##### Id:" + str(task_id) + " Name:" + task.name)
         logger.info(task)
 
     # get root and retrieve its child tasks
@@ -180,6 +188,7 @@ def test_graph_structure(ik_registry):
 
 
 def test_graph_build(ik_registry):
+    logger.info("===== Test::create workflow from scratch =====")
     wf = workflow.Workflow("FromScratch", ik_registry)
 
     # branch with auto-connection
@@ -226,6 +235,7 @@ def test_graph_build(ik_registry):
 
 
 def test_time_metrics(ik_registry):
+    logger.info("===== Test::compute workflow time metrics =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("test_single_image_run", ik_registry)
@@ -247,14 +257,14 @@ def test_time_metrics(ik_registry):
 if __name__ == "__main__":
     ikomia.initialize()
     reg = registry.IkomiaRegistry()
-    # test_metadata()
-    # test_load(reg)
-    # test_single_image_run(reg)
-    # test_directory_run(reg)
+    test_metadata()
+    test_load(reg)
+    test_single_image_run(reg)
+    test_directory_run(reg)
     # test_resnet_train(reg, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
     # test_resnet_train(reg, "/home/ludo/Images/Datasets/hymenoptera_data")
     # test_yolov5_train(reg)
-    # test_export_graphviz(reg)
+    test_export_graphviz(reg)
     test_graph_structure(reg)
-    # test_time_metrics(reg)
-    # test_graph_build(reg)
+    test_time_metrics(reg)
+    test_graph_build(reg)
