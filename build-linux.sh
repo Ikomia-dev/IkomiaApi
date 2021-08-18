@@ -1,11 +1,9 @@
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 [-m clean|build] [-r remote] [-b branch name] [-v python version suffix] [-t python version tag] [-p platform name] [-w]"
+   echo "Usage: $0 [-m clean|build|bundle|wheel|all] [-r remote] [-b branch name] [-v python version suffix] [-t python version tag] [-p platform name]"
    exit 1 # Exit script after printing help
 }
-
-build_wheel=0
 
 while getopts "m:r:b:v:t:p:w" opt
 do
@@ -16,13 +14,12 @@ do
       v ) pyversion="$OPTARG" ;;
       t ) pytag="$OPTARG" ;;
       p ) platform="$OPTARG" ;;
-      w ) build_wheel=1 ;;
    esac
 done
 
 if [ -z "$method" ]
 then
-   method="build"
+   method="all"
 fi
 
 if [ -z "$remote" ]
@@ -55,25 +52,32 @@ then
   rm -rf build
   rm -rf dist
   rm -rf ikomia.egg-info
+  rm -rf cpp/Build
+  rm -rf opencv/*.so
   echo "Cleaning wheel successfully"
 else
-  echo "----- Build Ikomia C++ libs -----"
-  build_dir="cpp/Build"
-  if [ ! -d $build_dir ]
+  root_folder=$PWD
+
+  if [ $method = "all" ] || [ $method = "build" ]
   then
-    mkdir $build_dir
+    echo "----- Build Ikomia C++ libs -----"
+    build_dir="cpp/Build"
+    if [ ! -d $build_dir ]
+    then
+      mkdir $build_dir
+    fi
+
+    git pull $remote $branch
+    cd $build_dir
+    qmake ../IkomiaApi.pro
+    make -j12
+    make install
+    echo "----- Build done-----"
   fi
 
-  git pull $remote $branch
-  cd $build_dir
-  qmake ../IkomiaApi.pro
-  make -j12
-  make install
-  echo "----- Build done-----"
-
-  if [ $build_wheel = 1 ]
+  if [ $method = "all" ] || [ $method = "bundle" ]
   then
-    cd ../..
+    cd $root_folder
     python_lib_dir="ikomia/lib"
     if [ ! -d $python_lib_dir ]
     then
@@ -97,7 +101,7 @@ else
     LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD linuxdeployqt cv2.cpython-37m-x86_64-linux-gnu.so -bundle-non-qt-libs
     mv lib/* .
     rm -rf lib
-    mv cv2.cpython-37m-x86_64-linux-gnu.so ../opencv
+    mv cv2.cpython-37m-x86_64-linux-gnu.so ../opencv/
     echo "----- Bundle dependencies done -----"
 
     echo "----- Update Ikomia libs RPATH -----"
@@ -110,12 +114,17 @@ else
     patchelf --set-rpath "\$ORIGIN/../lib" core/pycore.so
     patchelf --set-rpath "\$ORIGIN/../lib" dataio/pydataio.so
     patchelf --set-rpath "\$ORIGIN/../lib" dataprocess/pydataprocess.so
+    echo "----- Update Ikomia libs done -----"
 
+    echo "----- Update OpenCV Python RPATH -----"
     patchelf --set-rpath "\$ORIGIN/../lib" opencv/cv2.cpython-37m-x86_64-linux-gnu.so
-    echo "----- Patch Python libs done -----"
+    echo "----- Update OpenCV Python RPATH done -----"
+  fi
 
+  if [ $method = "all" ] || [ $method = "wheel" ]
+  then
     echo "----- Generating Python wheel -----"
-    cd ..
+    cd $root_folder
     python$pyversion setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
     echo "----- Python wheel done -----"
   fi
