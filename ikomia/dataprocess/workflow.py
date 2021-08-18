@@ -75,14 +75,14 @@ class Workflow(dataprocess.CWorkflow):
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
         """
         if array is not None:
-            img_input = dataprocess.CImageIO(datatype, array)
+            img_input = dataprocess.CImageIO(datatype, array, "Image")
         elif path:
-            img_input = dataprocess.CImageIO(datatype, path)
+            img_input = dataprocess.CImageIO(datatype, "Image", path)
         elif url:
             parsed = urlparse(url)
             img_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
             utils.http.download_file(url, img_path)
-            img_input = dataprocess.CImageIO(datatype, img_path)
+            img_input = dataprocess.CImageIO(datatype, "Image", img_path)
 
         if index == -1:
             self.addInput(img_input)
