@@ -1,5 +1,6 @@
 import logging
 import numpy as np
+import ikomia
 from ikomia import utils, core, dataprocess, dnn
 from ikomia.core.task import TaskParam
 
@@ -87,6 +88,7 @@ def test_dnn():
 
 
 if __name__ == "__main__":
+    ikomia.initialize()
     test_utils()
     test_core()
     test_dataprocess()

@@ -36,7 +36,6 @@ from matplotlib.cbook import flatten
 # Matplotlib backend choice
 _backend_name = None
 _valid_backend = True
-_gui_backend = True
 
 try:
     matplotlib.use("Qt5Agg")
@@ -54,10 +53,8 @@ except ImportError:
             _backend_name = "TkAgg"
         except ImportError:
             try:
-                matplotlib.use("agg")
                 import matplotlib.pyplot as plt
-                _backend_name = "agg"
-                _gui_backend = False
+                _backend_name = plt.get_backend()
             except ImportError:
                 _valid_backend = False
 
