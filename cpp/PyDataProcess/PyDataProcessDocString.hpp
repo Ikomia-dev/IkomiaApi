@@ -797,10 +797,14 @@ constexpr auto _pathIODocString =
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.\n\n";
 
 constexpr auto _ctor1PathIODocString =
-        "Construct a CPathIO instance with the given data type and path. "
+        "Construct a CPathIO instance with the given data type. "
         "Data type can be either a file or folder path (see :py:class:`~ikomia.core.pycore.IODataType`).\n\n";
 
 constexpr auto _ctor2PathIODocString =
+        "Construct a CPathIO instance with the given data type and path. "
+        "Data type can be either a file or folder path (see :py:class:`~ikomia.core.pycore.IODataType`).\n\n";
+
+constexpr auto _ctor3PathIODocString =
         "Construct a CPathIO instance with the given data type, path and name. "
         "Data type can be either a file or folder path (see :py:class:`~ikomia.core.pycore.IODataType`).\n\n";
 

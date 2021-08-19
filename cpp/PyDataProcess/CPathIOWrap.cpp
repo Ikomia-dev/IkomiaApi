@@ -4,6 +4,10 @@ CPathIOWrap::CPathIOWrap() : CPathIO()
 {
 }
 
+CPathIOWrap::CPathIOWrap(IODataType dataType) : CPathIO(dataType)
+{
+}
+
 CPathIOWrap::CPathIOWrap(IODataType dataType, const std::string& path) : CPathIO(dataType, path)
 {
 }

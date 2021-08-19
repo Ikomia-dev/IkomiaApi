@@ -9,6 +9,7 @@ class CPathIOWrap : public CPathIO, public wrapper<CPathIO>
     public:
 
         CPathIOWrap();
+        CPathIOWrap(IODataType dataType);
         CPathIOWrap(IODataType dataType, const std::string& path);
         CPathIOWrap(IODataType dataType, const std::string& path, const std::string& name);
         CPathIOWrap(const CPathIO& io);
