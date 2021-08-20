@@ -1402,7 +1402,10 @@ void CWorkflow::connectSignals(const WorkflowTaskPtr& pNewTask)
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doGraphicsContextChanged, this->getSignalRawPtr(), &CSignalHandler::onGraphicsContextChanged);
     QObject::connect(pNewTask->getSignalRawPtr(), &CSignalHandler::doLog, [&](const QString& msg)
     {
-        getSignalRawPtr()->doLog(msg);
+        if(Utils::IkomiaApp::isStarted())
+            getSignalRawPtr()->doLog(msg);
+        else
+            Utils::print(msg, QtMsgType::QtInfoMsg);
     });
 }
 
