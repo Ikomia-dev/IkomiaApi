@@ -36,6 +36,8 @@ UMapString CWorkflowTaskParam::getParamMap() const
     UMapString map;
     for(auto it : m_cfg)
         map[it.first] = it.second;
+
+    return map;
 }
 
 uint CWorkflowTaskParam::getHashValue() const
