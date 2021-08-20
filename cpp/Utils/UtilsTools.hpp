@@ -69,6 +69,8 @@
 #include <linux/videodev2.h>
 #endif
 
+#define IK_PYTHON_API
+
 ///@cond INTERNAL
 
 namespace Ikomia
@@ -914,6 +916,51 @@ namespace Ikomia
                 ret += getExceptionTraceback(pTraceback);
                 return ret;
             }
+
+            inline void         print(const std::string& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
+            {
+                auto strMsg = str(msg);
+                object file;
+
+                switch(type)
+                {
+                    case QtDebugMsg:
+                    case QtInfoMsg:
+                    default:
+                        try
+                        {
+                            file = import("sys").attr("stdout");
+                        }
+                        catch (const error_already_set &)
+                        {
+                            /* If print() is called from code that is executed as
+                             * part of garbage collection during interpreter shutdown,
+                             * importing 'sys' can fail. Give up rather than crashing the
+                             * interpreter in this case. */
+                            return;
+                        }
+                        break;
+
+                    case QtWarningMsg:
+                    case QtCriticalMsg:
+                    case QtFatalMsg:
+                        try
+                        {
+                            file = import("sys").attr("stderr");
+                        }
+                        catch (const error_already_set &)
+                        {
+                            /* If print() is called from code that is executed as
+                             * part of garbage collection during interpreter shutdown,
+                             * importing 'sys' can fail. Give up rather than crashing the
+                             * interpreter in this case. */
+                            return;
+                        }
+                        break;
+                }
+                auto write = file.attr("write");
+                write(strMsg);
+            }
         }
 
         namespace MLflow
@@ -977,6 +1024,9 @@ namespace Ikomia
             }
             else
             {
+#ifdef IK_PYTHON_API
+                Python::print(msg.toStdString() + "\n", type);
+#else
                 switch(type)
                 {
                     case QtDebugMsg:
@@ -994,6 +1044,7 @@ namespace Ikomia
                         std::cout << msg.toStdString() << std::endl;
                         break;
                 }
+#endif
             }
         }
 
@@ -1030,6 +1081,9 @@ namespace Ikomia
             }
             else
             {
+#ifdef IK_PYTHON_API
+                Python::print(msg + "\n", type);
+#else
                 switch(type)
                 {
                     case QtDebugMsg:
@@ -1047,6 +1101,7 @@ namespace Ikomia
                         std::cout << msg << std::endl;
                         break;
                 }
+#endif
             }
         }
 
