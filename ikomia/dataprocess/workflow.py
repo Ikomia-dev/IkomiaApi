@@ -139,6 +139,9 @@ class Workflow(dataprocess.CWorkflow):
             int: unique task identifier
         """
         algo = self.registry.create_algorithm(name, param)
+        if algo is None:
+            raise RuntimeError("Algorithm " + name + "can't be created.")
+
         return self.addTask(algo)
 
     def find_task(self, name: str):
@@ -149,7 +152,7 @@ class Workflow(dataprocess.CWorkflow):
              name (str): algorithm name
 
         Returns:
-            list of int: task identifiers
+            list of pairs (tuple): 1- task identifier 2- task object
         """
         tasks = []
         ids = self.getTaskIDs()
