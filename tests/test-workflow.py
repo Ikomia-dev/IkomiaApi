@@ -1,5 +1,6 @@
 import logging
 import os
+import argparse
 import ikomia
 from ikomia.dataprocess import registry, workflow, displayIO
 from ikomia.core import config
@@ -90,14 +91,40 @@ def test_resnet_train(ik_registry, dataset_dir):
     logger.info("Training finished successfully")
 
 
-def test_yolov5_train(ik_registry):
+def test_yolov5_train(ik_registry, wgisd_dataset_dir):
     logger.info("===== Test::launch YoloV5 training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowYoloV5Train.json"
     wf = workflow.Workflow("test_yolov5", ik_registry)
     wf.load(wf_path)
+    # set dataset directory
+    wgisd_tasks = wf.find_task("WGISD_Dataset")
+
+    wgisd_params = wgisd_tasks[0][1].getParam().getParamMap()
+    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
+    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_tasks[0][1].getParam().setParamMap(wgisd_params)
+
     logger.info("Start YoloV5 training...")
     wf.run()
     logger.info("Training finished successfully")
+
+
+def test_yolo_train(ik_registry, wgisd_dataset_dir):
+    logger.info("===== Test::launch Darknet YOLO training =====")
+    wf = workflow.Workflow("YoloTrain", reg)
+
+    wgisd_id = wf.add_task("WGISD_Dataset")
+    wgisd = wf.getTask(wgisd_id)
+    wgisd_params = wgisd.getParam().getParamMap()
+    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
+    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_params["load_mask"] = str(False)
+    wgisd.getParam().setParamMap(wgisd_params)
+
+    yolo_id = wf.add_task("YoloTrain")
+    wf.connect_tasks(wgisd_id, yolo_id)
+
+    wf.run()
 
 
 def test_export_graphviz(ik_registry):
@@ -255,15 +282,20 @@ def test_time_metrics(ik_registry):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
+    parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
+    opt = parser.parse_args()
+
     ikomia.initialize()
     reg = registry.IkomiaRegistry()
     test_metadata()
     test_load(reg)
     test_single_image_run(reg)
     test_directory_run(reg)
-    # test_resnet_train(reg, "/run/media/ludo/data/Ludo/Work/Ikomia/Images/Datasets/hymenoptera_data")
-    # test_resnet_train(reg, "/home/ludo/Images/Datasets/hymenoptera_data")
-    # test_yolov5_train(reg)
+    test_resnet_train(reg, opt.classif_dataset_dir)
+    test_yolo_train(reg, opt.detect_dataset_dir)
+    test_yolov5_train(reg, opt.detect_dataset_dir)
     test_export_graphviz(reg)
     test_graph_structure(reg)
     test_time_metrics(reg)
