@@ -124,6 +124,164 @@ namespace Ikomia
             return adl_helper::as_string(std::forward<T>(t));
         }
 
+        namespace Python
+        {
+            using namespace boost::python;
+
+            inline std::string  getExceptionType(PyObject *pType)
+            {
+                std::string ret;
+                if(pType)
+                {
+                    handle<> hType(pType);
+                    str typeStr(hType);
+                    // Extract the string from the boost::python object
+                    extract<std::string> eTypeStr(typeStr);
+
+                    // If a valid string extraction is available, use it
+                    //  otherwise use fallback
+                    if(eTypeStr.check())
+                        ret = eTypeStr();
+                    else
+                        ret = "Unknown exception type";
+                }
+                return ret;
+            }
+            inline std::string  getExceptionValue(PyObject *pValue)
+            {
+                std::string ret;
+                if(pValue)
+                {
+                    handle<> hValue(pValue);
+                    str valueStr(hValue);
+                    extract<std::string> returned(valueStr);
+
+                    if(returned.check())
+                        ret =  ": " + returned();
+                    else
+                        ret = std::string(": Unparseable Python error: ");
+                }
+                return ret;
+            }
+            inline std::string  getExceptionTraceback(PyObject *pTraceback)
+            {
+                std::string ret;
+                if(pTraceback)
+                {
+                    try
+                    {
+                        handle<> hTb(pTraceback);
+                        // Load the traceback module and the format_tb function
+                        object tb(import("traceback"));
+                        object formatTb(tb.attr("format_tb"));
+                        // Call format_tb to get a list of traceback strings
+                        object tbList(formatTb(hTb));
+                        // Join the traceback strings into a single string
+                        object tbStr(str("\n").join(tbList));
+                        // Extract the string, check the extraction, and fallback in necessary
+                        extract<std::string> returned(tbStr);
+
+                        if(returned.check())
+                            ret = ": " + returned();
+                        else
+                            ret = std::string(": Unparseable Python traceback");
+                    }
+                    catch(error_already_set&)
+                    {
+                        ret = std::string(": Unparseable Python traceback");
+                    }
+                }
+                return ret;
+            }
+
+            inline std::string  handlePythonException()
+            {
+                CPyEnsureGIL gil;
+                PyObject *pType = nullptr, *pValue = nullptr, *pTraceback = nullptr;
+                // Fetch the exception info from the Python C API
+                PyErr_Fetch(&pType, &pValue, &pTraceback);
+                PyErr_NormalizeException(&pType, &pValue, &pTraceback);
+
+                // Fallback error
+                std::string ret("Unfetchable Python error");
+
+                // If the fetch got a type pointer, parse the type into the exception string
+                ret = getExceptionType(pType);
+
+                // Do the same for the exception value (the stringification of the exception)
+                ret += getExceptionValue(pValue);
+
+                // Parse lines from the traceback using the Python traceback module
+                ret += getExceptionTraceback(pTraceback);
+                return ret;
+            }
+
+            inline void         print(const std::string& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
+            {
+                auto strMsg = str(msg);
+                object file;
+
+                switch(type)
+                {
+                    case QtDebugMsg:
+                    case QtInfoMsg:
+                    default:
+                        try
+                        {
+                            file = import("sys").attr("stdout");
+                        }
+                        catch (const error_already_set &)
+                        {
+                            /* If print() is called from code that is executed as
+                             * part of garbage collection during interpreter shutdown,
+                             * importing 'sys' can fail. Give up rather than crashing the
+                             * interpreter in this case. */
+                            return;
+                        }
+                        break;
+
+                    case QtWarningMsg:
+                    case QtCriticalMsg:
+                    case QtFatalMsg:
+                        try
+                        {
+                            file = import("sys").attr("stderr");
+                        }
+                        catch (const error_already_set &)
+                        {
+                            /* If print() is called from code that is executed as
+                             * part of garbage collection during interpreter shutdown,
+                             * importing 'sys' can fail. Give up rather than crashing the
+                             * interpreter in this case. */
+                            return;
+                        }
+                        break;
+                }
+                auto write = file.attr("write");
+                write(strMsg);
+            }
+
+            inline std::string  getIkomiaApiLibFolder()
+            {
+                try
+                {
+                    auto pyIkPath = import("ikomia").attr("__file__");
+                    extract<std::string> ikPath(pyIkPath);
+
+                    if(ikPath.check())
+                    {
+                        QFileInfo info(QString::fromStdString(ikPath));
+                        return info.absolutePath().toStdString() + "/lib";
+                    }
+                }
+                catch (const boost::python::error_already_set &)
+                {
+                    return "";
+                }
+                return "";
+            }
+        }
+
         namespace IkomiaApp
         {
             inline std::string  getIkomiaFolder()
@@ -166,6 +324,18 @@ namespace Ikomia
             {
                 auto windows = QGuiApplication::allWindows();
                 return windows.size() > 0;
+            }
+            inline std::string  getIkomiaLibFolder()
+            {
+                if(isStarted())
+                {
+                    auto appDirPath = QCoreApplication::applicationDirPath();
+                    QDir appDir(appDirPath);
+                    appDir.cdUp();
+                    return appDir.absolutePath().toStdString() + "/lib";
+                }
+                else
+                    return Utils::Python::getIkomiaApiLibFolder();
             }
         }
 
@@ -822,144 +992,6 @@ namespace Ikomia
             inline std::string  getCurrentApiVersion()
             {
                 return "0.5.0";
-            }
-        }
-
-        namespace Python
-        {
-            using namespace boost::python;
-
-            inline std::string  getExceptionType(PyObject *pType)
-            {
-                std::string ret;
-                if(pType)
-                {
-                    handle<> hType(pType);
-                    str typeStr(hType);
-                    // Extract the string from the boost::python object
-                    extract<std::string> eTypeStr(typeStr);
-
-                    // If a valid string extraction is available, use it
-                    //  otherwise use fallback
-                    if(eTypeStr.check())
-                        ret = eTypeStr();
-                    else
-                        ret = "Unknown exception type";
-                }
-                return ret;
-            }
-            inline std::string  getExceptionValue(PyObject *pValue)
-            {
-                std::string ret;
-                if(pValue)
-                {
-                    handle<> hValue(pValue);
-                    str valueStr(hValue);
-                    extract<std::string> returned(valueStr);
-
-                    if(returned.check())
-                        ret =  ": " + returned();
-                    else
-                        ret = std::string(": Unparseable Python error: ");
-                }
-                return ret;
-            }
-            inline std::string  getExceptionTraceback(PyObject *pTraceback)
-            {
-                std::string ret;
-                if(pTraceback)
-                {
-                    try
-                    {
-                        handle<> hTb(pTraceback);
-                        // Load the traceback module and the format_tb function
-                        object tb(import("traceback"));
-                        object formatTb(tb.attr("format_tb"));
-                        // Call format_tb to get a list of traceback strings
-                        object tbList(formatTb(hTb));
-                        // Join the traceback strings into a single string
-                        object tbStr(str("\n").join(tbList));
-                        // Extract the string, check the extraction, and fallback in necessary
-                        extract<std::string> returned(tbStr);
-
-                        if(returned.check())
-                            ret = ": " + returned();
-                        else
-                            ret = std::string(": Unparseable Python traceback");
-                    }
-                    catch(error_already_set&)
-                    {
-                        ret = std::string(": Unparseable Python traceback");
-                    }
-                }
-                return ret;
-            }
-
-            inline std::string  handlePythonException()
-            {
-                CPyEnsureGIL gil;
-                PyObject *pType = nullptr, *pValue = nullptr, *pTraceback = nullptr;
-                // Fetch the exception info from the Python C API
-                PyErr_Fetch(&pType, &pValue, &pTraceback);
-                PyErr_NormalizeException(&pType, &pValue, &pTraceback);
-
-                // Fallback error
-                std::string ret("Unfetchable Python error");
-
-                // If the fetch got a type pointer, parse the type into the exception string
-                ret = getExceptionType(pType);
-
-                // Do the same for the exception value (the stringification of the exception)
-                ret += getExceptionValue(pValue);
-
-                // Parse lines from the traceback using the Python traceback module
-                ret += getExceptionTraceback(pTraceback);
-                return ret;
-            }
-
-            inline void         print(const std::string& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
-            {
-                auto strMsg = str(msg);
-                object file;
-
-                switch(type)
-                {
-                    case QtDebugMsg:
-                    case QtInfoMsg:
-                    default:
-                        try
-                        {
-                            file = import("sys").attr("stdout");
-                        }
-                        catch (const error_already_set &)
-                        {
-                            /* If print() is called from code that is executed as
-                             * part of garbage collection during interpreter shutdown,
-                             * importing 'sys' can fail. Give up rather than crashing the
-                             * interpreter in this case. */
-                            return;
-                        }
-                        break;
-
-                    case QtWarningMsg:
-                    case QtCriticalMsg:
-                    case QtFatalMsg:
-                        try
-                        {
-                            file = import("sys").attr("stderr");
-                        }
-                        catch (const error_already_set &)
-                        {
-                            /* If print() is called from code that is executed as
-                             * part of garbage collection during interpreter shutdown,
-                             * importing 'sys' can fail. Give up rather than crashing the
-                             * interpreter in this case. */
-                            return;
-                        }
-                        break;
-                }
-                auto write = file.attr("write");
-                write(strMsg);
             }
         }
 
