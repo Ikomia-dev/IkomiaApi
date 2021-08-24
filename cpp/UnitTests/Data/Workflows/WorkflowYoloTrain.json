@@ -1,0 +1,109 @@
+{
+    "connections": [
+        {
+            "source_id": 0,
+            "source_index": 0,
+            "target_id": 1,
+            "target_index": 0
+        }
+    ],
+    "metadata": {
+        "description": "Train YOLO object detector on WGISD dataset",
+        "keywords": "yolo, darknet, object detection, training, viticulture",
+        "name": "YoloTrain"
+    },
+    "tasks": [
+        {
+            "task_data": {
+                "name": "WGISD_Dataset",
+                "parameters": [
+                    {
+                        "name": "load_mask",
+                        "value": "False"
+                    },
+                    {
+                        "name": "class_file_path",
+                        "value": "/home/ludo/Images/Datasets/wgisd/classes.txt"
+                    },
+                    {
+                        "name": "data_folder_path",
+                        "value": "/home/ludo/Images/Datasets/wgisd/data"
+                    }
+                ]
+            },
+            "task_id": 0
+        },
+        {
+            "task_data": {
+                "name": "YoloTrain",
+                "parameters": [
+                    {
+                        "name": "weightDecay",
+                        "value": "0.000500"
+                    },
+                    {
+                        "name": "splitRatio",
+                        "value": "0.900000"
+                    },
+                    {
+                        "name": "batchSize",
+                        "value": "32"
+                    },
+                    {
+                        "name": "configPath",
+                        "value": ""
+                    },
+                    {
+                        "name": "learningRate",
+                        "value": "0.001000"
+                    },
+                    {
+                        "name": "epochs",
+                        "value": "1"
+                    },
+                    {
+                        "name": "gpuCount",
+                        "value": "1"
+                    },
+                    {
+                        "name": "inputHeight",
+                        "value": "416"
+                    },
+                    {
+                        "name": "classes",
+                        "value": "1"
+                    },
+                    {
+                        "name": "modelName",
+                        "value": "Tiny YOLOv3"
+                    },
+                    {
+                        "name": "inputWidth",
+                        "value": "416"
+                    },
+                    {
+                        "name": "subdivision",
+                        "value": "16"
+                    },
+                    {
+                        "name": "momentum",
+                        "value": "0.900000"
+                    },
+                    {
+                        "name": "model",
+                        "value": "3"
+                    },
+                    {
+                        "name": "autoConfig",
+                        "value": "1"
+                    },
+                    {
+                        "name": "outputPath",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/YoloTrain/data/models"
+                    }
+                ]
+            },
+            "task_id": 1
+        }
+    ]
+}
