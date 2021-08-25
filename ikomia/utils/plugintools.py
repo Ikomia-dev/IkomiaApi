@@ -77,14 +77,14 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
         self.run_script(self.name)
 
 
-def get_plugin_dependencies(pluginFolder):
+def get_plugin_dependencies(plugin_folder):
     good_modules = []
     bad_modules = []
     file_paths = []
     module_names = []
 
     # Get all python files of the plugin (including sub-folders)
-    for r, d, f in os.walk(pluginFolder):
+    for r, d, f in os.walk(plugin_folder):
         for file in f:
             if file.endswith(".py"):
                 module_names.append(os.path.splitext(file)[0])
