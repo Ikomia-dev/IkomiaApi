@@ -52,6 +52,7 @@ then
   rm -rf build
   rm -rf dist
   rm -rf ikomia.egg-info
+  rm -rf ikomia/lib
   rm -rf cpp/Build
   rm -rf opencv/*.so
   echo "Cleaning wheel successfully"
