@@ -55,7 +55,7 @@ class COcvPSNR : public C2dImageTask
             removeInput(1);
             addInput(std::make_shared<CImageIO>());
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
         COcvPSNR(const std::string name, const std::shared_ptr<COcvPSNRParam>& pParam) : C2dImageTask(name)
         {
@@ -63,7 +63,7 @@ class COcvPSNR : public C2dImageTask
             removeInput(1);
             addInput(std::make_shared<CImageIO>());
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
 
         size_t  getProgressSteps() override
@@ -105,7 +105,7 @@ class COcvPSNR : public C2dImageTask
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<double>>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CNumericIO<double>>(getOutput(0));
             if(pOutput)
             {
                 std::vector<double> values;

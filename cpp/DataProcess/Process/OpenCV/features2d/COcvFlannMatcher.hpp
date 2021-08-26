@@ -74,11 +74,11 @@ class COcvFlannMatcher : public C2dFeatureMatcherTask
 
             auto pImg1 = std::dynamic_pointer_cast<CImageIO>(getInput(0));
             auto pDesc1 = std::dynamic_pointer_cast<CImageIO>(getInput(1));
-            auto pFeatures1 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(2));
+            auto pFeatures1 = std::dynamic_pointer_cast<CNumericIO<cv::KeyPoint>>(getInput(2));
 
             auto pImg2 = std::dynamic_pointer_cast<CImageIO>(getInput(3));
             auto pDesc2 = std::dynamic_pointer_cast<CImageIO>(getInput(4));
-            auto pFeatures2 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(5));
+            auto pFeatures2 = std::dynamic_pointer_cast<CNumericIO<cv::KeyPoint>>(getInput(5));
 
             auto pGraphicsInput = std::dynamic_pointer_cast<CGraphicsInput>(getInput(6));
             auto pParam = std::dynamic_pointer_cast<COcvFlannMatcherParam>(m_pParam);

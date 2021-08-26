@@ -30,8 +30,8 @@
 #include "IO/CImageIO.h"
 #include "IO/CGraphicsInput.h"
 #include "IO/CGraphicsOutput.h"
-#include "IO/CMeasureIO.h"
-#include "IO/CFeatureIO.hpp"
+#include "IO/CBlobMeasureIO.h"
+#include "IO/CNumericIO.hpp"
 
 /**
  * @ingroup groupDataProcess

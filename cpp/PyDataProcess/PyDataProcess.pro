@@ -43,9 +43,9 @@ HEADERS += \
         CArrayIOWrap.h \
         CDatasetIOWrap.h \
         CDnnTrainTaskWrap.h \
-        CFeatureIOWrap.hpp \
         CGraphicsInputWrap.h \
         CImageIOWrap.h \
+        CNumericIOWrap.hpp \
         CPathIOWrap.h \
         CVideoIOWrap.h \
         CWidgetOutputWrap.h \

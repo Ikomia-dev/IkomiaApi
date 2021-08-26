@@ -24,11 +24,11 @@ C2dFeatureMatcherTask::C2dFeatureMatcherTask() : C2dImageTask()
     clearInputs();
     addInput(std::make_shared<CImageIO>()); // Image originale 1
     addInput(std::make_shared<CImageIO>(IODataType::DESCRIPTORS)); // Descriptor 1
-    addInput(std::make_shared<CFeatureIO<cv::KeyPoint>>()); // Keypoints 1
+    addInput(std::make_shared<CNumericIO<cv::KeyPoint>>()); // Keypoints 1
 
     addInput(std::make_shared<CImageIO>()); // Image originale 2
     addInput(std::make_shared<CImageIO>(IODataType::DESCRIPTORS)); // Descriptor 2
-    addInput(std::make_shared<CFeatureIO<cv::KeyPoint>>()); // Keypoints 2
+    addInput(std::make_shared<CNumericIO<cv::KeyPoint>>()); // Keypoints 2
 
     addInput(std::make_shared<CGraphicsInput>());
 }
@@ -38,11 +38,11 @@ C2dFeatureMatcherTask::C2dFeatureMatcherTask(const std::string& name) : C2dImage
     clearInputs();
     addInput(std::make_shared<CImageIO>()); // Image originale 1
     addInput(std::make_shared<CImageIO>(IODataType::DESCRIPTORS)); // Descriptor 1
-    addInput(std::make_shared<CFeatureIO<cv::KeyPoint>>()); // Keypoints 1
+    addInput(std::make_shared<CNumericIO<cv::KeyPoint>>()); // Keypoints 1
 
     addInput(std::make_shared<CImageIO>()); // Image originale 2
     addInput(std::make_shared<CImageIO>(IODataType::DESCRIPTORS)); // Descriptor 2
-    addInput(std::make_shared<CFeatureIO<cv::KeyPoint>>()); // Keypoints 2
+    addInput(std::make_shared<CNumericIO<cv::KeyPoint>>()); // Keypoints 2
 
     addInput(std::make_shared<CGraphicsInput>());
 }

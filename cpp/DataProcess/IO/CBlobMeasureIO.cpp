@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#include "CMeasureIO.h"
+#include "CBlobMeasureIO.h"
 #include "CException.h"
 #include "Main/CoreTools.hpp"
 
@@ -67,50 +67,50 @@ void CObjectMeasure::setValues(const std::vector<double> &values)
     m_values = values;
 }
 
-//-----------------------------------//
-//----- class CMeasureIO -----//
-//-----------------------------------//
-CMeasureIO::CMeasureIO() : CWorkflowTaskIO(IODataType::BLOB_VALUES, "CMeasureIO")
+//--------------------------------//
+//----- class CBlobMeasureIO -----//
+//--------------------------------//
+CBlobMeasureIO::CBlobMeasureIO() : CWorkflowTaskIO(IODataType::BLOB_VALUES, "CBlobMeasureIO")
 {
     m_description = QObject::tr("Predefined measures computed from connected components (Surface, perimeter...).").toStdString();
     m_saveFormat = DataFileFormat::CSV;
 }
 
-CMeasureIO::CMeasureIO(const std::string &name) : CWorkflowTaskIO(IODataType::BLOB_VALUES, name)
+CBlobMeasureIO::CBlobMeasureIO(const std::string &name) : CWorkflowTaskIO(IODataType::BLOB_VALUES, name)
 {
     m_description = QObject::tr("Predefined measures computed from connected components (Surface, perimeter...).").toStdString();
     m_saveFormat = DataFileFormat::CSV;
 }
 
-CMeasureIO::CMeasureIO(const CMeasureIO& io) : CWorkflowTaskIO(io)
+CBlobMeasureIO::CBlobMeasureIO(const CBlobMeasureIO& io) : CWorkflowTaskIO(io)
 {
     m_measures = io.m_measures;
 }
 
-CMeasureIO::CMeasureIO(const CMeasureIO&& io) : CWorkflowTaskIO(io)
+CBlobMeasureIO::CBlobMeasureIO(const CBlobMeasureIO&& io) : CWorkflowTaskIO(io)
 {
     m_measures = std::move(io.m_measures);
 }
 
-CMeasureIO::~CMeasureIO()
+CBlobMeasureIO::~CBlobMeasureIO()
 {
 }
 
-CMeasureIO &CMeasureIO::operator=(const CMeasureIO& io)
+CBlobMeasureIO &CBlobMeasureIO::operator=(const CBlobMeasureIO& io)
 {
     CWorkflowTaskIO::operator=(io);
     m_measures = io.m_measures;
     return *this;
 }
 
-CMeasureIO &CMeasureIO::operator=(const CMeasureIO&& io)
+CBlobMeasureIO &CBlobMeasureIO::operator=(const CBlobMeasureIO&& io)
 {
     CWorkflowTaskIO::operator=(io);
     m_measures = std::move(io.m_measures);
     return *this;
 }
 
-void CMeasureIO::setObjectMeasure(size_t index, const CObjectMeasure &measure)
+void CBlobMeasureIO::setObjectMeasure(size_t index, const CObjectMeasure &measure)
 {
     if(index >= m_measures.size())
         addObjectMeasure(measure);
@@ -122,40 +122,40 @@ void CMeasureIO::setObjectMeasure(size_t index, const CObjectMeasure &measure)
     }
 }
 
-ObjectsMeasures CMeasureIO::getMeasures() const
+ObjectsMeasures CBlobMeasureIO::getMeasures() const
 {
     return m_measures;
 }
 
-bool CMeasureIO::isDataAvailable() const
+bool CBlobMeasureIO::isDataAvailable() const
 {
     return m_measures.size() > 0;
 }
 
-void CMeasureIO::addObjectMeasure(const CObjectMeasure &measure)
+void CBlobMeasureIO::addObjectMeasure(const CObjectMeasure &measure)
 {
     ObjectMeasures measures;
     measures.push_back(measure);
     m_measures.push_back(measures);
 }
 
-void CMeasureIO::addObjectMeasures(const std::vector<CObjectMeasure> &measures)
+void CBlobMeasureIO::addObjectMeasures(const std::vector<CObjectMeasure> &measures)
 {
     m_measures.push_back(measures);
 }
 
-void CMeasureIO::clearData()
+void CBlobMeasureIO::clearData()
 {
     m_measures.clear();
 }
 
-void CMeasureIO::save()
+void CBlobMeasureIO::save()
 {
     std::string path = m_saveFolder + m_saveBaseName + Utils::Data::getFileFormatExtension(m_saveFormat);
     save(path);
 }
 
-void CMeasureIO::save(const std::string &path)
+void CBlobMeasureIO::save(const std::string &path)
 {
     auto extension = Utils::File::extension(path);
     if(extension == ".csv")
@@ -164,7 +164,7 @@ void CMeasureIO::save(const std::string &path)
         saveXML(path);
 }
 
-std::set<std::string> CMeasureIO::getMeasuresNames() const
+std::set<std::string> CBlobMeasureIO::getMeasuresNames() const
 {
     std::set<std::string> names;
     //Iterate throw objects (ie lines)
@@ -177,7 +177,7 @@ std::set<std::string> CMeasureIO::getMeasuresNames() const
     return names;
 }
 
-void CMeasureIO::saveCSV(const std::string &path) const
+void CBlobMeasureIO::saveCSV(const std::string &path) const
 {
     std::ofstream file;
     file.open(path, std::ios::out | std::ios::trunc);
@@ -225,18 +225,18 @@ void CMeasureIO::saveCSV(const std::string &path) const
     file.close();
 }
 
-void CMeasureIO::saveXML(const std::string &path) const
+void CBlobMeasureIO::saveXML(const std::string &path) const
 {
     Q_UNUSED(path);
     throw CException(CoreExCode::NOT_IMPLEMENTED, "Feature not available yet", __func__, __FILE__, __LINE__);
 }
 
-std::shared_ptr<CMeasureIO> CMeasureIO::clone() const
+std::shared_ptr<CBlobMeasureIO> CBlobMeasureIO::clone() const
 {
-    return std::static_pointer_cast<CMeasureIO>(cloneImp());
+    return std::static_pointer_cast<CBlobMeasureIO>(cloneImp());
 }
 
-std::shared_ptr<CWorkflowTaskIO> CMeasureIO::cloneImp() const
+std::shared_ptr<CWorkflowTaskIO> CBlobMeasureIO::cloneImp() const
 {
-    return std::shared_ptr<CMeasureIO>(new CMeasureIO(*this));
+    return std::shared_ptr<CBlobMeasureIO>(new CBlobMeasureIO(*this));
 }

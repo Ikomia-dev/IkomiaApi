@@ -26,7 +26,7 @@ CVideoTrackingTask::CVideoTrackingTask() : CVideoTask()
     setOutputDataType(IODataType::IMAGE_BINARY, 0);
     addOutput(std::make_shared<CImageIO>());
     addOutput(std::make_shared<CGraphicsOutput>());
-    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CBlobMeasureIO>());
 }
 
 CVideoTrackingTask::CVideoTrackingTask(const std::string& name) : CVideoTask(name)
@@ -34,7 +34,7 @@ CVideoTrackingTask::CVideoTrackingTask(const std::string& name) : CVideoTask(nam
     setOutputDataType(IODataType::IMAGE_BINARY, 0);
     addOutput(std::make_shared<CImageIO>());
     addOutput(std::make_shared<CGraphicsOutput>());
-    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CBlobMeasureIO>());
 }
 
 void CVideoTrackingTask::setRoiToTrack()
@@ -90,7 +90,7 @@ void CVideoTrackingTask::manageOutputs()
     auto graphicsObj = pGraphicsOutput->addRectangle(m_trackedRect.x, m_trackedRect.y, m_trackedRect.width, m_trackedRect.height);
 
     //Tracked rectangle coordinates
-    auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(3));
+    auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(3));
     if(pMeasureOutput)
     {
         CMeasure bboxMeasure(CMeasure::BBOX, QObject::tr("Tracked ROI").toStdString());

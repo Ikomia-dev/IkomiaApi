@@ -290,10 +290,10 @@ std::string CWorkflowTaskIO::getClassName(IODataType ioDataType)
             return "CGraphicsOutput";
 
         case IODataType::BLOB_VALUES:
-            return "CMeasureIO";
+            return "CBlobMeasureIO";
 
         case IODataType::NUMERIC_VALUES:
-            return "CFeatureIO";
+            return "CNumericIO";
 
         case IODataType::WIDGET:
             return "CWidgetOutput";

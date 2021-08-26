@@ -138,22 +138,22 @@ constexpr auto _ctor2ObjMeasureDocString =
 constexpr auto _getMeasureInfoDocString =
         "Get measure information (identifier + name). See :py:class:`~ikomia.core.pycore.CMeasure`.\n";
 
-//----------------------//
-//----- CMeasureIO -----//
-//----------------------//
+//--------------------------//
+//----- CBlobMeasureIO -----//
+//--------------------------//
 constexpr auto _measureIODocString =
         "Define input or output for a task dedicated to manage blob measures (ie connected components). "
-        "It is possible to compute and store several measures for a single blob. A CMeasureIO instance "
+        "It is possible to compute and store several measures for a single blob. A CBlobMeasureIO instance "
         "stores a list of measures for each blob of an image, so you have a list of :py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure` list. "
         "Please note that it is possible to map each blob with its associated graphics item stored in a :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` instance. "
         "You just need to pass the graphics item identifier to the object measure\n. "
-        "Blob measures can also be handled by :py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`. "
-        "Although CDblFeatureIO is more generic, it can't map measure values with graphics item, which can be useful "
+        "Blob measures can also be handled by :py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`. "
+        "Although CNumericIO is more generic, it can't map measure values with graphics item, which can be useful "
         "to give visual information from object measures to users.\n"
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`\n\n";
 
 constexpr auto _ctorMeasureIODocString =
-        "Construct a CMeasureIO instance with the given name.\n\n"
+        "Construct a CBlobMeasureIO instance with the given name.\n\n"
         "Args:\n"
         "   arg1 (str): input or output name\n";
 
@@ -182,7 +182,7 @@ constexpr auto _addObjMeasuresDocString =
         "measures (list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
 
 //----------------------//
-//----- CFeatureIO -----//
+//----- CNumericIO -----//
 //----------------------//
 constexpr auto _featureProcessIODocString =
         "Define input or output for a task dedicated to manage numeric values. "
@@ -193,7 +193,7 @@ constexpr auto _featureProcessIODocString =
         "Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`\n\n";
 
 constexpr auto _ctorFeatureIODocString =
-        "Construct a CFeatureIO instance with the given name.\n\n"
+        "Construct a CNumericIO instance with the given name.\n\n"
         "Args:\n"
         "   arg1 (str): input or output name\n";
 
@@ -1354,12 +1354,12 @@ constexpr auto _wfSetInputDocString =
         "Derived class that handles common data type already exists: "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`, "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CVideoIO`, "
-        ":py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`, "
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`, "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`, "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`, "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`, "
         ":py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`, "
-        ":py:class:`~ikomia.dataprocess.pydataprocess.CMeasureIO`.\n\n"
+        ":py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`.\n\n"
         "Args:\n\n"
         "   input (:py:class:`~ikomia.core.pycore.CWorkflowTaskIO` object or derived): global input of the workflow\n\n"
         "   index (int): zero-based index\n\n"

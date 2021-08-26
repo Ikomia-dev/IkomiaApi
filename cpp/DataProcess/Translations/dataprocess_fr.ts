@@ -6104,7 +6104,7 @@
         <translation>Dataset d&apos;images annotées au format Ikomia (Deep Learning).</translation>
     </message>
     <message>
-        <location filename="../IO/CFeatureIO.hpp" line="203"/>
+        <location filename="../IO/CNumericIO.hpp" line="203"/>
         <source>Numerical values structured as table data (headers, labels and values).
 Can be displayed as table or plot.</source>
         <translation>Valeurs numériques structurées en tableau (entêtes, intitulés et valeurs).
@@ -6144,7 +6144,7 @@ Can be single frame from video or camera stream.</source>
 Peut aussi réprésenter une frame de vidéo.</translation>
     </message>
     <message>
-        <location filename="../IO/CMeasureIO.cpp" line="52"/>
+        <location filename="../IO/CBlobMeasureIO.cpp" line="52"/>
         <source>Predefined measures computed from connected components (Surface, perimeter...).</source>
         <translation>Mesures prédéfinies calculées sur composantes connexes (surface, périmètre...).</translation>
     </message>

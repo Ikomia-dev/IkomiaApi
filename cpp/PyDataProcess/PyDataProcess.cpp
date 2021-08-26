@@ -30,7 +30,7 @@
 #include "CVideoOFTaskWrap.h"
 #include "CVideoTrackingTaskWrap.h"
 #include "CDnnTrainTaskWrap.h"
-#include "CFeatureIOWrap.hpp"
+#include "CNumericIOWrap.hpp"
 #include "CGraphicsInputWrap.h"
 #include "CImageIOWrap.h"
 #include "CVideoIOWrap.h"
@@ -57,34 +57,34 @@ static bool init_numpy()
 }
 
 template<typename Type>
-void exposeFeatureIO(const std::string& className)
+void exposeNumericIO(const std::string& className)
 {
     //Overload member functions
-    void (CFeatureIO<Type>::*addValueList1)(const std::vector<Type>&) = &CFeatureIO<Type>::addValueList;
-    void (CFeatureIO<Type>::*addValueList2)(const std::vector<Type>&, const std::string&) = &CFeatureIO<Type>::addValueList;
-    void (CFeatureIO<Type>::*addValueList3)(const std::vector<Type>&, const std::vector<std::string>&) = &CFeatureIO<Type>::addValueList;
-    void (CFeatureIO<Type>::*addValueList4)(const std::vector<Type>&, const std::string&, const std::vector<std::string>&) = &CFeatureIO<Type>::addValueList;
+    void (CNumericIO<Type>::*addValueList1)(const std::vector<Type>&) = &CNumericIO<Type>::addValueList;
+    void (CNumericIO<Type>::*addValueList2)(const std::vector<Type>&, const std::string&) = &CNumericIO<Type>::addValueList;
+    void (CNumericIO<Type>::*addValueList3)(const std::vector<Type>&, const std::vector<std::string>&) = &CNumericIO<Type>::addValueList;
+    void (CNumericIO<Type>::*addValueList4)(const std::vector<Type>&, const std::string&, const std::vector<std::string>&) = &CNumericIO<Type>::addValueList;
 
-    class_<CFeatureIOWrap<Type>, bases<CWorkflowTaskIO>, std::shared_ptr<CFeatureIOWrap<Type>>>(className.c_str(), _featureProcessIODocString)
+    class_<CNumericIOWrap<Type>, bases<CWorkflowTaskIO>, std::shared_ptr<CNumericIOWrap<Type>>>(className.c_str(), _featureProcessIODocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorFeatureIODocString))
-        .def(init<const CFeatureIO<Type>&>("Copy constructor"))
-        .def("setOutputType", &CFeatureIO<Type>::setOutputType, _setOutputTypeDocString, args("self", "type"))
-        .def("setPlotType", &CFeatureIO<Type>::setPlotType, _setPlotTypeDocString, args("self", "type"))
+        .def(init<const CNumericIO<Type>&>("Copy constructor"))
+        .def("setOutputType", &CNumericIO<Type>::setOutputType, _setOutputTypeDocString, args("self", "type"))
+        .def("setPlotType", &CNumericIO<Type>::setPlotType, _setPlotTypeDocString, args("self", "type"))
         .def("addValueList", addValueList1, _addValueList1DocString, args("self", "values"))
         .def("addValueList", addValueList2, _addValueList2DocString, args("self", "values", "header_label"))
         .def("addValueList", addValueList3, _addValueList3DocString, args("self", "values", "labels"))
         .def("addValueList", addValueList4, _addValueList4DocString, args("self", "values", "header_label", "labels"))
-        .def("getOutputType", &CFeatureIO<Type>::getOutputType, _getOutputTypeDocString, args("self"))
-        .def("getPlotType", &CFeatureIO<Type>::getPlotType, _getPlotTypeDocString, args("self"))
-        .def("getValueList", &CFeatureIO<Type>::getValueList, _getValueListDocString, args("self", "index"))
-        .def("getAllValueList", &CFeatureIO<Type>::getAllValues, _getAllValueListDocString, args("self"))
-        .def("getAllLabelList", &CFeatureIO<Type>::getAllValueLabels, _getAllLabelListDocString, args("self"))
-        .def("getAllHeaderLabels", &CFeatureIO<Type>::getAllHeaderLabels, _getAllHeaderLabelsDocString, args("self"))
-        .def("getUnitElementCount", &CFeatureIO<Type>::getUnitElementCount, &CFeatureIOWrap<Type>::default_getUnitElementCount, _getUnitEltCountDerivedDocString, args("self"))
-        .def("isDataAvailable", &CFeatureIO<Type>::isDataAvailable, &CFeatureIOWrap<Type>::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
-        .def("clearData", &CFeatureIO<Type>::clearData, &CFeatureIOWrap<Type>::default_clearData, _clearDataDerivedDocString, args("self"))
-        .def("copyStaticData", &CFeatureIO<Type>::copyStaticData, &CFeatureIOWrap<Type>::default_copyStaticData, _copyStaticDataDerivedDocString, args("self", "io"))
+        .def("getOutputType", &CNumericIO<Type>::getOutputType, _getOutputTypeDocString, args("self"))
+        .def("getPlotType", &CNumericIO<Type>::getPlotType, _getPlotTypeDocString, args("self"))
+        .def("getValueList", &CNumericIO<Type>::getValueList, _getValueListDocString, args("self", "index"))
+        .def("getAllValueList", &CNumericIO<Type>::getAllValues, _getAllValueListDocString, args("self"))
+        .def("getAllLabelList", &CNumericIO<Type>::getAllValueLabels, _getAllLabelListDocString, args("self"))
+        .def("getAllHeaderLabels", &CNumericIO<Type>::getAllHeaderLabels, _getAllHeaderLabelsDocString, args("self"))
+        .def("getUnitElementCount", &CNumericIO<Type>::getUnitElementCount, &CNumericIOWrap<Type>::default_getUnitElementCount, _getUnitEltCountDerivedDocString, args("self"))
+        .def("isDataAvailable", &CNumericIO<Type>::isDataAvailable, &CNumericIOWrap<Type>::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
+        .def("clearData", &CNumericIO<Type>::clearData, &CNumericIOWrap<Type>::default_clearData, _clearDataDerivedDocString, args("self"))
+        .def("copyStaticData", &CNumericIO<Type>::copyStaticData, &CNumericIOWrap<Type>::default_copyStaticData, _copyStaticDataDerivedDocString, args("self", "io"))
     ;
 }
 
@@ -192,19 +192,19 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def_readwrite("label", &CObjectMeasure::m_label, "Label of the measure")
     ;
 
-    //----------------------//
-    //----- CMeasureIO -----//
-    //----------------------//
-    class_<CMeasureIO, bases<CWorkflowTaskIO>, std::shared_ptr<CMeasureIO>>("CMeasureIO", _measureIODocString)
+    //--------------------------//
+    //----- CBlobMeasureIO -----//
+    //--------------------------//
+    class_<CBlobMeasureIO, bases<CWorkflowTaskIO>, std::shared_ptr<CBlobMeasureIO>>("CBlobMeasureIO", _measureIODocString)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctorMeasureIODocString))
-        .def(init<const CMeasureIO&>("Copy constructor"))
-        .def("setObjectMeasure", &CMeasureIO::setObjectMeasure, _setObjMeasureDocString, args("self", "index", "measure"))
-        .def("getMeasures", &CMeasureIO::getMeasures, _getMeasuresDocString, args("self"))
-        .def("isDataAvailable", &CMeasureIO::isDataAvailable, _isMeasureDataAvailableDocString, args("self"))
-        .def("addObjectMeasure", &CMeasureIO::addObjectMeasure, _addObjMeasureDocString, args("self", "measure"))
-        .def("addObjectMeasures", &CMeasureIO::addObjectMeasures, _addObjMeasuresDocString, args("self", "measures"))
-        .def("clearData", &CMeasureIO::clearData, _clearDataDerivedDocString, args("self"))
+        .def(init<const CBlobMeasureIO&>("Copy constructor"))
+        .def("setObjectMeasure", &CBlobMeasureIO::setObjectMeasure, _setObjMeasureDocString, args("self", "index", "measure"))
+        .def("getMeasures", &CBlobMeasureIO::getMeasures, _getMeasuresDocString, args("self"))
+        .def("isDataAvailable", &CBlobMeasureIO::isDataAvailable, _isMeasureDataAvailableDocString, args("self"))
+        .def("addObjectMeasure", &CBlobMeasureIO::addObjectMeasure, _addObjMeasureDocString, args("self", "measure"))
+        .def("addObjectMeasures", &CBlobMeasureIO::addObjectMeasures, _addObjMeasuresDocString, args("self", "measures"))
+        .def("clearData", &CBlobMeasureIO::clearData, _clearDataDerivedDocString, args("self"))
     ;
 
     //--------------------------//
@@ -311,7 +311,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .value("PIE", PlotType::PIE)
     ;
 
-    exposeFeatureIO<double>("CDblFeatureIO");
+    exposeNumericIO<double>("CNumericIO");
 
     //--------------------//
     //----- CVideoIO -----//

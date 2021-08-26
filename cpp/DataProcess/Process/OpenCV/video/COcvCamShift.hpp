@@ -68,14 +68,14 @@ class COcvCamShift : public CVideoTask
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
             addOutput(std::make_shared<CImageIO>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
         }
         COcvCamShift(const std::string name, const std::shared_ptr<COcvCamShiftParam>& pParam) : CVideoTask(name)
         {
             setOutputDataType(IODataType::IMAGE_BINARY, 0);
             addOutput(std::make_shared<CImageIO>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
             setOutputColorMap(1, 0, {{255,0,0}});
             m_pParam = std::make_shared<COcvCamShiftParam>(*pParam);            
         }
@@ -222,7 +222,7 @@ class COcvCamShift : public CVideoTask
             }
 
             //Tracked oriented rectangle coordinates
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             if(pMeasureOutput)
             {
                 CMeasure bboxMeasure(CMeasure::ORIENTED_BBOX, QObject::tr("Tracked ROI").toStdString());

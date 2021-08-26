@@ -34,19 +34,19 @@ C2dFeatureImageTask::~C2dFeatureImageTask()
 
 void C2dFeatureImageTask::addKeypointInput()
 {
-    addInput(std::make_shared<CFeatureIO<cv::KeyPoint>>());
+    addInput(std::make_shared<CNumericIO<cv::KeyPoint>>());
 }
 
 void C2dFeatureImageTask::addDescriptorAndKeypointOuputs()
 {
     addOutput(std::make_shared<CImageIO>(IODataType::DESCRIPTORS));
-    addOutput(std::make_shared<CFeatureIO<cv::KeyPoint>>());
+    addOutput(std::make_shared<CNumericIO<cv::KeyPoint>>());
     addOutput(std::make_shared<CGraphicsOutput>());
 }
 
 void C2dFeatureImageTask::addKeypointOutput()
 {
-    addOutput(std::make_shared<CFeatureIO<cv::KeyPoint>>());
+    addOutput(std::make_shared<CNumericIO<cv::KeyPoint>>());
     addOutput(std::make_shared<CGraphicsOutput>());
 }
 
@@ -55,7 +55,7 @@ void C2dFeatureImageTask::manageInputs()
     if(getInputCount()<3)
         return;
 
-    auto pInput = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getInput(2));
+    auto pInput = std::dynamic_pointer_cast<CNumericIO<cv::KeyPoint>>(getInput(2));
     if(pInput)
         if(pInput->getAllValues().size()>0)
             m_keypoints = pInput->getValueList(0);
@@ -85,7 +85,7 @@ void C2dFeatureImageTask::manageOutputs()
         ind++;
     }
 
-    auto pOutput2 = std::dynamic_pointer_cast<CFeatureIO<cv::KeyPoint>>(getOutput(ind));
+    auto pOutput2 = std::dynamic_pointer_cast<CNumericIO<cv::KeyPoint>>(getOutput(ind));
     if(pOutput2)
     {
         pOutput2->clearData();

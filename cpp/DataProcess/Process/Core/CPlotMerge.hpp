@@ -22,8 +22,8 @@
 
 #include "Core/CTaskFactory.hpp"
 #include "IO/CImageIO.h"
-#include "IO/CMeasureIO.h"
-#include "IO/CFeatureIO.hpp"
+#include "IO/CBlobMeasureIO.h"
+#include "IO/CNumericIO.hpp"
 
 //-----------------------------//
 //----- CPlotProcessParam -----//
@@ -62,7 +62,7 @@ class CPlotMerge : public CWorkflowTask
         {
             addInput(std::make_shared<CImageIO>(IODataType::IMAGE));
             addOutput(std::make_shared<CImageIO>(IODataType::IMAGE));
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
         CPlotMerge(const std::string name, const std::shared_ptr<CPlotMergeParam>& pParam) : CWorkflowTask(name)
         {
@@ -70,10 +70,10 @@ class CPlotMerge : public CWorkflowTask
             addInput(std::make_shared<CImageIO>(IODataType::IMAGE));
 
             for(int i=0; i<pParam->m_inputCount; ++i)
-                addInput(std::make_shared<CFeatureIO<double>>());
+                addInput(std::make_shared<CNumericIO<double>>());
 
             addOutput(std::make_shared<CImageIO>(IODataType::IMAGE));
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
 
         void    setParam(const WorkflowTaskParamPtr &pParam) override
@@ -86,7 +86,7 @@ class CPlotMerge : public CWorkflowTask
             if(pParamTmp->m_inputCount > (int)inOldCount)
             {
                 for(size_t i=0; i<pParamTmp->m_inputCount-inOldCount; ++i)
-                    addInput(std::make_shared<CFeatureIO<double>>());
+                    addInput(std::make_shared<CNumericIO<double>>());
             }
             else
             {
@@ -111,17 +111,17 @@ class CPlotMerge : public CWorkflowTask
             if(pInput->isDataAvailable() == false)
                 throw CException(CoreExCode::INVALID_PARAMETER, "Empty image", __func__, __FILE__, __LINE__);
 
-            std::vector<std::shared_ptr<CFeatureIO<double>>> inputs;
+            std::vector<std::shared_ptr<CNumericIO<double>>> inputs;
             int index = 1;
             for(int i=0; i<pParam->m_inputCount; ++i)
             {
-                inputs.push_back(std::dynamic_pointer_cast<CFeatureIO<double>>(getInput(index++)));
+                inputs.push_back(std::dynamic_pointer_cast<CNumericIO<double>>(getInput(index++)));
                 if(inputs.back() == nullptr)
                     throw CException(CoreExCode::INVALID_PARAMETER, "Invalid parameters", __func__, __FILE__, __LINE__);
             }
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<double>>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CNumericIO<double>>(getOutput(1));
             if(pOutput)
             {
                 pOutput->clearData();

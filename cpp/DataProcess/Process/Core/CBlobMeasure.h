@@ -25,7 +25,7 @@
 #include "Core/CTaskFactory.hpp"
 #include "Core/C2dImageTask.h"
 #include "IO/CVideoIO.h"
-#include "IO/CMeasureIO.h"
+#include "IO/CBlobMeasureIO.h"
 
 //-----------------------------//
 //----- CBlobMeasureParam -----//

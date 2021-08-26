@@ -17,21 +17,21 @@
 // along with this program; if not, write to the Free Software Foundation,
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef CFEATUREIOWRAP_H
-#define CFEATUREIOWRAP_H
+#ifndef CNUMERICIOWRAP_H
+#define CNUMERICIOWRAP_H
 
 #include "PyDataProcessGlobal.h"
-#include "IO/CFeatureIO.hpp"
+#include "IO/CNumericIO.hpp"
 
 template<class Type>
-class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
+class CNumericIOWrap : public CNumericIO<Type>, public wrapper<CNumericIO<Type>>
 {
     public:
 
-        CFeatureIOWrap() : CFeatureIO<Type>()
+        CNumericIOWrap() : CNumericIO<Type>()
         {
         }
-        CFeatureIOWrap(const CFeatureIO<Type>& io) : CFeatureIO<Type>(io)
+        CNumericIOWrap(const CNumericIO<Type>& io) : CNumericIO<Type>(io)
         {
         }
 
@@ -42,7 +42,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             {
                 if(override getOver = this->get_override("getUnitElementCount"))
                     return getOver();
-                return CFeatureIO<Type>::getUnitElementCount();
+                return CNumericIO<Type>::getUnitElementCount();
             }
             catch(boost::python::error_already_set&)
             {
@@ -54,7 +54,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             CPyEnsureGIL gil;
             try
             {
-                return this->CFeatureIO<Type>::getUnitElementCount();
+                return this->CNumericIO<Type>::getUnitElementCount();
             }
             catch(boost::python::error_already_set&)
             {
@@ -69,7 +69,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             {
                 if(override isDataOver = this->get_override("isDataAvailable"))
                     return isDataOver();
-                return CFeatureIO<Type>::isDataAvailable();
+                return CNumericIO<Type>::isDataAvailable();
             }
             catch(boost::python::error_already_set&)
             {
@@ -81,7 +81,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             CPyEnsureGIL gil;
             try
             {
-                return this->CFeatureIO<Type>::isDataAvailable();
+                return this->CNumericIO<Type>::isDataAvailable();
             }
             catch(boost::python::error_already_set&)
             {
@@ -97,7 +97,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
                 if(override clearDataOver = this->get_override("clearData"))
                     clearDataOver();
                 else
-                    CFeatureIO<Type>::clearData();
+                    CNumericIO<Type>::clearData();
             }
             catch(boost::python::error_already_set&)
             {
@@ -109,7 +109,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             CPyEnsureGIL gil;
             try
             {
-                this->CFeatureIO<Type>::clearData();
+                this->CNumericIO<Type>::clearData();
             }
             catch(boost::python::error_already_set&)
             {
@@ -125,7 +125,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
                 if(override copyOver = this->get_override("copyStaticData"))
                     copyOver(ioPtr);
                 else
-                    CFeatureIO<Type>::copyStaticData(ioPtr);
+                    CNumericIO<Type>::copyStaticData(ioPtr);
             }
             catch(boost::python::error_already_set&)
             {
@@ -137,7 +137,7 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
             CPyEnsureGIL gil;
             try
             {
-                this->CFeatureIO<Type>::copyStaticData(ioPtr);
+                this->CNumericIO<Type>::copyStaticData(ioPtr);
             }
             catch(boost::python::error_already_set&)
             {
@@ -146,4 +146,4 @@ class CFeatureIOWrap : public CFeatureIO<Type>, public wrapper<CFeatureIO<Type>>
         }
 };
 
-#endif // CFEATUREIOWRAP_H
+#endif // CNUMERICIOWRAP_H

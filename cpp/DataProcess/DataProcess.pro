@@ -38,12 +38,12 @@ SOURCES += \
         Core/CVideoTask.cpp \
         Core/CWorkflow.cpp \
         IO/CArrayIO.cpp \
+        IO/CBlobMeasureIO.cpp \
         IO/CConvertIO.cpp \
         IO/CDatasetIO.cpp \
         IO/CGraphicsInput.cpp \
         IO/CGraphicsOutput.cpp \
         IO/CImageIO.cpp \
-        IO/CMeasureIO.cpp \
         IO/CPathIO.cpp \
         IO/CTaskIORegistration.cpp \
         IO/CVideoIO.cpp \
@@ -78,13 +78,13 @@ HEADERS += \
         Core/CVideoTask.h \
         Core/CWorkflow.h \
         IO/CArrayIO.h \
+        IO/CBlobMeasureIO.h \
         IO/CConvertIO.h \
         IO/CDatasetIO.h \
-        IO/CFeatureIO.hpp \
         IO/CGraphicsInput.h \
         IO/CGraphicsOutput.h \
         IO/CImageIO.h \
-        IO/CMeasureIO.h \
+        IO/CNumericIO.hpp \
         IO/CPathIO.h \
         IO/CTaskIORegistration.h \
         IO/CVideoIO.h \
@@ -474,12 +474,12 @@ deployIncludeCore.files = \
 deployIncludeIO.path = ../Build/Include/DataProcess/IO
 deployIncludeIO.files = \
         IO/CImageIO.h \
-        IO/CMeasureIO.h \
+        IO/CBlobMeasureIO.h \
         IO/CGraphicsInput.h \
         IO/CGraphicsOutput.h \
         IO/CGraphicsProcessIO.hpp \
         IO/CTaskIORegistration.h \
-        IO/CFeatureIO.hpp \
+        IO/CNumericIO.hpp \
         IO/CVideoIO.h \
         IO/CViewPropertyIO.h \
         IO/CDatasetIO.h

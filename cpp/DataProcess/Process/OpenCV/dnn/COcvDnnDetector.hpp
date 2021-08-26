@@ -69,13 +69,13 @@ class COcvDnnDetector: public COcvDnnProcess
         COcvDnnDetector() : COcvDnnProcess()
         {
             addOutput(std::make_shared<CGraphicsOutput>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
         }
         COcvDnnDetector(const std::string name, const std::shared_ptr<COcvDnnDetectorParam> &pParam): COcvDnnProcess(name)
         {
             m_pParam = std::make_shared<COcvDnnDetectorParam>(*pParam);
             addOutput(std::make_shared<CGraphicsOutput>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
         }
 
         size_t      getProgressSteps() override
@@ -242,7 +242,7 @@ class COcvDnnDetector: public COcvDnnProcess
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             for(int i=0; i<dnnOutput.size[2]; i++)
@@ -296,7 +296,7 @@ class COcvDnnDetector: public COcvDnnProcess
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             int size = getNetworkInputSize();
@@ -387,7 +387,7 @@ class COcvDnnDetector: public COcvDnnProcess
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             for(size_t i=0; i<indices.size(); ++i)
@@ -473,7 +473,7 @@ class COcvDnnDetector: public COcvDnnProcess
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             int size = getNetworkInputSize();

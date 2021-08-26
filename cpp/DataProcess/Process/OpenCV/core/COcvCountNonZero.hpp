@@ -52,13 +52,13 @@ class COcvCountNonZero : public C2dImageTask
         COcvCountNonZero() : C2dImageTask(false)
         {
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureIO<int>>());
+            addOutput(std::make_shared<CNumericIO<int>>());
         }
         COcvCountNonZero(const std::string name, const std::shared_ptr<COcvCountNonZeroParam>& pParam) : C2dImageTask(name, false)
         {
             m_pParam = std::make_shared<COcvCountNonZeroParam>(*pParam);
             removeOutput(0);
-            addOutput(std::make_shared<CFeatureIO<int>>());
+            addOutput(std::make_shared<CNumericIO<int>>());
         }
 
         size_t  getProgressSteps() override
@@ -95,7 +95,7 @@ class COcvCountNonZero : public C2dImageTask
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<int>>(getOutput(0));
+            auto pOutput = std::dynamic_pointer_cast<CNumericIO<int>>(getOutput(0));
             if(pOutput)
             {
                 std::vector<int> values;

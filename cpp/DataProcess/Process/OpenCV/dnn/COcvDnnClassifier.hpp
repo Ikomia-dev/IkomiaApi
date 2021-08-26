@@ -64,13 +64,13 @@ class COcvDnnClassifier: public COcvDnnProcess
         COcvDnnClassifier() : COcvDnnProcess()
         {
             addOutput(std::make_shared<CGraphicsOutput>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
         }
         COcvDnnClassifier(const std::string& name, const std::shared_ptr<COcvDnnClassifierParam>& pParam) : COcvDnnProcess(name)
         {
             m_pParam = std::make_shared<COcvDnnClassifierParam>(*pParam);
             addOutput(std::make_shared<CGraphicsOutput>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
         }
 
         size_t      getProgressSteps() override
@@ -166,7 +166,7 @@ class COcvDnnClassifier: public COcvDnnProcess
             pGraphicsOutput->setImageIndex(0);
 
             //Measures output
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
             pMeasureOutput->clearData();
 
             //We don't create the final CGraphicsText instance here for thread-safety reason

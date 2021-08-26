@@ -69,7 +69,7 @@ CBlobMeasure::CBlobMeasure() : C2dImageTask()
 {
     insertInput(std::make_shared<CImageIO>(), 1);
     addOutput(std::make_shared<CImageIO>());
-    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CBlobMeasureIO>());
     addOutput(std::make_shared<CGraphicsOutput>());
 }
 
@@ -78,7 +78,7 @@ CBlobMeasure::CBlobMeasure(const std::string name, const std::shared_ptr<CBlobMe
     m_pParam = std::make_shared<CBlobMeasureParam>(*pParam);
     insertInput(std::make_shared<CImageIO>(), 1);
     addOutput(std::make_shared<CImageIO>());
-    addOutput(std::make_shared<CMeasureIO>());
+    addOutput(std::make_shared<CBlobMeasureIO>());
     addOutput(std::make_shared<CGraphicsOutput>());
 }
 
@@ -120,7 +120,7 @@ void CBlobMeasure::run()
             img = imgSrc;
 
         //Get measures output to fill it
-        auto pOutputMeasure = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+        auto pOutputMeasure = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
         if(pOutputMeasure == nullptr)
             throw CException(CoreExCode::INVALID_SIZE, "Invalid measures output", __func__, __FILE__, __LINE__);
 
@@ -335,7 +335,7 @@ void CBlobMeasure::computeMeasures(const std::string& label)
     auto graphicsItems = pGraphicsOutput->getItems();
 
     //Get measures output to fill it
-    auto pOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(2));
+    auto pOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(2));
     assert(pOutput);
 
     if(m_blobs.size() > 0)

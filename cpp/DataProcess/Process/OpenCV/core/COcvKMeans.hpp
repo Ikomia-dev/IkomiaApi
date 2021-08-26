@@ -22,7 +22,7 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
-#include "IO/CMeasureIO.h"
+#include "IO/CBlobMeasureIO.h"
 
 //------------------------------//
 //----- COcvKMeansParam -----//
@@ -76,14 +76,14 @@ class COcvKMeans : public C2dImageTask
         {
             addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_LABEL));
             addOutput(std::make_shared<CImageIO>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
             setOutputColorMap(2, 1);
         }
         COcvKMeans(const std::string name, const std::shared_ptr<COcvKMeansParam>& pParam) : C2dImageTask(name)
         {
             addOutput(std::make_shared<CImageIO>(IODataType::IMAGE_LABEL));
             addOutput(std::make_shared<CImageIO>());
-            addOutput(std::make_shared<CMeasureIO>());
+            addOutput(std::make_shared<CBlobMeasureIO>());
             setOutputColorMap(2, 1);
             m_pParam = std::make_shared<COcvKMeansParam>(*pParam);
         }
@@ -177,7 +177,7 @@ class COcvKMeans : public C2dImageTask
             }
 
             //Compactness and center values
-            auto pMeasureOutput = std::dynamic_pointer_cast<CMeasureIO>(getOutput(3));
+            auto pMeasureOutput = std::dynamic_pointer_cast<CBlobMeasureIO>(getOutput(3));
             if(pMeasureOutput)
             {
                 pMeasureOutput->addObjectMeasure(CObjectMeasure(CMeasure(CMeasure::CUSTOM, QObject::tr("Compactness").toStdString()), compactness, -1, ""));

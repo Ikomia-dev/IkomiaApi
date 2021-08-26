@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CMEASUREIO_H
-#define CMEASUREIO_H
+#ifndef CBLOBMEASUREIO_H
+#define CBLOBMEASUREIO_H
 
 #include "DataProcessGlobal.hpp"
 #include "Data/CMeasure.h"
@@ -51,19 +51,19 @@ class DATAPROCESSSHARED_EXPORT CObjectMeasure
 using ObjectMeasures = std::vector<CObjectMeasure>;
 using ObjectsMeasures = std::vector<ObjectMeasures>;
 
-class DATAPROCESSSHARED_EXPORT CMeasureIO : public CWorkflowTaskIO
+class DATAPROCESSSHARED_EXPORT CBlobMeasureIO : public CWorkflowTaskIO
 {
     public:
 
-        CMeasureIO();
-        CMeasureIO(const std::string& name);
-        CMeasureIO(const CMeasureIO& io);
-        CMeasureIO(const CMeasureIO&& io);
+        CBlobMeasureIO();
+        CBlobMeasureIO(const std::string& name);
+        CBlobMeasureIO(const CBlobMeasureIO& io);
+        CBlobMeasureIO(const CBlobMeasureIO&& io);
 
-        virtual ~CMeasureIO();
+        virtual ~CBlobMeasureIO();
 
-        CMeasureIO&      operator=(const CMeasureIO& io);
-        CMeasureIO&      operator=(const CMeasureIO&& io);
+        CBlobMeasureIO&         operator=(const CBlobMeasureIO& io);
+        CBlobMeasureIO&         operator=(const CBlobMeasureIO&& io);
 
         void                    setObjectMeasure(size_t index, const CObjectMeasure& measure);
 
@@ -79,7 +79,7 @@ class DATAPROCESSSHARED_EXPORT CMeasureIO : public CWorkflowTaskIO
         void                    save() override;
         void                    save(const std::string &path) override;
 
-        std::shared_ptr<CMeasureIO> clone() const;
+        std::shared_ptr<CBlobMeasureIO> clone() const;
 
     private:
 
@@ -96,20 +96,20 @@ class DATAPROCESSSHARED_EXPORT CMeasureIO : public CWorkflowTaskIO
         ObjectsMeasures m_measures;
 };
 
-class DATAPROCESSSHARED_EXPORT CMeasureIOFactory: public CWorkflowTaskIOFactory
+class DATAPROCESSSHARED_EXPORT CBlobMeasureIOFactory: public CWorkflowTaskIOFactory
 {
     public:
 
-        CMeasureIOFactory()
+        CBlobMeasureIOFactory()
         {
-            m_name = "CMeasureIO";
+            m_name = "CBlobMeasureIO";
         }
 
         virtual WorkflowTaskIOPtr   create(IODataType dataType)
         {
             Q_UNUSED(dataType);
-            return std::make_shared<CMeasureIO>();
+            return std::make_shared<CBlobMeasureIO>();
         }
 };
 
-#endif // CMEASUREIO_H
+#endif // CBLOBMEASUREIO_H

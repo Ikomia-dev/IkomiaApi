@@ -19,10 +19,10 @@
 
 #include "CTaskIORegistration.h"
 #include "CImageIO.h"
-#include "CMeasureIO.h"
+#include "CBlobMeasureIO.h"
 #include "CGraphicsInput.h"
 #include "CGraphicsOutput.h"
-#include "CFeatureIO.hpp"
+#include "CNumericIO.hpp"
 #include "CVideoIO.h"
 #include "CWidgetOutput.h"
 #include "CPathIO.h"
@@ -60,10 +60,10 @@ void CTaskIORegistration::reset()
 void CTaskIORegistration::registerCore()
 {
     registerIO(std::make_shared<CImageIOFactory>());
-    registerIO(std::make_shared<CMeasureIOFactory>());
+    registerIO(std::make_shared<CBlobMeasureIOFactory>());
     registerIO(std::make_shared<CGraphicsInputFactory>());
     registerIO(std::make_shared<CGraphicsOutputFactory>());
-    registerIO(std::make_shared<CFeatureIOFactory>());
+    registerIO(std::make_shared<CNumericIOFactory>());
     registerIO(std::make_shared<CVideoIOFactory>());
     registerIO(std::make_shared<CWidgetOutputFactory>());
     registerIO(std::make_shared<CPathIOFactory>());

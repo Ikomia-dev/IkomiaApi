@@ -22,7 +22,7 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
-#include "IO/CFeatureIO.hpp"
+#include "IO/CNumericIO.hpp"
 
 //------------------------------//
 //----- COcvCalcHistParam -----//
@@ -83,12 +83,12 @@ class COcvCalcHist : public C2dImageTask
 
         COcvCalcHist() : C2dImageTask()
         {
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
         COcvCalcHist(const std::string name, const std::shared_ptr<COcvCalcHistParam>& pParam) : C2dImageTask(name)
         {
             m_pParam = std::make_shared<COcvCalcHistParam>(*pParam);
-            addOutput(std::make_shared<CFeatureIO<double>>());
+            addOutput(std::make_shared<CNumericIO<double>>());
         }
 
         size_t  getProgressSteps() override
@@ -156,7 +156,7 @@ class COcvCalcHist : public C2dImageTask
             endTaskRun();
             emit m_signalHandler->doProgress();
 
-            auto pOutput = std::dynamic_pointer_cast<CFeatureIO<double>>(getOutput(1));
+            auto pOutput = std::dynamic_pointer_cast<CNumericIO<double>>(getOutput(1));
             if(pOutput)
             {
                 assert(valuesByChannels.size() == namesByChannels.size());
