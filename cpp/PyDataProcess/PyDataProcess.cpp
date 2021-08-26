@@ -294,7 +294,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     ;
 
     //----------------------//
-    //----- CFeatureIO -----//
+    //----- CNumericIO -----//
     //----------------------//
     enum_<NumericOutputType>("NumericOutputType", "Enum - List of a display types for numeric values")
         .value("NONE", NumericOutputType::NONE)
