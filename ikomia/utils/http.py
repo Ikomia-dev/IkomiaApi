@@ -41,7 +41,7 @@ def download_file(url, path, public=True):
                         size = f.write(data)
                         bar.update(size)
     else:
-        s = ikomia.api_session
+        s = ikomia.ik_api_session
         if s.token is None:
             logger.error("Download failed, authentication required.")
             return

@@ -19,33 +19,43 @@
 
 import os
 import sys
+from dotenv import load_dotenv
 from ikomia.utils import init_logging
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
-from dotenv import load_dotenv
+from ikomia.dataprocess import registry
 
 # Add built-in OpenCV to Python path
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
 
-global api_session
-api_session = None
+global ik_api_session
+ik_api_session = None
+
+global ik_registry
+ik_registry = None
 
 
-def initialize():
+def authenticate():
     load_dotenv()
     username = os.environ.get("IKOMIA_USER")
     pwd = os.environ.get("IKOMIA_PWD")
-    global api_session
-    api_session = LoginSession(username, pwd)
-    check_directories()
-    init_logging()
+    global ik_api_session
+    ik_api_session = LoginSession(username, pwd)
 
 
-def check_directories():
+def _check_directories():
     os.makedirs(os.path.join(os.path.expanduser("~"), "Ikomia/"), exist_ok=True)
     os.makedirs(config.main_cfg["registry"]["path"], exist_ok=True)
+    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "C++/"), exist_ok=True)
+    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "Python/"), exist_ok=True)
     os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["mlflow"]["artifact_uri"], exist_ok=True)
     os.makedirs(config.main_cfg["mlflow"]["store_uri"], exist_ok=True)
     os.makedirs(config.main_cfg["tensorboard"]["log_uri"], exist_ok=True)
+
+
+# API initialization
+_check_directories()
+init_logging()
+ik_registry = registry.IkomiaRegistry()

@@ -2,7 +2,7 @@ import logging
 import os
 import argparse
 import ikomia
-from ikomia.dataprocess import registry, workflow, displayIO
+from ikomia.dataprocess import workflow, displayIO
 from ikomia.core import config
 from ikomia.utils import tests
 import numpy as np
@@ -23,11 +23,11 @@ def test_metadata():
     assert(wf.keywords == keywords)
 
 
-def test_load(registry):
+def test_load():
     # load test workflow
     logger.info("===== Test::load workflow from JSON =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_load", registry)
+    wf = workflow.Workflow("test_load", ikomia.ik_registry)
     wf.load(wf_path)
     logger.info("----- Workflow information:")
     logger.info(wf.name)
@@ -37,11 +37,11 @@ def test_load(registry):
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
-def test_single_image_run(ik_registry):
+def test_single_image_run():
     logger.info("===== Test::execute workflow on single image =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_single_image_run", ik_registry)
+    wf = workflow.Workflow("test_single_image_run", ikomia.ik_registry)
     wf.setAutoSave(True)
     wf.load(wf_path)
 
@@ -66,10 +66,10 @@ def test_single_image_run(ik_registry):
     logger.info("Workflow finished successfully")
 
 
-def test_directory_run(ik_registry):
+def test_directory_run():
     logger.info("===== Test::execute workflow on folder =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_dir_run", ik_registry)
+    wf = workflow.Workflow("test_dir_run", ikomia.ik_registry)
     wf.setAutoSave(True)
     wf.load(wf_path)
 
@@ -80,10 +80,10 @@ def test_directory_run(ik_registry):
     logger.info("Workflow finished successfully")
 
 
-def test_resnet_train(ik_registry, dataset_dir):
+def test_resnet_train(dataset_dir):
     logger.info("===== Test::launch ResNet training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowResNetTrain.json"
-    wf = workflow.Workflow("test_resnet", ik_registry)
+    wf = workflow.Workflow("test_resnet", ikomia.ik_registry)
     wf.load(wf_path)
     wf.set_directory_input(dataset_dir)
     logger.info("Start ResNet training...")
@@ -91,10 +91,10 @@ def test_resnet_train(ik_registry, dataset_dir):
     logger.info("Training finished successfully")
 
 
-def test_yolov5_train(ik_registry, wgisd_dataset_dir):
+def test_yolov5_train(wgisd_dataset_dir):
     logger.info("===== Test::launch YoloV5 training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowYoloV5Train.json"
-    wf = workflow.Workflow("test_yolov5", ik_registry)
+    wf = workflow.Workflow("test_yolov5", ikomia.ik_registry)
     wf.load(wf_path)
     # set dataset directory
     wgisd_tasks = wf.find_task("WGISD_Dataset")
@@ -109,9 +109,9 @@ def test_yolov5_train(ik_registry, wgisd_dataset_dir):
     logger.info("Training finished successfully")
 
 
-def test_yolo_train(ik_registry, wgisd_dataset_dir):
+def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
-    wf = workflow.Workflow("YoloTrain", reg)
+    wf = workflow.Workflow("YoloTrain", ikomia.ik_registry)
 
     wgisd_id = wf.add_task("WGISD_Dataset")
     wgisd = wf.getTask(wgisd_id)
@@ -127,20 +127,20 @@ def test_yolo_train(ik_registry, wgisd_dataset_dir):
     wf.run()
 
 
-def test_export_graphviz(ik_registry):
+def test_export_graphviz():
     logger.info("===== Test::export workflow as Graphviz =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_graphviz", ik_registry)
+    wf = workflow.Workflow("test_graphviz", ikomia.ik_registry)
     wf.load(wf_path)
     dot_file_name = wf.name + ".dot"
     path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
     wf.exportGraphviz(path)
 
 
-def test_graph_structure(ik_registry):
+def test_graph_structure():
     logger.info("===== Test::workflow introspection =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_single_image_run", ik_registry)
+    wf = workflow.Workflow("test_single_image_run", ikomia.ik_registry)
     wf.load(wf_path)
 
     # browse tasks
@@ -214,9 +214,9 @@ def test_graph_structure(ik_registry):
     assert(len(found_task) == 0)
 
 
-def test_graph_build(ik_registry):
+def test_graph_build():
     logger.info("===== Test::create workflow from scratch =====")
-    wf = workflow.Workflow("FromScratch", ik_registry)
+    wf = workflow.Workflow("FromScratch", ikomia.ik_registry)
 
     # branch with auto-connection
     box_filter_id = wf.add_task("Box Filter")
@@ -261,11 +261,11 @@ def test_graph_build(ik_registry):
         displayIO.display(task, task.name)
 
 
-def test_time_metrics(ik_registry):
+def test_time_metrics():
     logger.info("===== Test::compute workflow time metrics =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("test_single_image_run", ik_registry)
+    wf = workflow.Workflow("test_single_image_run", ikomia.ik_registry)
     wf.load(wf_path)
     wf.set_image_input(path=img_path)
     wf.run()
@@ -287,16 +287,14 @@ if __name__ == "__main__":
     parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
     opt = parser.parse_args()
 
-    ikomia.initialize()
-    reg = registry.IkomiaRegistry()
     test_metadata()
-    test_load(reg)
-    test_single_image_run(reg)
-    test_directory_run(reg)
-    test_resnet_train(reg, opt.classif_dataset_dir)
-    test_yolo_train(reg, opt.detect_dataset_dir)
-    test_yolov5_train(reg, opt.detect_dataset_dir)
-    test_export_graphviz(reg)
-    test_graph_structure(reg)
-    test_time_metrics(reg)
-    test_graph_build(reg)
+    test_load()
+    test_single_image_run()
+    test_directory_run()
+    test_resnet_train(opt.classif_dataset_dir)
+    test_yolo_train(opt.detect_dataset_dir)
+    test_yolov5_train(opt.detect_dataset_dir)
+    test_export_graphviz()
+    test_graph_structure()
+    test_time_metrics()
+    test_graph_build()

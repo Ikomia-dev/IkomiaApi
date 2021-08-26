@@ -59,7 +59,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Returns:
              list of str: list of algorithms names
         """
-        s = ikomia.api_session
+        s = ikomia.ik_api_session
         if s.token is None:
             logger.error("Online algorithms retrieval failed, authentication required.")
             return
@@ -228,7 +228,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             error_msg += "Based on Ikomia " + plugin["version"] + " while the current version is " + utils.getApiVersion()
             raise ValueError(error_msg)
 
-        s = ikomia.api_session
+        s = ikomia.ik_api_session
         if s.token is None:
             error_msg = "Online algorithms retrieval failed, authentication required."
             raise ConnectionRefusedError(error_msg)

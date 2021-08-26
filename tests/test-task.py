@@ -3,14 +3,14 @@ import logging
 import cv2
 from ikomia.utils import tests
 from ikomia.core import task, ParamMap
-from ikomia.dataprocess import registry, displayIO
+from ikomia.dataprocess import displayIO
 
 logger = logging.getLogger(__name__)
 
 
-def test_task_parameters(ik_registry):
+def test_task_parameters():
     logger.info("===== Test::set task parameters =====")
-    algo = ik_registry.create_algorithm("Box Filter")
+    algo = ikomia.ik_registry.create_algorithm("Box Filter")
     logger.info("----- Run with default parameters")
     logger.info(algo.getParam())
     img_path = tests.get_test_image_directory() + "/Lena.png"
@@ -45,6 +45,4 @@ def test_task_parameters(ik_registry):
 
 
 if __name__ == "__main__":
-    ikomia.initialize()
-    reg = registry.IkomiaRegistry()
-    test_task_parameters(reg)
+    test_task_parameters()

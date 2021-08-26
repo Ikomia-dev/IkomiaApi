@@ -2,7 +2,7 @@ import logging
 import ikomia
 import cv2
 from ikomia import core, dataprocess
-from ikomia.dataprocess import registry, displayIO, workflow
+from ikomia.dataprocess import displayIO, workflow
 from ikomia.utils import tests
 
 logger = logging.getLogger(__name__)
@@ -64,13 +64,13 @@ def test_display_graphics():
     displayIO.display(io, label="Output graphics scene")
 
 
-def test_display_table(ik_registry):
+def test_display_table():
     logger.info("===== Test::display measure IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run ResNet classification
-    algo = ik_registry.create_algorithm("ResNet")
+    algo = ikomia.ik_registry.create_algorithm("ResNet")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -78,7 +78,7 @@ def test_display_table(ik_registry):
     displayIO.display(algo.getOutput(2), label="ResNet classification")
 
     # run YoloV4 detection
-    algo = ik_registry.create_algorithm("YoloV4")
+    algo = ikomia.ik_registry.create_algorithm("YoloV4")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -86,13 +86,13 @@ def test_display_table(ik_registry):
     displayIO.display(algo.getOutput(2), label="YoloV4 detection")
 
 
-def test_display_plot(ik_registry):
+def test_display_plot():
     logger.info("===== Test::display numeric IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run CalcHist
-    algo = ik_registry.create_algorithm("CalcHist")
+    algo = ikomia.ik_registry.create_algorithm("CalcHist")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -107,14 +107,14 @@ def test_display_plot(ik_registry):
     displayIO.display(feature_io, label="CalcHist Pie chart")
 
 
-def test_display_task(ik_registry):
+def test_display_task():
     logger.info("===== Test::display task =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
 
     # run MaskRCNN
-    algo = ik_registry.create_algorithm("Mask RCNN")
+    algo = ikomia.ik_registry.create_algorithm("Mask RCNN")
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -122,21 +122,18 @@ def test_display_task(ik_registry):
     displayIO.display(algo, "Mask RCNN")
 
 
-def test_display_workflow(ik_registry):
+def test_display_workflow():
     logger.info("===== Test::display workflow =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("Test Workflow", ik_registry)
+    wf = workflow.Workflow("Test Workflow", ikomia.ik_registry)
     wf.load(wf_path)
     displayIO.display(wf, wf.name)
 
 
 if __name__ == "__main__":
-    ikomia.initialize()
-    # initialize Ikomia registry
-    reg = registry.IkomiaRegistry()
     test_display_image()
     test_display_graphics()
-    test_display_table(reg)
-    test_display_plot(reg)
-    test_display_task(reg)
-    test_display_workflow(reg)
+    test_display_table()
+    test_display_plot()
+    test_display_task()
+    test_display_workflow()
