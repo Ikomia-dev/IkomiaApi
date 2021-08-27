@@ -68,12 +68,6 @@ class COcvMerge : public C2dImageTask
                 addInput(std::make_shared<CImageIO>());
         }
 
-        void    setParam(const WorkflowTaskParamPtr &pParam) override
-        {
-            m_pParam = pParam;
-            parametersModified();
-        }
-
         void    parametersModified() override
         {
             auto pParam = std::dynamic_pointer_cast<COcvMergeParam>(m_pParam);

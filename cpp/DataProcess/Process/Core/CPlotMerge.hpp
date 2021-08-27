@@ -76,11 +76,9 @@ class CPlotMerge : public CWorkflowTask
             addOutput(std::make_shared<CNumericIO<double>>());
         }
 
-        void    setParam(const WorkflowTaskParamPtr &pParam) override
+        void    parametersModified() override
         {
-            m_pParam = pParam;
             auto pParamTmp = std::dynamic_pointer_cast<CPlotMergeParam>(m_pParam);
-
             size_t inOldCount = getInputCount()-1;
 
             if(pParamTmp->m_inputCount > (int)inOldCount)
@@ -94,6 +92,7 @@ class CPlotMerge : public CWorkflowTask
                     removeInput(getInputCount() - 1);
             }
         }
+
         size_t  getProgressSteps() override
         {
             return 3;

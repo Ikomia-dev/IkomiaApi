@@ -77,12 +77,6 @@ class COcvDistanceTransform : public C2dImageTask
             parametersModified();
         }
 
-        void    setParam(const WorkflowTaskParamPtr &pParam) override
-        {
-            m_pParam = pParam;
-            parametersModified();
-        }
-
         void    parametersModified() override
         {
             auto pParam = std::dynamic_pointer_cast<COcvDistanceTransformParam>(m_pParam);

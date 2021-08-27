@@ -267,6 +267,7 @@ void CWorkflowTask::setOutputs(const InputOutputVect &outputs)
 void CWorkflowTask::setParam(const WorkflowTaskParamPtr &pParam)
 {
     m_pParam = pParam;
+    parametersModified();
 }
 
 void CWorkflowTask::setActive(bool bActive)
@@ -274,10 +275,13 @@ void CWorkflowTask::setActive(bool bActive)
     m_bActive = bActive;
 }
 
-void CWorkflowTask::setParamMap(const UMapString &paramMap)
+void CWorkflowTask::setParamValues(const UMapString &paramMap)
 {
     if(m_pParam)
+    {
         m_pParam->setParamMap(paramMap);
+        parametersModified();
+    }
 }
 
 void CWorkflowTask::setName(const std::string &name)
@@ -432,6 +436,14 @@ std::string CWorkflowTask::getOutputFolder() const
 WorkflowTaskParamPtr CWorkflowTask::getParam() const
 {
     return m_pParam;
+}
+
+UMapString CWorkflowTask::getParamValues() const
+{
+    if(m_pParam)
+        return m_pParam->getParamMap();
+    else
+        return UMapString();
 }
 
 uint CWorkflowTask::getHashValue() const

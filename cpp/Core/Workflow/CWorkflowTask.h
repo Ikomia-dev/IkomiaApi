@@ -197,19 +197,19 @@ class CORESHARED_EXPORT CWorkflowTask
          * @brief Sets the task parameters object.
          * @param pParam: CWorkflowTaskParam based shared pointer.
          */
-        virtual void                setParam(const WorkflowTaskParamPtr& pParam);
+        void                        setParam(const WorkflowTaskParamPtr& pParam);
+        /**
+         * @brief Sets the map structure storing the parameters definition (name and value for each).
+         * This map is used to have persistent storage of task parameters when user saves a workflow.
+         * @param paramMap: map containing pairs of std::string: key=parameter name, value=parameter value.
+         */
+        void                        setParamValues(const UMapString& paramMap);
         /**
          * @brief Sets the active state of the task.
          * The active task is the one selected in the workflow, thus, user has access to parameters and can visualize results associated with the task.
          * @param bActive: true or false.
          */
         virtual void                setActive(bool bActive);
-        /**
-         * @brief Sets the map structure storing the parameters definition (name and value for each).
-         * This map is used to have persistent storage of task parameters when user saves a workflow.
-         * @param paramMap: map containing pairs of std::string: key=parameter name, value=parameter value.
-         */
-        void                        setParamMap(const UMapString& paramMap);
         /**
          * @brief Sets the task name.
          * @param name: new name of the task.
@@ -336,6 +336,12 @@ class CORESHARED_EXPORT CWorkflowTask
          * @return CWorkflowTaskParam based shared pointer.
          */
         WorkflowTaskParamPtr        getParam() const;
+        /**
+         * @brief Gets parameters values.
+         * @return Unordered map of std::string pair (key, value).
+         */
+        UMapString                  getParamValues() const;
+
         /**
          * @brief Gets unique hash value identifying the task.
          * This hash value is computed from multiple elements to ensure uniqueness.

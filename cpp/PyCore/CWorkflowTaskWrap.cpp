@@ -209,35 +209,6 @@ void CWorkflowTaskWrap::default_setOutputs(const InputOutputVect &outputs)
     }
 }
 
-void CWorkflowTaskWrap::setParam(const WorkflowTaskParamPtr &pParam)
-{
-    CPyEnsureGIL gil;
-    try
-    {
-        if(override setParamOver = this->get_override("setParam"))
-            setParamOver(pParam);
-        else
-            CWorkflowTask::setParam(pParam);
-    }
-    catch(boost::python::error_already_set&)
-    {
-        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
-    }
-}
-
-void CWorkflowTaskWrap::default_setParam(const WorkflowTaskParamPtr &pParam)
-{
-    CPyEnsureGIL gil;
-    try
-    {
-        this->CWorkflowTask::setParam(pParam);
-    }
-    catch(boost::python::error_already_set&)
-    {
-        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
-    }
-}
-
 void CWorkflowTaskWrap::setActive(bool bActive)
 {
     CPyEnsureGIL gil;
@@ -323,18 +294,6 @@ size_t CWorkflowTaskWrap::default_getProgressSteps(size_t unitEltCount)
     {
         throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
     }
-}
-
-InputOutputVect CWorkflowTaskWrap::getInputs(const std::vector<IODataType> &types) const
-{
-    std::set<IODataType> inTypes(types.begin(), types.end());
-    return CWorkflowTask::getInputs(inTypes);
-}
-
-InputOutputVect CWorkflowTaskWrap::getOutputs(const std::vector<IODataType> &types) const
-{
-    std::set<IODataType> outTypes(types.begin(), types.end());
-    return CWorkflowTask::getOutputs(outTypes);
 }
 
 bool CWorkflowTaskWrap::isGraphicsChangedListening() const

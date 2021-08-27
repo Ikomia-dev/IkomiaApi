@@ -57,9 +57,6 @@ class CWorkflowTaskWrap : public CWorkflowTask, public wrapper<CWorkflowTask>
         virtual void    setOutputs(const InputOutputVect &outputs) override;
         void            default_setOutputs(const InputOutputVect &outputs);
 
-        virtual void    setParam(const WorkflowTaskParamPtr& pParam) override;
-        void            default_setParam(const WorkflowTaskParamPtr& pParam);
-
         virtual void    setActive(bool bActive) override;
         void            default_setActive(bool bActive);
 
@@ -68,9 +65,6 @@ class CWorkflowTaskWrap : public CWorkflowTask, public wrapper<CWorkflowTask>
 
         virtual size_t  getProgressSteps(size_t unitEltCount) override;
         size_t          default_getProgressSteps(size_t unitEltCount);
-
-        InputOutputVect getInputs(const std::vector<IODataType>& types) const;
-        InputOutputVect getOutputs(const std::vector<IODataType>& types) const;
 
         virtual bool    isGraphicsChangedListening() const override;
         bool            default_isGraphicsChangedListening() const;
