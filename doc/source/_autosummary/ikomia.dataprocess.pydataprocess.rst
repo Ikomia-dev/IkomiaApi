@@ -17,14 +17,14 @@
 
       CImageIO
       CVideoIO
-      CDblFeatureIO
+      CNumericIO
       CGraphicsInput
       CGraphicsOutput
       CWidgetOutput
       CDatasetIO
       CPathIO
       CArrayIO
-      CMeasureIO
+      CBlobMeasureIO
       CObjectMeasure
       NumericOutputType
       PlotType
