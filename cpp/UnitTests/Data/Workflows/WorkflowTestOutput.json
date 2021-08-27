@@ -1,0 +1,133 @@
+{
+    "connections": [
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 0,
+            "target_index": 0
+        },
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 1,
+            "target_index": 0
+        },
+        {
+            "source_id": 1,
+            "source_index": 0,
+            "target_id": 2,
+            "target_index": 0
+        }
+    ],
+    "metadata": {
+        "description": "Test workflow with various output data types",
+        "keywords": "test,multiple,output,data,type",
+        "name": "MultiOutputTypes"
+    },
+    "tasks": [
+        {
+            "task_data": {
+                "name": "MobileNet SSD",
+                "parameters": [
+                    {
+                        "name": "structureFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.prototxt"
+                    },
+                    {
+                        "name": "labelsFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/pascalVoc0712_names.txt"
+                    },
+                    {
+                        "name": "modelFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.caffemodel"
+                    },
+                    {
+                        "name": "datasetName",
+                        "value": ""
+                    },
+                    {
+                        "name": "inputSize",
+                        "value": "416"
+                    },
+                    {
+                        "name": "confidence",
+                        "value": "0.500000"
+                    },
+                    {
+                        "name": "framework",
+                        "value": "1"
+                    },
+                    {
+                        "name": "nmsThreshold",
+                        "value": "0.400000"
+                    },
+                    {
+                        "name": "modelName",
+                        "value": ""
+                    },
+                    {
+                        "name": "target",
+                        "value": "0"
+                    },
+                    {
+                        "name": "backend",
+                        "value": "0"
+                    }
+                ]
+            },
+            "task_id": 0
+        },
+        {
+            "task_data": {
+                "name": "Split Operator",
+                "parameters": [
+                    {
+                        "name": "outputCount",
+                        "value": "3"
+                    }
+                ]
+            },
+            "task_id": 1
+        },
+        {
+            "task_data": {
+                "name": "SIFT",
+                "parameters": [
+                    {
+                        "name": "bDetect",
+                        "value": "1"
+                    },
+                    {
+                        "name": "sigma",
+                        "value": "1.600000"
+                    },
+                    {
+                        "name": "edgeThreshold",
+                        "value": "10.000000"
+                    },
+                    {
+                        "name": "contrastThreshold",
+                        "value": "0.040000"
+                    },
+                    {
+                        "name": "octaveLayersCount",
+                        "value": "3"
+                    },
+                    {
+                        "name": "bCompute",
+                        "value": "1"
+                    },
+                    {
+                        "name": "bUseProvidedKeypoints",
+                        "value": "0"
+                    },
+                    {
+                        "name": "featuresCount",
+                        "value": "0"
+                    }
+                ]
+            },
+            "task_id": 2
+        }
+    ]
+}
