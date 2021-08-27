@@ -343,7 +343,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
     """
     Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CDblFeatureIO`)
     as a table in a Matplotlib figure.
@@ -496,7 +496,7 @@ def _(obj: dataprocess.CDblFeatureIO, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CMeasureIO, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
     """
     Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CMeasureIO`)
     as a table in a Matplotlib figure.
