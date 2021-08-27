@@ -142,14 +142,15 @@ class Workflow(dataprocess.CWorkflow):
         if algo is None:
             raise RuntimeError("Algorithm " + name + "can't be created.")
 
-        return self.addTask(algo)
+        return self.addTask(algo), algo
 
-    def find_task(self, name: str):
+    def find_task(self, name: str, index=-1):
         """
         Get identifiers of tasks with the given name in the workflow.
 
         Args:
              name (str): algorithm name
+             index (int): zero-based index of the wanted task. If -1, the function returns all candidates.
 
         Returns:
             list of pairs (tuple): 1- task identifier 2- task object
@@ -162,7 +163,12 @@ class Workflow(dataprocess.CWorkflow):
             if task.name == name:
                 tasks.append((task_id, task))
 
-        return tasks
+        if 0 <= index < len(tasks):
+            return tasks[index]
+        elif len(tasks) == 1:
+            return tasks[0]
+        else:
+            return tasks
 
     def connect_tasks(self, src, target, edges=None):
         """
