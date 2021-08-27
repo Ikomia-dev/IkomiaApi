@@ -1709,6 +1709,7 @@ void CWorkflow::loadJSON(const std::string &path)
     QJsonArray jsonTasks = jsonWorkflow["tasks"].toArray();
     for(int i=0; i<jsonTasks.size(); ++i)
     {
+        CPyEnsureGIL gil;
         QJsonObject jsonTask = jsonTasks[i].toObject();
         QJsonObject jsonTaskData = jsonTask["task_data"].toObject();
         auto taskPtr = m_pTaskRegistration->createProcessObject(jsonTaskData["name"].toString().toStdString(), nullptr);
@@ -1718,13 +1719,15 @@ void CWorkflow::loadJSON(const std::string &path)
             UMapString paramMap;
             QJsonArray jsonParams = jsonTaskData["parameters"].toArray();
 
-            for(int j=0; j<jsonParams.size(); ++j)
+            if(!jsonParams.empty())
             {
-                QJsonObject jsonParam = jsonParams[j].toObject();
-                paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
+                for(int j=0; j<jsonParams.size(); ++j)
+                {
+                    QJsonObject jsonParam = jsonParams[j].toObject();
+                    paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
+                }
+                taskPtr->setParamValues(paramMap);
             }
-            taskPtr->setParamValues(paramMap);
-            taskPtr->parametersModified();
             auto vertexId = addTask(taskPtr);
             mapIdToVertexId.insert(std::make_pair(jsonTask["task_id"].toInt(), vertexId));
         }
