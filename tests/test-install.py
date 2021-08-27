@@ -48,7 +48,7 @@ def test_dataprocess():
     try:
         image_io = dataprocess.CImageIO(core.IODataType.IMAGE)
         video_io = dataprocess.CVideoIO(core.IODataType.VIDEO)
-        feat_io = dataprocess.CDblFeatureIO()
+        feat_io = dataprocess.CNumericIO()
         graphics_in = dataprocess.CGraphicsInput()
         graphics_out = dataprocess.CGraphicsOutput()
         path_io = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, "/home")

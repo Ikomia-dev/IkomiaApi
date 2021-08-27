@@ -28,7 +28,7 @@ import os
 import logging
 import enum
 from ikomia import utils, core, dataprocess
-from ikomia.core import config
+from ikomia.core import config, task
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
@@ -125,6 +125,27 @@ class Workflow(dataprocess.CWorkflow):
             metrics[task.name] = task_metrics
 
         return metrics
+
+    def get_image_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_image_output, task_id, task_name, index)
+
+    def get_graphics_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_graphics_output, task_id, task_name, index)
+
+    def get_numeric_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_numeric_output, task_id, task_name, index)
+
+    def get_blob_measure_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_blob_measure_output, task_id, task_name, index)
+
+    def get_dataset_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_dataset_output, task_id, task_name, index)
+
+    def get_array_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_array_output, task_id, task_name, index)
+
+    def get_path_output(self, task_id=None, task_name="", index=-1):
+        return self._get_task_output(task.get_path_output, task_id, task_name, index)
 
     def add_task(self, name, param=None):
         """
@@ -228,3 +249,29 @@ class Workflow(dataprocess.CWorkflow):
             return Workflow.RunMode.DIRECTORY
         else:
             return Workflow.RunMode.SINGLE
+
+    def _get_task_output(self, get_output_func, task_id=None, task_name="", index=-1):
+        wf_task = None
+        if task_id is not None:
+            wf_task = self.getTask(task_id)
+            if wf_task is None:
+                return None
+
+            return get_output_func(wf_task, index)
+        elif task_name:
+            wf_task = self.find_task(task_name)
+            if wf_task is None:
+                return None
+
+            if not isinstance(wf_task, list):
+                return get_output_func(wf_task[1], index)
+            else:
+                wf_outputs = []
+                for t in wf_task:
+                    outs = get_output_func(t[1], index)
+                    if isinstance(outs, list):
+                        wf_outputs.extend(outs)
+                    else:
+                        wf_outputs.append(outs)
+
+                return wf_outputs

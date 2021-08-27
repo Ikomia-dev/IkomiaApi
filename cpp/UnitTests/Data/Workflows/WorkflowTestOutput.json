@@ -1,6 +1,5 @@
 {
-    "connections": [
-        {
+    "connections": [{
             "source_id": -1,
             "source_index": 0,
             "target_id": 0,
@@ -20,16 +19,14 @@
         }
     ],
     "metadata": {
-        "description": "Test workflow with various output data types",
-        "keywords": "test,multiple,output,data,type",
+        "description": "",
+        "keywords": "",
         "name": "MultiOutputTypes"
     },
-    "tasks": [
-        {
+    "tasks": [{
             "task_data": {
                 "name": "MobileNet SSD",
-                "parameters": [
-                    {
+                "parameters": [{
                         "name": "structureFile",
                         "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.prototxt"
                     },
@@ -80,54 +77,54 @@
         {
             "task_data": {
                 "name": "Split Operator",
-                "parameters": [
-                    {
-                        "name": "outputCount",
-                        "value": "3"
-                    }
-                ]
+                "parameters": [{
+                    "name": "outputCount",
+                    "value": "3"
+                }]
             },
             "task_id": 1
         },
         {
             "task_data": {
-                "name": "SIFT",
-                "parameters": [
-                    {
-                        "name": "bDetect",
+                "name": "CalcHist",
+                "parameters": [{
+                        "name": "nChannels",
                         "value": "1"
                     },
                     {
-                        "name": "sigma",
-                        "value": "1.600000"
+                        "name": "nRanges",
+                        "value": "0"
                     },
                     {
-                        "name": "edgeThreshold",
-                        "value": "10.000000"
+                        "name": "histSize0",
+                        "value": "64"
                     },
                     {
-                        "name": "contrastThreshold",
-                        "value": "0.040000"
-                    },
-                    {
-                        "name": "octaveLayersCount",
-                        "value": "3"
-                    },
-                    {
-                        "name": "bCompute",
+                        "name": "nBins",
                         "value": "1"
                     },
                     {
-                        "name": "bUseProvidedKeypoints",
+                        "name": "bAccu",
                         "value": "0"
                     },
                     {
-                        "name": "featuresCount",
+                        "name": "channels0",
                         "value": "0"
+                    },
+                    {
+                        "name": "bUniform",
+                        "value": "1"
                     }
                 ]
             },
             "task_id": 2
+        },
+        {
+            "task_data": {
+                "name": "WGISD_Dataset",
+                "parameters": []
+            },
+            "task_id": 3
         }
     ]
 }

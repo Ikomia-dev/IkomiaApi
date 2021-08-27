@@ -1,5 +1,6 @@
 import ikomia
 import logging
+import argparse
 import cv2
 from ikomia.utils import tests
 from ikomia.core import task, ParamMap
@@ -57,24 +58,60 @@ def test_task_parameters():
     displayIO.display(algo.getOutput(0), algo.name)
 
 
-def test_get_task_outputs():
+def test_get_task_outputs(wgisd_dir):
     logger.info("===== Test::get task outputs of various data types =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTestOutput.json"
-    wf = workflow.Workflow("test_single_image_run", ikomia.ik_registry)
+    wf = workflow.Workflow("test_outputs", ikomia.ik_registry)
     wf.load(wf_path)
+
+    wgisd_task = wf.find_task("WGISD_Dataset", 0)[1]
+    wgisd_params = wgisd_task.getParamValues()
+    wgisd_params["data_folder_path"] = wgisd_dir + "/data"
+    wgisd_params["class_file_path"] = wgisd_dir + "/classes.txt"
+    wgisd_params["load_mask"] = str(False)
+    wgisd_task.setParamValues(wgisd_params)
     wf.set_image_input(path=img_path)
     wf.run()
 
+    logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
     detector_task = wf.find_task("MobileNet SSD", 0)[1]
     img_out = task.get_image_output(detector_task)
+    assert(img_out is not None)
     displayIO.display(img_out, detector_task.name)
     graphics_out = task.get_graphics_output(detector_task)
+    assert (graphics_out is not None)
     displayIO.display(graphics_out, detector_task.name)
     blob_out = task.get_blob_measure_output(detector_task)
+    assert (blob_out is not None)
     displayIO.display(blob_out, detector_task.name)
+
+    logger.info("----- Get Split Operator outputs: 3 images")
+    split_task = wf.find_task("Split Operator", 0)[1]
+    img_out = task.get_image_output(split_task)
+    assert (img_out is not None)
+    assert(len(img_out) == 3)
+    img_out = task.get_image_output(split_task, 2)
+    displayIO.display(img_out, split_task.name + "- blue channel")
+
+    logger.info("----- Get CalcHist outputs: numeric")
+    hist_task = wf.find_task("CalcHist", 0)[1]
+    numeric_out = task.get_numeric_output(hist_task)
+    assert (numeric_out is not None)
+    displayIO.display(numeric_out, hist_task.name)
+
+    logger.info("----- Get WGISD_Dataset outputs: dataset")
+    dataset_out = task.get_dataset_output(wgisd_task)
+    assert (dataset_out is not None)
+    assert (dataset_out.getCategoryCount() > 0)
+    assert (len(dataset_out.getImagePaths()) > 0)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--wgisd_dir", type=str, default="/home/ludo/Images/Datasets/wgisd",
+                        help="Classification datatset folder")
+    opt = parser.parse_args()
+
     test_task_parameters()
-    test_get_task_outputs()
+    test_get_task_outputs(opt.wgisd_dir)

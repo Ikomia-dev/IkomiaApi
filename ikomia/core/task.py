@@ -74,8 +74,7 @@ def _get_outputs(task, types, index=1):
 
 
 def get_image_output(task, index=-1):
-    # data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
-    data_types = [0, 1, 2]
+    data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     return _get_outputs(task, data_types, index)
 
 

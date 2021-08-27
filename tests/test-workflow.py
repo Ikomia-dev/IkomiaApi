@@ -99,10 +99,10 @@ def test_yolov5_train(wgisd_dataset_dir):
     # set dataset directory
     wgisd_tasks = wf.find_task("WGISD_Dataset")
 
-    wgisd_params = wgisd_tasks[0][1].getParam().getParamMap()
+    wgisd_params = wgisd_tasks[0][1].getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
-    wgisd_tasks[0][1].getParam().setParamMap(wgisd_params)
+    wgisd_tasks[0][1].setParamValues(wgisd_params)
 
     logger.info("Start YoloV5 training...")
     wf.run()
@@ -115,11 +115,11 @@ def test_yolo_train(wgisd_dataset_dir):
 
     wgisd_id = wf.add_task("WGISD_Dataset")
     wgisd = wf.getTask(wgisd_id)
-    wgisd_params = wgisd.getParam().getParamMap()
+    wgisd_params = wgisd.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params["load_mask"] = str(False)
-    wgisd.getParam().setParamMap(wgisd_params)
+    wgisd.setParamValues()(wgisd_params)
 
     yolo_id = wf.add_task("YoloTrain")
     wf.connect_tasks(wgisd_id, yolo_id)
@@ -281,20 +281,72 @@ def test_time_metrics():
     logger.info(wf.get_time_metrics())
 
 
+def test_get_outputs(wgisd_dataset_dir):
+    logger.info("===== Test::get workflow outputs of various data types =====")
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    wf_path = tests.get_test_workflow_directory() + "/WorkflowTestOutput.json"
+    wf = workflow.Workflow("test_outputs", ikomia.ik_registry)
+    wf.load(wf_path)
+
+    # set WGISD_Dataset parameters
+    wgisd_task = wf.find_task("WGISD_Dataset", 0)[1]
+    wgisd_params = wgisd_task.getParamValues()
+    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
+    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_params["load_mask"] = str(False)
+    wgisd_task.setParamValues(wgisd_params)
+
+    # run workflow
+    wf.set_image_input(path=img_path)
+    wf.run()
+
+    logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
+    img_out = wf.get_image_output(task_name="MobileNet SSD")
+    assert (img_out is not None)
+    displayIO.display(img_out, "MobileNet SSD")
+    graphics_out = wf.get_graphics_output(task_name="MobileNet SSD")
+    assert (graphics_out is not None)
+    displayIO.display(graphics_out, "MobileNet SSD")
+    blob_out = wf.get_blob_measure_output(task_name="MobileNet SSD")
+    assert (blob_out is not None)
+    displayIO.display(blob_out, "MobileNet SSD")
+
+    logger.info("----- Get Split Operator outputs: 3 images")
+    img_out = wf.get_image_output(task_name="Split Operator")
+    assert (img_out is not None)
+    assert (len(img_out) == 3)
+    img_out = wf.get_image_output(task_name="Split Operator", index=2)
+    assert (img_out is not None)
+    displayIO.display(img_out, "Blue channel")
+
+    logger.info("----- Get CalcHist outputs: numeric")
+    hist_task_id = wf.find_task("CalcHist", 0)[0]
+    numeric_out = wf.get_numeric_output(task_id=hist_task_id)
+    assert (numeric_out is not None)
+    displayIO.display(numeric_out, "CalcHist")
+
+    logger.info("----- Get WGISD_Dataset outputs: dataset")
+    dataset_out = wf.get_dataset_output(task_name="WGISD_Dataset")
+    assert (dataset_out is not None)
+    assert (dataset_out.getCategoryCount() > 0)
+    assert (len(dataset_out.getImagePaths()) > 0)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
     parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
     opt = parser.parse_args()
 
-    test_metadata()
-    test_load()
-    test_single_image_run()
-    test_directory_run()
-    test_resnet_train(opt.classif_dataset_dir)
-    test_yolo_train(opt.detect_dataset_dir)
-    test_yolov5_train(opt.detect_dataset_dir)
-    test_export_graphviz()
-    test_graph_structure()
-    test_time_metrics()
-    test_graph_build()
+    # test_metadata()
+    # test_load()
+    # test_single_image_run()
+    # test_directory_run()
+    # test_resnet_train(opt.classif_dataset_dir)
+    # test_yolo_train(opt.detect_dataset_dir)
+    # test_yolov5_train(opt.detect_dataset_dir)
+    # test_export_graphviz()
+    # test_graph_structure()
+    # test_time_metrics()
+    # test_graph_build()
+    test_get_outputs(opt.detect_dataset_dir)
