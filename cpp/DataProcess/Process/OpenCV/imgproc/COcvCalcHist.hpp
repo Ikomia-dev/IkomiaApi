@@ -35,14 +35,21 @@ class COcvCalcHistParam: public CWorkflowTaskParam
 
         void setParamMap(const UMapString& paramMap) override
         {
+            m_histSize.clear();
+            m_ranges.clear();
+            m_channels.clear();
+
             m_bUniform = std::stoi(paramMap.at("bUniform"));
             m_bAccu = std::stoi(paramMap.at("bAccu"));
+
             auto nBins = std::stoi(paramMap.at("nBins"));
             for(int i=0; i<nBins; ++i)
                 m_histSize.push_back(std::stoi(paramMap.at("histSize"+std::to_string(i))));
+
             auto nRanges = std::stoi(paramMap.at("nRanges"));
             for(int i=0; i<nRanges; ++i)
                 m_ranges.push_back(std::stoi(paramMap.at("ranges"+std::to_string(i))));
+
             auto nChannels = std::stoi(paramMap.at("nChannels"));
             for(int i=0; i<nChannels; ++i)
                 m_channels.push_back(std::stoi(paramMap.at("channels"+std::to_string(i))));
@@ -54,14 +61,18 @@ class COcvCalcHistParam: public CWorkflowTaskParam
             map.insert(std::make_pair("bUniform", std::to_string(m_bUniform)));
             map.insert(std::make_pair("bAccu", std::to_string(m_bAccu)));
             map.insert(std::make_pair("nBins", std::to_string(m_histSize.size())));
+
             for(size_t i=0; i<m_histSize.size(); ++i)
                 map.insert(std::make_pair("histSize"+std::to_string(i), std::to_string(m_histSize[i])));
+
             map.insert(std::make_pair("nRanges", std::to_string(m_ranges.size())));
             for(size_t i=0; i<m_ranges.size(); ++i)
                 map.insert(std::make_pair("ranges"+std::to_string(i), std::to_string(m_ranges[i])));
+
             map.insert(std::make_pair("nChannels", std::to_string(m_channels.size())));
             for(size_t i=0; i<m_channels.size(); ++i)
                 map.insert(std::make_pair("channels"+std::to_string(i), std::to_string(m_channels[i])));
+
             return map;
         }
 
