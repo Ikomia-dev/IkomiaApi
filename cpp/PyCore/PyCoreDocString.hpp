@@ -385,13 +385,8 @@ constexpr auto _getOutputDataTypeDocString =
         "Returns:\n"
         "   :py:class:`~ikomia.core.pycore.IODataType`: output data type\n";
 
-constexpr auto _getOutputs1DocString =
+constexpr auto _getOutputsDocString =
         "Get the whole list of outputs.\n\n"
-        "Returns:\n"
-        "   list: list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
-
-constexpr auto _getOutputs2DocString =
-        "Get the list of outputs of the given data type.\n\n"
         "Returns:\n"
         "   list: list of :py:class:`~ikomia.core.pycore.CWorkflowTaskIO` based objects\n";
 
@@ -399,6 +394,11 @@ constexpr auto _getParamDocString =
         "Get task parameters.\n\n"
         "Returns:\n"
         "   :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n";
+
+constexpr auto _getParamValuesDocString =
+        "Get values of task parameters.\n\n"
+        "Returns:\n"
+        "   :py:class:`ikomia.core.pycore.ParamMap`: dict-like structure of string pairs (parameter name, value)\n";
 
 constexpr auto _getProgressSteps1DocString =
         "Get the number of progress steps when the system runs the task.\n\n"
@@ -505,6 +505,11 @@ constexpr auto _setParamDocString =
         "Set the task parameters object. Task can have only one parameters object.\n\n"
         "Args:\n"
         "   param: :py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object\n";
+
+constexpr auto _setParamValuesDocString =
+        "Set values of task parameters.\n\n"
+        "Args:\n"
+        "   values: :py:class:`~ikomia.core.pycore.ParamMap`, dict-like structure of string pairs (parameter name, value)\n";
 
 constexpr auto _updateStaticOutputsDocString =
         "Updates the static information deduced from inputs. "

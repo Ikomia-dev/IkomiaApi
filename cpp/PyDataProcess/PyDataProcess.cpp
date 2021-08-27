@@ -122,7 +122,6 @@ BOOST_PYTHON_MODULE(pydataprocess)
     registerStdVector<std::vector<uchar>>();
     registerStdVector<std::vector<std::string>>();
     registerStdVector<std::vector<double>>();
-    registerStdVector<IODataType>();
     registerStdVector<CObjectMeasure>();
     registerStdVector<std::vector<CObjectMeasure>>();
 

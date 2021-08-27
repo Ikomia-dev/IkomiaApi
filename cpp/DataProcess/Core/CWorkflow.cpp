@@ -1723,7 +1723,7 @@ void CWorkflow::loadJSON(const std::string &path)
                 QJsonObject jsonParam = jsonParams[j].toObject();
                 paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
             }
-            taskPtr->setParamMap(paramMap);
+            taskPtr->setParamValues(paramMap);
             taskPtr->parametersModified();
             auto vertexId = addTask(taskPtr);
             mapIdToVertexId.insert(std::make_pair(jsonTask["task_id"].toInt(), vertexId));

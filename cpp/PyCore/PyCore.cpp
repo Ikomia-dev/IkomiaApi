@@ -98,6 +98,7 @@ BOOST_PYTHON_MODULE(pycore)
     registerStdVector<std::shared_ptr<CWorkflowTaskIO>>();
     registerStdVector<std::shared_ptr<CWorkflowTask>>();
     registerStdVector<CMeasure>();
+    registerStdVector<IODataType>();
 
     //--------------------//
     //----- Graphics -----//
@@ -305,6 +306,7 @@ BOOST_PYTHON_MODULE(pycore)
         .value("INPUT_GRAPHICS", IODataType::INPUT_GRAPHICS)
         .value("OUTPUT_GRAPHICS", IODataType::OUTPUT_GRAPHICS)
         .value("NUMERIC_VALUES", IODataType::NUMERIC_VALUES)
+        .value("BLOB_VALUES", IODataType::BLOB_VALUES)
         .value("DESCRIPTORS", IODataType::DESCRIPTORS)
         .value("WIDGET", IODataType::WIDGET)
         .value("FOLDER_PATH", IODataType::FOLDER_PATH)
@@ -357,10 +359,8 @@ BOOST_PYTHON_MODULE(pycore)
     size_t (CWorkflowTask::*getProgressSteps2)(size_t) = &CWorkflowTask::getProgressSteps;
     size_t (CWorkflowTaskWrap::*default_getProgressSteps1)() = &CWorkflowTaskWrap::default_getProgressSteps;
     size_t (CWorkflowTaskWrap::*default_getProgressSteps2)(size_t) = &CWorkflowTaskWrap::default_getProgressSteps;
-    InputOutputVect (CWorkflowTask::*getInputs1)() const = &CWorkflowTask::getInputs;
-    InputOutputVect (CWorkflowTaskWrap::*getInputs2)(const std::vector<IODataType>&) const = &CWorkflowTaskWrap::getInputs;
-    InputOutputVect (CWorkflowTask::*getOutputs1)() const = &CWorkflowTask::getOutputs;
-    InputOutputVect (CWorkflowTaskWrap::*getOutputs2)(const std::vector<IODataType>&) const = &CWorkflowTaskWrap::getOutputs;
+    InputOutputVect (CWorkflowTask::*getInputs)() const = &CWorkflowTask::getInputs;
+    InputOutputVect (CWorkflowTask::*getOutputs)() const = &CWorkflowTask::getOutputs;
     void (CWorkflowTask::*addInputRef)(const WorkflowTaskIOPtr&) = &CWorkflowTask::addInput;
     void (CWorkflowTask::*addOutputRef)(const WorkflowTaskIOPtr&) = &CWorkflowTask::addOutput;
 
@@ -377,19 +377,19 @@ BOOST_PYTHON_MODULE(pycore)
         .def("setOutputDataType", &CWorkflowTask::setOutputDataType, &CWorkflowTaskWrap::default_setOutputDataType, _setOutputDataTypeDocString, args("self", "data_type", "index"))
         .def("setOutput", &CWorkflowTask::setOutput, &CWorkflowTaskWrap::default_setOutput, _setOutputDocString, args("self", "output", "index"))
         .def("setOutputs", &CWorkflowTask::setOutputs, &CWorkflowTaskWrap::default_setOutputs, _setOutputsDocString, args("self", "outputs"))
-        .def("setParam", &CWorkflowTask::setParam, &CWorkflowTaskWrap::default_setParam, _setParamDocString, args("self", "param"))
+        .def("setParam", &CWorkflowTask::setParam, _setParamDocString, args("self", "param"))
+        .def("setParamValues", &CWorkflowTask::setParamValues, _setParamValuesDocString, args("self", "values"))
         .def("setActionFlag", &CWorkflowTask::setActionFlag, _setActionFlagDocString, args("self", "action", "is_enable"))
         .def("setActive", &CWorkflowTask::setActive, &CWorkflowTaskWrap::default_setActive, _setActiveDocString, args("self", "is_active"))
         .def("getInputCount", &CWorkflowTask::getInputCount, _getInputCountDocString, args("self"))
-        .def("getInputs", getInputs1, _getInputsDocString, args("self"))
-        .def("getInputs", getInputs2, _getInputsDocString, args("self", "types"))
+        .def("getInputs", getInputs, _getInputsDocString, args("self"))
         .def("getInput", &CWorkflowTask::getInput, _getInputDocString, args("self", "index"))
         .def("getInputDataType", &CWorkflowTask::getInputDataType, _getInputDataTypeDocString, args("self", "index"))
         .def("getOutputCount", &CWorkflowTask::getOutputCount, _getOutputCountDocString, args("self"))
-        .def("getOutputs", getOutputs1, _getOutputs1DocString, args("self"))
-        .def("getOutputs", getOutputs2, _getOutputs2DocString, args("self", "types"))
+        .def("getOutputs", getOutputs, _getOutputsDocString, args("self"))
         .def("getOutput", &CWorkflowTask::getOutput, _getOutputDocString, args("self", "index"))
         .def("getParam", &CWorkflowTask::getParam, _getParamDocString, args("self"))
+        .def("getParamValues", &CWorkflowTask::getParamValues, _getParamValuesDocString, args("self"))
         .def("getOutputDataType", &CWorkflowTask::getOutputDataType, _getOutputDataTypeDocString, args("self", "index"))
         .def("getElapsedTime", &CWorkflowTask::getElapsedTime, _getElapsedTimeDocString, args("self"))
         .def("getProgressSteps", getProgressSteps1, default_getProgressSteps1, _getProgressSteps1DocString, args("self"))
