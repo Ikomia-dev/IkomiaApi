@@ -27,6 +27,8 @@ Ikomia algorithms or any of those available in the Marketplace.
 import os
 import logging
 import enum
+
+import ikomia
 from ikomia import utils, core, dataprocess
 from ikomia.core import config, task
 from urllib.parse import urlparse
@@ -373,3 +375,53 @@ class Workflow(dataprocess.CWorkflow):
                         wf_outputs.append(outs)
 
                 return wf_outputs
+
+
+def create(name="untitled"):
+    """
+    Create new empty workflow.
+    See also :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`,
+    :py:meth:`~ikomia.dataprocess.workflow.Workflow.connect_tasks` and
+    :py:meth:`~ikomia.dataprocess.workflow.Workflow.run`.
+
+    Args:
+        name (str): workflow name.
+    """
+    return Workflow(name, ikomia.ik_registry)
+
+
+def load(path):
+    """
+    Load Ikomia workflow from the given path.
+
+    Args:
+        path (str)
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.workflow.Workflow`: loaded workflow.
+    """
+    wf = Workflow("untitled", ikomia.ik_registry)
+    wf.load(path)
+    return wf
+
+
+def run_on(wf, array=None, path="", url="", folder=""):
+    """
+    Convenient function to run the given workflow on common inputs. For more advanced use, please consult
+    :py:class:`~ikomia.dataprocess.workflow.Workflow`.
+    See also :py:func:`~ikomia.dataprocess.workflow.Workflow.set_image_input`
+    and :py:func:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`
+
+    Args:
+        wf (:py:class:`~ikomia.dataprocess.workflow.Workflow`): workflow object instance
+        array (Numpy array): image or generic array as numpy array
+        path (str): path to image (valid formats are those managed by OpenCV)
+        url (str): URL to image file (valid formats are those managed by OpenCV)
+        folder (str): image folder
+    """
+    if folder:
+        wf.set_directory_input(folder=folder)
+        wf.run
+    else:
+        wf.set_image_input(array=array, path=path, url=url)
+        wf.run()
