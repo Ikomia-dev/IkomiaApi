@@ -18,6 +18,13 @@ Workflow
         ~Workflow.add_task
         ~Workflow.connect_tasks
         ~Workflow.find_task
+        ~Workflow.get_array_output
+        ~Workflow.get_blob_measure_output
+        ~Workflow.get_dataset_output
+        ~Workflow.get_graphics_output
+        ~Workflow.get_image_output
+        ~Workflow.get_numeric_output
+        ~Workflow.get_path_output
         ~Workflow.get_time_metrics
         ~Workflow.run
         ~Workflow.set_directory_input
@@ -73,14 +80,21 @@ Workflow
     .. automethod:: exportGraphviz
     .. automethod:: find_task
     .. automethod:: getChilds
+    .. automethod:: get_array_output
+    .. automethod:: get_blob_measure_output
+    .. automethod:: get_dataset_output
     .. automethod:: getEdgeInfo
     .. automethod:: getEdgeSource
     .. automethod:: getEdgeTarget
     .. automethod:: getElapsedTimeTo
     .. automethod:: getFinalTasks
+    .. automethod:: get_graphics_output
+    .. automethod:: get_image_output
     .. automethod:: getInEdges
+    .. automethod:: get_numeric_output
     .. automethod:: getOutEdges
     .. automethod:: getParents
+    .. automethod:: get_path_output
     .. automethod:: getRootID
     .. automethod:: getRootTargetTypes
     .. automethod:: getTask

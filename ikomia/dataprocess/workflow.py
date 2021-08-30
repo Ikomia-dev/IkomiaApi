@@ -120,31 +120,129 @@ class Workflow(dataprocess.CWorkflow):
         ids = self.getTaskIDs()
 
         for task_id in ids:
-            task = self.getTask(task_id)
-            task_metrics = {"task_time": task.getElapsedTime(), "time_from_start": self.getElapsedTimeTo(task_id)}
-            metrics[task.name] = task_metrics
+            t = self.getTask(task_id)
+            task_metrics = {"task_time": t.getElapsedTime(), "time_from_start": self.getElapsedTimeTo(task_id)}
+            metrics[t.name] = task_metrics
 
         return metrics
 
     def get_image_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow IMAGE output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple IMAGE outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_image_output, task_id, task_name, index)
 
     def get_graphics_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow GRAPHICS output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple GRAPHICS outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`: output or list of outputs.
+        """
         return self._get_task_output(task.get_graphics_output, task_id, task_name, index)
 
     def get_numeric_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow NUMERIC output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple NUMERIC outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_numeric_output, task_id, task_name, index)
 
     def get_blob_measure_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow BLOB MEASURE output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple BLOB MEASURE outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_blob_measure_output, task_id, task_name, index)
 
     def get_dataset_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow DATASET output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple DATASET outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_dataset_output, task_id, task_name, index)
 
     def get_array_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow ARRAY output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple ARRAY outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_array_output, task_id, task_name, index)
 
     def get_path_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow PATH output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple PATH outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`: output or list of outputs.
+        """
         return self._get_task_output(task.get_path_output, task_id, task_name, index)
 
     def add_task(self, name, param=None):
@@ -157,7 +255,7 @@ class Workflow(dataprocess.CWorkflow):
             param (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` or derived): algorithm parameters
 
         Returns:
-            int: unique task identifier
+            pair (tuple): 1- unique task identifier 2- task object
         """
         algo = self.registry.create_algorithm(name, param)
         if algo is None:

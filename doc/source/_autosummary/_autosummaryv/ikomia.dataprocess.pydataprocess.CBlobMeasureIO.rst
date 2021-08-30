@@ -3,7 +3,7 @@ CBlobMeasureIO
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
-.. autoclass:: CMeasureIO
+.. autoclass:: CBlobMeasureIO
 
    .. rubric:: Import
    .. code-block:: python

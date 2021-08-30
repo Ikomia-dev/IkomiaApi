@@ -113,15 +113,14 @@ def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
     wf = workflow.Workflow("YoloTrain", ikomia.ik_registry)
 
-    wgisd_id = wf.add_task("WGISD_Dataset")
-    wgisd = wf.getTask(wgisd_id)
+    wgisd_id, wgisd = wf.add_task("WGISD_Dataset")
     wgisd_params = wgisd.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params["load_mask"] = str(False)
     wgisd.setParamValues()(wgisd_params)
 
-    yolo_id = wf.add_task("YoloTrain")
+    yolo_id, yolo = wf.add_task("YoloTrain")
     wf.connect_tasks(wgisd_id, yolo_id)
 
     wf.run()
@@ -219,32 +218,32 @@ def test_graph_build():
     wf = workflow.Workflow("FromScratch", ikomia.ik_registry)
 
     # branch with auto-connection
-    box_filter_id = wf.add_task("Box Filter")
+    box_filter_id, box_filter = wf.add_task("Box Filter")
     wf.connect_tasks(wf.getRootID(), box_filter_id)
 
-    clahe_id = wf.add_task("CLAHE")
+    clahe_id, clahe = wf.add_task("CLAHE")
     wf.connect_tasks(box_filter_id, clahe_id)
 
-    dtfilterenhance_id = wf.add_task("DTFilterEnhance")
+    dtfilterenhance_id, dtfilterenhance = wf.add_task("DTFilterEnhance")
     wf.connect_tasks(clahe_id, dtfilterenhance_id)
 
-    lsc_id = wf.add_task("SuperpixelLSC")
+    lsc_id, lsc = wf.add_task("SuperpixelLSC")
     wf.connect_tasks(dtfilterenhance_id, lsc_id)
 
     # branch with manual connection
-    bilateral_id = wf.add_task("Bilateral Filter")
+    bilateral_id, bilateral = wf.add_task("Bilateral Filter")
     wf.connect_tasks(wf.getRootID(), bilateral_id, [(0, 0)])
 
-    equalize_id = wf.add_task("Equalize histogram")
+    equalize_id, equalize = wf.add_task("Equalize histogram")
     wf.connect_tasks(bilateral_id, equalize_id, [(0, 0)])
 
-    dtfilter_id = wf.add_task("DTFilter")
+    dtfilter_id, dtfilter = wf.add_task("DTFilter")
     wf.connect_tasks(equalize_id, dtfilter_id, [(0, 0), (0, 1)])
 
-    convert_id = wf.add_task("ConvertTo")
+    convert_id, convert = wf.add_task("ConvertTo")
     wf.connect_tasks(dtfilter_id, convert_id, [(0, 0)])
 
-    seeds_id = wf.add_task("SuperpixelSEEDS")
+    seeds_id, seeds = wf.add_task("SuperpixelSEEDS")
     wf.connect_tasks(convert_id, seeds_id, [(0, 0)])
 
     # visualization
@@ -338,15 +337,15 @@ if __name__ == "__main__":
     parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
     opt = parser.parse_args()
 
-    # test_metadata()
-    # test_load()
-    # test_single_image_run()
-    # test_directory_run()
-    # test_resnet_train(opt.classif_dataset_dir)
-    # test_yolo_train(opt.detect_dataset_dir)
-    # test_yolov5_train(opt.detect_dataset_dir)
-    # test_export_graphviz()
-    # test_graph_structure()
-    # test_time_metrics()
-    # test_graph_build()
+    test_metadata()
+    test_load()
+    test_single_image_run()
+    test_directory_run()
+    test_resnet_train(opt.classif_dataset_dir)
+    test_yolo_train(opt.detect_dataset_dir)
+    test_yolov5_train(opt.detect_dataset_dir)
+    test_export_graphviz()
+    test_graph_structure()
+    test_time_metrics()
+    test_graph_build()
     test_get_outputs(opt.detect_dataset_dir)
