@@ -421,7 +421,7 @@ def run_on(wf, array=None, path="", url="", folder=""):
     """
     if folder:
         wf.set_directory_input(folder=folder)
-        wf.run
+        wf.run()
     else:
         wf.set_image_input(array=array, path=path, url=url)
         wf.run()

@@ -103,9 +103,8 @@ def test_resnet_train(dataset_dir):
     logger.info("===== Test::launch ResNet training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowResNetTrain.json"
     wf = workflow.load(wf_path)
-    wf.set_directory_input(dataset_dir)
     logger.info("Start ResNet training...")
-    wf.run()
+    workflow.run_on(wf, folder=dataset_dir)
     logger.info("Training finished successfully")
 
 
@@ -113,13 +112,13 @@ def test_yolov5_train(wgisd_dataset_dir):
     logger.info("===== Test::launch YoloV5 training =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowYoloV5Train.json"
     wf = workflow.load(wf_path)
-    # set dataset directory
-    wgisd_tasks = wf.find_task("WGISD_Dataset")
 
-    wgisd_params = wgisd_tasks[0][1].getParamValues()
+    # set dataset directory
+    wgisd_id, wgisd = wf.find_task("WGISD_Dataset")
+    wgisd_params = wgisd.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
-    wgisd_tasks[0][1].setParamValues(wgisd_params)
+    wgisd.setParamValues(wgisd_params)
 
     logger.info("Start YoloV5 training...")
     wf.run()
@@ -134,7 +133,7 @@ def test_yolo_train(wgisd_dataset_dir):
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params["load_mask"] = str(False)
-    wgisd.setParamValues()(wgisd_params)
+    wgisd.setParamValues(wgisd_params)
 
     yolo_id, yolo = wf.add_task("YoloTrain")
     wf.connect_tasks(wgisd_id, yolo_id)
@@ -347,7 +346,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
     parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
-    parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
+    parser.add_argument("--train_test", type=bool, default=True, help="Launch training tests")
     opt = parser.parse_args()
 
     test_metadata()
