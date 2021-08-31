@@ -191,6 +191,38 @@ CMat CImageIO::getImage() const
     return CMat();
 }
 
+CMat CImageIO::getImageWithGraphics(const GraphicsInputPtr &graphics) const
+{
+    auto internalImg = getImage();
+    if(internalImg.empty())
+        return CMat();
+
+    CMat img =internalImg.clone();
+    if(graphics)
+    {
+        CGraphicsConversion graphicsConv((int)img.getNbCols(), (int)img.getNbRows());
+        for(auto it : graphics->getItems())
+            it->insertToImage(img, graphicsConv, false, false);
+    }
+    return img;
+}
+
+CMat CImageIO::getImageWithGraphics(const GraphicsOutputPtr &graphics) const
+{
+    auto internalImg = getImage();
+    if(internalImg.empty())
+        return CMat();
+
+    CMat img =internalImg.clone();
+    if(graphics)
+    {
+        CGraphicsConversion graphicsConv((int)img.getNbCols(), (int)img.getNbRows());
+        for(auto it : graphics->getItems())
+            it->insertToImage(img, graphicsConv, false, false);
+    }
+    return img;
+}
+
 size_t CImageIO::getUnitElementCount() const
 {
     if( m_dataType == IODataType::IMAGE ||

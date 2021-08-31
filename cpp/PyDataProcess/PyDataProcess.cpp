@@ -266,6 +266,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------//
     void (CImageIO::*drawGraphicsIn)(const GraphicsInputPtr&) = &CImageIO::drawGraphics;
     void (CImageIO::*drawGraphicsOut)(const GraphicsOutputPtr&) = &CImageIO::drawGraphics;
+    CMat (CImageIO::*getImageWithGraphicsIn)(const GraphicsInputPtr&) const = &CImageIO::getImageWithGraphics;
+    CMat (CImageIO::*getImageWithGraphicsOut)(const GraphicsOutputPtr&) const = &CImageIO::getImageWithGraphics;
 
     class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))
@@ -282,14 +284,16 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("getChannelCount", &CImageIO::getChannelCount, _getChannelCountDocString, args("self"))
         .def("getData", &CImageIO::getData, _getDataDocString, args("self"))
         .def("getImage", &CImageIO::getImage, &CImageIOWrap::default_getImage, _getImageDocString, args("self"))
+        .def("getImageWithGraphics", getImageWithGraphicsIn, _getImageWithGraphicsInDocString, args("self", "graphics"))
+        .def("getImageWithGraphics", getImageWithGraphicsOut, _getImageWithGraphicsOutDocString, args("self", "graphics"))
         .def("getOverlayMask", &CImageIO::getOverlayMask, _getOverlayMaskDocString, args("self"))
         .def("getUnitElementCount", &CImageIO::getUnitElementCount, &CImageIOWrap::default_getUnitElementCount, _getImageUnitElementCountDocString, args("self"))
         .def("isDataAvailable", &CImageIO::isDataAvailable, &CImageIOWrap::default_isDataAvailable, _isImageDataAvailableDocString, args("self"))
         .def("isOverlayAvailable", &CImageIO::isOverlayAvailable, _isOverlayAvailableDocString, args("self"))
         .def("clearData", &CImageIO::clearData, &CImageIOWrap::default_clearData, _clearImageDataDocString, args("self"))
         .def("copyStaticData", &CImageIO::copyStaticData, &CImageIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
-        .def("drawGraphics", drawGraphicsIn, _drawGraphicsDocString, args("self", "graphics"))
-        .def("drawGraphics", drawGraphicsOut, _drawGraphicsDocString, args("self", "graphics"))
+        .def("drawGraphics", drawGraphicsIn, _drawGraphicsInDocString, args("self", "graphics"))
+        .def("drawGraphics", drawGraphicsOut, _drawGraphicsOutDocString, args("self", "graphics"))
     ;
 
     //----------------------//
