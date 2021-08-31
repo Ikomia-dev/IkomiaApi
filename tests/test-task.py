@@ -107,6 +107,21 @@ def test_get_task_outputs(wgisd_dir):
     assert (len(dataset_out.getImagePaths()) > 0)
 
 
+def test_get_image_with_graphics():
+    logger.info("===== Test::get image with graphics =====")
+    # Load image
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    img = cv2.imread(img_path)
+    # run
+    t = task.create("MobileNet SSD")
+    t.getInput(0).setImage(img)
+    t.run()
+    # get image with graphics
+    img_with_graphics = task.get_image_with_graphics(t, 0, 0)
+    cv2.imshow("Image with graphics", img_with_graphics)
+    cv2.waitKey(0)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--wgisd_dir", type=str, default="/home/ludo/Images/Datasets/wgisd",
@@ -115,3 +130,4 @@ if __name__ == "__main__":
 
     test_task_parameters()
     test_get_task_outputs(opt.wgisd_dir)
+    test_get_image_with_graphics()

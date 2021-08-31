@@ -145,6 +145,35 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self._get_task_output(task.get_image_output, task_id, task_name, index)
 
+    def get_image_with_graphics(self, task_id=None, task_name="", image_index=0, graphics_index=0):
+        """
+        Get image (numpy array) from a specific IMAGE output of the given task with graphics items burnt into it.
+        Graphics items came from a specific GRAPHICS output of the same task. If task_name argument is given, the
+        function returns images from all matching tasks.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            image_index (int): zero-based index of the IMAGE output.
+            graphics_index (int): zero-based index of the GRAPHICS output.
+
+        Returns:
+            Numpy array or list: result image(s).
+        """
+        if task_id is not None:
+            obj = self.getTask(task_id)
+            return task.get_image_with_graphics(obj, image_index, graphics_index)
+        elif task_name:
+            wf_task = self.find_task(task_name)
+            if not isinstance(wf_task, list):
+                return task.get_image_with_graphics(wf_task[1], image_index, graphics_index)
+            else:
+                images = []
+                for t in wf_task:
+                    images.append(task.get_image_with_graphics(t[1], image_index, graphics_index))
+
+                return images
+
     def get_graphics_output(self, task_id=None, task_name="", index=-1):
         """
         Get workflow GRAPHICS output(s) for the given task(s). You can either pass a unique task ID or a task name.
@@ -325,6 +354,26 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self._run_directory()
 
+    def run_on(self, array=None, path="", url="", folder=""):
+        """
+        Convenient function to run the workflow on common inputs. For more advanced use, please consult
+        :py:class:`~ikomia.dataprocess.workflow.Workflow`.
+        See also :py:func:`~ikomia.dataprocess.workflow.Workflow.set_image_input`
+        and :py:func:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`
+
+        Args:
+            array (Numpy array): image or generic array as numpy array
+            path (str): path to image (valid formats are those managed by OpenCV)
+            url (str): URL to image file (valid formats are those managed by OpenCV)
+            folder (str): image folder
+        """
+        if folder:
+            self.set_directory_input(folder=folder)
+            self.run()
+        else:
+            self.set_image_input(array=array, path=path, url=url)
+            self.run()
+
     def _run_directory(self):
         for i in range(self.getInputCount()):
             input_type = self.getInputDataType(i)
@@ -403,25 +452,3 @@ def load(path):
     wf = Workflow("untitled", ikomia.ik_registry)
     wf.load(path)
     return wf
-
-
-def run_on(wf, array=None, path="", url="", folder=""):
-    """
-    Convenient function to run the given workflow on common inputs. For more advanced use, please consult
-    :py:class:`~ikomia.dataprocess.workflow.Workflow`.
-    See also :py:func:`~ikomia.dataprocess.workflow.Workflow.set_image_input`
-    and :py:func:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`
-
-    Args:
-        wf (:py:class:`~ikomia.dataprocess.workflow.Workflow`): workflow object instance
-        array (Numpy array): image or generic array as numpy array
-        path (str): path to image (valid formats are those managed by OpenCV)
-        url (str): URL to image file (valid formats are those managed by OpenCV)
-        folder (str): image folder
-    """
-    if folder:
-        wf.set_directory_input(folder=folder)
-        wf.run()
-    else:
-        wf.set_image_input(array=array, path=path, url=url)
-        wf.run()
