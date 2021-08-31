@@ -21,10 +21,8 @@
 
         create
         load
-        run_on
 
     .. rubric:: Details
 
     .. autofunction:: create
     .. autofunction:: load
-    .. autofunction:: run_on

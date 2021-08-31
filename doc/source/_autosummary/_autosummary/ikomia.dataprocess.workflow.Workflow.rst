@@ -23,10 +23,12 @@ Workflow
         ~Workflow.get_dataset_output
         ~Workflow.get_graphics_output
         ~Workflow.get_image_output
+        ~Workflow.get_image_with_graphics
         ~Workflow.get_numeric_output
         ~Workflow.get_path_output
         ~Workflow.get_time_metrics
         ~Workflow.run
+        ~Workflow.run_on
         ~Workflow.set_directory_input
         ~Workflow.set_image_input
 
@@ -90,6 +92,7 @@ Workflow
     .. automethod:: getFinalTasks
     .. automethod:: get_graphics_output
     .. automethod:: get_image_output
+    .. automethod:: get_image_with_graphics
     .. automethod:: getInEdges
     .. automethod:: get_numeric_output
     .. automethod:: getOutEdges
@@ -105,6 +108,7 @@ Workflow
     .. automethod:: load
     .. automethod:: removeInput
     .. automethod:: run
+    .. automethod:: run_on
     .. automethod:: setAutoSave
     .. automethod:: set_directory_input
     .. automethod:: set_image_input

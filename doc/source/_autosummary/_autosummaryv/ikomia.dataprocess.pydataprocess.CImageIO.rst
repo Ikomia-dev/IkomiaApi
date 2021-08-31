@@ -18,6 +18,7 @@ CImageIO
       ~CImageIO.getChannelCount
       ~CImageIO.getData
       ~CImageIO.getImage
+      ~CImageIO.getImageWithGraphics
       ~CImageIO.getOverlayMask
       ~CImageIO.isOverlayAvailable
       ~CImageIO.setChannelCount
@@ -50,6 +51,7 @@ CImageIO
    .. automethod:: getChannelCount
    .. automethod:: getData
    .. automethod:: getImage
+   .. automethod:: getImageWithGraphics
    .. automethod:: getOverlayMask
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
