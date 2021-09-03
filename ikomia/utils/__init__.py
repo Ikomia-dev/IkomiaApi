@@ -52,3 +52,12 @@ def init_logging(rank=-1):
         logger.addHandler(file_handler)
     else:
         logging.basicConfig(format="%(message)s", level=logging.WARN)
+
+
+def is_colab():
+    # Is environment a Google Colab instance?
+    try:
+        import google.colab
+        return True
+    except Exception as e:
+        return False

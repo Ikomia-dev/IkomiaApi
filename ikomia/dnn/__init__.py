@@ -20,6 +20,7 @@
 import subprocess
 import logging
 import requests
+from ikomia.utils import is_colab
 from ikomia.core import config
 from .dataset import *
 from .datasetio import *
@@ -29,8 +30,9 @@ from .dataset import *
 logger = logging.getLogger(__name__)
 
 
-def start_monitoring(colab=False):
-    _start_mlflow()
+def start_monitoring():
+    colab = is_colab()
+    _start_mlflow(colab)
 
     if not colab:
         _start_tensorboard()
