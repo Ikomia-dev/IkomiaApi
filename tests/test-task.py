@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def test_task_parameters():
     logger.info("===== Test::set task parameters =====")
-    algo = ikomia.ik_registry.create_algorithm("Box Filter")
+    algo = task.create()("Box Filter")
     logger.info("----- Use default parameters")
     logger.info(algo.getParam())
     img_path = tests.get_test_image_directory() + "/Lena.png"

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def test_metadata():
     logger.info("===== Test::set workflow metadata =====")
-    wf = workflow.Workflow("test_metadata")
+    wf = workflow.create("test_metadata")
     description = "This is a test workflow"
     keywords = "ikomia,test,empty"
     wf.description = description
