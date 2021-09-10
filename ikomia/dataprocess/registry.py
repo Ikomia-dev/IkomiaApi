@@ -135,13 +135,18 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
              name (str): algorithm unique name
         """
         local_algos = self.getAlgorithms()
+        if local_algos is None:
+            logger.error("Ikomia algorithm registry is empty.")
+
         if name not in local_algos:
             logger.error("Plugin " + name + " can't be updated as it is not installed.")
             return
 
         online_algos = self.get_online_algorithms()
-        online_algo = None
+        if online_algos is None:
+            return
 
+        online_algo = None
         for algo in online_algos:
             if algo["name"] == name:
                 online_algo = algo

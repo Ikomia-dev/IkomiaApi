@@ -43,8 +43,8 @@ def test_local_instantiation():
     algos = []
 
     for name in algo_names:
+        logger.info(name)
         algo = ikomia.ik_registry.createInstance(name)
-        logger.info(algo.name)
         algos.append(algo)
 
     try:
@@ -136,11 +136,12 @@ def test_execution():
 
 
 if __name__ == "__main__":
-    # test_get_local_algorithms()
-    # test_get_online_algorithms()
-    # test_download_plugin()
-    # test_install_plugin()
-    # test_local_instantiation()
-    # test_instantiation()
-    # test_update()
+    ikomia.authenticate()
+    test_get_local_algorithms()
+    test_get_online_algorithms()
+    test_download_plugin()
+    test_install_plugin()
+    test_local_instantiation()
+    test_instantiation()
+    test_update()
     test_execution()
