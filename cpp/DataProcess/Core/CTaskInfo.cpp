@@ -110,7 +110,7 @@ int CTaskInfo::getYear() const
     return m_year;
 }
 
-int CTaskInfo::getLanguage() const
+ApiLanguage CTaskInfo::getLanguage() const
 {
     return m_language;
 }
@@ -205,7 +205,7 @@ void CTaskInfo::setYear(const int year)
     m_year = year;
 }
 
-void CTaskInfo::setLanguage(const int language)
+void CTaskInfo::setLanguage(const ApiLanguage language)
 {
     m_language = language;
 }
@@ -218,4 +218,30 @@ void CTaskInfo::setOS(const int os)
 void CTaskInfo::setInternal(bool bInternal)
 {
     m_bInternal = bInternal;
+}
+
+std::ostream& operator<<(std::ostream& os, const CTaskInfo& info)
+{
+    os << "Name: " << info.m_name << std::endl;
+    os << "Path: " << info.m_path << std::endl;
+    os << "Short description: " << info.m_shortDescription << std::endl;
+    os << "Description: " << info.m_description << std::endl;
+    os << "Documentation link: " << info.m_docLink << std::endl;
+    os << "Icon path: " << info.m_iconPath << std::endl;
+    os << "Keywords: " << info.m_keywords << std::endl;
+    os << "Authors link: " << info.m_authors << std::endl;
+    os << "Article: " << info.m_article << std::endl;
+    os << "Journal/conference: " << info.m_journal << std::endl;
+    os << "Year: " << std::to_string(info.m_year) << std::endl;
+    os << "Version: " << info.m_version << std::endl;
+    os << "API version: " << info.m_ikomiaVersion << std::endl;
+    os << "Created: " << info.m_createdDate << std::endl;
+    os << "Modified: " << info.m_modifiedDate << std::endl;
+    os << "License: " << info.m_license << std::endl;
+    os << "Repository: " << info.m_repo << std::endl;
+    std::string language = info.m_language == ApiLanguage::CPP ? "C++" : "Python";
+    os << "Language: " << language << std::endl;
+    std::string system = info.m_os == OSType::LINUX ? "Linux" : (info.m_os == OSType::WIN ? "Windows" : "MacOS");
+    os << "OS: " << system << std::endl;
+    return os;
 }

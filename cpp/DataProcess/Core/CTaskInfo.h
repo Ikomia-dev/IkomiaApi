@@ -60,7 +60,7 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         std::string getLicense() const;
         std::string getRepository() const;
         int         getYear() const;
-        int         getLanguage() const;
+        ApiLanguage getLanguage() const;
         int         getOS() const;
 
         /** @cond INTERNAL */
@@ -83,12 +83,14 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         void        setLicense(const std::string& license);
         void        setRepository(const std::string& repository);
         void        setYear(const int year);
-        void        setLanguage(const int language);
+        void        setLanguage(const ApiLanguage language);
         void        setOS(const int os);
 
         /** @cond INTERNAL */
         void        setInternal(bool bInternal);
         /** @endcond */
+
+        friend std::ostream& operator<<(std::ostream& os, const CTaskInfo& info);
 
     public:
 
@@ -115,7 +117,7 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         std::string m_license = "";
         std::string m_repo = "";
         int         m_year = -1;                /**< Year of the article or the algorithme */
-        int         m_language = CPP;           /**< Programming language */
+        ApiLanguage m_language = ApiLanguage::CPP;  /**< Programming language */
         int         m_os = OSType::LINUX;       /**< Compatible operating system */
 };
 
