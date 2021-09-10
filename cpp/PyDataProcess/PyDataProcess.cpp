@@ -140,12 +140,16 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .add_property("article", &CTaskInfo::getArticle, &CTaskInfo::setArticle, "Title of the corresponding paper")
         .add_property("journal", &CTaskInfo::getJournal, &CTaskInfo::setJournal, "Paper journal")
         .add_property("version", &CTaskInfo::getVersion, &CTaskInfo::setVersion, "Plugin version (mandatory)")
-        .add_property("ikomia_version", &CTaskInfo::getIkomiaVersion, "Ikomia API version")
+        .add_property("ikomiaVersion", &CTaskInfo::getIkomiaVersion, "Ikomia API version")
         .add_property("year", &CTaskInfo::getYear, &CTaskInfo::setYear, "Year of paper publication")
         .add_property("language", &CTaskInfo::getLanguage, &CTaskInfo::setLanguage, "Python")
         .add_property("license", &CTaskInfo::getLicense, &CTaskInfo::setLicense, "License of the plugin")
         .add_property("repository", &CTaskInfo::getRepository, &CTaskInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
-        .def_readonly("internal", &CTaskInfo::isInternal, "Indicate a built-in algorithm.")
+        .add_property("createdDate", &CTaskInfo::getCreatedDate, &CTaskInfo::setCreatedDate, "Date of first publication")
+        .add_property("modifiedDate", &CTaskInfo::getModifiedDate, &CTaskInfo::getModifiedDate, "Date of last update")
+        .add_property("os", &CTaskInfo::getOS, &CTaskInfo::setOS, "Operating system")
+        .add_property("internal", &CTaskInfo::isInternal, &CTaskInfo::setInternal, "Indicate a built-in algorithm.")
+        .def(self_ns::str(self_ns::self))
     ;
 
     //------------------------//
