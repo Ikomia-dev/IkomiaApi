@@ -182,7 +182,7 @@ void CIkomiaRegistry::_loadCppPlugin(const QString &fileName)
             }
 
             m_processRegistrator.registerProcess(taskFactoryPtr, widgetFactoryPtr);
-            std::cout << QString("Plugin %1 is loaded.").arg(fileName).toStdString();
+            std::cout << QString("Plugin %1 is loaded.").arg(fileName).toStdString() << std::endl;
         }
     }
     catch(std::exception& e)
