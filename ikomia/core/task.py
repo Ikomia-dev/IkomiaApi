@@ -3,6 +3,7 @@ Module dedicated to high-level features around task management.
 
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
+import ikomia
 from ikomia import core
 
 
@@ -37,6 +38,23 @@ class TaskParam(core.CWorkflowTaskParam):
         raise NotImplementedError
 
 
+def create(name=""):
+    """
+    Create task instance (ie algorithm) from the given name.
+    See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
+
+    Args:
+        name (str): unique algorithm name
+
+    Returns:
+        :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
+    """
+    if not name:
+        return None
+
+    return ikomia.ik_registry.create_algorithm(name)
+
+
 def set_parameters(task, params: dict):
     """
     Set parameters of the given task from a dict structure.
@@ -56,7 +74,7 @@ def set_parameters(task, params: dict):
     param.setParamMap(param_map)
 
 
-def _get_outputs(task, types, index=1):
+def _get_outputs(task, types, index=-1):
     if task is None:
         raise RuntimeError("Cannot get outputs from None task.")
 
@@ -89,6 +107,28 @@ def get_image_output(task, index=-1):
     """
     data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     return _get_outputs(task, data_types, index)
+
+
+def get_image_with_graphics(task, image_index=0, graphics_index=0):
+    """
+    Get image (numpy array) of a specific IMAGE output with graphics items from a specific GRAPHICS output burnt
+    into it. Index of IMAGE and GRAPHICS outputs must be given.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+        image_index (int): zero-based index of the IMAGE output.
+        graphics_index (int): zero-based index of the GRAPHICS output.
+
+    Returns:
+        Numpy array: result image.
+    """
+    if image_index < 0 or graphics_index < 0:
+        raise RuntimeError("Output index must be equal or greater than 0.")
+
+    img_data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
+    img_output = _get_outputs(task, img_data_types, image_index)
+    graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS], graphics_index)
+    return img_output.getImageWithGraphics(graphics_output)
 
 
 def get_graphics_output(task, index=-1):

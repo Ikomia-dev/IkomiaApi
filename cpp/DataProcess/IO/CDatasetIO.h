@@ -42,7 +42,7 @@ class DATAPROCESSSHARED_EXPORT CDatasetIO: public CWorkflowTaskIO
         virtual std::vector<std::string>            getImagePaths() const;
         virtual MapIntStr                           getCategories() const;
         virtual int                                 getCategoryCount() const;
-        virtual std::vector<ProxyGraphicsItemPtr>   getAnnotationGraphics(const std::string &imgPath) const;
+        virtual std::vector<ProxyGraphicsItemPtr>   getGraphicsAnnotations(const std::string &imgPath) const;
         virtual std::string                         getMaskPath(const std::string& imgPath) const;
         QJsonDocument                               getJsonDocument() const;
 

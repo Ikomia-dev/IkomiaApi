@@ -140,12 +140,16 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .add_property("article", &CTaskInfo::getArticle, &CTaskInfo::setArticle, "Title of the corresponding paper")
         .add_property("journal", &CTaskInfo::getJournal, &CTaskInfo::setJournal, "Paper journal")
         .add_property("version", &CTaskInfo::getVersion, &CTaskInfo::setVersion, "Plugin version (mandatory)")
-        .add_property("ikomia_version", &CTaskInfo::getIkomiaVersion, "Ikomia API version")
+        .add_property("ikomiaVersion", &CTaskInfo::getIkomiaVersion, "Ikomia API version")
         .add_property("year", &CTaskInfo::getYear, &CTaskInfo::setYear, "Year of paper publication")
         .add_property("language", &CTaskInfo::getLanguage, &CTaskInfo::setLanguage, "Python")
         .add_property("license", &CTaskInfo::getLicense, &CTaskInfo::setLicense, "License of the plugin")
         .add_property("repository", &CTaskInfo::getRepository, &CTaskInfo::setRepository, "Address of code repository (GitHub, GitLab, BitBucket...)")
-        .def_readonly("internal", &CTaskInfo::isInternal, "Indicate a built-in algorithm.")
+        .add_property("createdDate", &CTaskInfo::getCreatedDate, &CTaskInfo::setCreatedDate, "Date of first publication")
+        .add_property("modifiedDate", &CTaskInfo::getModifiedDate, &CTaskInfo::getModifiedDate, "Date of last update")
+        .add_property("os", &CTaskInfo::getOS, &CTaskInfo::setOS, "Operating system")
+        .add_property("internal", &CTaskInfo::isInternal, &CTaskInfo::setInternal, "Indicate a built-in algorithm.")
+        .def(self_ns::str(self_ns::self))
     ;
 
     //------------------------//
@@ -266,6 +270,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------//
     void (CImageIO::*drawGraphicsIn)(const GraphicsInputPtr&) = &CImageIO::drawGraphics;
     void (CImageIO::*drawGraphicsOut)(const GraphicsOutputPtr&) = &CImageIO::drawGraphics;
+    CMat (CImageIO::*getImageWithGraphicsIn)(const GraphicsInputPtr&) const = &CImageIO::getImageWithGraphics;
+    CMat (CImageIO::*getImageWithGraphicsOut)(const GraphicsOutputPtr&) const = &CImageIO::getImageWithGraphics;
 
     class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))
@@ -282,14 +288,16 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def("getChannelCount", &CImageIO::getChannelCount, _getChannelCountDocString, args("self"))
         .def("getData", &CImageIO::getData, _getDataDocString, args("self"))
         .def("getImage", &CImageIO::getImage, &CImageIOWrap::default_getImage, _getImageDocString, args("self"))
+        .def("getImageWithGraphics", getImageWithGraphicsIn, _getImageWithGraphicsInDocString, args("self", "graphics"))
+        .def("getImageWithGraphics", getImageWithGraphicsOut, _getImageWithGraphicsOutDocString, args("self", "graphics"))
         .def("getOverlayMask", &CImageIO::getOverlayMask, _getOverlayMaskDocString, args("self"))
         .def("getUnitElementCount", &CImageIO::getUnitElementCount, &CImageIOWrap::default_getUnitElementCount, _getImageUnitElementCountDocString, args("self"))
         .def("isDataAvailable", &CImageIO::isDataAvailable, &CImageIOWrap::default_isDataAvailable, _isImageDataAvailableDocString, args("self"))
         .def("isOverlayAvailable", &CImageIO::isOverlayAvailable, _isOverlayAvailableDocString, args("self"))
         .def("clearData", &CImageIO::clearData, &CImageIOWrap::default_clearData, _clearImageDataDocString, args("self"))
         .def("copyStaticData", &CImageIO::copyStaticData, &CImageIOWrap::default_copyStaticData, _copyImageStaticDataDocString, args("self", "io"))
-        .def("drawGraphics", drawGraphicsIn, _drawGraphicsDocString, args("self", "graphics"))
-        .def("drawGraphics", drawGraphicsOut, _drawGraphicsDocString, args("self", "graphics"))
+        .def("drawGraphics", drawGraphicsIn, _drawGraphicsInDocString, args("self", "graphics"))
+        .def("drawGraphics", drawGraphicsOut, _drawGraphicsOutDocString, args("self", "graphics"))
     ;
 
     //----------------------//
@@ -379,15 +387,15 @@ BOOST_PYTHON_MODULE(pydataprocess)
         .def(init<>("Default constructor"))
         .def(init<const std::string&>(_ctor1DatasetIODocString))
         .def(init<const std::string&, const std::string&>(_ctor2DatasetIODocString))
-        .def("getImagePaths", &CDatasetIO::getImagePaths, &CDatasetIOWrap::default_getImagePaths, _getImagePathsDocStr)
-        .def("getCategories", &CDatasetIO::getCategories, &CDatasetIOWrap::default_getCategories, _getCategoriesDocStr)
-        .def("getCategoryCount", &CDatasetIO::getCategoryCount, &CDatasetIOWrap::default_getCategoryCount, _getCategoryCountDocStr)
-        .def("getMaskPath", &CDatasetIO::getMaskPath, &CDatasetIOWrap::default_getMaskPath, _getMaskPathDocStr)
-        .def("getGraphicsAnnotations", &CDatasetIO::getAnnotationGraphics, &CDatasetIOWrap::default_getAnnotationGraphics, _getGraphicsAnnotationsDocStr)
-        .def("getSourceFormat", &CDatasetIO::getSourceFormat, _getSourceFormatDocStr)
-        .def("isDataAvailable", &CDatasetIO::isDataAvailable, &CDatasetIOWrap::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
-        .def("clearData", &CDatasetIO::clearData, &CDatasetIOWrap::default_clearData, _clearDataDerivedDocString, args("self"))
-        .def("save", &CDatasetIO::save, &CDatasetIOWrap::default_save, _saveDocStr)
+        .def("getImagePaths", &CDatasetIOWrap::getImagePaths, &CDatasetIOWrap::default_getImagePaths, _getImagePathsDocStr)
+        .def("getCategories", &CDatasetIOWrap::getCategories, &CDatasetIOWrap::default_getCategories, _getCategoriesDocStr)
+        .def("getCategoryCount", &CDatasetIOWrap::getCategoryCount, &CDatasetIOWrap::default_getCategoryCount, _getCategoryCountDocStr)
+        .def("getMaskPath", &CDatasetIOWrap::getMaskPath, &CDatasetIOWrap::default_getMaskPath, _getMaskPathDocStr)
+        .def("getGraphicsAnnotations", &CDatasetIOWrap::getGraphicsAnnotations, &CDatasetIOWrap::default_getGraphicsAnnotations, _getGraphicsAnnotationsDocStr)
+        .def("getSourceFormat", &CDatasetIOWrap::getSourceFormat, _getSourceFormatDocStr)
+        .def("isDataAvailable", &CDatasetIOWrap::isDataAvailable, &CDatasetIOWrap::default_isDataAvailable, _isDataAvailableDerivedDocString, args("self"))
+        .def("clearData", &CDatasetIOWrap::clearData, &CDatasetIOWrap::default_clearData, _clearDataDerivedDocString, args("self"))
+        .def("save", &CDatasetIOWrap::save, &CDatasetIOWrap::default_save, _saveDocStr)
     ;
 
     //--------------------//

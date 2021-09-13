@@ -106,7 +106,10 @@ class COcvInpaintXFactory : public CTaskFactory
 
         virtual WorkflowTaskPtr create(const WorkflowTaskParamPtr& pParam) override
         {
-            return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
+            if(pParam != nullptr)
+                return std::make_shared<COcvInpaintX>(m_info.m_name, pParam);
+            else
+                return create();
         }
         virtual WorkflowTaskPtr create() override
         {

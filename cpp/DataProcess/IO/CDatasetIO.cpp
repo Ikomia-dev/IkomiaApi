@@ -50,7 +50,7 @@ int CDatasetIO::getCategoryCount() const
     return 0;
 }
 
-std::vector<ProxyGraphicsItemPtr> CDatasetIO::getAnnotationGraphics(const std::string &imgPath) const
+std::vector<ProxyGraphicsItemPtr> CDatasetIO::getGraphicsAnnotations(const std::string &imgPath) const
 {
     Q_UNUSED(imgPath);
     return std::vector<ProxyGraphicsItemPtr>();

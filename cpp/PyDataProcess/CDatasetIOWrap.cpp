@@ -118,15 +118,15 @@ int CDatasetIOWrap::default_getCategoryCount() const
     }
 }
 
-std::vector<ProxyGraphicsItemPtr> CDatasetIOWrap::getAnnotationGraphics(const std::string &imgPath) const
+std::vector<ProxyGraphicsItemPtr> CDatasetIOWrap::getGraphicsAnnotations(const std::string &imgPath) const
 {
     CPyEnsureGIL gil;
     try
     {
-        if(override overMeth = this->get_override("getAnnotationGraphics"))
+        if(override overMeth = this->get_override("getGraphicsAnnotations"))
             return overMeth(imgPath);
         else
-            return CDatasetIO::getAnnotationGraphics(imgPath);
+            return CDatasetIO::getGraphicsAnnotations(imgPath);
     }
     catch(boost::python::error_already_set&)
     {
@@ -134,12 +134,12 @@ std::vector<ProxyGraphicsItemPtr> CDatasetIOWrap::getAnnotationGraphics(const st
     }
 }
 
-std::vector<ProxyGraphicsItemPtr> CDatasetIOWrap::default_getAnnotationGraphics(const std::string &imgPath) const
+std::vector<ProxyGraphicsItemPtr> CDatasetIOWrap::default_getGraphicsAnnotations(const std::string &imgPath) const
 {
     CPyEnsureGIL gil;
     try
     {
-        return this->CDatasetIO::getAnnotationGraphics(imgPath);
+        return this->CDatasetIO::getGraphicsAnnotations(imgPath);
     }
     catch(boost::python::error_already_set&)
     {

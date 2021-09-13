@@ -389,6 +389,20 @@ constexpr auto _getImageDocString =
         "Returns:\n"
         "   Numpy array: 2D image buffer\n";
 
+constexpr auto _getImageWithGraphicsInDocString =
+        "Get a copy of the internal image with graphics items from the given graphics input.\n\n"
+        "Args:\n"
+        "   graphics (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)\n\n"
+        "Returns:\n"
+        "   Numpy array: 2D image buffer\n";
+
+constexpr auto _getImageWithGraphicsOutDocString =
+        "Get a copy of the internal image with graphics items from the given graphics output.\n\n"
+        "Args:\n"
+        "   graphics (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)\n\n"
+        "Returns:\n"
+        "   Numpy array: 2D image buffer\n";
+
 constexpr auto _getOverlayMaskDocString =
         "Get the overlay mask. See :py:meth:`setOverlayMask` for more information.\n\n"
         "Returns:\n"
@@ -439,11 +453,15 @@ constexpr auto _setOverlayMaskDocString =
         "Args:\n"
         "   image (Numpy array): image buffer (8 bits - 1 channel)\n";
 
-constexpr auto _drawGraphicsDocString =
-        "Draw given graphics items (input or output) in the image.\n\n"
+constexpr auto _drawGraphicsInDocString =
+        "Draw given graphics items input in the image. Warning, this function overwrite the original output image.\n\n"
         "Args:\n"
-        "   graphics (:py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsInput` or "
-        "   :py:class:`~ikomia.dataprocess.pycdataprocess.CGraphicsOutput`)\n";
+        "   graphics (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)\n";
+
+constexpr auto _drawGraphicsOutDocString =
+        "Draw given graphics items output in the image. Warning, this function overwrite the original output image.\n\n"
+        "Args:\n"
+        "   graphics (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)\n";
 
 //--------------------------//
 //----- CGraphicsInput -----//

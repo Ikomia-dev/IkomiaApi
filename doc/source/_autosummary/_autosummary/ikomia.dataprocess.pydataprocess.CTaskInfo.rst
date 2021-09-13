@@ -21,7 +21,7 @@ CTaskInfo
       ~CTaskInfo.description
       ~CTaskInfo.documentationLink
       ~CTaskInfo.iconPath
-      ~CTaskInfo.ikomia_version
+      ~CTaskInfo.ikomiaVersion
       ~CTaskInfo.internal
       ~CTaskInfo.journal
       ~CTaskInfo.keywords

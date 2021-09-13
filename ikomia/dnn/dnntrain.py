@@ -21,7 +21,7 @@
 Module dedicated to Deep Learning training.
 """
 
-from ikomia import core, dataprocess
+from ikomia import dataprocess
 import mlflow
 from datetime import datetime
 

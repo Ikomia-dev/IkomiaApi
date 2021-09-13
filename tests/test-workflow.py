@@ -5,13 +5,14 @@ from ikomia.dataprocess import workflow, displayIO
 from ikomia.core import config
 from ikomia.utils import tests
 import numpy as np
+import cv2
 
 logger = logging.getLogger(__name__)
 
 
 def test_metadata():
     logger.info("===== Test::set workflow metadata =====")
-    wf = workflow.Workflow("test_metadata")
+    wf = workflow.create("test_metadata")
     description = "This is a test workflow"
     keywords = "ikomia,test,empty"
     wf.description = description
@@ -84,19 +85,19 @@ def test_run_common():
 
     logger.info("----- Run on image from array")
     img_array = np.random.randint(low=0, high=255, size=(512, 512, 3), dtype=np.uint8)
-    workflow.run_on(wf, array=img_array)
+    wf.run_on(array=img_array)
 
     logger.info("----- Run on image from file path")
     img_path = tests.get_test_image_directory() + "/Lena.png"
-    workflow.run_on(wf, path=img_path)
+    wf.run_on(path=img_path)
 
     logger.info("----- Run on image from URL")
     img_url = "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
-    workflow.run_on(wf, url=img_url)
+    wf.run_on(url=img_url)
 
     logger.info("----- Run on image from folder")
     dir_path = tests.get_test_image_directory()
-    workflow.run_on(wf, folder=dir_path)
+    wf.run_on(folder=dir_path)
 
 
 def test_resnet_train(dataset_dir):
@@ -104,7 +105,7 @@ def test_resnet_train(dataset_dir):
     wf_path = tests.get_test_workflow_directory() + "/WorkflowResNetTrain.json"
     wf = workflow.load(wf_path)
     logger.info("Start ResNet training...")
-    workflow.run_on(wf, folder=dataset_dir)
+    wf.run_on(folder=dataset_dir)
     logger.info("Training finished successfully")
 
 
@@ -342,11 +343,39 @@ def test_get_outputs(wgisd_dataset_dir):
     assert (len(dataset_out.getImagePaths()) > 0)
 
 
+def test_get_image_with_graphics():
+    logger.info("===== Test::get image with graphics =====")
+    # create workflow with MobileNet SSD task
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    wf = workflow.create("ImageWithGraphics")
+    id1, t1 = wf.add_task("MobileNet SSD")
+    wf.connect_tasks(wf.getRootID(), id1)
+    wf.run_on(path=img_path)
+
+    logger.info("-----Get image from task id")
+    image1 = wf.get_image_with_graphics(task_id=id1, image_index=0, graphics_index=0)
+    assert(image1 is not None)
+    cv2.imshow("MobileNet SSD", image1)
+    cv2.waitKey(0)
+
+    # add second MobileNet SSD task
+    id2, t2 = wf.add_task("MobileNet SSD")
+    wf.connect_tasks(wf.getRootID(), id2)
+    wf.run_on(path=img_path)
+
+    logger.info("-----Get image from task name")
+    images = wf.get_image_with_graphics(task_name="MobileNet SSD", image_index=0, graphics_index=0)
+    assert(len(images) == 2)
+    cv2.imshow("MobileNet SSD #1", images[0])
+    cv2.imshow("MobileNet SSD #2", images[1])
+    cv2.waitKey(0)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
     parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
-    parser.add_argument("--train_test", type=bool, default=True, help="Launch training tests")
+    parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
     opt = parser.parse_args()
 
     test_metadata()
@@ -359,6 +388,7 @@ if __name__ == "__main__":
     test_time_metrics()
     test_graph_build()
     test_get_outputs(opt.detect_dataset_dir)
+    test_get_image_with_graphics()
 
     if opt.train_test:
         test_resnet_train(opt.classif_dataset_dir)

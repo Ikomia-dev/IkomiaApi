@@ -40,8 +40,8 @@ class CDatasetIOWrap : public CDatasetIO, public wrapper<CDatasetIO>
         MapIntStr                           default_getCategories() const;
         int                                 getCategoryCount() const override;
         int                                 default_getCategoryCount() const;
-        std::vector<ProxyGraphicsItemPtr>   getAnnotationGraphics(const std::string &imgPath) const override;
-        std::vector<ProxyGraphicsItemPtr>   default_getAnnotationGraphics(const std::string &imgPath) const;
+        std::vector<ProxyGraphicsItemPtr>   getGraphicsAnnotations(const std::string &imgPath) const override;
+        std::vector<ProxyGraphicsItemPtr>   default_getGraphicsAnnotations(const std::string &imgPath) const;
         std::string                         getMaskPath(const std::string& imgPath) const override;
         std::string                         default_getMaskPath(const std::string& imgPath) const;
 

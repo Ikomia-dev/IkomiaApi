@@ -19,7 +19,6 @@
 
 import os
 import sys
-from dotenv import load_dotenv
 from ikomia.utils import init_logging
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
@@ -36,6 +35,7 @@ ik_registry = None
 
 
 def authenticate():
+    from dotenv import load_dotenv
     load_dotenv()
     username = os.environ.get("IKOMIA_USER")
     pwd = os.environ.get("IKOMIA_PWD")

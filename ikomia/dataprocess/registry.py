@@ -57,10 +57,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
 
         Returns:
-             list of str: list of algorithms names
+             list of dict: list of algorithms information
         """
         s = ikomia.ik_api_session
-        if s.token is None:
+        if s is None or s.token is None:
             logger.error("Online algorithms retrieval failed, authentication required.")
             return
 
@@ -135,13 +135,18 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
              name (str): algorithm unique name
         """
         local_algos = self.getAlgorithms()
+        if local_algos is None:
+            logger.error("Ikomia algorithm registry is empty.")
+
         if name not in local_algos:
             logger.error("Plugin " + name + " can't be updated as it is not installed.")
             return
 
         online_algos = self.get_online_algorithms()
-        online_algo = None
+        if online_algos is None:
+            return
 
+        online_algo = None
         for algo in online_algos:
             if algo["name"] == name:
                 online_algo = algo
@@ -152,7 +157,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return
 
         info = self.getAlgorithmInfo(name)
-        if info.version >= online_algo["version"] and info.ikomia_version >= online_algo["ikomiaVersion"]:
+        if info.version >= online_algo["version"] and info.ikomiaVersion >= online_algo["ikomiaVersion"]:
             logger.info("Plugin " + name + " is already up to date")
             return
 
@@ -192,8 +197,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         main_class = getattr(main_module, name)
         main_obj = main_class()
         task_factory = main_obj.getProcessFactory()
+        task_factory.info.language = utils.ApiLanguage.PYTHON
+        task_factory.info.internal = False
 
-        plugin_version = task_factory.info.ikomia_version
+        plugin_version = task_factory.info.ikomiaVersion
         compatibility_state = utils.getCompatibilityState(plugin_version, utils.ApiLanguage.PYTHON)
 
         if compatibility_state == utils.PluginState.DEPRECATED:
