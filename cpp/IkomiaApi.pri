@@ -60,9 +60,10 @@ else {
     macx: pythonPath = /usr/local/python$${PYTHON_VERSION}                                          # /usr/local/opt/python/Frameworks/Python.framework/Versions/3.7
     macx: INCLUDEPATH += $$pythonPath/include/python$${PYTHON_VERSION}m
     macx: INCLUDEPATH += $$pythonPath/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include
-    unix:!macx: INCLUDEPATH += /usr/include/python$${PYTHON_VERSION_EXT}
+    unix:!macx: INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
     unix:!macx: INCLUDEPATH += /usr/local/include/python$${PYTHON_VERSION}
     unix:!macx: INCLUDEPATH += /usr/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include/  # NUMPY path for Arch
+    unix:!macx: INCLUDEPATH += /usr/local/lib/python$${PYTHON_VERSION}/dist-packages/numpy/core/include/  # NUMPY path for Ubuntu
 }
 
 # VTK
@@ -86,6 +87,9 @@ macx: INCLUDEPATH += /usr/local/include/opencv4
 #OpenCL
 unix: INCLUDEPATH += $$PWD/../../..
 win32: INCLUDEPATH += '$$(ProgramW6432)/NVIDIA GPU Computing Toolkit/CUDA/v$${CUDA_VERSION}/include'
+
+#Cuda
+unix:!macx: INCLUDEPATH += /usr/local/cuda/include
 
 #gmic
 win32: INCLUDEPATH += $$(ProgramW6432)/gmic/include
