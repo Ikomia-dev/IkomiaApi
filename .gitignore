@@ -28,3 +28,4 @@ Build
 dist
 /ikomia/*.so
 /ikomia/opencv/*.so
+ikomia/core/config.yaml
