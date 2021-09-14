@@ -70,7 +70,7 @@ def _start_mlflow(colab=False):
 
         # Open an HTTPs tunnel on port 5000 for http://localhost:5000
         ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-        logger.info("MLflow Tracking UI:", ngrok_tunnel.public_url)
+        logger.info("MLflow Tracking UI:" + ngrok_tunnel.public_url)
 
 
 def _start_tensorboard():
