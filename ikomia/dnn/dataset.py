@@ -28,6 +28,9 @@ from PIL import Image
 from collections import defaultdict
 import xml.etree.ElementTree as ET
 
+_image_extensions = [".jpeg", ".jpg", ".png", ".bmp", ".tiff", ".tif", ".dib", ".jpe", ".jp2", ".webp", ".pbm", ".pgm",
+                     ".ppm", ".pxm", ".pnm", ".sr", ".ras", ".exr", ".hdr", ".pic"]
+
 
 def load_via_dataset(path):
     """
@@ -121,20 +124,6 @@ def load_via_dataset(path):
     return data
 
 
-def _get_image_extension(files):
-    for file in files:
-        filename, extension = os.path.splitext(file)
-
-        if (extension == ".bmp" or extension == ".dib" or extension == ".jpeg" or extension == ".jpg"
-                or extension == ".jpe" or extension == ".jp2" or extension == ".png" or extension == ".webp"
-                or extension == ".pbm" or extension == ".pgm" or extension == ".ppm" or extension == ".pxm"
-                or extension == ".pnm" or extension == ".sr" or extension == ".ras" or extension == ".tiff"
-                or extension == ".tif" or extension == ".exr" or extension == ".hdr" or extension == ".pic"):
-            return extension
-
-    return ".jpg"
-
-
 def read_class_names(txt_path):
     """
     Helper function to parse text file and extract class names.
@@ -172,12 +161,10 @@ def load_yolo_dataset(folder_path, class_path):
         dict: Ikomia dataset structure.  See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     data = {"images": [], "metadata": {}}
-    id = 0
+    img_id = 0
 
     # Collect annotations
     root, dirs, files = next(os.walk(folder_path))
-    image_extension = _get_image_extension(files)
-
     for file in files:
         img_data = {}
         filename, extension = os.path.splitext(file)
@@ -187,18 +174,28 @@ def load_yolo_dataset(folder_path, class_path):
             continue
 
         lines = []
-        with open(root + "/" + file, "rt") as f:
+        with open(root + os.sep + file, "rt") as f:
             lines = f.readlines()
 
         # No annotation, skip image
         if len(lines) == 0:
             continue
 
+        has_image = False
+        for ext in _image_extensions:
+            img_path = root + os.sep + filename + ext
+            if os.path.isfile(img_path):
+                # Full path of the image
+                img_data["filename"] = img_path
+                has_image = True
+                break
+
+        if not has_image:
+            continue
+
         # Unique id
-        img_data["image_id"] = id
-        id = id + 1
-        # Full path of the image
-        img_data["filename"] = root + "/" + filename + image_extension
+        img_data["image_id"] = img_id
+        img_id = img_id + 1
 
         # Open image to get width and height
         im = Image.open(img_data["filename"])
