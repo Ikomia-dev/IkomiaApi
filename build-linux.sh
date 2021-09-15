@@ -126,6 +126,7 @@ else
   then
     echo "----- Generating Python wheel -----"
     cd $root_folder
+    cp -r ikomia/core/config_template.yaml ikomia/core/config.yaml
     python$pyversion setup.py bdist_wheel --python-tag="$pytag" --plat-name="$platform"
     echo "----- Python wheel done -----"
   fi
