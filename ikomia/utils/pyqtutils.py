@@ -27,7 +27,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
 
 
-
 class BrowseFileWidget(QWidget):
     """
     Composite widget to handle file or folder selection.
@@ -89,6 +88,26 @@ class BrowseFileWidget(QWidget):
     def clear(self):
         self.path = ""
         self.qedit_file.clear()
+
+
+def add_edit(grid_layout, row, label, value=""):
+    """
+    Add an edit box and its label in the layout at the given row.
+    """
+    qlabel = QLabel(label)
+    qedit = QLineEdit()
+    qedit.setText(value)
+    grid_layout.addWidget(qlabel, row, 0)
+    grid_layout.addWidget(qedit, row, 1)
+    return qedit
+
+
+def append_edit(grid_layout, label, value=""):
+    """
+    Append an edit box and its label in the layout.
+    """
+    last_pos = grid_layout.rowCount()
+    return add_edit(grid_layout, last_pos, label, value=value)
 
 
 def add_combo(grid_layout, row, label):
