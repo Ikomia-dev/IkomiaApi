@@ -207,7 +207,10 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
 
         void                            notifyGraphicsChanged();
 
-        virtual void                    notifyVideoStart(int frameCount) override;
+        void                            notifyVideoStart(int frameCount) override;
+
+        void                            workflowStarted() override;
+        void                            workflowFinished() override;
 
         // Tells compiler (clang) we want all getProgressSteps functions
         using CWorkflowTask::getProgressSteps;

@@ -868,6 +868,14 @@ void CWorkflowTask::stop()
     m_bStop = true;
 }
 
+void CWorkflowTask::workflowStarted()
+{
+}
+
+void CWorkflowTask::workflowFinished()
+{
+}
+
 void CWorkflowTask::saveOutputs(const std::string& baseName) const
 {
     bool bFirst = true;

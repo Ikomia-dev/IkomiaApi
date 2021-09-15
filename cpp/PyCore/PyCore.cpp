@@ -411,6 +411,8 @@ BOOST_PYTHON_MODULE(pycore)
         .def("emitStepProgress", &CWorkflowTaskWrap::emitStepProgress, _emitStepProgressDocString, args("self"))
         .def("emitGraphicsContextChanged", &CWorkflowTaskWrap::emitGraphicsContextChanged, _emitGraphicsContextChangedDocString, args("self"))
         .def("emitOutputChanged", &CWorkflowTaskWrap::emitOutputChanged, _emitOutputChangedDocString, args("self"))
+        .def("workflowStarted", &CWorkflowTaskWrap::workflowStarted, &CWorkflowTaskWrap::default_workflowStarted, _workflowStartedDocString, args("self"))
+        .def("workflowFinished", &CWorkflowTaskWrap::workflowFinished, &CWorkflowTaskWrap::default_workflowFinished, _workflowStartedDocString, args("self"))
     ;
 
     //-------------------------------//

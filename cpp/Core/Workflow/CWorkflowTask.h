@@ -637,6 +637,17 @@ class CORESHARED_EXPORT CWorkflowTask
          */
         virtual void                stop();
 
+        /**
+         * @brief Notify that the workflow is started.
+         * This method can be overriden to implement custom actions when a workflow is started (before the task is run)
+         */
+        virtual void                workflowStarted();
+        /**
+         * @brief Notify that the workflow is finished.
+         * This method can be overriden to implement custom actions when a workflow is finished (after the task is run)
+         */
+        virtual void                workflowFinished();
+
         virtual void                saveOutputs(const std::string &baseName) const;
 
         QJsonObject                 toJson() const;

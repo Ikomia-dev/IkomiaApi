@@ -644,6 +644,64 @@ void CWorkflowTaskWrap::default_globalInputChanged(bool bNewSequence)
     }
 }
 
+void CWorkflowTaskWrap::workflowStarted()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        if(override workflowStartedOver = this->get_override("workflowStarted"))
+            workflowStartedOver();
+        else
+            CWorkflowTask::workflowStarted();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CWorkflowTaskWrap::default_workflowStarted()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        this->CWorkflowTask::workflowStarted();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CWorkflowTaskWrap::workflowFinished()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        if(override workflowFinishedOver = this->get_override("workflowFinished"))
+            workflowFinishedOver();
+        else
+            CWorkflowTask::workflowFinished();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CWorkflowTaskWrap::default_workflowFinished()
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        this->CWorkflowTask::workflowFinished();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
 void CWorkflowTaskWrap::emitAddSubProgressSteps(int count)
 {
     m_signalHandler->doAddSubTotalSteps(count);

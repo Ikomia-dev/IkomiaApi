@@ -1832,6 +1832,38 @@ void CWorkflow::notifyVideoStart(int frameCount)
     boost::breadth_first_search(m_graph, m_root, boost::visitor(visitor).vertex_index_map(propMapIndex));
 }
 
+void CWorkflow::workflowStarted()
+{
+    //Create property map of unique indices for bfs algorithm
+    VertexIndexMap mapIndex;
+    auto propMapIndex = createBfsPropertyMap(mapIndex);
+
+    CGenericDfsVisitor visitor([this](const WorkflowVertex& id)
+    {
+        auto taskPtr = m_graph[id];
+        if(taskPtr)
+            taskPtr->workflowStarted();
+
+    });
+    boost::depth_first_search(m_graph, boost::visitor(visitor).vertex_index_map(propMapIndex));
+}
+
+void CWorkflow::workflowFinished()
+{
+    //Create property map of unique indices for bfs algorithm
+    VertexIndexMap mapIndex;
+    auto propMapIndex = createBfsPropertyMap(mapIndex);
+
+    CGenericDfsVisitor visitor([this](const WorkflowVertex& id)
+    {
+        auto taskPtr = m_graph[id];
+        if(taskPtr)
+            taskPtr->workflowFinished();
+
+    });
+    boost::depth_first_search(m_graph, boost::visitor(visitor).vertex_index_map(propMapIndex));
+}
+
 //---------------------------//
 //- Class CFindChildVisitor -//
 //---------------------------//

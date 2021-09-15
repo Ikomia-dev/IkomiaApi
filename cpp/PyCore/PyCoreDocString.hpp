@@ -516,6 +516,15 @@ constexpr auto _updateStaticOutputsDocString =
         "The static data corresponds to all data that can be deduced without the runtime context. "
         "This method is called each time inputs changed.\n";
 
+constexpr auto _workflowStartedDocString =
+        "Notify that the workflow executing the task is started. The function is called before the run() function of each task."
+        "The function can be overriden in child classes to manage custom actions.\n";
+
+constexpr auto _workflowFinishedDocString =
+        "Notify that the workflow executing the task is finished. "
+        "The function is called at the end of the workflow after the last run() call for each task. "
+        "The function can be overriden in child classes to manage custom actions.\n";
+
 //---------------------------//
 //----- CWorkflowTaskIO -----//
 //---------------------------//
