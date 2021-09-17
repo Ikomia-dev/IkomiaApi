@@ -110,6 +110,38 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self.setInput(dir_input, index, True)
 
+    def set_task_parameters(self, params: dict, task_id=None, task_name="", index=-1):
+        """
+        Set task parameters as a simple key-value dict.
+        You can get parameters keys for each by calling:
+
+        .. code-block:: python
+            print(task_obj.getParam())
+
+        Args:
+            params (dict): key-value pairs of parameters to modify.
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
+        """
+        if task_id is not None:
+            wf_task = self.getTask(task_id)
+            if wf_task is None:
+                task.set_parameters(wf_task, params)
+        elif task_name:
+            wf_task = self.find_task(task_name)
+            if wf_task is None:
+                return
+
+            if not isinstance(wf_task, list):
+                task.set_parameters(wf_task[1], params)
+            else:
+                if index == -1:
+                    for t in wf_task:
+                        task.set_parameters(t[1], params)
+                elif 0 <= index < len(wf_task):
+                    task.set_parameters(wf_task[index][1], params)
+
     def get_time_metrics(self):
         """
         Get metrics around workflow execution time. This includes the total execution time of the workflow, and for
