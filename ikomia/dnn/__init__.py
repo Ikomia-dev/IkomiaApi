@@ -22,10 +22,10 @@ import logging
 import requests
 from ikomia.utils import is_colab
 from ikomia.core import config
-from .dataset import *
-from .datasetio import *
-from .dnntrain import *
-from .dataset import *
+from ikomia.dnn.dataset import *
+from ikomia.dnn.datasetio import *
+from ikomia.dnn.dnntrain import *
+from ikomia.dnn.dataset import *
 
 logger = logging.getLogger(__name__)
 

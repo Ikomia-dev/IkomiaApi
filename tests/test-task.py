@@ -2,7 +2,7 @@ import ikomia
 import logging
 import argparse
 import cv2
-from ikomia.utils import tests
+from ikomia.utils import tests, ik
 from ikomia.core import task, ParamMap
 from ikomia.dataprocess import workflow, displayIO
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def test_task_parameters():
     logger.info("===== Test::set task parameters =====")
-    algo = task.create()("Box Filter")
+    algo = task.create(ik.BoxFilter)
     logger.info("----- Use default parameters")
     logger.info(algo.getParam())
     img_path = tests.get_test_image_directory() + "/Lena.png"
@@ -46,7 +46,7 @@ def test_task_parameters():
 
     logger.info("----- Manually set all parameters from dict")
     task.set_parameters(algo, {"borderType": 4, "anchorX": -1, "anchorY": -1, "kSizeHeight": 29, "kSizeWidth": 29,
-                              "bNormalize": 1, "ddepth": -1})
+                               "bNormalize": 1, "ddepth": -1})
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
@@ -65,7 +65,7 @@ def test_get_task_outputs(wgisd_dir):
     wf = workflow.Workflow("test_outputs", ikomia.ik_registry)
     wf.load(wf_path)
 
-    wgisd_task = wf.find_task("WGISD_Dataset", 0)[1]
+    wgisd_task = wf.find_task(ik.WGISD_Dataset, 0)[1]
     wgisd_params = wgisd_task.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dir + "/classes.txt"
@@ -75,7 +75,7 @@ def test_get_task_outputs(wgisd_dir):
     wf.run()
 
     logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
-    detector_task = wf.find_task("MobileNet SSD", 0)[1]
+    detector_task = wf.find_task(ik.MobileNetSSD, 0)[1]
     img_out = task.get_image_output(detector_task)
     assert(img_out is not None)
     displayIO.display(img_out, detector_task.name)
@@ -87,7 +87,7 @@ def test_get_task_outputs(wgisd_dir):
     displayIO.display(blob_out, detector_task.name)
 
     logger.info("----- Get Split Operator outputs: 3 images")
-    split_task = wf.find_task("Split Operator", 0)[1]
+    split_task = wf.find_task(ik.SplitOperator, 0)[1]
     img_out = task.get_image_output(split_task)
     assert (img_out is not None)
     assert(len(img_out) == 3)
@@ -95,7 +95,7 @@ def test_get_task_outputs(wgisd_dir):
     displayIO.display(img_out, split_task.name + "- blue channel")
 
     logger.info("----- Get CalcHist outputs: numeric")
-    hist_task = wf.find_task("CalcHist", 0)[1]
+    hist_task = wf.find_task(ik.CalcHist, 0)[1]
     numeric_out = task.get_numeric_output(hist_task)
     assert (numeric_out is not None)
     displayIO.display(numeric_out, hist_task.name)
@@ -113,7 +113,7 @@ def test_get_image_with_graphics():
     img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
     # run
-    t = task.create("MobileNet SSD")
+    t = task.create(ik.MobileNetSSD)
     t.getInput(0).setImage(img)
     t.run()
     # get image with graphics

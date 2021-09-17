@@ -1,5 +1,7 @@
+import os
 import logging
 import numpy as np
+import ikomia
 from ikomia import utils, core, dataprocess, dnn
 from ikomia.core.task import TaskParam
 
@@ -10,6 +12,7 @@ def test_utils():
     logger.info("===== Test::Utils module =====")
     try:
         cpp_exc = utils.CException()
+        assert cpp_exc
 
         memory = utils.CMemoryInfo()
         logger.info("Total memory:" + str(memory.totalMemory()))
@@ -28,17 +31,27 @@ def test_core():
     logger.info("===== Test::Core module =====")
     try:
         io = core.CWorkflowTaskIO()
+        assert io
         task = core.CWorkflowTask("NewTask")
         logger.info("Task name:" + task.name)
         param = core.CWorkflowTaskParam()
+        assert param
         point2d = core.CPointF(0.0, 0.0)
+        assert point2d
         complex_poly = core.CGraphicsComplexPolygon()
+        assert complex_poly
         ellipse = core.CGraphicsEllipse()
+        assert ellipse
         point = core.CGraphicsPoint()
+        assert point
         polygon = core.CGraphicsPolygon()
+        assert polygon
         polyline = core.CGraphicsPolyline()
+        assert polyline
         rect = core.CGraphicsRectangle()
+        assert rect
         graphics_conv = core.CGraphicsConversion(512, 512)
+        assert graphics_conv
     except Exception as e:
         logger.error(e)
 
@@ -47,12 +60,19 @@ def test_dataprocess():
     logger.info("===== Test::DataProcess module =====")
     try:
         image_io = dataprocess.CImageIO(core.IODataType.IMAGE)
+        assert image_io
         video_io = dataprocess.CVideoIO(core.IODataType.VIDEO)
-        feat_io = dataprocess.CNumericIO()
+        assert video_io
+        numeric_io = dataprocess.CNumericIO()
+        assert numeric_io
         graphics_in = dataprocess.CGraphicsInput()
+        assert graphics_in
         graphics_out = dataprocess.CGraphicsOutput()
+        assert graphics_out
         path_io = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, "/home")
+        assert path_io
         array_io = dataprocess.CArrayIO(np.arange(20), "numpy array")
+        assert array_io
 
         categories = dataprocess.MapIntStr()
         categories[0] = "boat"
@@ -70,6 +90,7 @@ def test_dataprocess():
         logger.info("Task name:" + video_tracking.name)
 
         info = dataprocess.CTaskInfo()
+        assert info
     except Exception as e:
         logger.error(e)
 
@@ -82,6 +103,7 @@ def test_dnn():
         logger.info("Task name:" + train_task.name)
 
         datasetio = dnn.IkDatasetIO("new-format")
+        assert datasetio
     except Exception as e:
         logger.error(e)
 
@@ -91,4 +113,5 @@ if __name__ == "__main__":
     test_core()
     test_dataprocess()
     test_dnn()
+    ikomia.authenticate()
     logger.info("Install test run successfully")
