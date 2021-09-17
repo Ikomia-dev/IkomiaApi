@@ -160,7 +160,7 @@ CMat CImageIO::getData() const
 
 CDataInfoPtr CImageIO::getDataInfo()
 {
-    if(m_bNewDataInfo)
+    if(m_bNewDataInfo || m_infoPtr == nullptr)
     {
         m_infoPtr = std::make_shared<CDataImageInfo>(m_image);
         m_bNewDataInfo = false;

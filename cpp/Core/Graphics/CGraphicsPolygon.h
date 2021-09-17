@@ -40,25 +40,27 @@ class CORESHARED_EXPORT CProxyGraphicsPolygon: public CProxyGraphicsItem
         CProxyGraphicsPolygon(const std::vector<CPointF>& points);
         CProxyGraphicsPolygon(const std::vector<CPointF>& points, const CGraphicsPolygonProperty& property);
 
-        void                    setPoints(const PolygonF& pts);
-        void                    setProperty(const CGraphicsPolygonProperty& prop);
+        void                        setPoints(const PolygonF& pts);
+        void                        setProperty(const CGraphicsPolygonProperty& prop);
+        void                        setCategory(const std::string& categ) override;
 
-        PolygonF                getPoints() const;
-        QRectF                  getBoundingRect() const override;
-        CGraphicsPolygonProperty getProperty() const;
+        PolygonF                    getPoints() const;
+        QRectF                      getBoundingRect() const override;
+        CGraphicsPolygonProperty    getProperty() const;
+        std::string                 getCategory() const override;
 
-        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
-        void                    translate(float dx, float dy) override;
+        void                        translate(float dx, float dy) override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void                    toJson(QJsonObject& obj) const override;
+        void                        toJson(QJsonObject& obj) const override;
 
     public:
 
-        std::vector<CPointF>    m_points;
-        CGraphicsPolygonProperty m_property;
+        std::vector<CPointF>        m_points;
+        CGraphicsPolygonProperty    m_property;
 };
 
 //------------------------

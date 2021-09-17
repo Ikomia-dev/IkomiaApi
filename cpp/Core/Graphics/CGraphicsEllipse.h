@@ -40,32 +40,36 @@ class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
         CProxyGraphicsEllipse(float x, float y, float w, float h, const CGraphicsEllipseProperty& property);
 
         //Accessors are for Python binding
-        void                    setX(float x);
-        void                    setY(float y);
-        void                    setWidth(float w);
-        void                    setHeight(float h);
-        void                    setProperty(const CGraphicsEllipseProperty& prop);
+        void                        setX(float x);
+        void                        setY(float y);
+        void                        setWidth(float w);
+        void                        setHeight(float h);
+        void                        setProperty(const CGraphicsEllipseProperty& prop);
+        void                        setCategory(const std::string& categ) override;
 
-        float                   getX() const;
-        float                   getY() const;
-        float                   getWidth() const;
-        float                   getHeight() const;
-        QRectF                  getBoundingRect() const override;
-        CGraphicsEllipseProperty getProperty() const;
+        float                       getX() const;
+        float                       getY() const;
+        float                       getWidth() const;
+        float                       getHeight() const;
+        QRectF                      getBoundingRect() const override;
+        CGraphicsEllipseProperty    getProperty() const;
+        std::string                 getCategory() const override;
 
-        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        translate(float dx, float dy) override;
+
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void                    toJson(QJsonObject& obj) const override;
+        void                        toJson(QJsonObject& obj) const override;
 
     public:
 
-        float                   m_x = 0.0;
-        float                   m_y = 0.0;
-        float                   m_width = 0.0;
-        float                   m_height = 0.0;
-        CGraphicsEllipseProperty m_property;
+        float                       m_x = 0.0;
+        float                       m_y = 0.0;
+        float                       m_width = 0.0;
+        float                       m_height = 0.0;
+        CGraphicsEllipseProperty    m_property;
 };
 
 //------------------------

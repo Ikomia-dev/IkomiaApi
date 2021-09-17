@@ -54,12 +54,12 @@ class CORESHARED_EXPORT CGraphicsContext
     private:
 
         GraphicsShape               m_tool = GraphicsShape::SELECTION;
-        CGraphicsPointProperty       m_pointProperty;
-        CGraphicsEllipseProperty     m_ellipseProperty;
-        CGraphicsRectProperty        m_rectProperty;
-        CGraphicsPolygonProperty     m_polygonProperty;
-        CGraphicsPolylineProperty    m_polylineProperty;
-        CGraphicsTextProperty        m_textProperty;
+        CGraphicsPointProperty      m_pointProperty;
+        CGraphicsEllipseProperty    m_ellipseProperty;
+        CGraphicsRectProperty       m_rectProperty;
+        CGraphicsPolygonProperty    m_polygonProperty;
+        CGraphicsPolylineProperty   m_polylineProperty;
+        CGraphicsTextProperty       m_textProperty;
 };
 
 using GraphicsContextPtr = std::shared_ptr<CGraphicsContext>;

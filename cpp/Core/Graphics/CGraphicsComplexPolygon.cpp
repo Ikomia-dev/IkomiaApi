@@ -62,6 +62,11 @@ void CProxyGraphicsComplexPoly::setProperty(const CGraphicsPolygonProperty &prop
     m_property = prop;
 }
 
+void CProxyGraphicsComplexPoly::setCategory(const std::string &categ)
+{
+    m_property.m_category = categ;
+}
+
 PolygonF CProxyGraphicsComplexPoly::getOuter() const
 {
     return m_outer;
@@ -92,6 +97,29 @@ QRectF CProxyGraphicsComplexPoly::getBoundingRect() const
 CGraphicsPolygonProperty CProxyGraphicsComplexPoly::getProperty() const
 {
     return m_property;
+}
+
+std::string CProxyGraphicsComplexPoly::getCategory() const
+{
+    return m_property.m_category;
+}
+
+void CProxyGraphicsComplexPoly::translate(float dx, float dy)
+{
+    for(size_t i=0; i<m_outer.size(); ++i)
+    {
+        m_outer[i].m_x += dx;
+        m_outer[i].m_y += dy;
+    }
+
+    for(size_t i=0; i<m_inners.size(); ++i)
+    {
+        for(size_t j=0; j<m_inners[i].size(); ++j)
+        {
+            m_inners[i][j].m_x += dx;
+            m_inners[i][j].m_y += dy;
+        }
+    }
 }
 
 void CProxyGraphicsComplexPoly::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

@@ -77,6 +77,11 @@ void CProxyGraphicsText::setProperty(const CGraphicsTextProperty &prop)
     m_property = prop;
 }
 
+void CProxyGraphicsText::setCategory(const std::string &categ)
+{
+    m_property.m_category = categ;
+}
+
 float CProxyGraphicsText::getX() const
 {
     return m_x;
@@ -117,9 +122,20 @@ CGraphicsTextProperty CProxyGraphicsText::getProperty() const
     return m_property;
 }
 
+std::string CProxyGraphicsText::getCategory() const
+{
+    return m_property.m_category;
+}
+
 bool CProxyGraphicsText::isTextItem() const
 {
     return true;
+}
+
+void CProxyGraphicsText::translate(float dx, float dy)
+{
+    m_x += dx;
+    m_y += dy;
 }
 
 void CProxyGraphicsText::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

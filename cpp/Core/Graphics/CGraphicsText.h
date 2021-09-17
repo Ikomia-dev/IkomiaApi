@@ -44,14 +44,18 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         void                    setY(float x);
         void                    setText(const std::string& text);
         void                    setProperty(const CGraphicsTextProperty& prop);
+        void                    setCategory(const std::string& categ) override;
 
         float                   getX() const;
         float                   getY() const;
         std::string             getText() const;
         QRectF                  getBoundingRect() const override;
-        CGraphicsTextProperty    getProperty() const;
+        CGraphicsTextProperty   getProperty() const;
+        std::string             getCategory() const override;
 
         bool                    isTextItem() const override;
+
+        void                    translate(float dx, float dy) override;
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -64,7 +68,7 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         float                   m_x = 0;
         float                   m_y = 0;
         std::string             m_text;
-        CGraphicsTextProperty    m_property;
+        CGraphicsTextProperty   m_property;
 };
 
 //---------------------

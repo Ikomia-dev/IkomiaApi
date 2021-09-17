@@ -39,26 +39,30 @@ class CORESHARED_EXPORT CProxyGraphicsComplexPoly: public CProxyGraphicsItem
         CProxyGraphicsComplexPoly(const PolygonF& outer, const std::vector<PolygonF>& inners);
         CProxyGraphicsComplexPoly(const PolygonF& outer, const std::vector<PolygonF>& inners, const CGraphicsPolygonProperty& property);
 
-        void                    setOuter(const PolygonF& poly);
-        void                    setInners(const std::vector<PolygonF>& polygons);
-        void                    setProperty(const CGraphicsPolygonProperty& prop);
+        void                        setOuter(const PolygonF& poly);
+        void                        setInners(const std::vector<PolygonF>& polygons);
+        void                        setProperty(const CGraphicsPolygonProperty& prop);
+        void                        setCategory(const std::string& categ) override;
 
-        PolygonF                getOuter() const;
-        std::vector<PolygonF>   getInners() const;
-        QRectF                  getBoundingRect() const;
-        CGraphicsPolygonProperty getProperty() const;
+        PolygonF                    getOuter() const;
+        std::vector<PolygonF>       getInners() const;
+        QRectF                      getBoundingRect() const;
+        CGraphicsPolygonProperty    getProperty() const;
+        std::string                 getCategory() const override;
 
-        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        translate(float dx, float dy) override;
+
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void                    toJson(QJsonObject &obj) const override;
+        void                        toJson(QJsonObject &obj) const override;
 
     public:
 
-        PolygonF                m_outer;
-        std::vector<PolygonF>   m_inners;
-        CGraphicsPolygonProperty m_property;
+        PolygonF                    m_outer;
+        std::vector<PolygonF>       m_inners;
+        CGraphicsPolygonProperty    m_property;
 };
 
 //-------------------------------

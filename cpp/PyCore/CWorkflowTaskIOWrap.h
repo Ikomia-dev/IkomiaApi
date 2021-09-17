@@ -34,20 +34,20 @@ class CWorkflowTaskIOWrap : public CWorkflowTaskIO, public wrapper<CWorkflowTask
         CWorkflowTaskIOWrap(IODataType dataType, const std::string& name);
         CWorkflowTaskIOWrap(const CWorkflowTaskIO& io);
 
-        virtual size_t  getUnitElementCount() const;
-        size_t          default_getUnitElementCount() const;
+        size_t      getUnitElementCount() const;
+        size_t      default_getUnitElementCount() const;
 
-        virtual bool    isDataAvailable() const;
-        bool            default_isDataAvailable() const;
+        bool        isDataAvailable() const;
+        bool        default_isDataAvailable() const;
 
-        virtual bool    isAutoInput() const;
-        bool            default_isAutoInput() const;
+        bool        isAutoInput() const;
+        bool        default_isAutoInput() const;
 
-        virtual void    clearData();
-        void            default_clearData();
+        void        clearData();
+        void        default_clearData();
 
-        virtual void    copyStaticData(const std::shared_ptr<CWorkflowTaskIO>& ioPtr);
-        void            default_copyStaticData(const std::shared_ptr<CWorkflowTaskIO>& ioPtr);
+        void        copyStaticData(const std::shared_ptr<CWorkflowTaskIO>& ioPtr);
+        void        default_copyStaticData(const std::shared_ptr<CWorkflowTaskIO>& ioPtr);
 
 };
 

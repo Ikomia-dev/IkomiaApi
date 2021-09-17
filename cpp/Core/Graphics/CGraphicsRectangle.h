@@ -45,21 +45,23 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
         void                    setWidth(float w);
         void                    setHeight(float h);
         void                    setProperty(const CGraphicsRectProperty& prop);
+        void                    setCategory(const std::string& category) override;
 
         float                   getX() const;
         float                   getY() const;
         float                   getWidth() const;
         float                   getHeight() const;
         QRectF                  getBoundingRect() const override;
-        CGraphicsRectProperty    getProperty() const;
+        CGraphicsRectProperty   getProperty() const;
+        std::string             getCategory() const override;
 
-        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
-        void            translate(float dx, float dy) override;
+        void                    translate(float dx, float dy) override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 
-        void            toJson(QJsonObject &obj) const override;
+        void                    toJson(QJsonObject &obj) const override;
 
     public:
 
@@ -67,7 +69,7 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
         float                   m_y = 0.0;
         float                   m_width = 0.0;
         float                   m_height = 0.0;
-        CGraphicsRectProperty    m_property;
+        CGraphicsRectProperty   m_property;
 };
 
 //--------------------------

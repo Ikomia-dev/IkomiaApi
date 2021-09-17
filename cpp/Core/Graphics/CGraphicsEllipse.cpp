@@ -76,6 +76,11 @@ void CProxyGraphicsEllipse::setProperty(const CGraphicsEllipseProperty &prop)
     m_property = prop;
 }
 
+void CProxyGraphicsEllipse::setCategory(const std::string &categ)
+{
+    m_property.m_category = categ;
+}
+
 float CProxyGraphicsEllipse::getX() const
 {
     return m_x;
@@ -104,6 +109,17 @@ QRectF CProxyGraphicsEllipse::getBoundingRect() const
 CGraphicsEllipseProperty CProxyGraphicsEllipse::getProperty() const
 {
     return m_property;
+}
+
+std::string CProxyGraphicsEllipse::getCategory() const
+{
+    return m_property.m_category;
+}
+
+void CProxyGraphicsEllipse::translate(float dx, float dy)
+{
+    m_x += dx;
+    m_y += dy;
 }
 
 void CProxyGraphicsEllipse::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

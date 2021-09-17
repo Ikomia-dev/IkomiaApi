@@ -1840,10 +1840,16 @@ void CWorkflow::workflowStarted()
 
     CGenericDfsVisitor visitor([this](const WorkflowVertex& id)
     {
-        auto taskPtr = m_graph[id];
-        if(taskPtr)
-            taskPtr->workflowStarted();
-
+        try
+        {
+            auto taskPtr = m_graph[id];
+            if(taskPtr)
+                taskPtr->workflowStarted();
+        }
+        catch(std::exception& e)
+        {
+            Utils::print(e.what(), QtMsgType::QtCriticalMsg);
+        }
     });
     boost::depth_first_search(m_graph, boost::visitor(visitor).vertex_index_map(propMapIndex));
 }
@@ -1856,10 +1862,16 @@ void CWorkflow::workflowFinished()
 
     CGenericDfsVisitor visitor([this](const WorkflowVertex& id)
     {
-        auto taskPtr = m_graph[id];
-        if(taskPtr)
-            taskPtr->workflowFinished();
-
+        try
+        {
+            auto taskPtr = m_graph[id];
+            if(taskPtr)
+               taskPtr->workflowFinished();
+        }
+        catch(std::exception& e)
+        {
+            Utils::print(e.what(), QtMsgType::QtCriticalMsg);
+        }
     });
     boost::depth_first_search(m_graph, boost::visitor(visitor).vertex_index_map(propMapIndex));
 }

@@ -164,6 +164,14 @@ CDataInfoPtr CWorkflowTaskIO::getDataInfo()
     return m_infoPtr;
 }
 
+std::string CWorkflowTaskIO::getSourceFilePath()
+{
+    if(m_infoPtr)
+        return m_infoPtr->getFileName();
+    else
+        return "";
+}
+
 bool CWorkflowTaskIO::isDataAvailable() const
 {
     return false;

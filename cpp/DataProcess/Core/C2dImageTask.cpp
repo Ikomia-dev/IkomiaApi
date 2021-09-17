@@ -23,6 +23,7 @@
 #include "Graphics/CGraphicsConversion.h"
 #include "Graphics/CGraphicsLayer.h"
 #include "IO/CConvertIO.h"
+#include "Data/CDataImageInfo.h"
 
 C2dImageTask::C2dImageTask() : CWorkflowTask()
 {
@@ -223,6 +224,19 @@ void C2dImageTask::endTaskRun()
 {
     CWorkflowTask::endTaskRun();
     createOverlayMasks();
+
+    // Forward input image information
+    auto imgInputPtr = getInput(0);
+    auto imgOutputPtr = getOutput(0);
+
+    if(imgInputPtr && imgOutputPtr)
+    {
+        auto inputInfo = std::dynamic_pointer_cast<CDataImageInfo>(imgInputPtr->getDataInfo());
+        auto outputInfo = std::dynamic_pointer_cast<CDataImageInfo>(imgOutputPtr->getDataInfo());
+
+        if(inputInfo && outputInfo)
+            outputInfo->setFileName(inputInfo->getFileName());
+    }
 }
 
 void C2dImageTask::graphicsChanged()

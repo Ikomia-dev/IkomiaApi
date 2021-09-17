@@ -27,6 +27,48 @@ CGraphicsItemWrap::CGraphicsItemWrap(GraphicsItem type) : CProxyGraphicsItem(typ
 {
 }
 
+void CGraphicsItemWrap::setCategory(const std::string &categ)
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        this->get_override("setCategory")(categ);
+    }
+    catch(boost::python::error_already_set&)
+    {
+        //Do not throw exceptions from slot
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+    }
+}
+
+std::string CGraphicsItemWrap::getCategory() const
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        return this->get_override("getCategory")();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        //Do not throw exceptions from slot
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+    }
+}
+
+QRectF CGraphicsItemWrap::getBoundingRect() const
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        return this->get_override("getBoundingRect")();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        //Do not throw exceptions from slot
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+    }
+}
+
 bool CGraphicsItemWrap::isTextItem() const
 {
     CPyEnsureGIL gil;
@@ -53,6 +95,20 @@ bool CGraphicsItemWrap::default_isTextItem() const
     catch(boost::python::error_already_set&)
     {
         throw CException(CoreExCode::PYTHON_EXCEPTION, Utils::Python::handlePythonException(), __func__, __FILE__, __LINE__);
+    }
+}
+
+void CGraphicsItemWrap::translate(float dx, float dy)
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        this->get_override("translate")(dx, dy);
+    }
+    catch(boost::python::error_already_set&)
+    {
+        //Do not throw exceptions from slot
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
     }
 }
 

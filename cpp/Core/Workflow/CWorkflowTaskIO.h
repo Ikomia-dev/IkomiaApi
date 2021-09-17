@@ -122,8 +122,11 @@ class CORESHARED_EXPORT CWorkflowTaskIO
          * @return Object of CDataInfoPtr class or derived.
          */
         virtual CDataInfoPtr    getDataInfo();
-
-
+        /**
+         * @brief Gets the source file path from global workflow input
+         * @return std::string
+         */
+        std::string         getSourceFilePath();
 
         /**
          * @brief Checks if input or output object contains valid data.

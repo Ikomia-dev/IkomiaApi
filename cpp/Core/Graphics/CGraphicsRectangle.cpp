@@ -76,6 +76,11 @@ void CProxyGraphicsRect::setProperty(const CGraphicsRectProperty &prop)
     m_property = prop;
 }
 
+void CProxyGraphicsRect::setCategory(const std::string &category)
+{
+    m_property.m_category = category;
+}
+
 float CProxyGraphicsRect::getX() const
 {
     return m_x;
@@ -104,6 +109,11 @@ QRectF CProxyGraphicsRect::getBoundingRect() const
 CGraphicsRectProperty CProxyGraphicsRect::getProperty() const
 {
     return m_property;
+}
+
+std::string CProxyGraphicsRect::getCategory() const
+{
+    return m_property.m_category;
 }
 
 void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

@@ -161,12 +161,12 @@ constexpr auto _setObjMeasureDocString =
         "Set measure for the blob specified by the given index.\n"
         "Args:\n"
         "   index (int): zeo-based index in the blob list\n\n"
-        "   measure (:py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+        "   measure (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure`)\n";
 
 constexpr auto _getMeasuresDocString =
         "Get measures for all blobs.\n"
         "Returns:\n"
-        "   measures (list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure` list)\n";
+        "   measures (list of :py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure` list)\n";
 
 constexpr auto _isMeasureDataAvailableDocString =
         "Return True if there is at least one measure for one blob, False otherwise.\n";
@@ -174,12 +174,12 @@ constexpr auto _isMeasureDataAvailableDocString =
 constexpr auto _addObjMeasureDocString =
         "Add a new blob measure. Use this method if only one measure is computed for a blob.\n"
         "Args:\n"
-        "   measure (:py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+        "   measure (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure`)\n";
 
 constexpr auto _addObjMeasuresDocString =
         "Add a new list of measures for a blob.\n"
         "Args:\n"
-        "measures (list of :py:class:`~ikomia.dataprocess.pycdataprocess.CObjectMeasure`)\n";
+        "measures (list of :py:class:`~ikomia.dataprocess.pydataprocess.CObjectMeasure`)\n";
 
 //----------------------//
 //----- CNumericIO -----//

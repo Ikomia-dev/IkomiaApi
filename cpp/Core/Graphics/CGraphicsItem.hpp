@@ -51,10 +51,7 @@ class CProxyGraphicsItem
 
         virtual ~CProxyGraphicsItem() = default;
 
-        void                    setCategory(const std::string& category)
-        {
-            m_category = category;
-        }
+        virtual void            setCategory(const std::string& category) = 0;
 
         size_t                  getId() const
         {
@@ -64,14 +61,8 @@ class CProxyGraphicsItem
         {
             return static_cast<size_t>(m_type);
         }
-        std::string             getCategory() const
-        {
-            return m_category;
-        }
-        virtual QRectF          getBoundingRect() const
-        {
-            return QRectF();
-        }
+        virtual std::string     getCategory() const = 0;
+        virtual QRectF          getBoundingRect() const = 0;
 
         virtual bool            isTextItem() const
         {
@@ -84,11 +75,7 @@ class CProxyGraphicsItem
 
         virtual void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const = 0;
 
-        virtual void            translate(float dx, float dy)
-        {
-            Q_UNUSED(dx);
-            Q_UNUSED(dy);
-        }
+        virtual void            translate(float dx, float dy) = 0;
 
         virtual std::shared_ptr<CProxyGraphicsItem> clone() const = 0;
 
@@ -96,7 +83,6 @@ class CProxyGraphicsItem
         {
             obj["id"] = (qint64)m_id;
             obj["type"] = (int)m_type;
-            obj["category"] = QString::fromStdString(m_category);
         }
 
     private:
@@ -112,7 +98,6 @@ class CProxyGraphicsItem
 
         size_t          m_id = 0;
         GraphicsItem    m_type = GraphicsItem::LAYER;
-        std::string     m_category = "Default";
 
     protected:
 

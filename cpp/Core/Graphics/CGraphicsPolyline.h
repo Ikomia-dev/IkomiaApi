@@ -42,10 +42,14 @@ class CORESHARED_EXPORT CProxyGraphicsPolyline: public CProxyGraphicsItem
 
         void                        setPoints(const PolygonF& pts);
         void                        setProperty(const CGraphicsPolylineProperty& prop);
+        void                        setCategory(const std::string& categ) override;
 
         PolygonF                    getPoints() const;
         QRectF                      getBoundingRect() const override;
-        CGraphicsPolylineProperty    getProperty();
+        CGraphicsPolylineProperty   getProperty();
+        std::string                 getCategory() const override;
+
+        void                        translate(float dx, float dy) override;
 
         void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -56,7 +60,7 @@ class CORESHARED_EXPORT CProxyGraphicsPolyline: public CProxyGraphicsItem
     public:
 
         std::vector<CPointF>        m_points;
-        CGraphicsPolylineProperty    m_property;
+        CGraphicsPolylineProperty   m_property;
 };
 
 //-------------------------

@@ -114,6 +114,7 @@ class CGraphicsTextProperty
         bool        m_bItalic = false;
         bool        m_bUnderline = false;
         bool        m_bStrikeOut = false;
+        std::string m_category = "Default";
 };
 
 #endif // GRAPHICSPROPERTY_HPP

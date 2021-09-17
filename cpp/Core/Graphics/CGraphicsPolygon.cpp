@@ -62,6 +62,11 @@ void CProxyGraphicsPolygon::setProperty(const CGraphicsPolygonProperty &prop)
     m_property = prop;
 }
 
+void CProxyGraphicsPolygon::setCategory(const std::string &categ)
+{
+    m_property.m_category = categ;
+}
+
 PolygonF CProxyGraphicsPolygon::getPoints() const
 {
     return m_points;
@@ -87,6 +92,11 @@ QRectF CProxyGraphicsPolygon::getBoundingRect() const
 CGraphicsPolygonProperty CProxyGraphicsPolygon::getProperty() const
 {
     return m_property;
+}
+
+std::string CProxyGraphicsPolygon::getCategory() const
+{
+    return m_property.m_category;
 }
 
 void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const

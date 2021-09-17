@@ -33,8 +33,15 @@ class CGraphicsItemWrap : public CProxyGraphicsItem, public wrapper<CProxyGraphi
         CGraphicsItemWrap(GraphicsItem type);
         virtual ~CGraphicsItemWrap() = default;
 
+        void            setCategory(const std::string& categ) override;
+
+        std::string     getCategory() const override;
+        QRectF          getBoundingRect() const override;
+
         bool            isTextItem() const;
         bool            default_isTextItem() const;
+
+        void            translate(float dx, float dy) override;
 
         void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 

@@ -41,10 +41,14 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
 
         void                    setPoint(const CPointF& pt);
         void                    setProperty(const CGraphicsPointProperty& prop);
+        void                    setCategory(const std::string& categ) override;
 
         CPointF                 getPoint() const;
         QRectF                  getBoundingRect() const override;
-        CGraphicsPointProperty   getProperty() const;
+        CGraphicsPointProperty  getProperty() const;
+        std::string             getCategory() const override;
+
+        void                    translate(float dx, float dy);
 
         void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
 
@@ -55,7 +59,7 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
     public:
 
         CPointF                 m_point;
-        CGraphicsPointProperty   m_property;
+        CGraphicsPointProperty  m_property;
 };
 
 //----------------------

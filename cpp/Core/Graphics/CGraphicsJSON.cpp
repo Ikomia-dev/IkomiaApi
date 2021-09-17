@@ -303,6 +303,7 @@ QJsonObject CGraphicsJSON::toJsonObject(const CGraphicsTextProperty &prop)
     obj["italic"] = prop.m_bItalic;
     obj["underline"] = prop.m_bUnderline;
     obj["strikeout"] = prop.m_bStrikeOut;
+    obj["category"] = QString::fromStdString(prop.m_category);
     return obj;
 }
 

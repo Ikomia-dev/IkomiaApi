@@ -56,6 +56,11 @@ void CProxyGraphicsPolyline::setProperty(const CGraphicsPolylineProperty &prop)
     m_property = prop;
 }
 
+void CProxyGraphicsPolyline::setCategory(const std::string &categ)
+{
+    m_property.m_category = categ;
+}
+
 PolygonF CProxyGraphicsPolyline::getPoints() const
 {
     return m_points;
@@ -81,6 +86,20 @@ QRectF CProxyGraphicsPolyline::getBoundingRect() const
 CGraphicsPolylineProperty CProxyGraphicsPolyline::getProperty()
 {
     return m_property;
+}
+
+std::string CProxyGraphicsPolyline::getCategory() const
+{
+    return m_property.m_category;
+}
+
+void CProxyGraphicsPolyline::translate(float dx, float dy)
+{
+    for(size_t i=0; i<m_points.size(); ++i)
+    {
+        m_points[i].m_x += dx;
+        m_points[i].m_y += dy;
+    }
 }
 
 void CProxyGraphicsPolyline::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
