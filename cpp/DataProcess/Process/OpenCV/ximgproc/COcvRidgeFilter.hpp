@@ -147,7 +147,7 @@ class COcvRidgeFilterFactory : public CTaskFactory
 
         COcvRidgeFilterFactory()
         {
-            m_info.m_name = QObject::tr("Ridge Filter").toStdString();
+            m_info.m_name = "ocv_ridge_filter";
             m_info.m_description = QObject::tr("Applies Ridge Detection Filter to an input image. Implements Ridge detection similar to the one in Mathematica using the eigen values from the Hessian Matrix of the input image using Sobel Derivatives. Additional refinement can be done using Skeletonization and Binarization.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

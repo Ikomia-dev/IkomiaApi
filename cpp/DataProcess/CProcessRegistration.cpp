@@ -122,13 +122,13 @@ void CProcessRegistration::reset()
 
 void CProcessRegistration::registerCore()
 {
+    registerProcess(std::make_shared<CBinaryToGraphicsFactory>(), std::make_shared<CWidgetBinaryToGraphicsFactory>());
     registerProcess(std::make_shared<CBlobMeasureFactory>(), std::make_shared<CWidgetBlobMeasureFactory>());
     registerProcess(std::make_shared<CCutFactory>(), std::make_shared<CWidgetCutFactory>());
     registerProcess(std::make_shared<CFillHolesFactory>(), std::make_shared<CWidgetFillHolesFactory>());
+    registerProcess(std::make_shared<CGraphicsToBinaryFactory>(), std::make_shared<CWidgetGraphicsToBinaryFactory>());
     registerProcess(std::make_shared<CPlotMergeFactory>(), std::make_shared<CWidgetPlotMergeFactory>());
     registerProcess(std::make_shared<CRgbHlsThresholdFactory>(), std::make_shared<CWidgetRgbHlsThresholdFactory>());
-    registerProcess(std::make_shared<CBinaryToGraphicsFactory>(), std::make_shared<CWidgetBinaryToGraphicsFactory>());
-    registerProcess(std::make_shared<CGraphicsToBinaryFactory>(), std::make_shared<CWidgetGraphicsToBinaryFactory>());
 }
 
 void CProcessRegistration::registerOpenCV()
@@ -201,7 +201,6 @@ void CProcessRegistration::registerCvCore()
     registerProcess(std::make_shared<COcvFlipFactory>(), std::make_shared<COcvWidgetFlipFactory>());
     registerProcess(std::make_shared<COcvInRangeFactory>(), std::make_shared<COcvWidgetInRangeFactory>());
     registerProcess(std::make_shared<COcvInsertChannelFactory>(), std::make_shared<COcvWidgetInsertChannelFactory>());
-    registerProcess(std::make_shared<COcvKMeansFactory>(), std::make_shared<COcvWidgetKMeansFactory>());
     registerProcess(std::make_shared<COcvLogFactory>(), std::make_shared<COcvWidgetLogFactory>());
     registerProcess(std::make_shared<COcvLogicalOpFactory>(), std::make_shared<COcvWidgetLogicalOpFactory>());
     registerProcess(std::make_shared<COcvMagnitudeFactory>(), std::make_shared<COcvWidgetMagnitudeFactory>());    
@@ -215,6 +214,8 @@ void CProcessRegistration::registerCvCore()
     registerProcess(std::make_shared<COcvRotateFactory>(), std::make_shared<COcvWidgetRotateFactory>());
     registerProcess(std::make_shared<COcvSplitFactory>(), std::make_shared<COcvWidgetSplitFactory>());
     registerProcess(std::make_shared<COcvSubtractFactory>(), std::make_shared<COcvWidgetSubtractFactory>());
+
+    registerProcess(std::make_shared<COcvKMeansFactory>(), std::make_shared<COcvWidgetKMeansFactory>());
 }
 
 void CProcessRegistration::registerCvDnn()
@@ -256,21 +257,21 @@ void CProcessRegistration::registerCvFeatures2d()
 {
     registerProcess(std::make_shared<COcvAGASTFactory>(), std::make_shared<COcvWidgetAGASTFactory>());
     registerProcess(std::make_shared<COcvAKAZEFactory>(), std::make_shared<COcvWidgetAKAZEFactory>());
-    registerProcess(std::make_shared<COcvBFMatcherFactory>(), std::make_shared<COcvWidgetBFMatcherFactory>());
     registerProcess(std::make_shared<COcvBRISKFactory>(), std::make_shared<COcvWidgetBRISKFactory>());
     registerProcess(std::make_shared<COcvFASTFactory>(), std::make_shared<COcvWidgetFASTFactory>());
-    registerProcess(std::make_shared<COcvFlannMatcherFactory>(), std::make_shared<COcvWidgetFlannMatcherFactory>());
     registerProcess(std::make_shared<COcvGFTTFactory>(), std::make_shared<COcvWidgetGFTTFactory>());
     registerProcess(std::make_shared<COcvKAZEFactory>(), std::make_shared<COcvWidgetKAZEFactory>());
     registerProcess(std::make_shared<COcvORBFactory>(), std::make_shared<COcvWidgetORBFactory>());
     registerProcess(std::make_shared<COcvSIFTFactory>(), std::make_shared<COcvWidgetSIFTFactory>());
     registerProcess(std::make_shared<COcvSimpleBlobDetectorFactory>(), std::make_shared<COcvWidgetSimpleBlobDetectorFactory>());
+
+    registerProcess(std::make_shared<COcvBFMatcherFactory>(), std::make_shared<COcvWidgetBFMatcherFactory>());
+    registerProcess(std::make_shared<COcvFlannMatcherFactory>(), std::make_shared<COcvWidgetFlannMatcherFactory>());
 }
 
 void CProcessRegistration::registerCvPhoto()
 {
     registerProcess(std::make_shared<COcvDecolorFactory>(), std::make_shared<COcvWidgetDecolorFactory>());
-    registerProcess(std::make_shared<COcvInpaintFactory>(), std::make_shared<COcvWidgetInpaintFactory>());
     registerProcess(std::make_shared<COcvColorchangeFactory>(), std::make_shared<COcvWidgetColorchangeFactory>());
     registerProcess(std::make_shared<COcvDenoiseTVL1Factory>(), std::make_shared<COcvWidgetDenoiseTVL1Factory>());
     registerProcess(std::make_shared<COcvDetailEnhanceFactory>(), std::make_shared<COcvWidgetDetailEnhanceFactory>());
@@ -278,6 +279,7 @@ void CProcessRegistration::registerCvPhoto()
     registerProcess(std::make_shared<COcvFastNlMeansFactory>(), std::make_shared<COcvWidgetFastNlMeansFactory>());
     registerProcess(std::make_shared<COcvFastNlMeansMultiFactory>(), std::make_shared<COcvWidgetFastNlMeansMultiFactory>());
     registerProcess(std::make_shared<COcvIlluminationChangeFactory>(), std::make_shared<COcvWidgetIlluminationChangeFactory>());
+    registerProcess(std::make_shared<COcvInpaintFactory>(), std::make_shared<COcvWidgetInpaintFactory>());
     registerProcess(std::make_shared<COcvPencilSketchFactory>(), std::make_shared<COcvWidgetPencilSketchFactory>());
     registerProcess(std::make_shared<COcvSeamlessCloningFactory>(), std::make_shared<COcvWidgetSeamlessCloningFactory>());
     registerProcess(std::make_shared<COcvStylizationFactory>(), std::make_shared<COcvWidgetStylizationFactory>());
@@ -294,6 +296,7 @@ void CProcessRegistration::registerCvVideo()
 {
     registerProcess(std::make_shared<COcvBckgndSubKnnFactory>(), std::make_shared<COcvWidgetBckgndSubKnnFactory>());
     registerProcess(std::make_shared<COcvBckgndSubMog2Factory>(), std::make_shared<COcvWidgetBckgndSubMog2Factory>());
+
     registerProcess(std::make_shared<COcvCamShiftFactory>(), std::make_shared<COcvWidgetCamShiftFactory>());
     registerProcess(std::make_shared<COcvDISOFFactory>(), std::make_shared<COcvWidgetDISOFFactory>());
     registerProcess(std::make_shared<COcvFarnebackOFFactory>(), std::make_shared<COcvWidgetFarnebackOFFactory>());
@@ -311,39 +314,50 @@ void CProcessRegistration::registerCvBgsegm()
 
 void CProcessRegistration::registerCvXimgproc()
 {
-    registerProcess(std::make_shared<COcvAnisotropicDiffusionFactory>(), std::make_shared<COcvWidgetAnisotropicDiffusionFactory>());
-    registerProcess(std::make_shared<COcvNiblackThresholdFactory>(), std::make_shared<COcvWidgetNiblackThresholdFactory>());
-    registerProcess(std::make_shared<COcvPeiLinNormalizationFactory>(), std::make_shared<COcvWidgetPeiLinNormalizationFactory>());
-    registerProcess(std::make_shared<COcvThinningFactory>(), std::make_shared<COcvWidgetThinningFactory>());
-
+    // Filters
     registerProcess(std::make_shared<COcvAdaptiveManifoldFactory>(), std::make_shared<COcvWidgetAdaptiveManifoldFactory>());
     registerProcess(std::make_shared<COcvBilateralTextureFilterFactory>(), std::make_shared<COcvWidgetBilateralTextureFilterFactory>());
+    registerProcess(std::make_shared<COcvGradientDericheFactory>(), std::make_shared<COcvWidgetGradientDericheFactory>());
     registerProcess(std::make_shared<COcvDTFilterFactory>(), std::make_shared<COcvWidgetDTFilterFactory>());
     registerProcess(std::make_shared<COcvDTFilterEnhanceFactory>(), std::make_shared<COcvWidgetDTFilterEnhanceFactory>());
     registerProcess(std::make_shared<COcvDTFilterStylizeFactory>(), std::make_shared<COcvWidgetDTFilterStylizeFactory>());
     registerProcess(std::make_shared<COcvFastGlobalSmootherFilterFactory>(), std::make_shared<COcvWidgetFastGlobalSmootherFilterFactory>());
-    registerProcess(std::make_shared<COcvFastLineDetectorFactory>(), std::make_shared<COcvWidgetFastLineDetectorFactory>());
-    registerProcess(std::make_shared<COcvGradientDericheFactory>(), std::make_shared<COcvWidgetGradientDericheFactory>());
-    registerProcess(std::make_shared<COcvGradientPaillouFactory>(), std::make_shared<COcvWidgetGradientPaillouFactory>());
-    registerProcess(std::make_shared<COcvGraphSegmentationFactory>(), std::make_shared<COcvWidgetGraphSegmentationFactory>());
     registerProcess(std::make_shared<COcvGuidedFilterFactory>(), std::make_shared<COcvWidgetGuidedFilterFactory>());
+    registerProcess(std::make_shared<COcvGradientPaillouFactory>(), std::make_shared<COcvWidgetGradientPaillouFactory>());
     registerProcess(std::make_shared<COcvJointBilateralFilterFactory>(), std::make_shared<COcvWidgetJointBilateralFilterFactory>());
     registerProcess(std::make_shared<COcvL0SmoothFactory>(), std::make_shared<COcvWidgetL0SmoothFactory>());
     registerProcess(std::make_shared<COcvRidgeFilterFactory>(), std::make_shared<COcvWidgetRidgeFilterFactory>());
     registerProcess(std::make_shared<COcvRollingGuidanceFilterFactory>(), std::make_shared<COcvWidgetRollingGuidanceFilterFactory>());
+
+    // Line detector
+    registerProcess(std::make_shared<COcvFastLineDetectorFactory>(), std::make_shared<COcvWidgetFastLineDetectorFactory>());
+
+    // Segmentation
+    registerProcess(std::make_shared<COcvGraphSegmentationFactory>(), std::make_shared<COcvWidgetGraphSegmentationFactory>());
     registerProcess(std::make_shared<COcvSelectiveSearchSegmentationFactory>(), std::make_shared<COcvWidgetSelectiveSearchSegmentationFactory>());
+
+    //Superpixels
     registerProcess(std::make_shared<COcvSuperpixelLSCFactory>(), std::make_shared<COcvWidgetSuperpixelLSCFactory>());
     registerProcess(std::make_shared<COcvSuperpixelSEEDSFactory>(), std::make_shared<COcvWidgetSuperpixelSEEDSFactory>());
     registerProcess(std::make_shared<COcvSuperpixelSLICFactory>(), std::make_shared<COcvWidgetSuperpixelSLICFactory>());
+
+    // Structure forests
     registerProcess(std::make_shared<COcvStructuredEdgeDetectionFactory>(), std::make_shared<COcvWidgetStructuredEdgeDetectionFactory>());
+
+    // Others
+    registerProcess(std::make_shared<COcvAnisotropicDiffusionFactory>(), std::make_shared<COcvWidgetAnisotropicDiffusionFactory>());
+    registerProcess(std::make_shared<COcvNiblackThresholdFactory>(), std::make_shared<COcvWidgetNiblackThresholdFactory>());
+    registerProcess(std::make_shared<COcvPeiLinNormalizationFactory>(), std::make_shared<COcvWidgetPeiLinNormalizationFactory>());
+    registerProcess(std::make_shared<COcvThinningFactory>(), std::make_shared<COcvWidgetThinningFactory>());
 }
 
 void CProcessRegistration::registerCvXphoto()
 {
     registerProcess(std::make_shared<COcvGrayworldWBFactory>(), std::make_shared<COcvWidgetGrayworldWBFactory>());
-    registerProcess(std::make_shared<COcvInpaintXFactory>(), std::make_shared<COcvWidgetInpaintXFactory>());
     registerProcess(std::make_shared<COcvLearningBasedWBFactory>(), std::make_shared<COcvWidgetLearningBasedWBFactory>());
     registerProcess(std::make_shared<COcvSimpleWBFactory>(), std::make_shared<COcvWidgetSimpleWBFactory>());
+    registerProcess(std::make_shared<COcvInpaintXFactory>(), std::make_shared<COcvWidgetInpaintXFactory>());
+    // Non free
     //registerProcess(std::make_shared<COcvTonemapDurandFactory>(), std::make_shared<COcvWidgetTonemapDurandFactory>());
 }
 
@@ -359,6 +373,7 @@ void CProcessRegistration::registerCvOptflow()
 void CProcessRegistration::registerCvBioinspired()
 {
     registerProcess(std::make_shared<COcvRetinaFactory>(), std::make_shared<COcvWidgetRetinaFactory>());
+    // Non free
     //registerProcess(std::make_shared<COcvRetinaToneMappingFactory>(), std::make_shared<COcvWidgetRetinaToneMappingFactory>());
     registerProcess(std::make_shared<COcvRetinaSegmentationFactory>(), std::make_shared<COcvWidgetRetinaSegmentationFactory>());
 }

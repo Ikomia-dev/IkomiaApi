@@ -147,7 +147,7 @@ class COcvWidgetHfsSegmentFactory : public CWidgetFactory
 
         COcvWidgetHfsSegmentFactory()
         {
-            m_name = QObject::tr("Hierarchical Feature Selection Segmentation").toStdString();
+            m_name = "ocv_hierarchical_feature_selection";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

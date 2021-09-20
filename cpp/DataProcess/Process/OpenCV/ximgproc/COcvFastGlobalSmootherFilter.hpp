@@ -124,7 +124,7 @@ class COcvFastGlobalSmootherFilterFactory : public CTaskFactory
 
         COcvFastGlobalSmootherFilterFactory()
         {
-            m_info.m_name = QObject::tr("Fast Global Smoother Filter").toStdString();
+            m_info.m_name = "ocv_fast_global_smooth_filter";
             m_info.m_description = QObject::tr("The process applies fast global image smoothing based on weighted least squares.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

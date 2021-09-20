@@ -123,7 +123,7 @@ class COcvAddWeightedFactory : public CTaskFactory
 
         COcvAddWeightedFactory()
         {
-            m_info.m_name = QObject::tr("Add Weighted").toStdString();
+            m_info.m_name = "ocv_add_weighted";
             m_info.m_description = QObject::tr("The function addWeighted calculates the weighted sum of two images with the given formula:<br> <center><i>dst = saturate( src1 * alpha + src2 * beta + gamma )</i></center>").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

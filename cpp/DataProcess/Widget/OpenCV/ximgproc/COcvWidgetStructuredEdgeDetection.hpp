@@ -51,7 +51,7 @@ class COcvWidgetStructuredEdgeDetectionFactory : public CWidgetFactory
 
         COcvWidgetStructuredEdgeDetectionFactory()
         {
-            m_name = QObject::tr("StructuredEdgeDetection").toStdString();
+            m_name = "ocv_structured_edge_detection";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -59,4 +59,5 @@ class COcvWidgetStructuredEdgeDetectionFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetStructuredEdgeDetection>(pParam);
         }
 };
+
 #endif // COCVWIDGETSTRUCTUREDEDGEDETECTION_HPP

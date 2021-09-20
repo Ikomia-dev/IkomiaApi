@@ -142,7 +142,7 @@ class COcvSuperpixelSLICFactory : public CTaskFactory
 
         COcvSuperpixelSLICFactory()
         {
-            m_info.m_name = QObject::tr("SuperpixelSLIC").toStdString();
+            m_info.m_name = "ocv_superpixel_slic";
             m_info.m_description = QObject::tr("LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs. Basically, a normalized cuts formulation of the superpixel segmentation is adopted based on a similarity metric that measures the color similarity and space proximity between image pixels. LSC is of linear computational complexity and high memory efficiency and is able to preserve global properties of images ").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Superpixels").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

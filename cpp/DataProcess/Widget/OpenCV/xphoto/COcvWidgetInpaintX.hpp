@@ -41,7 +41,7 @@ class COcvWidgetInpaintXFactory : public CWidgetFactory
 
         COcvWidgetInpaintXFactory()
         {
-            m_name = QObject::tr("XPhoto Inpaint").toStdString();
+            m_name = "ocv_xphoto_inpaint";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

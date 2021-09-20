@@ -170,7 +170,7 @@ class CGmicSharpenDeblurFactory : public CTaskFactory
 
         CGmicSharpenDeblurFactory()
         {
-            m_info.m_name = QObject::tr("Sharpen [Deblur]").toStdString();
+            m_info.m_name = "gmic_sharpen_deblur";
             m_info.m_description = QObject::tr("This process performs deblurring on images.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Details").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

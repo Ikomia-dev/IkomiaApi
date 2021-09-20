@@ -102,7 +102,7 @@ class COcvWidgetDnnDetectorFactory : public CWidgetFactory
 
         COcvWidgetDnnDetectorFactory()
         {
-            m_name = QObject::tr("DNN detection").toStdString();
+            m_name = "ocv_dnn detection";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -93,7 +93,7 @@ class COcvWidgetNormalizeFactory : public CWidgetFactory
 
         COcvWidgetNormalizeFactory()
         {
-            m_name = QObject::tr("Normalize").toStdString();
+            m_name = "ocv_normalize";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

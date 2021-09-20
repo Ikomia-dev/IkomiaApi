@@ -80,7 +80,7 @@ class COcvWidgetFASTFactory : public CWidgetFactory
 
         COcvWidgetFASTFactory()
         {
-            m_name = QObject::tr("FAST").toStdString();
+            m_name = "ocv_fast";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

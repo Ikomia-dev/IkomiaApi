@@ -95,7 +95,7 @@ class COcvWidgetBckgndSubCntFactory : public CWidgetFactory
 
         COcvWidgetBckgndSubCntFactory()
         {
-            m_name = QObject::tr("CNT background substractor").toStdString();
+            m_name = "ocv_bck_substractor_cnt";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

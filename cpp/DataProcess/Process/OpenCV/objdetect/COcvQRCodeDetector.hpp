@@ -184,7 +184,7 @@ class COcvQRCodeDetectorFactory : public CTaskFactory
 
         COcvQRCodeDetectorFactory()
         {
-            m_info.m_name = QObject::tr("QRCodeDetector").toStdString();
+            m_info.m_name = "ocv_qrcode_detector";
             m_info.m_description = QObject::tr("This process detects QR code in images.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Object detection").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

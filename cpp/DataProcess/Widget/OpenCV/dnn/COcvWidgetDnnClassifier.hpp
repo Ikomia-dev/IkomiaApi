@@ -84,7 +84,7 @@ class COcvWidgetDnnClassifierFactory : public CWidgetFactory
 
         COcvWidgetDnnClassifierFactory()
         {
-            m_name = QObject::tr("DNN classification").toStdString();
+            m_name = "ocv_dnn_classification";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

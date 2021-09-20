@@ -122,7 +122,7 @@ class COcvEqualizeHistFactory : public CTaskFactory
 
         COcvEqualizeHistFactory()
         {
-            m_info.m_name = QObject::tr("Equalize histogram").toStdString();
+            m_info.m_name = "ocv_equalize_histogram";
             m_info.m_description = QObject::tr("This process normalizes the brightness and increases the contrast of the image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Histograms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

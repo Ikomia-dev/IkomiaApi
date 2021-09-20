@@ -47,7 +47,7 @@ class COcvWidgetCamShiftFactory : public CWidgetFactory
 
         COcvWidgetCamShiftFactory()
         {
-            m_name = QObject::tr("CamShift").toStdString();
+            m_name = "ocv_cam_shift";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

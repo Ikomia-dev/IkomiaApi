@@ -66,7 +66,7 @@ class COcvWidgetExtractChannelFactory : public CWidgetFactory
 
         COcvWidgetExtractChannelFactory()
         {
-            m_name = QObject::tr("Extract channel").toStdString();
+            m_name = "ocv_extract_channel";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

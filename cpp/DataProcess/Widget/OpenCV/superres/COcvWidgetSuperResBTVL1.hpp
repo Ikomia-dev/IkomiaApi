@@ -99,7 +99,7 @@ class COcvWidgetSuperResBTVL1Factory : public CWidgetFactory
 
         COcvWidgetSuperResBTVL1Factory()
         {
-            m_name = QObject::tr("Super Resolution BTVL1").toStdString();
+            m_name = "ocv_super_resolution_btvl1";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

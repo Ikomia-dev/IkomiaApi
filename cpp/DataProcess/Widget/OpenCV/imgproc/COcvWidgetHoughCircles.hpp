@@ -87,7 +87,7 @@ class COcvWidgetHoughCirclesFactory : public CWidgetFactory
 
         COcvWidgetHoughCirclesFactory()
         {
-            m_name = QObject::tr("Hough circles").toStdString();
+            m_name = "ocv_hough_circles";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

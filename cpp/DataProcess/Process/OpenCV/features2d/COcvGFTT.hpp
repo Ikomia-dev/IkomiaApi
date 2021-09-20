@@ -140,7 +140,7 @@ class COcvGFTTFactory : public CTaskFactory
 
         COcvGFTTFactory()
         {
-            m_info.m_name = QObject::tr("GFTTDetector").toStdString();
+            m_info.m_name = "ocv_gftt_detector";
             m_info.m_description = QObject::tr("Feature detection using the goodFeaturesToTrack function.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/2D features framework/Feature detection and description").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

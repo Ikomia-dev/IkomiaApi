@@ -223,7 +223,7 @@ void CRgbHlsThreshold::updateThresholds()
 //-----------------------------------//
 CRgbHlsThresholdFactory::CRgbHlsThresholdFactory()
 {
-    m_info.m_name = QObject::tr("RGB-HLS Segmentation").toStdString();
+    m_info.m_name = "ik_segmentation_rgbhls";
     m_info.m_description = QObject::tr("This process computes color segmentation from RGB and HLS color spaces.").toStdString();
     m_info.m_path = QObject::tr("Core/Segmentation/").toStdString();
     m_info.m_iconPath = QObject::tr(":/Images/default-process.png").toStdString();

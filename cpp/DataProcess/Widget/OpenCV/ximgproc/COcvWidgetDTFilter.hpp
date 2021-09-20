@@ -83,7 +83,7 @@ class COcvWidgetDTFilterFactory : public CWidgetFactory
 
         COcvWidgetDTFilterFactory()
         {
-            m_name = QObject::tr("DTFilter").toStdString();
+            m_name = "ocv_dt_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

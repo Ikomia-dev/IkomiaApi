@@ -81,7 +81,7 @@ class COcvWidgetAGASTFactory : public CWidgetFactory
 
         COcvWidgetAGASTFactory()
         {
-            m_name = QObject::tr("AGAST").toStdString();
+            m_name = "ocv_agast";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

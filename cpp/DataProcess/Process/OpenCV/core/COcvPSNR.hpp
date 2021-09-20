@@ -122,7 +122,7 @@ class COcvPSNRFactory : public CTaskFactory
 
         COcvPSNRFactory()
         {
-            m_info.m_name = QObject::tr("PSNR").toStdString();
+            m_info.m_name = "ocv_psnr";
             m_info.m_description = QObject::tr("The function calculates the Peak Signal-to-Noise Ratio (PSNR) image quality metric in decibels (dB), between two input images. The arrays must have the same type.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

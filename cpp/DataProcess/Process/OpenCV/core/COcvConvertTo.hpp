@@ -117,7 +117,7 @@ class COcvConvertToFactory : public CTaskFactory
 
         COcvConvertToFactory()
         {
-            m_info.m_name = QObject::tr("ConvertTo").toStdString();
+            m_info.m_name = "ocv_convert_to";
             m_info.m_description = QObject::tr("This process converts image to another type.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

@@ -120,7 +120,7 @@ class COcvWidgetKMeansFactory : public CWidgetFactory
 
         COcvWidgetKMeansFactory()
         {
-            m_name = QObject::tr("K-means").toStdString();
+            m_name = "ocv_kmeans";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

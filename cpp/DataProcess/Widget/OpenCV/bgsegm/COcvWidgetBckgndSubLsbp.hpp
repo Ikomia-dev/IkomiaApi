@@ -106,7 +106,7 @@ class COcvWidgetBckgndSubLsbpFactory : public CWidgetFactory
 
         COcvWidgetBckgndSubLsbpFactory()
         {
-            m_name = QObject::tr("LSBP background substractor").toStdString();
+            m_name = "ocv_bck_substractor_lspb";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

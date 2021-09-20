@@ -72,7 +72,7 @@ class COcvWidgetQRCodeDetectorFactory : public CWidgetFactory
 
         COcvWidgetQRCodeDetectorFactory()
         {
-            m_name = QObject::tr("QRCodeDetector").toStdString();
+            m_name = "ocv_qrcode_detector";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

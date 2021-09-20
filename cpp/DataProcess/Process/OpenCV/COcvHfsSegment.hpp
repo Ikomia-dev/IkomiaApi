@@ -127,7 +127,7 @@ class COcvHfsSegmentFactory : public CTaskFactory
 
         COcvHfsSegmentFactory()
         {
-            m_info.m_name = QObject::tr("Hierarchical Feature Selection Segmentation").toStdString();
+            m_info.m_name = "ocv_hierarchical_feature_selection";
             m_info.m_description = QObject::tr("This process is a real-time system for image segmentation.The algorithm is executed in 3 stages. In the first stage, it obtains an over-segmented image using SLIC(simple linear iterative clustering). In the last 2 stages, it iteratively merges the over-segmented image with merging method mentioned in EGB(Efficient Graph-based Image Segmentation) and learned SVM parameters.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Hierarchical Feature Selection for Efficient Image Segmentation").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

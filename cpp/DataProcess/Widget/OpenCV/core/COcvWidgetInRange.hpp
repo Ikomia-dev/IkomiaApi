@@ -75,7 +75,7 @@ class COcvWidgetInRangeFactory : public CWidgetFactory
 
         COcvWidgetInRangeFactory()
         {
-            m_name = QObject::tr("InRange").toStdString();
+            m_name = "ocv_in_range";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

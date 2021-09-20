@@ -66,7 +66,7 @@ class CWidgetCutFactory : public CWidgetFactory
 
         CWidgetCutFactory()
         {
-            m_name = QObject::tr("Cut").toStdString();
+            m_name = "ik_blob_cut";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

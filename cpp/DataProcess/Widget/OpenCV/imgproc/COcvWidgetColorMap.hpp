@@ -86,7 +86,7 @@ class COcvWidgetColorMapFactory : public CWidgetFactory
 
         COcvWidgetColorMapFactory()
         {
-            m_name = QObject::tr("Colormap").toStdString();
+            m_name = "ocv_colormap";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

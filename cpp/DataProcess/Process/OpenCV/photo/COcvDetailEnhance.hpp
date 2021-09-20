@@ -120,7 +120,7 @@ class COcvDetailEnhanceFactory : public CTaskFactory
 
         COcvDetailEnhanceFactory()
         {
-            m_info.m_name = QObject::tr("Detail Enhance Filter").toStdString();
+            m_info.m_name = "ocv_detail_enhance_filter";
             m_info.m_description = QObject::tr("This process enhances the details of a particular image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography/Non-photorealistic rendering").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

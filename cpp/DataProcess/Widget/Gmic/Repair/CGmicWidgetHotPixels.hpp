@@ -69,7 +69,7 @@ class CGmicWidgetHotPixelsFactory : public CWidgetFactory
 
         CGmicWidgetHotPixelsFactory()
         {
-            m_name = QObject::tr("Hot pixels").toStdString();
+            m_name = "gmic_hot_pixels";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

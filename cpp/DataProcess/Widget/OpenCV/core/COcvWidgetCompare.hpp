@@ -73,7 +73,7 @@ class COcvWidgetCompareFactory : public CWidgetFactory
 
         COcvWidgetCompareFactory()
         {
-            m_name = QObject::tr("Compare").toStdString();
+            m_name = "ocv_compare";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -80,7 +80,7 @@ class CGmicWidgetSharpenLucyFactory : public CWidgetFactory
 
         CGmicWidgetSharpenLucyFactory()
         {
-            m_name = QObject::tr("Sharpen [Richardson-Lucy]").toStdString();
+            m_name = "gmic_sharpen_richardson_lucy";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

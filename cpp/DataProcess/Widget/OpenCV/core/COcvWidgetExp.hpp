@@ -41,7 +41,7 @@ class COcvWidgetExpFactory : public CWidgetFactory
 
         COcvWidgetExpFactory()
         {
-            m_name = QObject::tr("Exponent").toStdString();
+            m_name = "ocv_exp";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

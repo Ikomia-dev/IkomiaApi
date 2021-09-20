@@ -124,7 +124,7 @@ class COcvWidgetCascadeClassifierFactory : public CWidgetFactory
 
         COcvWidgetCascadeClassifierFactory()
         {
-            m_name = QObject::tr("Cascade Classifier Filter").toStdString();
+            m_name = "ocv_cascade_classifier";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

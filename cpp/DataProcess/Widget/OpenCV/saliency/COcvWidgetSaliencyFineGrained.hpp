@@ -41,7 +41,7 @@ class COcvWidgetSaliencyFineGrainedFactory : public CWidgetFactory
 
         COcvWidgetSaliencyFineGrainedFactory()
         {
-            m_name = QObject::tr("StaticSaliencyFineGrained").toStdString();
+            m_name = "ocv_static_saliency_fine_grained";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -49,4 +49,5 @@ class COcvWidgetSaliencyFineGrainedFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSaliencyFineGrained>(pParam);
         }
 };
+
 #endif // COCVWIDGETSALIENCYFINEGRAINED_HPP

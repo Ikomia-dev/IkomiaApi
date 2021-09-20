@@ -115,7 +115,7 @@ class COcvWidgetAdaptiveManifoldFactory : public CWidgetFactory
 
         COcvWidgetAdaptiveManifoldFactory()
         {
-            m_name = QObject::tr("Adaptive Manifold Filter").toStdString();
+            m_name = "ocv_adaptive_manifold_filter";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

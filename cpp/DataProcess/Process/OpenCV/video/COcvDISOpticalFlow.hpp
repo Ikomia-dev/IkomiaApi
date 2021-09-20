@@ -131,7 +131,7 @@ class COcvDISOFFactory : public CTaskFactory
 
         COcvDISOFFactory()
         {
-            m_info.m_name = QObject::tr("DIS Optical Flow").toStdString();
+            m_info.m_name = "ocv_dis_flow";
             m_info.m_description = QObject::tr("This process computes a dense optical flow using the Dense Inverse Search (DIS) algorithm.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Video analysis/Object tracking").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

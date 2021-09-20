@@ -102,7 +102,7 @@ class COcvWidgetFastGlobalSmootherFilterFactory : public CWidgetFactory
 
         COcvWidgetFastGlobalSmootherFilterFactory()
         {
-            m_name = QObject::tr("Fast Global Smoother Filter").toStdString();
+            m_name = "ocv_fast_global_smooth_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

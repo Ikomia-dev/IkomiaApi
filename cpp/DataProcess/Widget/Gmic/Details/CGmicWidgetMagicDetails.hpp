@@ -86,7 +86,7 @@ class CGmicWidgetMagicDetailsFactory : public CWidgetFactory
 
         CGmicWidgetMagicDetailsFactory()
         {
-            m_name = QObject::tr("Magic details").toStdString();
+            m_name = "gmic_magic_details";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

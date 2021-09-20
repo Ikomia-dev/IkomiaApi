@@ -92,7 +92,7 @@ class COcvWidgetBoxFilterFactory : public CWidgetFactory
 
         COcvWidgetBoxFilterFactory()
         {
-            m_name = QObject::tr("Box Filter").toStdString();
+            m_name = "ocv_box_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

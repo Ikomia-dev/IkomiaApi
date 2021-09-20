@@ -92,7 +92,7 @@ class COcvWidgetAnisotropicDiffusionFactory : public CWidgetFactory
 
         COcvWidgetAnisotropicDiffusionFactory()
         {
-            m_name = QObject::tr("Anisotropic Diffusion").toStdString();
+            m_name = "ocv_anisotropic_diffusion";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

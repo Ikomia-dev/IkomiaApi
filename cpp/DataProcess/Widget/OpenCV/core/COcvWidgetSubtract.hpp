@@ -92,7 +92,7 @@ class COcvWidgetSubtractFactory : public CWidgetFactory
 
         COcvWidgetSubtractFactory()
         {
-            m_name = QObject::tr("Subtract").toStdString();
+            m_name = "ocv_subtract";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

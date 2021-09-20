@@ -76,7 +76,7 @@ class COcvWidgetLogicalOpFactory : public CWidgetFactory
 
         COcvWidgetLogicalOpFactory()
         {
-            m_name = QObject::tr("Logical operations").toStdString();
+            m_name = "ocv_logical_op";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

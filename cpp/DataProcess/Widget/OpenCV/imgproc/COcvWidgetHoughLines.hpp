@@ -89,7 +89,7 @@ class COcvWidgetHoughLinesFactory : public CWidgetFactory
 
         COcvWidgetHoughLinesFactory()
         {
-            m_name = QObject::tr("Hough lines").toStdString();
+            m_name = "ocv_hough_lines";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -112,7 +112,7 @@ class COcvCountNonZeroFactory : public CTaskFactory
 
         COcvCountNonZeroFactory()
         {
-            m_info.m_name = QObject::tr("CountNonZero").toStdString();
+            m_info.m_name = "ocv_count_non_zero";
             m_info.m_description = QObject::tr("The function returns the number of non-zero elements in source image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

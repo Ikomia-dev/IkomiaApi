@@ -166,7 +166,7 @@ class CGmicInpaintFactory : public CTaskFactory
 
         CGmicInpaintFactory()
         {
-            m_info.m_name = QObject::tr("Patch-based Inpaint").toStdString();
+            m_info.m_name = "gmic_patch_based_inpaint";
             m_info.m_description = QObject::tr("This process performs Gmic patch-based inpainting from region of interest drawn in original image."
                                                "Inpaint selected images by specified mask."
                                                "If no patch size (or 0) is specified, inpainting is done using a fast average or median algorithm."

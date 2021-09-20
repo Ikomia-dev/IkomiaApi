@@ -52,7 +52,7 @@ class COcvWidgetOCRTesseractFactory : public CWidgetFactory
 
         COcvWidgetOCRTesseractFactory()
         {
-            m_name = QObject::tr("OCRTesseract").toStdString();
+            m_name = "ocv_ocr_tesseract";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -60,4 +60,5 @@ class COcvWidgetOCRTesseractFactory : public CWidgetFactory
             return std::make_unique<COcvWidgetOCRTesseract>(pParam);
         }
 };
+
 #endif // COCVWIDGETOCRTESSERACT_HPP

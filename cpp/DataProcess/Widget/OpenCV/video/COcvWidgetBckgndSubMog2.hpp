@@ -89,7 +89,7 @@ class COcvWidgetBckgndSubMog2Factory : public CWidgetFactory
 
         COcvWidgetBckgndSubMog2Factory()
         {
-            m_name = QObject::tr("MOG2 background substractor").toStdString();
+            m_name = "ocv_bck_substractor_mog2";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -75,7 +75,7 @@ class COcvWidgetThinningFactory : public CWidgetFactory
 
         COcvWidgetThinningFactory()
         {
-            m_name = QObject::tr("Thinning").toStdString();
+            m_name = "ocv_thinning";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

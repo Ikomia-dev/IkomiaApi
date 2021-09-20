@@ -83,7 +83,7 @@ class COcvWidgetSuperpixelSLICFactory : public CWidgetFactory
 
         COcvWidgetSuperpixelSLICFactory()
         {
-            m_name = QObject::tr("SuperpixelSLIC").toStdString();
+            m_name = "ocv_superpixel_slic";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

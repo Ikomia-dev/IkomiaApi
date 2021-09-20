@@ -149,7 +149,7 @@ class COcvPCAOFFactory : public CTaskFactory
 
         COcvPCAOFFactory()
         {
-            m_info.m_name = QObject::tr("PCA Optical Flow").toStdString();
+            m_info.m_name = "ocv_pca_flow";
             m_info.m_description = QObject::tr("This process computes a dense optical flow using the PCA algorithm.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Optical flow algorithms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

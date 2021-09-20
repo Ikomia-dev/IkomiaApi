@@ -124,7 +124,7 @@ class COcvAGASTFactory : public CTaskFactory
 
         COcvAGASTFactory()
         {
-            m_info.m_name = QObject::tr("AGAST").toStdString();
+            m_info.m_name = "ocv_agast";
             m_info.m_description = QObject::tr("This process implements the AGAST keypoint detector.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/2D features framework/Feature detection and description").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

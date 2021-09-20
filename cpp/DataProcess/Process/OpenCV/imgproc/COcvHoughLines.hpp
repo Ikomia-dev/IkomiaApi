@@ -228,7 +228,7 @@ class COcvHoughLinesFactory : public CTaskFactory
 
         COcvHoughLinesFactory()
         {
-            m_info.m_name = QObject::tr("Hough lines").toStdString();
+            m_info.m_name = "ocv_hough_lines";
             m_info.m_description = QObject::tr("The function implements the standard or standard multi-scale Hough transform algorithm and the probabilistic Hough transform for line detection.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Feature detection").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

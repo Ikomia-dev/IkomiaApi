@@ -100,7 +100,7 @@ class COcvWidgetPencilSketchFactory : public CWidgetFactory
 
         COcvWidgetPencilSketchFactory()
         {
-            m_name = QObject::tr("Pencil sketch").toStdString();
+            m_name = "ocv_pencil_sketch";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

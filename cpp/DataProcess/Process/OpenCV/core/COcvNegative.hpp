@@ -104,7 +104,7 @@ class COcvNegativeFactory : public CTaskFactory
 
         COcvNegativeFactory()
         {
-            m_info.m_name = QObject::tr("Negative").toStdString();
+            m_info.m_name = "ocv_negative";
             m_info.m_description = QObject::tr("This process produces negative image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

@@ -144,7 +144,7 @@ class COcvBckgndSubGmgFactory : public CTaskFactory
 
         COcvBckgndSubGmgFactory()
         {
-            m_info.m_name = QObject::tr("GMG background substractor").toStdString();
+            m_info.m_name = "ocv_bck_substractor_gmg";
             m_info.m_description = QObject::tr("This process removes background on video sequence.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Improved Background-Foreground Segmentation Methods").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

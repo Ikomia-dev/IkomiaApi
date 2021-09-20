@@ -69,7 +69,7 @@ class COcvWidgetObjectnessBINGFactory : public CWidgetFactory
 
         COcvWidgetObjectnessBINGFactory()
         {
-            m_name = QObject::tr("ObjectnessBING").toStdString();
+            m_name = "ocv_objectness_bing";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

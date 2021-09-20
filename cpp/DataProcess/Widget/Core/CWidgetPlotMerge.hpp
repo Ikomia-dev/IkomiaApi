@@ -74,7 +74,7 @@ class CWidgetPlotMergeFactory : public CWidgetFactory
 
         CWidgetPlotMergeFactory()
         {
-            m_name = QObject::tr("Plots merge").toStdString();
+            m_name = "ik_plot_merge";
         }
         ~CWidgetPlotMergeFactory() {}
 

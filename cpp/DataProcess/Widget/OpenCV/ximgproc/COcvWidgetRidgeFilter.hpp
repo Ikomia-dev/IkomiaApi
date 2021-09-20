@@ -118,7 +118,7 @@ class COcvWidgetRidgeFilterFactory : public CWidgetFactory
 
         COcvWidgetRidgeFilterFactory()
         {
-            m_name = QObject::tr("Ridge Filter").toStdString();
+            m_name = "ocv_ridge_filter";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

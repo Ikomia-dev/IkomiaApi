@@ -125,7 +125,7 @@ class COcvIlluminationChangeFactory : public CTaskFactory
 
         COcvIlluminationChangeFactory()
         {
-            m_info.m_name = QObject::tr("IlluminationChange").toStdString();
+            m_info.m_name = "ocv_illumination_change";
             m_info.m_description = QObject::tr("Applying an appropriate non-linear transformation to the gradient field inside the selection and then integrating back with a Poisson solver, modifies locally the apparent illumination of an image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography/Seamless cloning").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

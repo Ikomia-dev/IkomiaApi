@@ -78,7 +78,7 @@ class CGmicWidgetDoGFactory : public CWidgetFactory
 
         CGmicWidgetDoGFactory()
         {
-            m_name = QObject::tr("Difference of Gaussians").toStdString();
+            m_name = "gmic_diff_of_gaussians";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

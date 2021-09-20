@@ -85,7 +85,7 @@ class COcvWidgetL0SmoothFactory : public CWidgetFactory
 
         COcvWidgetL0SmoothFactory()
         {
-            m_name = QObject::tr("L0 smooth filter").toStdString();
+            m_name = "ocv_l0_smooth_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -125,7 +125,7 @@ class COcvCannyFactory : public CTaskFactory
 
         COcvCannyFactory()
         {
-            m_info.m_name = QObject::tr("Canny").toStdString();
+            m_info.m_name = "ocv_canny";
             m_info.m_description = QObject::tr("The function finds edges in the input image and marks them in the output map edges using the Canny algorithm. The smallest value between threshold1 and threshold2 is used for edge linking. The largest value is used to find initial segments of strong edges.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Feature detection").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

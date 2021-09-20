@@ -89,7 +89,7 @@ class COcvWidgetBckgndSubKnnFactory : public CWidgetFactory
 
         COcvWidgetBckgndSubKnnFactory()
         {
-            m_name = QObject::tr("KNN background substractor").toStdString();
+            m_name = "ocv_bck_substractor_knn";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

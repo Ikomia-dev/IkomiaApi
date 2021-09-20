@@ -161,7 +161,7 @@ class COcvNiblackThresholdFactory : public CTaskFactory
 
         COcvNiblackThresholdFactory()
         {
-            m_info.m_name = QObject::tr("Niblack Threshold").toStdString();
+            m_info.m_name = "ocv_niblack_threshold";
             m_info.m_description = QObject::tr("Performs thresholding on input images using Niblack's technique or some of the popular variations it inspired.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

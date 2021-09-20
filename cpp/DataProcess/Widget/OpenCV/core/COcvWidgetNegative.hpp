@@ -42,7 +42,7 @@ class COcvWidgetNegativeFactory : public CWidgetFactory
 
         COcvWidgetNegativeFactory()
         {
-            m_name = QObject::tr("Negative").toStdString();
+            m_name = "ocv_negative";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -82,7 +82,7 @@ class COcvWidgetSuperpixelSEEDSFactory : public CWidgetFactory
 
         COcvWidgetSuperpixelSEEDSFactory()
         {
-            m_name = QObject::tr("SuperpixelSEEDS").toStdString();
+            m_name = "ocv_superpixel_seeds";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

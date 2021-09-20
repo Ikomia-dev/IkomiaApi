@@ -120,7 +120,7 @@ class COcvNormalizeFactory : public CTaskFactory
 
         COcvNormalizeFactory()
         {
-            m_info.m_name = QObject::tr("Normalize").toStdString();
+            m_info.m_name = "ocv_normalize";
             m_info.m_description = QObject::tr("This process Normalize your image around vertical, horizontal or both axes.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

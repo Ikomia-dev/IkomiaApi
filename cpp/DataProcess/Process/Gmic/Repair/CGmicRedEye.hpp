@@ -143,7 +143,7 @@ class CGmicRedEyeFactory : public CTaskFactory
 
         CGmicRedEyeFactory()
         {
-            m_info.m_name = QObject::tr("Red-eye").toStdString();
+            m_info.m_name = "gmic_red_eye";
             m_info.m_description = QObject::tr("This process automatically attenuates red-eye effect in images.").toStdString();
             m_info.m_docLink = "https://gmic.eu/reference.shtml#red_eye";
             m_info.m_path = QObject::tr("Gmic/Repair").toStdString();

@@ -118,7 +118,7 @@ class COcvDecolorFactory : public CTaskFactory
 
         COcvDecolorFactory()
         {
-            m_info.m_name = QObject::tr("Decolor").toStdString();
+            m_info.m_name = "ocv_decolor";
             m_info.m_description = QObject::tr("This process transforms a color image to a grayscale image. It is a basic tool in digital printing, stylized black-and-white photograph rendering, and in many single channel image processing applications.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

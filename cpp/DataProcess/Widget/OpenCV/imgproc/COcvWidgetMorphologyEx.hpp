@@ -129,7 +129,7 @@ class COcvWidgetMorphologyExFactory : public CWidgetFactory
 
         COcvWidgetMorphologyExFactory()
         {
-            m_name = QObject::tr("MorphologyEx").toStdString();
+            m_name = "ocv_morphology_ex";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

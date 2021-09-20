@@ -118,7 +118,7 @@ class COcvWidgetResizeFactory : public CWidgetFactory
 
         COcvWidgetResizeFactory()
         {
-            m_name = QObject::tr("Resize").toStdString();
+            m_name = "ocv_resize";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

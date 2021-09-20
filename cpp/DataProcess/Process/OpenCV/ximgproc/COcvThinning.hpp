@@ -117,7 +117,7 @@ class COcvThinningFactory : public CTaskFactory
 
         COcvThinningFactory()
         {
-            m_info.m_name = QObject::tr("Thinning").toStdString();
+            m_info.m_name = "ocv_thinning";
             m_info.m_description = QObject::tr("The function transforms a binary blob image into a skeletized form using the technique of Zhang-Suen.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

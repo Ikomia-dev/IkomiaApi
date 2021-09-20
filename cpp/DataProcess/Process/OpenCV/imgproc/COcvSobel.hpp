@@ -138,7 +138,7 @@ class COcvSobelFactory : public CTaskFactory
 
         COcvSobelFactory()
         {
-            m_info.m_name = QObject::tr("Sobel").toStdString();
+            m_info.m_name = "ocv_sobel";
             m_info.m_description = QObject::tr("Calculates the first, second, third, or mixed image derivatives using an extended Sobel operator.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Image filtering").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

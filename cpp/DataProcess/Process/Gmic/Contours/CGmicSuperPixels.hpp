@@ -162,7 +162,7 @@ class CGmicSuperPixelsFactory : public CTaskFactory
 
         CGmicSuperPixelsFactory()
         {
-            m_info.m_name = QObject::tr("Super-pixels").toStdString();
+            m_info.m_name = "gmic_super_pixels";
             m_info.m_description = QObject::tr("This process performs super-pixels decomposition.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Contours").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

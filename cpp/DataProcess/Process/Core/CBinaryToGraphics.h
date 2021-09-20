@@ -71,7 +71,7 @@ class CBinaryToGraphicsFactory : public CTaskFactory
 
         CBinaryToGraphicsFactory()
         {
-            m_info.m_name = QObject::tr("Binary to graphics").toStdString();
+            m_info.m_name = "ik_binary_to_graphics";
             m_info.m_description = QObject::tr("This process extract connected components from binary image and generates the corresponding graphics items.").toStdString();
             m_info.m_path = QObject::tr("Core/Utils").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/default-process.png").toStdString();

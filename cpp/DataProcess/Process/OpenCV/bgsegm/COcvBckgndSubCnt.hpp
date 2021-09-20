@@ -151,7 +151,7 @@ class COcvBckgndSubCntFactory : public CTaskFactory
 
         COcvBckgndSubCntFactory()
         {
-            m_info.m_name = QObject::tr("CNT background substractor").toStdString();
+            m_info.m_name = "ocv_bck_substractor_cnt";
             m_info.m_description = QObject::tr("This process removes background on video sequence based on counting algorithm.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Improved Background-Foreground Segmentation Methods").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

@@ -140,7 +140,7 @@ class COcvSIFTFactory : public CTaskFactory
 
         COcvSIFTFactory()
         {
-            m_info.m_name = QObject::tr("SIFT").toStdString();
+            m_info.m_name = "ocv_sift";
             m_info.m_description = QObject::tr("This process implements the SIFT keypoint detector and descriptor extractor.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/2D features framework/Feature detection and description").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

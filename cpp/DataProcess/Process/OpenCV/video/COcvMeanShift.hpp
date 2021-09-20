@@ -247,7 +247,7 @@ class COcvMeanShiftFactory : public CTaskFactory
 
         COcvMeanShiftFactory()
         {
-            m_info.m_name = QObject::tr("MeanShift").toStdString();
+            m_info.m_name = "ocv_mean_shift";
             m_info.m_description = QObject::tr("This process computes object tracking using MeanShift algorithm based on the back project of the histogram.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Video analysis/Object tracking").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

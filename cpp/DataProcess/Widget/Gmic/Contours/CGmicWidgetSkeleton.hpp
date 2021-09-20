@@ -73,7 +73,7 @@ class CGmicWidgetSkeletonFactory : public CWidgetFactory
 
         CGmicWidgetSkeletonFactory()
         {
-            m_name = QObject::tr("Skeleton").toStdString();
+            m_name = "gmic_skeleton";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

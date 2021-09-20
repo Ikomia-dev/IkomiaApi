@@ -119,7 +119,7 @@ class COcvWidgetFastLineDetectorFactory : public CWidgetFactory
 
         COcvWidgetFastLineDetectorFactory()
         {
-            m_name = QObject::tr("Fast Line Detector").toStdString();
+            m_name = "ocv_fast_line_detector";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

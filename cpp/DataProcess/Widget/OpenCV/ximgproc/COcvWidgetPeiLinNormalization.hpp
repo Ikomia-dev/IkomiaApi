@@ -75,7 +75,7 @@ class COcvWidgetPeiLinNormalizationFactory : public CWidgetFactory
 
         COcvWidgetPeiLinNormalizationFactory()
         {
-            m_name = QObject::tr("Pei-Lin Normalization").toStdString();
+            m_name = "ocv_pei_lin_normalization";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

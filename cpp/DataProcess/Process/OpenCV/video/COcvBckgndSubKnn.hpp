@@ -147,7 +147,7 @@ class COcvBckgndSubKnnFactory : public CTaskFactory
 
         COcvBckgndSubKnnFactory()
         {
-            m_info.m_name = QObject::tr("KNN background substractor").toStdString();
+            m_info.m_name = "ocv_bck_substractor_knn";
             m_info.m_description = QObject::tr("This process removes background on video sequence with K-Nearest Neighbors algorithm.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Video analysis/Motion analysis").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

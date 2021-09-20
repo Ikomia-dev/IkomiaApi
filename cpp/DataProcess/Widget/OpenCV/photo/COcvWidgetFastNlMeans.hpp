@@ -92,7 +92,7 @@ class COcvWidgetFastNlMeansFactory : public CWidgetFactory
 
         COcvWidgetFastNlMeansFactory()
         {
-            m_name = QObject::tr("Non Local Means Filter").toStdString();
+            m_name = "ocv_non_local_means_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

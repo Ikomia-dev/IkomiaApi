@@ -84,7 +84,7 @@ class COcvWidgetGuidedFilterFactory : public CWidgetFactory
 
         COcvWidgetGuidedFilterFactory()
         {
-            m_name = QObject::tr("Guided Filter").toStdString();
+            m_name = "ocv_guided_filter";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

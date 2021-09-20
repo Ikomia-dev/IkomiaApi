@@ -42,7 +42,7 @@ class COcvWidgetWatershedFactory : public CWidgetFactory
 
         COcvWidgetWatershedFactory()
         {
-            m_name = QObject::tr("Watershed").toStdString();
+            m_name = "ocv_watershed";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -56,7 +56,7 @@ void CWidgetRgbHlsThreshold::onApply()
 //-----------------------------------------//
 CWidgetRgbHlsThresholdFactory::CWidgetRgbHlsThresholdFactory()
 {
-    m_name = QObject::tr("RGB-HLS Segmentation").toStdString();
+    m_name = "ik_segmentation_rgbhls";
 }
 
 WorkflowTaskWidgetPtr CWidgetRgbHlsThresholdFactory::create(std::shared_ptr<CWorkflowTaskParam> pParam)

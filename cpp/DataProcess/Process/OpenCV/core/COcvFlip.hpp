@@ -113,7 +113,7 @@ class COcvFlipFactory : public CTaskFactory
 
         COcvFlipFactory()
         {
-            m_info.m_name = QObject::tr("Flip").toStdString();
+            m_info.m_name = "ocv_flip";
             m_info.m_description = QObject::tr("This process flip your image around vertical, horizontal or both axes.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

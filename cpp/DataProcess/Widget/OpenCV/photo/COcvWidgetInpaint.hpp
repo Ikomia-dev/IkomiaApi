@@ -89,7 +89,7 @@ class COcvWidgetInpaintFactory : public CWidgetFactory
 
         COcvWidgetInpaintFactory()
         {
-            m_name = QObject::tr("Inpaint filter").toStdString();
+            m_name = "ocv_inpaint";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

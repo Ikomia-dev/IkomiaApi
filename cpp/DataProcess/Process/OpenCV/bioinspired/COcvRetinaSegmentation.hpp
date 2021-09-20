@@ -135,7 +135,7 @@ class COcvRetinaSegmentationFactory : public CTaskFactory
 
         COcvRetinaSegmentationFactory()
         {
-            m_info.m_name = QObject::tr("RetinaSegmentation").toStdString();
+            m_info.m_name = "ocv_retina_segmentation";
             m_info.m_description = QObject::tr("This process provides a transient/moving areas segmentation using the retina magno.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Biologically inspired vision models and derivated tools").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

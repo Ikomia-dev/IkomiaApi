@@ -124,7 +124,7 @@ class COcvBilateralTextureFilterFactory : public CTaskFactory
 
         COcvBilateralTextureFilterFactory()
         {
-            m_info.m_name = QObject::tr("Bilateral texture filter").toStdString();
+            m_info.m_name = "ocv_bilateral_texture_filter";
             m_info.m_description = QObject::tr("Applies the bilateral texture filter to an image. It performs structure-preserving texture filter.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();
@@ -150,4 +150,5 @@ class COcvBilateralTextureFilterFactory : public CTaskFactory
             return std::make_shared<COcvBilateralTextureFilter>(m_info.m_name, pDerivedParam);
         }
 };
+
 #endif // COCVBILATERALTEXTUREFILTER_HPP

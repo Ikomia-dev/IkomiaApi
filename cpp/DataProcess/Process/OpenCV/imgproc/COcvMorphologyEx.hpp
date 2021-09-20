@@ -139,7 +139,7 @@ class COcvMorphologyExFactory : public CTaskFactory
 
         COcvMorphologyExFactory()
         {
-            m_info.m_name = QObject::tr("MorphologyEx").toStdString();
+            m_info.m_name = "ocv_morphology_ex";
             m_info.m_description = QObject::tr("Performs advanced morphological transformations. \
                                             The function cv::morphologyEx can perform advanced \
                                             morphological transformations using an erosion and dilation \

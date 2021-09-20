@@ -167,7 +167,7 @@ class COcvHoughCirclesFactory : public CTaskFactory
 
         COcvHoughCirclesFactory()
         {
-            m_info.m_name = QObject::tr("Hough circles").toStdString();
+            m_info.m_name = "ocv_hough_circles";
             m_info.m_description = QObject::tr("The function finds circles in a grayscale image using the Hough transform.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Feature detection").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

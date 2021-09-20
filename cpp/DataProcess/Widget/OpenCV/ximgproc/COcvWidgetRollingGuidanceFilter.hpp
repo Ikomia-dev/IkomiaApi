@@ -103,7 +103,7 @@ class COcvWidgetRollingGuidanceFilterFactory : public CWidgetFactory
 
         COcvWidgetRollingGuidanceFilterFactory()
         {
-            m_name = QObject::tr("Rolling guidance filter").toStdString();
+            m_name = "ocv_rolling_guidance_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

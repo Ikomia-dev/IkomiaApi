@@ -90,7 +90,7 @@ class CGmicWidgetInpaintFactory : public CWidgetFactory
 
         CGmicWidgetInpaintFactory()
         {
-            m_name = QObject::tr("Patch-based Inpaint").toStdString();
+            m_name = "gmic_patch_based_inpaint";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

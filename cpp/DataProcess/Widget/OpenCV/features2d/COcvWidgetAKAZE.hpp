@@ -123,7 +123,7 @@ class COcvWidgetAKAZEFactory : public CWidgetFactory
 
         COcvWidgetAKAZEFactory()
         {
-            m_name = QObject::tr("AKAZE").toStdString();
+            m_name = "ocv_akaze";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

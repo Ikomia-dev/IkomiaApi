@@ -77,7 +77,7 @@ class COcvWidgetDISOFFactory : public CWidgetFactory
 
         COcvWidgetDISOFFactory()
         {
-            m_name = QObject::tr("DIS Optical Flow").toStdString();
+            m_name = "ocv_dis_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

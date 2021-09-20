@@ -66,7 +66,7 @@ class CGraphicsToBinaryFactory : public CTaskFactory
 
         CGraphicsToBinaryFactory()
         {
-            m_info.m_name = QObject::tr("Graphics to binary").toStdString();
+            m_info.m_name = "ik_graphics_to_binary";
             m_info.m_description = QObject::tr("This process generates binary mask from graphics items.").toStdString();
             m_info.m_path = QObject::tr("Core/Utils").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/default-process.png").toStdString();

@@ -48,7 +48,7 @@ class COcvWidgetFlannMatcherFactory : public CWidgetFactory
 
         COcvWidgetFlannMatcherFactory()
         {
-            m_name = QObject::tr("Flann based matcher").toStdString();
+            m_name = "ocv_flann_based_matcher";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

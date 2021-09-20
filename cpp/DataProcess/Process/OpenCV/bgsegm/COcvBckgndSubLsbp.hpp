@@ -186,7 +186,7 @@ class COcvBckgndSubLsbpFactory : public CTaskFactory
 
         COcvBckgndSubLsbpFactory()
         {
-            m_info.m_name = QObject::tr("LSBP background substractor").toStdString();
+            m_info.m_name = "ocv_bck_substractor_lspb";
             m_info.m_description = QObject::tr("This process removes background on video sequence using Local SVD Binary Pattern.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Improved Background-Foreground Segmentation Methods").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

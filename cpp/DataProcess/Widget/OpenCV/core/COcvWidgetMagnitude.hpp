@@ -48,7 +48,7 @@ class COcvWidgetMagnitudeFactory : public CWidgetFactory
 
         COcvWidgetMagnitudeFactory()
         {
-            m_name = QObject::tr("Magnitude").toStdString();
+            m_name = "ocv_magnitude";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

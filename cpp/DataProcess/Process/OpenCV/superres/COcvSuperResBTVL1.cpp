@@ -207,7 +207,7 @@ cv::Ptr<cv::superres::DenseOpticalFlowExt> COcvSuperResBTVL1::createOpticalFlow(
 //------------------------------------//
 COcvSuperResBTVL1Factory::COcvSuperResBTVL1Factory()
 {
-    m_info.m_name = QObject::tr("Super Resolution BTVL1").toStdString();
+    m_info.m_name = "ocv_super_resolution_btvl1";
     m_info.m_description = QObject::tr("This process generate super resolution video using duality based TV-L1 optical flow.").toStdString();
     m_info.m_path = QObject::tr("OpenCV/Main modules/Super resolution").toStdString();
     m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

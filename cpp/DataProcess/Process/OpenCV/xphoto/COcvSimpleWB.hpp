@@ -133,7 +133,7 @@ class COcvSimpleWBFactory : public CTaskFactory
 
         COcvSimpleWBFactory()
         {
-            m_info.m_name = QObject::tr("SimpleWB").toStdString();
+            m_info.m_name = "ocv_simple_wb";
             m_info.m_description = QObject::tr("This algorithm scales the values of pixels based on a gray-world assumption which states that the average of all channels should result in a gray image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Additional photo processing algorithms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

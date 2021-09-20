@@ -41,7 +41,7 @@ class COcvWidgetLogFactory : public CWidgetFactory
 
         COcvWidgetLogFactory()
         {
-            m_name = QObject::tr("Log").toStdString();
+            m_name = "ocv_log";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

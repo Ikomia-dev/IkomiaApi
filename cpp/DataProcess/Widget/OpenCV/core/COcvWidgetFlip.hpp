@@ -98,7 +98,7 @@ class COcvWidgetFlipFactory : public CWidgetFactory
 
         COcvWidgetFlipFactory()
         {
-            m_name = QObject::tr("Flip").toStdString();
+            m_name = "ocv_flip";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

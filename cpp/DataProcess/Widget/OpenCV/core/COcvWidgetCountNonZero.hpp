@@ -41,7 +41,7 @@ class COcvWidgetCountNonZeroFactory : public CWidgetFactory
 
         COcvWidgetCountNonZeroFactory()
         {
-            m_name = QObject::tr("CountNonZero").toStdString();
+            m_name = "ocv_count_non_zero";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

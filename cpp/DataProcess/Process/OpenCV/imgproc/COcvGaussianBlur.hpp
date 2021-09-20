@@ -125,7 +125,7 @@ class COcvGaussianBlurFactory : public CTaskFactory
 
         COcvGaussianBlurFactory()
         {
-            m_info.m_name = QObject::tr("Gaussian Blur").toStdString();
+            m_info.m_name = "ocv_gaussian_blur";
             m_info.m_description = QObject::tr("This process smoothes your image with a Gaussian filter.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Image filtering").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

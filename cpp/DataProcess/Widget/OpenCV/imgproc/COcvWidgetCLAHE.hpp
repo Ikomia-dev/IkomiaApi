@@ -67,7 +67,7 @@ class COcvWidgetCLAHEFactory : public CWidgetFactory
 
         COcvWidgetCLAHEFactory()
         {
-            m_name = QObject::tr("CLAHE").toStdString();
+            m_name = "ocv_clahe";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

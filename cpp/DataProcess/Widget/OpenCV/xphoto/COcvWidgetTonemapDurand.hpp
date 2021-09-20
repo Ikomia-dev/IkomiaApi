@@ -123,7 +123,7 @@ class COcvWidgetTonemapDurandFactory : public CWidgetFactory
 
         COcvWidgetTonemapDurandFactory()
         {
-            m_name = QObject::tr("Tonemap Durand").toStdString();
+            m_name = "ocv_tonemap_durand";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -72,7 +72,7 @@ class COcvWidgetGrayworldWBFactory : public CWidgetFactory
 
         COcvWidgetGrayworldWBFactory()
         {
-            m_name = QObject::tr("GrayworldWB").toStdString();
+            m_name = "ocv_grayworld_wb";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

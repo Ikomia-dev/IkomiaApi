@@ -69,7 +69,7 @@ class COcvWidgetMinFactory : public CWidgetFactory
 
         COcvWidgetMinFactory()
         {
-            m_name = QObject::tr("Min").toStdString();
+            m_name = "ocv_min";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

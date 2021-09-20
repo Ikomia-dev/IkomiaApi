@@ -226,7 +226,7 @@ class COcvWidgetSelectiveSearchSegmentationFactory : public CWidgetFactory
 
         COcvWidgetSelectiveSearchSegmentationFactory()
         {
-            m_name = QObject::tr("Selective Search Segmentation").toStdString();
+            m_name = "ocv_selective_search_segmentation";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

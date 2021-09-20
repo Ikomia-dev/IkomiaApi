@@ -98,7 +98,7 @@ class COcvWidgetBRISKFactory : public CWidgetFactory
 
         COcvWidgetBRISKFactory()
         {
-            m_name = QObject::tr("BRISK").toStdString();
+            m_name = "ocv_brisk";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

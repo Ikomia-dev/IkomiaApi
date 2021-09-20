@@ -171,7 +171,7 @@ class COcvMergeFactory : public CTaskFactory
 
         COcvMergeFactory()
         {
-            m_info.m_name = QObject::tr("Merge Operator").toStdString();
+            m_info.m_name = "ocv_merge";
             m_info.m_description = QObject::tr("Creates one multi-channel array out of several single-channel ones. ").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

@@ -153,7 +153,7 @@ class COcvWidgetGrabCutFactory : public CWidgetFactory
 
         COcvWidgetGrabCutFactory()
         {
-            m_name = QObject::tr("GrabCut Segmentation").toStdString();
+            m_name = "ocv_grabcut_segmentation";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

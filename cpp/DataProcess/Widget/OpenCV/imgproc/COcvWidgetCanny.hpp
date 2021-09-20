@@ -84,7 +84,7 @@ class COcvWidgetCannyFactory : public CWidgetFactory
 
         COcvWidgetCannyFactory()
         {
-            m_name = QObject::tr("Canny").toStdString();
+            m_name = "ocv_canny";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

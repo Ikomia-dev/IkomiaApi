@@ -72,7 +72,7 @@ class CGmicWidgetRedEyeFactory : public CWidgetFactory
 
         CGmicWidgetRedEyeFactory()
         {
-            m_name = QObject::tr("Red-eye").toStdString();
+            m_name = "gmic_red_eye";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

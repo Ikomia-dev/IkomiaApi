@@ -42,7 +42,7 @@ class COcvWidgetEqualizeHistFactory : public CWidgetFactory
 
         COcvWidgetEqualizeHistFactory()
         {
-            m_name = QObject::tr("Equalize histogram").toStdString();
+            m_name = "ocv_equalize_histogram";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

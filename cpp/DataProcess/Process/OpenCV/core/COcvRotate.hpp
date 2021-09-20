@@ -110,7 +110,7 @@ class COcvRotateFactory : public CTaskFactory
 
         COcvRotateFactory()
         {
-            m_info.m_name = QObject::tr("Rotate").toStdString();
+            m_info.m_name = "ocv_rotate";
             m_info.m_description = QObject::tr("This process applies rotation of 90°, 180° or 270°.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

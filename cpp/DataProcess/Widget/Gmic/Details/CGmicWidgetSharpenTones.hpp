@@ -76,7 +76,7 @@ class CGmicWidgetSharpenTonesFactory : public CWidgetFactory
 
         CGmicWidgetSharpenTonesFactory()
         {
-            m_name = QObject::tr("Sharpen [Tones]").toStdString();
+            m_name = "gmic_sharpen_tones";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

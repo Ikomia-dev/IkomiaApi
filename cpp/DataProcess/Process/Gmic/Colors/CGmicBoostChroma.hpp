@@ -142,7 +142,7 @@ class CGmicBoostChromaFactory : public CTaskFactory
 
         CGmicBoostChromaFactory()
         {
-            m_info.m_name = QObject::tr("Boost chromaticity").toStdString();
+            m_info.m_name = "gmic_boost_chromaticity";
             m_info.m_description = QObject::tr("This process enhances chromaticity in images.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Colors").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

@@ -96,7 +96,7 @@ class COcvInpaintXFactory : public CTaskFactory
 
         COcvInpaintXFactory()
         {
-            m_info.m_name = QObject::tr("XPhoto Inpaint").toStdString();
+            m_info.m_name = "ocv_xphoto_inpaint";
             m_info.m_description = QObject::tr("This process performs inpainting from region of interest drawn in original image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Additional photo processing algorithms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

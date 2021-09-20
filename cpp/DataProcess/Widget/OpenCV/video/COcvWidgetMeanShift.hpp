@@ -47,7 +47,7 @@ class COcvWidgetMeanShiftFactory : public CWidgetFactory
 
         COcvWidgetMeanShiftFactory()
         {
-            m_name = QObject::tr("MeanShift").toStdString();
+            m_name = "ocv_mean_shift";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -104,7 +104,7 @@ class COcvWidgetCropFactory : public CWidgetFactory
 
         COcvWidgetCropFactory()
         {
-            m_name = QObject::tr("Crop").toStdString();
+            m_name = "ocv_crop";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

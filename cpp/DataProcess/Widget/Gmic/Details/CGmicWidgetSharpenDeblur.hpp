@@ -94,7 +94,7 @@ class CGmicWidgetSharpenDeblurFactory : public CWidgetFactory
 
         CGmicWidgetSharpenDeblurFactory()
         {
-            m_name = QObject::tr("Sharpen [Deblur]").toStdString();
+            m_name = "gmic_sharpen_deblur";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

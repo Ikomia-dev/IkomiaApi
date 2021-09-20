@@ -72,7 +72,7 @@ class COcvWidgetIlluminationChangeFactory : public CWidgetFactory
 
         COcvWidgetIlluminationChangeFactory()
         {
-            m_name = QObject::tr("IlluminationChange").toStdString();
+            m_name = "ocv_illumination_change";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

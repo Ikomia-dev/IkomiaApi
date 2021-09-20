@@ -114,7 +114,7 @@ class COcvWidgetKAZEFactory : public CWidgetFactory
 
         COcvWidgetKAZEFactory()
         {
-            m_name = QObject::tr("KAZE").toStdString();
+            m_name = "ocv_kaze";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

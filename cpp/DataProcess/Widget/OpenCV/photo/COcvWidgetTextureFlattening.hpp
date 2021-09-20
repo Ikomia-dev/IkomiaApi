@@ -100,7 +100,7 @@ class COcvWidgetTextureFlatteningFactory : public CWidgetFactory
 
         COcvWidgetTextureFlatteningFactory()
         {
-            m_name = QObject::tr("Texture flattening").toStdString();
+            m_name = "ocv_texture_flattening";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

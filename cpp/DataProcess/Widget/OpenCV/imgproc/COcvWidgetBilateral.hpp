@@ -89,7 +89,7 @@ class COcvWidgetBilateralFactory : public CWidgetFactory
 
         COcvWidgetBilateralFactory()
         {
-            m_name = QObject::tr("Bilateral Filter").toStdString();
+            m_name = "ocv_bilateral_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

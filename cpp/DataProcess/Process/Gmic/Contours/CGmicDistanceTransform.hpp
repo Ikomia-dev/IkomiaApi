@@ -150,7 +150,7 @@ class CGmicDistanceTransformFactory : public CTaskFactory
 
         CGmicDistanceTransformFactory()
         {
-            m_info.m_name = QObject::tr("Distance transform").toStdString();
+            m_info.m_name = "gmic_distance_transform";
             m_info.m_description = QObject::tr("This process performs Distance Transform algorithm.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Contours").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

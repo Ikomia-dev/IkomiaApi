@@ -134,7 +134,7 @@ class COcvBRISKFactory : public CTaskFactory
 
         COcvBRISKFactory()
         {
-            m_info.m_name = QObject::tr("BRISK").toStdString();
+            m_info.m_name = "ocv_brisk";
             m_info.m_description = QObject::tr("This process implements the BRISK keypoint detector and descriptor extractor.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/2D features framework/Feature detection and description").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

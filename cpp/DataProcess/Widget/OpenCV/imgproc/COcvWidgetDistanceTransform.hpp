@@ -118,7 +118,7 @@ class COcvWidgetDistanceTransformFactory : public CWidgetFactory
 
         COcvWidgetDistanceTransformFactory()
         {
-            m_name = QObject::tr("Distance Transform").toStdString();
+            m_name = "ocv_distance_transform";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

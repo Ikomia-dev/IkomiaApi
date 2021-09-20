@@ -142,7 +142,7 @@ class COcvBFMatcherFactory : public CTaskFactory
 
         COcvBFMatcherFactory()
         {
-            m_info.m_name = QObject::tr("BFMatcher").toStdString();
+            m_info.m_name = "ocv_bf_matcher";
             m_info.m_description = QObject::tr("Finds the best match for each descriptor from a query set.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/2D features framework/Descriptor matchers").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

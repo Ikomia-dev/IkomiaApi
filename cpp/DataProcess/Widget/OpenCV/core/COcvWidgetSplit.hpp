@@ -69,7 +69,7 @@ class COcvWidgetSplitFactory : public CWidgetFactory
 
         COcvWidgetSplitFactory()
         {
-            m_name = QObject::tr("Split Operator").toStdString();
+            m_name = "ocv_split";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

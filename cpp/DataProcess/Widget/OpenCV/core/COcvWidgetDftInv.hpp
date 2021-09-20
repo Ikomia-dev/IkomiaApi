@@ -81,7 +81,7 @@ class COcvWidgetDftInvFactory : public CWidgetFactory
 
         COcvWidgetDftInvFactory()
         {
-            m_name = QObject::tr("Discrete Inverse Fourier Transform").toStdString();
+            m_name = "ocv_dft_inverse";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -123,7 +123,7 @@ class COcvStructuredEdgeDetectionFactory : public CTaskFactory
 
         COcvStructuredEdgeDetectionFactory()
         {
-            m_info.m_name = QObject::tr("StructuredEdgeDetection").toStdString();
+            m_info.m_name = "ocv_structured_edge_detection";
             m_info.m_description = QObject::tr("The function detects edges and is much more robust to texture presence, than common approaches, e.g. Sobel.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Structured forests for fast edge detection").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

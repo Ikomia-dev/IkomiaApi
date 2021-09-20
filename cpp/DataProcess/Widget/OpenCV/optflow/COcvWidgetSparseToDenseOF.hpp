@@ -70,7 +70,7 @@ class COcvWidgetSparseToDenseOFFactory : public CWidgetFactory
 
         COcvWidgetSparseToDenseOFFactory()
         {
-            m_name = QObject::tr("SparseToDense Flow").toStdString();
+            m_name = "ocv_sparse_to_dense_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

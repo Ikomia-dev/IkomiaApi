@@ -74,7 +74,7 @@ class COcvWidgetRotateFactory : public CWidgetFactory
 
         COcvWidgetRotateFactory()
         {
-            m_name = QObject::tr("Rotate").toStdString();
+            m_name = "ocv_rotate";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

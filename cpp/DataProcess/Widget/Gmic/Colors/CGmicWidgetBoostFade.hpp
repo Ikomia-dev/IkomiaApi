@@ -71,7 +71,7 @@ class CGmicWidgetBoostFadeFactory : public CWidgetFactory
 
         CGmicWidgetBoostFadeFactory()
         {
-            m_name = QObject::tr("Boost fade").toStdString();
+            m_name = "gmic_boost_fade";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

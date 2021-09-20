@@ -201,7 +201,7 @@ class COcvWidgetSimpleBlobDetectorFactory : public CWidgetFactory
 
         COcvWidgetSimpleBlobDetectorFactory()
         {
-            m_name = QObject::tr("SimpleBlobDetector").toStdString();
+            m_name = "ocv_simple_blob_detector";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

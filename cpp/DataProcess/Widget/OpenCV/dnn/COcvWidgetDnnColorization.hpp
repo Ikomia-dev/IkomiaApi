@@ -41,7 +41,7 @@ class COcvWidgetDnnColorizationFactory : public CWidgetFactory
 
         COcvWidgetDnnColorizationFactory()
         {
-            m_name = QObject::tr("DNN colorization").toStdString();
+            m_name = "ocv_dnn_colorization";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

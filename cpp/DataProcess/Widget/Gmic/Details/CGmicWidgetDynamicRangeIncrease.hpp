@@ -84,7 +84,7 @@ class CGmicWidgetDynamicRangeIncreaseFactory : public CWidgetFactory
 
         CGmicWidgetDynamicRangeIncreaseFactory()
         {
-            m_name = QObject::tr("Dynamic range increase").toStdString();
+            m_name = "gmic_dynamic_range_increase";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

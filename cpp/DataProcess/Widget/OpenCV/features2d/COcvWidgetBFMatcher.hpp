@@ -81,7 +81,7 @@ class COcvWidgetBFMatcherFactory : public CWidgetFactory
 
         COcvWidgetBFMatcherFactory()
         {
-            m_name = QObject::tr("BFMatcher").toStdString();
+            m_name = "ocv_bf_matcher";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

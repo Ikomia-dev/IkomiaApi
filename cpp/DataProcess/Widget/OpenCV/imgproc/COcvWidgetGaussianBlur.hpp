@@ -94,7 +94,7 @@ class COcvWidgetGaussianBlurFactory : public CWidgetFactory
 
         COcvWidgetGaussianBlurFactory()
         {
-            m_name = QObject::tr("Gaussian Blur").toStdString();
+            m_name = "ocv_gaussian_blur";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

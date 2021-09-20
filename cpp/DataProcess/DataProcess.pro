@@ -175,7 +175,8 @@ HEADERS += \
         DataProcessGlobal.hpp \
         Process/OpenCV/xphoto/COcvGrayworldWB.hpp \
         Widget/OpenCV/xphoto/COcvWidgetGrayworldWB.hpp \
-        Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp \
+        Process/OpenCV/xphoto/COcvTonemapDurand.hpp \
+        Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp \
         Process/OpenCV/photo/COcvTextureFlattening.hpp \
         Widget/OpenCV/photo/COcvWidgetTextureFlattening.hpp \
         Process/OpenCV/photo/COcvPencilSketch.hpp \
@@ -435,7 +436,6 @@ HEADERS += \
         Widget/OpenCV/core/COcvWidgetNegative.hpp \
         Process/OpenCV/imgproc/COcvMedian.hpp \
         Widget/OpenCV/imgproc/COcvWidgetMedian.hpp \
-        Process/OpenCV/xphoto/COcvTonemapDurand.hpp \
         Process/OpenCV/dnn/COcvDnnSegmentation.h \
         Process/OpenCV/video/COcvDISOpticalFlow.hpp \
         Process/OpenCV/optflow/COcvDualTVL1OpticalFlow.hpp \

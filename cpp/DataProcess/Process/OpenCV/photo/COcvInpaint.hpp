@@ -122,7 +122,7 @@ class COcvInpaintFactory : public CTaskFactory
 
         COcvInpaintFactory()
         {
-            m_info.m_name = QObject::tr("Inpaint filter").toStdString();
+            m_info.m_name = "ocv_inpaint";
             m_info.m_description = QObject::tr("This process performs inpainting from region of interest drawn in original image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

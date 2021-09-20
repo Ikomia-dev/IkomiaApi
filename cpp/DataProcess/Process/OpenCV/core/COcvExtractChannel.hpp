@@ -114,7 +114,7 @@ class COcvExtractChannelFactory : public CTaskFactory
 
         COcvExtractChannelFactory()
         {
-            m_info.m_name = QObject::tr("Extract channel").toStdString();
+            m_info.m_name = "ocv_extract_channel";
             m_info.m_description = QObject::tr("The function extracts a single channel from source image (Index parameter is a 0-based index).").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

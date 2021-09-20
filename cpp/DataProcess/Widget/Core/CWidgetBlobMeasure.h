@@ -63,7 +63,7 @@ class CWidgetBlobMeasureFactory : public CWidgetFactory
 
         CWidgetBlobMeasureFactory()
         {
-            m_name = QObject::tr("Objects measurements").toStdString();
+            m_name = "ik_blob_measurement";
         }
         ~CWidgetBlobMeasureFactory() {}
 

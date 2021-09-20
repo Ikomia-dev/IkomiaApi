@@ -70,7 +70,7 @@ class COcvWidgetDeepFlowFactory : public CWidgetFactory
 
         COcvWidgetDeepFlowFactory()
         {
-            m_name = QObject::tr("DeepFlow").toStdString();
+            m_name = "ocv_deepflow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

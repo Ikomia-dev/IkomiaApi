@@ -42,7 +42,7 @@ class COcvWidgetDecolorFactory : public CWidgetFactory
 
         COcvWidgetDecolorFactory()
         {
-            m_name = QObject::tr("Decolor").toStdString();
+            m_name = "ocv_decolor";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

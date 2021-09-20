@@ -68,7 +68,7 @@ class COcvWidgetDenoiseTVL1Factory : public CWidgetFactory
 
         COcvWidgetDenoiseTVL1Factory()
         {
-            m_name = QObject::tr("Denoise TV L1").toStdString();
+            m_name = "ocv_denoise_tvl1";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

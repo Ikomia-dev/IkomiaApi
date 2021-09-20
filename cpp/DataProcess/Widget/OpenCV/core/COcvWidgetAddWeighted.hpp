@@ -94,7 +94,7 @@ class COcvWidgetAddWeightedFactory : public CWidgetFactory
 
         COcvWidgetAddWeightedFactory()
         {
-            m_name = QObject::tr("Add Weighted").toStdString();
+            m_name = "ocv_add_weighted";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

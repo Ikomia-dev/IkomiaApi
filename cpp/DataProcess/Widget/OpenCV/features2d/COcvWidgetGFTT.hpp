@@ -85,7 +85,7 @@ class COcvWidgetGFTTFactory : public CWidgetFactory
 
         COcvWidgetGFTTFactory()
         {
-            m_name = QObject::tr("GFTTDetector").toStdString();
+            m_name = "ocv_gftt_detector";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

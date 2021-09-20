@@ -76,7 +76,7 @@ class COcvWidgetDTFilterStylizeFactory : public CWidgetFactory
 
         COcvWidgetDTFilterStylizeFactory()
         {
-            m_name = QObject::tr("DTFilterStylize").toStdString();
+            m_name = "ocv_dt_filter_stylize";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

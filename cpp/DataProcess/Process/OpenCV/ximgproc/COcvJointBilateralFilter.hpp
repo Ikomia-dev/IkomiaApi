@@ -135,7 +135,7 @@ class COcvJointBilateralFilterFactory : public CTaskFactory
 
         COcvJointBilateralFilterFactory()
         {
-            m_info.m_name = QObject::tr("Joint Bilateral Filter").toStdString();
+            m_info.m_name = "ocv_joint_bilateral_filter";
             m_info.m_description = QObject::tr("This process applies the Joint Bilateral filter.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

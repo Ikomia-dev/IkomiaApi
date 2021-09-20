@@ -76,7 +76,7 @@ class CGmicWidgetSharpenGradientFactory : public CWidgetFactory
 
         CGmicWidgetSharpenGradientFactory()
         {
-            m_name = QObject::tr("Sharpen [Gradient]").toStdString();
+            m_name = "gmic_sharpen_gradient";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

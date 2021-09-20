@@ -128,7 +128,7 @@ class COcvTrackerKCFFactory : public CTaskFactory
 
         COcvTrackerKCFFactory()
         {
-            m_info.m_name = QObject::tr("TrackerKCF").toStdString();
+            m_info.m_name = "ocv_tracker_kcf";
             m_info.m_description = QObject::tr("KCF is a novel tracking framework that utilizes properties of circulant matrix to enhance the processing speed.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Tracking API").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

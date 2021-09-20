@@ -110,7 +110,7 @@ class COcvRetinaToneMappingFactory : public CTaskFactory
 
         COcvRetinaToneMappingFactory()
         {
-            m_info.m_name = QObject::tr("RetinaToneMapping").toStdString();
+            m_info.m_name = "ocv_retina_tone_mapping";
             m_info.m_description = QObject::tr("This RetinaToneMapping model allows spatio-temporal image processing (applied on still images, video sequences).").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Biologically inspired vision models and derivated tools").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

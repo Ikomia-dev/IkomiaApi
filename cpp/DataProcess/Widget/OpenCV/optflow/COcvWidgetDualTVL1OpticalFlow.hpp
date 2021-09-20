@@ -104,7 +104,7 @@ class COcvWidgetDualTVL1OFFactory : public CWidgetFactory
 
         COcvWidgetDualTVL1OFFactory()
         {
-            m_name = QObject::tr("Dual TVL1 Optical Flow").toStdString();
+            m_name = "ocv_dual_tvl1_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

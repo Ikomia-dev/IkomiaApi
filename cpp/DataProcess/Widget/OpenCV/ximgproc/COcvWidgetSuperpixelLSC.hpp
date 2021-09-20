@@ -76,7 +76,7 @@ class COcvWidgetSuperpixelLSCFactory : public CWidgetFactory
 
         COcvWidgetSuperpixelLSCFactory()
         {
-            m_name = QObject::tr("SuperpixelLSC").toStdString();
+            m_name = "ocv_superpixel_lsc";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

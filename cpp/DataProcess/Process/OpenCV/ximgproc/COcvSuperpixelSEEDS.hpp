@@ -148,7 +148,7 @@ class COcvSuperpixelSEEDSFactory : public CTaskFactory
 
         COcvSuperpixelSEEDSFactory()
         {
-            m_info.m_name = QObject::tr("SuperpixelSEEDS").toStdString();
+            m_info.m_name = "ocv_superpixel_seeds";
             m_info.m_description = QObject::tr("The algorithm uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, which is optional. The energy function encourages superpixels to be of the same color, and if the boundary term is activated, the superpixels have smooth boundaries and are of similar shape. In practice it starts from a regular grid of superpixels and moves the pixels or blocks of pixels at the boundaries to refine the solution. The algorithm runs in real-time using a single CPU.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Superpixels").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

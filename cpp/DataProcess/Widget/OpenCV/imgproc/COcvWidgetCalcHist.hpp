@@ -74,7 +74,7 @@ class COcvWidgetCalcHistFactory : public CWidgetFactory
 
         COcvWidgetCalcHistFactory()
         {
-            m_name = QObject::tr("CalcHist").toStdString();
+            m_name = "ocv_calc_hist";
         }
 
         virtual WorkflowTaskWidgetPtr create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -82,4 +82,5 @@ class COcvWidgetCalcHistFactory : public CWidgetFactory
             return std::make_unique<COcvWidgetCalcHist>(pParam);
         }
 };
+
 #endif // COCVWIDGETCALCHIST_HPP

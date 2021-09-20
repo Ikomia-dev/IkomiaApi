@@ -256,7 +256,7 @@ class COcvCamShiftFactory : public CTaskFactory
 
         COcvCamShiftFactory()
         {
-            m_info.m_name = QObject::tr("CamShift").toStdString();
+            m_info.m_name = "ocv_cam_shift";
             m_info.m_description = QObject::tr("This process computes object tracking using CamShift algorithm based on the back project of the histogram.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Video analysis/Object tracking").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

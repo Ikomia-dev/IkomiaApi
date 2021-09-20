@@ -90,7 +90,7 @@ class COcvWidgetPCAOFFactory : public CWidgetFactory
 
         COcvWidgetPCAOFFactory()
         {
-            m_name = QObject::tr("PCA Optical Flow").toStdString();
+            m_name = "ocv_pca_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

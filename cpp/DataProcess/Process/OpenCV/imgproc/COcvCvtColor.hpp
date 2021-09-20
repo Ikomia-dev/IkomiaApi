@@ -113,7 +113,7 @@ class COcvCvtColorFactory : public CTaskFactory
 
         COcvCvtColorFactory()
         {
-            m_info.m_name = QObject::tr("Color Conversion").toStdString();
+            m_info.m_name = "ocv_color_conversion";
             m_info.m_description = QObject::tr("This process converts an image from one color space to another.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Miscellaneous image transformations").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

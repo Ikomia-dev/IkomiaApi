@@ -66,7 +66,7 @@ class COcvWidgetInsertChannelFactory : public CWidgetFactory
 
         COcvWidgetInsertChannelFactory()
         {
-            m_name = QObject::tr("Insert channel").toStdString();
+            m_name = "ocv_insert_channel";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -131,7 +131,7 @@ class COcvCopyMakeBorderFactory : public CTaskFactory
 
         COcvCopyMakeBorderFactory()
         {
-            m_info.m_name = QObject::tr("CopyMakeBorder").toStdString();
+            m_info.m_name = "ocv_copy_make_border";
             m_info.m_description = QObject::tr("The function copies the source image into the middle of the destination image. The areas to the left, to the right, above and below the copied source image will be filled with extrapolated pixels.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

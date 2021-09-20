@@ -138,7 +138,7 @@ class COcvDenoiseTVL1Factory : public CTaskFactory
 
         COcvDenoiseTVL1Factory()
         {
-            m_info.m_name = QObject::tr("Denoise TV L1").toStdString();
+            m_info.m_name = "ocv_denoise_tvl1";
             m_info.m_description = QObject::tr("Primal-dual algorithm is an algorithm for solving special types of variational problems (that is, finding a function to minimize some functional). As the image denoising, in particular, may be seen as the variational problem, primal-dual algorithm then can be used to perform denoising and this is exactly what is implemented.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography/Denoising").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

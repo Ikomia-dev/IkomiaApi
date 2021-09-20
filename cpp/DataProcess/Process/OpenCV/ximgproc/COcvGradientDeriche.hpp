@@ -126,7 +126,7 @@ class COcvGradientDericheFactory : public CTaskFactory
 
         COcvGradientDericheFactory()
         {
-            m_info.m_name = QObject::tr("Deriche gradient filter").toStdString();
+            m_info.m_name = "ocv_deriche_gradient_filter";
             m_info.m_description = QObject::tr("Applies X or Y Deriche filter to an image").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

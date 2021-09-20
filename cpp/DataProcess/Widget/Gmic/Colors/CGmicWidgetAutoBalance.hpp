@@ -87,7 +87,7 @@ class CGmicWidgetAutoBalanceFactory : public CWidgetFactory
 
         CGmicWidgetAutoBalanceFactory()
         {
-            m_name = QObject::tr("Auto balance").toStdString();
+            m_name = "gmic_auto_balance";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

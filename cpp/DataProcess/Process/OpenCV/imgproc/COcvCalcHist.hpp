@@ -201,7 +201,7 @@ class COcvCalcHistFactory : public CTaskFactory
 
         COcvCalcHistFactory()
         {
-            m_info.m_name = QObject::tr("CalcHist").toStdString();
+            m_info.m_name = "ocv_calc_hist";
             m_info.m_description = QObject::tr("This process calculates the histogram of the input image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Histograms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

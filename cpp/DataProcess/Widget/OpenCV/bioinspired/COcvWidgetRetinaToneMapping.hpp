@@ -63,7 +63,7 @@ class COcvWidgetRetinaToneMappingFactory : public CWidgetFactory
 
         COcvWidgetRetinaToneMappingFactory()
         {
-            m_name = QObject::tr("RetinaToneMapping").toStdString();
+            m_name = "ocv_retina_tone_mapping";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

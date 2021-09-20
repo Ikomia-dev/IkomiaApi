@@ -99,7 +99,7 @@ class COcvWidgetInpaintFuzzyFactory : public CWidgetFactory
 
         COcvWidgetInpaintFuzzyFactory()
         {
-            m_name = QObject::tr("Inpaint fuzzy filter").toStdString();
+            m_name = "ocv_inpaint_fuzzy";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

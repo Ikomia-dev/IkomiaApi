@@ -132,7 +132,7 @@ class COcvSaliencyFineGrainedFactory : public CTaskFactory
 
         COcvSaliencyFineGrainedFactory()
         {
-            m_info.m_name = QObject::tr("StaticSaliencyFineGrained").toStdString();
+            m_info.m_name = "ocv_static_saliency_fine_grained";
             m_info.m_description = QObject::tr("Starting from the principle of natural image statistics, this method simulate the behavior of pre-attentive visual search. The algorithm analyze the log spectrum of each image and obtain the spectral residual. Then transform the spectral residual to spatial domain to obtain the saliency map, which suggests the positions of proto-objects.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Saliency API").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

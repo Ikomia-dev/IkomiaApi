@@ -154,7 +154,7 @@ class COcvObjectnessBINGFactory : public CTaskFactory
 
         COcvObjectnessBINGFactory()
         {
-            m_info.m_name = QObject::tr("ObjectnessBING").toStdString();
+            m_info.m_name = "ocv_objectness_bing";
             m_info.m_description = QObject::tr("This process finds all object window in a given image according to the BING method.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Saliency API").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

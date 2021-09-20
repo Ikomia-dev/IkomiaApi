@@ -94,7 +94,7 @@ class CGmicWidgetConstrainedSharpenFactory : public CWidgetFactory
 
         CGmicWidgetConstrainedSharpenFactory()
         {
-            m_name = QObject::tr("Constrained sharpen").toStdString();
+            m_name = "gmic_constrained_sharpen";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -71,7 +71,7 @@ class COcvWidgetGraphSegmentationFactory : public CWidgetFactory
 
         COcvWidgetGraphSegmentationFactory()
         {
-            m_name = QObject::tr("Graph Segmentation").toStdString();
+            m_name = "ocv_graph_segmentation";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -150,7 +150,7 @@ class COcvDTFilterStylizeFactory : public CTaskFactory
 
         COcvDTFilterStylizeFactory()
         {
-            m_info.m_name = QObject::tr("DTFilterStylize").toStdString();
+            m_info.m_name = "ocv_dt_filter_stylize";
             m_info.m_description = QObject::tr("This process produces stylized image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

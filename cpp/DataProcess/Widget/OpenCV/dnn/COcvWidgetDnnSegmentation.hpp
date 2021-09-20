@@ -100,7 +100,7 @@ class COcvWidgetDnnSegmentationFactory : public CWidgetFactory
 
         COcvWidgetDnnSegmentationFactory()
         {
-            m_name = QObject::tr("DNN segmentation").toStdString();
+            m_name = "ocv_dnn_segmentation";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

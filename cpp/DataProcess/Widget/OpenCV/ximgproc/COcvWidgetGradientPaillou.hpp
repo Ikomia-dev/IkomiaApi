@@ -104,7 +104,7 @@ class COcvWidgetGradientPaillouFactory : public CWidgetFactory
 
         COcvWidgetGradientPaillouFactory()
         {
-            m_name = QObject::tr("Paillou gradient filter").toStdString();
+            m_name = "ocv_paillou_gradient_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

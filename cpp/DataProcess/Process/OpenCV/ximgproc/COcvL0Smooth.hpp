@@ -118,7 +118,7 @@ class COcvL0SmoothFactory : public CTaskFactory
 
         COcvL0SmoothFactory()
         {
-            m_info.m_name = QObject::tr("L0 smooth filter").toStdString();
+            m_info.m_name = "ocv_l0_smooth_filter";
             m_info.m_description = QObject::tr("Global image smoothing via L0 gradient minimization.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Filters").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

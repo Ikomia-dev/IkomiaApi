@@ -76,7 +76,7 @@ class COcvWidgetDivideFactory : public CWidgetFactory
 
         COcvWidgetDivideFactory()
         {
-            m_name = QObject::tr("Divide").toStdString();
+            m_name = "ocv_divide";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

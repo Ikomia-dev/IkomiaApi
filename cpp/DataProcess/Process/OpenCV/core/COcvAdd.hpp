@@ -121,7 +121,7 @@ class COcvAddFactory : public CTaskFactory
 
         COcvAddFactory()
         {
-            m_info.m_name = QObject::tr("Add").toStdString();
+            m_info.m_name = "ocv_add";
             m_info.m_description = QObject::tr("The function calculates the per-element sum of two arrays with the given formula:<br> <center><i>dst = saturate( src1 + src2 )</i></center>").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

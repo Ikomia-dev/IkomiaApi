@@ -129,7 +129,7 @@ class COcvGraphSegmentationFactory : public CTaskFactory
 
         COcvGraphSegmentationFactory()
         {
-            m_info.m_name = QObject::tr("Graph Segmentation").toStdString();
+            m_info.m_name = "ocv_graph_segmentation";
             m_info.m_description = QObject::tr("This process performs a graph based segmentation.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Extended Image Processing/Image segmentation").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

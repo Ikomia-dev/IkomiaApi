@@ -69,7 +69,7 @@ class COcvWidgetMaxFactory : public CWidgetFactory
 
         COcvWidgetMaxFactory()
         {
-            m_name = QObject::tr("Max").toStdString();
+            m_name = "ocv_max";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

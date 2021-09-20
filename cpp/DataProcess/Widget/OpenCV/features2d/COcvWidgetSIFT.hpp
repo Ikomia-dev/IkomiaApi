@@ -102,7 +102,7 @@ class COcvWidgetSIFTFactory : public CWidgetFactory
 
         COcvWidgetSIFTFactory()
         {
-            m_name = QObject::tr("SIFT").toStdString();
+            m_name = "ocv_sift";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

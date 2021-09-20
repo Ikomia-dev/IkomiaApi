@@ -89,7 +89,7 @@ class COcvWidgetSobelFactory : public CWidgetFactory
 
         COcvWidgetSobelFactory()
         {
-            m_name = QObject::tr("Sobel").toStdString();
+            m_name = "ocv_sobel";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -97,4 +97,5 @@ class COcvWidgetSobelFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSobel>(pParam);
         }
 };
+
 #endif // COCVWIDGETSOBEL_HPP

@@ -48,7 +48,7 @@ class COcvWidgetRetinaSegmentationFactory : public CWidgetFactory
 
         COcvWidgetRetinaSegmentationFactory()
         {
-            m_name = QObject::tr("RetinaSegmentation").toStdString();
+            m_name = "ocv_retina_segmentation";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

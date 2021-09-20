@@ -154,7 +154,7 @@ class COcvMinFactory : public CTaskFactory
 
         COcvMinFactory()
         {
-            m_info.m_name = QObject::tr("Min").toStdString();
+            m_info.m_name = "ocv_min";
             m_info.m_description = QObject::tr("The function calculates the per-element minimum of two arrays or array and a scalar.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

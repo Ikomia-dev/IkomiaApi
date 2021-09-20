@@ -73,7 +73,7 @@ class CGmicWidgetBoostChromaFactory : public CWidgetFactory
 
         CGmicWidgetBoostChromaFactory()
         {
-            m_name = QObject::tr("Boost chromaticity").toStdString();
+            m_name = "gmic_boost_chromaticity";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

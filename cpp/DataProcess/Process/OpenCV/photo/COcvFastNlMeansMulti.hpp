@@ -151,7 +151,7 @@ class COcvFastNlMeansMultiFactory : public CTaskFactory
 
         COcvFastNlMeansMultiFactory()
         {
-            m_info.m_name = QObject::tr("Non Local Means Multi Filter").toStdString();
+            m_info.m_name = "ocv_non_local_means_multi_filter";
             m_info.m_description = QObject::tr("This process smoothes a video sequence with an edge-preserving filter (blur homogeneous area and keep borders intact).").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Computational photography/Denoising").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

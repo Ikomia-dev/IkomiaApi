@@ -113,7 +113,6 @@
 #include "photo/COcvWidgetPencilSketch.hpp"
 #include "photo/COcvWidgetStylization.hpp"
 #include "photo/COcvWidgetTextureFlattening.hpp"
-#include "photo/COcvWidgetTonemapDurand.hpp"
 #include "photo/COcvWidgetSeamlessCloning.hpp"
 #include "photo/COcvWidgetColorchange.hpp"
 #include "photo/COcvWidgetIlluminationChange.hpp"
@@ -147,6 +146,7 @@
 #include "xphoto/COcvWidgetGrayworldWB.hpp"
 #include "xphoto/COcvWidgetLearningBasedWB.hpp"
 #include "xphoto/COcvWidgetSimpleWB.hpp"
+#include "xphoto/COcvWidgetTonemapDurand.hpp"
 /********************
  *XIMGPROC
 ********************/

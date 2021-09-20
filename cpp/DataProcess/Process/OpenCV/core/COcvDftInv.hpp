@@ -181,7 +181,7 @@ class COcvDftInvFactory : public CTaskFactory
 
         COcvDftInvFactory()
         {
-            m_info.m_name = QObject::tr("Discrete Inverse Fourier Transform").toStdString();
+            m_info.m_name = "ocv_dft_inverse";
             m_info.m_description = QObject::tr("This process calculates the Inverse Discrete Fourier Transform of a 1D or 2D array.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

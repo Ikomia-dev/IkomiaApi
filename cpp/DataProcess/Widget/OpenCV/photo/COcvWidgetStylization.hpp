@@ -89,7 +89,7 @@ class COcvWidgetStylizationFactory : public CWidgetFactory
 
         COcvWidgetStylizationFactory()
         {
-            m_name = QObject::tr("Stylization").toStdString();
+            m_name = "ocv_stylization";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

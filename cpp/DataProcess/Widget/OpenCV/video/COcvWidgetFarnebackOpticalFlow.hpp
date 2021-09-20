@@ -93,7 +93,7 @@ class COcvWidgetFarnebackOFFactory : public CWidgetFactory
 
         COcvWidgetFarnebackOFFactory()
         {
-            m_name = QObject::tr("Farneback Optical Flow").toStdString();
+            m_name = "ocv_farneback_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

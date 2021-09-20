@@ -137,7 +137,7 @@ class COcvRotateExFactory : public CTaskFactory
 
         COcvRotateExFactory()
         {
-            m_info.m_name = QObject::tr("RotateEx").toStdString();
+            m_info.m_name = "ocv_rotate_ex";
             m_info.m_description = QObject::tr("This process applies scaled rotation of any angle in degree.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/Geometric image transformations").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

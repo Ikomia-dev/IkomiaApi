@@ -45,7 +45,7 @@ class COcvWidgetTrackerGOTURNFactory : public CWidgetFactory
 
         COcvWidgetTrackerGOTURNFactory()
         {
-            m_name = QObject::tr("TrackerGOTURN").toStdString();
+            m_name = "ocv_tracker_goturn";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -53,4 +53,5 @@ class COcvWidgetTrackerGOTURNFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetTrackerGOTURN>(pParam);
         }
 };
+
 #endif // COCVWIDGETTRACKERGOTURN_HPP

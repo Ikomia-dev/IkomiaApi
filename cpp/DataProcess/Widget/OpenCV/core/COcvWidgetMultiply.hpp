@@ -76,7 +76,7 @@ class COcvWidgetMultiplyFactory : public CWidgetFactory
 
         COcvWidgetMultiplyFactory()
         {
-            m_name = QObject::tr("Multiply").toStdString();
+            m_name = "ocv_multiply";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

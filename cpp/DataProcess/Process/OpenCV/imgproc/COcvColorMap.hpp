@@ -118,7 +118,7 @@ class COcvColorMapFactory : public CTaskFactory
 
         COcvColorMapFactory()
         {
-            m_info.m_name = QObject::tr("Colormap").toStdString();
+            m_info.m_name = "ocv_colormap";
             m_info.m_description = QObject::tr("The human perception isn't built for observing fine changes in grayscale images. Human eyes are more sensitive to observing changes between colors, so you often need to recolor your grayscale images to get a clue about them. OpenCV now comes with various colormaps to enhance the visualization in your computer vision application.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Image processing/ColorMaps").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

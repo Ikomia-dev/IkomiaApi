@@ -69,7 +69,7 @@ class COcvWidgetMedianFactory : public CWidgetFactory
 
         COcvWidgetMedianFactory()
         {
-            m_name = QObject::tr("Median Filter").toStdString();
+            m_name = "ocv_median_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

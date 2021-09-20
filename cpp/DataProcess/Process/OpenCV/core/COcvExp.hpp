@@ -94,7 +94,7 @@ class COcvExpFactory : public CTaskFactory
 
         COcvExpFactory()
         {
-            m_info.m_name = QObject::tr("Exponent").toStdString();
+            m_info.m_name = "ocv_exp";
             m_info.m_description = QObject::tr("Calculates the exponent of every element of the input image").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

@@ -86,7 +86,7 @@ class CGmicWidgetSuperPixelsFactory : public CWidgetFactory
 
         CGmicWidgetSuperPixelsFactory()
         {
-            m_name = QObject::tr("Super-pixels").toStdString();
+            m_name = "gmic_super_pixels";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

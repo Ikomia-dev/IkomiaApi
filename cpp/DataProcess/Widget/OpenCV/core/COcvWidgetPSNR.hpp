@@ -41,7 +41,7 @@ class COcvWidgetPSNRFactory : public CWidgetFactory
 
         COcvWidgetPSNRFactory()
         {
-            m_name = QObject::tr("PSNR").toStdString();
+            m_name = "ocv_psnr";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -94,7 +94,7 @@ class COcvLogFactory : public CTaskFactory
 
         COcvLogFactory()
         {
-            m_info.m_name = QObject::tr("Log").toStdString();
+            m_info.m_name = "ocv_log";
             m_info.m_description = QObject::tr("Calculates the natural logarithm of every element of the input image").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

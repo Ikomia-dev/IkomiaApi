@@ -126,7 +126,7 @@ class COcvWidgetORBFactory : public CWidgetFactory
 
         COcvWidgetORBFactory()
         {
-            m_name = QObject::tr("ORB").toStdString();
+            m_name = "ocv_orb";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

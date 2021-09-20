@@ -90,7 +90,7 @@ class COcvWidgetCvtColorFactory : public CWidgetFactory
 
         COcvWidgetCvtColorFactory()
         {
-            m_name = QObject::tr("Color Conversion").toStdString();
+            m_name = "ocv_color_conversion";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

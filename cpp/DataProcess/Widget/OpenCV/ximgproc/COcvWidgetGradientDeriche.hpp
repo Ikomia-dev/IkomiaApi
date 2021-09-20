@@ -104,7 +104,7 @@ class COcvWidgetGradientDericheFactory : public CWidgetFactory
 
         COcvWidgetGradientDericheFactory()
         {
-            m_name = QObject::tr("Deriche gradient filter").toStdString();
+            m_name = "ocv_deriche_gradient_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

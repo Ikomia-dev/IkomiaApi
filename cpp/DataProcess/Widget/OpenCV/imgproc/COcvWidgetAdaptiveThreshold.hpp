@@ -111,7 +111,7 @@ class COcvWidgetAdaptiveThresholdFactory : public CWidgetFactory
 
         COcvWidgetAdaptiveThresholdFactory()
         {
-            m_name = QObject::tr("Adaptive Threshold").toStdString();
+            m_name = "ocv_adaptive_threshold";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

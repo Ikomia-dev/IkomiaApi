@@ -152,7 +152,7 @@ class CGmicAutoBalanceFactory : public CTaskFactory
 
         CGmicAutoBalanceFactory()
         {
-            m_info.m_name = QObject::tr("Auto balance").toStdString();
+            m_info.m_name = "gmic_auto_balance";
             m_info.m_description = QObject::tr("This process performs a map based tone and color balance.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Colors").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

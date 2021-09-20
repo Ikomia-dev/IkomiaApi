@@ -224,7 +224,7 @@ class COcvKMeansFactory : public CTaskFactory
 
         COcvKMeansFactory()
         {
-            m_info.m_name = QObject::tr("K-means").toStdString();
+            m_info.m_name = "ocv_kmeans";
             m_info.m_description = QObject::tr("This process implements a k-means algorithm that finds the centers of k clusters and groups the input samples around the clusters.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Clustering").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

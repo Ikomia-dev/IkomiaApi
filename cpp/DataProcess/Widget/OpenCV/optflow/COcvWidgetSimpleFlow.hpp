@@ -70,7 +70,7 @@ class COcvWidgetSimpleFlowFactory : public CWidgetFactory
 
         COcvWidgetSimpleFlowFactory()
         {
-            m_name = QObject::tr("Simple Flow").toStdString();
+            m_name = "ocv_simple_flow";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

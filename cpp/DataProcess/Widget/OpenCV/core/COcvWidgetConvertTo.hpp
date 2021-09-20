@@ -83,7 +83,7 @@ class COcvWidgetConvertToFactory : public CWidgetFactory
 
         COcvWidgetConvertToFactory()
         {
-            m_name = QObject::tr("ConvertTo").toStdString();
+            m_name = "ocv_convert_to";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

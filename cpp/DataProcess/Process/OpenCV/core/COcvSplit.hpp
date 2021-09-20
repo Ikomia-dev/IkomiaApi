@@ -143,7 +143,7 @@ class COcvSplitFactory : public CTaskFactory
 
         COcvSplitFactory()
         {
-            m_info.m_name = QObject::tr("Split Operator").toStdString();
+            m_info.m_name = "ocv_split";
             m_info.m_description = QObject::tr("Divide a multi-channel image into several single-channel image.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

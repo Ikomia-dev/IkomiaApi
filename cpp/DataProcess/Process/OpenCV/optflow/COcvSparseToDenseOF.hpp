@@ -135,7 +135,7 @@ class COcvSparseToDenseOFFactory : public CTaskFactory
 
         COcvSparseToDenseOFFactory()
         {
-            m_info.m_name = QObject::tr("SparseToDense Flow").toStdString();
+            m_info.m_name = "ocv_sparse_to_dense_flow";
             m_info.m_description = QObject::tr("This process computes a fast dense optical flow based on PyrLK sparse matches interpolation.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Optical flow algorithms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

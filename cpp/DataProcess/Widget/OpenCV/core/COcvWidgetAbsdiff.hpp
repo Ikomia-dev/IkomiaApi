@@ -41,7 +41,7 @@ class COcvWidgetAbsdiffFactory : public CWidgetFactory
 
         COcvWidgetAbsdiffFactory()
         {
-            m_name = QObject::tr("Abs diff").toStdString();
+            m_name = "ocv_abs_diff";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

@@ -46,7 +46,7 @@ class CWidgetBinaryToGraphicsFactory : public CWidgetFactory
 
         CWidgetBinaryToGraphicsFactory()
         {
-            m_name = QObject::tr("Binary to graphics").toStdString();
+            m_name = "ik_binary_to_graphics";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

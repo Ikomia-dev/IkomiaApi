@@ -41,7 +41,7 @@ class COcvWidgetSaliencySpectralResidualFactory : public CWidgetFactory
 
         COcvWidgetSaliencySpectralResidualFactory()
         {
-            m_name = QObject::tr("StaticSaliencySpectralResidual").toStdString();
+            m_name = "ocv_static_saliency_spectral_residual";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -49,4 +49,5 @@ class COcvWidgetSaliencySpectralResidualFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSaliencySpectralResidual>(pParam);
         }
 };
+
 #endif // COCVWIDGETSALIENCYSPECTRALRESIDUAL_HPP

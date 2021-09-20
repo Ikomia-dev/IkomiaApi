@@ -67,7 +67,7 @@ class COcvWidgetRetinaFactory : public CWidgetFactory
 
         COcvWidgetRetinaFactory()
         {
-            m_name = QObject::tr("Retina").toStdString();
+            m_name = "ocv_retina";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

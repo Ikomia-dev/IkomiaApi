@@ -142,7 +142,7 @@ class CGmicSkeletonFactory : public CTaskFactory
 
         CGmicSkeletonFactory()
         {
-            m_info.m_name = QObject::tr("Skeleton").toStdString();
+            m_info.m_name = "gmic_skeleton";
             m_info.m_description = QObject::tr("This process generates a skeleton image from input image.").toStdString();
             m_info.m_path = QObject::tr("Gmic/Contours").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/gmic.png").toStdString();

@@ -100,7 +100,7 @@ class COcvWidgetBckgndSubGsocFactory : public CWidgetFactory
 
         COcvWidgetBckgndSubGsocFactory()
         {
-            m_name = QObject::tr("GSOC background substractor").toStdString();
+            m_name = "ocv_bck_substractor_gsoc";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

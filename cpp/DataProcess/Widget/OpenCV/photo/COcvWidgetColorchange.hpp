@@ -75,7 +75,7 @@ class COcvWidgetColorchangeFactory : public CWidgetFactory
 
         COcvWidgetColorchangeFactory()
         {
-            m_name = QObject::tr("Colorchange").toStdString();
+            m_name = "ocv_color_change";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -83,4 +83,5 @@ class COcvWidgetColorchangeFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetColorchange>(pParam);
         }
 };
+
 #endif // COCVWIDGETCOLORCHANGE_HPP

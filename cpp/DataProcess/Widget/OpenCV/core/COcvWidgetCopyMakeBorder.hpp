@@ -88,7 +88,7 @@ class COcvWidgetCopyMakeBorderFactory : public CWidgetFactory
 
         COcvWidgetCopyMakeBorderFactory()
         {
-            m_name = QObject::tr("CopyMakeBorder").toStdString();
+            m_name = "ocv_copy_make_border";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

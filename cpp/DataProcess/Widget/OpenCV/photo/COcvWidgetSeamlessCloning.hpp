@@ -73,7 +73,7 @@ class COcvWidgetSeamlessCloningFactory : public CWidgetFactory
 
         COcvWidgetSeamlessCloningFactory()
         {
-            m_name = QObject::tr("SeamlessCloning").toStdString();
+            m_name = "ocv_seamless_cloning";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -81,4 +81,5 @@ class COcvWidgetSeamlessCloningFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetSeamlessCloning>(pParam);
         }
 };
+
 #endif // COCVWIDGETSEAMLESSCLONING_HPP

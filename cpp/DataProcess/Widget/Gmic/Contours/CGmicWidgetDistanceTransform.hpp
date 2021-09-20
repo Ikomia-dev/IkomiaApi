@@ -87,7 +87,7 @@ class CGmicWidgetDistanceTransformFactory : public CWidgetFactory
 
         CGmicWidgetDistanceTransformFactory()
         {
-            m_name = QObject::tr("Distance transform").toStdString();
+            m_name = "gmic_distance_transform";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

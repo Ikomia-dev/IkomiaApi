@@ -172,7 +172,7 @@ class COcvRetinaFactory : public CTaskFactory
 
         COcvRetinaFactory()
         {
-            m_info.m_name = QObject::tr("Retina").toStdString();
+            m_info.m_name = "ocv_retina";
             m_info.m_description = QObject::tr("This retina model allows spatio-temporal image processing (applied on still images, video sequences).").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Biologically inspired vision models and derivated tools").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

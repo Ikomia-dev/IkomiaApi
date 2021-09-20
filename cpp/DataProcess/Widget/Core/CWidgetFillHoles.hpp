@@ -42,7 +42,7 @@ class CWidgetFillHolesFactory : public CWidgetFactory
 
         CWidgetFillHolesFactory()
         {
-            m_name = QObject::tr("Fill Holes").toStdString();
+            m_name = "ik_fill_holes";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

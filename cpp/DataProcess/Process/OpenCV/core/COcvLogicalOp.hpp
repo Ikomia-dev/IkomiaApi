@@ -131,7 +131,7 @@ class COcvLogicalOpFactory : public CTaskFactory
 
         COcvLogicalOpFactory()
         {
-            m_info.m_name = QObject::tr("Logical operations").toStdString();
+            m_info.m_name = "ocv_logical_op";
             m_info.m_description = QObject::tr("This process computes bitwise logical operations of two images.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Main modules/Core functionality/Operations on arrays").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

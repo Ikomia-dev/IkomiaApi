@@ -93,7 +93,7 @@ class COcvWidgetLaplacianFactory : public CWidgetFactory
 
         COcvWidgetLaplacianFactory()
         {
-            m_name = QObject::tr("Laplacian").toStdString();
+            m_name = "ocv_laplacian";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -101,4 +101,5 @@ class COcvWidgetLaplacianFactory : public CWidgetFactory
             return std::make_shared<COcvWidgetLaplacian>(pParam);
         }
 };
+
 #endif // COCVWIDGETLAPLACIAN_HPP

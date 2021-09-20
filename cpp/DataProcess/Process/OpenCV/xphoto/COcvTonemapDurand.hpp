@@ -128,7 +128,7 @@ class COcvTonemapDurandFactory : public CTaskFactory
 
         COcvTonemapDurandFactory()
         {
-            m_info.m_name = QObject::tr("Tonemap Durand").toStdString();
+            m_info.m_name = "ocv_tonemap_durand";
             m_info.m_description = QObject::tr("This algorithm decomposes image into two layers: base layer and detail layer using bilateral filter and compresses contrast of the base layer thus preserving all the details.").toStdString();
             m_info.m_path = QObject::tr("OpenCV/Extra modules/Additional photo processing algorithms").toStdString();
             m_info.m_iconPath = QObject::tr(":/Images/opencv.png").toStdString();

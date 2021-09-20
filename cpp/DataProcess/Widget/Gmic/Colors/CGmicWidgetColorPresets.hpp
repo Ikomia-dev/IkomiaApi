@@ -118,7 +118,7 @@ class CGmicWidgetColorPresetsFactory : public CWidgetFactory
 
         CGmicWidgetColorPresetsFactory()
         {
-            m_name = QObject::tr("Color presets").toStdString();
+            m_name = "gmic_color_presets";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

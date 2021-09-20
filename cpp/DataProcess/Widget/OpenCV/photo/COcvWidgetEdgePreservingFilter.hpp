@@ -93,7 +93,7 @@ class COcvWidgetEdgePreservingFilterFactory : public CWidgetFactory
 
         COcvWidgetEdgePreservingFilterFactory()
         {
-            m_name = QObject::tr("Edge Preserving Filter").toStdString();
+            m_name = "ocv_detail_enhance_filter";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)

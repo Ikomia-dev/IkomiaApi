@@ -41,7 +41,7 @@ class COcvWidgetMotionSaliencyBinWangApr2014Factory : public CWidgetFactory
 
         COcvWidgetMotionSaliencyBinWangApr2014Factory()
         {
-            m_name = QObject::tr("MotionSaliencyBinWangApr2014").toStdString();
+            m_name = "ocv_motion_saliency_bin_wang";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
@@ -49,4 +49,5 @@ class COcvWidgetMotionSaliencyBinWangApr2014Factory : public CWidgetFactory
             return std::make_shared<COcvWidgetMotionSaliencyBinWangApr2014>(pParam);
         }
 };
+
 #endif // COCVWIDGETMOTIONSALIENCYBINWANGAPR2014_HPP

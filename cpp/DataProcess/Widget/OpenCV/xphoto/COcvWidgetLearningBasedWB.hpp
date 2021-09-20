@@ -73,7 +73,7 @@ class COcvWidgetLearningBasedWBFactory : public CWidgetFactory
 
         COcvWidgetLearningBasedWBFactory()
         {
-            m_name = QObject::tr("LearningBasedWB").toStdString();
+            m_name = "ocv_learning_based_wb";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
