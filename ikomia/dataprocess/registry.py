@@ -194,7 +194,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     def _load_python_plugin(self, directory, name):
         main_module_name = name + "." + name
         main_module = utils.import_plugin_module(directory, main_module_name)
-        main_class = getattr(main_module, name)
+        main_class = getattr(main_module, "IkomiaPlugin")
         main_obj = main_class()
         task_factory = main_obj.getProcessFactory()
         task_factory.info.language = utils.ApiLanguage.PYTHON

@@ -1,4 +1,3 @@
-import os
 import logging
 import numpy as np
 import ikomia
@@ -91,6 +90,8 @@ def test_dataprocess():
 
         info = dataprocess.CTaskInfo()
         assert info
+
+        logger.info("Installed algorithms : " + str(len(ikomia.ik_registry.getAlgorithms())))
     except Exception as e:
         logger.error(e)
 
@@ -109,9 +110,9 @@ def test_dnn():
 
 
 if __name__ == "__main__":
+    ikomia.authenticate()
     test_utils()
     test_core()
     test_dataprocess()
     test_dnn()
-    ikomia.authenticate()
     logger.info("Install test run successfully")
