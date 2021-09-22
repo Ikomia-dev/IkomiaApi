@@ -320,14 +320,14 @@ namespace Ikomia
             {
                 return "0.5.0";
             }
-            inline bool         isStarted()
+            inline bool         isAppStarted()
             {
                 auto windows = QGuiApplication::allWindows();
                 return windows.size() > 0;
             }
             inline std::string  getIkomiaLibFolder()
             {
-                if(isStarted())
+                if(isAppStarted())
                 {
                     auto appDirPath = QCoreApplication::applicationDirPath();
                     QDir appDir(appDirPath);
@@ -355,7 +355,7 @@ namespace Ikomia
             }
             inline void openUrl(const std::string& url)
             {
-                bool bGuiStarted = Utils::IkomiaApp::isStarted();
+                bool bGuiStarted = Utils::IkomiaApp::isAppStarted();
                 if(bGuiStarted)
                     QDesktopServices::openUrl(QUrl(QString::fromStdString(url)));
                 else
@@ -494,6 +494,19 @@ namespace Ikomia
                     // If found then erase it from string
                     mainStr.erase(pos, toErase.length());
                 }
+            }
+
+            inline QString toCamelCase(const QString& str)
+            {
+                QStringList parts = str.split('_', Qt::SkipEmptyParts);
+                for(int i=0; i<parts.size(); ++i)
+                    parts[i].replace(0, 1, parts[i][0].toUpper());
+
+                return parts.join("");
+            }
+            inline std::string toCamelCase(const std::string& str)
+            {
+                return toCamelCase(QString::fromStdString(str)).toStdString();
             }
         }
 
@@ -1025,7 +1038,7 @@ namespace Ikomia
 
         inline void print(const QString& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
         {
-            if(IkomiaApp::isStarted())
+            if(IkomiaApp::isAppStarted())
             {
                 switch(type)
                 {
@@ -1082,7 +1095,7 @@ namespace Ikomia
 
         inline void print(const std::string& msg, const QtMsgType type=QtMsgType::QtInfoMsg)
         {
-            if(IkomiaApp::isStarted())
+            if(IkomiaApp::isAppStarted())
             {
                 switch(type)
                 {
