@@ -19,6 +19,7 @@
 
 import os
 import sys
+from ikomia import utils
 from ikomia.utils import init_logging, make_auto_complete
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
@@ -57,7 +58,9 @@ def _check_directories():
 
 
 # API initialization
-_check_directories()
 init_logging()
-ik_registry = registry.IkomiaRegistry()
-make_auto_complete()
+
+if not utils.isAppStarted():
+    _check_directories()
+    ik_registry = registry.IkomiaRegistry()
+    make_auto_complete()
