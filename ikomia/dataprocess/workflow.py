@@ -110,7 +110,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self.setInput(dir_input, index, True)
 
-    def set_task_parameters(self, params: dict, task_id=None, task_name="", index=-1):
+    def set_parameters(self, params: dict, task_id=None, task_name="", index=-1):
         """
         Set task parameters as a simple key-value dict.
         You can get parameters keys for each by calling:
@@ -126,7 +126,7 @@ class Workflow(dataprocess.CWorkflow):
         """
         if task_id is not None:
             wf_task = self.getTask(task_id)
-            if wf_task is None:
+            if wf_task is not None:
                 task.set_parameters(wf_task, params)
         elif task_name:
             wf_task = self.find_task(task_name)
@@ -417,7 +417,7 @@ class Workflow(dataprocess.CWorkflow):
                         self.set_image_input(path=os.path.join(root, file), index=i)
                         super().run()
 
-            self.setInput(dir_input, i, False)
+                self.setInput(dir_input, i, False)
 
     def _get_run_mode(self):
         input_types = []
