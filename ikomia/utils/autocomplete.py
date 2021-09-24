@@ -28,7 +28,7 @@ import ikomia
 logger = logging.getLogger()
 
 
-def _write_auto_complete(f, name, skip_params=False):
+def _write_auto_complete_str(f, name, skip_params=False):
     forbid_char = "\ |\-|\[|\]"
 
     if skip_params:
@@ -62,6 +62,41 @@ def _write_auto_complete(f, name, skip_params=False):
         f.write("        return obj\n\n")
         create_line = name + " = " + class_name + "()\n\n"
         f.write(create_line)
+
+
+def _write_auto_complete(f, name, skip_params=False):
+    forbid_char = "\ |\-|\[|\]"
+
+    # create global variable declaration
+    var_name = re.sub(forbid_char, "", name)
+    declaration = var_name + " = " + "\"" + name + "\"\n"
+    f.write(declaration)
+
+    if not skip_params:
+        # create class with attributes
+        algo = ikomia.ik_registry.create_algorithm(name)
+        if algo is None:
+            return
+
+        parameters = algo.getParamValues()
+        if len(parameters) == 0:
+            f.write("\n")
+            return
+
+        class_name = re.sub(forbid_char, "", name)
+        declaration = "class " + class_name + "_param:\n"
+        f.write(declaration)
+
+        for param in parameters:
+            param_key = param.key()
+            if keyword.iskeyword(param_key):
+                param_key += "_"
+
+            var_name = re.sub(forbid_char, "", param_key)
+            declaration = "    " + var_name + " = " + "\"" + param_key + "\"\n"
+            f.write(declaration)
+
+        f.write("\n")
 
 
 def _generate_python_file(folder):

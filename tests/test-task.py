@@ -23,13 +23,13 @@ def test_task_parameters():
 
     logger.info("----- Manually set all parameters from ParamMap")
     params = ParamMap()
-    params["borderType"] = str(4)
-    params["anchorX"] = str(-1)
-    params["anchorY"] = str(-1)
-    params["kSizeHeight"] = str(13)
-    params["kSizeWidth"] = str(13)
-    params["bNormalize"] = str(1)
-    params["ddepth"] = str(-1)
+    params[ik.ocv_box_filter_param.borderType] = str(4)
+    params[ik.ocv_box_filter_param.anchorX] = str(-1)
+    params[ik.ocv_box_filter_param.anchorY] = str(-1)
+    params[ik.ocv_box_filter_param.kSizeHeight] = str(13)
+    params[ik.ocv_box_filter_param.kSizeWidth] = str(13)
+    params[ik.ocv_box_filter_param.bNormalize] = str(1)
+    params[ik.ocv_box_filter_param.ddepth] = str(-1)
     algo.setParamValues(params)
     logger.info(algo.getParam())
     algo.run()
@@ -37,22 +37,28 @@ def test_task_parameters():
 
     logger.info("----- Manually set some of the parameters from ParamMap")
     params = algo.getParamValues()
-    params["kSizeHeight"] = str(31)
-    params["kSizeWidth"] = str(31)
+    params[ik.ocv_box_filter_param.kSizeHeight] = str(31)
+    params[ik.ocv_box_filter_param.kSizeWidth] = str(31)
     algo.setParamValues(params)
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
 
     logger.info("----- Manually set all parameters from dict")
-    task.set_parameters(algo, {"borderType": 4, "anchorX": -1, "anchorY": -1, "kSizeHeight": 29, "kSizeWidth": 29,
-                               "bNormalize": 1, "ddepth": -1})
+    task.set_parameters(algo, {ik.ocv_box_filter_param.borderType: 4,
+                               ik.ocv_box_filter_param.anchorX: -1,
+                               ik.ocv_box_filter_param.anchorX: -1,
+                               ik.ocv_box_filter_param.kSizeHeight: 29,
+                               ik.ocv_box_filter_param.kSizeWidth: 29,
+                               ik.ocv_box_filter_param.bNormalize: 1,
+                               ik.ocv_box_filter_param.ddepth: -1})
+
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
 
     logger.info("----- Manually set some parameters from dict")
-    task.set_parameters(algo, {"kSizeHeight": 29, "kSizeWidth": 29})
+    task.set_parameters(algo, {ik.ocv_box_filter_param.kSizeHeight: 29, ik.ocv_box_filter_param.kSizeWidth: 29})
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
@@ -67,9 +73,9 @@ def test_get_task_outputs(wgisd_dir):
 
     wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
     wgisd_params = wgisd_task.getParamValues()
-    wgisd_params["data_folder_path"] = wgisd_dir + "/data"
-    wgisd_params["class_file_path"] = wgisd_dir + "/classes.txt"
-    wgisd_params["load_mask"] = str(False)
+    wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dir + "/data"
+    wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dir + "/classes.txt"
+    wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
     wgisd_task.setParamValues(wgisd_params)
     wf.set_image_input(path=img_path)
     wf.run()

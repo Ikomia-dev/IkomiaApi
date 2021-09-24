@@ -117,8 +117,8 @@ def test_yolov5_train(wgisd_dataset_dir):
     # set dataset directory
     wgisd_id, wgisd = wf.find_task(ik.dataset_wgisd)
     wgisd_params = wgisd.getParamValues()
-    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
-    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
+    wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd.setParamValues(wgisd_params)
 
     logger.info("Start YoloV5 training...")
@@ -131,9 +131,9 @@ def test_yolo_train(wgisd_dataset_dir):
     wf = workflow.create("YoloTrain")
     wgisd_id, wgisd = wf.add_task(ik.dataset_wgisd)
     wgisd_params = wgisd.getParamValues()
-    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
-    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
-    wgisd_params["load_mask"] = str(False)
+    wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
+    wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
     wgisd.setParamValues(wgisd_params)
 
     yolo_id, yolo = wf.add_task(ik.train_yolo)
@@ -302,9 +302,9 @@ def test_get_outputs(wgisd_dataset_dir):
     # set WGISD_Dataset parameters
     wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
     wgisd_params = wgisd_task.getParamValues()
-    wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
-    wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
-    wgisd_params["load_mask"] = str(False)
+    wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
+    wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
+    wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
     wgisd_task.setParamValues(wgisd_params)
 
     # run workflow
@@ -378,13 +378,15 @@ def test_set_task_parameters():
 
     bf_id, box_filter = wf.find_task(name=ik.ocv_box_filter, index=0)
     logger.info(box_filter.getParam())
-    wf.set_parameters({"kSizeHeight": 11, "kSizeWidth": 11}, task_name=ik.ocv_box_filter, index=0)
+    wf.set_parameters({ik.ocv_box_filter_param.kSizeHeight: 11,
+                       ik.ocv_box_filter_param.kSizeWidth: 11}, task_name=ik.ocv_box_filter, index=0)
     params = box_filter.getParamValues()
     assert (params["kSizeHeight"] == str(11) and params["kSizeWidth"] == str(11))
 
     bl_id, bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter, index=0)
     logger.info(bilateral_filter.getParam())
-    wf.set_parameters({"sigmaSpace": 31.0, "sigmaColor": 11.0}, task_id=bl_id)
+    wf.set_parameters({ik.ocv_bilateral_filter_param.sigmaSpace: 31.0,
+                       ik.ocv_bilateral_filter_param.sigmaColor: 11.0}, task_id=bl_id)
     params = bilateral_filter.getParamValues()
 
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
