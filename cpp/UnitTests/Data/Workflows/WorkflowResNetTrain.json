@@ -12,7 +12,7 @@
     },
     "tasks": [{
         "task_data": {
-            "name": "ResNet Train",
+            "name": "train_torchvision_resnet",
             "parameters": [{
                     "name": "model_name",
                     "value": "resnet18"

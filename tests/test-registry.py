@@ -2,7 +2,7 @@ import logging
 import ikomia
 import cv2
 from ikomia.dataprocess import displayIO
-from ikomia.utils import tests
+from ikomia.utils import tests, ik
 
 logger = logging.getLogger(__name__)
 
@@ -26,15 +26,15 @@ def test_get_online_algorithms():
 def test_download_plugin():
     logger.info("===== Test::download online algorithm =====")
     logger.info("Downloading RAFTOpticalFlow...")
-    ikomia.ik_registry._download_plugin("RAFTOpticalFlow")
+    ikomia.ik_registry._download_plugin(ik.infer_raft_optical_flow)
 
 
 def test_install_plugin():
     logger.info("===== Test::install online algorithms =====")
     logger.info("Installing RAFTOpticalFlow...")
-    ikomia.ik_registry._install_plugin("RAFTOpticalFlow")
+    ikomia.ik_registry._install_plugin(ik.infer_raft_optical_flow)
     logger.info("Installing MobileNet SSD...")
-    ikomia.ik_registry._install_plugin("MobileNet SSD")
+    ikomia.ik_registry._install_plugin(ik.infer_mobilenet_ssd)
 
 
 def test_local_instantiation():
@@ -58,28 +58,30 @@ def test_instantiation():
     logger.info("===== Test::instanciate online algorithms =====")
     # Local C++ algo
     logger.info("Instantiate CLAHE algorithm...")
-    algo = ikomia.ik_registry.create_algorithm("CLAHE")
+    algo = ikomia.ik_registry.create_algorithm(ik.ocv_clahe)
     assert(algo is not None)
     logger.info("Done.")
     # Local Python algo
     logger.info("Instantiate ResNet Train algorithm...")
-    algo = ikomia.ik_registry.create_algorithm("ResNet Train")
+    algo = ikomia.ik_registry.create_algorithm(ik.train_torchvision_resnet)
     assert (algo is not None)
     logger.info("Done.")
     # Online C++ algo
     logger.info("Instantiate MobileNet SSD algorithm...")
-    algo = ikomia.ik_registry.create_algorithm("MobileNet SSD")
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_mobilenet_ssd)
+    assert (algo is not None)
     logger.info("Done.")
     # Online Python algo
     logger.info("Instantiate RAFTOpticalFlow algorithm...")
-    algo = ikomia.ik_registry.create_algorithm("RAFTOpticalFlow")
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_raft_optical_flow)
+    assert (algo is not None)
     logger.info("Done.")
 
 
 def test_update():
     logger.info("===== Test::update algorithms =====")
     logger.info("Updating ResNet Train algorithm...")
-    ikomia.ik_registry.update_algorithm("ResNet Train")
+    ikomia.ik_registry.update_algorithm(ik.train_torchvision_resnet)
     logger.info("Updating all algorithms...")
     ikomia.ik_registry.update_algorithms()
 
@@ -93,21 +95,21 @@ def test_execution():
     cv2.imshow("Original", img)
 
     # OpenCV CLAHE (C++)
-    algo = ikomia.ik_registry.create_algorithm("CLAHE")
+    algo = ikomia.ik_registry.create_algorithm(ik.ocv_clahe)
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
     displayIO.display(algo, algo.name)
 
     # OpenCV Canny (C++)
-    algo = ikomia.ik_registry.create_algorithm("Canny")
+    algo = ikomia.ik_registry.create_algorithm(ik.ocv_canny)
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
     displayIO.display(algo, algo.name)
 
     # Marketplace FaceDetector (C++)
-    algo = ikomia.ik_registry.create_algorithm("Face Detector")
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_face_detector)
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -117,7 +119,7 @@ def test_execution():
     displayIO.display(algo, algo.name)
 
     # Marketplace scikit_threshold (Python)
-    algo = ikomia.ik_registry.create_algorithm("scikit_threshold")
+    algo = ikomia.ik_registry.create_algorithm(ik.skimage_threshold)
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()
@@ -126,7 +128,7 @@ def test_execution():
     # Marketplace YoloV5Predict (Python)
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
-    algo = ikomia.ik_registry.create_algorithm("YoloV5Predict")
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v5)
     input_img = algo.getInput(0)
     input_img.setImage(img)
     algo.run()

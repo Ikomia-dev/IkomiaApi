@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def test_task_parameters():
     logger.info("===== Test::set task parameters =====")
-    algo = task.create(ik.BoxFilter)
+    algo = task.create(ik.ocv_box_filter)
     logger.info("----- Use default parameters")
     logger.info(algo.getParam())
     img_path = tests.get_test_image_directory() + "/Lena.png"
@@ -65,7 +65,7 @@ def test_get_task_outputs(wgisd_dir):
     wf = workflow.Workflow("test_outputs", ikomia.ik_registry)
     wf.load(wf_path)
 
-    wgisd_task = wf.find_task(ik.WGISD_Dataset, 0)[1]
+    wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
     wgisd_params = wgisd_task.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dir + "/classes.txt"
@@ -75,7 +75,7 @@ def test_get_task_outputs(wgisd_dir):
     wf.run()
 
     logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
-    detector_task = wf.find_task(ik.MobileNetSSD, 0)[1]
+    detector_task = wf.find_task(ik.infer_mobilenet_ssd, 0)[1]
     img_out = task.get_image_output(detector_task)
     assert(img_out is not None)
     displayIO.display(img_out, detector_task.name)
@@ -87,7 +87,7 @@ def test_get_task_outputs(wgisd_dir):
     displayIO.display(blob_out, detector_task.name)
 
     logger.info("----- Get Split Operator outputs: 3 images")
-    split_task = wf.find_task(ik.SplitOperator, 0)[1]
+    split_task = wf.find_task(ik.ocv_split, 0)[1]
     img_out = task.get_image_output(split_task)
     assert (img_out is not None)
     assert(len(img_out) == 3)
@@ -95,7 +95,7 @@ def test_get_task_outputs(wgisd_dir):
     displayIO.display(img_out, split_task.name + "- blue channel")
 
     logger.info("----- Get CalcHist outputs: numeric")
-    hist_task = wf.find_task(ik.CalcHist, 0)[1]
+    hist_task = wf.find_task(ik.ocv_calc_hist, 0)[1]
     numeric_out = task.get_numeric_output(hist_task)
     assert (numeric_out is not None)
     displayIO.display(numeric_out, hist_task.name)
@@ -113,7 +113,7 @@ def test_get_image_with_graphics():
     img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
     # run
-    t = task.create(ik.MobileNetSSD)
+    t = task.create(ik.infer_mobilenet_ssd)
     t.getInput(0).setImage(img)
     t.run()
     # get image with graphics

@@ -10,12 +10,12 @@
     "metadata": {
         "description": "Training workflow with YoloV5 models on WGISD dataset",
         "keywords": "object,detection,yolov5,ultralytics",
-        "name": "YoloV5Train"
+        "name": "train_yolo_v5"
     },
     "tasks": [
         {
             "task_data": {
-                "name": "WGISD_Dataset",
+                "name": "dataset_wgisd",
                 "parameters": [
                     {
                         "name": "load_mask",
@@ -35,7 +35,7 @@
         },
         {
             "task_data": {
-                "name": "YoloV5Train",
+                "name": "train_yolo_v5",
                 "parameters": [
                     {
                         "name": "dataset_split_ratio",

@@ -115,7 +115,7 @@ def test_yolov5_train(wgisd_dataset_dir):
     wf = workflow.load(wf_path)
 
     # set dataset directory
-    wgisd_id, wgisd = wf.find_task(ik.WGISD_Dataset)
+    wgisd_id, wgisd = wf.find_task(ik.dataset_wgisd)
     wgisd_params = wgisd.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
@@ -129,14 +129,14 @@ def test_yolov5_train(wgisd_dataset_dir):
 def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
     wf = workflow.create("YoloTrain")
-    wgisd_id, wgisd = wf.add_task(ik.WGISD_Dataset)
+    wgisd_id, wgisd = wf.add_task(ik.dataset_wgisd)
     wgisd_params = wgisd.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params["load_mask"] = str(False)
     wgisd.setParamValues(wgisd_params)
 
-    yolo_id, yolo = wf.add_task(ik.YoloTrain)
+    yolo_id, yolo = wf.add_task(ik.train_yolo)
     wf.connect_tasks(wgisd_id, yolo_id)
 
     wf.run()
@@ -171,7 +171,7 @@ def test_graph_structure():
     logger.info("Childs of root are: " + wf.getTask(childs[0]).name + " and " + wf.getTask(childs[1]).name)
 
     # find task from name
-    task_id, task_obj = wf.find_task(ik.CLAHE)
+    task_id, task_obj = wf.find_task(ik.ocv_clahe)
     assert(task_id and task_obj is not None)
 
     # get parents
@@ -188,7 +188,7 @@ def test_graph_structure():
     logger.info(msg)
 
     # input edges of a task
-    task_id, task_obj = wf.find_task(ik.DTFilter)
+    task_id, task_obj = wf.find_task(ik.ocv_dt_filter)
     assert(task_id and task_obj is not None)
     in_edges = wf.getInEdges(task_id)
     logger.info("Input edges of DTFilter: " + str(len(in_edges)))
@@ -197,7 +197,7 @@ def test_graph_structure():
         logger.info("Edge port index: " + str(wf.getEdgeInfo(edge)))
 
     # output edges of a task
-    task_id, task_obj = wf.find_task(ik.Equalizehistogram)
+    task_id, task_obj = wf.find_task(ik.ocv_equalize_histogram)
     assert(task_id and task_obj is not None)
     out_edges = wf.getOutEdges(task_id)
     logger.info("Output edges of Equalize histogram: " + str(len(out_edges)))
@@ -223,7 +223,7 @@ def test_graph_structure():
     count_after = len(wf.getTaskIDs())
     logger.info("Task count after delete: " + str(count_after))
     assert(count_before == count_after + 1)
-    found_task = wf.find_task(ik.Equalizehistogram)
+    found_task = wf.find_task(ik.ocv_equalize_histogram)
     assert(len(found_task) == 0)
 
 
@@ -232,32 +232,32 @@ def test_graph_build():
     wf = workflow.create("FromScratch")
 
     # branch with auto-connection
-    box_filter_id, box_filter = wf.add_task(ik.BoxFilter)
+    box_filter_id, box_filter = wf.add_task(ik.ocv_box_filter)
     wf.connect_tasks(wf.getRootID(), box_filter_id)
 
-    clahe_id, clahe = wf.add_task(ik.CLAHE)
+    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
     wf.connect_tasks(box_filter_id, clahe_id)
 
-    dtfilterenhance_id, dtfilterenhance = wf.add_task(ik.DTFilterEnhance)
+    dtfilterenhance_id, dtfilterenhance = wf.add_task(ik.ocv_dt_filter_enhance)
     wf.connect_tasks(clahe_id, dtfilterenhance_id)
 
-    lsc_id, lsc = wf.add_task(ik.SuperpixelLSC)
+    lsc_id, lsc = wf.add_task(ik.ocv_superpixel_lsc)
     wf.connect_tasks(dtfilterenhance_id, lsc_id)
 
     # branch with manual connection
-    bilateral_id, bilateral = wf.add_task(ik.BilateralFilter)
+    bilateral_id, bilateral = wf.add_task(ik.ocv_bilateral_filter)
     wf.connect_tasks(wf.getRootID(), bilateral_id, [(0, 0)])
 
-    equalize_id, equalize = wf.add_task(ik.Equalizehistogram)
+    equalize_id, equalize = wf.add_task(ik.ocv_equalize_histogram)
     wf.connect_tasks(bilateral_id, equalize_id, [(0, 0)])
 
-    dtfilter_id, dtfilter = wf.add_task(ik.DTFilter)
+    dtfilter_id, dtfilter = wf.add_task(ik.ocv_dt_filter)
     wf.connect_tasks(equalize_id, dtfilter_id, [(0, 0), (0, 1)])
 
-    convert_id, convert = wf.add_task(ik.ConvertTo)
+    convert_id, convert = wf.add_task(ik.ocv_convert_to)
     wf.connect_tasks(dtfilter_id, convert_id, [(0, 0)])
 
-    seeds_id, seeds = wf.add_task(ik.SuperpixelSEEDS)
+    seeds_id, seeds = wf.add_task(ik.ocv_superpixel_seeds)
     wf.connect_tasks(convert_id, seeds_id, [(0, 0)])
 
     # visualization
@@ -300,7 +300,7 @@ def test_get_outputs(wgisd_dataset_dir):
     wf = workflow.load(wf_path)
 
     # set WGISD_Dataset parameters
-    wgisd_task = wf.find_task(ik.WGISD_Dataset, 0)[1]
+    wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
     wgisd_params = wgisd_task.getParamValues()
     wgisd_params["data_folder_path"] = wgisd_dataset_dir + "/data"
     wgisd_params["class_file_path"] = wgisd_dataset_dir + "/classes.txt"
@@ -312,32 +312,32 @@ def test_get_outputs(wgisd_dataset_dir):
     wf.run()
 
     logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
-    img_out = wf.get_image_output(task_name=ik.MobileNetSSD)
+    img_out = wf.get_image_output(task_name=ik.infer_mobilenet_ssd)
     assert (img_out is not None)
     displayIO.display(img_out, "MobileNet SSD")
-    graphics_out = wf.get_graphics_output(task_name=ik.MobileNetSSD)
+    graphics_out = wf.get_graphics_output(task_name=ik.infer_mobilenet_ssd)
     assert (graphics_out is not None)
     displayIO.display(graphics_out, "MobileNet SSD")
-    blob_out = wf.get_blob_measure_output(task_name=ik.MobileNetSSD)
+    blob_out = wf.get_blob_measure_output(task_name=ik.infer_mobilenet_ssd)
     assert (blob_out is not None)
     displayIO.display(blob_out, "MobileNet SSD")
 
     logger.info("----- Get Split Operator outputs: 3 images")
-    img_out = wf.get_image_output(task_name=ik.SplitOperator)
+    img_out = wf.get_image_output(task_name=ik.ocv_split)
     assert (img_out is not None)
     assert (len(img_out) == 3)
-    img_out = wf.get_image_output(task_name=ik.SplitOperator, index=2)
+    img_out = wf.get_image_output(task_name=ik.ocv_split, index=2)
     assert (img_out is not None)
     displayIO.display(img_out, "Blue channel")
 
     logger.info("----- Get CalcHist outputs: numeric")
-    hist_task_id = wf.find_task(ik.CalcHist, 0)[0]
+    hist_task_id = wf.find_task(ik.ocv_calc_hist, 0)[0]
     numeric_out = wf.get_numeric_output(task_id=hist_task_id)
     assert (numeric_out is not None)
     displayIO.display(numeric_out, "CalcHist")
 
     logger.info("----- Get WGISD_Dataset outputs: dataset")
-    dataset_out = wf.get_dataset_output(task_name=ik.WGISD_Dataset)
+    dataset_out = wf.get_dataset_output(task_name=ik.dataset_wgisd)
     assert (dataset_out is not None)
     assert (dataset_out.getCategoryCount() > 0)
     assert (len(dataset_out.getImagePaths()) > 0)
@@ -348,7 +348,7 @@ def test_get_image_with_graphics():
     # create workflow with MobileNet SSD task
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf = workflow.create("ImageWithGraphics")
-    id1, t1 = wf.add_task(ik.MobileNetSSD)
+    id1, t1 = wf.add_task(ik.infer_mobilenet_ssd)
     wf.connect_tasks(wf.getRootID(), id1)
     wf.run_on(path=img_path)
 
@@ -359,12 +359,12 @@ def test_get_image_with_graphics():
     cv2.waitKey(0)
 
     # add second MobileNet SSD task
-    id2, t2 = wf.add_task(ik.MobileNetSSD)
+    id2, t2 = wf.add_task(ik.infer_mobilenet_ssd)
     wf.connect_tasks(wf.getRootID(), id2)
     wf.run_on(path=img_path)
 
     logger.info("-----Get image from task name")
-    images = wf.get_image_with_graphics(task_name=ik.MobileNetSSD, image_index=0, graphics_index=0)
+    images = wf.get_image_with_graphics(task_name=ik.infer_mobilenet_ssd, image_index=0, graphics_index=0)
     assert(len(images) == 2)
     cv2.imshow("MobileNet SSD #1", images[0])
     cv2.imshow("MobileNet SSD #2", images[1])
@@ -376,17 +376,18 @@ def test_set_task_parameters():
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
 
-    bf_id, box_filter = wf.find_task(name=ik.BoxFilter, index=0)
+    bf_id, box_filter = wf.find_task(name=ik.ocv_box_filter, index=0)
     logger.info(box_filter.getParam())
-    wf.set_task_parameters({"kSizeHeight": 11, "kSizeWidth": 11}, task_name=ik.BoxFilter, index=0)
+    wf.set_parameters({"kSizeHeight": 11, "kSizeWidth": 11}, task_name=ik.ocv_box_filter, index=0)
     params = box_filter.getParamValues()
     assert (params["kSizeHeight"] == str(11) and params["kSizeWidth"] == str(11))
 
-    bl_id, bilateral_filter = wf.find_task(name=ik.BilateralFilter, index=0)
+    bl_id, bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter, index=0)
     logger.info(bilateral_filter.getParam())
-    wf.set_task_parameters({"sigmaSpace": 31, "sigmaColor": 11}, task_id=bl_id)
+    wf.set_parameters({"sigmaSpace": 31.0, "sigmaColor": 11.0}, task_id=bl_id)
     params = bilateral_filter.getParamValues()
-    assert (params["sigmaSpace"] == str(31) and params["sigmaColor"] == str(11))
+
+    assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
 
 
 if __name__ == "__main__":

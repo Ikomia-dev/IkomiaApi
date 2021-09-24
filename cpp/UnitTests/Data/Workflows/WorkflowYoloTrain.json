@@ -15,7 +15,7 @@
     "tasks": [
         {
             "task_data": {
-                "name": "WGISD_Dataset",
+                "name": "dataset_wgisd",
                 "parameters": [
                     {
                         "name": "load_mask",
@@ -35,7 +35,7 @@
         },
         {
             "task_data": {
-                "name": "YoloTrain",
+                "name": "train_yolo",
                 "parameters": [
                     {
                         "name": "weightDecay",

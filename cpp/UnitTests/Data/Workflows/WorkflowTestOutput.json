@@ -25,7 +25,7 @@
     },
     "tasks": [{
             "task_data": {
-                "name": "MobileNet SSD",
+                "name": "infer_mobilenet_ssd",
                 "parameters": [{
                         "name": "structureFile",
                         "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.prototxt"
@@ -76,7 +76,7 @@
         },
         {
             "task_data": {
-                "name": "Split Operator",
+                "name": "ocv_split",
                 "parameters": [{
                     "name": "outputCount",
                     "value": "3"
@@ -86,7 +86,7 @@
         },
         {
             "task_data": {
-                "name": "CalcHist",
+                "name": "ocv_calc_hist",
                 "parameters": [{
                         "name": "nChannels",
                         "value": "1"
@@ -121,7 +121,7 @@
         },
         {
             "task_data": {
-                "name": "WGISD_Dataset",
+                "name": "dataset_wgisd",
                 "parameters": []
             },
             "task_id": 3

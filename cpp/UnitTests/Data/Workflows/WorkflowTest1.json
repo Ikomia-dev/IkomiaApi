@@ -69,7 +69,7 @@
     "tasks": [
         {
             "task_data": {
-                "name": "Box Filter",
+                "name": "ocv_box_filter",
                 "parameters": [
                     {
                         "name": "borderType",
@@ -105,7 +105,7 @@
         },
         {
             "task_data": {
-                "name": "Bilateral Filter",
+                "name": "ocv_bilateral_filter",
                 "parameters": [
                     {
                         "name": "borderType",
@@ -129,7 +129,7 @@
         },
         {
             "task_data": {
-                "name": "CLAHE",
+                "name": "ocv_clahe",
                 "parameters": [
                     {
                         "name": "clipLimit",
@@ -141,7 +141,7 @@
         },
         {
             "task_data": {
-                "name": "Equalize histogram",
+                "name": "ocv_equalize_histogram",
                 "parameters": [
                 ]
             },
@@ -149,7 +149,7 @@
         },
         {
             "task_data": {
-                "name": "DTFilterEnhance",
+                "name": "ocv_dt_filter_enhance",
                 "parameters": [
                     {
                         "name": "numLayer",
@@ -177,7 +177,7 @@
         },
         {
             "task_data": {
-                "name": "DTFilter",
+                "name": "ocv_dt_filter",
                 "parameters": [
                     {
                         "name": "numIters",
@@ -201,7 +201,7 @@
         },
         {
             "task_data": {
-                "name": "ConvertTo",
+                "name": "ocv_convert_to",
                 "parameters": [
                     {
                         "name": "dtype",
@@ -221,7 +221,7 @@
         },
         {
             "task_data": {
-                "name": "SuperpixelLSC",
+                "name": "ocv_superpixel_lsc",
                 "parameters": [
                     {
                         "name": "num_iterations",
@@ -241,7 +241,7 @@
         },
         {
             "task_data": {
-                "name": "SuperpixelSEEDS",
+                "name": "ocv_superpixel_seeds",
                 "parameters": [
                     {
                         "name": "num_iterations",
