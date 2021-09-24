@@ -60,10 +60,10 @@ def _check_directories():
 
 
 # API initialization
+_check_directories()
 init_logging()
 
 if not utils.isAppStarted():
-    _check_directories()
     ik_registry = registry.IkomiaRegistry()
 
     if config.main_cfg["registry"]["auto_completion"]:
