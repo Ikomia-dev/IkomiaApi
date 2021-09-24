@@ -44,7 +44,7 @@ fi
 
 if [ -z "$platform" ]
 then
-   platform="manylinux2014"
+   platform="manylinux2014_x86_64"
 fi
 
 if [ $method = "clean" ]
