@@ -102,7 +102,7 @@ class COcvWidgetDnnDetectorFactory : public CWidgetFactory
 
         COcvWidgetDnnDetectorFactory()
         {
-            m_name = "ocv_dnn detection";
+            m_name = "ocv_dnn_detection";
         }
 
         virtual WorkflowTaskWidgetPtr   create(std::shared_ptr<CWorkflowTaskParam> pParam)
