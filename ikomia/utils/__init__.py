@@ -23,8 +23,6 @@ from ikomia.utils.plugintools import *
 from ikomia.utils.data import *
 import sys
 import logging
-import re
-import site
 
 logger = logging.getLogger()
 
@@ -64,38 +62,3 @@ def is_colab():
         return True
     except Exception as e:
         return False
-
-
-def make_auto_complete():
-    current_folder = os.path.dirname(__file__)
-    names_file_path = current_folder + os.sep + "ik.py"
-
-    try:
-        f = open(names_file_path, "w+")
-    except Exception:
-        local_site = site.getusersitepackages() + os.sep + "ikomia" + os.sep + "utils" + os.sep
-        os.makedirs(local_site, exist_ok=True)
-        names_file_path = local_site + "iknames.py"
-
-        try:
-            f = open(names_file_path, "w+")
-        except Exception:
-            logger.warning("Ikomia auto-completion is disable")
-
-    local_names = ikomia.ik_registry.getAlgorithms()
-    forbid_char = "\ |\-|\[|\]"
-
-    for name in local_names:
-        variable_name = re.sub(forbid_char, "", name)
-        declaration = variable_name + " = " + "\"" + name + "\"\n\n"
-        f.write(declaration)
-
-    online_algos = ikomia.ik_registry.get_online_algorithms()
-    if online_algos is None:
-        return
-
-    for algo in online_algos:
-        if algo["name"] not in local_names:
-            variable_name = re.sub(forbid_char, "", algo["name"])
-            declaration = variable_name + " = " + "\"" + algo["name"] + "\"\n\n"
-            f.write(declaration)

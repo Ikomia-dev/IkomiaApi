@@ -65,6 +65,7 @@ SYSMODULES = [
     "optparse", "imp"
     ]
 
+
 class SingleFileModuleFinder(modulefinder.ModuleFinder):
 
     def import_hook(self, name, caller, *arg, **kwarg):

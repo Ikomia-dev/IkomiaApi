@@ -26,6 +26,7 @@ algorithms from the built-in environment or the Marketplace.
 """
 import ikomia
 from ikomia import utils, dataprocess
+from ikomia.utils import autocomplete
 from ikomia.core import config
 import os
 import sys
@@ -108,6 +109,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             try:
                 self._install_plugin(name)
                 algo = self.createInstance(name, parameters)
+
+                if config.main_cfg["registry"]["auto_completion"]:
+                    autocomplete.make_local_plugins(force=True)
             except ValueError as val_e:
                 logger.error(val_e)
             except ConnectionRefusedError as conn_e:

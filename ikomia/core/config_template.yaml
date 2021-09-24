@@ -2,6 +2,7 @@ marketplace:
   url: https://ikomia.com
 registry:
   path:
+  auto_completion: False
 workflow:
   path:
 data:

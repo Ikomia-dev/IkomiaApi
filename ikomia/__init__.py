@@ -20,7 +20,7 @@
 import os
 import sys
 from ikomia import utils
-from ikomia.utils import init_logging, make_auto_complete
+from ikomia.utils import init_logging, autocomplete
 from ikomia.core.auth import LoginSession
 from ikomia.core import config
 from ikomia.dataprocess import registry
@@ -42,7 +42,9 @@ def authenticate():
     pwd = os.environ.get("IKOMIA_PWD")
     global ik_api_session
     ik_api_session = LoginSession(username, pwd)
-    make_auto_complete()
+
+    if config.main_cfg["registry"]["auto_completion"]:
+        autocomplete.make_online_plugins()
 
 
 def _check_directories():
@@ -63,4 +65,6 @@ init_logging()
 if not utils.isAppStarted():
     _check_directories()
     ik_registry = registry.IkomiaRegistry()
-    make_auto_complete()
+
+    if config.main_cfg["registry"]["auto_completion"]:
+        autocomplete.make_local_plugins()
