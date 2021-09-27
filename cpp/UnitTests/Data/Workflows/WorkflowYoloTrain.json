@@ -18,8 +18,8 @@
                 "name": "dataset_wgisd",
                 "parameters": [
                     {
-                        "name": "load_mask",
-                        "value": "False"
+                        "name": "seg_mask_mode",
+                        "value": "None"
                     },
                     {
                         "name": "class_file_path",
