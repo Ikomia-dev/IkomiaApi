@@ -1714,23 +1714,26 @@ void CWorkflow::loadJSON(const std::string &path)
         QJsonObject jsonTaskData = jsonTask["task_data"].toObject();
         auto taskPtr = m_pTaskRegistration->createProcessObject(jsonTaskData["name"].toString().toStdString(), nullptr);
 
-        if(taskPtr)
+        if(taskPtr == nullptr)
         {
-            UMapString paramMap;
-            QJsonArray jsonParams = jsonTaskData["parameters"].toArray();
-
-            if(!jsonParams.empty())
-            {
-                for(int j=0; j<jsonParams.size(); ++j)
-                {
-                    QJsonObject jsonParam = jsonParams[j].toObject();
-                    paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
-                }
-                taskPtr->setParamValues(paramMap);
-            }
-            auto vertexId = addTask(taskPtr);
-            mapIdToVertexId.insert(std::make_pair(jsonTask["task_id"].toInt(), vertexId));
+            std::string errorMsg = "Algorithm " +  jsonTaskData["name"].toString().toStdString() + " can't be created. Please check installation or marketplace connection.";
+            throw CException(CoreExCode::CREATE_FAILED, errorMsg, __func__, __FILE__, __LINE__);
         }
+
+        UMapString paramMap;
+        QJsonArray jsonParams = jsonTaskData["parameters"].toArray();
+
+        if(!jsonParams.empty())
+        {
+            for(int j=0; j<jsonParams.size(); ++j)
+            {
+                QJsonObject jsonParam = jsonParams[j].toObject();
+                paramMap[jsonParam["name"].toString().toStdString()] = jsonParam["value"].toString().toStdString();
+            }
+            taskPtr->setParamValues(paramMap);
+        }
+        auto vertexId = addTask(taskPtr);
+        mapIdToVertexId.insert(std::make_pair(jsonTask["task_id"].toInt(), vertexId));
     }
 
     // Load connections

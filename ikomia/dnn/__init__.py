@@ -44,7 +44,7 @@ def _start_mlflow(colab=False):
     try:
         r = requests.get(url=url)
         running = r.status_code == 200
-    except:
+    except Exception:
         running = False
 
     if not running:
