@@ -371,6 +371,24 @@ def test_get_image_with_graphics():
     cv2.waitKey(0)
 
 
+def test_get_image():
+    logger.info("===== Test::get image =====")
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.load(wf_path)
+    wf.run_on(path=img_path)
+
+    image = wf.get_image(task_name=ik.ocv_box_filter)
+    assert image.size != 0
+    clahe_id, clahe = wf.find_task(name=ik.ocv_clahe)
+    image = wf.get_image(task_id=clahe_id)
+    assert image.size != 0
+    images = wf.get_image(task_name=ik.ocv_superpixel_lsc)
+    assert(len(images) == 3)
+    image = wf.get_image(task_name=ik.ocv_superpixel_lsc, index=0)
+    assert image.size != 0
+
+
 def test_set_task_parameters():
     logger.info("===== Test::set parameters of specific tasks =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
@@ -399,20 +417,21 @@ if __name__ == "__main__":
     parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
     opt = parser.parse_args()
 
-    test_metadata()
-    test_load()
-    test_single_image_run()
-    test_directory_run()
-    test_run_common()
-    test_export_graphviz()
-    test_graph_structure()
-    test_time_metrics()
-    test_graph_build()
-    test_get_outputs(opt.detect_dataset_dir)
-    test_get_image_with_graphics()
-    test_set_task_parameters()
-
-    if opt.train_test:
-        test_resnet_train(opt.classif_dataset_dir)
-        test_yolo_train(opt.detect_dataset_dir)
-        test_yolov5_train(opt.detect_dataset_dir)
+    # test_metadata()
+    # test_load()
+    # test_single_image_run()
+    # test_directory_run()
+    # test_run_common()
+    # test_export_graphviz()
+    # test_graph_structure()
+    # test_time_metrics()
+    # test_graph_build()
+    # test_get_outputs(opt.detect_dataset_dir)
+    # test_get_image_with_graphics()
+    test_get_image()
+    # test_set_task_parameters()
+    #
+    # if opt.train_test:
+    #     test_resnet_train(opt.classif_dataset_dir)
+    #     test_yolo_train(opt.detect_dataset_dir)
+    #     test_yolov5_train(opt.detect_dataset_dir)

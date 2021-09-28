@@ -177,6 +177,29 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self._get_task_output(task.get_image_output, task_id, task_name, index)
 
+    def get_image(self, task_id=None, task_name="", index=-1):
+        """
+        Get image (numpy array) from a specific IMAGE output (by index) of the given task (by name or id).
+        If task_name argument is given, the function returns images from all matching tasks. If index = -1,
+        the function returns also images from all IMAGE outputs available.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the IMAGE output.
+
+        Returns:
+            Numpy array or list: result image(s).
+        """
+        outputs = self.get_image_output(task_id=task_id, task_name=task_name, index=index)
+        if isinstance(outputs, list):
+            images = []
+            for output in outputs:
+                images.append(output.getImage())
+            return images
+        else:
+            return outputs.getImage()
+
     def get_image_with_graphics(self, task_id=None, task_name="", image_index=0, graphics_index=0):
         """
         Get image (numpy array) from a specific IMAGE output of the given task with graphics items burnt into it.
