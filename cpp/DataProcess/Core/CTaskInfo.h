@@ -90,7 +90,7 @@ class DATAPROCESSSHARED_EXPORT CTaskInfo
         void        setInternal(bool bInternal);
         /** @endcond */
 
-        friend std::ostream& operator<<(std::ostream& os, const CTaskInfo& info);
+        friend DATAPROCESSSHARED_EXPORT std::ostream& operator<<(std::ostream& os, const CTaskInfo& info);
 
     public:
 

@@ -147,7 +147,7 @@ class CORESHARED_EXPORT CWorkflowTask
          */
         CWorkflowTask& operator=(const CWorkflowTask&& task);
 
-        friend std::ostream& operator<<(std::ostream& os, const CWorkflowTask& task);
+        friend CORESHARED_EXPORT std::ostream& operator<<(std::ostream& os, const CWorkflowTask& task);
 
         virtual ~CWorkflowTask();
 

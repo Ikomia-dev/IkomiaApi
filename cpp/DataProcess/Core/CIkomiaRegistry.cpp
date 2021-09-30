@@ -1,6 +1,10 @@
-#include "CIkomiaRegistry.h"
 #include "UtilsTools.hpp"
+#ifdef Q_OS_WIN64
+#include <windows.h>
+#endif
+#include "CIkomiaRegistry.h"
 #include "CPluginProcessInterface.hpp"
+
 
 CIkomiaRegistry::CIkomiaRegistry()
 {
@@ -73,11 +77,12 @@ void CIkomiaRegistry::registerIO(const TaskIOFactoryPtr &factoryPtr)
 
 void CIkomiaRegistry::loadCppPlugins()
 {
-    QDir pluginsDir(QString::fromStdString(m_pluginsDir + "/C++"));
+    QString pluginRootPath = QString::fromStdString(m_pluginsDir + "/C++");
+    QDir pluginsDir(pluginRootPath);
 
 #ifdef Q_OS_WIN64
     //Add plugin root folder to the search path of the DLL loader
-    SetDllDirectoryA(QDir::toNativeSeparators(m_cppPath).toStdString().c_str());
+    SetDllDirectoryA(QDir::toNativeSeparators(pluginRootPath).toStdString().c_str());
 #endif
 
     //Load plugins placed directly in the root folder

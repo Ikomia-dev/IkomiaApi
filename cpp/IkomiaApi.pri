@@ -52,18 +52,18 @@ centos7 {
     unix:!macx: INCLUDEPATH += /work/shared/local/include
     # Python include
     unix:!macx: INCLUDEPATH += /work/shared/local/include/python3.7m
-    unix:!macx: INCLUDEPATH += /work/shared/local/lib/python3.7/site-packages/numpy/core/include/   # NUMPY path for CENTOS 7
+    unix:!macx: INCLUDEPATH += /work/shared/local/lib/python3.7/site-packages/numpy/core/include/           # NUMPY path for CENTOS 7
 }
 else {
     win32: INCLUDEPATH += $$(ProgramW6432)/Python$${PYTHON_VERSION_EXT}/include
-    win32: INCLUDEPATH += $$PWD/../numpy/numpy/core/include                                         # NUMPY path for Windows
-    macx: pythonPath = /usr/local/python$${PYTHON_VERSION}                                          # /usr/local/opt/python/Frameworks/Python.framework/Versions/3.7
+    win32: INCLUDEPATH += $$PWD/../../numpy/numpy/core/include                                              # NUMPY path for Windows
+    macx: pythonPath = /usr/local/python$${PYTHON_VERSION}                                                  # /usr/local/opt/python/Frameworks/Python.framework/Versions/3.7
     macx: INCLUDEPATH += $$pythonPath/include/python$${PYTHON_VERSION}m
     macx: INCLUDEPATH += $$pythonPath/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include
     unix:!macx: INCLUDEPATH += /usr/include/python$${PYTHON_VERSION}
     unix:!macx: INCLUDEPATH += /usr/local/include/python$${PYTHON_VERSION}
-    unix:!macx: INCLUDEPATH += /usr/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include/  # NUMPY path for Arch
-    unix:!macx: INCLUDEPATH += /usr/local/lib/python$${PYTHON_VERSION}/dist-packages/numpy/core/include/  # NUMPY path for Ubuntu
+    unix:!macx: INCLUDEPATH += /usr/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include/          # NUMPY path for Arch
+    unix:!macx: INCLUDEPATH += /usr/local/lib/python$${PYTHON_VERSION}/dist-packages/numpy/core/include/    # NUMPY path for Ubuntu
 }
 
 # VTK
@@ -72,7 +72,7 @@ centos7 {
 }
 win32: INCLUDEPATH += $$(ProgramW6432)/VTK/include/vtk-$${VTK_VERSION}
 unix:!macx: INCLUDEPATH += /usr/include/vtk/8.1.1/
-unix:!macx: INCLUDEPATH += /usr/local/include/vtk-$${VTK_VERSION}/                                  # Add path for VTK on CENTOS 6
+unix:!macx: INCLUDEPATH += /usr/local/include/vtk-$${VTK_VERSION}/                                          # Add path for VTK on CENTOS 6
 unix:!macx: INCLUDEPATH += /usr/include/vtk
 macx: INCLUDEPATH += /usr/local/include/vtk-$${VTK_VERSION}
 
@@ -154,7 +154,7 @@ win32: LIBS += -L$$(ProgramW6432)/intel_tbb/bin/intel64/vc14
 win32: LIBS += -L$$(ProgramW6432)/zlib/bin
 
 # Quazip
-win32: LIBS += -L$$PWD/../quazip/build/lib
+win32: LIBS += -L$$PWD/../../quazip/build/lib
 macx: LIBS += -L$$PWD/../quazip/build/lib
 
 #Qwt

@@ -45,7 +45,7 @@ class CGraphicsPolygon;
 class CGraphicsPolyline;
 class CGraphicsText;
 class CGraphicsComplexPolygon;
-struct CGraphicsPolygonProperty;
+class CGraphicsPolygonProperty;
 
 class CORESHARED_EXPORT CGraphicsConversion
 {

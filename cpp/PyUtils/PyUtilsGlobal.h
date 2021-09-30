@@ -22,6 +22,10 @@
 #ifndef PYUTILS_GLOBAL_H
 #define PYUTILS_GLOBAL_H
 
+#ifndef HAVE_SNPRINTF
+    #define HAVE_SNPRINTF
+#endif
+
 #include <QtCore/qglobal.h>
 
 #if defined(PYUTILS_LIBRARY)

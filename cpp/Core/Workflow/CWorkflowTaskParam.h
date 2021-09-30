@@ -61,7 +61,7 @@ class CORESHARED_EXPORT CWorkflowTaskParam
          */
         virtual uint        getHashValue() const;
 
-        friend std::ostream& operator<<(std::ostream& os, const CWorkflowTaskParam& param);
+        friend CORESHARED_EXPORT std::ostream& operator<<(std::ostream& os, const CWorkflowTaskParam& param);
 
     public:
 
