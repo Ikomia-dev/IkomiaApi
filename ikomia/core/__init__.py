@@ -17,4 +17,9 @@
 # along with this program; if not, write to the Free Software Foundation,
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from ikomia.core.pycore import *
+try:
+    # Valid for Ikomia Studio or Linux platform
+    from ikomia.core.pycore import *
+except:
+    # Valid for Windows standalone API
+    from ikomia.lib.pycore import *

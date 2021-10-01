@@ -26,7 +26,11 @@ from ikomia.core import config
 from ikomia.dataprocess import registry
 
 # Add built-in OpenCV to Python path
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
+if not utils.isAppStarted():
+    if sys.platform == "win32":
+        sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib")
+    else:
+        sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
 
 global ik_api_session
 ik_api_session = None
