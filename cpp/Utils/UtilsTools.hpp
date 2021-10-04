@@ -314,11 +314,11 @@ namespace Ikomia
             }
             inline QString      getCurrentVersionNumber()
             {
-                return "0.5.0";
+                return "0.6.0";
             }
             inline QString      getCurrentVersionName()
             {
-                return "0.5.0";
+                return "0.6.0";
             }
             inline bool         isAppStarted()
             {
@@ -967,7 +967,7 @@ namespace Ikomia
             }
             inline PluginState  getCppState(const QString& version)
             {
-                const std::set<QString> breakChanges = {"0.3.0", "0.4.0", "0.4.1", "0.5.0"};
+                const std::set<QString> breakChanges = {"0.3.0", "0.4.0", "0.4.1", "0.5.0", "0.6.0"};
                 for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
                 {
                     if(version < *it)
@@ -981,7 +981,7 @@ namespace Ikomia
             }
             inline PluginState  getPythonState(const QString& version)
             {
-                const std::set<QString> breakChanges = {"0.3.0"};
+                const std::set<QString> breakChanges = {"0.3.0", "0.6.0"};
                 for(auto it=breakChanges.begin(); it!=breakChanges.end(); ++it)
                 {
                     if(version < *it)
@@ -1004,7 +1004,7 @@ namespace Ikomia
             }
             inline std::string  getCurrentApiVersion()
             {
-                return "0.5.0";
+                return "0.6.0";
             }
         }
 
