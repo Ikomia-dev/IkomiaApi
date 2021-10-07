@@ -1,2 +1,138 @@
 Input/Output management
 =======================
+
+
+Every algorithm in Ikomia platform comes with a list of inputs and outputs. Depending of the algorithm, 
+you will have to deal with several types. This API provides a comprehensive list of I/O types to 
+address common needs in Computer Vision.
+
+Ideally, inputs and outputs should be defined in the constructor of the task.
+
+.. note:: In some case, you may need to dynamically set inputs and/or outputs based on parameters values. You can handle such case by implementing :py:meth:`~ikomia.core.pycore.CWorkflowTask.parametersModified` and calling either :py:meth:`~ikomia.core.pycore.CWorkflowTask.addInput` or :py:meth:`~ikomia.core.pycore.CWorkflowTask.removeInput`.
+
+
+Image
+-----
+
+:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`: input or output containing image data stored as Numpy array with dimensions [HWC]. 
+When the number of channels is 3, the color format should be RGB.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia import core, dataprocess
+
+    class my_plugin(core.CWorkflowTask):
+        def init(self, name, param):
+            # Add image input
+            self.addInput(dataprocess.CImageIO())
+            # Add image output
+            self.addOutput(dataprocess.CImageIO())
+
+        def run(self):
+            # Get input
+            image_input = self.getInput(0)
+            # Get image as Numpy array
+            image = image_input.getImage()
+
+Please consult :py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO` for details.
+
+
+Graphics
+--------
+
+In Ikomia platform, graphics represent all vectorial items (line, polygon, text...) that 
+bring additionnal information to images. They can be stored as input (:py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`) 
+or output (:py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`). Different types of graphics 
+are provided, each one being implemented in a dedicated class:
+
+- Point: :py:mod:`~ikomia.core.pycore.CGraphicsPoint`
+- Polyline: :py:mod:`~ikomia.core.pycore.CGraphicsPolyline`
+- Rectangle/Square: :py:mod:`~ikomia.core.pycore.CGraphicsRectangle`
+- Ellipse/Circle: :py:mod:`~ikomia.core.pycore.CGraphicsEllipse`
+- Polygon: :py:mod:`~ikomia.core.pycore.CGraphicsPolygon`
+- Polygon with hole(s): :py:mod:`~ikomia.core.pycore.CGraphicsComplexPolygon`
+- Text: :py:mod:`~ikomia.core.pycore.CGraphicsText`
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia import core, dataprocess
+
+    class my_plugin(core.CWorkflowTask):
+        def init(self, name, param):
+            # Add graphics input
+            self.addInput(dataprocess.CGraphicsInput())
+            # Add graphics output
+            self.addOutput(dataprocess.CGraphicsOutput())
+
+        def run(self):
+            # Get graphics input: from another algorithm or user
+            graphics_input = self.getInput(0)
+            items = graphics_input.getItems()
+
+            for item in items:
+                if item.getType() == core.GraphicsItem.RECTANGLE:
+                    top_left = (item.x, item.y)
+                    width = item.width
+                    height = item.height
+
+            # Fill graphics output
+            graphics_output = self.getOutput(0)
+            graphics_output.addEllipse(0, 0, 100, 200)
+            graphics_output.addItem(core.CGraphicRectangle(0, 0, 100, 200))
+            
+.. note:: 
+    - In Ikomia Studio, you can display items of graphics output as an overlay layer on top of an image I/O. You just have to call :py:meth:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput.setImageIndex` and specify the index of the desired image I/O. 
+    - Some useful functions are implemented in :py:mod:`~ikomia.dataprocess.pydataprocess.C2dImageTask` to manage graphics items.
+    - From :py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO` you can burn items of a :py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` object directly into the image array. See :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.getImageWithGraphics` and :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.drawGraphics`.
+
+
+Numeric values
+--------------
+
+:py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO`: input or output dedicated to handle numeric values as float. 
+Data structure is organized to be visualize in a column/row table. You can also add labels describing 
+those values: *header labels* for columns and *labels* for rows.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia import core, dataprocess
+
+    class my_plugin(core.CWorkflowTask):
+        def init(self, name, param):
+            # Add numeric output
+            self.addOutput(dataprocess.CNumericIO())
+
+        def run(self):
+            # Fill numeric output
+            header = "Confidence"
+            labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
+            confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
+            numeric_output = self.getOutput(0)
+            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_ouput.addValueList(confidences, header, labels)
+
+.. note:: 
+    In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO` can be display differently depending on the value set with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setOutputType`. 
+    Possible values are listed in :py:mod:`~ikomia.dataprocess.pydataprocess.NumericOutputType`. If **PLOT** is choosen, then you have to select the plot type with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setPlotType`.
+
+
+Blob measures
+-------------
+
+
+Multi-dimensional array
+-----------------------
+
+
+Deep learning dataset
+---------------------
+
+
+Filesystem path
+---------------

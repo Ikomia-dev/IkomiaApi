@@ -44,13 +44,13 @@ Please refer to :doc:`Hello World tutorial <hello_world_plugin>` if you are not 
 Plugin files structure
 ----------------------
 
-- scikit_MorphoSnakes
+- skimage_morpho_snakes
 
     - __init__.py
     - requirements.txt
-    - scikit_MorphoSnakes.py
-    - scikit_MorphoSnakes_process.py
-    - scikit_MorphoSnakes_widget.py
+    - skimage_morpho_snakes.py
+    - skimage_morpho_snakes_process.py
+    - skimage_morpho_snakes_widget.py
 
 .. _dependencies:
 
@@ -69,14 +69,14 @@ Interface implementation
 ------------------------
 
 No features added from the default implementation.
-See `scikit_MorphoSnakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_.
+See `skimage_morpho_snakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_.
 
 .. _process_implementation:
 
 Process implementation
 ----------------------
 
-Import statements in *scikit_MorphoSnakes_process.py*:
+Import statements in *skimage_morpho_snakes_process.py*:
 
 .. code-block:: python
 
@@ -380,7 +380,7 @@ Process widget
 
 At this point, parameters are only available from source code. The role of the plugin widget is to open parameters 
 configuration to the user. We will use PyQt framework for this example. We implement the widget part in the file 
-*scikit_MorphoSnakes_widget.py*. The widget layout is created in the constructor. Like the process class, 
+*skimage_morpho_snakes_widget.py*. The widget layout is created in the constructor. Like the process class, 
 the constructor receives an instance of the parameters structure to initialize the widget components.
 
 We let the user choose the active contour method, so we need him to select the method in order to display 
@@ -527,7 +527,7 @@ Process metadata
 
 Finally, we will add some useful information about our plugin. Ikomia software manages such information and 
 display it to the user (parameters widget, Ikomia Apps). Metadata can be added in the constructor of the process 
-factory class in *scikit_MorphoSnakes_process.py*. We have to fill the member object info, 
+factory class in *skimage_morpho_snakes_process.py*. We have to fill the member object info, 
 see :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.
 
 **Our plugin is now fully functional and interactive !**
@@ -539,8 +539,8 @@ Source code
 
 `requirements.txt <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/requirements.txt>`_
 
-`scikit_MorphoSnakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_
+`skimage_morpho_snakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_
 
-`scikit_MorphoSnakes_process.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_process.py>`_
+`skimage_morpho_snakes_process.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_process.py>`_
 
-`scikit_MorphoSnakes_widget.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_
+`skimage_morpho_snakes_widget.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_

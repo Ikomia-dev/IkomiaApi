@@ -968,7 +968,7 @@ constexpr auto _imageProcess2dDocString =
         "This class defines a task with the following properties:\n\n"
         "Inputs:\n\n"
         "- image (:py:class:`CImageIO`)\n"
-        "- graphics layer (not accessible yet in Python API)\n\n"
+        "- graphics (:py:class:`CGraphicsInput`)\n\n"
         "Outputs:\n\n"
         "- image (:py:class:`CImageIO`)\n\n"
         "It is a good starting point to use it as a base class for all task dedicated to 2D images.\n\n"

@@ -1,4 +1,4 @@
-API Modules
+API Reference
 ===========
 
 List of Ikomia Python modules

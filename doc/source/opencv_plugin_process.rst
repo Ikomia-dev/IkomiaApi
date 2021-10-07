@@ -28,7 +28,6 @@ Code example for OCVBasics process implementation
             self.kernel_size = (int(paramMap["kernel_size_x"]), int(paramMap["kernel_size_y"]))
             self.sigma_x = int(paramMap["sigma_x"])
             self.sigma_y = int(paramMap["sigma_y"])
-            pass
 
         def getParam(self):
             # Send parameters values to Ikomia application (workflow)

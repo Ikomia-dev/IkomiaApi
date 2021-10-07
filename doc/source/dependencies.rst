@@ -36,13 +36,13 @@ Example of plugin structure:
 - MyPlugin
 
     - __init__.py
-    - MyPlugin.py
-    - MyPlugin_process.py
-    - MyPlugin_widget.py
+    - my_plugin.py
+    - my_plugin_process.py
+    - my_plugin_widget.py
     - requirements1.txt
     - requirements2.txt
 
-In this configuration, Ikomia software will first install Python packages listed *requirements1.txt* and 
+In this configuration, Ikomia software will first install Python packages listed in *requirements1.txt* and 
 then those listed in the file *requirements2.txt*.
 
 

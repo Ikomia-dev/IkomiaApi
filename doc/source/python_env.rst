@@ -14,13 +14,13 @@ The Python environment configuration may vary among your operating system:
 
 - Version: *3.8*
 - Path: *c:\\Users\\{username}\\Ikomia\\Python*
-- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.3, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
+- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.2, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
 
 **Linux**
 
 - Version: *3.7*
 - Path: *~/Ikomia/Python*
-- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.3, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
+- Installed packages: *pip, numpy=1.20.0, requests, PyQt5=5.15.2, Pillow=8.1.0, opencv=4.5.2, mlflow=1.14.1, tensorboard>=2.4.1, matplotlib*
 
 .. Note:: To ensure interoperability with Qt, the PyQt5 package **must not** be updated with pip or other package manager.
 

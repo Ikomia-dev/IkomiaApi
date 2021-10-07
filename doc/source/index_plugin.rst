@@ -25,12 +25,12 @@ Then, each plugin must follow the connection mechanism of Ikomia Studio by provi
 
 Finally, the minimal file structure of a plugin could be:
 
-    - my-plugin-name (folder)
+    - my_plugin_name (folder)
 
         - __init__.py
-        - my-plugin-name.py: implementation of the main plugin interface.
-        - my-plugin-name_process.py: implementation of the algorithm, its parameters and its factory.
-        - my-plugin-name_widget.py: implementation of the widget and its factory.
+        - my_plugin_name.py: implementation of the main plugin interface.
+        - my_plugin_name_process.py: implementation of the algorithm, its parameters and its factory.
+        - my_plugin_name_widget.py: implementation of the widget and its factory.
 
 
 Getting started
@@ -44,6 +44,7 @@ So you need to use this environment while implementing your plugin. More details
 
     python_env
     dependencies
+    naming
 
 
 These tutorial sections will help you understand the API structure and will guide you through the creation of your first plugins:

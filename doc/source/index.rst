@@ -18,7 +18,7 @@ Choose your API usage
 ---------------------
 As an Ikomia user, you will be led to use this API for two reasons:
 
-    - **Create plugins for Ikomia Studio**: with a little wrap around your Python code, you are able to integrate your algorithm in a user friendly and powerful software. Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
+    - **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to give access to your algorithm from a user friendly software (Ikomia Studio) and a flexible workflow API. Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
     - **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms and those from the Marketplace directly in your application. Run single algorithm or workflows with few lines of code.
 
 

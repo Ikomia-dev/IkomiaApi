@@ -5,18 +5,18 @@ This section will show how to create a fully functional plugin applying basics O
 
 We skip here all steps to create a new empty plugin. Please refer to :doc:`Hello World tutorial <hello_world_plugin>` if you are not familiar with it.
 
-At this point, a plugin called *OCVBasics* is created with the following structure:
+At this point, a plugin called *ocv_basics* is created with the following structure:
     .../*BasicsOpenCV/*
         - *__init__.py*
-        - *OCVBasics.py*
-        - *OCVBasics_process.py*
-        - *OCVBasics_widget.py*
+        - *ocv_basics.py*
+        - *ocv_basics_process.py*
+        - *ocv_basics_widget.py*
 
 Interface implementation
 ------------------------
 
 No features added from the default implementation.
-See :doc:`OCVBasics.py <opencv_plugin_interface>`.
+See :doc:`ocv_basics.py <opencv_plugin_interface>`.
 
 
 Process implementation
@@ -27,7 +27,7 @@ This base class comes with default inputs (image + graphics) and outputs (image)
 
 Our process pipeline will be: *Convert to grayscale* -> *Gaussian blur* -> *Canny filter*.
 
-The first thing to do in our *OCVBasics_process.py* is importing OpenCV package (already installed):
+The first thing to do in our *ocv_basics_process.py* is importing OpenCV package (already installed with Ikomia Studio):
 
 .. code-block:: python
     
@@ -82,7 +82,7 @@ Reload plugin in Ikomia software (with Plugin Manager or in the main menu), add 
 Process parameters
 ------------------
 
-We will focus now on adding some parameters to our process ((in *OCVBasics_process.py*). 
+We will focus now on adding some parameters to our process ((in *ocv_basics_process.py*). 
 Let's say we want to control blur strengh of the Gaussian filter, we have to manage at least 3 parameters:
 
 - Kernel size
@@ -90,7 +90,7 @@ Let's say we want to control blur strengh of the Gaussian filter, we have to man
 - Sigma Y
 
 First, we add member variables in the parameters class, they will be accessible from the process. 
-Note the presence of functions :py:meth:`~~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and :py:meth:`~~ikomia.core.pycore.CWorkflowTaskParam.getParamMap`
+Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.getParamMap`
 which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
@@ -98,7 +98,7 @@ which are required to save/load values when user wants to save his workflow.
     class OCVBasicsProcessParam(core.CWorkflowTaskParam):
 
         def __init__(self):
-            core.CProtocolTaskParam.__init__(self)
+            core.CWorkflowTaskParam.__init__(self)
             # Place default value initialization here
             self.kernel_size = (3, 3)
             self.sigma_x = 1.0
@@ -110,7 +110,6 @@ which are required to save/load values when user wants to save his workflow.
             self.kernel_size = (int(paramMap["kernel_size_x"]), int(paramMap["kernel_size_y"]))
             self.sigma_x = int(paramMap["sigma_x"])
             self.sigma_y = int(paramMap["sigma_y"])
-            pass
 
         def getParam(self):
             # Send parameters values to Ikomia application (workflow)
@@ -164,6 +163,8 @@ Process widget
 At this point, parameters are only available from source code. 
 The role of the plugin widget is to open parameters configuration to the user.
 We will use PyQt framework for this example.
+
+.. note:: You can also use PySide2 (another Qt-based framework supported by Qt) for your widget.
 
 We implement the widget part in the file *OCVBasics_widget.py*. 
 The widget layout is created in the constructor. 
@@ -294,8 +295,8 @@ We have to fill the member object *info*, see :py:class:`~~ikomia.dataprocess.py
 Source code
 -----------
 
-:doc:`OCVBasics.py <opencv_plugin_interface>`
+:doc:`ocv_basics.py <opencv_plugin_interface>`
 
-:doc:`OCVBasics_process.py <opencv_plugin_process>`
+:doc:`ocv_basics_process.py <opencv_plugin_process>`
 
-:doc:`OCVBasics_widget.py <opencv_plugin_widget>`
+:doc:`ocv_basics_widget.py <opencv_plugin_widget>`
