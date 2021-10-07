@@ -22,6 +22,7 @@ Module dedicated to Deep Learning training.
 """
 
 from ikomia import dataprocess
+from ikomia.dnn import datasetio
 import mlflow
 from datetime import datetime
 
@@ -49,6 +50,7 @@ class TrainProcess(dataprocess.CDnnTrainTask):
             param (:py:class:`~ikomia.core.task.TaskParam`): task parameters
         """
         dataprocess.CDnnTrainTask.__init__(self, name, param)
+        self.addInput(datasetio.IkDatasetIO())
         self.experiment_id = -1
         self._init_mlflow()
 
