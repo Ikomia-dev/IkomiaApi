@@ -86,7 +86,7 @@ class Workflow(dataprocess.CWorkflow):
             utils.http.download_file(url, img_path)
             img_input = dataprocess.CImageIO(datatype, "Image", img_path)
 
-        if index == -1:
+        if index == -1 or index >= self.getInputCount():
             self.addInput(img_input)
         else:
             self.setInput(img_input, index, True)
@@ -426,7 +426,7 @@ class Workflow(dataprocess.CWorkflow):
             self.set_directory_input(folder=folder)
             self.run()
         else:
-            self.set_image_input(array=array, path=path, url=url)
+            self.set_image_input(array=array, path=path, url=url, index=0)
             self.run()
 
     def _run_directory(self):
