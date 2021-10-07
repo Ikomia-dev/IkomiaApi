@@ -410,6 +410,27 @@ def test_set_task_parameters():
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
 
 
+def test_video():
+    cap = cv2.VideoCapture(0)
+
+    wf = workflow.create("Video Processing")
+    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
+    wf.connect_tasks(wf.getRootID(), clahe_id)
+    canny_id, canny = wf.add_task(ik.ocv_canny)
+    wf.connect_tasks(clahe_id, canny_id)
+
+    while True:
+        ret, img = cap.read()
+        wf.run_on(array=img)
+        res_img = wf.get_image(canny_id, 0)
+        cv2.imshow("Result", res_img)
+
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyAllWindows()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
@@ -417,21 +438,22 @@ if __name__ == "__main__":
     parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
     opt = parser.parse_args()
 
-    # test_metadata()
-    # test_load()
-    # test_single_image_run()
-    # test_directory_run()
-    # test_run_common()
-    # test_export_graphviz()
-    # test_graph_structure()
-    # test_time_metrics()
-    # test_graph_build()
-    # test_get_outputs(opt.detect_dataset_dir)
-    # test_get_image_with_graphics()
+    test_metadata()
+    test_load()
+    test_single_image_run()
+    test_directory_run()
+    test_run_common()
+    test_export_graphviz()
+    test_graph_structure()
+    test_time_metrics()
+    test_graph_build()
+    test_get_outputs(opt.detect_dataset_dir)
+    test_get_image_with_graphics()
     test_get_image()
-    # test_set_task_parameters()
-    #
-    # if opt.train_test:
-    #     test_resnet_train(opt.classif_dataset_dir)
-    #     test_yolo_train(opt.detect_dataset_dir)
-    #     test_yolov5_train(opt.detect_dataset_dir)
+    test_set_task_parameters()
+    test_video()
+
+    if opt.train_test:
+        test_resnet_train(opt.classif_dataset_dir)
+        test_yolo_train(opt.detect_dataset_dir)
+        test_yolov5_train(opt.detect_dataset_dir)
