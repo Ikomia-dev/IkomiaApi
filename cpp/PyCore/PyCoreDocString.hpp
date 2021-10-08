@@ -689,6 +689,12 @@ constexpr auto _ctor1MeasureDocString =
         "Args:\n"
         "   id: :py:class:`~ikomia.core.pycore.MeasureId";
 
+constexpr auto _ctor2MeasureDocString =
+        "Construct a measure with the given identifier and name.\n\n"
+        "Args:\n"
+        "   id: :py:class:`~ikomia.core.pycore.MeasureId\n\n"
+        "   name (str)\n";
+
 constexpr auto _getAvailableMeasuresDocString =
         "Get available measures (static method).\n"
         "Returns:"
