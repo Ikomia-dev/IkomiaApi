@@ -1,5 +1,6 @@
-Integrate your algorithm in Ikomia platform
-===========================================
+Integrate your algorithm in Ikomia
+==================================
+
 Ikomia platform is an Open Source ecosystem providing plug'n'play algorithms in Computer Vision. Such algorithms can then be tested and evaluated in 
 Ikomia Studio for fast prototyping or used in business application through a :doc:`dedicated API<index_api>`. Ikomia Studio is a desktop software 
 (Qt based) that will help you to access and evaluate state of the art algorithms in a no-code way. It includes built-in algorithms from well-known 
@@ -12,6 +13,7 @@ You will also be able to publish your method to the Marketplace and promote your
 
 The plugin structure
 --------------------
+
 In Ikomia platform, each plugin is intended for use in workflows to process image-based data. A workflow is thus composed of several connected tasks that get inputs, process them and give results through outputs.
 When you create your own plugin, there are some few essential components to deal with, each one being implemented by a specific class:
 
@@ -41,6 +43,7 @@ Finally, the minimal file structure of a plugin could be:
 
 Getting started
 ---------------
+
 You are almost ready to write your first Ikomia plugin. We just need to introduce how the Python environment is managed in Ikomia Studio.
 As a C++/Qt software, Ikomia Studio embeds a specific version of the Python interpreter.
 So you need to use this environment while implementing your plugin. More details are given in the following pages:
@@ -65,6 +68,7 @@ These tutorial sections will help you understand the API structure and will guid
 
 Going deeper
 ------------
+
 .. toctree::
     :maxdepth: 1
 
@@ -75,6 +79,7 @@ Going deeper
 
 Examples
 --------
+
 Here are source codes associated with the tutorials.
 
 .. toctree::
