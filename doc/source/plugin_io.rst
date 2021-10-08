@@ -8,7 +8,10 @@ address common needs in Computer Vision.
 
 Ideally, inputs and outputs should be defined in the constructor of the task.
 
-.. note:: In some case, you may need to dynamically set inputs and/or outputs based on parameters values. You can handle such case by implementing :py:meth:`~ikomia.core.pycore.CWorkflowTask.parametersModified` and calling either :py:meth:`~ikomia.core.pycore.CWorkflowTask.addInput` or :py:meth:`~ikomia.core.pycore.CWorkflowTask.removeInput`.
+.. note:: 
+    In some case, you may need to dynamically set inputs and/or outputs based on parameters values. You can handle such case by implementing 
+    :py:meth:`~ikomia.core.pycore.CWorkflowTask.parametersModified` and calling either :py:meth:`~ikomia.core.pycore.CWorkflowTask.addInput` or 
+    :py:meth:`~ikomia.core.pycore.CWorkflowTask.removeInput` from your task class.
 
 
 Image
@@ -125,14 +128,126 @@ Basic usage:
 Blob measures
 -------------
 
+:py:mod:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`: input or output dedicated to handle measures computed on BLOBs (Binary Large Objects).
+BLOBs are regions or connected components extracted from image based on specific properties (color, brightness, edges...). A CBlobMeasureIO instance 
+stores a list of :py:mod:`~ikomia.dataprocess.pydataprocess.CObjectMeasure` (one for each BLOB). Here is the list of available measures:
+
+- Surface (core.MeasureId.SURFACE)
+- Perimeter (core.MeasureId.PERIMETER)
+- Centroïd (core.MeasureId.CENTROID)
+- Bounding box (core.MeasureId.BBOX): top-left point coordinates, width, height
+- Oriented bounding box (core.MeasureId.ORIENTED_BBOX): center point coordinates, width, height, angle of rotation
+- Equivalent diameter (core.MeasureId.EQUIVALENT_DIAMETER): diameter of the minimum enclosing circle computed from the surface
+- Elongation (core.MeasureId.ELONGATION): elongation factor computed from moments (R. Mukundan and K.R. Ramakrishnan. Moment Functions in Image Analysis –Theory and Applications. World Scientific, 1998)
+- Circularity (core.MeasureId.CIRCULARITY): circularity factor in [0, 1] computed from surface and perimeter
+- Solidity (core.MeasureId.SOLIDITY): compactness factor defined as a ratio between blob surface and convex hull surface
+
+BLOB measure can be associated with a graphics element from a :py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` and store the corresponding 
+graphics id in :py:mod:`~ikomia.dataprocess.pydataprocess.CObjectMeasure`.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia.core import CWorkflowTask, CMeasure, MeasureId
+    from ikomia.dataprocess import CBlobMeasureIO, CObjectMeasure
+
+    class my_plugin(CWorkflowTask):
+        def init(self, name, param):
+            # Add BLOB measure output
+            self.addOutput(CBlobMeasureIO())
+
+        def run(self):
+            # Fill blob measure output
+            blob_output = self.getOutput(0)
+            boxes, confidences = my_object_detection_func()
+            measures = []
+            graphics_id = -1
+
+            for box, conf in zip(boxes, confidences):
+                measures.append(CObjectMeasure(CMeasure(MeasureId.BBOX), [box.x, box.y, box.width, box.height], graphics_id, "label"))
+                measures.append(CObjectMeasure(CMeasure(MeasureId.CUSTOM, "Confidence"), conf, graphics_id, "label"))
+                blob_output.addObjectMeasures(measures)
+
+
+.. note:: In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO` outputs are visualized in tables.
+
 
 Multi-dimensional array
 -----------------------
+
+:py:mod:`~ikomia.dataprocess.pydataprocess.CArrayIO`: input or output dedicated to handle multi-dimensional array. 
+:py:mod:`~ikomia.dataprocess.pydataprocess.CArrayIO` instance just stores a Numpy array that will be not considered as image. 
+Thus, such I/O are not visualized in Ikomia Studio.
 
 
 Deep learning dataset
 ---------------------
 
+:py:mod:`~ikomia.dnn.datasetio.IkDatasetIO`: input or output dedicated to handle deep learning image dataset. The Ikomia platform aims 
+to simplify the use of state of the art algorithms, especially training algorithms. The idea behind :py:mod:`~ikomia.dnn.datasetio.IkDatasetIO` 
+is to define a common structure so that every datasets converted to Ikomia format can then be used by any training algorithms of Ikomia 
+Marketplace. Ikomia dataset structure is inspired by PyTorch and Detectron2. It is composed of a global dict with 2 main entries 
+‘images’ and ‘metadata’.
+
+This API provides built-in function to manage standard dataset format:
+
+- COCO (2017): :py:func:`~ikomia.dnn.dataset.load_coco_dataset`.
+- PASCAL-VOC (2012): :py:func:`~ikomia.dnn.dataset.load_pascalvoc_dataset`.
+- VIA (VGG Image Annotator): :py:func:`~ikomia.dnn.dataset.load_via_dataset`.
+- YOLO: :py:func:`~ikomia.dnn.dataset.load_yolo_dataset`.
+
+More information in :py:mod:`~ikomia.dnn.dataset`.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia.core import CWorkflowTask
+    from ikomia.dnn.datasetio import IkDatasetIO
+
+    class my_plugin(CWorkflowTask):
+        def init(self, name, param):
+            # Add dataset input
+            self.addInput(IkDatasetIO())
+            # Add dataset output
+            self.addOutput(IkDatasetIO())
+
+        def run(self):
+            # Load dataset
+            dataset = self.getOutput(0)
+            dataset.data = my_dataset_loader_func()
+
+.. note:: 
+    You will find other dataset loaders in the Ikomia Marketplace. You can also consult our GitHub repository to find implementation details (dataset_wgisd for example).
+
 
 Filesystem path
 ---------------
+
+:py:mod:`~ikomia.dataprocess.pydataprocess.CPathIO`: input or output dedicated to handle folder or file path.
+
+Basic usage:
+
+.. code-block:: python
+
+    import os
+    from ikomia.core import CWorkflowTask, IODataType
+    from ikomia.dataprocess import CPathIO
+
+    class my_plugin(CWorkflowTask):
+        def init(self, name, param):
+            # Add path input
+            self.addInput(CPathIO(IODataType.FILE_PATH))
+            # Add path output
+            default_path = "/usr/local"
+            self.addOutput(CPathIO(IODataType.FOLDER_PATH, default_path))
+
+        def run(self):
+            # Get path
+            path_input = self.getInput(0)
+            path_in = path_input.getPath()
+
+            # Set path
+            path_output = self.getOutput(0)
+            path_output.setPath(os.path.dirname(path_in))

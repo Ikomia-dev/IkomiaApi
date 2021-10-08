@@ -45,7 +45,7 @@ Inherit from the pure Python base class
 As an option, it is possible to inherit your parameter class from a pure Python base class 
 (:py:mod:`~ikomia.core.task.TaskParam`) that make it easier. Indeed, parameters are managed directly 
 in a dict member instead of defining one variable for each parameter. Another small advantage is that 
-the method *getParamMap()* should not be reimplemented anymore.
+the method *getParamMap()* has not to be reimplemented anymore.
 
 .. code-block:: python
 
