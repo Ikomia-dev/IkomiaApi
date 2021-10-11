@@ -31,6 +31,7 @@ Workflow
         ~Workflow.run_on
         ~Workflow.set_directory_input
         ~Workflow.set_image_input
+        ~Workflow.set_parameters
 
 
     .. rubric:: Inherited methods
@@ -114,6 +115,7 @@ Workflow
     .. automethod:: set_image_input
     .. automethod:: setInput
     .. automethod:: setOutputFolder
+    .. automethod:: set_parameters
     .. automethod:: save
     .. automethod:: stop
     .. automethod:: updateStartTime
