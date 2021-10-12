@@ -28,7 +28,9 @@ from ikomia.dataprocess import registry
 # Add built-in OpenCV to Python path
 if not utils.isAppStarted():
     if sys.platform == "win32":
-        sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib")
+        lib_path = os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib"
+        sys.path.insert(0, lib_path)
+        os.environ["PATH"] += lib_path
     else:
         sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
 
