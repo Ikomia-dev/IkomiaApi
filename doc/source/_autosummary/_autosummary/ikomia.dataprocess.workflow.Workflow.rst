@@ -22,6 +22,7 @@ Workflow
         ~Workflow.get_blob_measure_output
         ~Workflow.get_dataset_output
         ~Workflow.get_graphics_output
+        ~Workflow.get_image
         ~Workflow.get_image_output
         ~Workflow.get_image_with_graphics
         ~Workflow.get_numeric_output
@@ -92,6 +93,7 @@ Workflow
     .. automethod:: getElapsedTimeTo
     .. automethod:: getFinalTasks
     .. automethod:: get_graphics_output
+    .. automethod:: get_image
     .. automethod:: get_image_output
     .. automethod:: get_image_with_graphics
     .. automethod:: getInEdges

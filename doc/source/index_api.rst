@@ -28,6 +28,17 @@ You simply install Ikomia API via pip for Linux and Windows:
     More versions will be available soon.
 
 
+.. Important::
+    **OpenCV**
+    
+    A GPU-enabled version of OpenCV is bundled within the Ikomia package. It includes all the core 
+    and contribution librairies with CUDA support. There is only one important constraint to respect, **you must import Ikomia 
+    module before importing cv2 module**.
+    
+    As  result, the package *opencv-python* from Pypi repository must not be installed in 
+    the same Python environment. This will lead to incompatibility issues.
+
+
 Concepts
 --------
 
@@ -74,6 +85,13 @@ inputs/outputs. This API provides a comprehensive list of I/O types to address c
 information :doc:`here <plugin_io>`.
 
 
+Authentication
+--------------
+
+Access to the Ikomia Marketplace is reserved for registered users. So if you need algorithms from the Marketplace in your workflow, you have 
+to set your Ikomia credentials in environment variables: **IKOMIA_USER** and **IKOMIA_PWD**.
+
+
 In practice
 -----------
 
@@ -83,3 +101,6 @@ Let's dive now into the API with practical examples:
     :maxdepth: 1
 
     first_steps_workflow
+    going_deeper_workflow
+    working_with_task
+    display_tools

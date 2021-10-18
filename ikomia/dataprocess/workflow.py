@@ -116,6 +116,7 @@ class Workflow(dataprocess.CWorkflow):
         You can get parameters keys for each by calling:
 
         .. code-block:: python
+
             print(task_obj.getParam())
 
         Args:
@@ -351,14 +352,14 @@ class Workflow(dataprocess.CWorkflow):
 
     def find_task(self, name: str, index=-1):
         """
-        Get identifiers of tasks with the given name in the workflow.
+        Get identifiers and instance of tasks with the given name in the workflow.
 
         Args:
              name (str): algorithm name
              index (int): zero-based index of the wanted task. If -1, the function returns all candidates.
 
         Returns:
-            list of pairs (tuple): 1- task identifier 2- task object
+            list of pairs (tuple): 1- task identifier 2- task object instance
         """
         tasks = []
         ids = self.getTaskIDs()

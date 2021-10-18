@@ -60,3 +60,15 @@ Then you can select a package and make the following actions:
 
 
 .. image:: _static/plugin_manager.jpg
+
+
+OpenCV
+------
+
+A GPU-enabled version of OpenCV is bundled within the Ikomia Studio Python environment. It includes all the core 
+and contribution librairies with CUDA support. There is only one important constraint to respect, **you must import Ikomia 
+module before importing cv2 module**.
+
+.. Important::
+    Because Python OpenCV is already included, the package *opencv-python* from Pypi repository must not be installed in 
+    the Ikomia Python environment. This will lead to incompatibility issues. 
