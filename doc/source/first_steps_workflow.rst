@@ -185,5 +185,5 @@ With name only:
     you will find a sub-namespace for each algorithm: *name_of_algorithm_param*.
     
 .. important::
-    The example above assumes that there is only one Box Filter algorithm. If it is not the case, you can set a keywords argument **index** in
+    The example above assumes that there is only one Box Filter algorithm in the workflow. If it is not the case, you can set a keywords argument **index** in
     both :py:meth:`~ikomia.dataprocess.workflow.Workflow.find_task` and :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_parameters`.

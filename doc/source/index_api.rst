@@ -22,7 +22,7 @@ You simply install Ikomia API via pip for Linux and Windows:
 .. note::
     For this beta version, we only provide Python wheel for Python 3.7. It includes OpenCV package (v4.5.2) with CUDA enabled (v11.1), 
     CuDNN 8. Thus, you must have CUDA 11 drivers for your graphic card and install machine learning framework compatible with CUDA 11.
-    For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distribution. For 
+    For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distributions. For 
     Windows, the wheel is only compatible with Windows 10.
 
     More versions will be available soon.
@@ -35,7 +35,7 @@ You simply install Ikomia API via pip for Linux and Windows:
     and contribution librairies with CUDA support. There is only one important constraint to respect, **you must import Ikomia 
     module before importing cv2 module**.
     
-    As  result, the package *opencv-python* from Pypi repository must not be installed in 
+    As a result, the package *opencv-python* from Pypi repository must not be installed in 
     the same Python environment. This will lead to incompatibility issues.
 
 

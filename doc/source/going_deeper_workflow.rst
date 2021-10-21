@@ -7,8 +7,8 @@ Set workflow inputs
 
 In the previous section, we use :py:meth:`~ikomia.dataprocess.workflow.Workflow.run_on` to execute a workflow on common inputs. 
 But this function can only be used for a workflow with a single input. In fact, a workflow object is also a task 
-(:py:mod:`~ikomia.dataprocess.workflow.Workflow` is derived from :py:mod:`~ikomia.core.CWorkflowTask`). Please find below 
-the generic way to set workflow inputs.
+(:py:mod:`~ikomia.dataprocess.workflow.Workflow` is derived from :py:mod:`~ikomia.core.CWorkflowTask`) and you can add as many inputs as you want. 
+Please find below the generic way to set workflow inputs.
 
 .. code-block:: python
 
@@ -44,6 +44,8 @@ from the oldest to the most recent. You can also specify a zero-based index (ins
 Considering the following workflow:
 
 .. image:: _static/workflow_example1.jpg
+
+Here is how you will retrieve a specific task:
 
 .. code-block:: python
 
@@ -94,8 +96,8 @@ The generic way to get workflow outputs is to firstly get the task object and th
     box_output = yolov4_obj.getOutput(2)
 
 The :py:mod:`~ikomia.dataprocess.workflow.Workflow` class provides convenient methods to get outputs by type. For all these methods, 
-you could get outputs from the task name or the task id. When using task name, the methods will return a list of outputs for all maching 
-tasks. When a task has several outputs of the same type, you can specify the output index (zero-based index of all outputs).
+you could get outputs from the task name or the task id (faster). When using task name, the methods will return a list of outputs for all matching 
+tasks. When a task has several outputs of the same type, you can specify the output index (zero-based index among all outputs).
 
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_image_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_graphics_output`
@@ -132,18 +134,179 @@ Handle the workflow graph structure
 A workflow is a graph where the nodes are the runnable tasks (algorithms) and the links between nodes are connections from task outputs to task inputs.
 Basically, you need two methods to build your own workflow:
 
-- :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`
-- :py:meth:`~ikomia.dataprocess.workflow.Workflow.connect_tasks`
+- :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`: instanciate an algorithm object and add it to the workflow. All algorithms are identified by their unique names and the function uses this name to create instance (factory design pattern). Instanciation process firstly searches for installed algorithms in the registry. If not found, it searches in the Ikomia Marketplace and do all installation steps automatically. Note that this installation can take a while (download package and install dependencies) but it will be executed once.
+- :py:meth:`~ikomia.dataprocess.workflow.Workflow.connect_tasks`: connect 2 tasks of the workflow so that output data from the source task will be forwarded to target task input when running the workflow.
+
+The first way to connect tasks is to let the system create connections automatically based on input and output data types. This will work well in simple scenarios. 
+In the following example, we will create a simple workflow composed by a Box Filter (noise reduction) and CLAHE algorithm (histogram equalization). Both tasks have 
+2 inputs (IMAGE + GRAPHICS) and 1 output (IMAGE). In this simple case, auto-connection will work well and make the code easy.
+
+.. code-block:: python
+
+    from ikomia.utils import ik
+    from ikomia.dataprocess import workflow
+
+    wf = workflow.create("MyWorkflow")
+
+    # Add Box Filter
+    box_filter_id, box_filter = wf.add_task(ik.ocv_box_filter)
+
+    # Connect to root (auto-connection)
+    wf.connect_tasks(wf.getRootID(), box_filter_id)
+
+    # Add CLAHE
+    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
+
+    # Connect to Box Filter (auto-connection)
+    wf.connect_tasks(box_filter_id, clahe_id)
+
+If you want to have a full control in the connection mechanism, you could set manually the list of connections between 2 tasks. A connection is defined as a pair of index, 
+the first one being the output index of the source task, the second being the input index of the target task. You must pass a list of pairs because 2 tasks can be connected 
+by multiple output-input links. Adding a DT Filter with manual connections to the previous workflow will look like this:
+
+.. code-block:: python
+
+    # Add DT Filter algorithm to the workflow
+    dtfilter_id, dtfilter = wf.add_task(ik.ocv_dt_filter)
+
+    # Connect to CLAHE with manual connections
+    wf.connect_tasks(clahe_id, dtfilter_id, [(0, 0), (0, 1)])
+
+The :py:mod:`~ikomia.dataprocess.workflow.Workflow` class provides also functions to browse the graph structure of an existing workflow. Consult 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getTaskIDs`, :py:meth:`~ikomia.dataprocess.workflow.Workflow.getTask`, 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getParents`, :py:meth:`~ikomia.dataprocess.workflow.Workflow.getFinalTasks`, 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getInEdges`, :py:meth:`~ikomia.dataprocess.workflow.Workflow.getOutEdges`, 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getEdgeSource`, :py:meth:`~ikomia.dataprocess.workflow.Workflow.getEdgeTarget`, 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getEdgeInfo` for details.
 
 
 Create a Deep Learning training workflow
 ----------------------------------------
 
+Training deep learning models is an important use case of Ikomia API. The workflow approach is also well suited for this case and you can handle it 
+with few lines of code. Basically, it will consist in 2 main tasks:
+
+- a dataset loader that will convert your custom dataset structure into the Ikomia Dataset structure. This conversion is mandatory to leverage all training algorithms you can find in the Marketplace. We provide dataset loader of common formats like COCO, PascalVOC, YOLO...
+- a training algorithm. You will find various algorithms in the Marketplace for classification, object detection, segmentation...
+
+Here is an example of a training workflow for a YOLOv4 model and a custom dataset in YOLO format (grapes detection):
+
+.. code-block:: python
+
+    from ikomia.utils import ik
+    from ikomia.dataprocess import workflow
+    from ikomia.dnn import start_monitoring
+
+    wf = workflow.create("MyTrainingWorkflow")
+
+    # Add dataset loader for grapes dataset
+    # No need to connect dataset loader task to root node as it does not need workflow input
+    wgisd_id, wgisd = wf.add_task("dataset_wgisd")
+    dataset_params = {
+        ik.dataset_wgisd_param.data_folder_path: "path/to/data/folder",
+        ik.dataset_wgisd_param.class_file_path: "path/to/class/file.txt" 
+    }
+    wf.set_parameters(dataset_params, task_id=wgisd_id)
+
+    # Add YOLO training algorithm
+    yolo_id, yolo = wf.add_task(ik.train_yolo)
+    yolo_params = { ik.train_yolo_param.model: "yolov4" }
+    wf.set_parameters(yolo_params, task_id=yolo_id)
+    wf.connect_tasks(wgisd_id, yolo_id)
+
+    # Start MLflow and Tensorboard
+    start_monitoring()
+
+    # Start training
+    wf.run()
+
+.. note::
+    Ikomia API integrates MLflow and Tensorboard for training monitoring. Depending on the algorithm implementation, 
+    you will have access to metrics, parameters, artifacts in MLflow or Tensorboard or both. 
+    
+.. important::
+    If you need a model not present in the Marketplace, it is quiet easy to port your prefered model in Ikomia ecosystem. 
+    Documentation can be found :doc:`here <index_plugin>` and :doc:`here <plugin_task>`.
+
 
 Working with video
 ------------------
+
+At this time, we do not offer high level API to handle videos and streams. On the other hand, it is very simple to 
+run a workflow on each frame acquired by a third-party video library. Here is an example with OpenCV:
+
+.. code-block::
+
+    from ikomia.utils import ik
+    from ikomia.dataprocess import workflow
+    import cv2
+
+    # Initializing stream capture
+    cap = cv2.VideoCapture(0)
+
+    # Build workflow
+    wf = workflow.create("MyVideoWorkflow")
+    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
+    wf.connect_tasks(wf.getRootID(), clahe_id)
+    canny_id, canny = wf.add_task(ik.ocv_canny)
+    wf.connect_tasks(clahe_id, canny_id)
+
+    while True:
+        ret, img = cap.read()
+        # Execute on current frame
+        wf.run_on(array=img)
+        res_img = wf.get_image(canny_id, 0)
+        cv2.imshow("Result", res_img)
+
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyAllWindows()
 
 
 Get workflow time metrics
 -------------------------
 
+Ikomia API provides functions to get executing time of a workflow, globally and at task level.
+
+Get the total time (:py:meth:`~ikomia.dataprocess.workflow.Workflow.getTotalElapsedTime`):
+
+.. code-block::
+
+    from ikomia.dataprocess import workflow
+
+    wf = workflow.load("path/to/workflow.json")
+    wf.set_image_input(path="path/to/image.png")
+    wf.run()
+
+    # Executing time in ms
+    time_ms = wf.getTotalElapsedTime()
+
+Get executing time for each task 
+(:py:meth:`~ikomia.core.pycore.CWorkflowTask.getElapsedTime` and 
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.getElapsedTimeTo`):
+
+.. code-block::
+
+    from ikomia.dataprocess import workflow
+
+    wf = workflow.load("path/to/workflow.json")
+    wf.set_image_input(path="path/to/image.png")
+    wf.run()
+
+    ids = wf.getTaskIDs()
+    for task_id in ids:
+        task = wf.getTask(task_id)
+        time_ms = task.getElapsedTime()
+        time_to_ms = wf.getElapsedTimeTo(task_id)
+
+You can also get all metrics in a dict structure (:py:meth:`~ikomia.dataprocess.workflow.Workflow.get_time_metrics`):
+
+.. code-block::
+
+    from ikomia.dataprocess import workflow
+
+    wf = workflow.load("path/to/workflow.json")
+    wf.set_image_input(path="path/to/image.png")
+    wf.run()
+    metrics = wf.get_time_metrics()
