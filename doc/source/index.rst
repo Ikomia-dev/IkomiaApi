@@ -7,26 +7,29 @@ The Ikomia platform is made up of three components:
 
     - **Ikomia Marketplace**: centralized place where you can find plug'n'play algorithms of Computer Vision
     - **Ikomia Studio**: free desktop software (Linux and Windows) for easy algorithm evaluation and fast prototyping
-    - **Ikomia API**: Python API to leverage state of the art algorithms for your own computer vision application and/or create plugins for Ikomia Studio and the Marketplace
+    - **Ikomia API**: Python API to create plugins for Ikomia Studio and the Marketplace
 
 .. note:: Ikomia API is built around core C++ libraries with Python bindings. It contains also pure Python modules for high-level features.
 
 .. important:: Ikomia Studio and Ikomia API are Open-Source projects, AGPLv3 and LGPLv3 respectively.
 
 
-Choose your API usage
----------------------
-As an Ikomia user, you will be led to use this API for two reasons:
+As an Ikomia user, you can easily evaluate state of the art algorithms from the Ikomia Marketplace to speed the
+development of your own method. Ikomia Marketplace also aims to be a community place where every one can promote its
+work through plug'n'play algorithms. We provide this API to address this point.
 
-    - **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to give access to your algorithm from a user friendly software (Ikomia Studio) and a flexible workflow API. Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
-    - **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms and those from the Marketplace directly in your application. Run single algorithm or workflows with few lines of code.
 
+With a little wrap around your Python code, you are able to give access to your algorithm from a user friendly software
+(Ikomia Studio). Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it
+with the community.
+
+
+**Ready to start?**
 
 .. toctree::
     :maxdepth: 1
 
     index_plugin
-    index_api
 
 
 Useful links

@@ -2,10 +2,9 @@ Integrate your algorithm in Ikomia
 ==================================
 
 Ikomia platform is an Open Source ecosystem providing plug'n'play algorithms in Computer Vision. Such algorithms can then be tested and evaluated in 
-Ikomia Studio for fast prototyping or used in business application through a :doc:`dedicated API<index_api>`. Ikomia Studio is a desktop software 
-(Qt based) that will help you to access and evaluate state of the art algorithms in a no-code way. It includes built-in algorithms from well-known 
-libraries like **OpenCV** and give access to the Ikomia Marketplace. Ikomia Studio offers the possibility to build complex **workflows** thanks to 
-a flexible graph-based editor.
+Ikomia Studio for fast prototyping. Ikomia Studio is a desktop software (Qt based) that will help you to access and evaluate state of the art algorithms
+in a no-code way. It includes built-in algorithms from well-known libraries like **OpenCV** and give access to the Ikomia Marketplace. Ikomia Studio offers
+the possibility to build complex **workflows** thanks to a flexible graph-based editor.
 
 The aim of this API is to offer a simple Python interface to add user-defined plugin into Ikomia platform. A plugin is a Python implementation of an 
 algorithm executed on image based data. Once implemented, you will be able to handle your plugin like all others algorithms, use it in workflows. 
@@ -14,8 +13,8 @@ You will also be able to publish your method to the Marketplace and promote your
 The plugin structure
 --------------------
 
-In Ikomia platform, each plugin is intended for use in workflows to process image-based data. A workflow is thus composed of several connected tasks that get inputs, process them and give results through outputs.
-When you create your own plugin, there are some few essential components to deal with, each one being implemented by a specific class:
+In Ikomia platform, each plugin is intended for use in workflows to process image-based data. A workflow is thus composed of several connected tasks that get inputs,
+process them and give results through outputs. When you create your own plugin, there are some few essential components to deal with, each one being implemented by a specific class:
 
     - **Task**: algorithm implementation, inherited from :py:mod:`~ikomia.core.pycore.CWorkflowTask`.
     - **Parameters**: to setup the algorithm, inherited from :py:mod:`~ikomia.core.pycore.CWorkflowTaskParam`.
