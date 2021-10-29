@@ -202,6 +202,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         main_obj = main_class()
         task_factory = main_obj.getProcessFactory()
         task_factory.info.language = utils.ApiLanguage.PYTHON
+        task_factory.info.os = utils.OSType.ALL
         task_factory.info.internal = False
 
         plugin_version = task_factory.info.ikomiaVersion
