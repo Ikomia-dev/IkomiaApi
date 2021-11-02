@@ -641,12 +641,12 @@
         <translation>Seuillage</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAGAST.hpp" line="54"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAGAST.hpp" line="53"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAGAST.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAGAST.hpp" line="59"/>
         <source>Non maximum suppression</source>
         <translation>Suppression des non maxima</translation>
     </message>
@@ -659,32 +659,32 @@
         <translation>Type de descripteur</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="58"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="59"/>
         <source>Descriptor size</source>
         <translation>Taille de descripteur</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="60"/>
         <source>Descriptor channels</source>
         <translation>Nombre de canaux par descripteur</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="61"/>
         <source>Threshold</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="64"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="62"/>
         <source>Octaves</source>
         <translation>Octaves</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="65"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="63"/>
         <source>Octave layers</source>
         <translation>Nombre de couches par octave</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="66"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="65"/>
         <source>Diffusivity</source>
         <translation>Diffusion</translation>
     </message>
@@ -852,27 +852,27 @@
         <translation>Seuillage</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="54"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="53"/>
         <source>Octaves</source>
         <translation>Octaves</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="55"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="54"/>
         <source>Pattern scale</source>
         <translation>Facteur d&apos;échelle</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="57"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="55"/>
         <source>Use provided keypoints</source>
         <translation>Utiliser les points d&apos;intérêt fournis</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="58"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="56"/>
         <source>Detect</source>
         <translation>Détecter</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="58"/>
         <source>Compute</source>
         <translation>Calculer</translation>
     </message>
@@ -1138,7 +1138,7 @@
 <context>
     <name>COcvWidgetCalcHist</name>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCalcHist.hpp" line="56"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCalcHist.hpp" line="54"/>
         <source>Number of bins</source>
         <translation>Nombre de groupements</translation>
     </message>
@@ -1697,12 +1697,12 @@
         <translation>Seuillage</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetFAST.hpp" line="54"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetFAST.hpp" line="53"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetFAST.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetFAST.hpp" line="58"/>
         <source>Non maximum suppression</source>
         <translation>Suppression des non maxima</translation>
     </message>
@@ -1823,27 +1823,27 @@
         <translation>Nombre de coins maximum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="55"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="53"/>
         <source>Quality level</source>
         <translation>Niveau de qualité</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="57"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="54"/>
         <source>Min distance</source>
         <translation>Distance minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="58"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="55"/>
         <source>Block size</source>
         <translation>Taille de bloc</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="56"/>
         <source>Use Harris</source>
         <translation>Utiliser Harris</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="57"/>
         <source>Harris coefficient</source>
         <translation>Coefficient de Harris</translation>
     </message>
@@ -1945,32 +1945,32 @@
         <translation>Nombre d&apos;itérations (SLIC)</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="74"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="73"/>
         <source>SlicSpixelSize</source>
         <translation>Taille de superpixel (SLIC)</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="81"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="79"/>
         <source>Spatial weight</source>
         <translation>Poid spacial (SLIC)</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="89"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="86"/>
         <source>MinRegionSizeI</source>
         <translation>Taille de région minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="97"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="93"/>
         <source>SegEgbThresholdI</source>
         <translation>Seuil EGB 1</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="106"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="101"/>
         <source>MinRegionSizeII</source>
         <translation>Taille de région minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="114"/>
+        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="108"/>
         <source>SegEgbThresholdII</source>
         <translation>Seuil EGB 2</translation>
     </message>
@@ -2116,37 +2116,37 @@
         <translation>Descripteurs droits</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="55"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="54"/>
         <source>Threshold</source>
         <translation>SeuilSeuillage</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="55"/>
         <source>Octaves</source>
         <translation>Nombre d&apos;octaves</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="56"/>
         <source>Octave layers</source>
         <translation>Nombre de couches par octave</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="61"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="58"/>
         <source>Diffusivity</source>
         <translation>Diffusion</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="67"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="65"/>
         <source>Use provided keypoints</source>
         <translation>Utiliser les points d&apos;intérêt fournis</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="68"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="66"/>
         <source>Detect</source>
         <translation>Détecter</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="70"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="68"/>
         <source>Compute</source>
         <translation>Calculer</translation>
     </message>
@@ -2446,57 +2446,57 @@
         <translation>Fonctionnalités</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="55"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="56"/>
         <source>Scale factor</source>
         <translation>Facteur d&apos;échelle</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="57"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="59"/>
         <source>Levels</source>
         <translation>Niveaux</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="58"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="60"/>
         <source>Edge threshold</source>
         <translation>Seuil sur les contours</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="61"/>
         <source>First level</source>
         <translation>Premier niveau</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="62"/>
         <source>WTA_K</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="61"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="64"/>
         <source>Score Type</source>
         <translation>Type de score</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="65"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="69"/>
         <source>Patch size</source>
         <translation>Taille du patch</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="66"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="70"/>
         <source>Fast threshold</source>
         <translation>Seuillage rapide</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="67"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="71"/>
         <source>Use provided keypoints</source>
         <translation>Utiliser les points d&apos;intérêt fournis</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="68"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="72"/>
         <source>Detect</source>
         <translation>Détecter</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="70"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="74"/>
         <source>Compute</source>
         <translation>Calculer</translation>
     </message>
@@ -2933,82 +2933,82 @@
         <translation>Seuil minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="56"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="54"/>
         <source>Max threshold</source>
         <translation>Seuil maximum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="59"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="55"/>
         <source>Min distance between blobs</source>
         <translation>Distance minimum entre objets</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="64"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="58"/>
         <source>Dark blobs</source>
         <translation>Objets sombres</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="65"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="59"/>
         <source>Bright objects</source>
         <translation>Objets clairs</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="68"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="62"/>
         <source>Area</source>
         <translation>Surface</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="73"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="67"/>
         <source>Min area</source>
         <translation>Surface minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="77"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="71"/>
         <source>Max area</source>
         <translation>Surface maximum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="89"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="83"/>
         <source>Circularity</source>
         <translation>Circularité</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="94"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="88"/>
         <source>Min circularity</source>
         <translation>Circularité minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="98"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="92"/>
         <source>Max circularity</source>
         <translation>Circularité maximum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="110"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="104"/>
         <source>Convexity</source>
         <translation>Convexité</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="115"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="109"/>
         <source>Min convexity</source>
         <translation>Convexité minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="119"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="113"/>
         <source>Max convexity</source>
         <translation>Convexité maximum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="131"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="125"/>
         <source>Inertia ratio</source>
         <translation>Ratio d&apos;inertie</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="136"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="130"/>
         <source>Min inertia ratio</source>
         <translation>Ratio d&apos;inertie minimum</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="140"/>
+        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="134"/>
         <source>Max inertia ratio</source>
         <translation>Ratio d&apos;inertie maximum</translation>
     </message>
@@ -3052,27 +3052,27 @@
 <context>
     <name>COcvWidgetSobel</name>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="54"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="52"/>
         <source>x-derivative order</source>
         <translation>Ordre de la dérivée en x</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="57"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="53"/>
         <source>y-derivative order</source>
         <translation>Ordre de la dérivée en y</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="54"/>
         <source>Kernel size</source>
         <translation>Taille du noyau</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="63"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="55"/>
         <source>Scale</source>
         <translation>Echelle</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="64"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="56"/>
         <source>Delta</source>
         <translation></translation>
     </message>
@@ -3363,27 +3363,27 @@
 <context>
     <name>COcvWidgetTonemapDurand</name>
     <message>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="52"/>
+        <location filename="../Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp" line="52"/>
         <source>Gamma</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="53"/>
+        <location filename="../Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp" line="53"/>
         <source>Contrast</source>
         <translation>Contraste</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="54"/>
+        <location filename="../Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp" line="54"/>
         <source>Saturation</source>
         <translation>Saturation</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="55"/>
+        <location filename="../Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp" line="55"/>
         <source>Sigma spatial</source>
         <translation>Ecart-type spacial</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="56"/>
+        <location filename="../Widget/OpenCV/xphoto/COcvWidgetTonemapDurand.hpp" line="56"/>
         <source>Sigma color</source>
         <translation>Ecart-type couleur</translation>
     </message>
@@ -3413,7 +3413,7 @@
     </message>
     <message>
         <location filename="../Widget/Core/CWidgetGraphicsToBinary.hpp" line="48"/>
-        <location filename="../Widget/Core/CWidgetGraphicsToBinary.hpp" line="49"/>
+        <location filename="../Widget/Core/CWidgetGraphicsToBinary.hpp" line="50"/>
         <source>Image width</source>
         <translation>Largeur d&apos;image</translation>
     </message>
@@ -3421,7 +3421,7 @@
 <context>
     <name>CWidgetPlotMerge</name>
     <message>
-        <location filename="../Widget/Core/CWidgetPlotMerge.hpp" line="53"/>
+        <location filename="../Widget/Core/CWidgetPlotMerge.hpp" line="52"/>
         <source>Number of inputs</source>
         <translation>Nombre d&apos;entrées</translation>
     </message>
@@ -3463,12 +3463,6 @@
         <translation>ROI à suivre</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Repair/CGmicInpaint.hpp" line="169"/>
-        <location filename="../Widget/Gmic/Repair/CGmicWidgetInpaint.hpp" line="86"/>
-        <source>Patch-based Inpaint</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Repair/CGmicInpaint.hpp" line="170"/>
         <source>This process performs Gmic patch-based inpainting from region of interest drawn in original image.Inpaint selected images by specified mask.If no patch size (or 0) is specified, inpainting is done using a fast average or median algorithm.Otherwise, it used a patch-based reconstruction method, that can be very time consuming.</source>
         <translation></translation>
@@ -3478,10 +3472,8 @@
         <translation type="vanished">Ce traitement exécute la méthode patch-based inpainting de la librairie CIM à partir de régions d&apos;intérêts dessinées sur l&apos;image originale (objets graphiques).</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CBinaryToGraphics.h" line="74"/>
-        <location filename="../Widget/Core/CWidgetBinaryToGraphics.hpp" line="49"/>
         <source>Binary to graphics</source>
-        <translation>Binary to graphics</translation>
+        <translation type="vanished">Binary to graphics</translation>
     </message>
     <message>
         <location filename="../Process/Core/CBinaryToGraphics.h" line="75"/>
@@ -3494,16 +3486,14 @@
         <location filename="../Process/Core/CCut.hpp" line="155"/>
         <location filename="../Process/Core/CFillHoles.hpp" line="99"/>
         <location filename="../Process/Core/CGraphicsToBinary.h" line="72"/>
-        <location filename="../Process/Core/CPlotMerge.hpp" line="172"/>
+        <location filename="../Process/Core/CPlotMerge.hpp" line="171"/>
         <location filename="../Process/Core/CRgbHlsThreshold.cpp" line="229"/>
         <source>:/Images/default-process.png</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Core/CBlobMeasure.h" line="85"/>
-        <location filename="../Widget/Core/CWidgetBlobMeasure.h" line="64"/>
         <source>Objects measurements</source>
-        <translation>Mesures d&apos;objets</translation>
+        <translation type="vanished">Mesures d&apos;objets</translation>
     </message>
     <message>
         <location filename="../Process/Core/CBlobMeasure.h" line="86"/>
@@ -3516,10 +3506,8 @@
         <translation>Core/Measurements</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CCut.hpp" line="152"/>
-        <location filename="../Widget/Core/CWidgetCut.hpp" line="70"/>
         <source>Cut</source>
-        <translation>Découper</translation>
+        <translation type="vanished">Découper</translation>
     </message>
     <message>
         <location filename="../Process/Core/CCut.hpp" line="153"/>
@@ -3535,10 +3523,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Core/CFillHoles.hpp" line="96"/>
-        <location filename="../Widget/Core/CWidgetFillHoles.hpp" line="45"/>
         <source>Fill Holes</source>
-        <translation>Remplissage de trous</translation>
+        <translation type="vanished">Remplissage de trous</translation>
     </message>
     <message>
         <location filename="../Process/Core/CFillHoles.hpp" line="97"/>
@@ -3546,26 +3532,22 @@
         <translation>Ce traitement remplit automatiquement les trous dans une image binaire.</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CPlotMerge.hpp" line="169"/>
-        <location filename="../Widget/Core/CWidgetPlotMerge.hpp" line="77"/>
         <source>Plots merge</source>
-        <translation>Fusion de courbes</translation>
+        <translation type="vanished">Fusion de courbes</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CPlotMerge.hpp" line="170"/>
+        <location filename="../Process/Core/CPlotMerge.hpp" line="169"/>
         <source>This process mutualizes data for plotting.</source>
         <translation>Ce traitement permet de fusionner des données dans un même graphique.</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CPlotMerge.hpp" line="171"/>
+        <location filename="../Process/Core/CPlotMerge.hpp" line="170"/>
         <source>Core/Plots</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Core/CRgbHlsThreshold.cpp" line="226"/>
-        <location filename="../Widget/Core/CWidgetRgbHlsThreshold.cpp" line="58"/>
         <source>RGB-HLS Segmentation</source>
-        <translation>Segmentation RGB-HLS</translation>
+        <translation type="vanished">Segmentation RGB-HLS</translation>
     </message>
     <message>
         <location filename="../Process/Core/CRgbHlsThreshold.cpp" line="227"/>
@@ -3592,12 +3574,6 @@
     <message>
         <source>Face Swap.</source>
         <translation type="vanished">Echange de visages.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/COcvHfsSegment.hpp" line="130"/>
-        <location filename="../Widget/OpenCV/COcvWidgetHfsSegment.hpp" line="154"/>
-        <source>Hierarchical Feature Selection Segmentation</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/COcvHfsSegment.hpp" line="131"/>
@@ -3641,14 +3617,14 @@
         <location filename="../Process/OpenCV/core/COcvLogicalOp.hpp" line="137"/>
         <location filename="../Process/OpenCV/core/COcvMagnitude.hpp" line="122"/>
         <location filename="../Process/OpenCV/core/COcvMax.hpp" line="160"/>
-        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="183"/>
+        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="177"/>
         <location filename="../Process/OpenCV/core/COcvMin.hpp" line="160"/>
         <location filename="../Process/OpenCV/core/COcvMultiply.hpp" line="128"/>
         <location filename="../Process/OpenCV/core/COcvNegative.hpp" line="110"/>
         <location filename="../Process/OpenCV/core/COcvNormalize.hpp" line="126"/>
         <location filename="../Process/OpenCV/core/COcvPSNR.hpp" line="128"/>
         <location filename="../Process/OpenCV/core/COcvRotate.hpp" line="116"/>
-        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="155"/>
+        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="149"/>
         <location filename="../Process/OpenCV/core/COcvSubtract.hpp" line="169"/>
         <location filename="../Process/OpenCV/dnn/COcvDnnClassifier.hpp" line="201"/>
         <location filename="../Process/OpenCV/dnn/COcvDnnColorization.hpp" line="195"/>
@@ -3665,15 +3641,15 @@
         <location filename="../Process/OpenCV/features2d/COcvORB.hpp" line="160"/>
         <location filename="../Process/OpenCV/features2d/COcvSIFT.hpp" line="146"/>
         <location filename="../Process/OpenCV/features2d/COcvSimpleBlobDetector.hpp" line="153"/>
-        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="168"/>
+        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="167"/>
         <location filename="../Process/OpenCV/imgproc/COcvBilateral.hpp" line="129"/>
         <location filename="../Process/OpenCV/imgproc/COcvBoxFilter.hpp" line="136"/>
         <location filename="../Process/OpenCV/imgproc/COcvCLAHE.hpp" line="137"/>
-        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="185"/>
+        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="207"/>
         <location filename="../Process/OpenCV/imgproc/COcvCanny.hpp" line="131"/>
         <location filename="../Process/OpenCV/imgproc/COcvColorMap.hpp" line="124"/>
         <location filename="../Process/OpenCV/imgproc/COcvCvtColor.hpp" line="119"/>
-        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="161"/>
+        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="155"/>
         <location filename="../Process/OpenCV/imgproc/COcvEqualizeHist.hpp" line="128"/>
         <location filename="../Process/OpenCV/imgproc/COcvGaussianBlur.hpp" line="131"/>
         <location filename="../Process/OpenCV/imgproc/COcvGrabCut.hpp" line="270"/>
@@ -3713,8 +3689,8 @@
         <location filename="../Process/OpenCV/saliency/COcvSaliencySpectralResidual.hpp" line="139"/>
         <location filename="../Process/OpenCV/superres/COcvSuperResBTVL1.cpp" line="213"/>
         <location filename="../Process/OpenCV/text/COcvOCRTesseract.hpp" line="184"/>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="135"/>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="135"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="134"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="134"/>
         <location filename="../Process/OpenCV/video/COcvBckgndSubKnn.hpp" line="153"/>
         <location filename="../Process/OpenCV/video/COcvBckgndSubMog2.hpp" line="153"/>
         <location filename="../Process/OpenCV/video/COcvCamShift.hpp" line="262"/>
@@ -3754,10 +3730,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/COcvInpaintFuzzy.hpp" line="110"/>
-        <location filename="../Widget/OpenCV/COcvWidgetInpaintFuzzy.hpp" line="104"/>
         <source>Inpaint fuzzy filter</source>
-        <translation>Inpaint Fuzzy Filter</translation>
+        <translation type="vanished">Inpaint Fuzzy Filter</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/COcvInpaintFuzzy.hpp" line="111"/>
@@ -3772,10 +3746,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubCnt.hpp" line="154"/>
-        <location filename="../Widget/OpenCV/bgsegm/COcvWidgetBckgndSubCnt.hpp" line="96"/>
         <source>CNT background substractor</source>
-        <translation>Soustracteur de fond CNT</translation>
+        <translation type="vanished">Soustracteur de fond CNT</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubCnt.hpp" line="155"/>
@@ -3793,10 +3765,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubGmg.hpp" line="147"/>
-        <location filename="../Widget/OpenCV/bgsegm/COcvWidgetBckgndSubGmg.hpp" line="86"/>
         <source>GMG background substractor</source>
-        <translation>Soustracteur de fond GMG</translation>
+        <translation type="vanished">Soustracteur de fond GMG</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubGmg.hpp" line="148"/>
@@ -3804,16 +3774,12 @@
         <translation>Ce traitement permet la suppression de fond dans une séquence vidéo.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubGsoc.hpp" line="182"/>
-        <location filename="../Widget/OpenCV/bgsegm/COcvWidgetBckgndSubGsoc.hpp" line="94"/>
         <source>GSOC background substractor</source>
-        <translation>Soustracteur de fond GSOC</translation>
+        <translation type="vanished">Soustracteur de fond GSOC</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubLsbp.hpp" line="189"/>
-        <location filename="../Widget/OpenCV/bgsegm/COcvWidgetBckgndSubLsbp.hpp" line="98"/>
         <source>LSBP background substractor</source>
-        <translation>Soustracteur de fond LSBP</translation>
+        <translation type="vanished">Soustracteur de fond LSBP</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubLsbp.hpp" line="190"/>
@@ -3821,10 +3787,8 @@
         <translation>Ce traitement permet la suppression de fond dans une séquence vidéo à l&apos;aide d&apos;un algorithme basé sur la décomposition en valeurs singulières (Local SVS Binary Pattern).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubMog.hpp" line="153"/>
-        <location filename="../Widget/OpenCV/bgsegm/COcvWidgetBckgndSubMog.hpp" line="76"/>
         <source>MOG background substractor</source>
-        <translation>Soustracteur de fond MOG</translation>
+        <translation type="vanished">Soustracteur de fond MOG</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bgsegm/COcvBckgndSubMog.hpp" line="154"/>
@@ -3832,10 +3796,8 @@
         <translation>Ce traitement permet la suppression de fond dans une séquence vidéo à partir d&apos;un algorithme à base de melange de Gaussiennes.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bioinspired/COcvRetina.hpp" line="175"/>
-        <location filename="../Widget/OpenCV/bioinspired/COcvWidgetRetina.hpp" line="69"/>
         <source>Retina</source>
-        <translation>Retina</translation>
+        <translation type="vanished">Retina</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bioinspired/COcvRetina.hpp" line="176"/>
@@ -3850,10 +3812,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bioinspired/COcvRetinaSegmentation.hpp" line="138"/>
-        <location filename="../Widget/OpenCV/bioinspired/COcvWidgetRetinaSegmentation.hpp" line="51"/>
         <source>RetinaSegmentation</source>
-        <translation>Segmentation Retina</translation>
+        <translation type="vanished">Segmentation Retina</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bioinspired/COcvRetinaSegmentation.hpp" line="139"/>
@@ -3861,10 +3821,8 @@
         <translation>Ce traitement permet de segmenter les régions transitoires ou mobiles en utilisant le Retina Magno.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/bioinspired/COcvRetinaToneMapping.hpp" line="113"/>
-        <location filename="../Widget/OpenCV/bioinspired/COcvWidgetRetinaToneMapping.hpp" line="67"/>
         <source>RetinaToneMapping</source>
-        <translation>Retina Tone Mapping</translation>
+        <translation type="vanished">Retina Tone Mapping</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/bioinspired/COcvRetinaToneMapping.hpp" line="114"/>
@@ -3872,10 +3830,8 @@
         <translation>Le modèle Retina permet d&apos;appliquer des traitements d&apos;image spaciaux-temporels (sur image ou séquence vidéo).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvAbsdiff.hpp" line="118"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetAbsdiff.hpp" line="44"/>
         <source>Abs diff</source>
-        <translation>Différence absolue</translation>
+        <translation type="vanished">Différence absolue</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvAbsdiff.hpp" line="119"/>
@@ -3903,23 +3859,21 @@
         <location filename="../Process/OpenCV/core/COcvLogicalOp.hpp" line="136"/>
         <location filename="../Process/OpenCV/core/COcvMagnitude.hpp" line="121"/>
         <location filename="../Process/OpenCV/core/COcvMax.hpp" line="159"/>
-        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="182"/>
+        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="176"/>
         <location filename="../Process/OpenCV/core/COcvMin.hpp" line="159"/>
         <location filename="../Process/OpenCV/core/COcvMultiply.hpp" line="127"/>
         <location filename="../Process/OpenCV/core/COcvNegative.hpp" line="109"/>
         <location filename="../Process/OpenCV/core/COcvNormalize.hpp" line="125"/>
         <location filename="../Process/OpenCV/core/COcvPSNR.hpp" line="127"/>
         <location filename="../Process/OpenCV/core/COcvRotate.hpp" line="115"/>
-        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="154"/>
+        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="148"/>
         <location filename="../Process/OpenCV/core/COcvSubtract.hpp" line="168"/>
         <source>OpenCV/Main modules/Core functionality/Operations on arrays</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvAdd.hpp" line="124"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetAdd.hpp" line="77"/>
         <source>Add</source>
-        <translation>Somme</translation>
+        <translation type="vanished">Somme</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvAdd.hpp" line="125"/>
@@ -3927,10 +3881,8 @@
         <translation>La fonction calcule la somme élément par élément de deux images selon la formule suivante:&lt;br&gt; &lt;center&gt;&lt;i&gt;dst = saturate( src1 + src2 )&lt;/i&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvAddWeighted.hpp" line="126"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetAddWeighted.hpp" line="96"/>
         <source>Add Weighted</source>
-        <translation>Somme pondérée</translation>
+        <translation type="vanished">Somme pondérée</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvAddWeighted.hpp" line="127"/>
@@ -3938,10 +3890,8 @@
         <translation>La fonction calcule la somme pondérée élément par élément de deux images selon la formule suivante:&lt;br&gt; &lt;center&gt;&lt;i&gt;dst = saturate( src1 * alpha + src2 * beta + gamma )&lt;/i&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvConvertTo.hpp" line="120"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetConvertTo.hpp" line="84"/>
         <source>ConvertTo</source>
-        <translation>Conversion</translation>
+        <translation type="vanished">Conversion</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvConvertTo.hpp" line="121"/>
@@ -3949,10 +3899,8 @@
         <translation>Cette fonction convertit l&apos;image d&apos;un type à un autre.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvCrop.hpp" line="150"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetCrop.hpp" line="114"/>
         <source>Crop</source>
-        <translation>Découper</translation>
+        <translation type="vanished">Découper</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvCrop.hpp" line="151"/>
@@ -3960,10 +3908,8 @@
         <translation>Cette fonction découpe l&apos;image selon une région d&apos;intérêt rectangulaire.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvDft.hpp" line="192"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetDft.hpp" line="87"/>
         <source>Discrete Fourier Transform</source>
-        <translation>Transformée de Fourier discrète</translation>
+        <translation type="vanished">Transformée de Fourier discrète</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvDft.hpp" line="193"/>
@@ -3975,10 +3921,8 @@
         <translation type="obsolete">Ce traitement réalise une transformée de Fourier discrète ou une transformée de Fourier discrète inverse en 1D ou en 2D.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvDftInv.hpp" line="184"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetDftInv.hpp" line="87"/>
         <source>Discrete Inverse Fourier Transform</source>
-        <translation>Transformée de Fourier discrète inverse</translation>
+        <translation type="vanished">Transformée de Fourier discrète inverse</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvDftInv.hpp" line="185"/>
@@ -3986,10 +3930,8 @@
         <translation>Ce traitement réalise une transformée de Fourier discrète inverse en 1D ou en 2D.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvDivide.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetDivide.hpp" line="79"/>
         <source>Divide</source>
-        <translation>Division</translation>
+        <translation type="vanished">Division</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvDivide.hpp" line="126"/>
@@ -3997,10 +3939,8 @@
         <translation>Cette fonction effectue la division d&apos;une image par une autre selon la formule suivante: &lt;br&gt; &lt;center&gt;&lt;i&gt;dst = saturate( scale * src1 / src2 )&lt;/i&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvExp.hpp" line="97"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetExp.hpp" line="44"/>
         <source>Exponent</source>
-        <translation>Exponentielle</translation>
+        <translation type="vanished">Exponentielle</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvExp.hpp" line="98"/>
@@ -4008,10 +3948,8 @@
         <translation>Cette fonction calcule l&apos;exponentielle de chaque élément de l&apos;image d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvFlip.hpp" line="116"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetFlip.hpp" line="101"/>
         <source>Flip</source>
-        <translation>Symétrie axiale</translation>
+        <translation type="vanished">Symétrie axiale</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvFlip.hpp" line="117"/>
@@ -4019,10 +3957,8 @@
         <translation>Ce traitement effectue une symétrie axiale de l&apos;image selon les axes verticaux, horizontaux ou les 2.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvInRange.hpp" line="206"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetInRange.hpp" line="76"/>
         <source>InRange</source>
-        <translation>Seuillage d&apos;intervalle</translation>
+        <translation type="vanished">Seuillage d&apos;intervalle</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvInRange.hpp" line="207"/>
@@ -4055,12 +3991,6 @@
         <translation>Centres B</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvKMeans.hpp" line="227"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetKMeans.hpp" line="120"/>
-        <source>K-means</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/core/COcvKMeans.hpp" line="228"/>
         <source>This process implements a k-means algorithm that finds the centers of k clusters and groups the input samples around the clusters.</source>
         <translation>Ce traitement implémente un algorithme de K-Means afin de trouver les centres de K groupes et d&apos;y associer les éléments autour.</translation>
@@ -4071,10 +4001,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvLog.hpp" line="97"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetLog.hpp" line="44"/>
         <source>Log</source>
-        <translation>Logarithme</translation>
+        <translation type="vanished">Logarithme</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvLog.hpp" line="98"/>
@@ -4082,10 +4010,8 @@
         <translation>Cette fonction calcule le logarithme népérien de chaque élément de l&apos;image d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvLogicalOp.hpp" line="134"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetLogicalOp.hpp" line="87"/>
         <source>Logical operations</source>
-        <translation>Opérations logiques</translation>
+        <translation type="vanished">Opérations logiques</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvLogicalOp.hpp" line="135"/>
@@ -4093,10 +4019,8 @@
         <translation>Ce traitement réalise des opérations logiques bit à bit sur 2 images.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMagnitude.hpp" line="119"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetMagnitude.hpp" line="51"/>
         <source>Magnitude</source>
-        <translation>Norme</translation>
+        <translation type="vanished">Norme</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvMagnitude.hpp" line="120"/>
@@ -4104,10 +4028,8 @@
         <translation>Cette fonction calcule la norme de vecteur 2D selon la formule suivante:&lt;br&gt; &lt;center&gt;&lt;i&gt;dst = sqrt( src1 * src1 + src2 * src2 )&lt;/i&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMax.hpp" line="157"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetMax.hpp" line="72"/>
         <source>Max</source>
-        <translation>Maximum</translation>
+        <translation type="vanished">Maximum</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvMax.hpp" line="158"/>
@@ -4115,21 +4037,17 @@
         <translation>Cette fonction calcule la valeur maximum entre 2 images ou entre une image et une constante, élément par élément.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="180"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetMerge.hpp" line="78"/>
         <source>Merge Operator</source>
-        <translation>Fusion couleur</translation>
+        <translation type="vanished">Fusion couleur</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="181"/>
+        <location filename="../Process/OpenCV/core/COcvMerge.hpp" line="175"/>
         <source>Creates one multi-channel array out of several single-channel ones. </source>
         <translation>Ce traitement permet de créer une image couleur à partir de plusieurs images monochromes.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMin.hpp" line="157"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetMin.hpp" line="72"/>
         <source>Min</source>
-        <translation>Minimum</translation>
+        <translation type="vanished">Minimum</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvMin.hpp" line="158"/>
@@ -4137,10 +4055,8 @@
         <translation>Cette fonction calcule la valeur minimum entre 2 images ou entre une image et une constante, élément par élément.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvMultiply.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetMultiply.hpp" line="79"/>
         <source>Multiply</source>
-        <translation>Multiplication</translation>
+        <translation type="vanished">Multiplication</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvMultiply.hpp" line="126"/>
@@ -4148,10 +4064,8 @@
         <translation>Cette fonction calcule la multiplication élément par élément entre 2 images selon la formule suivante:&lt;br&gt; &lt;center&gt;&lt;i&gt;dst = saturate( scale * src1 * src2 )&lt;/i&gt;&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvNegative.hpp" line="107"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetNegative.hpp" line="45"/>
         <source>Negative</source>
-        <translation>Négatif</translation>
+        <translation type="vanished">Négatif</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvNegative.hpp" line="108"/>
@@ -4159,10 +4073,8 @@
         <translation>Ce traitement effectue le négatif de l&apos;image d&apos;entrée.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvNormalize.hpp" line="123"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetNormalize.hpp" line="93"/>
         <source>Normalize</source>
-        <translation>Normalisation</translation>
+        <translation type="vanished">Normalisation</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvNormalize.hpp" line="124"/>
@@ -4170,10 +4082,8 @@
         <translation>Ce traitement réalise la normalisation de l&apos;image suivant les axes verticaux, horizontaux ou les 2.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvRotate.hpp" line="113"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetRotate.hpp" line="84"/>
         <source>Rotate</source>
-        <translation>Rotation</translation>
+        <translation type="vanished">Rotation</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvRotate.hpp" line="114"/>
@@ -4181,21 +4091,17 @@
         <translation>Ce traitement applique une rotation de 90°, 180° ou 270°.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="152"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetSplit.hpp" line="75"/>
         <source>Split Operator</source>
-        <translation>Décomposition couleur</translation>
+        <translation type="vanished">Décomposition couleur</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="153"/>
+        <location filename="../Process/OpenCV/core/COcvSplit.hpp" line="147"/>
         <source>Divide a multi-channel image into several single-channel image.</source>
         <translation>Ce traitement décompose une image multi-canaux en plusieurs images monochromes.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvSubtract.hpp" line="166"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetSubtract.hpp" line="91"/>
         <source>Subtract</source>
-        <translation>Soustraction</translation>
+        <translation type="vanished">Soustraction</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/core/COcvSubtract.hpp" line="167"/>
@@ -4212,10 +4118,8 @@
         <translation>Confiance</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/dnn/COcvDnnClassifier.hpp" line="198"/>
-        <location filename="../Widget/OpenCV/dnn/COcvWidgetDnnClassifier.hpp" line="87"/>
         <source>DNN classification</source>
-        <translation>Classification par DNN</translation>
+        <translation type="vanished">Classification par DNN</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/dnn/COcvDnnClassifier.hpp" line="199"/>
@@ -4231,10 +4135,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/dnn/COcvDnnColorization.hpp" line="192"/>
-        <location filename="../Widget/OpenCV/dnn/COcvWidgetDnnColorization.hpp" line="44"/>
         <source>DNN colorization</source>
-        <translation>Colorisation par DNN</translation>
+        <translation type="vanished">Colorisation par DNN</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/dnn/COcvDnnColorization.hpp" line="193"/>
@@ -4242,10 +4144,8 @@
         <translation>Ce traitement offre la possibilité de lancer le processus d&apos;inférence à partir de réseaux pré-entraînés pour la colorisation d&apos;images (Framework CAFFE, TensorFlow, Darknet et Torch).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/dnn/COcvDnnDetector.hpp" line="514"/>
-        <location filename="../Widget/OpenCV/dnn/COcvWidgetDnnDetector.hpp" line="105"/>
         <source>DNN detection</source>
-        <translation>Détection par DNN</translation>
+        <translation type="vanished">Détection par DNN</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/dnn/COcvDnnDetector.hpp" line="515"/>
@@ -4253,10 +4153,8 @@
         <translation>Ce traitement offre la possibilité de lancer le processus d&apos;inférence à partir de réseaux pré-entraînés pour la détection d&apos;objets (Framework CAFFE, TensorFlow, Darknet et Torch).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/dnn/COcvDnnSegmentation.h" line="91"/>
-        <location filename="../Widget/OpenCV/dnn/COcvWidgetDnnSegmentation.hpp" line="103"/>
         <source>DNN segmentation</source>
-        <translation>Segmentation par DNN</translation>
+        <translation type="vanished">Segmentation par DNN</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/dnn/COcvDnnSegmentation.h" line="92"/>
@@ -4266,12 +4164,6 @@
     <message>
         <source>FacemarkLBF</source>
         <translation type="vanished">Facemark LBF</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/features2d/COcvAGAST.hpp" line="127"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAGAST.hpp" line="85"/>
-        <source>AGAST</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvAGAST.hpp" line="128"/>
@@ -4292,21 +4184,13 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvAKAZE.hpp" line="151"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetAKAZE.hpp" line="118"/>
-        <source>AKAZE</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/features2d/COcvAKAZE.hpp" line="152"/>
         <source>This process implements the AKAZE keypoint detector and descriptor extractor.</source>
         <translation>Ce traitement implémente le détecteur de points d&apos;intérêts et générateur de descripteurs AKAZE.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvBFMatcher.hpp" line="145"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBFMatcher.hpp" line="84"/>
         <source>BFMatcher</source>
-        <translation>BF Matcher</translation>
+        <translation type="vanished">BF Matcher</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvBFMatcher.hpp" line="146"/>
@@ -4320,21 +4204,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvBRISK.hpp" line="137"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetBRISK.hpp" line="99"/>
-        <source>BRISK</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/features2d/COcvBRISK.hpp" line="138"/>
         <source>This process implements the BRISK keypoint detector and descriptor extractor.</source>
         <translation>Ce traitement implémente le détecteur de points d&apos;intérêts et générateur de descripteurs BRISK.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/features2d/COcvFAST.hpp" line="127"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetFAST.hpp" line="84"/>
-        <source>FAST</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvFAST.hpp" line="128"/>
@@ -4342,21 +4214,13 @@
         <translation>Ce traitement implémente le détecteur de points d&apos;intérêts et générateur de descripteurs FAST.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvFlannMatcher.hpp" line="143"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetFlannMatcher.hpp" line="51"/>
-        <source>Flann based matcher</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/features2d/COcvFlannMatcher.hpp" line="144"/>
         <source>Flann-based descriptor matcher.</source>
         <translation>Ce traitement permet de trouver la meilleure correspondance pour chaque descripteur.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvGFTT.hpp" line="143"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetGFTT.hpp" line="87"/>
         <source>GFTTDetector</source>
-        <translation>GFTT Detector</translation>
+        <translation type="vanished">GFTT Detector</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvGFTT.hpp" line="144"/>
@@ -4364,21 +4228,9 @@
         <translation>Ce traitement permet la détection de caractéristiques en utilisant la fonction goodFeaturesToTrack().</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvKAZE.hpp" line="147"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetKAZE.hpp" line="112"/>
-        <source>KAZE</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/features2d/COcvKAZE.hpp" line="148"/>
         <source>This process implements the KAZE keypoint detector and descriptor extractor.</source>
         <translation>Ce traitement implémente le détecteur de points d&apos;intérêts et générateur de descripteurs KAZE.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/features2d/COcvORB.hpp" line="157"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetORB.hpp" line="114"/>
-        <source>ORB</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvORB.hpp" line="158"/>
@@ -4386,31 +4238,23 @@
         <translation>Ce traitement implémente le détecteur de points d&apos;intérêts et générateur de descripteurs ORB (Oriented BRIEF).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvSimpleBlobDetector.hpp" line="150"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSimpleBlobDetector.hpp" line="195"/>
-        <source>SimpleBlobDetector</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/features2d/COcvSimpleBlobDetector.hpp" line="151"/>
         <source>This process implements a simple algorithm for extracting blobs from an image.</source>
         <translation>Ce traitement implémente un algorithme simple d&apos;extraction de composantes connexes d&apos;une image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="165"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetAdaptiveThreshold.hpp" line="116"/>
         <source>Adaptive Threshold</source>
-        <translation>Seuillage adaptatif</translation>
+        <translation type="vanished">Seuillage adaptatif</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="166"/>
+        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="165"/>
         <source>Adaptive thresholding according to local background estimation</source>
         <translation>Ce traitement propose une méthode de seuillage adaptative en fonction de l&apos;estimation d&apos;intensité locale du fond</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="167"/>
+        <location filename="../Process/OpenCV/imgproc/COcvAdaptiveThreshold.hpp" line="166"/>
         <location filename="../Process/OpenCV/imgproc/COcvCvtColor.hpp" line="118"/>
-        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="160"/>
+        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="154"/>
         <location filename="../Process/OpenCV/imgproc/COcvGrabCut.hpp" line="269"/>
         <location filename="../Process/OpenCV/imgproc/COcvThreshold.hpp" line="166"/>
         <location filename="../Process/OpenCV/imgproc/COcvWatershed.hpp" line="143"/>
@@ -4418,10 +4262,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvBilateral.hpp" line="126"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="130"/>
         <source>Bilateral Filter</source>
-        <translation>Filtre bilatéral</translation>
+        <translation type="vanished">Filtre bilatéral</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvBilateral.hpp" line="127"/>
@@ -4442,21 +4284,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvBoxFilter.hpp" line="133"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBoxFilter.hpp" line="95"/>
-        <source>Box Filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/imgproc/COcvBoxFilter.hpp" line="134"/>
         <source>This process smoothes your image with a box filter.</source>
         <translation>Ce traitement propose un algorithme de lissage d&apos;image (Box Filter).</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/imgproc/COcvCLAHE.hpp" line="134"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCLAHE.hpp" line="71"/>
-        <source>CLAHE</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvCLAHE.hpp" line="135"/>
@@ -4465,27 +4295,19 @@
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvCLAHE.hpp" line="136"/>
-        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="184"/>
+        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="206"/>
         <location filename="../Process/OpenCV/imgproc/COcvEqualizeHist.hpp" line="127"/>
         <source>OpenCV/Main modules/Image processing/Histograms</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="182"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCalcHist.hpp" line="83"/>
         <source>CalcHist</source>
-        <translation>Histogramme</translation>
+        <translation type="vanished">Histogramme</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="183"/>
+        <location filename="../Process/OpenCV/imgproc/COcvCalcHist.hpp" line="205"/>
         <source>This process calculates the histogram of the input image.</source>
         <translation>Cette fonction calcule l&apos;histogramme d&apos;une image.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/imgproc/COcvCanny.hpp" line="128"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCanny.hpp" line="85"/>
-        <source>Canny</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvCanny.hpp" line="129"/>
@@ -4500,10 +4322,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvColorMap.hpp" line="121"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetColorMap.hpp" line="90"/>
         <source>Colormap</source>
-        <translation>Palette de couleurs</translation>
+        <translation type="vanished">Palette de couleurs</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvColorMap.hpp" line="122"/>
@@ -4516,10 +4336,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvCvtColor.hpp" line="116"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetCvtColor.hpp" line="92"/>
         <source>Color Conversion</source>
-        <translation>Conversion couleur</translation>
+        <translation type="vanished">Conversion couleur</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvCvtColor.hpp" line="117"/>
@@ -4527,21 +4345,17 @@
         <translation>Ce traitement permet de convertir une image d&apos;un espace couleur à un autre.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="158"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetDistanceTransform.hpp" line="120"/>
         <source>Distance Transform</source>
-        <translation>Transformée en distance</translation>
+        <translation type="vanished">Transformée en distance</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="159"/>
+        <location filename="../Process/OpenCV/imgproc/COcvDistanceTransform.hpp" line="153"/>
         <source>The function calculates the approximate or precise distance from every binary image pixel to the nearest zero pixel. For zero image pixels, the distance will obviously be zero.</source>
         <translation>Cette fonction calcule la distance précise ou approximative entre chaque pixel d&apos;une image binaire et son pixel noir le plus proche. Pour les image entièrement noire, la distance est 0.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvEqualizeHist.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetEqualizeHist.hpp" line="45"/>
         <source>Equalize histogram</source>
-        <translation>Egalisation d&apos;histogramme</translation>
+        <translation type="vanished">Egalisation d&apos;histogramme</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvEqualizeHist.hpp" line="126"/>
@@ -4549,10 +4363,8 @@
         <translation>Ce traitement normalise la luminosité et augmente le contraste d&apos;une image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvGaussianBlur.hpp" line="128"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetGaussianBlur.hpp" line="96"/>
         <source>Gaussian Blur</source>
-        <translation>Flou Gaussien</translation>
+        <translation type="vanished">Flou Gaussien</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvGaussianBlur.hpp" line="129"/>
@@ -4560,21 +4372,13 @@
         <translation>Ce traitement lisse l&apos;image avec un filtre Gaussien.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvGrabCut.hpp" line="267"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetGrabCut.hpp" line="158"/>
-        <source>GrabCut Segmentation</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/imgproc/COcvGrabCut.hpp" line="268"/>
         <source>This process computes image segmentation based on graph cuts method.</source>
         <translation>Ce traitement réalise une segmentation d&apos;image basée sur l&apos;algorithme Graph Cuts.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvLaplacian.hpp" line="129"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetLaplacian.hpp" line="93"/>
         <source>Laplacian</source>
-        <translation>Laplacien</translation>
+        <translation type="vanished">Laplacien</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvLaplacian.hpp" line="130"/>
@@ -4582,10 +4386,8 @@
         <translation>Cette fonction calcule le Laplacien d&apos;une image en additionnant les dérivées secondes en x et y calculées par l&apos;opérateur de Sobel.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvMedian.hpp" line="117"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetMedian.hpp" line="72"/>
         <source>Median Filter</source>
-        <translation>Filtre médian</translation>
+        <translation type="vanished">Filtre médian</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvMedian.hpp" line="118"/>
@@ -4593,10 +4395,8 @@
         <translation>Ce traitement lisse d&apos;image à l&apos;aide d&apos;un filtre médian.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvMorphologyEx.hpp" line="142"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetMorphologyEx.hpp" line="130"/>
         <source>MorphologyEx</source>
-        <translation>Morpho Maths</translation>
+        <translation type="vanished">Morpho Maths</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvMorphologyEx.hpp" line="143"/>
@@ -4604,10 +4404,8 @@
         <translation>La fonction cv::morphologyEx permet de réaliser des opérations de morphologie mathématique avancées à partir des opérations de base telles que l&apos;érosion et la dilatation.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvResize.hpp" line="138"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetResize.hpp" line="128"/>
         <source>Resize</source>
-        <translation>Redimensionner</translation>
+        <translation type="vanished">Redimensionner</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvResize.hpp" line="139"/>
@@ -4621,10 +4419,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvRotateEx.hpp" line="140"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetRotateEx.hpp" line="107"/>
         <source>RotateEx</source>
-        <translation>Rotation2</translation>
+        <translation type="vanished">Rotation2</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvRotateEx.hpp" line="141"/>
@@ -4632,21 +4428,13 @@
         <translation>Ce traitement applique une rotation d&apos;un angle quelconque en degré.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvSobel.hpp" line="141"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetSobel.hpp" line="96"/>
-        <source>Sobel</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/imgproc/COcvSobel.hpp" line="142"/>
         <source>Calculates the first, second, third, or mixed image derivatives using an extended Sobel operator.</source>
         <translation>Cette fonction calcule la dérivée première, seconde, troisième ou mixte en utilisant l&apos;opérateur de Sobel.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvThreshold.hpp" line="164"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetThreshold.hpp" line="102"/>
         <source>Threshold</source>
-        <translation>Seuillage</translation>
+        <translation type="vanished">Seuillage</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/imgproc/COcvThreshold.hpp" line="165"/>
@@ -4654,21 +4442,13 @@
         <translation>Ce traitement réalise un seuillage de l&apos;image à partir d&apos;un seuil fixe</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvWatershed.hpp" line="141"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetWatershed.hpp" line="45"/>
-        <source>Watershed</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/imgproc/COcvWatershed.hpp" line="142"/>
         <source>This process implements one of the variants of watershed, non-parametric marker-based segmentation algorithm.</source>
         <translation>Ce traitement implémente une des variantes de l&apos;algorithme du Watershed, à partir de marqueurs et sans paramètre.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/objdetect/COcvCascadeClassifier.hpp" line="165"/>
-        <location filename="../Widget/OpenCV/objdetect/COcvWidgetCascadeClassifier.hpp" line="123"/>
         <source>Cascade Classifier Filter</source>
-        <translation>Cascade Classifier</translation>
+        <translation type="vanished">Cascade Classifier</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/objdetect/COcvCascadeClassifier.hpp" line="167"/>
@@ -4677,21 +4457,13 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/objdetect/COcvQRCodeDetector.hpp" line="187"/>
-        <location filename="../Widget/OpenCV/objdetect/COcvWidgetQRCodeDetector.hpp" line="74"/>
-        <source>QRCodeDetector</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/objdetect/COcvQRCodeDetector.hpp" line="188"/>
         <source>This process detects QR code in images.</source>
         <translation>Ce traitement détecte des QR codes dans une image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvDISOpticalFlow.hpp" line="134"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetDISOpticalFlow.hpp" line="81"/>
         <source>DIS Optical Flow</source>
-        <translation>Flot optique DIS</translation>
+        <translation type="vanished">Flot optique DIS</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/video/COcvDISOpticalFlow.hpp" line="135"/>
@@ -4708,21 +4480,13 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/optflow/COcvDeepFlow.hpp" line="131"/>
-        <location filename="../Widget/OpenCV/optflow/COcvWidgetDeepFlow.hpp" line="73"/>
-        <source>DeepFlow</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/optflow/COcvDeepFlow.hpp" line="132"/>
         <source>This process computes a dense optical flow using the DeepFlow algorithm.</source>
         <translation>Ce traitement calcule le flot optique en utilisant l&apos;algorithme DeepFlow.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/optflow/COcvPCAOpticalFlow.hpp" line="152"/>
-        <location filename="../Widget/OpenCV/optflow/COcvWidgetPCAOpticalFlow.hpp" line="87"/>
         <source>PCA Optical Flow</source>
-        <translation>Flot optique PCA</translation>
+        <translation type="vanished">Flot optique PCA</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/optflow/COcvPCAOpticalFlow.hpp" line="153"/>
@@ -4730,21 +4494,9 @@
         <translation>Ce traitement calcule le flot optique en utilisant l&apos;algorithme PCA (Principal Components Analysis).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/optflow/COcvSimpleFlow.hpp" line="146"/>
-        <location filename="../Widget/OpenCV/optflow/COcvWidgetSimpleFlow.hpp" line="73"/>
-        <source>Simple Flow</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/optflow/COcvSimpleFlow.hpp" line="147"/>
         <source>This process computes a dense optical flow using the Simple Flow algorithm.</source>
         <translation>Ce traitement calcule le flot optique en utilisant l&apos;algorithme Simple Flow.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/optflow/COcvSparseToDenseOF.hpp" line="138"/>
-        <location filename="../Widget/OpenCV/optflow/COcvWidgetSparseToDenseOF.hpp" line="73"/>
-        <source>SparseToDense Flow</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/optflow/COcvSparseToDenseOF.hpp" line="139"/>
@@ -4752,10 +4504,8 @@
         <translation>Ce traitement calcule le flot optique par un algorithme rapide PyrLK.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvColorchange.hpp" line="133"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetColorchange.hpp" line="75"/>
         <source>Colorchange</source>
-        <translation>Changement couleur</translation>
+        <translation type="vanished">Changement couleur</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvColorchange.hpp" line="134"/>
@@ -4771,12 +4521,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvDecolor.hpp" line="121"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetDecolor.hpp" line="45"/>
-        <source>Decolor</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/photo/COcvDecolor.hpp" line="122"/>
         <source>This process transforms a color image to a grayscale image. It is a basic tool in digital printing, stylized black-and-white photograph rendering, and in many single channel image processing applications.</source>
         <translation>Ce traitement transforme une image couleur en image monochrome. C&apos;est un outil usuel en retouche photo, en rendu noir et blanc et dans beaucoup d&apos;applications basées sur les images monochromes.</translation>
@@ -4788,10 +4532,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvDenoiseTVL1.hpp" line="141"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetDenoiseTVL1.hpp" line="71"/>
         <source>Denoise TV L1</source>
-        <translation>Débruitage TV L1</translation>
+        <translation type="vanished">Débruitage TV L1</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvDenoiseTVL1.hpp" line="142"/>
@@ -4806,10 +4548,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvDetailEnhance.hpp" line="123"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetDetailEnhance.hpp" line="91"/>
         <source>Detail Enhance Filter</source>
-        <translation>Accentuation de détails</translation>
+        <translation type="vanished">Accentuation de détails</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvDetailEnhance.hpp" line="124"/>
@@ -4825,10 +4565,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvEdgePreservingFilter.hpp" line="126"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetEdgePreservingFilter.hpp" line="95"/>
         <source>Edge Preserving Filter</source>
-        <translation>Préservation de contours</translation>
+        <translation type="vanished">Préservation de contours</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvEdgePreservingFilter.hpp" line="127"/>
@@ -4837,16 +4575,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvFastNlMeans.hpp" line="145"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetFastNlMeans.hpp" line="97"/>
         <source>Non Local Means Filter</source>
-        <translation>Filtre Non Local Means</translation>
+        <translation type="vanished">Filtre Non Local Means</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvFastNlMeansMulti.hpp" line="154"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetFastNlMeansMulti.hpp" line="103"/>
         <source>Non Local Means Multi Filter</source>
-        <translation>Filtre Non Local Means Multi</translation>
+        <translation type="vanished">Filtre Non Local Means Multi</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvFastNlMeansMulti.hpp" line="155"/>
@@ -4854,10 +4588,8 @@
         <translation>Ce traitement lisse une séquence vidéo à l&apos;aide d&apos;un filtre préservant les contours.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvIlluminationChange.hpp" line="128"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetIlluminationChange.hpp" line="74"/>
         <source>IlluminationChange</source>
-        <translation>Changement d&apos;illumination</translation>
+        <translation type="vanished">Changement d&apos;illumination</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvIlluminationChange.hpp" line="129"/>
@@ -4865,16 +4597,12 @@
         <translation>Ce traitement applique une transformation non linéaire spécifique au champ de gradient à l&apos;intérieur d&apos;une région d&apos;intérêt, puis réintègre cette région à l&apos;aide d&apos;un solveur de Poisson modifiant localement l&apos;illumination de l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvInpaint.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetInpaint.hpp" line="94"/>
         <source>Inpaint filter</source>
-        <translation>Filtre d&apos;inpainting</translation>
+        <translation type="vanished">Filtre d&apos;inpainting</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvPencilSketch.hpp" line="134"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetPencilSketch.hpp" line="101"/>
         <source>Pencil sketch</source>
-        <translation>Effet crayon</translation>
+        <translation type="vanished">Effet crayon</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvPencilSketch.hpp" line="135"/>
@@ -4882,10 +4610,8 @@
         <translation>Ce traitement ajoute un effet crayon à l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvSeamlessCloning.hpp" line="144"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetSeamlessCloning.hpp" line="75"/>
         <source>SeamlessCloning</source>
-        <translation>Seamless Cloning</translation>
+        <translation type="vanished">Seamless Cloning</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvSeamlessCloning.hpp" line="145"/>
@@ -4893,21 +4619,13 @@
         <translation>Ce traitement permet de remplacer une zone de l&apos;image délimitée par une région d&apos;intérêt définie manuellement par un contenu différent en minimisant les discontinuités et les distorsions.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvStylization.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetStylization.hpp" line="91"/>
-        <source>Stylization</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/photo/COcvStylization.hpp" line="126"/>
         <source>Stylization aims to produce digital imagery with a wide variety of effects not focused on photorealism. Edge-aware filters are ideal for stylization, as they can abstract regions of low contrast while preserving, or enhancing, high-contrast features.</source>
         <translation>Ce traitement permet d&apos;ajouter des effets non réalistes en appliquant des transformations sur des zones de faible ou fort constraste.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/photo/COcvTextureFlattening.hpp" line="132"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTextureFlattening.hpp" line="101"/>
         <source>Texture flattening</source>
-        <translation>Homogénéisation de texture</translation>
+        <translation type="vanished">Homogénéisation de texture</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/photo/COcvTextureFlattening.hpp" line="133"/>
@@ -4915,21 +4633,9 @@
         <translation>En ne retenant que le gradient sur les zones de contours avant l&apos;application du solveur de Poisson, ce traitement homogénéise la texture sur les zones sélectionnées. Le détecteur de contours de Canny est utilisé dans cette méthode.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/xphoto/COcvTonemapDurand.hpp" line="131"/>
-        <location filename="../Widget/OpenCV/photo/COcvWidgetTonemapDurand.hpp" line="119"/>
-        <source>Tonemap Durand</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/xphoto/COcvTonemapDurand.hpp" line="132"/>
         <source>This algorithm decomposes image into two layers: base layer and detail layer using bilateral filter and compresses contrast of the base layer thus preserving all the details.</source>
         <translation>L&apos;algorithme utilisé décompose l&apos;image en 2 couches à l&apos;aide du filtre bilatéral: la couche de base et la couche de détails. Le contraste de la couche de base est ensuite compressé préservant ainsi les détails.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/saliency/COcvMotionSaliencyBinWangApr2014.hpp" line="160"/>
-        <location filename="../Widget/OpenCV/saliency/COcvWidgetMotionSaliencyBinWangApr2014.hpp" line="44"/>
-        <source>MotionSaliencyBinWangApr2014</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/saliency/COcvMotionSaliencyBinWangApr2014.hpp" line="161"/>
@@ -4945,39 +4651,15 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/saliency/COcvObjectnessBING.hpp" line="157"/>
-        <location filename="../Widget/OpenCV/saliency/COcvWidgetObjectnessBING.hpp" line="71"/>
-        <source>ObjectnessBING</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/saliency/COcvObjectnessBING.hpp" line="158"/>
         <source>This process finds all object window in a given image according to the BING method.</source>
         <translation>Ce traitement localise les boîtes englobantes des objets d&apos;une image selon la méthode BING.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/saliency/COcvSaliencyFineGrained.hpp" line="135"/>
-        <location filename="../Widget/OpenCV/saliency/COcvWidgetSaliencyFineGrained.hpp" line="44"/>
-        <source>StaticSaliencyFineGrained</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/saliency/COcvSaliencyFineGrained.hpp" line="136"/>
         <location filename="../Process/OpenCV/saliency/COcvSaliencySpectralResidual.hpp" line="137"/>
         <source>Starting from the principle of natural image statistics, this method simulate the behavior of pre-attentive visual search. The algorithm analyze the log spectrum of each image and obtain the spectral residual. Then transform the spectral residual to spatial domain to obtain the saliency map, which suggests the positions of proto-objects.</source>
         <translation>En partant des caractéristiques statistiques des images naturelles, cette méthode simule le comportement de la recherche visuelle pré-attentive. L&apos;algorithme analyse le spectre logarithmique de chaque image pour obtenir le spectre résiduel. Il transforme alors ce spectre dans le domaine spacial pour obtenir la carte de saillance qui suggère la position des objets d&apos;intérêts.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/saliency/COcvSaliencySpectralResidual.hpp" line="136"/>
-        <location filename="../Widget/OpenCV/saliency/COcvWidgetSaliencySpectralResidual.hpp" line="44"/>
-        <source>StaticSaliencySpectralResidual</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/superres/COcvSuperResBTVL1.cpp" line="210"/>
-        <location filename="../Widget/OpenCV/superres/COcvWidgetSuperResBTVL1.hpp" line="94"/>
-        <source>Super Resolution BTVL1</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/superres/COcvSuperResBTVL1.cpp" line="211"/>
@@ -4987,12 +4669,6 @@
     <message>
         <location filename="../Process/OpenCV/superres/COcvSuperResBTVL1.cpp" line="212"/>
         <source>OpenCV/Main modules/Super resolution</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/text/COcvOCRTesseract.hpp" line="181"/>
-        <location filename="../Widget/OpenCV/text/COcvWidgetOCRTesseract.hpp" line="55"/>
-        <source>OCRTesseract</source>
         <translation></translation>
     </message>
     <message>
@@ -5022,58 +4698,42 @@
         <translation>Le traitement nécessite un seul rectangle comme entrée graphique</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="102"/>
         <source>GOTURN tracker init failed</source>
-        <translation>L&apos;initialisation du traqueur GOTURN a échoué</translation>
+        <translation type="vanished">L&apos;initialisation du traqueur GOTURN a échoué</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="108"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="107"/>
         <source>GOTURN tracker update failed</source>
         <translation>La mise à jour du traqueur GOTURN a échoué</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="132"/>
-        <location filename="../Widget/OpenCV/tracking/COcvWidgetTrackerGOTURN.hpp" line="48"/>
-        <source>TrackerGOTURN</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="133"/>
         <source>GOTURN is a kind of trackers based on Convolutional Neural Networks (CNN).</source>
         <translation>GOTURN est un type de traqueur basé sur un réseau de neurones convolutionnel (CNN).</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="134"/>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="134"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerGOTURN.hpp" line="133"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="133"/>
         <source>OpenCV/Extra modules/Tracking API</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="102"/>
         <source>KCF tracker init failed</source>
-        <translation>L&apos;initialisation du traqueur KCF a échoué</translation>
+        <translation type="vanished">L&apos;initialisation du traqueur KCF a échoué</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="108"/>
+        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="107"/>
         <source>KCF tracker update failed</source>
         <translation>La mise à jour du traqueur KCF a échoué</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="132"/>
-        <location filename="../Widget/OpenCV/tracking/COcvWidgetTrackerKCF.hpp" line="48"/>
-        <source>TrackerKCF</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/tracking/COcvTrackerKCF.hpp" line="133"/>
         <source>KCF is a novel tracking framework that utilizes properties of circulant matrix to enhance the processing speed.</source>
         <translation>KCF est un nouveau framework de suivi qui utilise les propriétés des matrices circulantes pour améliorer la vitesse de traitement.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvBckgndSubKnn.hpp" line="150"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetBckgndSubKnn.hpp" line="91"/>
         <source>KNN background substractor</source>
-        <translation>Soustracteur de fond KNN</translation>
+        <translation type="vanished">Soustracteur de fond KNN</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/video/COcvBckgndSubKnn.hpp" line="151"/>
@@ -5087,10 +4747,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvBckgndSubMog2.hpp" line="150"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetBckgndSubMog2.hpp" line="91"/>
         <source>MOG2 background substractor</source>
-        <translation>Soustracteur de fond MOG2</translation>
+        <translation type="vanished">Soustracteur de fond MOG2</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/video/COcvBckgndSubMog2.hpp" line="151"/>
@@ -5113,12 +4771,6 @@
         <translation>L&apos;algorithme CamShift ne peut suivre qu&apos;un objet rectangulaire</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvCamShift.hpp" line="259"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetCamShift.hpp" line="50"/>
-        <source>CamShift</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/video/COcvCamShift.hpp" line="260"/>
         <source>This process computes object tracking using CamShift algorithm based on the back project of the histogram.</source>
         <translation>Ce traitement effectue un suivi d&apos;objet en utilisant l&apos;algorithme CamShift basé sur la rétroprojection de l&apos;histogramme.</translation>
@@ -5132,10 +4784,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/optflow/COcvDualTVL1OpticalFlow.hpp" line="165"/>
-        <location filename="../Widget/OpenCV/optflow/COcvWidgetDualTVL1OpticalFlow.hpp" line="98"/>
         <source>Dual TVL1 Optical Flow</source>
-        <translation>Flot optique Dual TVL1</translation>
+        <translation type="vanished">Flot optique Dual TVL1</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/optflow/COcvDualTVL1OpticalFlow.hpp" line="166"/>
@@ -5143,10 +4793,8 @@
         <translation>Ce traitement calcule le flot optique en utilisant l&apos;algorithme Dual TV L1.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvFarnebackOpticalFlow.hpp" line="155"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetFarnebackOpticalFlow.hpp" line="91"/>
         <source>Farneback Optical Flow</source>
-        <translation>Flot optique Farneback</translation>
+        <translation type="vanished">Flot optique Farneback</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/video/COcvFarnebackOpticalFlow.hpp" line="156"/>
@@ -5169,21 +4817,13 @@
         <translation>L&apos;algorithme MeanShift ne peut suivre qu&apos;un objet rectangulaire</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/video/COcvMeanShift.hpp" line="250"/>
-        <location filename="../Widget/OpenCV/video/COcvWidgetMeanShift.hpp" line="50"/>
-        <source>MeanShift</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/video/COcvMeanShift.hpp" line="251"/>
         <source>This process computes object tracking using MeanShift algorithm based on the back project of the histogram.</source>
         <translation>Ce traitement effectue un suivi d&apos;objet en utilisant l&apos;algorithme MeanShift basé sur la rétroprojection de l&apos;histogramme.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvAdaptiveManifold.hpp" line="141"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetAdaptiveManifold.hpp" line="114"/>
         <source>Adaptive Manifold Filter</source>
-        <translation>Filtre Adaptive Manifold</translation>
+        <translation type="vanished">Filtre Adaptive Manifold</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvAdaptiveManifold.hpp" line="143"/>
@@ -5203,10 +4843,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvAnisotropicDiffusion.hpp" line="124"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetAnisotropicDiffusion.hpp" line="94"/>
         <source>Anisotropic Diffusion</source>
-        <translation>Diffusion anisotropique</translation>
+        <translation type="vanished">Diffusion anisotropique</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvAnisotropicDiffusion.hpp" line="125"/>
@@ -5222,10 +4860,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvBilateralTextureFilter.hpp" line="127"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetBilateralTextureFilter.hpp" line="109"/>
         <source>Bilateral texture filter</source>
-        <translation>Filtre Bilateral Texture</translation>
+        <translation type="vanished">Filtre Bilateral Texture</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvBilateralTextureFilter.hpp" line="128"/>
@@ -5233,21 +4869,9 @@
         <translation>Ce traitement applique le filtre bilatéral de texture qui préserve les structures.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvDTFilter.hpp" line="143"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetDTFilter.hpp" line="84"/>
-        <source>DTFilter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvDTFilter.hpp" line="144"/>
         <source>This process produces domain transform filtering operation on source image.</source>
         <translation>Ce traitement propose des opération de filtrage à base de transformation de domaine.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvDTFilterEnhance.hpp" line="167"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetDTFilterEnhance.hpp" line="82"/>
-        <source>DTFilterEnhance</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvDTFilterEnhance.hpp" line="168"/>
@@ -5255,32 +4879,14 @@
         <translation>Ce traitement accentue les détails de l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvDTFilterStylize.hpp" line="153"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetDTFilterStylize.hpp" line="78"/>
-        <source>DTFilterStylize</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvDTFilterStylize.hpp" line="154"/>
         <source>This process produces stylized image.</source>
         <translation>Ce traitement produit des effets non réalistes sur l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvFastGlobalSmootherFilter.hpp" line="127"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetFastGlobalSmootherFilter.hpp" line="103"/>
-        <source>Fast Global Smoother Filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvFastGlobalSmootherFilter.hpp" line="128"/>
         <source>The process applies fast global image smoothing based on weighted least squares.</source>
         <translation>Ce traitement applique un lissage global rapide sur l&apos;image basé sur la méthode des moindres carrés.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvFastLineDetector.hpp" line="160"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetFastLineDetector.hpp" line="118"/>
-        <source>Fast Line Detector</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvFastLineDetector.hpp" line="161"/>
@@ -5293,21 +4899,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvGradientDeriche.hpp" line="129"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientDeriche.hpp" line="108"/>
-        <source>Deriche gradient filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvGradientDeriche.hpp" line="130"/>
         <source>Applies X or Y Deriche filter to an image</source>
         <translation>Cette fonction applique le filtre de Deriche en X ou Y</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvGradientPaillou.hpp" line="129"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientPaillou.hpp" line="108"/>
-        <source>Paillou gradient filter</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvGradientPaillou.hpp" line="130"/>
@@ -5315,10 +4909,8 @@
         <translation>Cette fonction applique le filtre de Paillou en X ou Y</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvGraphSegmentation.hpp" line="132"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGraphSegmentation.hpp" line="73"/>
         <source>Graph Segmentation</source>
-        <translation>Segmentation par graphe</translation>
+        <translation type="vanished">Segmentation par graphe</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvGraphSegmentation.hpp" line="133"/>
@@ -5332,21 +4924,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvGuidedFilter.hpp" line="142"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGuidedFilter.hpp" line="85"/>
-        <source>Guided Filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvGuidedFilter.hpp" line="143"/>
         <source>This process applies the guided filter.</source>
         <translation>Ce traitement applique l&apos;algorithme Guided Filter.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvJointBilateralFilter.hpp" line="138"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetJointBilateralFilter.hpp" line="85"/>
-        <source>Joint Bilateral Filter</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvJointBilateralFilter.hpp" line="139"/>
@@ -5354,21 +4934,13 @@
         <translation>Ce traitement applique l&apos;algorithme du filtre Joint Bilateral.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvL0Smooth.hpp" line="121"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetL0Smooth.hpp" line="91"/>
-        <source>L0 smooth filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvL0Smooth.hpp" line="122"/>
         <source>Global image smoothing via L0 gradient minimization.</source>
         <translation>Ce traitement effecture un lissage global via la minimisation L0 du gradient.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvNiblackThreshold.hpp" line="164"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetNiblackThreshold.hpp" line="105"/>
         <source>Niblack Threshold</source>
-        <translation>Seuillage de Niblack</translation>
+        <translation type="vanished">Seuillage de Niblack</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvNiblackThreshold.hpp" line="165"/>
@@ -5376,10 +4948,8 @@
         <translation>Ce traitement propose d&apos;appliquer la méthode de seuillage de Niblack ou quelques unes de ses variantes.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvPeiLinNormalization.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetPeiLinNormalization.hpp" line="79"/>
         <source>Pei-Lin Normalization</source>
-        <translation>Normalisation de Pei-Lin</translation>
+        <translation type="vanished">Normalisation de Pei-Lin</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvPeiLinNormalization.hpp" line="126"/>
@@ -5387,21 +4957,9 @@
         <translation>Cette fonction calcule et applique une transformation affine de normalisation selon l&apos;algorithme de Pei et Lin.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvRidgeFilter.hpp" line="150"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetRidgeFilter.hpp" line="114"/>
-        <source>Ridge Filter</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvRidgeFilter.hpp" line="151"/>
         <source>Applies Ridge Detection Filter to an input image. Implements Ridge detection similar to the one in Mathematica using the eigen values from the Hessian Matrix of the input image using Sobel Derivatives. Additional refinement can be done using Skeletonization and Binarization.</source>
         <translation>Ce traitement applique l&apos;algorithme Ridge Detection Filter. Son implémentation est similaire à celle de Mathematica utilisant les valeurs propres de la matrice Hessienne de l&apos;image à l&apos;aide des dérivées de Sobel.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvRollingGuidanceFilter.hpp" line="130"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetRollingGuidanceFilter.hpp" line="109"/>
-        <source>Rolling guidance filter</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvRollingGuidanceFilter.hpp" line="131"/>
@@ -5409,21 +4967,13 @@
         <translation>Ce traitement applique l&apos;algorithme Rolling Guidance Filter.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvSelectiveSearchSegmentation.hpp" line="216"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetSelectiveSearchSegmentation.hpp" line="221"/>
         <source>Selective Search Segmentation</source>
-        <translation>Segmentation par recherche sélective</translation>
+        <translation type="vanished">Segmentation par recherche sélective</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvSelectiveSearchSegmentation.hpp" line="217"/>
         <source>This process performs a selective search segmentation.</source>
         <translation>Ce traitement réalise une segmentationde l&apos;image par recherche sélective.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvStructuredEdgeDetection.hpp" line="126"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetStructuredEdgeDetection.hpp" line="54"/>
-        <source>StructuredEdgeDetection</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvStructuredEdgeDetection.hpp" line="127"/>
@@ -5433,12 +4983,6 @@
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvStructuredEdgeDetection.hpp" line="128"/>
         <source>OpenCV/Extra modules/Extended Image Processing/Structured forests for fast edge detection</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvSuperpixelLSC.hpp" line="142"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetSuperpixelLSC.hpp" line="78"/>
-        <source>SuperpixelLSC</source>
         <translation></translation>
     </message>
     <message>
@@ -5455,38 +4999,18 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvSuperpixelSEEDS.hpp" line="151"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetSuperpixelSEEDS.hpp" line="82"/>
-        <source>SuperpixelSEEDS</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/ximgproc/COcvSuperpixelSEEDS.hpp" line="152"/>
         <source>The algorithm uses an efficient hill-climbing algorithm to optimize the superpixels&apos; energy function that is based on color histograms and a boundary term, which is optional. The energy function encourages superpixels to be of the same color, and if the boundary term is activated, the superpixels have smooth boundaries and are of similar shape. In practice it starts from a regular grid of superpixels and moves the pixels or blocks of pixels at the boundaries to refine the solution. The algorithm runs in real-time using a single CPU.</source>
         <translation>L&apos;algorithme utlise un algorithme efficace de hill-climbing pour optimiser la fonction energie des superpixels basé sur l&apos;histogramme couleur et le terme de frontière. La fonction energie encourage les superpixels à être de la même couleur, et lorsque le terme de frontière est utilisé, les superpixels possèdent des contours lisses et sont de forme similaire. En pratique, l&apos;algorithme commence par une grille régulière de superpixels puis réorganise les pixels sur la frontière pour affiner la solution. L&apos;algorithme est temps réel sur une simple CPU.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvSuperpixelSLIC.hpp" line="145"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetSuperpixelSLIC.hpp" line="84"/>
-        <source>SuperpixelSLIC</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/ximgproc/COcvThinning.hpp" line="120"/>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetThinning.hpp" line="79"/>
         <source>Thinning</source>
-        <translation>Amincissement</translation>
+        <translation type="vanished">Amincissement</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/ximgproc/COcvThinning.hpp" line="121"/>
         <source>The function transforms a binary blob image into a skeletized form using the technique of Zhang-Suen.</source>
         <translation>Cette fonction transforme une image binaire composée d&apos;objets en une forme squelettisée de ces objets par l&apos;utilisation de la méthode de Zhang-Suen.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/xphoto/COcvGrayworldWB.hpp" line="120"/>
-        <location filename="../Widget/OpenCV/xphoto/COcvWidgetGrayworldWB.hpp" line="78"/>
-        <source>GrayworldWB</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/xphoto/COcvGrayworldWB.hpp" line="121"/>
@@ -5504,27 +5028,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/xphoto/COcvInpaintX.hpp" line="99"/>
-        <location filename="../Widget/OpenCV/xphoto/COcvWidgetInpaintX.hpp" line="44"/>
-        <source>XPhoto Inpaint</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/xphoto/COcvLearningBasedWB.hpp" line="128"/>
-        <location filename="../Widget/OpenCV/xphoto/COcvWidgetLearningBasedWB.hpp" line="76"/>
-        <source>LearningBasedWB</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/xphoto/COcvLearningBasedWB.hpp" line="129"/>
         <source>More sophisticated learning-based automatic white balance algorithm.</source>
         <translation>Ce traitement propose un algorithme sophistiqué de balance des blancs basé sur un apprentissage.</translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/xphoto/COcvSimpleWB.hpp" line="136"/>
-        <location filename="../Widget/OpenCV/xphoto/COcvWidgetSimpleWB.hpp" line="80"/>
-        <source>SimpleWB</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Widget/OpenCV/COcvWidgetInpaintFuzzy.hpp" line="50"/>
@@ -5563,19 +5069,19 @@
         <translation>Décalage</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="52"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="50"/>
         <location filename="../Widget/OpenCV/ximgproc/COcvWidgetBilateralTextureFilter.hpp" line="49"/>
         <location filename="../Widget/OpenCV/ximgproc/COcvWidgetRollingGuidanceFilter.hpp" line="49"/>
         <source>Filter size d</source>
         <translation>Taille du noyau</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="56"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="54"/>
         <source>Sigma spatial</source>
         <translation>Ecart-type spacial</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="60"/>
+        <location filename="../Widget/OpenCV/imgproc/COcvWidgetBilateral.hpp" line="58"/>
         <source>Sigma range</source>
         <translation>Ecart-type intervalle</translation>
     </message>
@@ -5659,22 +5165,22 @@
         <translation>Atténuation Lambda</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientDeriche.hpp" line="63"/>
+        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientDeriche.hpp" line="64"/>
         <source>Derive</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientDeriche.hpp" line="69"/>
+        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientDeriche.hpp" line="70"/>
         <source>Mean</source>
         <translation>Moyenne</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientPaillou.hpp" line="63"/>
+        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientPaillou.hpp" line="64"/>
         <source>Alpha</source>
         <translation>Alpha</translation>
     </message>
     <message>
-        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientPaillou.hpp" line="69"/>
+        <location filename="../Widget/OpenCV/ximgproc/COcvWidgetGradientPaillou.hpp" line="70"/>
         <source>Omega</source>
         <translation></translation>
     </message>
@@ -5714,12 +5220,6 @@
         <translation>Seuil de saturation</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Colors/CGmicAutoBalance.hpp" line="155"/>
-        <location filename="../Widget/Gmic/Colors/CGmicWidgetAutoBalance.hpp" line="85"/>
-        <source>Auto balance</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Colors/CGmicAutoBalance.hpp" line="156"/>
         <source>This process performs a map based tone and color balance.</source>
         <translation></translation>
@@ -5755,12 +5255,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Repair/CGmicHotPixels.hpp" line="143"/>
-        <location filename="../Widget/Gmic/Repair/CGmicWidgetHotPixels.hpp" line="73"/>
-        <source>Hot pixels</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Repair/CGmicHotPixels.hpp" line="144"/>
         <source>This process automatically removes hot pixels in images.</source>
         <translation></translation>
@@ -5773,20 +5267,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Repair/CGmicRedEye.hpp" line="146"/>
-        <location filename="../Widget/Gmic/Repair/CGmicWidgetRedEye.hpp" line="74"/>
-        <source>Red-eye</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Repair/CGmicRedEye.hpp" line="147"/>
         <source>This process automatically attenuates red-eye effect in images.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/core/COcvCompare.hpp" line="122"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetCompare.hpp" line="78"/>
-        <source>Compare</source>
         <translation></translation>
     </message>
     <message>
@@ -5795,20 +5277,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvCopyMakeBorder.hpp" line="134"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetCopyMakeBorder.hpp" line="88"/>
-        <source>CopyMakeBorder</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/core/COcvCopyMakeBorder.hpp" line="135"/>
         <source>The function copies the source image into the middle of the destination image. The areas to the left, to the right, above and below the copied source image will be filled with extrapolated pixels.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/core/COcvCountNonZero.hpp" line="115"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetCountNonZero.hpp" line="44"/>
-        <source>CountNonZero</source>
         <translation></translation>
     </message>
     <message>
@@ -5817,20 +5287,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvExtractChannel.hpp" line="117"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetExtractChannel.hpp" line="68"/>
-        <source>Extract channel</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/core/COcvExtractChannel.hpp" line="118"/>
         <source>The function extracts a single channel from source image (Index parameter is a 0-based index).</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/core/COcvInsertChannel.hpp" line="133"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetInsertChannel.hpp" line="69"/>
-        <source>Insert channel</source>
         <translation></translation>
     </message>
     <message>
@@ -5839,20 +5297,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/core/COcvPSNR.hpp" line="125"/>
-        <location filename="../Widget/OpenCV/core/COcvWidgetPSNR.hpp" line="44"/>
-        <source>PSNR</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/core/COcvPSNR.hpp" line="126"/>
         <source>The function calculates the Peak Signal-to-Noise Ratio (PSNR) image quality metric in decibels (dB), between two input images. The arrays must have the same type.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/OpenCV/imgproc/COcvHoughCircles.hpp" line="170"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetHoughCircles.hpp" line="84"/>
-        <source>Hough circles</source>
         <translation></translation>
     </message>
     <message>
@@ -5861,20 +5307,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/imgproc/COcvHoughLines.hpp" line="231"/>
-        <location filename="../Widget/OpenCV/imgproc/COcvWidgetHoughLines.hpp" line="87"/>
-        <source>Hough lines</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/OpenCV/imgproc/COcvHoughLines.hpp" line="232"/>
         <source>The function implements the standard or standard multi-scale Hough transform algorithm and the probabilistic Hough transform for line detection.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Colors/CGmicBoostChroma.hpp" line="145"/>
-        <location filename="../Widget/Gmic/Colors/CGmicWidgetBoostChroma.hpp" line="77"/>
-        <source>Boost chromaticity</source>
         <translation></translation>
     </message>
     <message>
@@ -5883,32 +5317,14 @@
         <translation>Ce traitement accentue la chromaticité des images.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Colors/CGmicBoostFade.hpp" line="145"/>
-        <location filename="../Widget/Gmic/Colors/CGmicWidgetBoostFade.hpp" line="75"/>
-        <source>Boost fade</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Colors/CGmicBoostFade.hpp" line="146"/>
         <source>This process fades chromaticity in images.</source>
         <translation>Ce traitement atténue la chromaticité des images.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Colors/CGmicColorPresets.hpp" line="263"/>
-        <location filename="../Widget/Gmic/Colors/CGmicWidgetColorPresets.hpp" line="111"/>
-        <source>Color presets</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Colors/CGmicColorPresets.hpp" line="264"/>
         <source>This process applies pre-defined LUT on images.</source>
         <translation>Ce traitement applique des palettes de couleurs pré-définies sur les images.</translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Contours/CGmicDOG.hpp" line="153"/>
-        <location filename="../Widget/Gmic/Contours/CGmicWidgetDOG.hpp" line="76"/>
-        <source>Difference of Gaussians</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/Gmic/Contours/CGmicDOG.hpp" line="154"/>
@@ -5928,12 +5344,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Contours/CGmicDistanceTransform.hpp" line="153"/>
-        <location filename="../Widget/Gmic/Contours/CGmicWidgetDistanceTransform.hpp" line="86"/>
-        <source>Distance transform</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Contours/CGmicDistanceTransform.hpp" line="154"/>
         <source>This process performs Distance Transform algorithm.</source>
         <translation>Ce traitement réalise une transformée en distance sur l&apos;image.</translation>
@@ -5943,21 +5353,9 @@
         <translation type="obsolete">Ce traitement réalise une transformée en distance sur l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Contours/CGmicSkeleton.hpp" line="145"/>
-        <location filename="../Widget/Gmic/Contours/CGmicWidgetSkeleton.hpp" line="74"/>
-        <source>Skeleton</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Contours/CGmicSkeleton.hpp" line="146"/>
         <source>This process generates a skeleton image from input image.</source>
         <translation>Ce traitement génère l&apos;image de squelette à partir des formes de l&apos;image source.</translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Contours/CGmicSuperPixels.hpp" line="165"/>
-        <location filename="../Widget/Gmic/Contours/CGmicWidgetSuperPixels.hpp" line="83"/>
-        <source>Super-pixels</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/Gmic/Contours/CGmicSuperPixels.hpp" line="166"/>
@@ -5967,12 +5365,6 @@
     <message>
         <source>This process performs super-pixels decomposition</source>
         <translation type="vanished">Ce traitement réalise une décomposition en super-pixels.</translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Details/CGmicConstrainedSharpen.hpp" line="173"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetConstrainedSharpen.hpp" line="92"/>
-        <source>Constrained sharpen</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/Gmic/Details/CGmicConstrainedSharpen.hpp" line="174"/>
@@ -5991,32 +5383,14 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Details/CGmicDynamicRangeIncrease.hpp" line="160"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetDynamicRangeIncrease.hpp" line="82"/>
-        <source>Dynamic range increase</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Details/CGmicDynamicRangeIncrease.hpp" line="161"/>
         <source>This process increases dynamic range of images.</source>
         <translation>Ce traitement augmente la dynamique des images.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Details/CGmicMagicDetails.hpp" line="167"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetMagicDetails.hpp" line="85"/>
-        <source>Magic details</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../Process/Gmic/Details/CGmicMagicDetails.hpp" line="168"/>
         <source>This process increases details in images.</source>
         <translation>Ce traitement accentue les détails de l&apos;image.</translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Details/CGmicSharpenDeblur.hpp" line="173"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetSharpenDeblur.hpp" line="92"/>
-        <source>Sharpen [Deblur]</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/Gmic/Details/CGmicSharpenDeblur.hpp" line="174"/>
@@ -6026,20 +5400,8 @@
         <translation>Ce traitement applique une méthode de défloutage de l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Details/CGmicSharpenGradient.hpp" line="148"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetSharpenGradient.hpp" line="76"/>
-        <source>Sharpen [Gradient]</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>This process performs deblurring on images</source>
         <translation type="vanished">Ce traitement applique une méthode de défloutage de l&apos;image.</translation>
-    </message>
-    <message>
-        <location filename="../Process/Gmic/Details/CGmicSharpenLucy.hpp" line="152"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetSharpenLucy.hpp" line="81"/>
-        <source>Sharpen [Richardson-Lucy]</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../Process/Gmic/Details/CGmicSharpenLucy.hpp" line="153"/>
@@ -6047,43 +5409,37 @@
         <translation>Ce traitement réalise une opération de défloutage de l&apos;image basée sur l&apos;algorithme de Lucy-Richardson.</translation>
     </message>
     <message>
-        <location filename="../Process/Gmic/Details/CGmicSharpenTones.hpp" line="148"/>
-        <location filename="../Widget/Gmic/Details/CGmicWidgetSharpenTones.hpp" line="76"/>
-        <source>Sharpen [Tones]</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../Core/CWorkflow.cpp" line="858"/>
+        <location filename="../Core/CWorkflow.cpp" line="902"/>
         <source>No valid connection available, please check input/output data types.</source>
         <translation>Aucune connexion possible, merci de vérifier les types de données d&apos;entrée/sortie.</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="885"/>
+        <location filename="../Core/CWorkflow.cpp" line="935"/>
         <source>Invalid connection between output #%1 of %2 (%3) and input #%4 of %5 (%6)</source>
         <translation>Connexion invalide entre la sortie #%1 de %2 (%3) et l&apos;entrée #%4 de %5 (%6)</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="954"/>
+        <location filename="../Core/CWorkflow.cpp" line="1004"/>
         <source>One connection has been removed</source>
         <translation>Une connexion a été supprimée</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="1142"/>
+        <location filename="../Core/CWorkflow.cpp" line="1192"/>
         <source>Workflow stop requested by user</source>
         <translation>Arrêt du workflow demandé par l&apos;utilisateur</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="1188"/>
+        <location filename="../Core/CWorkflow.cpp" line="1238"/>
         <source>Stopping workflow...</source>
         <translation>Workflow en cours d&apos;arrêt...</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="1218"/>
+        <location filename="../Core/CWorkflow.cpp" line="1268"/>
         <source>No possible connection to input #%1</source>
         <translation>Aucune connexion possible à l&apos;entrée #%1</translation>
     </message>
     <message>
-        <location filename="../Core/CWorkflow.cpp" line="1240"/>
+        <location filename="../Core/CWorkflow.cpp" line="1290"/>
         <source>Data type mismatch on input #%1 between type %2 and type %3</source>
         <translation>Incompatibilité de type de données sur l&apos;entrée #%1 entre %2 et %3</translation>
     </message>
@@ -6099,12 +5455,14 @@
     </message>
     <message>
         <location filename="../IO/CDatasetIO.cpp" line="9"/>
-        <location filename="../IO/CDatasetIO.cpp" line="22"/>
+        <location filename="../IO/CDatasetIO.cpp" line="16"/>
+        <location filename="../IO/CDatasetIO.cpp" line="29"/>
         <source>Annotated image dataset in Ikomia format (for Deep Learning).</source>
         <translation>Dataset d&apos;images annotées au format Ikomia (Deep Learning).</translation>
     </message>
     <message>
-        <location filename="../IO/CNumericIO.hpp" line="203"/>
+        <location filename="../IO/CNumericIO.hpp" line="206"/>
+        <location filename="../IO/CNumericIO.hpp" line="213"/>
         <source>Numerical values structured as table data (headers, labels and values).
 Can be displayed as table or plot.</source>
         <translation>Valeurs numériques structurées en tableau (entêtes, intitulés et valeurs).
@@ -6119,6 +5477,7 @@ Utilisé en entrée seulement.</translation>
     <message>
         <location filename="../IO/CGraphicsInput.cpp" line="26"/>
         <location filename="../IO/CGraphicsInput.cpp" line="34"/>
+        <location filename="../IO/CGraphicsInput.cpp" line="42"/>
         <source>Graphics items organized in layer.
 Represent shapes and types of objects in image.
 Graphics can be created interactively by user.</source>
@@ -6128,23 +5487,27 @@ Possibilité d&apos;être dessinés par l&apos;utilisateur.</translation>
     </message>
     <message>
         <location filename="../IO/CGraphicsOutput.cpp" line="35"/>
+        <location filename="../IO/CGraphicsOutput.cpp" line="42"/>
         <source>Graphics items organized in layer.
 Represent shapes and types of objects extracted from image.</source>
         <translation>Eléments graphiques organisés en couche.
 Permet de représenter les objets détectés dans une image.</translation>
     </message>
     <message>
-        <location filename="../IO/CImageIO.cpp" line="26"/>
-        <location filename="../IO/CImageIO.cpp" line="33"/>
-        <location filename="../IO/CImageIO.cpp" line="44"/>
-        <location filename="../IO/CImageIO.cpp" line="51"/>
+        <location filename="../IO/CImageIO.cpp" line="29"/>
+        <location filename="../IO/CImageIO.cpp" line="36"/>
+        <location filename="../IO/CImageIO.cpp" line="43"/>
+        <location filename="../IO/CImageIO.cpp" line="54"/>
+        <location filename="../IO/CImageIO.cpp" line="65"/>
+        <location filename="../IO/CImageIO.cpp" line="72"/>
         <source>2D or 3D images.
 Can be single frame from video or camera stream.</source>
         <translation>Image 2D ou 3D.
 Peut aussi réprésenter une frame de vidéo.</translation>
     </message>
     <message>
-        <location filename="../IO/CBlobMeasureIO.cpp" line="52"/>
+        <location filename="../IO/CBlobMeasureIO.cpp" line="75"/>
+        <location filename="../IO/CBlobMeasureIO.cpp" line="81"/>
         <source>Predefined measures computed from connected components (Surface, perimeter...).</source>
         <translation>Mesures prédéfinies calculées sur composantes connexes (surface, périmètre...).</translation>
     </message>
@@ -6152,6 +5515,7 @@ Peut aussi réprésenter une frame de vidéo.</translation>
         <location filename="../IO/CPathIO.cpp" line="26"/>
         <location filename="../IO/CPathIO.cpp" line="32"/>
         <location filename="../IO/CPathIO.cpp" line="38"/>
+        <location filename="../IO/CPathIO.cpp" line="45"/>
         <source>File system path (file or folder).</source>
         <translation>Chemin de fichier ou répertoire.</translation>
     </message>
@@ -6175,16 +5539,15 @@ Peut aussi réprésenter une frame de vidéo.</translation>
     <message>
         <location filename="../IO/CWidgetOutput.cpp" line="26"/>
         <location filename="../IO/CWidgetOutput.cpp" line="32"/>
+        <location filename="../IO/CWidgetOutput.cpp" line="38"/>
         <source>Generic widget for custom display.
 Any Qt-based window (ex: Matplotlib canvas).</source>
         <translation>Affichage personnalisé.
 Tout type de fenêtre du framework Qt (ex: Matplotlib canvas).</translation>
     </message>
     <message>
-        <location filename="../Process/Core/CGraphicsToBinary.h" line="69"/>
-        <location filename="../Widget/Core/CWidgetGraphicsToBinary.hpp" line="77"/>
         <source>Graphics to binary</source>
-        <translation>Graphics to binary</translation>
+        <translation type="vanished">Graphics to binary</translation>
     </message>
     <message>
         <location filename="../Process/Core/CGraphicsToBinary.h" line="70"/>
@@ -6192,10 +5555,8 @@ Tout type de fenêtre du framework Qt (ex: Matplotlib canvas).</translation>
         <translation>Ce traitement génère un masque binaire à partir d&apos;éléments graphiques.</translation>
     </message>
     <message>
-        <location filename="../Process/OpenCV/features2d/COcvSIFT.hpp" line="143"/>
-        <location filename="../Widget/OpenCV/features2d/COcvWidgetSIFT.hpp" line="97"/>
         <source>SIFT</source>
-        <translation>SIFT</translation>
+        <translation type="vanished">SIFT</translation>
     </message>
     <message>
         <location filename="../Process/OpenCV/features2d/COcvSIFT.hpp" line="144"/>
@@ -6205,6 +5566,7 @@ Tout type de fenêtre du framework Qt (ex: Matplotlib canvas).</translation>
     <message>
         <location filename="../IO/CArrayIO.cpp" line="26"/>
         <location filename="../IO/CArrayIO.cpp" line="31"/>
+        <location filename="../IO/CArrayIO.cpp" line="36"/>
         <source>Generic multi-dimensional array.
 </source>
         <translation>Tableau multi-dimensionnel.

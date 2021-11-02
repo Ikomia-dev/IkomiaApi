@@ -18,7 +18,7 @@
 <context>
     <name>CGraphicsText</name>
     <message>
-        <location filename="../Graphics/CGraphicsText.cpp" line="148"/>
+        <location filename="../Graphics/CGraphicsText.cpp" line="174"/>
         <source>Text Area</source>
         <translation>Zone de texte</translation>
     </message>
@@ -26,7 +26,7 @@
 <context>
     <name>CWorkflowTaskWidget</name>
     <message>
-        <location filename="../Workflow/CWorkflowTaskWidget.cpp" line="25"/>
+        <location filename="../Workflow/CWorkflowTaskWidget.cpp" line="29"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
@@ -34,12 +34,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="320"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="354"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="388"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="422"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="461"/>
-        <location filename="../Graphics/CGraphicsJSON.cpp" line="500"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="321"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="355"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="389"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="423"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="462"/>
+        <location filename="../Graphics/CGraphicsJSON.cpp" line="501"/>
         <source>Graphics object can&apos;t be created from empty data</source>
         <translation>Erreur de création de l&apos;object graphique: pas de donnée source</translation>
     </message>
@@ -48,52 +48,52 @@
         <translation type="vanished">Le pointeur vers l&apos;objet vidéo est nul.</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="87"/>
+        <location filename="../Data/CMeasure.cpp" line="88"/>
         <source>Surface</source>
         <translation>Surface</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="88"/>
+        <location filename="../Data/CMeasure.cpp" line="89"/>
         <source>Perimeter</source>
         <translation>Périmètre</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="89"/>
+        <location filename="../Data/CMeasure.cpp" line="90"/>
         <source>Centroid</source>
         <translation>Centre de gravité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="90"/>
+        <location filename="../Data/CMeasure.cpp" line="91"/>
         <source>Bounding box</source>
         <translation>Rectangle englobant</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="91"/>
+        <location filename="../Data/CMeasure.cpp" line="92"/>
         <source>Oriented bounding box</source>
         <translation>Rectangle orienté englobant</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="92"/>
+        <location filename="../Data/CMeasure.cpp" line="93"/>
         <source>Equivalent diameter</source>
         <translation>Diamètre équivalent</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="93"/>
+        <location filename="../Data/CMeasure.cpp" line="94"/>
         <source>Elongation</source>
         <translation>Elongation</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="94"/>
+        <location filename="../Data/CMeasure.cpp" line="95"/>
         <source>Circularity</source>
         <translation>Circularité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="95"/>
+        <location filename="../Data/CMeasure.cpp" line="96"/>
         <source>Solidity</source>
         <translation>Compacité</translation>
     </message>
     <message>
-        <location filename="../Data/CMeasure.cpp" line="96"/>
+        <location filename="../Data/CMeasure.cpp" line="97"/>
         <source>Custom measure</source>
         <translation>Mesure personnalisée</translation>
     </message>
@@ -344,10 +344,6 @@
         <translation type="vanished">Arrêt du workflow en cours...</translation>
     </message>
     <message>
-        <source>Workflow stop requested by user</source>
-        <translation type="vanished">Arrêt du Workflow demandé par l&apos;utilisateur</translation>
-    </message>
-    <message>
         <source>Stopping Workflow...</source>
         <translation type="vanished">Arrêt du Workflowe en cours...</translation>
     </message>
@@ -421,12 +417,12 @@
         <translation>Valeur maximum</translation>
     </message>
     <message>
-        <location filename="../Data/CDataInfo.cpp" line="110"/>
+        <location filename="../Data/CDataInfo.cpp" line="125"/>
         <source>General metadata</source>
         <translation>Données générales</translation>
     </message>
     <message>
-        <location filename="../Data/CDataInfo.cpp" line="107"/>
+        <location filename="../Data/CDataInfo.cpp" line="122"/>
         <source>File path</source>
         <translation>Chemin du fichier</translation>
     </message>

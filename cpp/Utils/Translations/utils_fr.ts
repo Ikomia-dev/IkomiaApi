@@ -20,8 +20,9 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../UtilsTools.hpp" line="660"/>
         <source>No CUDA device found</source>
-        <translation type="vanished">Aucun dispositif CUDA trouvé</translation>
+        <translation>Aucun dispositif CUDA trouvé</translation>
     </message>
 </context>
 <context>
