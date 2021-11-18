@@ -167,7 +167,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         self._install_plugin(name)
 
-    def _install_plugin(self, name):
+    def install_plugin(self, name):
         # Download package
         plugin, language, plugin_dir = self._download_plugin(name)
 

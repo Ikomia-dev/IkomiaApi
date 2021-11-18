@@ -430,6 +430,21 @@ class Workflow(dataprocess.CWorkflow):
             self.set_image_input(array=array, path=path, url=url, index=0)
             self.run()
 
+    def prepare_runtime_env(self, path):
+        tasks = self.getRequiredTasks(path)
+        available_tasks = ikomia.ik_registry.getAlgorithms()
+        online_tasks = ikomia.ik_registry.get_online_algorithms()
+
+        for t in tasks:
+            if t not in available_tasks and any(d["name"] == t for d in online_tasks):
+                # try installation
+                try:
+                    ikomia.ik_registry.install_plugin(t)
+                except Exception:
+                    return False
+
+        return True
+
     def _run_directory(self):
         for i in range(self.getInputCount()):
             input_type = self.getInputDataType(i)
@@ -505,6 +520,10 @@ def load(path):
     Returns:
         :py:class:`~ikomia.dataprocess.workflow.Workflow`: loaded workflow.
     """
+
     wf = Workflow("untitled", ikomia.ik_registry)
-    wf.load(path)
-    return wf
+    if wf.prepare_runtime_env(path):
+        wf.load(path)
+        return wf
+
+    return None

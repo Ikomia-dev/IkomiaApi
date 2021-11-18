@@ -730,6 +730,38 @@ std::vector<IODataType> CWorkflow::getRootTargetTypes() const
     return types;
 }
 
+std::vector<std::string> CWorkflow::getRequiredTasks(const std::string &path)
+{
+    auto ext = Utils::File::extension(path);
+    if(ext != ".json")
+        throw CException(CoreExCode::NOT_IMPLEMENTED, "Workflow can only be loaded as JSON file", __func__, __FILE__, __LINE__);
+
+    std::vector<std::string> taskNames;
+
+    QFile jsonFile(QString::fromStdString(path));
+    if(!jsonFile.open(QFile::ReadOnly))
+        throw CException(CoreExCode::INVALID_FILE, "Could not load file: " + path, __func__, __FILE__, __LINE__);
+
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonFile.readAll()));
+    if(jsonDoc.isNull() || jsonDoc.isEmpty())
+        throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: invalid JSON structure", __func__, __FILE__, __LINE__);
+
+    QJsonObject jsonWorkflow = jsonDoc.object();
+    if(jsonWorkflow.isEmpty())
+        throw CException(CoreExCode::INVALID_JSON_FORMAT, "Error while loading workflow: empty JSON workflow", __func__, __FILE__, __LINE__);
+
+    // Load tasks
+    QJsonArray jsonTasks = jsonWorkflow["tasks"].toArray();
+    for(int i=0; i<jsonTasks.size(); ++i)
+    {
+        QJsonObject jsonTask = jsonTasks[i].toObject();
+        QJsonObject jsonTaskData = jsonTask["task_data"].toObject();
+        auto name = jsonTaskData["name"].toString().toStdString();
+        taskNames.push_back(name);
+    }
+    return taskNames;
+}
+
 bool CWorkflow::isRoot(const WorkflowVertex &id) const
 {
     return id == m_root;

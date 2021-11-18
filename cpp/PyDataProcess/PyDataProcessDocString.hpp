@@ -1499,6 +1499,13 @@ constexpr auto _wfGetElapsedTimeToDocString =
         "Returns:\n\n"
         "   float: elapsed time\n";
 
+constexpr auto _wfGetRequiredTasks =
+        "Get task names required to load and execute the given workflow file.\n\n"
+        "Args:\n\n"
+        "   path (str): path to the workflow file (JSON)\n\n"
+        "Returns:\n\n"
+        "   list of str: task names";
+
 constexpr auto _wfAddInputDocString =
         "Add global input to the workflow.\n\n"
         "Args:\n\n"

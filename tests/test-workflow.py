@@ -1,6 +1,7 @@
 import logging
 import os
 import argparse
+import ikomia
 from ikomia.dataprocess import workflow, displayIO
 from ikomia.core import config
 from ikomia.utils import tests, ik
@@ -23,10 +24,23 @@ def test_metadata():
     assert(wf.keywords == keywords)
 
 
-def test_load():
+def test_load_builtin():
     # load test workflow
-    logger.info("===== Test::load workflow from JSON =====")
+    logger.info("===== Test::load workflow from JSON with builtin algorithms =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.load(wf_path)
+    logger.info("----- Workflow information:")
+    logger.info(wf.name)
+    logger.info(wf.description)
+    logger.info(wf.keywords)
+    logger.info("Input count: " + str(wf.getInputCount()))
+    logger.info("Task count: " + str(wf.getTaskCount()))
+
+
+def test_load_marketplace():
+    # load test workflow
+    logger.info("===== Test::load workflow from JSON with marketplace algorithm =====")
+    wf_path = tests.get_test_workflow_directory() + "/WorkflowYolorBlur.json"
     wf = workflow.load(wf_path)
     logger.info("----- Workflow information:")
     logger.info(wf.name)
@@ -438,8 +452,11 @@ if __name__ == "__main__":
     parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
     opt = parser.parse_args()
 
+    ikomia.authenticate()
+
     test_metadata()
-    test_load()
+    test_load_builtin()
+    test_load_marketplace()
     test_single_image_run()
     test_directory_run()
     test_run_common()
