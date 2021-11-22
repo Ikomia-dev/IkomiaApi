@@ -6,6 +6,8 @@
 
 # Uncomment the following line to enable unit tests compilation
 #CONFIG += IKOMIA_TESTS
+# Uncomment to enable CPU mode
+#CONFIG += ik_cpu
 # LINUX deployment (CENTOS 7)
 CONFIG += centos centos7
 

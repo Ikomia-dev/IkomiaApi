@@ -104,8 +104,9 @@ class COcvRotateEx : public C2dImageTask
             {
                 auto center = cv::Point2f(imgSrc.cols/2, imgSrc.rows/2);
                 auto rotationMat = cv::getRotationMatrix2D(center, pParam->m_angle, pParam->m_scale);
-                bool bCuda = Utils::Gpu::isCudaAvailable();
 
+#ifdef HAVE_OPENCV_CUDAIMGPROC
+                bool bCuda = Utils::Gpu::isCudaAvailable();
                 if(bCuda == true && (pParam->m_interpolation == cv::INTER_NEAREST ||
                                      pParam->m_interpolation == cv::INTER_LINEAR ||
                                      pParam->m_interpolation == cv::INTER_CUBIC))
@@ -117,6 +118,9 @@ class COcvRotateEx : public C2dImageTask
                 }
                 else
                     cv::warpAffine(imgSrc, imgDst, rotationMat, imgSrc.size(), pParam->m_interpolation);
+#else
+                cv::warpAffine(imgSrc, imgDst, rotationMat, imgSrc.size(), pParam->m_interpolation);
+#endif
             }
             catch(cv::Exception& e)
             {

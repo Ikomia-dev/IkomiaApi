@@ -5,6 +5,9 @@
 #-------------------------------------------------
 include(../IkomiaApi.pri)
 
+# Not compile in CPU only mode (ik_cpu enabled)
+requires(!ik_cpu)
+
 QT       += core widgets sql concurrent opengl
 
 TARGET = ikVolumeRender

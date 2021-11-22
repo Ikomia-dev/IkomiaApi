@@ -105,7 +105,7 @@ class COcvResize : public C2dImageTask
 
             try
             {
-
+#ifdef HAVE_OPENCV_CUDAIMGPROC
                 bool bCuda = Utils::Gpu::isCudaAvailable();
                 if(bCuda == true)
                 {
@@ -114,7 +114,11 @@ class COcvResize : public C2dImageTask
                     cv::cuda::resize(cuImgSrc, cuImgDst, cv::Size(pParam->m_newWidth,pParam->m_newHeight), pParam->m_fx, pParam->m_fy, pParam->m_interpolation);
                     cuImgDst.download(imgDst);
                 }
+                else
+                    cv::resize(pInput->getImage(), imgDst, cv::Size(pParam->m_newWidth,pParam->m_newHeight), pParam->m_fx, pParam->m_fy, pParam->m_interpolation);
+#else
                 cv::resize(pInput->getImage(), imgDst, cv::Size(pParam->m_newWidth,pParam->m_newHeight), pParam->m_fx, pParam->m_fy, pParam->m_interpolation);
+#endif
             }
             catch(cv::Exception& e)
             {
