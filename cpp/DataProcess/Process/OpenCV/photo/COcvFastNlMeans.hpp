@@ -22,8 +22,11 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
-#include "opencv2/photo/cuda.hpp"
 #include "UtilsTools.hpp"
+
+#ifdef HAVE_OPENCV_CUDAIMGPROC
+#include "opencv2/photo/cuda.hpp"
+#endif
 
 //----------------------------//
 //----- COcvNlMeansParam -----//

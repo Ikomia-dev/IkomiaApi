@@ -22,7 +22,10 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
+
+#ifdef HAVE_OPENCV_CUDAIMGPROC
 #include "opencv2/cudawarping.hpp"
+#endif
 
 //---------------------------//
 //----- COcvResizeParam -----//
