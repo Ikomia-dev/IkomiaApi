@@ -66,7 +66,6 @@ BOOST_PYTHON_MODULE(pyutils)
 
     def("getApiVersion", &Utils::Plugin::getCurrentApiVersion, _getCurrentVersionDocString);
     def("getCompatibilityState", &Utils::Plugin::getCompatibilityState, _pythonStateDocString, args("version", "language"));
-    def("getIkomiaFolder", &Utils::IkomiaApp::getIkomiaFolder, _getIkomiaFolderDocString);
     def("isAppStarted", &Utils::IkomiaApp::isAppStarted, "Internal use only");
 
     //----- Binding CException -----

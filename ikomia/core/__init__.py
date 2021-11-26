@@ -23,3 +23,9 @@ try:
 except:
     # Valid for Windows standalone API
     from ikomia.lib.pycore import *
+
+from ikomia.core import config
+
+
+def get_ikomia_root_folder():
+    return config.main_cfg["root_folder"]

@@ -280,17 +280,48 @@ namespace Ikomia
                 }
                 return "";
             }
+
+            inline std::string  getIkomiaApiFolder()
+            {
+                try
+                {
+                    auto pyIkPath = import("ikomia.core").attr("get_ikomia_root_folder")();
+                    extract<std::string> ikPath(pyIkPath);
+
+                    if(ikPath.check())
+                    {
+                        QFileInfo info(QString::fromStdString(ikPath));
+                        return info.absolutePath().toStdString();
+                    }
+                }
+                catch (const boost::python::error_already_set &)
+                {
+                    return "";
+                }
+                return "";
+            }
         }
 
         namespace IkomiaApp
         {
+            inline bool         isAppStarted()
+            {
+                auto windows = QGuiApplication::allWindows();
+                return windows.size() > 0;
+            }
             inline std::string  getIkomiaFolder()
             {
-                return QDir::homePath().toStdString() + "/Ikomia";
+                if(isAppStarted())
+                    return QDir::homePath().toStdString() + "/Ikomia";
+                else
+                    return Utils::Python::getIkomiaApiFolder();
             }
             inline QString      getQIkomiaFolder()
             {
-                return QDir::homePath() + "/Ikomia";
+                if(isAppStarted())
+                    return QDir::homePath() + "/Ikomia";
+                else
+                    return QString::fromStdString(Utils::Python::getIkomiaApiFolder());
             }
             inline QString      getGmicFolder()
             {
@@ -319,11 +350,6 @@ namespace Ikomia
             inline QString      getCurrentVersionName()
             {
                 return "0.6.0";
-            }
-            inline bool         isAppStarted()
-            {
-                auto windows = QGuiApplication::allWindows();
-                return windows.size() > 0;
             }
             inline std::string  getIkomiaLibFolder()
             {

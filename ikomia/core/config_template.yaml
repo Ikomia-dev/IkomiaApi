@@ -1,5 +1,6 @@
 marketplace:
   url: https://ikomia.com
+root_folder:
 registry:
   path:
   auto_completion: True
