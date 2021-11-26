@@ -22,8 +22,11 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
-#include "opencv2/photo/cuda.hpp"
 #include "UtilsTools.hpp"
+
+#ifdef HAVE_OPENCV_CUDAIMGPROC
+#include "opencv2/photo/cuda.hpp"
+#endif
 
 //----------------------------//
 //----- COcvNlMeansParam -----//
@@ -97,6 +100,7 @@ class COcvFastNlMeans : public C2dImageTask
 
             try
             {
+#ifdef HAVE_OPENCV_CUDAIMGPROC
                 bool bCuda = Utils::Gpu::isCudaAvailable();
                 bCuda = false;
                 if(bCuda == true)
@@ -118,6 +122,12 @@ class COcvFastNlMeans : public C2dImageTask
                     else
                         cv::fastNlMeansDenoisingColored(imgSrc, imgDst, pParam->m_h, pParam->m_blockSize, pParam->m_searchSize);
                 }
+#else
+                if(pInput->m_channelCount == 1)
+                    cv::fastNlMeansDenoising(imgSrc, imgDst, pParam->m_h, pParam->m_blockSize, pParam->m_searchSize);
+                else
+                    cv::fastNlMeansDenoisingColored(imgSrc, imgDst, pParam->m_h, pParam->m_blockSize, pParam->m_searchSize);
+#endif
             }
             catch(cv::Exception& e)
             {
