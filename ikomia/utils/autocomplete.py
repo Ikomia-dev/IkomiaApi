@@ -139,8 +139,12 @@ def make_local_plugins(force=False):
         _write_auto_complete(f, name, skip_params=False)
 
     f.close()
-    _generate_python_file(folder)
-    logger.info("Ikomia auto-completion updated for installed plugins.")
+
+    try:
+        _generate_python_file(folder)
+        logger.info("Ikomia auto-completion updated for installed plugins.")
+    except Exception:
+        logger.info("Ikomia auto-completion cannot be generated.")
 
 
 def make_online_plugins(force=False):

@@ -436,12 +436,16 @@ class Workflow(dataprocess.CWorkflow):
         online_tasks = ikomia.ik_registry.get_online_algorithms()
 
         for t in tasks:
-            if t not in available_tasks and any(d["name"] == t for d in online_tasks):
-                # try installation
-                try:
-                    ikomia.ik_registry.install_plugin(t)
-                except Exception:
-                    return False
+            if t not in available_tasks:
+                if online_tasks is not None and any(d["name"] == t for d in online_tasks):
+                    # try installation
+                    try:
+                        ikomia.ik_registry.install_plugin(t)
+                    except Exception:
+                        return False
+                else:
+                    msg = "Workflow preparation failed: task " + t + " cannot be found or installed."
+                    logger.error(msg)
 
         return True
 
