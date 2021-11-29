@@ -442,10 +442,13 @@ class Workflow(dataprocess.CWorkflow):
                     try:
                         ikomia.ik_registry.install_plugin(t)
                     except Exception:
+                        msg = "Workflow preparation failed: task " + t + " cannot be installed."
+                        logger.error(msg)
                         return False
                 else:
-                    msg = "Workflow preparation failed: task " + t + " cannot be found or installed."
+                    msg = "Workflow preparation failed: task " + t + " cannot be found."
                     logger.error(msg)
+                    return False
 
         return True
 
