@@ -289,10 +289,7 @@ namespace Ikomia
                     extract<std::string> ikPath(pyIkPath);
 
                     if(ikPath.check())
-                    {
-                        QFileInfo info(QString::fromStdString(ikPath));
-                        return info.absolutePath().toStdString();
-                    }
+                        return ikPath();
                 }
                 catch (const boost::python::error_already_set &)
                 {

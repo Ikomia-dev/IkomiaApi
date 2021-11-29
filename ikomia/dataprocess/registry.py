@@ -45,8 +45,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
     def __init__(self):
         dataprocess.CIkomiaRegistry.__init__(self)
-        plugin_folder = config.main_cfg["registry"]["path"]
-        self.setPluginsDirectory(plugin_folder)
         self._load_python_plugins()
 
     @utils.http.http_except

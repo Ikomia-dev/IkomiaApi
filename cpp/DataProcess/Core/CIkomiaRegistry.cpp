@@ -8,7 +8,7 @@
 
 CIkomiaRegistry::CIkomiaRegistry()
 {
-    m_pluginsDir = QDir::homePath().toStdString() + "/Ikomia/Plugins";
+    m_pluginsDir = Utils::IkomiaApp::getIkomiaFolder() + "/Plugins";
     loadCppPlugins();
 }
 
