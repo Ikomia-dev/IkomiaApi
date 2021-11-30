@@ -45,7 +45,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
     def __init__(self):
         dataprocess.CIkomiaRegistry.__init__(self)
-        self._load_python_plugins()
+        self.load_python_plugins()
 
     @utils.http.http_except
     def get_online_algorithms(self):
