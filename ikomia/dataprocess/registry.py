@@ -178,7 +178,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             self.loadCppPlugin(plugin_dir)
 
-    def _load_python_plugins(self):
+    def load_python_plugins(self):
         root_dir = self.getPluginsDirectory() + os.sep + "Python"
 
         if root_dir not in sys.path:
