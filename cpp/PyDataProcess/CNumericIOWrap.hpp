@@ -21,7 +21,7 @@
 #define CNUMERICIOWRAP_H
 
 #include "PyDataProcessGlobal.h"
-#include "IO/CNumericIO.hpp"
+#include "IO/CNumericIO.h"
 
 template<class Type>
 class CNumericIOWrap : public CNumericIO<Type>, public wrapper<CNumericIO<Type>>

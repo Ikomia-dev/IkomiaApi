@@ -319,6 +319,7 @@ BOOST_PYTHON_MODULE(pydataprocess)
     ;
 
     exposeNumericIO<double>("CNumericIO");
+    exposeNumericIO<std::string>("CDataStringIO");
 
     //--------------------//
     //----- CVideoIO -----//

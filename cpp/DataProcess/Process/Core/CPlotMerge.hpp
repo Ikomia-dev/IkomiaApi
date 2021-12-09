@@ -23,7 +23,7 @@
 #include "Core/CTaskFactory.hpp"
 #include "IO/CImageIO.h"
 #include "IO/CBlobMeasureIO.h"
-#include "IO/CNumericIO.hpp"
+#include "IO/CNumericIO.h"
 
 //-----------------------------//
 //----- CPlotProcessParam -----//

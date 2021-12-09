@@ -44,6 +44,7 @@ SOURCES += \
         IO/CGraphicsInput.cpp \
         IO/CGraphicsOutput.cpp \
         IO/CImageIO.cpp \
+        IO/CNumericIO.cpp \
         IO/CPathIO.cpp \
         IO/CTaskIORegistration.cpp \
         IO/CVideoIO.cpp \
@@ -84,7 +85,7 @@ HEADERS += \
         IO/CGraphicsInput.h \
         IO/CGraphicsOutput.h \
         IO/CImageIO.h \
-        IO/CNumericIO.hpp \
+        IO/CNumericIO.h \
         IO/CPathIO.h \
         IO/CTaskIORegistration.h \
         IO/CVideoIO.h \

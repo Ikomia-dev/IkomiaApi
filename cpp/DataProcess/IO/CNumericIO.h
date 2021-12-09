@@ -344,7 +344,7 @@ class CNumericIO : public CNumericIOBase
         {
             return m_values;
         }
-        VectorOfStringVector        getAllValuesAsString() const override
+        inline VectorOfStringVector getAllValuesAsString() const override
         {
             VectorOfStringVector strValues;
             for(size_t i=0; i<m_values.size(); ++i)
@@ -456,20 +456,28 @@ class CNumericIO : public CNumericIOBase
         VectorOfNumericValues       m_values;
 };
 
+// Partial specialization
+template <>
+CNumericIOBase::VectorOfStringVector CNumericIO<std::string>::getAllValuesAsString() const;
+
+template <>
+void    CNumericIO<std::string>::saveCSV(const std::string &path) const;
+
+
 class DATAPROCESSSHARED_EXPORT CNumericIOFactory: public CWorkflowTaskIOFactory
 {
-    public:
+public:
 
-        CNumericIOFactory()
-        {
-            m_name = "CNumericIO";
-        }
+    CNumericIOFactory()
+    {
+        m_name = "CNumericIO";
+    }
 
-        virtual WorkflowTaskIOPtr   create(IODataType dataType)
-        {
-            Q_UNUSED(dataType);
-            return std::make_shared<CNumericIO<double>>();
-        }
+    virtual WorkflowTaskIOPtr   create(IODataType dataType)
+    {
+        Q_UNUSED(dataType);
+        return std::make_shared<CNumericIO<double>>();
+    }
 };
 
 #endif // CNUMERICIO_H

@@ -22,7 +22,7 @@
 
 #include "Core/C2dImageTask.h"
 #include "IO/CImageIO.h"
-#include "IO/CNumericIO.hpp"
+#include "IO/CNumericIO.h"
 
 //------------------------------//
 //----- COcvCalcHistParam -----//

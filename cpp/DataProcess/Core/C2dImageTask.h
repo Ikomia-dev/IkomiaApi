@@ -31,7 +31,7 @@
 #include "IO/CGraphicsInput.h"
 #include "IO/CGraphicsOutput.h"
 #include "IO/CBlobMeasureIO.h"
-#include "IO/CNumericIO.hpp"
+#include "IO/CNumericIO.h"
 
 /**
  * @ingroup groupDataProcess

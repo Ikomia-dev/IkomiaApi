@@ -22,7 +22,7 @@
 #include "CBlobMeasureIO.h"
 #include "CGraphicsInput.h"
 #include "CGraphicsOutput.h"
-#include "CNumericIO.hpp"
+#include "CNumericIO.h"
 #include "CVideoIO.h"
 #include "CWidgetOutput.h"
 #include "CPathIO.h"
