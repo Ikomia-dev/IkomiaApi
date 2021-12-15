@@ -167,3 +167,9 @@ void COcvDnnProcess::displayLayers(const cv::dnn::Net& net)
     for(size_t i=0; i<layerNames.size(); ++i)
         Utils::print(layerNames[i], QtDebugMsg);
 }
+
+void COcvDnnProcess::globalInputChanged(bool bNewSequence)
+{
+    if(bNewSequence)
+        m_bNewInput = true;
+}

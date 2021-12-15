@@ -480,7 +480,7 @@ deployIncludeIO.files = \
         IO/CGraphicsOutput.h \
         IO/CGraphicsProcessIO.hpp \
         IO/CTaskIORegistration.h \
-        IO/CNumericIO.hpp \
+        IO/CNumericIO.h \
         IO/CVideoIO.h \
         IO/CViewPropertyIO.h \
         IO/CDatasetIO.h

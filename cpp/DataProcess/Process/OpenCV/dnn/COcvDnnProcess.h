@@ -97,11 +97,18 @@ class DATAPROCESSSHARED_EXPORT COcvDnnProcess : public C2dImageTask
 
         void                            displayLayers(const cv::dnn::Net& net);
 
+        void                            globalInputChanged(bool bNewSequence) override;
+
     protected:
 
         std::string                 m_outputLayerName = "";
         std::vector<std::string>    m_classNames;
         cv::dnn::Net                m_net;
+
+        // Trick to overcome OpenCV issue around CUDA context and multithreading
+        // https://github.com/opencv/opencv/issues/20566
+        bool                        m_bNewInput = false;
+        int                         m_sign = 1;
 };
 
 #endif // CDNNPROCESS_H
