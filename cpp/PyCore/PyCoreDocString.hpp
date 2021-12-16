@@ -76,6 +76,11 @@ constexpr auto _isGraphicsTextItemDocString =
         "Returns:\n"
         "   bool: True or False\n";
 
+constexpr auto _getGraphicsBoundRectDocString =
+        "Get graphics item bounding rectangle.\n\n"
+        "Returns:\n"
+        "   list of float: rectangle coordinate (left, top, width, height)\n";
+
 //-----------------------------------//
 //----- CGraphicsComplexPolygon -----//
 //-----------------------------------//

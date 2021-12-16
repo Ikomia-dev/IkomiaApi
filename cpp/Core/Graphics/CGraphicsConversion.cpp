@@ -530,7 +530,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolygon
     if(image.data == nullptr)
         throw CException(CoreExCode::NULL_POINTER, "Polygon insertion failed : invalid image", __func__, __FILE__, __LINE__);
 
-    QRectF rc = pItem->getBoundingRect();
+    QRectF rc = pItem->getBoundingQRect();
     QRectF rcImg(0, 0, m_width, m_height);
 
     if(!rcImg.contains(rc))
@@ -626,7 +626,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsComplex
     if(image.data == nullptr)
         throw CException(CoreExCode::NULL_POINTER, "Complex polygon insertion failed : invalid image", __func__, __FILE__, __LINE__);
 
-    QRectF rc = pItem->getBoundingRect();
+    QRectF rc = pItem->getBoundingQRect();
     QRectF rcImg(0, 0, m_width, m_height);
 
     if(!rcImg.contains(rc))

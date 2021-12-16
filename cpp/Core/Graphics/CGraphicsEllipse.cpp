@@ -101,9 +101,16 @@ float CProxyGraphicsEllipse::getHeight() const
     return m_height;
 }
 
-QRectF CProxyGraphicsEllipse::getBoundingRect() const
+QRectF CProxyGraphicsEllipse::getBoundingQRect() const
 {
     return QRectF(m_x, m_y, m_width, m_height);
+}
+
+std::vector<float> CProxyGraphicsEllipse::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsEllipseProperty CProxyGraphicsEllipse::getProperty() const

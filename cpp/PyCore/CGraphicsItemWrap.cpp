@@ -52,10 +52,26 @@ std::string CGraphicsItemWrap::getCategory() const
     {
         //Do not throw exceptions from slot
         Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+        return std::string();
     }
 }
 
-QRectF CGraphicsItemWrap::getBoundingRect() const
+QRectF CGraphicsItemWrap::getBoundingQRect() const
+{
+    CPyEnsureGIL gil;
+    try
+    {
+        return this->get_override("getBoundingQRect")();
+    }
+    catch(boost::python::error_already_set&)
+    {
+        //Do not throw exceptions from slot
+        Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+        return QRectF();
+    }
+}
+
+std::vector<float> CGraphicsItemWrap::getBoundingRect() const
 {
     CPyEnsureGIL gil;
     try
@@ -66,6 +82,7 @@ QRectF CGraphicsItemWrap::getBoundingRect() const
     {
         //Do not throw exceptions from slot
         Utils::print(Utils::Python::handlePythonException(), QtCriticalMsg);
+        return std::vector<float>();
     }
 }
 

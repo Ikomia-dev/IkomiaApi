@@ -46,7 +46,8 @@ class CORESHARED_EXPORT CProxyGraphicsComplexPoly: public CProxyGraphicsItem
 
         PolygonF                    getOuter() const;
         std::vector<PolygonF>       getInners() const;
-        QRectF                      getBoundingRect() const;
+        QRectF                      getBoundingQRect() const override;
+        std::vector<float>          getBoundingRect() const override;
         CGraphicsPolygonProperty    getProperty() const;
         std::string                 getCategory() const override;
 

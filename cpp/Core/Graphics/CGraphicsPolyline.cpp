@@ -66,7 +66,7 @@ PolygonF CProxyGraphicsPolyline::getPoints() const
     return m_points;
 }
 
-QRectF CProxyGraphicsPolyline::getBoundingRect() const
+QRectF CProxyGraphicsPolyline::getBoundingQRect() const
 {
     float xmin = FLT_MAX;
     float ymin = FLT_MAX;
@@ -81,6 +81,13 @@ QRectF CProxyGraphicsPolyline::getBoundingRect() const
         ymax = std::max(ymax, m_points[i].m_y);
     }
     return QRectF(xmin, ymin, (xmax - xmin) + 1, (ymax - ymin) + 1);
+}
+
+std::vector<float> CProxyGraphicsPolyline::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsPolylineProperty CProxyGraphicsPolyline::getProperty()

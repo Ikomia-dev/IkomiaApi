@@ -114,7 +114,7 @@ class COcvOCRTesseract : public C2dImageTask
             // Loop over bounding boxes
             for(auto&& it : items)
             {
-                auto rect = it->getBoundingRect();
+                auto rect = it->getBoundingQRect();
                 int x = rect.x();
                 int y = rect.y();
                 int w = rect.width();

@@ -49,7 +49,8 @@ class CORESHARED_EXPORT CProxyGraphicsText: public CProxyGraphicsItem
         float                   getX() const;
         float                   getY() const;
         std::string             getText() const;
-        QRectF                  getBoundingRect() const override;
+        QRectF                  getBoundingQRect() const override;
+        std::vector<float>      getBoundingRect() const override;
         CGraphicsTextProperty   getProperty() const;
         std::string             getCategory() const override;
 

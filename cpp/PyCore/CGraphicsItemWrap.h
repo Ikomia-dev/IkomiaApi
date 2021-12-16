@@ -35,8 +35,9 @@ class CGraphicsItemWrap : public CProxyGraphicsItem, public wrapper<CProxyGraphi
 
         void            setCategory(const std::string& categ) override;
 
-        std::string     getCategory() const override;
-        QRectF          getBoundingRect() const override;
+        std::string         getCategory() const override;
+        QRectF              getBoundingQRect() const override;
+        std::vector<float>  getBoundingRect() const override;
 
         bool            isTextItem() const;
         bool            default_isTextItem() const;

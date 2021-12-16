@@ -44,7 +44,8 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
         void                    setCategory(const std::string& categ) override;
 
         CPointF                 getPoint() const;
-        QRectF                  getBoundingRect() const override;
+        QRectF                  getBoundingQRect() const override;
+        std::vector<float>      getBoundingRect() const override;
         CGraphicsPointProperty  getProperty() const;
         std::string             getCategory() const override;
 

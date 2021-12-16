@@ -77,7 +77,7 @@ std::vector<PolygonF> CProxyGraphicsComplexPoly::getInners() const
     return m_inners;
 }
 
-QRectF CProxyGraphicsComplexPoly::getBoundingRect() const
+QRectF CProxyGraphicsComplexPoly::getBoundingQRect() const
 {
     float xmin = FLT_MAX;
     float ymin = FLT_MAX;
@@ -92,6 +92,13 @@ QRectF CProxyGraphicsComplexPoly::getBoundingRect() const
         ymax = std::max(ymax, m_outer[i].m_y);
     }
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
+}
+
+std::vector<float> CProxyGraphicsComplexPoly::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsPolygonProperty CProxyGraphicsComplexPoly::getProperty() const

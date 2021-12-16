@@ -51,7 +51,8 @@ class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
         float                       getY() const;
         float                       getWidth() const;
         float                       getHeight() const;
-        QRectF                      getBoundingRect() const override;
+        QRectF                      getBoundingQRect() const override;
+        std::vector<float>          getBoundingRect() const override;
         CGraphicsEllipseProperty    getProperty() const;
         std::string                 getCategory() const override;
 

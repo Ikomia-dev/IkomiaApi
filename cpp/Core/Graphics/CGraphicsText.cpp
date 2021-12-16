@@ -97,7 +97,7 @@ std::string CProxyGraphicsText::getText() const
     return m_text;
 }
 
-QRectF CProxyGraphicsText::getBoundingRect() const
+QRectF CProxyGraphicsText::getBoundingQRect() const
 {
     CGraphicsTextProperty prop;
     if(m_bUseGlobalContext == false)
@@ -115,6 +115,13 @@ QRectF CProxyGraphicsText::getBoundingRect() const
     int width = fontMetrics.horizontalAdvance(QString::fromStdString(m_text));
     int height = fontMetrics.height();
     return QRect(m_x, m_y, width, height);
+}
+
+std::vector<float> CProxyGraphicsText::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsTextProperty CProxyGraphicsText::getProperty() const

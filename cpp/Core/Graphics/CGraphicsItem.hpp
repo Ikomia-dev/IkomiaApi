@@ -61,8 +61,9 @@ class CProxyGraphicsItem
         {
             return static_cast<size_t>(m_type);
         }
-        virtual std::string     getCategory() const = 0;
-        virtual QRectF          getBoundingRect() const = 0;
+        virtual std::string         getCategory() const = 0;
+        virtual QRectF              getBoundingQRect() const = 0;
+        virtual std::vector<float>  getBoundingRect() const = 0;
 
         virtual bool            isTextItem() const
         {

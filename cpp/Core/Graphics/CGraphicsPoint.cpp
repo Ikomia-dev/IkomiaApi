@@ -64,7 +64,7 @@ CPointF CProxyGraphicsPoint::getPoint() const
     return m_point;
 }
 
-QRectF CProxyGraphicsPoint::getBoundingRect() const
+QRectF CProxyGraphicsPoint::getBoundingQRect() const
 {
     CGraphicsPointProperty prop;
     if(!m_bUseGlobalContext)
@@ -72,6 +72,13 @@ QRectF CProxyGraphicsPoint::getBoundingRect() const
 
     float radius = (float)prop.m_size / 2.0f;
     return QRectF(m_point.m_x - radius, m_point.m_y - radius, prop.m_size, prop.m_size);
+}
+
+std::vector<float> CProxyGraphicsPoint::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsPointProperty CProxyGraphicsPoint::getProperty() const
