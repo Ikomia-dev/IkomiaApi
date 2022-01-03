@@ -1,6 +1,7 @@
 import numpy as np
 import math
 
+
 def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, process):
     """
 
@@ -16,20 +17,20 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, process):
     h, w = np.shape(img)[:2]
 
     # modify tile_size to fit with the needs of the process function
-    h = h * sf // (sf*size_divisible_by) * size_divisible_by
-    w = w * sf // (sf*size_divisible_by) * size_divisible_by
+    h = h * sf // (sf * size_divisible_by) * size_divisible_by
+    w = w * sf // (sf * size_divisible_by) * size_divisible_by
 
-    if len(shape)==3:
+    if len(shape) == 3:
         c = np.shape(img)[2]
         img_up = np.zeros((sf * h, sf * w, c), dtype='half')
-    elif len(shape)==2:
+    elif len(shape) == 2:
         img_up = np.zeros((sf * h, sf * w), dtype='half')
     else:
         print("Not an image")
         return
 
-    img = img[:h,:w]
-    tile_size = min(h,w,tile_size)
+    img = img[:h, :w]
+    tile_size = min(h, w, tile_size)
     while h % tile_size * sf % size_divisible_by != 0 and w % tile_size * sf % size_divisible_by != 0:
         tile_size += 1
     # modify overlap_ratio to avoid rounding errors
@@ -67,14 +68,14 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, process):
             if tile_h != int(stride):
                 if i == 0:
                     if ny == 1:
-                        cropped_mask = cropped_mask[sf * overlap:-sf*overlap]
+                        cropped_mask = cropped_mask[sf * overlap:-sf * overlap]
                     else:
                         cropped_mask = cropped_mask[2 * sf * overlap:]
                 else:
                     cropped_mask = cropped_mask[:sf * tile_h]
 
             if tile_w != int(stride):
-                if j == 0 :
+                if j == 0:
                     if nx == 1:
                         cropped_mask = cropped_mask[:, sf * overlap:-sf * overlap]
                     else:
@@ -135,10 +136,10 @@ def compute_weights(size, overlap_ratio):
     # vertical symetry
     mx = len(res[0]) // 2
     rx = len(res[0]) % 2
-    res[:, :mx+rx] = res[:, :mx - 1:-1]
+    res[:, :mx + rx] = res[:, :mx - 1:-1]
 
     # horizontal symetry
     my = len(res) // 2
     ry = len(res) % 2
-    res[:my+ry] = res[:my - 1:-1]
+    res[:my + ry] = res[:my - 1:-1]
     return res
