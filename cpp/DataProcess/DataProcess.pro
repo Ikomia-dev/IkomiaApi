@@ -52,6 +52,7 @@ SOURCES += \
         Process/Core/CBinaryToGraphics.cpp \
         Process/Core/CBlobMeasure.cpp \
         Process/Core/CGraphicsToBinary.cpp \
+        Process/Core/CObjDetectFilter.cpp \
         Process/Core/CRgbHlsThreshold.cpp \
         Process/Gmic/CGmicImageConverter.cpp \
         Widget/Core/CWidgetBlobMeasure.cpp \
@@ -92,6 +93,7 @@ HEADERS += \
         IO/CWidgetOutput.h \
         Process/Core/CBinaryToGraphics.h \
         Process/Core/CGraphicsToBinary.h \
+        Process/Core/CObjDetectFilter.h \
         Process/Gmic/CGmicImageConverter.h \
         Process/Gmic/CGmicTaskParam.hpp \
         Process/Gmic/Colors/CGmicAutoBalance.hpp \

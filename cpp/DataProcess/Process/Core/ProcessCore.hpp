@@ -28,5 +28,6 @@
 #include "CCut.hpp"
 #include "CBinaryToGraphics.h"
 #include "CGraphicsToBinary.h"
+#include "CObjDetectFilter.h"
 
 #endif // PROCESSCORE_HPP
