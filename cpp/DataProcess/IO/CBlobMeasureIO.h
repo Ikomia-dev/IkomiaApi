@@ -68,6 +68,9 @@ class DATAPROCESSSHARED_EXPORT CBlobMeasureIO : public CWorkflowTaskIO
         void                    setObjectMeasure(size_t index, const CObjectMeasure& measure);
 
         ObjectsMeasures         getMeasures() const;
+        ObjectMeasures          getBlobMeasures(size_t index) const;
+        int                     getBlobMeasureIndex(size_t index, std::string name);
+        int                     getBlobMeasureIndex(size_t index, int id);
 
         bool                    isDataAvailable() const override;
 

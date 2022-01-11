@@ -127,6 +127,30 @@ ObjectsMeasures CBlobMeasureIO::getMeasures() const
     return m_measures;
 }
 
+ObjectMeasures CBlobMeasureIO::getBlobMeasures(size_t index) const
+{
+    if(index >= m_measures.size())
+        throw CException(CoreExCode::INDEX_OVERFLOW, "Blob index out of range");
+
+    return m_measures[index];
+}
+
+int CBlobMeasureIO::getBlobMeasureIndex(size_t index, std::string name)
+{
+    ObjectMeasures measures = getBlobMeasures(index);
+    for(size_t i=0; i<measures.size(); ++i)
+    {
+        if(measures[i].m_measure.m_name == name)
+            return i;
+    }
+    return -1;
+}
+
+int CBlobMeasureIO::getBlobMeasureIndex(size_t index, int id)
+{
+    return getBlobMeasureIndex(index, CMeasure::getName(id));
+}
+
 bool CBlobMeasureIO::isDataAvailable() const
 {
     return m_measures.size() > 0;
