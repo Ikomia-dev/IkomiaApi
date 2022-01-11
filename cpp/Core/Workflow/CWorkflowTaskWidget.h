@@ -89,6 +89,21 @@ class CORESHARED_EXPORT CWorkflowTaskWidget : public QWidget
     protected:
 
         /**
+         * @brief Tool method to add edit box into the internal grid layout.
+         * @param row: zero based index to set where the edit box is placed.
+         * @param title: label associated with the edit box.
+         * @param value: text in the edit box.
+         * @return Pointer to the newly created edit box.
+         */
+        QLineEdit*      addEdit(int row, const QString& title, const QString& value);
+        /**
+         * @brief Tool method to add edit box at the end of the internal grid layout.
+         * @param title: label associated with the edit box.
+         * @param value: text in the edit box.
+         * @return Pointer to the newly created edit box.
+         */
+        QLineEdit*      addEdit(const QString& title, const QString& value);
+        /**
          * @brief Tool method to add combo box into the internal grid layout.
          * @param row: zero based index to set where the combo box is placed.
          * @param title: label associated with the combo box.
