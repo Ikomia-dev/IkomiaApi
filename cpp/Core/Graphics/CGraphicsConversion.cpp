@@ -532,12 +532,12 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolygon
 
     QRectF rc = pItem->getBoundingQRect();
     QRectF rcImg(0, 0, m_width, m_height);
+    std::vector<std::vector<cv::Point>> polygonArray;
 
     if(!rcImg.contains(rc))
-        throw CException(CoreExCode::INVALID_DIMENSION, "Polygon outside image bounds", __func__, __FILE__, __LINE__);
-
-    std::vector<std::vector<cv::Point>> polygonArray;
-    polygonArray.push_back(convertToCvPolygon(pItem->m_points));
+        polygonArray.push_back(convertToCvPolygon(clipPolygon(pItem->m_points)));
+    else
+        polygonArray.push_back(convertToCvPolygon(pItem->m_points));
 
     cv::Scalar color = {255, 255, 255, 255};
     CColor brushColor = pItem->m_property.m_brushColor;
@@ -628,15 +628,20 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsComplex
 
     QRectF rc = pItem->getBoundingQRect();
     QRectF rcImg(0, 0, m_width, m_height);
+    std::vector<std::vector<cv::Point>> polygonArray;
 
     if(!rcImg.contains(rc))
-        throw CException(CoreExCode::INVALID_DIMENSION, "Polygon outside image bounds", __func__, __FILE__, __LINE__);
-
-    std::vector<std::vector<cv::Point>> polygonArray;
-    polygonArray.push_back(convertToCvPolygon(pItem->m_outer));
-
-    for(size_t i=0; i<pItem->m_inners.size(); ++i)
-        polygonArray.push_back(convertToCvPolygon(pItem->m_inners[i]));
+    {
+        polygonArray.push_back(convertToCvPolygon(clipPolygon(pItem->m_outer)));
+        for(size_t i=0; i<pItem->m_inners.size(); ++i)
+            polygonArray.push_back(convertToCvPolygon(clipPolygon(pItem->m_inners[i])));
+    }
+    else
+    {
+        polygonArray.push_back(convertToCvPolygon(pItem->m_outer));
+        for(size_t i=0; i<pItem->m_inners.size(); ++i)
+            polygonArray.push_back(convertToCvPolygon(pItem->m_inners[i]));
+    }
 
     cv::Scalar color = {255, 255, 255, 255};
     CColor brushColor = pItem->m_property.m_brushColor;
@@ -739,4 +744,22 @@ void CGraphicsConversion::clipPoint(cv::Point &pt)
         pt.y = 0;
     else if(pt.y >= m_height)
         pt.y = m_height - 1;
+}
+
+std::vector<CPointF> CGraphicsConversion::clipPolygon(const std::vector<CPointF> &pts)
+{
+    std::vector<CPointF> clipPts = pts;
+    for(size_t i=0; i<clipPts.size(); ++i)
+    {
+        if(clipPts[i].m_x < 0)
+            clipPts[i].m_x = 0;
+        else if(clipPts[i].m_x >= (float)m_width)
+            clipPts[i].m_x = (float)(m_width - 1);
+
+        if(clipPts[i].m_y < 0)
+            clipPts[i].m_y = 0;
+        else if(clipPts[i].m_y >= (float)m_height)
+            clipPts[i].m_y = (float)(m_height - 1);
+    }
+    return clipPts;
 }
