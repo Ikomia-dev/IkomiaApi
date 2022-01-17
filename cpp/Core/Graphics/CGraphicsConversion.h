@@ -93,6 +93,7 @@ class CORESHARED_EXPORT CGraphicsConversion
         std::vector<cv::Point>  convertToCvPolygon(const std::vector<CPointF>& poly);
 
         void                    clipPoint(cv::Point& pt);
+        std::vector<CPointF>    clipPolygon(const std::vector<CPointF>& pts);
 
     private:
 
