@@ -168,7 +168,7 @@ CDataInfoPtr CImageIO::getDataInfo()
     return m_infoPtr;
 }
 
-CMat CImageIO::getImage() const
+CMat CImageIO::getImage()
 {
     if( m_dataType == IODataType::IMAGE ||
         m_dataType == IODataType::IMAGE_BINARY ||
@@ -191,7 +191,7 @@ CMat CImageIO::getImage() const
     return CMat();
 }
 
-CMat CImageIO::getImageWithGraphics(const GraphicsInputPtr &graphics) const
+CMat CImageIO::getImageWithGraphics(const GraphicsInputPtr &graphics)
 {
     auto internalImg = getImage();
     if(internalImg.empty())
@@ -207,7 +207,7 @@ CMat CImageIO::getImageWithGraphics(const GraphicsInputPtr &graphics) const
     return img;
 }
 
-CMat CImageIO::getImageWithGraphics(const GraphicsOutputPtr &graphics) const
+CMat CImageIO::getImageWithGraphics(const GraphicsOutputPtr &graphics)
 {
     auto internalImg = getImage();
     if(internalImg.empty())

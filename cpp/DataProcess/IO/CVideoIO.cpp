@@ -85,15 +85,23 @@ void CVideoIO::setVideoPath(const std::string& path)
 void CVideoIO::setVideoPos(int pos)
 {
     if(m_pVideoBuffer)
-        m_pVideoBuffer->setPosition(pos);
+        m_pVideoBuffer->setPosition(pos);        
     else
         throw CException(CoreExCode::NULL_POINTER, QObject::tr("Video buffer pointer is null.").toStdString(), __func__, __FILE__, __LINE__);
+}
+
+void CVideoIO::setFrameToRead(int index)
+{
+    m_frameIndex = index;
 }
 
 void CVideoIO::startVideo()
 {
     if(m_pVideoBuffer)
+    {
         m_pVideoBuffer->startRead();
+        m_frameIndexRead = -1;
+    }
     else
         throw CException(CoreExCode::NULL_POINTER, QObject::tr("Video buffer pointer is null.").toStdString(), __func__, __FILE__, __LINE__);
 }
@@ -144,15 +152,18 @@ bool CVideoIO::hasVideo()
     return m_pVideoBuffer != nullptr;
 }
 
-CMat CVideoIO::getImage() const
+CMat CVideoIO::getImage()
 {
     if(m_pVideoBuffer && m_pVideoBuffer->isReadStarted())
     {
-        CMat image = m_pVideoBuffer->read();
-        return image;
+        // Do not read image from source multiple times if we get it already
+        if(m_frameIndex != m_frameIndexRead)
+        {
+            m_image = m_pVideoBuffer->read();
+            m_frameIndexRead = m_frameIndex;
+        }
     }
-    else
-        return m_image;
+    return m_image;
 }
 
 size_t CVideoIO::getVideoFrameCount() const

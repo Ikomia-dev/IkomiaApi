@@ -75,7 +75,7 @@ size_t CImageIOWrap::default_getUnitElementCount() const
     }
 }
 
-CMat CImageIOWrap::getImage() const
+CMat CImageIOWrap::getImage()
 {
     CPyEnsureGIL gil;
     try
@@ -90,7 +90,7 @@ CMat CImageIOWrap::getImage() const
     }
 }
 
-CMat CImageIOWrap::default_getImage() const
+CMat CImageIOWrap::default_getImage()
 {
     CPyEnsureGIL gil;
     try

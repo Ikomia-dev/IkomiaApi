@@ -466,7 +466,6 @@ void CDataVideoBuffer::updateRead()
         {
             try
             {
-                grabCount++;
                 if(!m_reader.grab())
                 {
                     m_lastErrorMsg = "OpenCV VideoCapture::grab() function failed.";
@@ -482,6 +481,8 @@ void CDataVideoBuffer::updateRead()
                 }
 
                 CMat dst;
+                grabCount++;
+
                 if(frame.channels() > 1)
                     cv::cvtColor(frame, dst, cv::COLOR_BGR2RGB);
                 else
@@ -500,7 +501,6 @@ void CDataVideoBuffer::updateRead()
                     // For video files, we buffer frames in the queue
                     m_queueRead.push(dst);
                 }
-
                 //Reset successive failure count
                 failureCount = 0;
             }
@@ -596,9 +596,10 @@ void CDataVideoBuffer::writeVideoThread()
         return;
     }
 
+    int count = 0;
+
     try
     {
-        int count = 0;
         while(m_bStopWrite == false && count < m_nbFrames)
         {
             cv::Mat img = m_queueWrite.pop();
@@ -612,10 +613,12 @@ void CDataVideoBuffer::writeVideoThread()
         }
         writer.release();
     }
-    catch(std::exception& /*e*/)
+    catch(std::exception& e)
     {
         // Nothing more to process, we're done
-        Utils::print("Write thread finished: no more images available", QtWarningMsg);
+        std::string msg = "Write thread finished: " + std::to_string(count) + "/" + std::to_string(m_nbFrames) + " images written.";
+        msg += " Error occured:" + std::string(e.what());
+        Utils::print(msg, QtWarningMsg);
     }
 }
 

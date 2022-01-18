@@ -222,6 +222,11 @@ void CRunTaskManager::runWholeVideoProcess(const WorkflowTaskPtr &taskPtr, const
     {
         try
         {
+            for(size_t j=0; j<videoInputs.size(); ++j)
+            {
+                auto inputPtr = std::static_pointer_cast<CVideoIO>(videoInputs[j]);
+                inputPtr->setFrameToRead(i);
+            }
             // Run process
             taskPtr->run();
             // Save video outputs
@@ -262,7 +267,7 @@ void CRunTaskManager::saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const Inp
     }
 
     if(bEmbedGraphics)
-        graphicsOutputs = taskPtr->getOutputs({ IODataType::OUTPUT_GRAPHICS});
+        graphicsOutputs = taskPtr->getOutputs({IODataType::OUTPUT_GRAPHICS});
 
     for(size_t i=0; i<outputs.size(); ++i)
     {
