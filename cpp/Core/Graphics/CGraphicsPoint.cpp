@@ -97,9 +97,9 @@ void CProxyGraphicsPoint::translate(float dx, float dy)
     m_point.m_y += dy;
 }
 
-void CProxyGraphicsPoint::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsPoint::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 std::shared_ptr<CProxyGraphicsItem> CProxyGraphicsPoint::clone() const

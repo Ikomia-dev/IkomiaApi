@@ -106,9 +106,9 @@ std::string CProxyGraphicsPolygon::getCategory() const
     return m_property.m_category;
 }
 
-void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 void CProxyGraphicsPolygon::translate(float dx, float dy)

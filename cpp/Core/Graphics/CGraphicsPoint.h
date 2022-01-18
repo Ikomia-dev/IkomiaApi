@@ -51,7 +51,7 @@ class CORESHARED_EXPORT CProxyGraphicsPoint: public CProxyGraphicsItem
 
         void                    translate(float dx, float dy);
 
-        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 

@@ -109,9 +109,9 @@ void CProxyGraphicsPolyline::translate(float dx, float dy)
     }
 }
 
-void CProxyGraphicsPolyline::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsPolyline::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 std::shared_ptr<CProxyGraphicsItem> CProxyGraphicsPolyline::clone() const

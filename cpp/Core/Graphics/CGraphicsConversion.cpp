@@ -422,7 +422,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CGraphicsComplexPolyg
     }
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPoint *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPoint *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
     Q_UNUSED(bForceFill);
@@ -441,7 +441,10 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPoint *
     if(!bBinary)
     {
         auto penColor = pItem->m_property.m_brushColor;
-        color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+        if(bgr)
+            color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+        else
+            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
     }
     cv::RotatedRect rcObj(cv::Point2f(rc.topLeft().x(), rc.topLeft().y()),
                           cv::Point2f(rc.topRight().x(), rc.topRight().y()),
@@ -449,7 +452,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPoint *
     cv::ellipse(image, rcObj, color, cv::FILLED);
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsRect *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsRect *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
 
@@ -472,20 +475,28 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsRect *p
         if(!bBinary)
         {
             auto penColor = pItem->m_property.m_penColor;
-            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+            if(bgr)
+                color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+            else
+                color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
         }
     }
     else
     {
         thickness = cv::FILLED;
         if(!bBinary)
-            color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        {
+            if(bgr)
+                color = {(double)brushColor[2], (double)brushColor[1], (double)brushColor[0], (double)brushColor[3]};
+            else
+                color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        }
     }
     cv::Rect rcObj(rc.x(), rc.y(), rc.width(), rc.height());
     cv::rectangle(image, rcObj, color, thickness, cv::LINE_8);
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsEllipse *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsEllipse *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
 
@@ -508,14 +519,22 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsEllipse
         if(!bBinary)
         {
             CColor penColor = pItem->m_property.m_penColor;
-            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+            if(bgr)
+                color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+            else
+                color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
         }
     }
     else
     {
         thickness = cv::FILLED;
         if(!bBinary)
-            color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        {
+            if(bgr)
+                color = {(double)brushColor[2], (double)brushColor[1], (double)brushColor[0], (double)brushColor[3]};
+            else
+                color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        }
     }
     cv::RotatedRect rcObj(cv::Point2f(rc.topLeft().x(), rc.topLeft().y()),
                           cv::Point2f(rc.topRight().x(), rc.topRight().y()),
@@ -523,7 +542,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsEllipse
     cv::ellipse(image, rcObj, color, thickness, cv::LINE_8);
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolygon *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolygon *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
 
@@ -547,20 +566,27 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolygon
         if(!bBinary)
         {
             CColor penColor = pItem->m_property.m_penColor;
-            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+            if(bgr)
+                color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+            else
+                color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
         }
         cv::polylines(image, polygonArray, true, color, pItem->m_property.m_lineSize, cv::LINE_8);
     }
     else
     {
         if(!bBinary)
-            color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
-
+        {
+            if(bgr)
+                color = {(double)brushColor[2], (double)brushColor[1], (double)brushColor[0], (double)brushColor[3]};
+            else
+                color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        }
         cv::fillPoly(image, polygonArray, color, cv::LINE_8);
     }
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolyline *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolyline *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
     Q_UNUSED(bForceFill);
@@ -572,14 +598,17 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsPolylin
     if(!bBinary)
     {
         CColor penColor = pItem->m_property.m_penColor;
-        color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+        if(bgr)
+            color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+        else
+            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
     }
     std::vector<std::vector<cv::Point>> polylineArray;
     polylineArray.push_back(convertToCvPolygon(pItem->m_points));
     cv::polylines(image, polylineArray, false, color, pItem->m_property.m_lineSize);
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsText *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsText *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
     Q_UNUSED(bForceFill);
@@ -591,9 +620,14 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsText *p
     size_t startPos=0, endPos;
     bool bMultiline = (endPos = pItem->m_text.find('\n')) != std::string::npos;
     cv::Point pos = cv::Point(pItem->m_x, pItem->m_y);
-    cv::Scalar color(pItem->m_property.m_color[0], pItem->m_property.m_color[1], pItem->m_property.m_color[2]);
     double fontScale = Utils::Font::getQtToOcvFontScaleFactor(pItem->m_property.m_fontSize);
     int thickness = pItem->m_property.m_bBold == true ? 2 : 1;
+
+    cv::Scalar color;
+    if(bgr)
+        color = cv::Scalar(pItem->m_property.m_color[2], pItem->m_property.m_color[1], pItem->m_property.m_color[0]);
+    else
+        color = cv::Scalar(pItem->m_property.m_color[0], pItem->m_property.m_color[1], pItem->m_property.m_color[2]);
 
     int fontFace = cv::FONT_HERSHEY_SIMPLEX;
     if(pItem->m_property.m_bItalic)
@@ -619,7 +653,7 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsText *p
         cv::putText(image, pItem->m_text, pos, fontFace, fontScale, color, thickness, cv::LINE_AA);
 }
 
-void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsComplexPoly *pItem, bool bForceFill, bool bBinary)
+void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsComplexPoly *pItem, bool bForceFill, bool bBinary, bool bgr)
 {
     assert(pItem);
 
@@ -651,15 +685,22 @@ void CGraphicsConversion::insertToImage(CMat &image, const CProxyGraphicsComplex
         if(!bBinary)
         {
             CColor penColor = pItem->m_property.m_penColor;
-            color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
+            if(bgr)
+                color = {(double)penColor[2], (double)penColor[1], (double)penColor[0], (double)penColor[3]};
+            else
+                color = {(double)penColor[0], (double)penColor[1], (double)penColor[2], (double)penColor[3]};
         }
         cv::polylines(image, polygonArray, true, color, pItem->m_property.m_lineSize, cv::LINE_8);
     }
     else
     {
         if(!bBinary)
-            color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
-
+        {
+            if(bgr)
+                color = {(double)brushColor[2], (double)brushColor[1], (double)brushColor[0], (double)brushColor[3]};
+            else
+                color = {(double)brushColor[0], (double)brushColor[1], (double)brushColor[2], (double)brushColor[3]};
+        }
         cv::fillPoly(image, polygonArray, color, cv::LINE_8);
     }
 }

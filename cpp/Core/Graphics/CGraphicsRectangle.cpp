@@ -123,9 +123,9 @@ std::string CProxyGraphicsRect::getCategory() const
     return m_property.m_category;
 }
 
-void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 void CProxyGraphicsRect::translate(float dx, float dy)

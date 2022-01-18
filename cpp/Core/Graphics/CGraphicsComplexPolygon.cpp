@@ -129,9 +129,9 @@ void CProxyGraphicsComplexPoly::translate(float dx, float dy)
     }
 }
 
-void CProxyGraphicsComplexPoly::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsComplexPoly::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 std::shared_ptr<CProxyGraphicsItem> CProxyGraphicsComplexPoly::clone() const

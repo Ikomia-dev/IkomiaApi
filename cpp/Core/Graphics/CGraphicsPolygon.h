@@ -50,7 +50,7 @@ class CORESHARED_EXPORT CProxyGraphicsPolygon: public CProxyGraphicsItem
         CGraphicsPolygonProperty    getProperty() const;
         std::string                 getCategory() const override;
 
-        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const override;
 
         void                        translate(float dx, float dy) override;
 

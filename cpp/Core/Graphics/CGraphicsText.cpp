@@ -145,9 +145,9 @@ void CProxyGraphicsText::translate(float dx, float dy)
     m_y += dy;
 }
 
-void CProxyGraphicsText::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsText::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 std::shared_ptr<CProxyGraphicsItem> CProxyGraphicsText::clone() const

@@ -129,7 +129,7 @@ void CGraphicsItemWrap::translate(float dx, float dy)
     }
 }
 
-void CGraphicsItemWrap::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CGraphicsItemWrap::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
     Q_UNUSED(image);
     Q_UNUSED(filler);

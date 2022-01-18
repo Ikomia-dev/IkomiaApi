@@ -74,7 +74,7 @@ class CProxyGraphicsItem
             return m_bUseGlobalContext;
         }
 
-        virtual void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const = 0;
+        virtual void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const = 0;
 
         virtual void            translate(float dx, float dy) = 0;
 
