@@ -1,6 +1,7 @@
 import numpy as np
 import math
 
+
 def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_size, process):
     """
 
@@ -15,10 +16,6 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_s
     shape = np.shape(img)
     h, w = np.shape(img)[:2]
 
-    # modify tile_size to fit in the needs of the process function
-    h = h * sf // (sf * size_divisible_by) * size_divisible_by
-    w = w * sf // (sf * size_divisible_by) * size_divisible_by
-
     if len(shape) == 3:
         c = np.shape(img)[2]
         img_up = np.zeros((sf * h, sf * w, c), dtype='half')
@@ -29,8 +26,8 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_s
         return
 
     img = img[:h, :w]
-    tile_h = tile_size
-    tile_w = tile_size
+    tile_h = min(tile_size, h)
+    tile_w = min(tile_size, w)
 
     # modify overlap_ratio to avoid rounding errors
     overlap_ratio_w = round(tile_w * overlap_ratio) / tile_w
@@ -39,7 +36,7 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_s
     overlap_w = round(tile_w * overlap_ratio_w)
     overlap_h = round(tile_h * overlap_ratio_h)
 
-    nx = math.ceil((w+ overlap_w) / (tile_w - overlap_w))
+    nx = math.ceil((w + overlap_w) / (tile_w - overlap_w))
     ny = math.ceil((h + overlap_h) / (tile_h - overlap_h))
     mask = compute_weights((sf * tile_h, sf * tile_w), overlap_ratio_w,
                            overlap_ratio_h)
@@ -78,14 +75,16 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_s
             if np.prod(np.shape(img_tile)):
                 is_tile_w_too_short = current_tile_w < minimum_size
                 is_tile_h_too_short = current_tile_h < minimum_size
-                pad_w = math.ceil(current_tile_w+ max(0,minimum_size-current_tile_w)/size_divisible_by)*size_divisible_by - current_tile_w
-                pad_h = math.ceil(current_tile_h+ max(0,minimum_size-current_tile_h)/size_divisible_by)*size_divisible_by - current_tile_h
+                pad_w = math.ceil(current_tile_w + max(0,
+                                                       minimum_size - current_tile_w) / size_divisible_by) * size_divisible_by - current_tile_w
+                pad_h = math.ceil(current_tile_h + max(0,
+                                                       minimum_size - current_tile_h) / size_divisible_by) * size_divisible_by - current_tile_h
 
                 if is_tile_h_too_short or is_tile_w_too_short:
-                    img_tile = np.pad(img_tile,pad_width=((0,pad_h),(0,pad_w),(0,0)),mode='reflect')
+                    img_tile = np.pad(img_tile, pad_width=((0, pad_h), (0, pad_w), (0, 0)), mode='reflect')
 
                 upscaled_tile = process(img_tile)
-                upscaled_tile = upscaled_tile[:sf*current_tile_h,:sf*current_tile_w]
+                upscaled_tile = upscaled_tile[:sf * current_tile_h, :sf * current_tile_w]
                 if upscaled_tile.ndim == 3:
                     # shortcut for upscaled_tile *= np.stack([cropped_mask,cropped_mask,cropped_mask],axis=2)
                     upscaled_tile = np.einsum('ijk,ij->ijk', upscaled_tile, cropped_mask)
@@ -149,4 +148,3 @@ def compute_weights(size, overlap_ratio_w, overlap_ratio_h):
     ry = len(res) % 2
     res[:my + ry] = res[:my - 1:-1]
     return res
-
