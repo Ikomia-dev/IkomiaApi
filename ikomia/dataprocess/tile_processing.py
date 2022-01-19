@@ -118,7 +118,8 @@ def compute_weights(size, overlap_ratio_w, overlap_ratio_h):
     x = np.linspace(0, 1, w)
     y = np.linspace(0, 1, h)
     xv, yv = np.meshgrid(x, y)
-
+    if overlap_ratio_h == 0 or overlap_ratio_w == 0:
+        return np.ones(size)
     x_01 = (xv - 1 + overlap_ratio_w) / overlap_ratio_w
     y_01 = (yv - 1 + overlap_ratio_h) / overlap_ratio_h
     # mean_y and mean_x must be 0.5, so we force it
