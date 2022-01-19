@@ -51,13 +51,14 @@ class CORESHARED_EXPORT CProxyGraphicsEllipse: public CProxyGraphicsItem
         float                       getY() const;
         float                       getWidth() const;
         float                       getHeight() const;
-        QRectF                      getBoundingRect() const override;
+        QRectF                      getBoundingQRect() const override;
+        std::vector<float>          getBoundingRect() const override;
         CGraphicsEllipseProperty    getProperty() const;
         std::string                 getCategory() const override;
 
         void                        translate(float dx, float dy) override;
 
-        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                        insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 

@@ -35,15 +35,16 @@ class CGraphicsItemWrap : public CProxyGraphicsItem, public wrapper<CProxyGraphi
 
         void            setCategory(const std::string& categ) override;
 
-        std::string     getCategory() const override;
-        QRectF          getBoundingRect() const override;
+        std::string         getCategory() const override;
+        QRectF              getBoundingQRect() const override;
+        std::vector<float>  getBoundingRect() const override;
 
         bool            isTextItem() const;
         bool            default_isTextItem() const;
 
         void            translate(float dx, float dy) override;
 
-        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void            insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const override;
 
         std::shared_ptr<CProxyGraphicsItem> clone() const override;
 };

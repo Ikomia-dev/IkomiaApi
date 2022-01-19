@@ -101,9 +101,16 @@ float CProxyGraphicsRect::getHeight() const
     return m_height;
 }
 
-QRectF CProxyGraphicsRect::getBoundingRect() const
+QRectF CProxyGraphicsRect::getBoundingQRect() const
 {
     return QRectF(m_x, m_y, m_width, m_height);
+}
+
+std::vector<float> CProxyGraphicsRect::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsRectProperty CProxyGraphicsRect::getProperty() const
@@ -116,9 +123,9 @@ std::string CProxyGraphicsRect::getCategory() const
     return m_property.m_category;
 }
 
-void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsRect::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 void CProxyGraphicsRect::translate(float dx, float dy)

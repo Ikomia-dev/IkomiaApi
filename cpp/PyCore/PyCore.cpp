@@ -91,6 +91,7 @@ BOOST_PYTHON_MODULE(pycore)
     registerStdVector<int>();
     registerStdVector<size_t>();
     registerStdVector<double>();
+    registerStdVector<float>();
     registerStdVector<std::string>();
     registerStdVector<CPoint<float>>();
     registerStdVector<std::vector<CPoint<float>>>();
@@ -138,6 +139,7 @@ BOOST_PYTHON_MODULE(pycore)
         .def("getCategory", pure_virtual(&CProxyGraphicsItem::getCategory), _getGraphicsCategoryDocString, args("self"))
         .def("isTextItem", &CProxyGraphicsItem::isTextItem, &CGraphicsItemWrap::default_isTextItem, _isGraphicsTextItemDocString, args("self"))
         .def("insertToImage", pure_virtual(&CGraphicsItemWrap::insertToImage), "**Internal use only.**")
+        .def("getBoundingRect", pure_virtual(&CProxyGraphicsItem::getBoundingRect), _getGraphicsBoundRectDocString, args("self"))
     ;
 
     //Complex polygon

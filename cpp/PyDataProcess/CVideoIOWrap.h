@@ -38,8 +38,8 @@ class CVideoIOWrap : public CVideoIO, public wrapper<CVideoIO>
         virtual size_t  getUnitElementCount() const;
         size_t          default_getUnitElementCount() const;
 
-        virtual CMat    getImage() const;
-        CMat            default_getImage() const;
+        virtual CMat    getImage();
+        CMat            default_getImage();
 
         virtual bool    isDataAvailable() const;
         bool            default_isDataAvailable() const;

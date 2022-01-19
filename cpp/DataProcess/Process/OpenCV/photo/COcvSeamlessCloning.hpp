@@ -107,7 +107,7 @@ class COcvSeamlessCloning : public C2dImageTask
             createGraphicsMask(img1.getNbCols(), img1.getNbRows(), pGraphics1);
 
             auto items = pGraphics2->getItems();
-            QPointF center = items[0]->getBoundingRect().center();
+            QPointF center = items[0]->getBoundingQRect().center();
             cv::Point pt(center.x(), center.y());
             emit m_signalHandler->doProgress();
 

@@ -76,13 +76,13 @@ class CORESHARED_EXPORT CGraphicsConversion
         void                    insertToImage(CMat& image, const CGraphicsText* pItem, bool bForceFill, bool bBinary);
         void                    insertToImage(CMat& image, const CGraphicsComplexPolygon* pItem, bool bForceFill, bool bBinary);
 
-        void                    insertToImage(CMat& image, const CProxyGraphicsPoint* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsRect* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsEllipse* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsPolygon* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsPolyline* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsText* pItem, bool bForceFill, bool bBinary);
-        void                    insertToImage(CMat& image, const CProxyGraphicsComplexPoly* pItem, bool bForceFill, bool bBinary);
+        void                    insertToImage(CMat& image, const CProxyGraphicsPoint* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsRect* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsEllipse* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsPolygon* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsPolyline* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsText* pItem, bool bForceFill, bool bBinary, bool bgr);
+        void                    insertToImage(CMat& image, const CProxyGraphicsComplexPoly* pItem, bool bForceFill, bool bBinary, bool bgr);
 
     private:
 
@@ -93,6 +93,7 @@ class CORESHARED_EXPORT CGraphicsConversion
         std::vector<cv::Point>  convertToCvPolygon(const std::vector<CPointF>& poly);
 
         void                    clipPoint(cv::Point& pt);
+        std::vector<CPointF>    clipPolygon(const std::vector<CPointF>& pts);
 
     private:
 

@@ -88,8 +88,8 @@ std::string CMeasure::getName(int id)
         case Id::SURFACE: name = QObject::tr("Surface").toStdString(); break;
         case Id::PERIMETER: name = QObject::tr("Perimeter").toStdString(); break;
         case Id::CENTROID: name = QObject::tr("Centroid").toStdString(); break;
-        case Id::BBOX: name = QObject::tr("Bounding box").toStdString(); break;
-        case Id::ORIENTED_BBOX: name = QObject::tr("Oriented bounding box").toStdString(); break;
+        case Id::BBOX: name = QObject::tr("Box").toStdString(); break;
+        case Id::ORIENTED_BBOX: name = QObject::tr("Oriented box").toStdString(); break;
         case Id::EQUIVALENT_DIAMETER: name = QObject::tr("Equivalent diameter").toStdString(); break;
         case Id::ELONGATION: name = QObject::tr("Elongation").toStdString(); break;
         case Id::CIRCULARITY: name = QObject::tr("Circularity").toStdString(); break;

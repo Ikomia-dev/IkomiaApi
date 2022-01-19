@@ -141,7 +141,7 @@ QRectF CGraphicsInput::getBoundingRect() const
     QRectF rect;
 
     for(size_t i=0; i<m_items.size(); ++i)
-        rect = rect.united(m_items[i]->getBoundingRect());
+        rect = rect.united(m_items[i]->getBoundingQRect());
 
     return rect;
 }

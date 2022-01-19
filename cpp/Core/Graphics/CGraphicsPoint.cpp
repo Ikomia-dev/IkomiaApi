@@ -64,7 +64,7 @@ CPointF CProxyGraphicsPoint::getPoint() const
     return m_point;
 }
 
-QRectF CProxyGraphicsPoint::getBoundingRect() const
+QRectF CProxyGraphicsPoint::getBoundingQRect() const
 {
     CGraphicsPointProperty prop;
     if(!m_bUseGlobalContext)
@@ -72,6 +72,13 @@ QRectF CProxyGraphicsPoint::getBoundingRect() const
 
     float radius = (float)prop.m_size / 2.0f;
     return QRectF(m_point.m_x - radius, m_point.m_y - radius, prop.m_size, prop.m_size);
+}
+
+std::vector<float> CProxyGraphicsPoint::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
 }
 
 CGraphicsPointProperty CProxyGraphicsPoint::getProperty() const
@@ -90,9 +97,9 @@ void CProxyGraphicsPoint::translate(float dx, float dy)
     m_point.m_y += dy;
 }
 
-void CProxyGraphicsPoint::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsPoint::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 std::shared_ptr<CProxyGraphicsItem> CProxyGraphicsPoint::clone() const

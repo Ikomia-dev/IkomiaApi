@@ -72,7 +72,7 @@ PolygonF CProxyGraphicsPolygon::getPoints() const
     return m_points;
 }
 
-QRectF CProxyGraphicsPolygon::getBoundingRect() const
+QRectF CProxyGraphicsPolygon::getBoundingQRect() const
 {
     float xmin = FLT_MAX;
     float ymin = FLT_MAX;
@@ -89,6 +89,13 @@ QRectF CProxyGraphicsPolygon::getBoundingRect() const
     return QRectF(xmin, ymin, std::floor(xmax - xmin) + 1, std::floor(ymax - ymin) + 1);
 }
 
+std::vector<float> CProxyGraphicsPolygon::getBoundingRect() const
+{
+    auto qrect = getBoundingQRect();
+    std::vector<float> rect = {(float)qrect.left(), (float)qrect.top(), (float)qrect.width(), (float)qrect.height()};
+    return rect;
+}
+
 CGraphicsPolygonProperty CProxyGraphicsPolygon::getProperty() const
 {
     return m_property;
@@ -99,9 +106,9 @@ std::string CProxyGraphicsPolygon::getCategory() const
     return m_property.m_category;
 }
 
-void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary) const
+void CProxyGraphicsPolygon::insertToImage(CMat &image, CGraphicsConversion &filler, bool bForceFill, bool bBinary, bool bgr) const
 {
-    filler.insertToImage(image, this, bForceFill, bBinary);
+    filler.insertToImage(image, this, bForceFill, bBinary, bgr);
 }
 
 void CProxyGraphicsPolygon::translate(float dx, float dy)

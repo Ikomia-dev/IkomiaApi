@@ -61,6 +61,22 @@ void CWorkflowTaskWidget::setApplyBtnHidden(bool bHidden)
     m_pApplyBtn->setHidden(bHidden);
 }
 
+QLineEdit* CWorkflowTaskWidget::addEdit(int row, const QString& title, const QString& value)
+{
+    auto pLabel = new QLabel(title);
+    auto pLineEdit = new QLineEdit;
+    pLineEdit->setText(value);
+    m_pLayout->addWidget(pLabel, row, 0);
+    m_pLayout->addWidget(pLineEdit, row, 1);
+    return pLineEdit;
+}
+
+QLineEdit* CWorkflowTaskWidget::addEdit(const QString& title, const QString& value)
+{
+    int nextPos = m_pLayout->rowCount();
+    return addEdit(nextPos, title, value);
+}
+
 QComboBox *CWorkflowTaskWidget::addCombo(int row, const QString &title)
 {
     auto pLabel = new QLabel(title);

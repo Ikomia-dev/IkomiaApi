@@ -144,14 +144,14 @@ class DATAPROCESSSHARED_EXPORT CImageIO : public CWorkflowTaskIO
          * @details Returned image is 2D only. In case of 3D volume, the current image index is used to get the desired 2D plane (see setCurrentImage()).
          * @return CMat object for C++ and Numpy array for Python. 2D only.
          */
-        virtual CMat    getImage() const;
+        virtual CMat    getImage();
         /**
          * @brief Gets the 2D image data with graphics items from the given input/output.
          * @details Returned image is 2D only. In case of 3D volume, the current image index is used to get the desired 2D plane (see setCurrentImage()).
          * @return CMat object for C++ and Numpy array for Python. 2D only.
          */
-        CMat            getImageWithGraphics(const GraphicsInputPtr& graphics) const;
-        CMat            getImageWithGraphics(const GraphicsOutputPtr& graphics) const;
+        CMat            getImageWithGraphics(const GraphicsInputPtr& graphics);
+        CMat            getImageWithGraphics(const GraphicsOutputPtr& graphics);
 
         /**
          * @brief Gets the number of unit elements when the data is processed.

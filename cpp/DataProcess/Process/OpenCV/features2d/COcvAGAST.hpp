@@ -98,6 +98,7 @@ class COcvAGAST : public C2dFeatureImageTask
 
             CMat imgSrc = pInput->getImage();
             createGraphicsMask(imgSrc.getNbCols(), imgSrc.getNbRows(), pGraphicsInput);
+
             try
             {
                 manageInputs();

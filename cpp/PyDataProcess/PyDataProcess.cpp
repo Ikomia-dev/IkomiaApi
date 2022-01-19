@@ -270,8 +270,8 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //--------------------//
     void (CImageIO::*drawGraphicsIn)(const GraphicsInputPtr&) = &CImageIO::drawGraphics;
     void (CImageIO::*drawGraphicsOut)(const GraphicsOutputPtr&) = &CImageIO::drawGraphics;
-    CMat (CImageIO::*getImageWithGraphicsIn)(const GraphicsInputPtr&) const = &CImageIO::getImageWithGraphics;
-    CMat (CImageIO::*getImageWithGraphicsOut)(const GraphicsOutputPtr&) const = &CImageIO::getImageWithGraphics;
+    CMat (CImageIO::*getImageWithGraphicsIn)(const GraphicsInputPtr&) = &CImageIO::getImageWithGraphics;
+    CMat (CImageIO::*getImageWithGraphicsOut)(const GraphicsOutputPtr&) = &CImageIO::getImageWithGraphics;
 
     class_<CImageIOWrap, bases<CWorkflowTaskIO>, std::shared_ptr<CImageIOWrap>>("CImageIO", _imageProcessIODocString)
         .def(init<>("Default constructor"))

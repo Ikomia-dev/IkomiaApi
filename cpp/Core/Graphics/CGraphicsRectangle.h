@@ -51,11 +51,12 @@ class CORESHARED_EXPORT CProxyGraphicsRect: public CProxyGraphicsItem
         float                   getY() const;
         float                   getWidth() const;
         float                   getHeight() const;
-        QRectF                  getBoundingRect() const override;
+        QRectF                  getBoundingQRect() const override;
+        std::vector<float>      getBoundingRect() const override;
         CGraphicsRectProperty   getProperty() const;
         std::string             getCategory() const override;
 
-        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary) const override;
+        void                    insertToImage(CMat& image, CGraphicsConversion& filler, bool bForceFill, bool bBinary, bool bgr=false) const override;
 
         void                    translate(float dx, float dy) override;
 

@@ -94,6 +94,11 @@ class DATAPROCESSSHARED_EXPORT CVideoIO : public CImageIO
          * @param pos: index of the frame.
          */
         void                setVideoPos(int pos);
+        /**
+         * @brief Set index of the next frame to read.
+         * @param index: index of the frame.
+         */
+        void                setFrameToRead(int index);
 
         /**
          * @brief Gets the total number of frames for the video.
@@ -128,7 +133,7 @@ class DATAPROCESSSHARED_EXPORT CVideoIO : public CImageIO
          * @brief Get the image at the current frame index.
          * @return CMat for C++ and Numpy array for Python.
          */
-        CMat                getImage() const override;
+        CMat                getImage() override;
         /**
          * @brief Gets the number of unit elements to process. Used to determine the number of steps for progress bar.
          * @return The number of frames of the video.
@@ -206,6 +211,8 @@ class DATAPROCESSSHARED_EXPORT CVideoIO : public CImageIO
 
         CDataVideoBufferPtr m_pVideoBuffer = nullptr;
         std::vector<CMat>   m_videoImgList;
+        int                 m_frameIndex = 0;
+        int                 m_frameIndexRead = -1;
 };
 
 using VideoIOPtr = std::shared_ptr<CVideoIO>;

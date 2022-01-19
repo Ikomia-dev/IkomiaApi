@@ -67,7 +67,7 @@ size_t CVideoIOWrap::default_getUnitElementCount() const
     }
 }
 
-CMat CVideoIOWrap::getImage() const
+CMat CVideoIOWrap::getImage()
 {
     CPyEnsureGIL gil;
     try
@@ -82,7 +82,7 @@ CMat CVideoIOWrap::getImage() const
     }
 }
 
-CMat CVideoIOWrap::default_getImage() const
+CMat CVideoIOWrap::default_getImage()
 {
     CPyEnsureGIL gil;
     try
