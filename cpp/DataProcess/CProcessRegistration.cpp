@@ -417,5 +417,10 @@ const CWidgetAbstractFactory& CProcessRegistration::getWidgetFactory() const
 CTaskInfo CProcessRegistration::getProcessInfo(const std::string &name) const
 {
     auto factory = m_processFactory.getFactory(name);
+    if(!factory)
+    {
+        std::string msg = "Information for task " + name + " can't be retrieved";
+        throw CException(CoreExCode::INVALID_PARAMETER, msg, __func__, __FILE__, __LINE__);
+    }
     return factory->getInfo();
 }

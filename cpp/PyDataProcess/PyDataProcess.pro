@@ -23,6 +23,7 @@ SOURCES += \
         CDatasetIOWrap.cpp \
         CDnnTrainTaskWrap.cpp \
         CGraphicsInputWrap.cpp \
+        CIkomiaRegistryWrap.cpp \
         CImageIOWrap.cpp \
         CPathIOWrap.cpp \
         CVideoIOWrap.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
         CDatasetIOWrap.h \
         CDnnTrainTaskWrap.h \
         CGraphicsInputWrap.h \
+        CIkomiaRegistryWrap.h \
         CImageIOWrap.h \
         CNumericIOWrap.hpp \
         CPathIOWrap.h \

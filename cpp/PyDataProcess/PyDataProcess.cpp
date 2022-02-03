@@ -38,7 +38,7 @@
 #include "CDatasetIOWrap.h"
 #include "CPathIOWrap.h"
 #include "CArrayIOWrap.h"
-#include "Core/CIkomiaRegistry.h"
+#include "CIkomiaRegistryWrap.h"
 #include "CWorkflowWrap.h"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -605,20 +605,20 @@ BOOST_PYTHON_MODULE(pydataprocess)
     //---------------------------//
     //----- CIkomiaRegistry -----//
     //---------------------------//
-    WorkflowTaskPtr (CIkomiaRegistry::*createInstance1)(const std::string&) = &CIkomiaRegistry::createInstance;
-    WorkflowTaskPtr (CIkomiaRegistry::*createInstance2)(const std::string&, const WorkflowTaskParamPtr&) = &CIkomiaRegistry::createInstance;
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance1)(const std::string&) = &CIkomiaRegistryWrap::createInstance;
+    WorkflowTaskPtr (CIkomiaRegistry::*createInstance2)(const std::string&, const WorkflowTaskParamPtr&) = &CIkomiaRegistryWrap::createInstance;
 
-    class_<CIkomiaRegistry, std::shared_ptr<CIkomiaRegistry>>("CIkomiaRegistry", _ikomiaRegistryDocString)
+    class_<CIkomiaRegistryWrap, std::shared_ptr<CIkomiaRegistryWrap>>("CIkomiaRegistry", _ikomiaRegistryDocString)
         .def(init<>("Default constructor"))
-        .def("setPluginsDirectory", &CIkomiaRegistry::setPluginsDirectory, _setPluginsDirDocString, args("self", "directory"))
-        .def("getPluginsDirectory", &CIkomiaRegistry::getPluginsDirectory, _getPluginsDirDocString, args("self"))
-        .def("getAlgorithms", &CIkomiaRegistry::getAlgorithms, _getAlgorithmsDocString, args("self)"))
-        .def("getAlgorithmInfo", &CIkomiaRegistry::getAlgorithmInfo, _getAlgorithmInfoDocString, args("self", "name"))
+        .def("setPluginsDirectory", &CIkomiaRegistryWrap::setPluginsDirectory, _setPluginsDirDocString, args("self", "directory"))
+        .def("getPluginsDirectory", &CIkomiaRegistryWrap::getPluginsDirectory, _getPluginsDirDocString, args("self"))
+        .def("getAlgorithms", &CIkomiaRegistryWrap::getAlgorithms, _getAlgorithmsDocString, args("self)"))
+        .def("getAlgorithmInfo", &CIkomiaRegistryWrap::getAlgorithmInfo, _getAlgorithmInfoDocString, args("self", "name"))
         .def("createInstance", createInstance1, _createInstance1DocString, args("self", "name"))
         .def("createInstance", createInstance2, _createInstance2DocString, args("self", "name", "parameters"))
-        .def("registerTask", &CIkomiaRegistry::registerTask, _registerTaskDocString, args("self", "factory"))
-        .def("registerIO", &CIkomiaRegistry::registerIO, _registerIODocString, args("self", "factory"))
-        .def("loadCppPlugin", &CIkomiaRegistry::loadCppPlugin, _loadCppPluginDocString, args("self", "path"))
+        .def("registerTask", &CIkomiaRegistryWrap::registerTask, _registerTaskDocString, args("self", "factory"))
+        .def("registerIO", &CIkomiaRegistryWrap::registerIO, _registerIODocString, args("self", "factory"))
+        .def("loadCppPlugin", &CIkomiaRegistryWrap::loadCppPlugin, _loadCppPluginDocString, args("self", "path"))
     ;
 
     //---------------------//
