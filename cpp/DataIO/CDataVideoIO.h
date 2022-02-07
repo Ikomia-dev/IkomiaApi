@@ -68,6 +68,7 @@ class DATAIOSHARED_EXPORT CDataVideoIO
         static Dimensions               dimensions(const std::string& fileName);
 
         static bool                     isVideoFormat(const std::string& extension, bool bVideoOnly);
+        static bool                     isImageFormat(const std::string& extension);
         static bool                     isSameImageSequence(const std::string& fileRenamed, const std::string& fileName);
 
         static std::pair<std::string, int>  getImageSequenceInfo(const std::string& fileName);
@@ -76,8 +77,6 @@ class DATAIOSHARED_EXPORT CDataVideoIO
 
         void                            allocateDataIOPtr(const std::string& fileName);
         static CVideoIOPtr              _allocateDataIOPtr(const std::string& fileName);
-
-        static bool                     isImageFormat(const std::string& extension);
 
     private:
 
