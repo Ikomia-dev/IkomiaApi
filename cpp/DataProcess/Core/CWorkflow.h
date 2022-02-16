@@ -178,6 +178,8 @@ class DATAPROCESSSHARED_EXPORT CWorkflow : public CWorkflowTask
         void                            clear();
         void                            clearInputs() override;
         void                            clearAllOutputData();
+        void                            clearOutputDataFrom(const WorkflowVertex& id);
+        void                            clearOutputDataTo(const WorkflowVertex& id);
 
         void                            forceBatchMode(bool bEnable);
 
