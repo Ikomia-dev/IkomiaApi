@@ -1092,6 +1092,33 @@ void CWorkflow::clearAllOutputData()
     }
 }
 
+void CWorkflow::clearOutputDataFrom(const WorkflowVertex &id)
+{
+    auto vertexList = getAllChilds(id);
+    vertexList.insert(vertexList.begin(), id);
+
+    for(const auto& it : vertexList)
+    {
+        WorkflowTaskPtr taskPtr = m_graph[it];
+        if(it != m_root && taskPtr)
+            taskPtr->clearOutputData();
+    }
+}
+
+void CWorkflow::clearOutputDataTo(const WorkflowVertex &id)
+{
+    std::vector<WorkflowVertex> vertexList;
+    getAllParents(id, vertexList);
+    vertexList.push_back(id);
+
+    for(const auto& it : vertexList)
+    {
+        WorkflowTaskPtr taskPtr = m_graph[it];
+        if(it != m_root && taskPtr)
+            taskPtr->clearOutputData();
+    }
+}
+
 void CWorkflow::forceBatchMode(bool bEnable)
 {
     m_bBatchMode = bEnable;
@@ -1108,6 +1135,7 @@ void CWorkflow::run()
 
     //Traverse graph and run each task
     clearOutputs();
+    clearAllOutputData();
     auto tasks = getForwardPassTasks(m_root);
     updateCompositeInputName();
 
@@ -1124,6 +1152,7 @@ void CWorkflow::runFrom(const WorkflowVertex &id)
     if(getTaskCount() == 0)
         throw CException(CoreExCode::INVALID_SIZE, "Empty workflow can't be run", __func__, __FILE__, __LINE__);
 
+    clearOutputDataFrom(id);
     auto tasks = getForwardPassTasks(id);
 
     // Search for and run all task not already executed before id
@@ -1208,6 +1237,8 @@ void CWorkflow::runTo(const WorkflowVertex& id)
 
     if(getTaskCount() == 0)
         throw CException(CoreExCode::INVALID_SIZE, "Empty workflow can't be run", __func__, __FILE__, __LINE__);
+
+    clearOutputDataTo(id);
 
     // Search for and run all task not already executed before id
     std::vector<WorkflowVertex> taskToExecute;
