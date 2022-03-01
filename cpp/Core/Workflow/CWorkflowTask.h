@@ -374,9 +374,10 @@ class CORESHARED_EXPORT CWorkflowTask
         /**
          * @brief Gets the first output of the given data type.
          * @param type: see ::IODataType for more details.
+         * @param index: relative zero-based index of output in case multiple outputs of the given type exist.
          * @return CWorkflowTaskIO based shared pointer.
          */
-        WorkflowTaskIOPtr           getOutputFromType(const IODataType& type) const;
+        WorkflowTaskIOPtr           getOutputFromType(const IODataType& type, size_t index=0) const;
         /**
          * @brief Gets specific behaviors list and their activation state.
          * @return A map containing pairs of std::string where key=::ActionFlag and value=state.

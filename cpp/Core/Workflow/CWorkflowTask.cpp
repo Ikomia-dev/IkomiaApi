@@ -480,12 +480,18 @@ VectorPairString CWorkflowTask::getCustomInfo() const
     return m_customInfo;
 }
 
-WorkflowTaskIOPtr CWorkflowTask::getOutputFromType(const IODataType &type) const
+WorkflowTaskIOPtr CWorkflowTask::getOutputFromType(const IODataType &type, size_t index) const
 {
+    int currentIndex = 0;
     for(size_t i=0; i<m_outputs.size(); ++i)
     {
         if(m_outputs[i]->getDataType() == type)
-            return m_outputs[i];
+        {
+            if(currentIndex == index)
+                return m_outputs[i];
+
+            currentIndex++;
+        }
     }
     return nullptr;
 }
