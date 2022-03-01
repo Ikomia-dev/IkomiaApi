@@ -155,7 +155,6 @@ class IkDatasetIO(dataprocess.CDatasetIO):
             :py:class:`~ikomia.core.pycore.CGraphicsItem` list: graphics items
         """
         graphics = []
-
         if len(self.category_colors) == 0:
             self.category_colors = self._get_random_category_colors()
 
@@ -207,6 +206,34 @@ class IkDatasetIO(dataprocess.CDatasetIO):
                             graphics.append(graphics_rect)
                             graphics.append(graphics_text)
 
+                    if "keypoints" in annotation:
+                        kp = annotation["keypoints"]
+                        kp_names_id = {pt_name: pt_id for pt_id, pt_name in
+                                       enumerate(self.data["metadata"]["keypoint_names"])}
+                        kp_id_names = {pt_id: pt_name for pt_id, pt_name in
+                                       enumerate(self.data["metadata"]["keypoint_names"])}
+
+                        num_kp = len(kp_names_id)
+                        kp_connection_rules = self.data["metadata"]["keypoint_connection_rules"]
+                        assert num_kp * 3 == len(kp)
+                        pt_prop = core.GraphicsPointProperty()
+                        pt_prop.pen_color = color
+                        for i, (x, y, v) in enumerate(zip(kp[0::3], kp[1::3], kp[2::3])):
+                            if v != 0:
+                                pt_prop.category = kp_id_names[i]
+                                graphics_point = core.CGraphicsPoint(core.CPointF(x, y), pt_prop)
+                                graphics.append(graphics_point)
+                        for named_pt1, named_pt2, c in kp_connection_rules:
+                            id_pt1 = kp_names_id[named_pt1]
+                            id_pt2 = kp_names_id[named_pt2]
+                            if kp[id_pt1 * 3 + 2] != 0 and kp[id_pt2 * 3 + 2] != 0:
+                                line_prop = core.GraphicsPolylineProperty()
+                                line_prop.pen_color = list(c)
+                                pt1 = core.CPointF(kp[id_pt1 * 3], kp[id_pt1 * 3 + 1])
+                                pt2 = core.CPointF(kp[id_pt2 * 3], kp[id_pt2 * 3 + 1])
+                                graphics_kp_poly = core.CGraphicsPolyline([pt1, pt2], line_prop)
+                                graphics.append(graphics_kp_poly)
+
         return graphics
 
     def isDataAvailable(self):
@@ -230,11 +257,9 @@ class IkDatasetIO(dataprocess.CDatasetIO):
     def _get_random_category_colors(self):
         random.seed(1)
         colors = {}
-
         for categ_id in self.data["metadata"]["category_names"]:
             color = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
             colors[categ_id] = color
-
         return colors
 
     def save(self, path):
