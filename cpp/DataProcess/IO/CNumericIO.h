@@ -458,10 +458,10 @@ class CNumericIO : public CNumericIOBase
 
 // Partial specialization
 template <>
-CNumericIOBase::VectorOfStringVector CNumericIO<std::string>::getAllValuesAsString() const;
+DATAPROCESSSHARED_EXPORT CNumericIOBase::VectorOfStringVector CNumericIO<std::string>::getAllValuesAsString() const;
 
 template <>
-void    CNumericIO<std::string>::saveCSV(const std::string &path) const;
+DATAPROCESSSHARED_EXPORT void CNumericIO<std::string>::saveCSV(const std::string &path) const;
 
 
 class DATAPROCESSSHARED_EXPORT CNumericIOFactory: public CWorkflowTaskIOFactory

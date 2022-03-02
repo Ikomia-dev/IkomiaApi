@@ -1,4 +1,4 @@
-# include "CNumericIO.h".h"
+# include "CNumericIO.h"
 
 template <>
 std::vector<std::vector<std::string> > CNumericIO<std::string>::getAllValuesAsString() const
