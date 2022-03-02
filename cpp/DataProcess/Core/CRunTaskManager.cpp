@@ -18,10 +18,9 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "CRunTaskManager.h"
-#include "Data/CDataVideoInfo.h"
 #include "IO/CImageIO.h"
-#include "IO/CVideoIO.h"
 #include "IO/CGraphicsOutput.h"
+#include "IO/CVideoIO.h"
 #include "Main/CoreTools.hpp"
 
 CRunTaskManager::CRunTaskManager()
@@ -213,9 +212,6 @@ void CRunTaskManager::runWholeVideoProcess(const WorkflowTaskPtr &taskPtr, const
 
         outputPtr->addTemporaryFile(outPath);
         outputPtr->setVideoPath(outPath);
-
-        // Start video write
-        outputPtr->startVideoWrite(infoPtr->m_width, infoPtr->m_height, infoPtr->m_frameCount, infoPtr->m_fps, infoPtr->m_fourcc);
     }
 
     for(int i=0; i<infoPtr->m_frameCount && !m_bStop; ++i)
@@ -230,7 +226,7 @@ void CRunTaskManager::runWholeVideoProcess(const WorkflowTaskPtr &taskPtr, const
             // Run process
             taskPtr->run();
             // Save video outputs
-            saveVideoOutputs(taskPtr, videoOutputs);
+            saveVideoOutputs(taskPtr, videoOutputs, infoPtr);
         }
         catch(CException& e)
         {
@@ -254,7 +250,7 @@ void CRunTaskManager::runWholeVideoProcess(const WorkflowTaskPtr &taskPtr, const
     }
 }
 
-void CRunTaskManager::saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect &outputs)
+void CRunTaskManager::saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect &outputs, const std::shared_ptr<CDataVideoInfo>& inputInfo)
 {
     bool bEmbedGraphics = false;
     InputOutputVect graphicsOutputs;
@@ -273,6 +269,10 @@ void CRunTaskManager::saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const Inp
     {
         auto outputPtr = std::static_pointer_cast<CVideoIO>(outputs[i]);
         CMat img = outputPtr->getImage();
+
+        // Start video write if needed
+        if(outputPtr->isWriteStarted() == false)
+            outputPtr->startVideoWrite(img.getNbCols(), img.getNbRows(), inputInfo->m_frameCount, inputInfo->m_fps, inputInfo->m_fourcc);
 
         if(bEmbedGraphics && graphicsOutputs.size() > 0)
         {

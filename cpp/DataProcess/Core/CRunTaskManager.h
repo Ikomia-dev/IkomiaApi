@@ -23,6 +23,7 @@
 #define CRUNTASKMANAGER_H
 
 #include "Workflow/CWorkflowTask.h"
+#include "Data/CDataVideoInfo.h"
 
 class CRunTaskManager
 {
@@ -43,7 +44,7 @@ class CRunTaskManager
         void    runVideoProcess(const WorkflowTaskPtr& taskPtr, const std::string &inputName);
         void    runWholeVideoProcess(const WorkflowTaskPtr& taskPtr, const std::string &inputName);
 
-        void    saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect& outputs);
+        void    saveVideoOutputs(const WorkflowTaskPtr &taskPtr, const InputOutputVect& outputs, const std::shared_ptr<CDataVideoInfo> &inputInfo);
 
     private:
 

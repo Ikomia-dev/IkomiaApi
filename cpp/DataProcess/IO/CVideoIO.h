@@ -155,6 +155,8 @@ class DATAPROCESSSHARED_EXPORT CVideoIO : public CImageIO
          * @return True if there is some valid data, False otherwise.
          */
         bool                isDataAvailable() const override;
+        bool                isReadStarted() const;
+        bool                isWriteStarted() const;
         /**
          * @brief Starts the video
          */

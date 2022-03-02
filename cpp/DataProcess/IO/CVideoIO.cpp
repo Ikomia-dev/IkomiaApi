@@ -244,6 +244,22 @@ bool CVideoIO::isDataAvailable() const
     return bRet;
 }
 
+bool CVideoIO::isReadStarted() const
+{
+    if(m_pVideoBuffer)
+        return m_pVideoBuffer->isReadStarted();
+
+    return false;
+}
+
+bool CVideoIO::isWriteStarted() const
+{
+    if(m_pVideoBuffer)
+        return m_pVideoBuffer->isWriteStarted();
+
+    return false;
+}
+
 void CVideoIO::clearData()
 {
     m_image.release();
