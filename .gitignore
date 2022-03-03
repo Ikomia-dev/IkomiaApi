@@ -1,3 +1,9 @@
+.idea
+.vscode
+ikomia.egg-info
+build
+Build
+dist
 cpp/IkomiaApi.pro.user
 cpp/LocalSettings.pri
 cpp/Build
@@ -5,7 +11,6 @@ cpp/Doc/API/html
 cpp/Doc/API/latex
 cpp/Doc/Internal/html
 cpp/Doc/Internal/latex
-.idea
 ikomia/__pycache__
 ikomia/.idea
 ikomia/.env
@@ -23,12 +28,8 @@ ikomia/utils/autocomplete_local.cache
 ikomia/utils/autocomplete_online.cache
 ikomia/utils/pyutils.so
 ikomia/lib
+ikomia/*.so
+ikomia/opencv/*.so
+ikomia/core/config.yaml
 doc/build
 doc/_build
-ikomia.egg-info
-build
-Build
-dist
-/ikomia/*.so
-/ikomia/opencv/*.so
-ikomia/core/config.yaml
