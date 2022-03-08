@@ -17,7 +17,7 @@ List of Ikomia Python modules
     :toctree: _autosummary
 
     ikomia.core.pycore
-    #ikomia.core.task
+    ikomia.core.task
 
 
 .. rubric:: DataProcess module
@@ -25,9 +25,9 @@ List of Ikomia Python modules
     :toctree: _autosummary
 
     ikomia.dataprocess.pydataprocess
-    #ikomia.dataprocess.registry
-    #ikomia.dataprocess.workflow
-    #ikomia.dataprocess.displayIO
+    ikomia.dataprocess.registry
+    ikomia.dataprocess.workflow
+    ikomia.dataprocess.displayIO
 
 
 .. rubric:: DNN module
