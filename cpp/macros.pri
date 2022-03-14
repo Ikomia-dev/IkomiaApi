@@ -40,7 +40,7 @@ defineReplace(link_boost) {
     win32:CONFIG(release, debug|release): libs += -lboost_filesystem-vc$${BOOST_VC_VERSION}-mt-x64-$${BOOST_VERSION} -lboost_system-vc$${BOOST_VC_VERSION}-mt-x64-$${BOOST_VERSION} -lboost_python$${PYTHON_VERSION_EXT}-vc$${BOOST_VC_VERSION}-mt-x64-$${BOOST_VERSION}
     else:win32:CONFIG(debug, debug|release): libs += -lboost_filesystem-vc$${BOOST_VC_VERSION}-mt-gd-x64-$${BOOST_VERSION} -lboost_system-vc$${BOOST_VC_VERSION}-mt-gd-x64-$${BOOST_VERSION} -lboost_python$${PYTHON_VERSION_EXT}-vc$${BOOST_VC_VERSION}-mt-gd-x64-$${BOOST_VERSION}
     centos7 {
-        unix:!macx: libs += -lboost_filesystem -lboost_system -lboost_python37
+        unix:!macx: libs += -lboost_filesystem -lboost_system -lboost_python$${PYTHON_VERSION_EXT}
     } else:ubuntu_20_04 {
         unix:!macx: libs += -lboost_filesystem -lboost_system -lboost_python$${PYTHON_VERSION_EXT}
     } else {
