@@ -111,7 +111,7 @@ defineReplace(link_qwt) {
 
 defineReplace(link_python) {
     win32:libs += -lpython$${PYTHON_VERSION_EXT}
-    macx:libs += -lpython$${PYTHON_VERSION}
-    unix:!macx: libs += -lpython$${PYTHON_VERSION}
+    macx:libs += -lpython$${PYTHON_VERSION}$${PYTHON_SUFFIX}
+    unix:!macx: libs += -lpython$${PYTHON_VERSION}$${PYTHON_SUFFIX}
     return($$libs)
 }

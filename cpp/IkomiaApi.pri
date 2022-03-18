@@ -51,7 +51,7 @@ centos7 {
     # Global include
     unix:!macx: INCLUDEPATH += /work/shared/local/include
     # Python include
-    unix:!macx: INCLUDEPATH += /work/shared/local/include/python$${PYTHON_VERSION}
+    unix:!macx: INCLUDEPATH += /work/shared/local/include/python$${PYTHON_VERSION}$${PYTHON_SUFFIX}
     unix:!macx: INCLUDEPATH += /work/shared/local/lib/python$${PYTHON_VERSION}/site-packages/numpy/core/include/           # NUMPY path for CENTOS 7
 }
 else {
