@@ -54,6 +54,7 @@ Workflow
         ~Workflow.getInEdges
         ~Workflow.getOutEdges
         ~Workflow.getParents
+        ~Workflow.getRequiredTasks
         ~Workflow.getRootID
         ~Workflow.getRootTargetTypes
         ~Workflow.getTask
@@ -101,6 +102,7 @@ Workflow
     .. automethod:: getOutEdges
     .. automethod:: getParents
     .. automethod:: get_path_output
+    .. automethod:: getRequiredTasks
     .. automethod:: getRootID
     .. automethod:: getRootTargetTypes
     .. automethod:: getTask
