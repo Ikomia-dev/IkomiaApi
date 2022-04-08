@@ -4,13 +4,7 @@ ikomia.egg-info
 build
 Build
 dist
-cpp/IkomiaApi.pro.user
-cpp/LocalSettings.pri
-cpp/Build
-cpp/Doc/API/html
-cpp/Doc/API/latex
-cpp/Doc/Internal/html
-cpp/Doc/Internal/latex
+version.py
 ikomia/__pycache__
 ikomia/.idea
 ikomia/.env
