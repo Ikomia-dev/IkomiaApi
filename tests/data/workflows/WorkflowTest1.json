@@ -1,0 +1,275 @@
+{
+    "connections": [
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 0,
+            "target_index": 0
+        },
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 1,
+            "target_index": 0
+        },
+        {
+            "source_id": 0,
+            "source_index": 0,
+            "target_id": 2,
+            "target_index": 0
+        },
+        {
+            "source_id": 1,
+            "source_index": 0,
+            "target_id": 3,
+            "target_index": 0
+        },
+        {
+            "source_id": 2,
+            "source_index": 0,
+            "target_id": 4,
+            "target_index": 0
+        },
+        {
+            "source_id": 3,
+            "source_index": 0,
+            "target_id": 5,
+            "target_index": 0
+        },
+        {
+            "source_id": 3,
+            "source_index": 0,
+            "target_id": 5,
+            "target_index": 1
+        },
+        {
+            "source_id": 5,
+            "source_index": 0,
+            "target_id": 6,
+            "target_index": 0
+        },
+        {
+            "source_id": 6,
+            "source_index": 0,
+            "target_id": 8,
+            "target_index": 0
+        },
+        {
+            "source_id": 4,
+            "source_index": 0,
+            "target_id": 7,
+            "target_index": 0
+        }
+    ],
+    "metadata": {
+        "description": "Two-rows workflow with built-in OpenCV algorithms",
+        "keywords": "test,blur,enhance,OpenCV",
+        "name": "ProtocolTest1"
+    },
+    "tasks": [
+        {
+            "task_data": {
+                "name": "ocv_box_filter",
+                "parameters": [
+                    {
+                        "name": "borderType",
+                        "value": "4"
+                    },
+                    {
+                        "name": "anchorY",
+                        "value": "-1"
+                    },
+                    {
+                        "name": "anchorX",
+                        "value": "-1"
+                    },
+                    {
+                        "name": "kSizeHeight",
+                        "value": "5"
+                    },
+                    {
+                        "name": "bNormalize",
+                        "value": "1"
+                    },
+                    {
+                        "name": "kSizeWidth",
+                        "value": "5"
+                    },
+                    {
+                        "name": "ddepth",
+                        "value": "-1"
+                    }
+                ]
+            },
+            "task_id": 0
+        },
+        {
+            "task_data": {
+                "name": "ocv_bilateral_filter",
+                "parameters": [
+                    {
+                        "name": "borderType",
+                        "value": "4"
+                    },
+                    {
+                        "name": "sigmaSpace",
+                        "value": "10.000000"
+                    },
+                    {
+                        "name": "sigmaColor",
+                        "value": "10.000000"
+                    },
+                    {
+                        "name": "diameter",
+                        "value": "5"
+                    }
+                ]
+            },
+            "task_id": 1
+        },
+        {
+            "task_data": {
+                "name": "ocv_clahe",
+                "parameters": [
+                    {
+                        "name": "clipLimit",
+                        "value": "4.000000"
+                    }
+                ]
+            },
+            "task_id": 2
+        },
+        {
+            "task_data": {
+                "name": "ocv_equalize_histogram",
+                "parameters": [
+                ]
+            },
+            "task_id": 3
+        },
+        {
+            "task_data": {
+                "name": "ocv_dt_filter_enhance",
+                "parameters": [
+                    {
+                        "name": "numLayer",
+                        "value": "1"
+                    },
+                    {
+                        "name": "detailsLevel",
+                        "value": "10"
+                    },
+                    {
+                        "name": "contrastBase",
+                        "value": "100"
+                    },
+                    {
+                        "name": "sigmaSpatial",
+                        "value": "15.000000"
+                    },
+                    {
+                        "name": "sigmaColor",
+                        "value": "0.070000"
+                    }
+                ]
+            },
+            "task_id": 4
+        },
+        {
+            "task_data": {
+                "name": "ocv_dt_filter",
+                "parameters": [
+                    {
+                        "name": "numIters",
+                        "value": "3"
+                    },
+                    {
+                        "name": "mode",
+                        "value": "0"
+                    },
+                    {
+                        "name": "sigmaSpatial",
+                        "value": "17.000000"
+                    },
+                    {
+                        "name": "sigmaColor",
+                        "value": "0.800000"
+                    }
+                ]
+            },
+            "task_id": 5
+        },
+        {
+            "task_data": {
+                "name": "ocv_convert_to",
+                "parameters": [
+                    {
+                        "name": "dtype",
+                        "value": "0"
+                    },
+                    {
+                        "name": "beta",
+                        "value": "0.000000"
+                    },
+                    {
+                        "name": "alpha",
+                        "value": "255.000000"
+                    }
+                ]
+            },
+            "task_id": 6
+        },
+        {
+            "task_data": {
+                "name": "ocv_superpixel_lsc",
+                "parameters": [
+                    {
+                        "name": "num_iterations",
+                        "value": "10"
+                    },
+                    {
+                        "name": "ratio",
+                        "value": "0.075000"
+                    },
+                    {
+                        "name": "regions_size",
+                        "value": "10"
+                    }
+                ]
+            },
+            "task_id": 7
+        },
+        {
+            "task_data": {
+                "name": "ocv_superpixel_seeds",
+                "parameters": [
+                    {
+                        "name": "num_iterations",
+                        "value": "4"
+                    },
+                    {
+                        "name": "double_step",
+                        "value": "0"
+                    },
+                    {
+                        "name": "histogram_bins",
+                        "value": "5"
+                    },
+                    {
+                        "name": "prior",
+                        "value": "2"
+                    },
+                    {
+                        "name": "num_levels",
+                        "value": "4"
+                    },
+                    {
+                        "name": "num_superpixels",
+                        "value": "400"
+                    }
+                ]
+            },
+            "task_id": 8
+        }
+    ]
+}
