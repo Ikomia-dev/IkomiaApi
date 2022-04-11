@@ -170,6 +170,9 @@ def test_graph_structure():
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
 
+    # get all tasks
+    logger.info(wf.get_tasks())
+
     # browse tasks
     ids = wf.getTaskIDs()
     for task_id in ids:
@@ -447,30 +450,54 @@ def test_video():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--classif_dataset_dir", type=str, default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
-    parser.add_argument("--detect_dataset_dir", type=str, default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
-    parser.add_argument("--train_test", type=bool, default=False, help="Launch training tests")
+    parser.add_argument("--classif_dataset_dir",
+                        type=str,
+                        default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
+    parser.add_argument("--detect_dataset_dir",
+                        type=str,
+                        default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
+    parser.add_argument("--tests",
+                        type=str,
+                        default='all',
+                        help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
+    running_tests = opt.tests.split(',')
 
     ikomia.authenticate()
 
-    test_metadata()
-    test_load_builtin()
-    test_load_marketplace()
-    test_single_image_run()
-    test_directory_run()
-    test_run_common()
-    test_export_graphviz()
-    test_graph_structure()
-    test_time_metrics()
-    test_graph_build()
-    test_get_outputs(opt.detect_dataset_dir)
-    test_get_image_with_graphics()
-    test_get_image()
-    test_set_task_parameters()
-    test_video()
-
-    if opt.train_test:
+    if 'all' in running_tests or 'metadata' in running_tests:
+        test_metadata()
+    if 'all' in running_tests or 'builtin' in running_tests:
+        test_load_builtin()
+    if 'all' in running_tests or 'marketplace' in running_tests:
+        test_load_marketplace()
+    if 'all' in running_tests or 'single_run' in running_tests:
+        test_single_image_run()
+    if 'all' in running_tests or 'dir_run' in running_tests:
+        test_directory_run()
+    if 'all' in running_tests or 'run_common' in running_tests:
+        test_run_common()
+    if 'all' in running_tests or 'graphviz' in running_tests:
+        test_export_graphviz()
+    if 'all' in running_tests or 'graph_struct' in running_tests:
+        test_graph_structure()
+    if 'all' in running_tests or 'time_metrics' in running_tests:
+        test_time_metrics()
+    if 'all' in running_tests or 'graph_build' in running_tests:
+        test_graph_build()
+    if 'all' in running_tests or 'outputs' in running_tests:
+        test_get_outputs(opt.detect_dataset_dir)
+    if 'all' in running_tests or 'output_image_graphics' in running_tests:
+        test_get_image_with_graphics()
+    if 'all' in running_tests or 'output_image' in running_tests:
+        test_get_image()
+    if 'all' in running_tests or 'set_parameters' in running_tests:
+        test_set_task_parameters()
+    if 'all' in running_tests or 'video' in running_tests:
+        test_video()
+    if 'all' in running_tests or 'train_resnet' in running_tests:
         test_resnet_train(opt.classif_dataset_dir)
+    if 'all' in running_tests or 'train_yolo' in running_tests:
         test_yolo_train(opt.detect_dataset_dir)
+    if 'all' in running_tests or 'train_yolov5' in running_tests:
         test_yolov5_train(opt.detect_dataset_dir)

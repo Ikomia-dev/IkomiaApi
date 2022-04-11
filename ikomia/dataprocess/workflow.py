@@ -325,6 +325,22 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self._get_task_output(task.get_path_output, task_id, task_name, index)
 
+    def get_tasks(self):
+        """
+        Get unique identifier and name for all tasks composing the workflow.
+
+        Returns:
+             list of tuple (id (int), name (str)
+        """
+        tasks = []
+        ids = self.getTaskIDs()
+        for task_id in ids:
+            t = self.getTask(task_id)
+            if t is not None:
+                tasks.append((task_id, t.name))
+
+        return tasks
+
     def add_task(self, name, param=None):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be

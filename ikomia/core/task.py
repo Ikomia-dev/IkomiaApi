@@ -88,6 +88,27 @@ def set_parameters(task, params: dict):
     param.setParamMap(param_map)
 
 
+def get_parameters(task):
+    """
+    Get parameters as a dict of key-value pairs for the given task.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+
+    Returns:
+        parameters (dict): pairs of key, value for each parameter.
+    """
+    if task is None:
+        raise RuntimeError("Parameter can't be retrieved from None object")
+
+    params = {}
+    param_map = task.getParamValues()
+    for param in param_map:
+        params[param.key()] = param_map[param.key()]
+
+    return params
+
+
 def _get_outputs(task, types, index=-1):
     if task is None:
         raise RuntimeError("Cannot get outputs from None task.")

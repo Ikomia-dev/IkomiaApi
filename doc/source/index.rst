@@ -11,7 +11,7 @@ The Ikomia platform is made up of three components:
 
 .. note:: Ikomia API is built around Ikomia Core, a set of C++ libraries with Python bindings.
 
-.. important:: Ikomia Studio and Ikomia API are Open-Source projects, distributed under the Apache 2.0 license.
+.. important:: Ikomia Studio and Ikomia API are Open-Source projects, distributed under AGPLv3 and LGPLv3 respectively.
 
 
 Choose your API usage

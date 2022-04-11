@@ -12,20 +12,23 @@ Python library (PyTorch, TensorFlow, Scikit-image ...).
 Installation
 ------------
 
-You simply install Ikomia API via pip for Linux and Windows:
+You simply install Ikomia API via pip for Linux and Windows (CPU only):
 
 .. code-block:: zsh
 
-    pip install Ikomia
+    pip install ikomia==0.6.1+cpu -f https://ikomia-packages.s3-website.fr-par.scw.cloud/ikomia/index.html
 
+With GPU enabled:
+
+.. code-block:: zsh
+
+    pip install ikomia==0.6.1+cu11 -f https://ikomia-packages.s3-website.fr-par.scw.cloud/ikomia/index.html
 
 .. note::
-    For this beta version, we only provide Python wheel for Python 3.7. It includes OpenCV package (v4.5.2) with CUDA enabled (v11.1), 
+    For this beta version, we provide Python wheel for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2) with CUDA enabled (v11),
     CuDNN 8. Thus, you must have CUDA 11 drivers for your graphic card and install machine learning framework compatible with CUDA 11.
     For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distributions. For 
     Windows, the wheel is only compatible with Windows 10.
-
-    More versions will be available soon.
 
 
 .. Important::

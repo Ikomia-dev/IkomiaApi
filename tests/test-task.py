@@ -12,6 +12,10 @@ logger = logging.getLogger(__name__)
 def test_task_parameters():
     logger.info("===== Test::set task parameters =====")
     algo = task.create(ik.ocv_box_filter)
+
+    logger.info("----- Get parameters")
+    logger.info(task.get_parameters(algo))
+
     logger.info("----- Use default parameters")
     logger.info(algo.getParam())
     img_path = tests.get_test_image_directory() + "/Lena.png"
@@ -130,10 +134,21 @@ def test_get_image_with_graphics():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--wgisd_dir", type=str, default="/home/ludo/Images/Datasets/wgisd",
+    parser.add_argument("--wgisd_dir",
+                        type=str,
+                        default="/home/ludo/Images/Datasets/wgisd",
                         help="Classification datatset folder")
-    opt = parser.parse_args()
+    parser.add_argument("--tests",
+                        type=str,
+                        default='all',
+                        help="List of tests to execute (comma-separated string, default=all)")
 
-    test_task_parameters()
-    test_get_task_outputs(opt.wgisd_dir)
-    test_get_image_with_graphics()
+    opt = parser.parse_args()
+    running_tests = opt.tests.split(',')
+
+    if 'all' in running_tests or 'parameters' in running_tests:
+        test_task_parameters()
+    if 'all' in running_tests or 'outputs' in running_tests:
+        test_get_task_outputs(opt.wgisd_dir)
+    if 'all' in running_tests or 'output_image_graphics' in running_tests:
+        test_get_image_with_graphics()

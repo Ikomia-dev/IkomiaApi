@@ -8,7 +8,6 @@
 
         getApiVersion
         getCompatibilityState
-        getIkomiaFolder
    
     .. rubric:: Classes
     .. autosummary::
