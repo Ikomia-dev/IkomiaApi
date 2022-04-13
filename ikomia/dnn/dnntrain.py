@@ -16,13 +16,17 @@
 Module dedicated to Deep Learning training.
 """
 
-from ikomia import dataprocess
-from ikomia.dnn import datasetio
+import sys
 import mlflow
+import requests
+import subprocess
+from ikomia.core import config
+from ikomia.dataprocess import CDnnTrainTask
+from ikomia.dnn import datasetio
 from datetime import datetime
 
 
-class TrainProcess(dataprocess.CDnnTrainTask):
+class TrainProcess(CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
     It includes MLflow framework and Tensorboard and handle connections with them:
@@ -44,19 +48,48 @@ class TrainProcess(dataprocess.CDnnTrainTask):
             name (str): task name
             param (:py:class:`~ikomia.core.task.TaskParam`): task parameters
         """
-        dataprocess.CDnnTrainTask.__init__(self, name, param)
+        CDnnTrainTask.__init__(self, name, param)
         self.addInput(datasetio.IkDatasetIO())
         self.experiment_id = -1
         self._init_mlflow()
+
+    @staticmethod
+    def _check_mlflow_server():
+        try:
+            url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
+            r = requests.get(url)
+            r.raise_for_status()
+        except:
+            # Start server if needed
+            if sys.platform == "win32":
+                store_uri = config.main_cfg["mlflow"]["store_uri"].replace(':', '')
+                artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace(':', '')
+                store_uri = store_uri.replace('\\', '/')
+                artifact_uri = artifact_uri.replace('\\', '/')
+                store_uri = "file://" + store_uri
+                artifact_uri = "file://" + artifact_uri
+            else:
+                store_uri = config.main_cfg["mlflow"]["store_uri"]
+                artifact_uri = config.main_cfg["mlflow"]["artifact_uri"]
+
+            proc = subprocess.Popen(["mlflow", "server",
+                                     "--backend-store-uri", store_uri,
+                                     "--default-artifact-root", artifact_uri,
+                                     "--host", "0.0.0.0"])
+            poll = proc.poll()
+            if poll is None:
+                print("MLflow server started successfully at ", config.main_cfg["mlflow"]["tracking_uri"])
 
     def _init_mlflow(self):
         """
         Internal use only
         """
+        # Check mlflow server
+        self._check_mlflow_server()
         # Create experiment
         date_time_obj = datetime.now()
         time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
-        mlflow.set_tracking_uri('http://localhost:5000')
+        mlflow.set_tracking_uri(config.main_cfg["mlflow"]["tracking_uri"])
 
         try:
             self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
