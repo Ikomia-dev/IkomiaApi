@@ -98,7 +98,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             algo = self.createInstance(name, parameters)
         else:
             try:
-                self._install_plugin(name)
+                self.install_plugin(name)
                 algo = self.createInstance(name, parameters)
 
                 if config.main_cfg["registry"]["auto_completion"]:
@@ -156,7 +156,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.info("Plugin " + name + " is already up to date")
             return
 
-        self._install_plugin(name)
+        self.install_plugin(name)
 
     def install_plugin(self, name):
         # Download package
