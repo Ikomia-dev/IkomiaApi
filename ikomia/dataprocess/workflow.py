@@ -543,3 +543,30 @@ def load(path):
         return wf
 
     return None
+
+
+def install_requirements(path):
+    """
+    Install needed requirements from the given workflow path.
+
+    Args:
+        path (str)
+
+    Returns:
+        True if all installations succeeded else False
+    """
+    wf = Workflow("untitled", ikomia.ik_registry)
+    tasks = wf.getRequiredTasks(path)
+    available_tasks = ikomia.ik_registry.getAlgorithms()
+    plugins_directory = ikomia.ik_registry.getPluginsDirectory()
+    for t in tasks:
+        if t not in available_tasks:
+            plugin_dir = os.path.join(plugins_directory, "Python", t)
+            if os.path.isdir(plugin_dir):
+                utils.plugintools.install_requirements(plugin_dir)
+            else:
+                msg = "Workflow preparation failed: task " + t + " cannot be found."
+                logger.error(msg)
+                return False
+    return True
+

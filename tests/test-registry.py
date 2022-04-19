@@ -32,9 +32,9 @@ def test_download_plugin():
 def test_install_plugin():
     logger.info("===== Test::install online algorithms =====")
     logger.info("Installing RAFTOpticalFlow...")
-    ikomia.ik_registry._install_plugin(ik.infer_raft_optical_flow)
+    ikomia.ik_registry.install_plugin(ik.infer_raft_optical_flow)
     logger.info("Installing MobileNet SSD...")
-    ikomia.ik_registry._install_plugin(ik.infer_mobilenet_ssd)
+    ikomia.ik_registry.install_plugin(ik.infer_mobilenet_ssd)
 
 
 def test_local_instantiation():

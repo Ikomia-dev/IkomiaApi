@@ -26,23 +26,23 @@ if not main_cfg["root_folder"]:
 
 # Ikomia registry
 if not main_cfg["registry"]["path"]:
-    main_cfg["registry"]["path"] = os.path.join(main_cfg["root_folder"], "Plugins/")
+    main_cfg["registry"]["path"] = os.path.join(main_cfg["root_folder"], "Plugins") + os.sep
 
 # Ikomia workflows
 if not main_cfg["workflow"]["path"]:
-    main_cfg["workflow"]["path"] = os.path.join(main_cfg["root_folder"], "Workflows/")
+    main_cfg["workflow"]["path"] = os.path.join(main_cfg["root_folder"], "Workflows") + os.sep
 
 # Data directory
 if not main_cfg["data"]["path"]:
-    main_cfg["data"]["path"] = os.path.join(main_cfg["root_folder"], "Data/")
+    main_cfg["data"]["path"] = os.path.join(main_cfg["root_folder"], "Data") + os.sep
 
 # MLflow
 if not main_cfg["mlflow"]["artifact_uri"]:
-    main_cfg["mlflow"]["artifact_uri"] = os.path.join(main_cfg["root_folder"], "MLflow/")
+    main_cfg["mlflow"]["artifact_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
 
 if not main_cfg["mlflow"]["store_uri"]:
-    main_cfg["mlflow"]["store_uri"] = os.path.join(main_cfg["root_folder"], "MLflow/")
+    main_cfg["mlflow"]["store_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
 
 # Tensorboard
 if not main_cfg["tensorboard"]["log_uri"]:
-    main_cfg["tensorboard"]["log_uri"] = os.path.join(main_cfg["root_folder"], "Tensorboard/")
+    main_cfg["tensorboard"]["log_uri"] = os.path.join(main_cfg["root_folder"], "Tensorboard") + os.sep
