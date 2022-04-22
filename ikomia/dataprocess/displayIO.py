@@ -267,10 +267,10 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
             ax.add_patch(circle)
             update_min_max(item.point.x, item.point.y)
         elif item_type == core.GraphicsItem.RECTANGLE:
-            ellipse = patches.Rectangle(xy=[item.x, item.y], width=item.width, height=item.height,
-                                        edgecolor=_to_plot_color(item.property.pen_color),
-                                        facecolor=_to_plot_color(item.property.brush_color), **kwargs)
-            ax.add_patch(ellipse)
+            rect = patches.Rectangle(xy=[item.x, item.y], width=item.width, height=item.height,
+                                     edgecolor=_to_plot_color(item.property.pen_color),
+                                     facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            ax.add_patch(rect)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
         elif item_type == core.GraphicsItem.POLYLINE:
@@ -519,7 +519,11 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
                 col_labels.append(measure_info.name)
 
     cols_count = len(col_labels)
-    values = [[None for _ in range(cols_count)] for _ in range(len(measures))]
+    values = [["No data" for _ in range(cols_count)] for _ in range(len(measures))]
+
+    if len(values) == 0:
+        values = [["No data" for _ in range(cols_count)]]
+        row_labels = ["No data"]
 
     for i, blob_measures in enumerate(measures):
         for measure in blob_measures:
@@ -547,6 +551,7 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
                      cellLoc="left", loc="upper left", colWidths=col_width)
     table.auto_set_font_size(False)
     table.set_fontsize(10)
+
     ax.axis("off")
     fig.suptitle(label)
 
