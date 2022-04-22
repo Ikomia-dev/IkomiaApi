@@ -228,7 +228,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         if state != utils.PluginState.VALID:
             error_msg = "Plugin " + plugin["name"] + " can't be installed due to version incompatibility.\n"
-            error_msg += "Based on Ikomia " + plugin["version"] + " while the current version is " + utils.getApiVersion()
+            error_msg += "Based on Ikomia " + plugin["ikomiaVersion"] + " while the current version is " + utils.getApiVersion()
             raise ValueError(error_msg)
 
         s = ikomia.ik_api_session
