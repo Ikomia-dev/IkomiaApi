@@ -1,4 +1,5 @@
 import logging
+import sys
 import ikomia
 import cv2
 from ikomia.dataprocess import displayIO
@@ -33,8 +34,10 @@ def test_install_plugin():
     logger.info("===== Test::install online algorithms =====")
     logger.info("Installing RAFTOpticalFlow...")
     ikomia.ik_registry.install_plugin(ik.infer_raft_optical_flow)
+
     logger.info("Installing MobileNet SSD...")
-    ikomia.ik_registry.install_plugin(ik.infer_mobilenet_ssd)
+    if sys.version_info[1] == 7:
+        ikomia.ik_registry.install_plugin(ik.infer_mobilenet_ssd)
 
 
 def test_local_instantiation():
@@ -125,7 +128,7 @@ def test_execution():
     algo.run()
     displayIO.display(algo, algo.name)
 
-    # Marketplace YoloV5Predict (Python)
+    # Marketplace infer_yolov5 (Python)
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v5)

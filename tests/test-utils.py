@@ -13,7 +13,7 @@ def test_plugin_dependencies(plugin_folder):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--plugin_folder", type=str, default="/home/ludo/Ikomia/Plugins/Python/ResNet",
+    parser.add_argument("--plugin_folder", type=str, default="/home/ludo/Ikomia/Plugins/Python/infer_torchvision_resnet",
                         help="Plugin folder to checl")
     opt = parser.parse_args()
     test_plugin_dependencies(opt.plugin_folder)

@@ -462,6 +462,7 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
+    running_tests = 'train_yolov5'
 
     ikomia.authenticate()
 
@@ -497,7 +498,7 @@ if __name__ == "__main__":
         test_video()
     if 'all' in running_tests or 'train_resnet' in running_tests:
         test_resnet_train(opt.classif_dataset_dir)
-    if 'all' in running_tests or 'train_yolo' in running_tests:
+    if 'all' in running_tests or 'train_yolov4' in running_tests:
         test_yolo_train(opt.detect_dataset_dir)
     if 'all' in running_tests or 'train_yolov5' in running_tests:
         test_yolov5_train(opt.detect_dataset_dir)

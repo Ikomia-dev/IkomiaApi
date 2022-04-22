@@ -122,12 +122,14 @@ def test_get_image_with_graphics():
     # Load image
     img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     # run
     t = task.create(ik.infer_mobilenet_ssd)
     t.getInput(0).setImage(img)
     t.run()
     # get image with graphics
     img_with_graphics = task.get_image_with_graphics(t, 0, 0)
+    img_with_graphics = cv2.cvtColor(img_with_graphics, cv2.COLOR_BGR2RGB)
     cv2.imshow("Image with graphics", img_with_graphics)
     cv2.waitKey(0)
 
@@ -145,6 +147,7 @@ if __name__ == "__main__":
 
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
+    running_tests = "output_image_graphics"
 
     if 'all' in running_tests or 'parameters' in running_tests:
         test_task_parameters()

@@ -62,6 +62,10 @@
                         "value": "10"
                     },
                     {
+                        "name": "model_path",
+                        "value": "/home/ludo/Ikomia/Plugins/Python/train_yolo_v5/models/yolov5s.pt"
+                    },
+                    {
                         "name": "model_name",
                         "value": "yolov5s"
                     },
