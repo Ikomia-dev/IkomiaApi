@@ -22,7 +22,7 @@ import logging
 import enum
 
 import ikomia
-from ikomia import utils, core, dataprocess
+from ikomia import utils, core, dataprocess, dataio
 from ikomia.core import config, task
 from urllib.parse import urlparse
 
@@ -54,7 +54,7 @@ class Workflow(dataprocess.CWorkflow):
             dataprocess.CWorkflow.__init__(self, name, registry)
 
         self.registry = registry
-        output_folder = config.main_cfg["workflow"]["path"]
+        output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
         self.setOutputFolder(output_folder)
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
@@ -83,6 +83,30 @@ class Workflow(dataprocess.CWorkflow):
             self.addInput(img_input)
         else:
             self.setInput(img_input, index, True)
+
+    def set_video_input(self, path="", url="", index=-1, datatype=core.IODataType.VIDEO):
+        """
+        Set video as global input of the workflow. Video can be specified by a path or an URL thanks to
+        keyword arguments, you have to choose one of them.
+
+        Args:
+            path (str): image input as file path (valid formats are those managed by OpenCV)
+            url (str): valid URL to image file (valid formats are those managed by OpenCV)
+            index (int): zero-based input index, if -1 a new input is added
+            datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
+        """
+        if path:
+            video_input = dataprocess.CVideoIO(datatype, "Video", path)
+        elif url:
+            parsed = urlparse(url)
+            video_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
+            utils.http.download_file(url, video_path)
+            video_input = dataprocess.CVideoIO(datatype, "Video", video_path)
+
+        if index == -1 or index >= self.getInputCount():
+            self.addInput(video_input)
+        else:
+            self.setInput(video_input, index, True)
 
     def set_directory_input(self, folder="", index=-1):
         """
@@ -432,11 +456,23 @@ class Workflow(dataprocess.CWorkflow):
             url (str): URL to image file (valid formats are those managed by OpenCV)
             folder (str): image folder
         """
+        if not self._check_run_input(array, path, url, folder):
+            raise RuntimeError("Workflow input is invalid: you must pass either an numpy array, a path to image/video"
+                               "or a folder containing images or videos.")
+
         if folder:
             self.set_directory_input(folder=folder)
             self.run()
         else:
-            self.set_image_input(array=array, path=path, url=url, index=0)
+            if self._is_image_input(array, path, url):
+                self.set_image_input(array=array, path=path, url=url, index=0)
+            elif self._is_video_input(path, url):
+                self.set_video_input(path=path, url=url, index=0)
+                self.setCfgEntry("WholeVideo", str(int(True)))
+                self.updateStartTime()
+            else:
+                raise RuntimeError("Workflow run failed: unsupported input type.")
+
             self.run()
 
     def prepare_runtime_env(self, path):
@@ -511,6 +547,36 @@ class Workflow(dataprocess.CWorkflow):
                         wf_outputs.append(outs)
 
                 return wf_outputs
+
+    @staticmethod
+    def _check_run_input(array, path, url, folder):
+        return array is not None or path or url or folder
+
+    @staticmethod
+    def _is_image_input(array=None, path="", url=""):
+        if array is not None:
+            return True
+        elif path:
+            filename, ext = os.path.splitext(path)
+            return dataio.CDataImageIO.isImageFormat(ext)
+        elif url:
+            parsed_url = urlparse(url)
+            filename, ext = os.path.splitext(parsed_url.path)
+            return dataio.CDataImageIO.isImageFormat(ext)
+        else:
+            return False
+
+    @staticmethod
+    def _is_video_input(path="", url=""):
+        if path:
+            filename, ext = os.path.splitext(path)
+            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+        elif url:
+            parsed_url = urlparse(url)
+            filename, ext = os.path.splitext(parsed_url.path)
+            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+        else:
+            return False
 
 
 def create(name="untitled"):
