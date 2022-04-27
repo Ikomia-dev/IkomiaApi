@@ -50,7 +50,7 @@ def test_load_marketplace():
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
-def test_single_image_run():
+def test_run_single_image():
     logger.info("===== Test::execute workflow on single image =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
@@ -78,8 +78,8 @@ def test_single_image_run():
     logger.info("Workflow finished successfully")
 
 
-def test_directory_run():
-    logger.info("===== Test::execute workflow on folder =====")
+def test_run_image_folder():
+    logger.info("===== Test::execute image workflow on folder =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     wf.setAutoSave(True)
@@ -91,8 +91,8 @@ def test_directory_run():
     logger.info("Workflow finished successfully")
 
 
-def test_run_common():
-    logger.info("===== Test::execute workflow on common inputs =====")
+def test_run_image_common():
+    logger.info("===== Test::execute workflow on common image inputs =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     wf.setAutoSave(True)
@@ -111,6 +111,32 @@ def test_run_common():
 
     logger.info("----- Run on image from folder")
     dir_path = tests.get_test_image_directory()
+    wf.run_on(folder=dir_path)
+
+
+def test_run_single_video():
+    logger.info("===== Test::execute workflow on single video =====")
+    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.load(wf_path)
+    wf.setAutoSave(True)
+
+    logger.info("----- Run on video from file path")
+    video_path = tests.get_test_video_directory() + "/basketball.mp4"
+    wf.run_on(path=video_path)
+
+    logger.info("----- Run on video from URL")
+    video_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    wf.run_on(url=video_url)
+
+
+def test_run_video_folder():
+    logger.info("===== Test::execute workflow on folder =====")
+    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf = workflow.load(wf_path)
+    wf.setAutoSave(True)
+
+    logger.info("----- Run on video from folder")
+    dir_path = tests.get_test_video_directory()
     wf.run_on(folder=dir_path)
 
 
@@ -462,7 +488,7 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = 'train_yolov5'
+    running_tests = 'run_single_video'
 
     ikomia.authenticate()
 
@@ -472,12 +498,16 @@ if __name__ == "__main__":
         test_load_builtin()
     if 'all' in running_tests or 'marketplace' in running_tests:
         test_load_marketplace()
-    if 'all' in running_tests or 'single_run' in running_tests:
-        test_single_image_run()
-    if 'all' in running_tests or 'dir_run' in running_tests:
-        test_directory_run()
-    if 'all' in running_tests or 'run_common' in running_tests:
-        test_run_common()
+    if 'all' in running_tests or 'run_single_image' in running_tests:
+        test_run_single_image()
+    if 'all' in running_tests or 'run_image_folder' in running_tests:
+        test_run_image_folder()
+    if 'all' in running_tests or 'run_image_common' in running_tests:
+        test_run_image_common()
+    if 'all' in running_tests or 'run_single_video' in running_tests:
+        test_run_single_video()
+    if 'all' in running_tests or 'run_video_folder' in running_tests:
+        test_run_video_folder()
     if 'all' in running_tests or 'graphviz' in running_tests:
         test_export_graphviz()
     if 'all' in running_tests or 'graph_struct' in running_tests:
