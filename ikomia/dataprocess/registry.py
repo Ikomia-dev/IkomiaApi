@@ -87,6 +87,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         Args:
             name (str): unique algorithm name
+            parameters (~ikomia.core.CWorkflowTaskParam): initial parameters values
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance

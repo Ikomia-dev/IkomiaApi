@@ -1,5 +1,6 @@
 import logging
 import sys
+import argparse
 import ikomia
 import cv2
 from ikomia.dataprocess import displayIO
@@ -140,13 +141,51 @@ def test_execution():
     displayIO.display(algo, algo.name)
 
 
+def test_auto_completion():
+    # Algorithm infer_torchvision_mnasnet must not be installed for this tes
+    logger.info("===== Test::hot auto-completion update =====")
+
+    try:
+        algo_name = ik.infer_torchvision_mnasnet
+        algo_param = ik.infer_torchvision_mnasnet_param
+    except Exception as e:
+        logger.info(e)
+
+    ikomia.ik_registry.create_algorithm(ik.infer_torchvision_mnasnet)
+    algo_name = ik.infer_torchvision_mnasnet
+    algo_param = ik.infer_torchvision_mnasnet_param
+    logger.info(algo_name)
+    logger.info(algo_param)
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tests",
+                        type=str,
+                        default='all',
+                        help="List of tests to execute (comma-separated string, default=all)")
+
+    opt = parser.parse_args()
+    running_tests = opt.tests.split(',')
+    running_tests = 'auto_completion'
+
     ikomia.authenticate()
-    test_get_local_algorithms()
-    test_get_online_algorithms()
-    test_download_plugin()
-    test_install_plugin()
-    test_local_instantiation()
-    test_instantiation()
-    test_update()
-    test_execution()
+
+    if 'all' in running_tests or 'get_local_algorithms' in running_tests:
+        test_get_local_algorithms()
+    if 'all' in running_tests or 'get_online_algorithms' in running_tests:
+        test_get_online_algorithms()
+    if 'all' in running_tests or 'get_download_plugin' in running_tests:
+        test_download_plugin()
+    if 'all' in running_tests or 'install_plugin' in running_tests:
+        test_install_plugin()
+    if 'all' in running_tests or 'local_instantiation' in running_tests:
+        test_local_instantiation()
+    if 'all' in running_tests or 'instantiation' in running_tests:
+        test_instantiation()
+    if 'all' in running_tests or 'update' in running_tests:
+        test_update()
+    if 'all' in running_tests or 'execution' in running_tests:
+        test_execution()
+    if 'all' in running_tests or 'auto_completion' in running_tests:
+        test_auto_completion()

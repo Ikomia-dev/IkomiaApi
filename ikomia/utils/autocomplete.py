@@ -18,6 +18,9 @@ import site
 import keyword
 import logging
 import shutil
+import importlib
+import sys
+
 import ikomia
 
 logger = logging.getLogger()
@@ -106,6 +109,10 @@ def _generate_python_file(folder):
         if os.path.isfile(cache_file_path):
             with open(cache_file_path, "r") as f_cache:
                 shutil.copyfileobj(f_cache, f)
+
+    # reload module
+    if "ikomia.utils.ik" in sys.modules:
+        importlib.reload(ikomia.utils.ik)
 
 
 def make_local_plugins(force=False):
