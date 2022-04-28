@@ -453,7 +453,7 @@ def test_set_task_parameters():
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
 
 
-def test_video():
+def test_video_stream():
     cap = cv2.VideoCapture(0)
 
     wf = workflow.create("Video Processing")
@@ -488,7 +488,7 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = 'run_single_video'
+    running_tests = 'run_video_folder'
 
     ikomia.authenticate()
 
@@ -524,8 +524,8 @@ if __name__ == "__main__":
         test_get_image()
     if 'all' in running_tests or 'set_parameters' in running_tests:
         test_set_task_parameters()
-    if 'all' in running_tests or 'video' in running_tests:
-        test_video()
+    if 'all' in running_tests or 'test_video_stream' in running_tests:
+        test_video_stream()
     if 'all' in running_tests or 'train_resnet' in running_tests:
         test_resnet_train(opt.classif_dataset_dir)
     if 'all' in running_tests or 'train_yolov4' in running_tests:

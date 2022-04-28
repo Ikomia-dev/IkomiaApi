@@ -70,9 +70,9 @@ class Workflow(dataprocess.CWorkflow):
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
         """
         if array is not None:
-            img_input = dataprocess.CImageIO(datatype, array, "Image")
+            img_input = dataprocess.CImageIO(datatype, array, "")
         elif path:
-            img_input = dataprocess.CImageIO(datatype, "Image", path)
+            img_input = dataprocess.CImageIO(datatype, "", path)
         elif url:
             parsed = urlparse(url)
             img_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
@@ -96,7 +96,7 @@ class Workflow(dataprocess.CWorkflow):
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
         """
         if path:
-            video_input = dataprocess.CVideoIO(datatype, "Video", path)
+            video_input = dataprocess.CVideoIO(datatype, "", path)
         elif url:
             parsed = urlparse(url)
             video_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
@@ -460,16 +460,18 @@ class Workflow(dataprocess.CWorkflow):
             raise RuntimeError("Workflow input is invalid: you must pass either an numpy array, a path to image/video"
                                "or a folder containing images or videos.")
 
+        self.updateStartTime()
+
         if folder:
             self.set_directory_input(folder=folder)
             self.run()
         else:
             if self._is_image_input(array, path, url):
                 self.set_image_input(array=array, path=path, url=url, index=0)
+                self.setCfgEntry("WholeVideo", str(int(False)))
             elif self._is_video_input(path, url):
                 self.set_video_input(path=path, url=url, index=0)
                 self.setCfgEntry("WholeVideo", str(int(True)))
-                self.updateStartTime()
             else:
                 raise RuntimeError("Workflow run failed: unsupported input type.")
 
@@ -505,8 +507,22 @@ class Workflow(dataprocess.CWorkflow):
 
                 for root, subdirs, files in os.walk(dir_input.getPath(), topdown=True):
                     for file in files:
-                        self.set_image_input(path=os.path.join(root, file), index=i)
-                        super().run()
+                        file_path = os.path.join(root, file)
+                        if self._is_image_input(path=file_path):
+                            self.set_image_input(path=file_path, index=i)
+                            self.setCfgEntry("WholeVideo", str(int(False)))
+                        elif self._is_video_input(path=file_path):
+                            self.set_video_input(path=file_path, index=i)
+                            self.setCfgEntry("WholeVideo", str(int(True)))
+                        else:
+                            logger.warning(f"Skipping file {file} as it is neither a supported image or video.")
+                            continue
+
+                        try:
+                            super().run()
+                        except Exception as e:
+                            msg = f"Error occurred while processing {file}: {e.__str__()}"
+                            logger.error(msg)
 
                 self.setInput(dir_input, i, False)
 
