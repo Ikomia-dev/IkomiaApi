@@ -38,7 +38,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
     def __init__(self):
         dataprocess.CIkomiaRegistry.__init__(self)
-        self.load_python_plugins()
+        self.load_python_algorithms()
 
     @utils.http.http_except
     def get_online_algorithms(self):
@@ -53,7 +53,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         """
         s = ikomia.ik_api_session
         if s is None or s.token is None:
-            logger.error("Online algorithms retrieval failed, authentication required.")
+            logger.error("Failed to get online algorithms, authentication required.")
             return
 
         url = config.main_cfg["marketplace"]["url"] + "/api/plugin/"
@@ -99,7 +99,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             algo = self.createInstance(name, parameters)
         else:
             try:
-                self.install_plugin(name)
+                self.install_algorithm(name)
                 algo = self.createInstance(name, parameters)
 
                 if config.main_cfg["registry"]["auto_completion"]:
@@ -135,7 +135,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.error("Ikomia algorithm registry is empty.")
 
         if name not in local_algos:
-            logger.error("Plugin " + name + " can't be updated as it is not installed.")
+            logger.error("Algorithm " + name + " can't be updated as it is not installed.")
             return
 
         online_algos = self.get_online_algorithms()
@@ -149,30 +149,35 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 break
 
         if online_algo is None:
-            logger.error("Plugin " + name + " does not exist in the Ikomia Marketplace")
+            logger.error("Algorithm " + name + " does not exist in the Ikomia Marketplace")
             return
 
         info = self.getAlgorithmInfo(name)
         if info.version >= online_algo["version"] and info.ikomiaVersion >= online_algo["ikomiaVersion"]:
-            logger.info("Plugin " + name + " is already up to date")
+            logger.info("Algorithm " + name + " is already up to date")
             return
 
-        self.install_plugin(name)
+        self.install_algorithm(name, force=True)
 
-    def install_plugin(self, name):
+    def install_algorithm(self, name, force=False):
+        available_algos = self.getAlgorithms()
+        if name in available_algos and not force:
+            logger.info(f"Skip installation of {name} as it is already installed.")
+            return
+
         # Download package
-        plugin, language, plugin_dir = self._download_plugin(name)
+        plugin, language, plugin_dir = self._download_algorithm(name)
 
         # Install requirements
         utils.plugintools.install_requirements(plugin_dir)
 
         # Load it
         if language == utils.ApiLanguage.PYTHON:
-            self._load_python_plugin(plugin_dir, plugin["name"])
+            self._load_python_algorithm(plugin_dir, plugin["name"])
         else:
             self.loadCppPlugin(plugin_dir)
 
-    def load_python_plugins(self):
+    def load_python_algorithms(self):
         root_dir = self.getPluginsDirectory() + os.sep + "Python"
 
         if root_dir not in sys.path:
@@ -182,12 +187,12 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             subdirs[:] = [d for d in subdirs if not d[0] == '.']
             for directory in subdirs:
                 try:
-                    self._load_python_plugin(root + os.sep + directory, directory)
+                    self._load_python_algorithm(root + os.sep + directory, directory)
                 except Exception as e:
                     logger.error(e)
             break
 
-    def _load_python_plugin(self, directory, name):
+    def _load_python_algorithm(self, directory, name):
         main_module_name = name + "." + name
         main_module = utils.import_plugin_module(directory, main_module_name)
         main_class = getattr(main_module, "IkomiaPlugin")
@@ -211,7 +216,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         self.registerTask(task_factory)
 
-    def _download_plugin(self, name):
+    def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
         plugin_info = None
 
@@ -221,7 +226,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 break
 
         if plugin_info is None:
-            error_msg = "Plugin " + name + " does not exist in the Ikomia Marketplace"
+            error_msg = "Algorithm " + name + " does not exist in the Ikomia Marketplace"
             raise ValueError(error_msg)
 
         language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON

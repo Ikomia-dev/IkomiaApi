@@ -28,17 +28,17 @@ def test_get_online_algorithms():
 def test_download_plugin():
     logger.info("===== Test::download online algorithm =====")
     logger.info("Downloading RAFTOpticalFlow...")
-    ikomia.ik_registry._download_plugin(ik.infer_raft_optical_flow)
+    ikomia.ik_registry._download_algorithm(ik.infer_raft_optical_flow)
 
 
 def test_install_plugin():
     logger.info("===== Test::install online algorithms =====")
     logger.info("Installing RAFTOpticalFlow...")
-    ikomia.ik_registry.install_plugin(ik.infer_raft_optical_flow)
+    ikomia.ik_registry.install_algorithm(ik.infer_raft_optical_flow)
 
     logger.info("Installing MobileNet SSD...")
     if sys.version_info[1] == 7:
-        ikomia.ik_registry.install_plugin(ik.infer_mobilenet_ssd)
+        ikomia.ik_registry.install_algorithm(ik.infer_mobilenet_ssd)
 
 
 def test_local_instantiation():
