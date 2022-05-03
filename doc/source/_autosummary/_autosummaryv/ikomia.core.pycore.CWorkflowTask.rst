@@ -34,6 +34,7 @@
         ~CWorkflowTask.getOutputDataType
         ~CWorkflowTask.getOutputs
         ~CWorkflowTask.getParam
+        ~CWorkflowTask.getParamValues
         ~CWorkflowTask.getProgressSteps
         ~CWorkflowTask.globalInputChanged
         ~CWorkflowTask.graphicsChanged
@@ -43,15 +44,20 @@
         ~CWorkflowTask.run
         ~CWorkflowTask.setActionFlag
         ~CWorkflowTask.setActive
+        ~CWorkflowTask.setAutoSave
         ~CWorkflowTask.setInput
         ~CWorkflowTask.setInputDataType
         ~CWorkflowTask.setInputs
         ~CWorkflowTask.setOutput
         ~CWorkflowTask.setOutputDataType
         ~CWorkflowTask.setOutputs
+        ~CWorkflowTask.setOutputFolder
         ~CWorkflowTask.setParam
+        ~CWorkflowTask.setParamValues
         ~CWorkflowTask.stop
         ~CWorkflowTask.updateStaticOutputs
+        ~CWorkflowTask.workflowStarted
+        ~CWorkflowTask.workflowFinished
 
 
     .. rubric:: Attributes
@@ -83,6 +89,7 @@
     .. automethod:: getOutputDataType
     .. automethod:: getOutputs
     .. automethod:: getParam
+    .. automethod:: getParamValues
     .. automethod:: getProgressSteps
     .. automethod:: globalInputChanged
     .. automethod:: graphicsChanged
@@ -92,12 +99,17 @@
     .. automethod:: run
     .. automethod:: setActionFlag
     .. automethod:: setActive
+    .. automethod:: setAutoSave
     .. automethod:: setInput
     .. automethod:: setInputDataType
     .. automethod:: setInputs
     .. automethod:: setOutput
     .. automethod:: setOutputDataType
     .. automethod:: setOutputs
+    .. automethod:: setOutputFolder
     .. automethod:: setParam
+    .. automethod:: setParamValues
     .. automethod:: stop
     .. automethod:: updateStaticOutputs
+    .. automethod:: workflowStarted
+    .. automethod:: workflowFinished

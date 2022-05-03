@@ -18,6 +18,7 @@
       CImageIO
       CVideoIO
       CNumericIO
+      CDataStringIO
       CGraphicsInput
       CGraphicsOutput
       CWidgetOutput

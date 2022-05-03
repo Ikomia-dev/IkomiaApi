@@ -17,6 +17,7 @@ IkomiaRegistry
         ~IkomiaRegistry.__init__
         ~IkomiaRegistry.create_algorithm
         ~IkomiaRegistry.get_online_algorithms
+        ~IkomiaRegistry.install_algorithm
         ~IkomiaRegistry.update_algorithm
         ~IkomiaRegistry.update_algorithms
 
@@ -38,6 +39,7 @@ IkomiaRegistry
     .. automethod:: get_online_algorithms
     .. automethod:: getPluginsDirectory
     .. automethod:: registerTask
+    .. automethod:: install_algorithm
     .. automethod:: setPluginsDirectory
     .. automethod:: update_algorithm
     .. automethod:: update_algorithms

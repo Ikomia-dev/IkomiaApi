@@ -5,9 +5,9 @@ Code example for OCVBasics widget implementation
 
 .. code-block:: python
 
-    from ikomia import utils, core, dataprocess
-    import OCVBasics_process as processMod
-
+    from ikomia import core, dataprocess
+    from ikomia.utils import qtconversion
+    from ocv_basics.ocv_basics_process import OCVBasicsParam
     #PyQt GUI framework
     from PyQt5.QtWidgets import *
 
@@ -16,13 +16,13 @@ Code example for OCVBasics widget implementation
     # - Class which implements widget associated with the process
     # - Inherits core.CProtocolTaskWidget from Ikomia API
     # --------------------
-    class OCVBasicsWidget(core.CProtocolTaskWidget):
+    class OCVBasicsWidget(core.CWorkflowTaskWidget):
 
         def __init__(self, param, parent):
-            core.CProtocolTaskWidget.__init__(self, parent)
+            core.CWorkflowTaskWidget.__init__(self, parent)
 
             if param is None:
-                self.parameters = processMod.OCVBasicsProcessParam()
+                self.parameters = OCVBasicsParam()
             else:
                 self.parameters = param
 
@@ -67,11 +67,10 @@ Code example for OCVBasics widget implementation
             self.gridLayout.addWidget(self.spin_sigma_y, 2, 1)
 
             # PyQt -> Qt wrapping (C++ handle)
-            layoutPtr = utils.PyQtToQt(self.gridLayout)
+            layoutPtr = qtconversion.PyQtToQt(self.gridLayout)
 
             # Set widget layout
             self.setLayout(layoutPtr)
-
 
         def onApply(self):
             # Apply button has been pressed
@@ -93,7 +92,7 @@ Code example for OCVBasics widget implementation
         def __init__(self):
             dataprocess.CWidgetFactory.__init__(self)
             # Set the name of the process -> it must be the same as the one declared in the process factory class
-            self.name = "OCVBasics"
+            self.name = "ocv_basics"
 
         def create(self, param):
             # Create widget object

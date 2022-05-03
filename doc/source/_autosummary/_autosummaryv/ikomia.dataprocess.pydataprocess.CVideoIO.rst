@@ -32,13 +32,13 @@ CVideoIO
    .. rubric:: Overridden methods
    .. autosummary::
       ~CVideoIO.clearData
+      ~CVideoIO.copyStaticData
       ~CVideoIO.getImage
       ~CVideoIO.getUnitElementCount
       ~CVideoIO.isDataAvailable
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CVideoIO.copyStaticData
       ~CVideoIO.drawGraphics
       ~CVideoIO.getChannelCount
       ~CVideoIO.getData

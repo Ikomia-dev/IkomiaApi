@@ -13,10 +13,10 @@ Code example for OCVBasics process implementation
     # - Class to handle the process parameters
     # - Inherits core.CProtocolTaskParam from Ikomia API
     # --------------------
-    class OCVBasicsProcessParam(core.CProtocolTaskParam):
+    class OCVBasicsParam(core.CWorkflowTaskParam):
 
         def __init__(self):
-            core.CProtocolTaskParam.__init__(self)
+            core.CWorkflowTaskParam.__init__(self)
             # Place default value initialization here
             self.kernel_size = (3, 3)
             self.sigma_x = 1.0
@@ -44,21 +44,21 @@ Code example for OCVBasics process implementation
     # - Class which implements the process
     # - Inherits core.CProtocolTask or derived from Ikomia API
     # --------------------
-    class OCVBasicsProcess(dataprocess.CImageProcess2d):
+    class OCVBasics(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
-            dataprocess.CImageProcess2d.__init__(self, name)
+            dataprocess.C2dImageTask.__init__(self, name)
             # Add input/output of the process here
             # Example :  self.addInput(core.CImageProcessIO())
             #           self.addOutput(core.CImageProcessIO())
 
             #Create parameters class
             if param is None:
-                self.setParam(OCVBasicsProcessParam())
+                self.setParam(OCVBasicsParam())
             else:
                 self.setParam(copy.deepcopy(param))
 
-        def getProgressSteps(self, eltCount=1):
+        def getProgressSteps(self):
             # Function returning the number of progress steps for this process
             # This is handled by the main progress bar of Ikomia application
             return 1
@@ -102,12 +102,12 @@ Code example for OCVBasics process implementation
     # - Factory class to build process object
     # - Inherits dataprocess.CProcessFactory from Ikomia API
     # --------------------
-    class OCVBasicsProcessFactory(dataprocess.CProcessFactory):
+    class OCVBasicsFactory(dataprocess.CProcessFactory):
 
         def __init__(self):
             dataprocess.CProcessFactory.__init__(self)
             # Set process information as string here
-            self.info.name = "OCVBasics"
+            self.info.name = "ocv_basics"
             self.info.shortDescription = "OpenCV Canny"
             self.info.description = "Simple OpenCV pipeline that computes Canny filter"
             self.info.authors = "Ikomia team"
@@ -127,4 +127,4 @@ Code example for OCVBasics process implementation
 
         def create(self, param=None):
             # Create process object
-            return OCVBasicsProcess(self.info.name, param)
+            return OCVBasics(self.info.name, param)

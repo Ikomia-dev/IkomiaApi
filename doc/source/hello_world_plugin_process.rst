@@ -13,7 +13,7 @@ Code example for process implementation
     # - Class to handle the process parameters
     # - Inherits CProtocolTaskParam from Ikomia API
     # --------------------
-    class HelloWorldProcessParam(core.CWorkflowTaskParam):
+    class HelloWorldParam(core.CWorkflowTaskParam):
 
         def __init__(self):
             core.CWorkflowTaskParam.__init__(self)
@@ -38,7 +38,7 @@ Code example for process implementation
     # - Class which implements the process
     # - Inherits CProtocolTask or derived from Ikomia API
     # --------------------
-    class HelloWorldProcess(dataprocess.C2dImageTask):
+    class HelloWorld(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
             dataprocess.C2dImageTask.__init__(self, name)
@@ -48,11 +48,11 @@ Code example for process implementation
 
             #Create parameters class
             if param is None:
-                self.setParam(HelloWorldProcessParam())
+                self.setParam(HelloWorldParam())
             else:
                 self.setParam(copy.deepcopy(param))
 
-        def getProgressSteps(self, eltCount=1):
+        def getProgressSteps(self):
             # Function returning the number of progress steps for this process
             # This is handled by the main progress bar of Ikomia application
             return 1
@@ -92,12 +92,12 @@ Code example for process implementation
     # - Factory class to build process object
     # - Inherits CProcessFactory from Ikomia API
     # --------------------
-    class HelloWorldProcessFactory(dataprocess.CTaskFactory):
+    class HelloWorldFactory(dataprocess.CTaskFactory):
 
         def __init__(self):
             dataprocess.CTaskFactory.__init__(self)
             # Set process information as string here
-            self.info.name = "HelloWorld"
+            self.info.name = "hello_world"
             self.info.description = "your description"
             self.info.authors = "Plugin authors"
             # relative path -> as displayed in Ikomia application process tree
@@ -107,4 +107,4 @@ Code example for process implementation
 
         def create(self, param=None):
             # Create process object
-            return HelloWorldProcess(self.info.name, param)
+            return HelloWorld(self.info.name, param)

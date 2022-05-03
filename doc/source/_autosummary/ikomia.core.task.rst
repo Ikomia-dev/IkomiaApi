@@ -27,6 +27,7 @@
         get_image_output
         get_image_with_graphics
         get_numeric_output
+        get_data_string_output
         get_path_output
         set_parameters
 
@@ -40,5 +41,6 @@
     .. autofunction:: get_image_output
     .. autofunction:: get_image_with_graphics
     .. autofunction:: get_numeric_output
+    .. autofunction:: get_data_string_output
     .. autofunction:: get_path_output
     .. autofunction:: set_parameters

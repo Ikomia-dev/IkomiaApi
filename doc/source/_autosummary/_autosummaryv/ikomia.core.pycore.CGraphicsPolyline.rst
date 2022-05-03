@@ -16,10 +16,10 @@ CGraphicsPolyline
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsPolyline.getBoundingRect
       ~CGraphicsPolyline.getCategory
       ~CGraphicsPolyline.getId
       ~CGraphicsPolyline.getType
-      ~CGraphicsPolyline.insertToImage
       ~CGraphicsPolyline.isTextItem
       ~CGraphicsPolyline.setCategory
    
@@ -30,6 +30,7 @@ CGraphicsPolyline
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

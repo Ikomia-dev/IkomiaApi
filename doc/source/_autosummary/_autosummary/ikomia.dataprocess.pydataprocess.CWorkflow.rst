@@ -24,7 +24,7 @@ CWorkflow
         ~CWorkflow.deleteEdge
         ~CWorkflow.deleteTask
         ~CWorkflow.exportGraphviz
-        ~CWorkflow.getChilds
+        ~CWorkflow.getChildren
         ~CWorkflow.getEdgeInfo
         ~CWorkflow.getEdgeSource
         ~CWorkflow.getEdgeTarget
@@ -68,7 +68,7 @@ CWorkflow
     .. automethod:: deleteEdge
     .. automethod:: deleteTask
     .. automethod:: exportGraphviz
-    .. automethod:: getChilds
+    .. automethod:: getChildren
     .. automethod:: getEdgeInfo
     .. automethod:: getEdgeSource
     .. automethod:: getEdgeTarget

@@ -26,7 +26,7 @@ Basic usage:
 
     from ikomia import core, dataprocess
 
-    class my_plugin(core.CWorkflowTask):
+    class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add image input
             self.addInput(dataprocess.CImageIO())
@@ -64,7 +64,7 @@ Basic usage:
 
     from ikomia import core, dataprocess
 
-    class my_plugin(core.CWorkflowTask):
+    class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add graphics input
             self.addInput(dataprocess.CGraphicsInput())
@@ -106,7 +106,7 @@ Basic usage:
 
     from ikomia import core, dataprocess
 
-    class my_plugin(core.CWorkflowTask):
+    class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add numeric output
             self.addOutput(dataprocess.CNumericIO())
@@ -123,6 +123,54 @@ Basic usage:
 .. note:: 
     In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO` can be display differently depending on the value set with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setOutputType`. 
     Possible values are listed in :py:mod:`~ikomia.dataprocess.pydataprocess.NumericOutputType`. If **PLOT** is choosen, then you have to select the plot type with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setPlotType`.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia import core, dataprocess
+
+    class MyPlugin(core.CWorkflowTask):
+        def init(self, name, param):
+            # Add numeric output
+            self.addOutput(dataprocess.CNumericIO())
+
+        def run(self):
+            # Fill numeric output
+            header = "Confidence"
+            labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
+            confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
+            numeric_output = self.getOutput(0)
+            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_ouput.addValueList(confidences, header, labels)
+
+
+String values
+--------------
+
+:py:mod:`~ikomia.dataprocess.pydataprocess.CDataStringIO`: input or output dedicated to output string values.
+Data structure is organized to be visualize in a column/row table. You can also add labels describing
+those values: header labels for columns and labels for rows.
+
+Basic usage:
+
+.. code-block:: python
+
+    from ikomia import core, dataprocess
+
+    class MyPlugin(core.CWorkflowTask):
+        def init(self, name, param):
+            # Add numeric output
+            self.addOutput(dataprocess.CDataStringIO())
+
+        def run(self):
+            # Fill numeric output
+            header = "TextRecognition"
+            labels = ["Distributor", "Date", "Article", "Price", "Currency"]
+            ocr_res = ["eShop", "04/12/2021", "smartphone", "199.90", "euro"]
+            numeric_output = self.getOutput(0)
+            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_ouput.addValueList(ocr_res, header, labels)
 
 
 Blob measures
@@ -152,7 +200,7 @@ Basic usage:
     from ikomia.core import CWorkflowTask, CMeasure, MeasureId
     from ikomia.dataprocess import CBlobMeasureIO, CObjectMeasure
 
-    class my_plugin(CWorkflowTask):
+    class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add BLOB measure output
             self.addOutput(CBlobMeasureIO())
@@ -206,7 +254,7 @@ Basic usage:
     from ikomia.core import CWorkflowTask
     from ikomia.dnn.datasetio import IkDatasetIO
 
-    class my_plugin(CWorkflowTask):
+    class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add dataset input
             self.addInput(IkDatasetIO())
@@ -235,7 +283,7 @@ Basic usage:
     from ikomia.core import CWorkflowTask, IODataType
     from ikomia.dataprocess import CPathIO
 
-    class my_plugin(CWorkflowTask):
+    class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add path input
             self.addInput(CPathIO(IODataType.FILE_PATH))

@@ -16,10 +16,10 @@ CGraphicsComplexPolygon
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsComplexPolygon.getBoundingRect
       ~CGraphicsComplexPolygon.getCategory
       ~CGraphicsComplexPolygon.getId
       ~CGraphicsComplexPolygon.getType
-      ~CGraphicsComplexPolygon.insertToImage
       ~CGraphicsComplexPolygon.isTextItem
       ~CGraphicsComplexPolygon.setCategory
    
@@ -31,6 +31,7 @@ CGraphicsComplexPolygon
    .. rubric:: Details
 
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

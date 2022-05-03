@@ -26,12 +26,15 @@ Workflow
         ~Workflow.get_image_output
         ~Workflow.get_image_with_graphics
         ~Workflow.get_numeric_output
+        ~Workflow.get_data_string_output
         ~Workflow.get_path_output
+        ~Workflow.get_tasks
         ~Workflow.get_time_metrics
         ~Workflow.run
         ~Workflow.run_on
         ~Workflow.set_directory_input
         ~Workflow.set_image_input
+        ~Workflow.set_video_input
         ~Workflow.set_parameters
 
 
@@ -45,7 +48,7 @@ Workflow
         ~Workflow.deleteEdge
         ~Workflow.deleteTask
         ~Workflow.exportGraphviz
-        ~Workflow.getChilds
+        ~Workflow.getChildren
         ~Workflow.getEdgeInfo
         ~Workflow.getEdgeSource
         ~Workflow.getEdgeTarget
@@ -84,7 +87,7 @@ Workflow
     .. automethod:: deleteTask
     .. automethod:: exportGraphviz
     .. automethod:: find_task
-    .. automethod:: getChilds
+    .. automethod:: getChildren
     .. automethod:: get_array_output
     .. automethod:: get_blob_measure_output
     .. automethod:: get_dataset_output
@@ -99,6 +102,7 @@ Workflow
     .. automethod:: get_image_with_graphics
     .. automethod:: getInEdges
     .. automethod:: get_numeric_output
+    .. automethod:: get_data_string_output
     .. automethod:: getOutEdges
     .. automethod:: getParents
     .. automethod:: get_path_output
@@ -108,6 +112,7 @@ Workflow
     .. automethod:: getTask
     .. automethod:: getTaskCount
     .. automethod:: getTaskIDs
+    .. automethod:: get_tasks
     .. automethod:: get_time_metrics
     .. automethod:: getTotalElapsedTime
     .. automethod:: load
@@ -117,6 +122,7 @@ Workflow
     .. automethod:: setAutoSave
     .. automethod:: set_directory_input
     .. automethod:: set_image_input
+    .. automethod:: set_video_input
     .. automethod:: setInput
     .. automethod:: setOutputFolder
     .. automethod:: set_parameters

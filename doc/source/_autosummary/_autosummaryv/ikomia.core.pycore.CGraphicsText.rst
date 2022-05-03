@@ -16,10 +16,10 @@ CGraphicsText
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsText.getBoundingRect
       ~CGraphicsText.getCategory
       ~CGraphicsText.getId
       ~CGraphicsText.getType
-      ~CGraphicsText.insertToImage
       ~CGraphicsText.isTextItem
       ~CGraphicsText.setCategory
    
@@ -32,6 +32,7 @@ CGraphicsText
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

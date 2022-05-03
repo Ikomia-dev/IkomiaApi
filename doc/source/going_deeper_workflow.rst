@@ -102,6 +102,7 @@ tasks. When a task has several outputs of the same type, you can specify the out
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_image_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_graphics_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_numeric_output`
+- :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_data_string_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_blob_measure_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_dataset_output`
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.get_array_output`
@@ -229,10 +230,34 @@ Here is an example of a training workflow for a YOLOv4 model and a custom datase
     Documentation can be found :doc:`here <index_plugin>` and :doc:`here <plugin_task>`.
 
 
-Working with video
-------------------
+Working with video files
+------------------------
 
-At this time, we do not offer high level API to handle videos and streams. On the other hand, it is very simple to 
+Processing video files is available out of the box. Ikomia API leverages OpenCV video reader capabilities to apply
+any workflows on whole video. Basically, it will execute the workflow on every frames and return when all frames are
+processed. You should enable the auto-save mode (:py:meth:`~ikomia.core.pycore.CWorkflowTask.setAutoSave`) at
+workflow or task level to save outputs to disk. Output folder can be set at either workflow or task level also
+(:py:meth:`~ikomia.core.pycore.CWorkflowTask.setOutputFolder`), default is the user home folder.
+
+.. code-block::
+
+    from ikomia.dataprocess import workflow
+
+    wf = workflow.load("path_to_your_workflow")
+    # Enable auto-save mode to let Ikomia API save outputs to disk for all tasks
+    wf.setAutoSave(True)
+    # Video from local filesystem
+    wf.run_on(path="path_to_your_video.avi")
+    # Video from public url
+    wf.run_on(url="url_of_your_video")
+    # Batch processing from a folder
+    wf.run_on(folder="local_folder_containing_your_videos")
+
+
+Working with video streams
+--------------------------
+
+At this time, we do not offer high level API to handle streams. On the other hand, it is very simple to
 run a workflow on each frame acquired by a third-party video library. Here is an example with OpenCV:
 
 .. code-block::

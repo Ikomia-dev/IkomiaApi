@@ -69,7 +69,7 @@ Interface implementation
 ------------------------
 
 No features added from the default implementation.
-See `skimage_morpho_snakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_.
+See `skimage_morpho_snakes.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_.
 
 .. _process_implementation:
 
@@ -103,7 +103,7 @@ So we need to add a new image-based input of type :py:class:`~ikomia.dataprocess
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
+    class MorphoSnakes(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
             dataprocess.C2dImageTask.__init__(self, name)
@@ -129,7 +129,7 @@ So we need to add a new image-based output of type :py:class:`~ikomia.dataproces
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
+    class MorphoSnakes(dataprocess.C2dImageTask):
 
         def __init__(self, name, param):
             dataprocess.C2dImageTask.__init__(self, name)
@@ -263,7 +263,7 @@ We also need to specify the number of iterations (steps) to our progress bar by 
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
+    class MorphoSnakes(dataprocess.C2dImageTask):
 
         def getProgressSteps(self, eltCount=1):
             param = self.getParam()
@@ -307,7 +307,7 @@ Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesParam(core.CWorkflowTaskParam):
+    class MorphoSnakesParam(core.CWorkflowTaskParam):
 
         def __init__(self):
             core.CWorkflowTaskParam.__init__(self)
@@ -356,7 +356,7 @@ We now modify the *run()* method to give parameters to our function:
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesProcess(dataprocess.C2dImageTask):
+    class MorphoSnakes(dataprocess.C2dImageTask):
 
         def run(self):
             ...
@@ -392,7 +392,7 @@ Global widget initialization
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def __init__(self, param, parent):
             # Create layout : QGridLayout by default
@@ -430,7 +430,7 @@ Method selection:
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
         ...
         def methodWidget(self):
             label_method = QLabel("Methods :")
@@ -450,7 +450,7 @@ MGAC method parameters (see `source code <https://github.com/Ikomia-dev/IkomiaPl
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def mgacWidget(self):
             ...
@@ -460,7 +460,7 @@ Chan Vese method parameters (see `source code <https://github.com/Ikomia-dev/Iko
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def chanVeseWidget(self):
             ...
@@ -469,7 +469,7 @@ We use the slot *self.OnMethodChange()* to change current index of our QStackWid
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
         #pySlot
         def OnMethodChange(self):
             if self.comboMethod.currentText() == "Morphological Geodesic Active Contour":
@@ -489,7 +489,7 @@ We do that by overriding *onApply()* method which is called when user clicks the
 
 .. code-block:: python
 
-    class scikit_MorphoSnakesWidget(core.CWorkflowTaskWidget):
+    class MorphoSnakesWidget(core.CWorkflowTaskWidget):
 
         def onApply(self):
             # Apply button clicked slot
@@ -537,10 +537,10 @@ see :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.
 Source code
 -----------
 
-`requirements.txt <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/requirements.txt>`_
+`requirements.txt <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/requirements.txt>`_
 
-`skimage_morpho_snakes.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_
+`skimage_morpho_snakes.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_
 
-`skimage_morpho_snakes_process.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_process.py>`_
+`skimage_morpho_snakes_process.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_process.py>`_
 
-`skimage_morpho_snakes_widget.py <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_
+`skimage_morpho_snakes_widget.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_

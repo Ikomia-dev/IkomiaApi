@@ -5,12 +5,6 @@ CDnnTrainTask
 
 .. autoclass:: CDnnTrainTask
 
-    .. rubric:: Import
-    .. code-block:: python
-
-        from ikomia.dataprocess import CDnnTrainTask
-
-
     .. rubric:: Methods
     .. autosummary::
 

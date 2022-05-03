@@ -16,10 +16,10 @@ CGraphicsEllipse
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsEllipse.getBoundingRect
       ~CGraphicsEllipse.getCategory
       ~CGraphicsEllipse.getId
       ~CGraphicsEllipse.getType
-      ~CGraphicsEllipse.insertToImage
       ~CGraphicsEllipse.isTextItem
       ~CGraphicsEllipse.setCategory
 
@@ -34,6 +34,7 @@ CGraphicsEllipse
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

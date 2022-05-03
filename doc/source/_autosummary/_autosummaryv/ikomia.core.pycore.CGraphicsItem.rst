@@ -13,6 +13,7 @@ CGraphicsItem
    .. rubric:: Methods
    .. autosummary::
       ~CGraphicsItem.__init__
+      ~CGraphicsItem.getBoundingRect
       ~CGraphicsItem.getCategory
       ~CGraphicsItem.getId
       ~CGraphicsItem.getType
@@ -23,6 +24,7 @@ CGraphicsItem
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

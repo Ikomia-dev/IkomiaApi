@@ -39,7 +39,7 @@ In the *run* method, we now have to retrieve source image from input, add OpenCV
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.C2dImageTask):
+    class OCVBasics(dataprocess.C2dImageTask):
 
         #...
 
@@ -95,7 +95,7 @@ which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
 
-    class OCVBasicsProcessParam(core.CWorkflowTaskParam):
+    class OCVBasicsParam(core.CWorkflowTaskParam):
 
         def __init__(self):
             core.CWorkflowTaskParam.__init__(self)
@@ -125,14 +125,14 @@ We are now able to manage parameters from the process. The constructor receives 
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.C2dImageTask):
+    class OCVBasics(dataprocess.C2dImageTask):
     
         def __init__(self, name, param):
             dataprocess.C2dImageTask.__init__(self, name)
 
             #Create parameters class
             if param is None:
-                self.setParam(OCVBasicsProcessParam())
+                self.setParam(OCVBasicsParam())
             else:       
                 self.setParam(copy.deepcopy(param))
 
@@ -140,7 +140,7 @@ Finally, we modify the *run* method to pass parameters to GaussianBlur function:
 
 .. code-block:: python
 
-    class OCVBasicsProcess(dataprocess.C2dImageTask):
+    class OCVBasics(dataprocess.C2dImageTask):
 
         def run(self):
             # Core function of your process
@@ -178,7 +178,7 @@ Like the process class, the constructor receives an instance of the parameters s
             core.CWorkflowTaskWidget.__init__(self, parent)
 
             if param is None:
-                self.parameters = processMod.OCVBasicsProcessParam()
+                self.parameters = processMod.OCVBasicsParam()
             else:
                 self.parameters = param
 
@@ -268,7 +268,7 @@ We have to fill the member object *info*, see :py:class:`~~ikomia.dataprocess.py
 
 .. code-block:: python
 
-    class OCVBasicsProcessFactory(dataprocess.CTaskFactory):
+    class OCVBasicsFactory(dataprocess.CTaskFactory):
 
         def __init__(self):
             dataprocess.CTaskFactory.__init__(self)

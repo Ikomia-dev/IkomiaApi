@@ -16,10 +16,10 @@ CGraphicsRectangle
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsRectangle.getBoundingRect
       ~CGraphicsRectangle.getCategory
       ~CGraphicsRectangle.getId
       ~CGraphicsRectangle.getType
-      ~CGraphicsRectangle.insertToImage
       ~CGraphicsRectangle.isTextItem
       ~CGraphicsRectangle.setCategory
    
@@ -33,6 +33,7 @@ CGraphicsRectangle
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType

@@ -74,6 +74,7 @@ Like for workflows, the :py:mod:`~ikomia.core.task` module provides useful funct
 - :py:meth:`~ikomia.core.task.get_image_output`
 - :py:meth:`~ikomia.core.task.get_graphics_output`
 - :py:meth:`~ikomia.core.task.get_numeric_output`
+- :py:meth:`~ikomia.core.task.get_data_string_output`
 - :py:meth:`~ikomia.core.task.get_blob_measure_output`
 - :py:meth:`~ikomia.core.task.get_dataset_output`
 - :py:meth:`~ikomia.core.task.get_array_output`

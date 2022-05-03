@@ -16,10 +16,10 @@ CGraphicsPolygon
 
    .. rubric:: Inherited methods
    .. autosummary::
+      ~CGraphicsPolygon.getBoundingRect
       ~CGraphicsPolygon.getCategory
       ~CGraphicsPolygon.getId
       ~CGraphicsPolygon.getType
-      ~CGraphicsPolygon.insertToImage
       ~CGraphicsPolygon.isTextItem
       ~CGraphicsPolygon.setCategory
    
@@ -30,6 +30,7 @@ CGraphicsPolygon
    .. rubric:: Details
    
    .. automethod:: __init__
+   .. automethod:: getBoundingRect
    .. automethod:: getCategory
    .. automethod:: getId
    .. automethod:: getType
