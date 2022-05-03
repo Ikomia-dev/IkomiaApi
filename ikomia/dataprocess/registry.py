@@ -160,6 +160,13 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         self.install_algorithm(name, force=True)
 
     def install_algorithm(self, name, force=False):
+        """
+        Launch algorithm installation from the Marketplace given its unique name.
+
+        Args:
+            name (str): algorithm unique name
+            force (bool): force package installation even if the algorithm is already installed
+        """
         available_algos = self.getAlgorithms()
         if name in available_algos and not force:
             logger.info(f"Skip installation of {name} as it is already installed.")
