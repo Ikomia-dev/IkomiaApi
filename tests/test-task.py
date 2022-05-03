@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = "output_image_graphics"
+    running_tests = "outputs"
 
     if 'all' in running_tests or 'parameters' in running_tests:
         test_task_parameters()

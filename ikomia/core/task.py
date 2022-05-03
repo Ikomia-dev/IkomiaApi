@@ -18,7 +18,7 @@ Module dedicated to high-level features around task management.
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
 import ikomia
-from ikomia import core
+from ikomia import core, dataprocess
 
 
 class TaskParam(core.CWorkflowTaskParam):
@@ -109,7 +109,7 @@ def get_parameters(task):
     return params
 
 
-def _get_outputs(task, types, index=-1):
+def _get_outputs(task, types, target_class=None, index=-1):
     if task is None:
         raise RuntimeError("Cannot get outputs from None task.")
 
@@ -118,7 +118,10 @@ def _get_outputs(task, types, index=-1):
 
     for output in all_outputs:
         if output.dataType in types:
-            outputs.append(output)
+            if target_class is None:
+                outputs.append(output)
+            elif type(output) == target_class:
+                outputs.append(output)
 
     if 0 <= index < len(outputs):
         return outputs[index]
@@ -141,7 +144,7 @@ def get_image_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`: output or list of outputs.
     """
     data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)
 
 
 def get_image_with_graphics(task, image_index=0, graphics_index=0):
@@ -162,7 +165,7 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
 
     img_data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     img_output = _get_outputs(task, img_data_types, image_index)
-    graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS], graphics_index)
+    graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS], index=graphics_index)
     return img_output.getImageWithGraphics(graphics_output)
 
 
@@ -179,7 +182,7 @@ def get_graphics_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`: output or list of outputs.
     """
     data_types = [core.IODataType.OUTPUT_GRAPHICS]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)
 
 
 def get_numeric_output(task, index=-1):
@@ -195,7 +198,23 @@ def get_numeric_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`: output or list of outputs.
     """
     data_types = [core.IODataType.NUMERIC_VALUES]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, target_class=dataprocess.CNumericIO, index=index)
+
+
+def get_data_string_output(task, index=-1):
+    """
+    Get data string output(s) of the given task. A task can have multiple NUMERIC outputs so the index
+    argument can be set to specify the wanted output.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+        index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.pydataprocess.CDataStringIO`: output or list of outputs.
+    """
+    data_types = [core.IODataType.NUMERIC_VALUES]
+    return _get_outputs(task, data_types, target_class=dataprocess.CDataStringIO, index=index)
 
 
 def get_blob_measure_output(task, index=-1):
@@ -211,7 +230,7 @@ def get_blob_measure_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`: output or list of outputs.
     """
     data_types = [core.IODataType.BLOB_VALUES]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)
 
 
 def get_dataset_output(task, index=-1):
@@ -227,7 +246,7 @@ def get_dataset_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`: output or list of outputs.
     """
     data_types = [core.IODataType.DNN_DATASET]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)
 
 
 def get_array_output(task, index=-1):
@@ -243,7 +262,7 @@ def get_array_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`: output or list of outputs.
     """
     data_types = [core.IODataType.ARRAY]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)
 
 
 def get_path_output(task, index=-1):
@@ -259,4 +278,4 @@ def get_path_output(task, index=-1):
         :py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`: output or list of outputs.
     """
     data_types = [core.IODataType.FOLDER_PATH, core.IODataType.FILE_PATH]
-    return _get_outputs(task, data_types, index)
+    return _get_outputs(task, data_types, index=index)

@@ -209,7 +209,7 @@ def test_graph_structure():
     # get root and retrieve its child tasks
     root_id = wf.getRootID()
     assert(root_id in ids)
-    childs = wf.getChilds(root_id)
+    childs = wf.getChildren(root_id)
     assert(len(childs) == 2)
     logger.info("Childs of root are: " + wf.getTask(childs[0]).name + " and " + wf.getTask(childs[1]).name)
 
@@ -488,7 +488,7 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = 'run_video_folder'
+    running_tests = 'graph_struct'
 
     ikomia.authenticate()
 

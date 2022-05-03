@@ -281,6 +281,23 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self._get_task_output(task.get_numeric_output, task_id, task_name, index)
 
+    def get_data_string_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow data string output(s) for the given task(s). You can either pass a unique task ID or a task name.
+        In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple string outputs so the index (zero-based)
+        argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CDataStringIO`: output or list of outputs.
+        """
+        return self._get_task_output(task.get_data_string_output, task_id, task_name, index)
+
     def get_blob_measure_output(self, task_id=None, task_name="", index=-1):
         """
         Get workflow BLOB MEASURE output(s) for the given task(s). You can either pass a unique task ID or a task name.
