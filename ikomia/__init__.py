@@ -21,6 +21,9 @@ from ikomia.core import config
 from ikomia.dataprocess import registry
 
 
+__version__ = "0.7.0"
+
+
 # Add built-in OpenCV to Python path
 if not utils.isAppStarted():
     if sys.platform == "win32":
