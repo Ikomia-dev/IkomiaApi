@@ -396,7 +396,7 @@ class Workflow(dataprocess.CWorkflow):
         """
         algo = self.registry.create_algorithm(name, param)
         if algo is None:
-            raise RuntimeError("Algorithm " + name + "can't be created.")
+            raise RuntimeError(f"Algorithm {name} can't be created.")
 
         return self.addTask(algo), algo
 
@@ -506,11 +506,11 @@ class Workflow(dataprocess.CWorkflow):
                     try:
                         ikomia.ik_registry.install_algorithm(t)
                     except Exception:
-                        msg = "Workflow preparation failed: task " + t + " cannot be installed."
+                        msg = f"Workflow preparation failed: task {t} cannot be installed."
                         logger.error(msg)
                         return False
                 else:
-                    msg = "Workflow preparation failed: task " + t + " cannot be found."
+                    msg = f"Workflow preparation failed: task {t} cannot be found."
                     logger.error(msg)
                     return False
 
@@ -664,7 +664,7 @@ def install_requirements(path):
             if os.path.isdir(plugin_dir):
                 utils.plugintools.install_requirements(plugin_dir)
             else:
-                msg = "Workflow preparation failed: task " + t + " cannot be found."
+                msg = f"Workflow preparation failed: task {t} cannot be found."
                 logger.error(msg)
                 return False
     return True
