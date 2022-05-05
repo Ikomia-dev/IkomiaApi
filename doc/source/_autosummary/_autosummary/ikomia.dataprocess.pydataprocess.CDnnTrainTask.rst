@@ -11,7 +11,6 @@ CDnnTrainTask
         ~CDnnTrainTask.__init__
         ~CDnnTrainTask.enableMlflow
         ~CDnnTrainTask.enableTensorboard
-        ~CDnnTrainTask.getTensorboardLogDir
 
     .. rubric:: Inherited methods
     .. autosummary::

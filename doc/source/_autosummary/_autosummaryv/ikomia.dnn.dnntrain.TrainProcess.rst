@@ -42,7 +42,6 @@
         ~TrainProcess.getOutputs
         ~TrainProcess.getParam
         ~TrainProcess.getProgressSteps
-        ~TrainProcess.getTensorboardLogDir
         ~TrainProcess.globalInputChanged
         ~TrainProcess.graphicsChanged
         ~TrainProcess.isGraphicsChangedListening
