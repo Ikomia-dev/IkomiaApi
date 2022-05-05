@@ -3,7 +3,7 @@ import os
 import argparse
 import ikomia
 from ikomia.dataprocess import workflow, displayIO
-from ikomia.core import config
+from ikomia.core import config, task
 from ikomia.utils import tests, ik
 import numpy as np
 import cv2
@@ -177,6 +177,9 @@ def test_yolo_train(wgisd_dataset_dir):
     wgisd.setParamValues(wgisd_params)
 
     yolo_id, yolo = wf.add_task(ik.train_yolo)
+    yolo_params = task.get_parameters(yolo)
+    yolo_params["batchSize"] = 16
+    task.set_parameters(yolo, yolo_params)
     wf.connect_tasks(wgisd_id, yolo_id)
 
     wf.run()
@@ -488,7 +491,7 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = 'graph_struct'
+    running_tests = ['train_yolov4']
 
     ikomia.authenticate()
 

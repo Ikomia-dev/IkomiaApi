@@ -15,14 +15,10 @@
 """
 Module dedicated to Deep Learning training.
 """
-
-import sys
 import mlflow
-import requests
-import subprocess
 from ikomia.core import config
 from ikomia.dataprocess import CDnnTrainTask
-from ikomia.dnn import datasetio
+from ikomia.dnn import datasetio, monitoring
 from datetime import datetime
 
 
@@ -52,40 +48,13 @@ class TrainProcess(CDnnTrainTask):
         self.addInput(datasetio.IkDatasetIO())
         self.experiment_id = -1
         self._init_mlflow()
-
-    @staticmethod
-    def _check_mlflow_server():
-        try:
-            url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
-            r = requests.get(url)
-            r.raise_for_status()
-        except:
-            # Start server if needed
-            if sys.platform == "win32":
-                store_uri = config.main_cfg["mlflow"]["store_uri"].replace(':', '')
-                artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace(':', '')
-                store_uri = store_uri.replace('\\', '/')
-                artifact_uri = artifact_uri.replace('\\', '/')
-                store_uri = "file://" + store_uri
-                artifact_uri = "file://" + artifact_uri
-            else:
-                store_uri = config.main_cfg["mlflow"]["store_uri"]
-                artifact_uri = config.main_cfg["mlflow"]["artifact_uri"]
-
-            proc = subprocess.Popen(["mlflow", "server",
-                                     "--backend-store-uri", store_uri,
-                                     "--default-artifact-root", artifact_uri,
-                                     "--host", "0.0.0.0"])
-            poll = proc.poll()
-            if poll is None:
-                print("MLflow server started successfully at ", config.main_cfg["mlflow"]["tracking_uri"])
+        self._init_tensorboard()
 
     def _init_mlflow(self):
         """
         Internal use only
         """
-        # Check mlflow server
-        self._check_mlflow_server()
+        monitoring.check_mlflow_server()
         # Create experiment
         date_time_obj = datetime.now()
         time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
@@ -95,6 +64,10 @@ class TrainProcess(CDnnTrainTask):
             self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
         except:
             print("MLflow server is not accessible.")
+
+    @staticmethod
+    def _init_tensorboard(self):
+        monitoring.check_tensorboard_server()
 
     def beginTaskRun(self):
         """
