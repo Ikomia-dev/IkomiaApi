@@ -164,7 +164,7 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
         raise RuntimeError("Output index must be equal or greater than 0.")
 
     img_data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
-    img_output = _get_outputs(task, img_data_types, image_index)
+    img_output = _get_outputs(task, img_data_types, index=image_index)
     graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS], index=graphics_index)
     return img_output.getImageWithGraphics(graphics_output)
 
