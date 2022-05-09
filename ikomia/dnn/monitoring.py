@@ -38,7 +38,11 @@ def check_mlflow_server():
 
     colab = is_colab()
     if colab:
-        from pyngrok import ngrok
+        try:
+            from pyngrok import ngrok
+        except:
+            logger.error("MLflow dashboard won't be accessible. You need to install pyngrok before starting you training workflow: !pip install pyngrok.")
+            return
 
         # create ngrok tunnel to access dashboard via public URL
         # Terminate open tunnels if exist
