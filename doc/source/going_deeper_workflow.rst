@@ -196,7 +196,6 @@ Here is an example of a training workflow for a YOLOv4 model and a custom datase
 
     from ikomia.utils import ik
     from ikomia.dataprocess import workflow
-    from ikomia.dnn import start_monitoring
 
     wf = workflow.create("MyTrainingWorkflow")
 
@@ -214,9 +213,6 @@ Here is an example of a training workflow for a YOLOv4 model and a custom datase
     yolo_params = { ik.train_yolo_param.model: "yolov4" }
     wf.set_parameters(yolo_params, task_id=yolo_id)
     wf.connect_tasks(wgisd_id, yolo_id)
-
-    # Start MLflow and Tensorboard
-    start_monitoring()
 
     # Start training
     wf.run()

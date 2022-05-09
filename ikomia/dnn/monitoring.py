@@ -1,7 +1,12 @@
 import sys
+import os
 import requests
 import subprocess
+import logging
 from ikomia.core import config
+from ikomia.utils import is_colab
+
+logger = logging.getLogger(__name__)
 
 
 def check_mlflow_server():
@@ -9,7 +14,7 @@ def check_mlflow_server():
         url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
         r = requests.get(url)
         r.raise_for_status()
-        print("MLflow server is started at ", config.main_cfg["mlflow"]["tracking_uri"])
+        logger.info("MLflow server is started at ", config.main_cfg["mlflow"]["tracking_uri"])
     except:
         # Start server if needed
         if sys.platform == "win32":
@@ -29,19 +34,40 @@ def check_mlflow_server():
                                  "--host", "0.0.0.0"])
         poll = proc.poll()
         if poll is None:
-            print("MLflow server started successfully at ", config.main_cfg["mlflow"]["tracking_uri"])
+            logger.info("MLflow server started successfully at ", config.main_cfg["mlflow"]["tracking_uri"])
+
+    colab = is_colab()
+    if colab:
+        from pyngrok import ngrok
+
+        # create ngrok tunnel to access dashboard via public URL
+        # Terminate open tunnels if exist
+        ngrok.kill()
+
+        # Setting the authtoken (optional)
+        # Get your authtoken from https://dashboard.ngrok.com/auth
+        token = os.environ["NGROK_AUTH_TOKEN"]
+        ngrok.set_auth_token(token)
+        # Open an HTTPs tunnel on port 5000 for http://localhost:5000
+        ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
+        logger.info("MLflow Tracking UI:" + ngrok_tunnel.public_url)
 
 
 def check_tensorboard_server():
+    colab = is_colab()
+    if colab:
+        logger.info("To enable Tensorboard on Colab, please use the magic command: %load_ext tensorboard")
+        return
+
     try:
         url = config.main_cfg["tensorboard"]["tracking_uri"]
         r = requests.get(url)
         r.raise_for_status()
-        print("Tensorboard server is started at ", config.main_cfg["tensorboard"]["tracking_uri"])
+        logger.info("Tensorboard server is started at ", config.main_cfg["tensorboard"]["tracking_uri"])
     except:
         # Start server if needed
         proc = subprocess.Popen(["tensorboard", "--logdir", config.main_cfg["tensorboard"]["log_uri"]])
         poll = proc.poll()
 
         if poll is None:
-            print("Tensorboard server started successfully at ", config.main_cfg["tensorboard"]["tracking_uri"])
+            logger.info("Tensorboard server started successfully at ", config.main_cfg["tensorboard"]["tracking_uri"])
