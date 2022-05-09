@@ -66,7 +66,7 @@ class TrainProcess(CDnnTrainTask):
             print("MLflow server is not accessible.")
 
     @staticmethod
-    def _init_tensorboard(self):
+    def _init_tensorboard():
         monitoring.check_tensorboard_server()
 
     def beginTaskRun(self):
