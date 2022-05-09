@@ -84,7 +84,6 @@
     .. automethod:: getOutputs
     .. automethod:: getParam
     .. automethod:: getProgressSteps
-    .. automethod:: getTensorboardLogDir
     .. automethod:: globalInputChanged
     .. automethod:: graphicsChanged
     .. automethod:: isGraphicsChangedListening
