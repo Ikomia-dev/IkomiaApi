@@ -14,7 +14,7 @@ def check_mlflow_server():
         url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
         r = requests.get(url)
         r.raise_for_status()
-        logger.info("MLflow server is started at ", config.main_cfg["mlflow"]["tracking_uri"])
+        logger.info(f"MLflow server is started at {config.main_cfg['mlflow']['tracking_uri']}")
     except:
         # Start server if needed
         if sys.platform == "win32":
@@ -34,7 +34,7 @@ def check_mlflow_server():
                                  "--host", "0.0.0.0"])
         poll = proc.poll()
         if poll is None:
-            logger.info("MLflow server started successfully at ", config.main_cfg["mlflow"]["tracking_uri"])
+            logger.info(f"MLflow server started successfully at {config.main_cfg['mlflow']['tracking_uri']}")
 
     colab = is_colab()
     if colab:
@@ -54,7 +54,7 @@ def check_mlflow_server():
         ngrok.set_auth_token(token)
         # Open an HTTPs tunnel on port 5000 for http://localhost:5000
         ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-        logger.info("MLflow Tracking UI:" + ngrok_tunnel.public_url)
+        logger.info(f"MLflow Tracking UI: {ngrok_tunnel.public_url}")
 
 
 def check_tensorboard_server():
@@ -67,11 +67,11 @@ def check_tensorboard_server():
         url = config.main_cfg["tensorboard"]["tracking_uri"]
         r = requests.get(url)
         r.raise_for_status()
-        logger.info("Tensorboard server is started at ", config.main_cfg["tensorboard"]["tracking_uri"])
+        logger.info(f"Tensorboard server is started at {config.main_cfg['tensorboard']['tracking_uri']}")
     except:
         # Start server if needed
         proc = subprocess.Popen(["tensorboard", "--logdir", config.main_cfg["tensorboard"]["log_uri"]])
         poll = proc.poll()
 
         if poll is None:
-            logger.info("Tensorboard server started successfully at ", config.main_cfg["tensorboard"]["tracking_uri"])
+            logger.info(f"Tensorboard server started successfully at {config.main_cfg['tensorboard']['tracking_uri']}")
