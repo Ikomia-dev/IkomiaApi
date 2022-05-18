@@ -22,7 +22,7 @@ With GPU enabled:
 
 .. code-block:: zsh
 
-    pip install ikomia==0.7.0+cu11 -f https://ikomia-packages.s3-website.fr-par.scw.cloud/ikomia/index.html
+    pip install ikomia==0.7.0+cu11 -f https://packages.ikomia.com/ikomia/index.html
 
 .. note::
     For this beta version, we provide Python wheel for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2) with CUDA enabled (v11),
