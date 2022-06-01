@@ -1,5 +1,7 @@
-CNumericIO
-==========
+CDataStringIO
+=============
+
+String specialization of C++ template class CNumericIO.
 
 .. currentmodule:: ikomia.dataprocess.pydataprocess
 
@@ -45,6 +47,7 @@ CNumericIO
    .. automethod:: addValueList
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: getAllHeaderLabels
    .. automethod:: getAllLabelList
    .. automethod:: getAllValueList
    .. automethod:: getOutputType
