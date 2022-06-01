@@ -48,7 +48,7 @@ def authenticate():
     pwd = os.environ.get("IKOMIA_PWD")
     global ik_api_session
     # check if authentication has be made before
-    not_auth = ik_api_session.token is None
+    not_auth = ik_api_session is None or ik_api_session.token is None
     ik_api_session = LoginSession(username, pwd)
 
     if config.main_cfg["registry"]["auto_completion"]:
