@@ -13,6 +13,19 @@
 # limitations under the License.
 
 import os
+from ikomia.core import task
+import traceback
+
+
+def run_for_test(t):
+    try:
+        t.run()
+    except Exception as e:
+        tb = traceback.format_exc()
+    else:
+        tb = "OK"
+    finally:
+        return task.get_parameters(t), tb
 
 
 def get_test_image_directory():
