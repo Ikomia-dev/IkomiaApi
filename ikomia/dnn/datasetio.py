@@ -266,3 +266,16 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         """
         with open(path, "w") as outfile:
             json.dump(self.data, outfile)
+
+    def load(self, path):
+        """
+        Load JSON as dataset structure.
+
+        Args:
+            path: file path where dataset is saved
+        """
+        with open(path, "r") as infile:
+            self.data = json.load(infile)
+            if "category_names" in self.data["metadata"]:
+                self.data["metadata"]["category_names"] = {int(k): v for k, v in
+                                                           self.data["metadata"]["category_names"].items()}
