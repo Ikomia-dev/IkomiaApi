@@ -30,6 +30,8 @@ CGraphicsOutput
    .. autosummary::
       ~CGraphicsOutput.clearData
       ~CGraphicsOutput.isDataAvailable
+      ~CGraphicsOutput.load
+      ~CGraphicsOutput.save
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -58,6 +60,8 @@ CGraphicsOutput
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setImageIndex
    .. automethod:: setNewLayer
    

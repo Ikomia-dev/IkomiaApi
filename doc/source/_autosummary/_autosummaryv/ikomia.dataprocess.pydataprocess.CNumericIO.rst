@@ -29,6 +29,8 @@ Float specialization of C++ template class CNumericIO.
    .. autosummary::
       ~CNumericIO.clearData
       ~CNumericIO.isDataAvailable
+      ~CNumericIO.load
+      ~CNumericIO.save
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -56,6 +58,8 @@ Float specialization of C++ template class CNumericIO.
    .. automethod:: getValueList
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setOutputType
    .. automethod:: setPlotType
    
