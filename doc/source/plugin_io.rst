@@ -117,8 +117,8 @@ Basic usage:
             labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
             confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
             numeric_output = self.getOutput(0)
-            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_ouput.addValueList(confidences, header, labels)
+            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_output.addValueList(confidences, header, labels)
 
 .. note:: 
     In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO` can be display differently depending on the value set with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setOutputType`. 
@@ -141,8 +141,8 @@ Basic usage:
             labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
             confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
             numeric_output = self.getOutput(0)
-            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_ouput.addValueList(confidences, header, labels)
+            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_output.addValueList(confidences, header, labels)
 
 
 String values
@@ -169,8 +169,8 @@ Basic usage:
             labels = ["Distributor", "Date", "Article", "Price", "Currency"]
             ocr_res = ["eShop", "04/12/2021", "smartphone", "199.90", "euro"]
             numeric_output = self.getOutput(0)
-            numeric_ouput.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_ouput.addValueList(ocr_res, header, labels)
+            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
+            numeric_output.addValueList(ocr_res, header, labels)
 
 
 Blob measures
