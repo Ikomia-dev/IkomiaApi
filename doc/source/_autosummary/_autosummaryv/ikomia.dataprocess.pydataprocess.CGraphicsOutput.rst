@@ -22,6 +22,7 @@ CGraphicsOutput
       ~CGraphicsOutput.addRectangle
       ~CGraphicsOutput.addText
       ~CGraphicsOutput.getItems
+      ~CGraphicsOutput.getImageIndex
       ~CGraphicsOutput.setImageIndex
       ~CGraphicsOutput.setItems
       ~CGraphicsOutput.setNewLayer
@@ -57,6 +58,7 @@ CGraphicsOutput
    .. automethod:: addText
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: getImageIndex
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
