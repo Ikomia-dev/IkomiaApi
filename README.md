@@ -20,7 +20,7 @@ You simply install Ikomia API via pip for Linux and Windows (CPU only):
 
 With GPU enabled:
 
-`pip install ikomia==0.6.2+cu11 -f https://ikomia-packages.s3-website.fr-par.scw.cloud/ikomia/index.html`
+`pip install ikomia==0.7.0+cu11 -f https://packages.ikomia.com/ikomia/index.html`
 
 >**_Note:_** we provide Python wheel for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2) with CUDA enabled (v11), CuDNN 8. Thus, you must have CUDA 11 drivers for your graphic card and install machine learning framework compatible with CUDA 11. For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distributions. For Windows, the wheel is only compatible with Windows 10.
 

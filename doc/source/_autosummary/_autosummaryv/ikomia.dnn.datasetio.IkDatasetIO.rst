@@ -22,6 +22,7 @@ IkDatasetIO
         ~IkDatasetIO.getMaskPath
         ~IkDatasetIO.getSourceFormat
         ~IkDatasetIO.isDataAvailable
+        ~IkDatasetIO.load
         ~IkDatasetIO.save
    
     .. rubric:: Details
@@ -34,4 +35,5 @@ IkDatasetIO
     .. automethod:: getMaskPath
     .. automethod:: getSourceFormat
     .. automethod:: isDataAvailable
+    .. automethod:: load
     .. automethod:: save

@@ -20,6 +20,8 @@ CGraphicsInput
    .. autosummary::
       ~CGraphicsInput.clearData
       ~CGraphicsInput.isDataAvailable
+      ~CGraphicsInput.load
+      ~CGraphicsInput.save
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -40,5 +42,7 @@ CGraphicsInput
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setItems   
    

@@ -32,6 +32,8 @@ CImageIO
       ~CImageIO.copyStaticData
       ~CImageIO.getUnitElementCount
       ~CImageIO.isDataAvailable
+      ~CImageIO.load
+      ~CImageIO.save
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -57,6 +59,8 @@ CImageIO
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
    .. automethod:: isOverlayAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setChannelCount
    .. automethod:: setCurrentImage
    .. automethod:: setDisplayable

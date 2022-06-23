@@ -22,6 +22,7 @@ CGraphicsOutput
       ~CGraphicsOutput.addRectangle
       ~CGraphicsOutput.addText
       ~CGraphicsOutput.getItems
+      ~CGraphicsOutput.getImageIndex
       ~CGraphicsOutput.setImageIndex
       ~CGraphicsOutput.setItems
       ~CGraphicsOutput.setNewLayer
@@ -30,6 +31,8 @@ CGraphicsOutput
    .. autosummary::
       ~CGraphicsOutput.clearData
       ~CGraphicsOutput.isDataAvailable
+      ~CGraphicsOutput.load
+      ~CGraphicsOutput.save
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -55,9 +58,12 @@ CGraphicsOutput
    .. automethod:: addText
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: getImageIndex
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setImageIndex
    .. automethod:: setNewLayer
    
