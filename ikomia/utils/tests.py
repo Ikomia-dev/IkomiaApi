@@ -15,15 +15,21 @@
 import os
 from ikomia.core import task
 import traceback
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def run_for_test(t):
+    logger.info("Running once...")
     try:
         t.run()
     except Exception as e:
         tb = traceback.format_exc()
+        logger.error("Run failed")
     else:
         tb = "OK"
+        logger.info("Run succeed")
     finally:
         return task.get_parameters(t), tb
 
