@@ -23,6 +23,13 @@ logger = logging.getLogger(__name__)
 def run_for_test(t):
     logger.info("Running once...")
     try:
+        import torch.cuda
+        logger.info("Cleaning cuda torch cache...")
+        torch.cuda.empty_cache()
+        logger.info("Cuda torch cache cleaned...")
+    except:
+        pass
+    try:
         t.run()
     except Exception as e:
         tb = traceback.format_exc()
