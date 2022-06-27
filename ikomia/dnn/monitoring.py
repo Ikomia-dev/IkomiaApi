@@ -40,21 +40,21 @@ def check_mlflow_server():
     if colab:
         try:
             from pyngrok import ngrok
+
+            # create ngrok tunnel to access dashboard via public URL
+            # Terminate open tunnels if exist
+            ngrok.kill()
+
+            # Setting the authtoken (optional)
+            # Get your authtoken from https://dashboard.ngrok.com/auth
+            token = os.environ["NGROK_AUTH_TOKEN"]
+            ngrok.set_auth_token(token)
+            # Open an HTTPs tunnel on port 5000 for http://localhost:5000
+            ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
+            logger.info(f"MLflow Tracking UI: {ngrok_tunnel.public_url}")
         except:
-            logger.error("MLflow dashboard won't be accessible. You need to install pyngrok before starting you training workflow: !pip install pyngrok.")
-            return
-
-        # create ngrok tunnel to access dashboard via public URL
-        # Terminate open tunnels if exist
-        ngrok.kill()
-
-        # Setting the authtoken (optional)
-        # Get your authtoken from https://dashboard.ngrok.com/auth
-        token = os.environ["NGROK_AUTH_TOKEN"]
-        ngrok.set_auth_token(token)
-        # Open an HTTPs tunnel on port 5000 for http://localhost:5000
-        ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-        logger.info(f"MLflow Tracking UI: {ngrok_tunnel.public_url}")
+            logger.error("MLflow dashboard won't be accessible. You need to install pyngrok before starting your "
+                         "training workflow: !pip install pyngrok. You also need a free ngrok account at least.")
 
 
 def check_tensorboard_server():
