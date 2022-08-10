@@ -259,14 +259,16 @@ def load_coco_dataset(path, image_folder):
         dataset = json.load(fp)
         img_to_anns = defaultdict(list)
         cat_names = {0: "background"}
+        cat_map = {0: 0}
 
         if "annotations" in dataset:
             for ann in dataset["annotations"]:
                 img_to_anns[ann["image_id"]].append(ann)
 
         if "categories" in dataset:
-            for cat in dataset["categories"]:
-                cat_names[cat["id"]] = cat["name"]
+            for i, cat in enumerate(dataset["categories"]):
+                cat_names[i + 1] = cat["name"]
+                cat_map[cat["id"]] = i + 1
 
         data["metadata"] = {"category_names": cat_names}
 
@@ -281,7 +283,7 @@ def load_coco_dataset(path, image_folder):
 
                 for ann in img_to_anns[img["id"]]:
                     instance = {}
-                    instance["category_id"] = ann["category_id"]
+                    instance["category_id"] = cat_map[ann["category_id"]]
                     instance["iscrowd"] = ann["iscrowd"]
 
                     if "bbox" in ann:
