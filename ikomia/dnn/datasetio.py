@@ -279,3 +279,9 @@ class IkDatasetIO(dataprocess.CDatasetIO):
             if "category_names" in self.data["metadata"]:
                 self.data["metadata"]["category_names"] = {int(k): v for k, v in
                                                            self.data["metadata"]["category_names"].items()}
+
+    def toJson(self, options=[]):
+        return json.dumps(self.data)
+
+    def fromJson(self, json_string):
+        self.data = json.loads(json_string)
