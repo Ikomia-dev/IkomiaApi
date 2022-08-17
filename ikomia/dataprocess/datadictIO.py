@@ -29,7 +29,7 @@ class DataDictIO(CWorkflowTaskIO):
     JSON serializable.
     """
     def __init__(self):
-        CWorkflowTaskIO.__init__(IODataType.DATA_DICT)
+        CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
         self.data = {}
 
     def clearData(self):
