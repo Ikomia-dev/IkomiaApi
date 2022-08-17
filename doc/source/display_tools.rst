@@ -1,7 +1,7 @@
 Display tools for debugging
 ===========================
 
-The :py:mod:`~ikomia.dataprocess.displayIO` module aims to give display output based on Matplolib for every Ikomia input/output types. 
+The :py:mod:`~ikomia.dataprocess.displayIO` module aims to give display output based on Matplolib for every Ikomia input/output types.
 We provide these features for debugging purpose essentially.
 
 So it's very simple, you just have to call a single function: :py:meth:`~ikomia.dataprocess.displayIO.display`.

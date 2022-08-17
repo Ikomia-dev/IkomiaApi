@@ -1,5 +1,5 @@
 ﻿DisplayIO
-============================
+=========
 
 .. automodule:: ikomia.dataprocess.displayIO
 
