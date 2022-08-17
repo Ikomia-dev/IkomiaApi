@@ -1,0 +1,101 @@
+{
+    "connections": [
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 0,
+            "target_index": 0
+        },
+        {
+            "source_id": 0,
+            "source_index": 0,
+            "target_id": 1,
+            "target_index": 0
+        },
+        {
+            "source_id": 1,
+            "source_index": 0,
+            "target_id": 2,
+            "target_index": 0
+        }
+    ],
+    "metadata": {
+        "description": "Edge detection",
+        "keywords": "box filter,clahe,canny",
+        "name": "VideoEdge"
+    },
+    "tasks": [
+        {
+            "task_data": {
+                "name": "ocv_box_filter",
+                "parameters": [
+                    {
+                        "name": "borderType",
+                        "value": "4"
+                    },
+                    {
+                        "name": "anchorY",
+                        "value": "-1"
+                    },
+                    {
+                        "name": "anchorX",
+                        "value": "-1"
+                    },
+                    {
+                        "name": "kSizeHeight",
+                        "value": "5"
+                    },
+                    {
+                        "name": "bNormalize",
+                        "value": "1"
+                    },
+                    {
+                        "name": "kSizeWidth",
+                        "value": "5"
+                    },
+                    {
+                        "name": "ddepth",
+                        "value": "-1"
+                    }
+                ]
+            },
+            "task_id": 0
+        },
+        {
+            "task_data": {
+                "name": "ocv_clahe",
+                "parameters": [
+                    {
+                        "name": "clipLimit",
+                        "value": "4.000000"
+                    }
+                ]
+            },
+            "task_id": 1
+        },
+        {
+            "task_data": {
+                "name": "ocv_canny",
+                "parameters": [
+                    {
+                        "name": "L2gradient",
+                        "value": "0"
+                    },
+                    {
+                        "name": "apertureSize",
+                        "value": "3"
+                    },
+                    {
+                        "name": "threshold2",
+                        "value": "255.000000"
+                    },
+                    {
+                        "name": "threshold1",
+                        "value": "0.000000"
+                    }
+                ]
+            },
+            "task_id": 2
+        }
+    ]
+}
