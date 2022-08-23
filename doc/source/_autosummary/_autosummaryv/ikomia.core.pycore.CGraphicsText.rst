@@ -28,6 +28,7 @@ CGraphicsText
       ~CGraphicsText.text
       ~CGraphicsText.x
       ~CGraphicsText.y
+      ~CGraphicsText.property
    
    .. rubric:: Details
    

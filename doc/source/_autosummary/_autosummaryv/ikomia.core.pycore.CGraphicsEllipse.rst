@@ -30,6 +30,7 @@ CGraphicsEllipse
       ~CGraphicsEllipse.width
       ~CGraphicsEllipse.x
       ~CGraphicsEllipse.y
+      ~CGraphicsEllipse.property
    
    .. rubric:: Details
    

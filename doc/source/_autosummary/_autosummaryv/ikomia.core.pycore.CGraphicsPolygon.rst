@@ -26,6 +26,7 @@ CGraphicsPolygon
    .. rubric:: Attributes
    .. autosummary::
       ~CGraphicsPolygon.points
+      ~CGraphicsPolygon.property
    
    .. rubric:: Details
    

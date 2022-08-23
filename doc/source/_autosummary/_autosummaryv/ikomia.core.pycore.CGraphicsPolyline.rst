@@ -26,6 +26,7 @@ CGraphicsPolyline
    .. rubric:: Attributes
    .. autosummary::
       ~CGraphicsPolyline.points
+      ~CGraphicsPolyline.property
    
    .. rubric:: Details
    
