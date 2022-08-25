@@ -1,15 +1,17 @@
-Welcome to Ikomia's documentation
+Welcome to Ikomia API documentation
 =================================
 
 :Current version: |version|
 
 The Ikomia platform is made up of three components:
 
-    - **Ikomia Marketplace**: centralized place where you can find plug'n'play algorithms of Computer Vision
-    - **Ikomia Studio**: free desktop software (Linux and Windows) for easy algorithm evaluation and fast prototyping
-    - **Ikomia API**: Python API to leverage state of the art algorithms for your own computer vision application and/or create plugins for Ikomia Studio and the Marketplace
+    - **Ikomia HUB**: HUB is the central sharing place for Plug'n'Play algorithms in Computer Vision and Deep Learning. We regularly push the best state of the art algorithms in classification, object detection, segmentation or pose estimation (among others). With Ikomia HUB, all algorithms are Open Source and ready to use in few clicks and you can easily edit the code if you want.
+    - **Ikomia Studio**: Studio is an Open Source no-code application (Linux and Windows) that allows you to test, chain and train any Computer Vision algorithms with a drag and drop system. You can load all images and video formats, and select the best state of the art algorithms from Ikomia HUB.
+    - **Ikomia API**: Python API to leverage state of the art algorithms for your own computer vision application and/or create plugins for Ikomia Studio and Ikomia HUB.
+
 
 .. note:: Ikomia API is built around Ikomia Core, a set of C++ libraries with Python bindings.
+
 
 .. important:: Ikomia Studio and Ikomia API are Open-Source projects, distributed under AGPLv3 and Apache 2.0 respectively.
 
@@ -18,8 +20,8 @@ Choose your API usage
 ---------------------
 As an Ikomia user, you will be led to use this API for two reasons:
 
-    - **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to give access to your algorithm from a user friendly software (Ikomia Studio) and a flexible workflow API. Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
-    - **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms and those from the Marketplace directly in your application. Run single algorithm or workflows with few lines of code.
+    - **Create workflows and use Ikomia algorithms in your custom application**: leverage built-in algorithms and those from Ikomia HUB directly in your application. Run single algorithm or workflows with few lines of code.
+    - **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to give access to your algorithm from a user friendly software (Ikomia Studio) and a flexible workflow API. Moreover, from Ikomia Studio you can publish your work to Ikomia HUB in one click and share it with the community.
 
 
 **Ready to start?**
@@ -27,8 +29,8 @@ As an Ikomia user, you will be led to use this API for two reasons:
 .. toctree::
     :maxdepth: 1
 
-    index_plugin
     index_api
+    index_plugin
 
 
 Useful links
@@ -36,7 +38,7 @@ Useful links
 
 `Ikomia GitHub repository <https://github.com/Ikomia-dev/>`_
 
-`Ikomia Marketplace <https://ikomia.com/en/marketplace-en/>`_
+`Ikomia HUB <https://ikomia.com/en/marketplace-en/>`_
 
 `Ikomia blog <https://blog.ikomia.com/>`_
 

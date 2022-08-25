@@ -1,12 +1,20 @@
-Algorithms for your application
-===============================
+Implement Computer Vision workflows for your application
+========================================================
 
-This part of the Ikomia API aims to leverage algorithms coming from the Marketplace into standalone application. It provides a simple and fast way to 
+This part of the Ikomia API aims to leverage algorithms coming from Ikomia HUB into standalone application. It provides a simple and fast way to
 integrate state of the art methods to your image analysis pipeline. Ikomia API is framework-agnostic, algorithms can be implemented in your favorite
 Python library (PyTorch, TensorFlow, Scikit-image ...).
 
 .. note::
     If you are interested in integrating your own algorithm in Ikomia, please consult :doc:`this documentation <index_plugin>`.
+
+
+Registration (free)
+-------------------
+
+Leverage state of the art algorithms from Ikomia HUB is one of the big advantage of using Ikomia API. Then you will need a free Ikomia account so that
+you will be able to authenticate while using Ikomia API. If we don't have the chance yet to count you among our users, we invite you to
+`register here <https://members.ikomia.com/accounts/signup/>`_.
 
 
 Installation
@@ -91,7 +99,7 @@ information :doc:`here <plugin_io>`.
 Authentication
 --------------
 
-Access to the Ikomia Marketplace is reserved for registered users. So if you need algorithms from the Marketplace in your workflow, you have 
+Access to Ikomia HUB is reserved for registered users. So if you need algorithms from HUB in your workflow, you have
 to set your Ikomia credentials in environment variables: **IKOMIA_USER** and **IKOMIA_PWD**.
 
 

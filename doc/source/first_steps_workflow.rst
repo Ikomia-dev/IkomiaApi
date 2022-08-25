@@ -17,7 +17,7 @@ Get the list of available algorithms
 ------------------------------------
 
 In Ikomia, algorithms are identified by their names. So one of the most important thing when using this API is to know the list of possible algorithms. 
-We can differentiate 2 kinds of algorithms: those available on the host system (built-in + installed plugins) and those available on the Marketplace.
+We can differentiate 2 kinds of algorithms: those available on the host system (built-in + installed plugins) and those available on Ikomia HUB.
 As introduced in the previous section, algorithms management is done by the global Ikomia registry.
 
 Get names of built-in and installed algorithms:
@@ -28,7 +28,7 @@ Get names of built-in and installed algorithms:
 
     names = ikomia.ik_registry.getAlgorithms()
 
-Get information (name, authors, description...) of Marketplace algorithms:
+Get information (name, authors, description...) of HUB algorithms:
 
 .. code-block:: python
 
