@@ -26,9 +26,11 @@ CDatasetIO
    .. rubric:: Overridden methods
    .. autosummary::
       ~CDatasetIO.clearData
+      ~CDatasetIO.fromJson
       ~CDatasetIO.isAutoInput
       ~CDatasetIO.isDataAvailable
       ~CDatasetIO.save
+      ~CDatasetIO.toJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -45,6 +47,7 @@ CDatasetIO
    .. automethod:: __init__
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: fromJson
    .. automethod:: getCategories
    .. automethod:: getCategoryCount
    .. automethod:: getGraphicsAnnotations
@@ -54,4 +57,5 @@ CDatasetIO
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
    .. automethod:: save
+   .. automethod:: toJson
    

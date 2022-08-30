@@ -1,15 +1,19 @@
 API Reference
 =============
 
-List of Ikomia Python modules
+Ikomia API is divided into 4 main modules, each one may contain sub-modules. A large part of this API is based on
+C++ bindings, those classes are easily identifiable since we apply a naming convention where all C++ classes begin with
+the C capital letter.
 
 .. rubric:: Utils module
 .. autosummary::
     :toctree: _autosummary
+    :recursive:
 
     ikomia.utils.pyutils
     ikomia.utils.pyqtutils
     ikomia.utils.qtconversion
+
 
 
 .. rubric:: Core module

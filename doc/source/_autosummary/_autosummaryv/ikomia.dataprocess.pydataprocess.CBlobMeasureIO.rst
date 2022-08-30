@@ -22,7 +22,9 @@ CBlobMeasureIO
    .. rubric:: Overridden methods
    .. autosummary::
       ~CImageIO.clearData
+      ~CImageIO.fromJson
       ~CImageIO.isDataAvailable
+      ~CImageIO.toJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -38,9 +40,11 @@ CBlobMeasureIO
    .. automethod:: __init__
    .. automethod:: addObjectMeasure
    .. automethod:: addObjectMeasures
+   .. automethod:: fromJson
    .. automethod:: getMeasures
    .. automethod:: setObjectMeasure
    .. automethod:: clearData
    .. automethod:: isDataAvailable
    .. automethod:: isAutoInput
    .. automethod:: setDisplayable
+   .. automethod:: toJson

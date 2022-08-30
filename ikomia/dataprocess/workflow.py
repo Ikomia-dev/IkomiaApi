@@ -15,7 +15,7 @@
 """
 Module dedicated to workflow management. It implements the Workflow class that offers high-level features
 based on a C++ implementation. You will be able to create, modify, load and run workflows composed by built-in
-Ikomia algorithms or any of those available in the Marketplace.
+Ikomia algorithms or any of those available in Ikomia HUB.
 """
 import os
 import logging
@@ -46,7 +46,7 @@ class Workflow(dataprocess.CWorkflow):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
-        you are able to use any Ikomia algorithms (built-in and Marketplace) in your workflow.
+        you are able to use any Ikomia algorithms (built-in and Ikomia HUB) in your workflow.
         """
         if registry is None:
             dataprocess.CWorkflow.__init__(self, name)
@@ -385,7 +385,7 @@ class Workflow(dataprocess.CWorkflow):
     def add_task(self, name, param=None):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
-        firstly downloaded and installed from the Marketplace.
+        firstly downloaded and installed from Ikomia HUB.
 
         Args:
             name (str): algorithm unique name

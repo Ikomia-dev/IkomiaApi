@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
-    Registry for all Ikomia algorithms (built-in and Marketplace). It stores all algorithms references and allows to
+    Registry for all Ikomia algorithms (built-in and Ikomia HUB). It stores all algorithms references and allows to
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """

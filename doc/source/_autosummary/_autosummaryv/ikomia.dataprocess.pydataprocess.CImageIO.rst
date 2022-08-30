@@ -34,6 +34,8 @@ CImageIO
       ~CImageIO.isDataAvailable
       ~CImageIO.load
       ~CImageIO.save
+      ~CImageIO.toJson
+      ~CImageIO.fromJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -50,6 +52,7 @@ CImageIO
    .. automethod:: clearData
    .. automethod:: copyStaticData
    .. automethod:: drawGraphics
+   .. automethod:: fromJson
    .. automethod:: getChannelCount
    .. automethod:: getData
    .. automethod:: getImage
@@ -66,4 +69,5 @@ CImageIO
    .. automethod:: setDisplayable
    .. automethod:: setImage
    .. automethod:: setOverlayMask
+   .. automethod:: toJson
    

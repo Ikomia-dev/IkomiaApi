@@ -23,7 +23,7 @@ from ikomia import core, dataprocess
 
 class TaskParam(core.CWorkflowTaskParam):
     """
-    Base class to manage task parameters.
+    Base class to manage task parameters. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
     It includes a dict structure to store parameter values.
 
     :ivar cfg: parameters dict

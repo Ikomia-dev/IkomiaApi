@@ -19,9 +19,11 @@ CGraphicsInput
    .. rubric:: Overridden methods
    .. autosummary::
       ~CGraphicsInput.clearData
+      ~CGraphicsInput.fromJson
       ~CGraphicsInput.isDataAvailable
       ~CGraphicsInput.load
       ~CGraphicsInput.save
+      ~CGraphicsInput.toJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -38,11 +40,13 @@ CGraphicsInput
    .. automethod:: __init__
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: fromJson
    .. automethod:: getItems
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
    .. automethod:: load
    .. automethod:: save
-   .. automethod:: setItems   
+   .. automethod:: setItems
+   .. automethod:: toJson
    

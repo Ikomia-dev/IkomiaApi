@@ -20,6 +20,8 @@ CWorkflowTaskIO
       ~CWorkflowTaskIO.isAutoInput
       ~CWorkflowTaskIO.isDataAvailable
       ~CWorkflowTaskIO.setDisplayable
+      ~CWorkflowTaskIO.toJson
+      ~CWorkflowTaskIO.fromJson
    
    .. rubric:: Attributes
    .. autosummary::
@@ -38,4 +40,6 @@ CWorkflowTaskIO
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
    .. automethod:: setDisplayable
+   .. automethod:: toJson
+   .. automethod:: fromJson
    

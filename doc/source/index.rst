@@ -1,5 +1,5 @@
 Welcome to Ikomia API documentation
-=================================
+===================================
 
 :Current version: |version|
 
