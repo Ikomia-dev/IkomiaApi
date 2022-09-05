@@ -299,17 +299,19 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
             cat_names = {}
             cat_map = {}
 
-
         if "annotations" in dataset:
             for ann in dataset["annotations"]:
                 img_to_anns[ann["image_id"]].append(ann)
 
         if "categories" in dataset:
-            for i, cat in enumerate(dataset["categories"]):
+            for cat in dataset["categories"]:
+                i = len(cat_names.keys())
+                cat_names[i] = cat["name"]
+                cat_map[cat["id"]] = i
+
                 if keypoints:
                     # We don't support yet multi class keypoints dataset
-                    cat_names[i] = cat["name"]
-                    cat_map[cat["id"]] = i
+
                     data["metadata"]["keypoint_names"] = dataset["categories"][0]["keypoints"]
                     data["metadata"]["keypoint_connection_rules"] = [
                         (data["metadata"]["keypoint_names"][i1 - 1], data["metadata"]["keypoint_names"][i2 - 1],
@@ -321,9 +323,6 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
                             data["metadata"]["keypoint_flip_map"].append((body_part, body_part.replace("left", "right")))
                         elif not body_part.startswith("right"):
                             data["metadata"]["keypoint_flip_map"].append((body_part, body_part))
-                else:
-                    cat_names[i + 1] = cat["name"]
-                    cat_map[cat["id"]] = i + 1
 
         data["metadata"]["category_names"] = cat_names
 
