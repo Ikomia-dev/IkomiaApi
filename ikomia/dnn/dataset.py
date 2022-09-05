@@ -292,12 +292,13 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
         dataset = json.load(fp)
         img_to_anns = defaultdict(list)
         data["metadata"] = {}
-        if keypoints:
-            cat_names = {}
-            cat_map = {}
-        else:
+        if sem_seg:
             cat_names = {0: "background"}
             cat_map = {0: 0}
+        else:
+            cat_names = {}
+            cat_map = {}
+
 
         if "annotations" in dataset:
             for ann in dataset["annotations"]:
