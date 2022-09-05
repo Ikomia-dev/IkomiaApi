@@ -27,6 +27,7 @@ CGraphicsComplexPolygon
    .. autosummary::
       ~CGraphicsComplexPolygon.inners
       ~CGraphicsComplexPolygon.outer
+      ~CGraphicsComplexPolygon.property
 
    .. rubric:: Details
 

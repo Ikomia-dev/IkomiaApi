@@ -28,9 +28,11 @@ Float specialization of C++ template class CNumericIO.
    .. rubric:: Overridden methods
    .. autosummary::
       ~CNumericIO.clearData
+      ~CNumericIO.fromJson
       ~CNumericIO.isDataAvailable
       ~CNumericIO.load
       ~CNumericIO.save
+      ~CNumericIO.toJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -49,6 +51,7 @@ Float specialization of C++ template class CNumericIO.
    .. automethod:: addValueList
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: fromJson
    .. automethod:: getAllHeaderLabels
    .. automethod:: getAllLabelList
    .. automethod:: getAllValueList
@@ -62,4 +65,5 @@ Float specialization of C++ template class CNumericIO.
    .. automethod:: save
    .. automethod:: setOutputType
    .. automethod:: setPlotType
+   .. automethod:: toJson
    

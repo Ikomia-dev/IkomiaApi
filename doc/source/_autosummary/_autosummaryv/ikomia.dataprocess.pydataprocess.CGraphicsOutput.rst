@@ -30,9 +30,11 @@ CGraphicsOutput
    .. rubric:: Overridden methods
    .. autosummary::
       ~CGraphicsOutput.clearData
+      ~CGraphicsOutput.fromJson
       ~CGraphicsOutput.isDataAvailable
       ~CGraphicsOutput.load
       ~CGraphicsOutput.save
+      ~CGraphicsOutput.toJson
 
    .. rubric:: Inherited methods
    .. autosummary::
@@ -58,6 +60,7 @@ CGraphicsOutput
    .. automethod:: addText
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: fromJson
    .. automethod:: getImageIndex
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
@@ -66,4 +69,4 @@ CGraphicsOutput
    .. automethod:: save
    .. automethod:: setImageIndex
    .. automethod:: setNewLayer
-   
+   .. automethod:: toJson

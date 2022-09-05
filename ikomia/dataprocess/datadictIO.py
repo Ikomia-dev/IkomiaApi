@@ -68,7 +68,16 @@ class DataDictIO(CWorkflowTaskIO):
             self.data = json.load(infile)
 
     def toJson(self, options=[]):
-        return json.dumps(self.data)
+        json_format = "compact"
+        if "json_format" in options:
+            json_format = options[options.index("json_format") + 1]
+
+        print(json_format)
+        if json_format == "indented":
+            print(json.dumps(self.data, indent=4))
+            return json.dumps(self.data, indent=4)
+        else:
+            return json.dumps(self.data)
 
     def fromJson(self, json_string):
         self.data = json.loads(json_string)

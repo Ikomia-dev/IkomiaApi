@@ -135,7 +135,7 @@ Handle the workflow graph structure
 A workflow is a graph where the nodes are the runnable tasks (algorithms) and the links between nodes are connections from task outputs to task inputs.
 Basically, you need two methods to build your own workflow:
 
-- :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`: instanciate an algorithm object and add it to the workflow. All algorithms are identified by their unique names and the function uses this name to create instance (factory design pattern). Instanciation process firstly searches for installed algorithms in the registry. If not found, it searches in the Ikomia Marketplace and do all installation steps automatically. Note that this installation can take a while (download package and install dependencies) but it will be executed once.
+- :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`: instanciate an algorithm object and add it to the workflow. All algorithms are identified by their unique names and the function uses this name to create instance (factory design pattern). Instanciation process firstly searches for installed algorithms in the registry. If not found, it searches in Ikomia HUB and do all installation steps automatically. Note that this installation can take a while (download package and install dependencies) but it will be executed once.
 - :py:meth:`~ikomia.dataprocess.workflow.Workflow.connect_tasks`: connect 2 tasks of the workflow so that output data from the source task will be forwarded to target task input when running the workflow.
 
 The first way to connect tasks is to let the system create connections automatically based on input and output data types. This will work well in simple scenarios. 
@@ -187,8 +187,8 @@ Create a Deep Learning training workflow
 Training deep learning models is an important use case of Ikomia API. The workflow approach is also well suited for this case and you can handle it 
 with few lines of code. Basically, it will consist in 2 main tasks:
 
-- a dataset loader that will convert your custom dataset structure into the Ikomia Dataset structure. This conversion is mandatory to leverage all training algorithms you can find in the Marketplace. We provide dataset loader of common formats like COCO, PascalVOC, YOLO...
-- a training algorithm. You will find various algorithms in the Marketplace for classification, object detection, segmentation...
+- a dataset loader that will convert your custom dataset structure into the Ikomia Dataset structure. This conversion is mandatory to leverage all training algorithms you can find in Ikomia HUB. We provide dataset loader of common formats like COCO, PascalVOC, YOLO...
+- a training algorithm. You will find various algorithms in Ikomia HUB for classification, object detection, segmentation...
 
 Here is an example of a training workflow for a YOLOv4 model and a custom dataset in YOLO format (grapes detection):
 
@@ -222,7 +222,7 @@ Here is an example of a training workflow for a YOLOv4 model and a custom datase
     you will have access to metrics, parameters, artifacts in MLflow or Tensorboard or both. 
     
 .. important::
-    If you need a model not present in the Marketplace, it is quiet easy to port your prefered model in Ikomia ecosystem. 
+    If you need a model not present in Ikomia HUB, it is quiet easy to port your preferred model in Ikomia ecosystem.
     Documentation can be found :doc:`here <index_plugin>` and :doc:`here <plugin_task>`.
 
 

@@ -26,6 +26,7 @@ CGraphicsPoint
    .. rubric:: Attributes
    .. autosummary::
       ~CGraphicsPoint.point
+      ~CGraphicsPoint.property
    
    .. rubric:: Details
 

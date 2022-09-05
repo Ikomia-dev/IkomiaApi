@@ -29,7 +29,7 @@
 
 /* Max window size */
 .wy-nav-content {
-    max-width: 1024px;
+    max-width: 70% !important;
 }
 
 /* It would be better for table to be visible without horizontal scrolling */

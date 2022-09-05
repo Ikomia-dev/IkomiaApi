@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
-    Registry for all Ikomia algorithms (built-in and Marketplace). It stores all algorithms references and allows to
+    Registry for all Ikomia algorithms (built-in and Ikomia HUB). It stores all algorithms references and allows to
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
@@ -161,7 +161,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def install_algorithm(self, name, force=False):
         """
-        Launch algorithm installation from the Marketplace given its unique name.
+        Launch algorithm installation from Ikomia HUB given its unique name.
 
         Args:
             name (str): algorithm unique name
@@ -177,6 +177,17 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Install requirements
         utils.plugintools.install_requirements(plugin_dir)
+
+        # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
+        to_remove = self.getBlackListedPackages()
+        for package in to_remove:
+            utils.plugintools.uninstall_package(package)
+
+        # Remove plugin specific blacklisted packages
+        needless_path = os.path.join(plugin_dir, "needless.txt")
+        with open(needless_path, "r") as f:
+            for line in f:
+                utils.plugintools.uninstall_package(line.rstrip())
 
         # Load it
         if language == utils.ApiLanguage.PYTHON:

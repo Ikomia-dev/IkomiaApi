@@ -129,6 +129,11 @@ def install_requirements(directory):
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
 
 
+def uninstall_package(name):
+    if name:
+        subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+
+
 def import_plugin_module(directory, name):
     if is_module_imported(name):
         for root, subdirs, files in os.walk(directory, topdown=True):

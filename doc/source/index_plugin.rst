@@ -1,14 +1,14 @@
-Integrate your algorithm in Ikomia
-==================================
+Create your algorithm for Ikomia platform
+=========================================
 
 Ikomia platform is an Open Source ecosystem providing plug'n'play algorithms in Computer Vision. Such algorithms can then be tested and evaluated in 
 Ikomia Studio for fast prototyping. Ikomia Studio is a desktop software (Qt based) that will help you to access and evaluate state of the art algorithms
-in a no-code way. It includes built-in algorithms from well-known libraries like **OpenCV** and give access to the Ikomia Marketplace. Ikomia Studio offers
+in a no-code way. It includes built-in algorithms from well-known libraries like **OpenCV** and give access to Ikomia HUB. Ikomia Studio offers
 the possibility to build complex **workflows** thanks to a flexible graph-based editor.
 
 The aim of this API is to offer a simple Python interface to add user-defined plugin into Ikomia platform. A plugin is a Python implementation of an 
-algorithm executed on image based data. Once implemented, you will be able to handle your plugin like all others algorithms, use it in workflows. 
-You will also be able to publish your method to the Marketplace and promote your work towards Ikomia community.
+algorithm executed on image based data. Once implemented, you will be able to handle your plugin like all others algorithms and use it in workflows.
+You will also be able to publish it to the Ikomia HUB and promote your work towards Ikomia community.
 
 The plugin structure
 --------------------

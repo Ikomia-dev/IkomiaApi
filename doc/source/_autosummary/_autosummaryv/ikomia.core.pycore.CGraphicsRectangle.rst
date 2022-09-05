@@ -29,6 +29,7 @@ CGraphicsRectangle
       ~CGraphicsRectangle.width
       ~CGraphicsRectangle.x
       ~CGraphicsRectangle.y
+      ~CGraphicsRectangle.property
    
    .. rubric:: Details
    
