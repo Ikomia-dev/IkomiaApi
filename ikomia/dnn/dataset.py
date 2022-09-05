@@ -22,6 +22,10 @@ from ikomia import core
 from PIL import Image
 from collections import defaultdict
 import xml.etree.ElementTree as ET
+import numpy as np
+from pycocotools.coco import maskUtils
+import cv2
+import random
 
 _image_extensions = [".jpeg", ".jpg", ".png", ".bmp", ".tiff", ".tif", ".dib", ".jpe", ".jp2", ".webp", ".pbm", ".pgm",
                      ".ppm", ".pxm", ".pnm", ".sr", ".ras", ".exr", ".hdr", ".pic"]
@@ -237,7 +241,28 @@ def load_yolo_dataset(folder_path, class_path):
     return data
 
 
-def load_coco_dataset(path, image_folder):
+def annToRLE(img, ann):
+    """
+    Convert annotation which can be polygons, uncompressed RLE to RLE.
+    :return: binary mask (numpy 2D array)
+    """
+    h, w = img['height'], img['width']
+    segm = ann['segmentation']
+    if type(segm) == list:
+        # polygon -- a single object might consist of multiple parts
+        # we merge all parts into one mask rle code
+        rles = maskUtils.frPyObjects(segm, h, w)
+        rle = maskUtils.merge(rles)
+    elif type(segm['counts']) == list:
+        # uncompressed RLE
+        rle = maskUtils.frPyObjects(segm, h, w)
+    else:
+        # rle
+        rle = ann['segmentation']
+    return rle
+
+
+def load_coco_dataset(path, image_folder, task="instance_segmentation", output_folder=""):
     """
     Load COCO dataset (2017 version).
     COCO dataset consists in a JSON file describing annotations
@@ -246,11 +271,19 @@ def load_coco_dataset(path, image_folder):
     Args:
         path (str): path to the JSON annotation file
         image_folder (str): path to the image folder
+        task (str): task of the dataset, must be one of the following "detection", "instance_segmentation",
+        "semantic_segmentation" or "keypoints"
+        output_folder (str): path to output folder only for semantic segmentation
 
     Returns:
         dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
     data = {"images": [], "metadata": {}}
+
+    sem_seg = task == "semantic_segmentation"
+    keypoints = task == "keypoints"
+
+    assert not(sem_seg) or output_folder != "", "Output folder must be set when task is semantic segmentation"
 
     if not image_folder.endswith("/"):
         image_folder += "/"
@@ -258,8 +291,13 @@ def load_coco_dataset(path, image_folder):
     with open(path, "r") as fp:
         dataset = json.load(fp)
         img_to_anns = defaultdict(list)
-        cat_names = {0: "background"}
-        cat_map = {0: 0}
+        data["metadata"] = {}
+        if keypoints:
+            cat_names = {}
+            cat_map = {}
+        else:
+            cat_names = {0: "background"}
+            cat_map = {0: 0}
 
         if "annotations" in dataset:
             for ann in dataset["annotations"]:
@@ -267,10 +305,26 @@ def load_coco_dataset(path, image_folder):
 
         if "categories" in dataset:
             for i, cat in enumerate(dataset["categories"]):
-                cat_names[i + 1] = cat["name"]
-                cat_map[cat["id"]] = i + 1
+                if keypoints:
+                    # We don't support yet multi class keypoints dataset
+                    cat_names[i] = cat["name"]
+                    cat_map[cat["id"]] = i
+                    data["metadata"]["keypoint_names"] = dataset["categories"][0]["keypoints"]
+                    data["metadata"]["keypoint_connection_rules"] = [
+                        (data["metadata"]["keypoint_names"][i1 - 1], data["metadata"]["keypoint_names"][i2 - 1],
+                         tuple([random.randint(0, 255) for i in range(3)]))
+                        for (i1, i2) in dataset["categories"][0]["skeleton"]]
+                    data["metadata"]["keypoint_flip_map"] = []
+                    for body_part in data["metadata"]["keypoint_names"]:
+                        if body_part.startswith("left"):
+                            data["metadata"]["keypoint_flip_map"].append((body_part, body_part.replace("left", "right")))
+                        elif not body_part.startswith("right"):
+                            data["metadata"]["keypoint_flip_map"].append((body_part, body_part))
+                else:
+                    cat_names[i + 1] = cat["name"]
+                    cat_map[cat["id"]] = i + 1
 
-        data["metadata"] = {"category_names": cat_names}
+        data["metadata"]["category_names"] = cat_names
 
         if "images" in dataset:
             for img in dataset["images"]:
@@ -280,6 +334,8 @@ def load_coco_dataset(path, image_folder):
                 img_data["width"] = img["width"]
                 img_data["height"] = img["height"]
                 img_data["annotations"] = []
+                if sem_seg:
+                    mask = np.zeros((img['height'], img['width']), dtype='uint8')
 
                 for ann in img_to_anns[img["id"]]:
                     instance = {}
@@ -294,10 +350,28 @@ def load_coco_dataset(path, image_folder):
                         if type(ann["segmentation"]) == list:
                             # Polygon
                             instance["segmentation_poly"] = ann["segmentation"]
+                            if sem_seg:
+                                if np.shape(instance["segmentation_poly"])[0] == 1:
+                                    poly = [np.array(instance["segmentation_poly"], dtype='int').reshape((-1, 2))]
+                                else:
+                                    poly = []
+                                    for pts in instance["segmentation_poly"]:
+                                        poly.append(np.array(pts, dtype='int').reshape((-1, 2)))
+                                color = int(instance["category_id"])
+                                cv2.fillPoly(mask,
+                                             poly,
+                                             color)
+
+                    if "keypoints" in ann:
+                        instance["keypoints"] = ann["keypoints"]
 
                     img_data["annotations"].append(instance)
 
                 if len(img_data["annotations"]) > 0:
+                    if sem_seg:
+                        img_data["semantic_seg_masks_file"] = os.path.join(output_folder,
+                                                                           str(img_data["image_id"]) + ".png")
+                        cv2.imwrite(img_data["semantic_seg_masks_file"], mask)
                     data["images"].append(img_data)
 
     return data
@@ -418,7 +492,7 @@ def polygon_to_mask(polygons, width, height):
         i = 0
         while i < len(poly):
             x = poly[i]
-            y = poly[i+1]
+            y = poly[i + 1]
 
             if x > width - 1:
                 x = width - 1
