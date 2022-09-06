@@ -17,7 +17,6 @@ CWorkflowTaskWidget
       ~CWorkflowTaskWidget.emitSendProcessAction
       ~CWorkflowTaskWidget.emitSetGraphicsCategory
       ~CWorkflowTaskWidget.emitSetGraphicsTool
-      ~CWorkflowTaskWidget.init
       ~CWorkflowTaskWidget.onApply
       ~CWorkflowTaskWidget.setApplyBtnHidden
       ~CWorkflowTaskWidget.setLayout
@@ -29,7 +28,6 @@ CWorkflowTaskWidget
    .. automethod:: emitSendProcessAction
    .. automethod:: emitSetGraphicsCategory
    .. automethod:: emitSetGraphicsTool
-   .. automethod:: init
    .. automethod:: onApply
    .. automethod:: setApplyBtnHidden
    .. automethod:: setLayout

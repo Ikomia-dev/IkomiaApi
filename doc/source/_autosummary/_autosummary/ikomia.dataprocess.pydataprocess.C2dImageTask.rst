@@ -97,7 +97,6 @@
    .. automethod:: getOutputs
    .. automethod:: getParam
    .. automethod:: getProgressSteps
-   .. automethod:: getProgressSteps
    .. automethod:: globalInputChanged
    .. automethod:: graphicsChanged
    .. automethod:: isGraphicsChangedListening

@@ -15,18 +15,22 @@
    .. autosummary::
       :toctree: _autosummaryv
 
-      CImageIO
-      CVideoIO
-      CNumericIO
+      CArrayIO
+      CBlobMeasureIO
+      CDatasetIO
       CDataStringIO
       CGraphicsInput
       CGraphicsOutput
-      CWidgetOutput
-      CDatasetIO
-      CPathIO
-      CArrayIO
-      CBlobMeasureIO
+      CImageIO
+      CInstanceSegIO
       CObjectMeasure
+      CNumericIO
+      CObjectDetectionIO
+      CPathIO
+      CVideoIO
+      CWidgetOutput
+      CInstanceSegmentation
+      CObjectDetection
       NumericOutputType
       PlotType
       MapIntStr
@@ -37,12 +41,12 @@
    
       C2dImageTask
       C2dImageInteractiveTask
+      CDnnTrainTask
+      CIkomiaRegistry
+      CTaskInfo
       CVideoTask
       CVideoOFTask
       CVideoTrackingTask
-      CDnnTrainTask
-      CTaskInfo
-      CIkomiaRegistry
       CWorkflow
 
    .. rubric:: Widget management
