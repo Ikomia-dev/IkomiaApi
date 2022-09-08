@@ -27,6 +27,7 @@
       CNumericIO
       CObjectDetectionIO
       CPathIO
+      CSemanticSegIO
       CVideoIO
       CWidgetOutput
       CInstanceSegmentation
