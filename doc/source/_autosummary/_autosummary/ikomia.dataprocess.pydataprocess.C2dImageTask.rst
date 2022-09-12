@@ -16,6 +16,7 @@
       ~C2dImageTask.__init__
       ~C2dImageTask.applyGraphicsMask
       ~C2dImageTask.applyGraphicsMaskToBinary
+      ~C2dImageTask.createInputGraphicsMask
       ~C2dImageTask.createGraphicsMask
       ~C2dImageTask.emitAddSubProgressSteps
       ~C2dImageTask.emitGraphicsContextChanged
@@ -77,6 +78,7 @@
    .. automethod:: applyGraphicsMask
    .. automethod:: applyGraphicsMaskToBinary
    .. automethod:: beginTaskRun
+   .. automethod:: createInputGraphicsMask
    .. automethod:: createGraphicsMask
    .. automethod:: emitAddSubProgressSteps
    .. automethod:: emitGraphicsContextChanged
