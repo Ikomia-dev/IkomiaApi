@@ -7,6 +7,8 @@ CInstanceSegmentation
 
     .. rubric:: Attributes
     .. autosummary::
+        ~CInstanceSegmentation.id
+        ~CInstanceSegmentation.type
         ~CInstanceSegmentation.class_index
         ~CInstanceSegmentation.label
         ~CInstanceSegmentation.confidence
