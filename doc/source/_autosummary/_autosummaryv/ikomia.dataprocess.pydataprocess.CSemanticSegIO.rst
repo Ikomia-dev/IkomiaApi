@@ -15,6 +15,7 @@ CSemanticSegIO
         ~CSemanticSegIO.__init__
         ~CSemanticSegIO.getMask
         ~CSemanticSegIO.getClassNames
+        ~CSemanticSegIO.getColors
         ~CSemanticSegIO.setMask
         ~CSemanticSegIO.setClassNames
 
@@ -44,6 +45,7 @@ CSemanticSegIO
     .. automethod:: __init__
     .. automethod:: getMask
     .. automethod:: getClassNames
+    .. automethod:: getColors
     .. automethod:: setMask
     .. automethod:: setClassNames
     .. automethod:: isDataAvailable
