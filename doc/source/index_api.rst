@@ -26,7 +26,7 @@ You simply install Ikomia API via pip for Linux and Windows:
 
     pip install ikomia
 
-Another version is also available which provides a GPU-enabled version of OpenCV (CUDA 11, CuDNN 8). This version give
+Another version is also available which provides a GPU-enabled version of OpenCV (CUDA 11, CuDNN 8). This version gives
 you access to OpenCV algorithms with GPU acceleration, especially the Deep Learning inference framework.
 
 .. code-block:: zsh
