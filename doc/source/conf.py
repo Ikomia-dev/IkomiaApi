@@ -34,6 +34,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
+    'sphinx.ext.autosectionlabel',
     'sphinx_rtd_theme',
 ]
 

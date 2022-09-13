@@ -31,9 +31,10 @@ The first thing to do in our *ocv_basics_process.py* is importing OpenCV package
 
 .. code-block:: python
     
-    from ikomia import core, dataprocess, cv2
+    from ikomia import core, dataprocess
     import copy
     # Your imports below
+    import cv2
 
 In the *run* method, we now have to retrieve source image from input, add OpenCV calls and set the output:
 
@@ -83,7 +84,7 @@ Process parameters
 ------------------
 
 We will focus now on adding some parameters to our process ((in *ocv_basics_process.py*). 
-Let's say we want to control blur strengh of the Gaussian filter, we have to manage at least 3 parameters:
+Let's say we want to control blur strength of the Gaussian filter, we have to manage at least 3 parameters:
 
 - Kernel size
 - Sigma X
@@ -178,7 +179,7 @@ Like the process class, the constructor receives an instance of the parameters s
             core.CWorkflowTaskWidget.__init__(self, parent)
 
             if param is None:
-                self.parameters = processMod.OCVBasicsParam()
+                self.parameters = OCVBasicsParam()
             else:
                 self.parameters = param
 
@@ -223,7 +224,7 @@ Like the process class, the constructor receives an instance of the parameters s
             self.gridLayout.addWidget(self.spin_sigma_y, 2, 1)
 
             # PyQt -> Qt wrapping (C++ handle)
-            layoutPtr = utils.PyQtToQt(self.gridLayout)
+            layoutPtr = qtconversion.PyQtToQt(self.gridLayout)
 
             # Set widget layout
             self.setLayout(layoutPtr)

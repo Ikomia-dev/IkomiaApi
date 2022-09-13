@@ -6,6 +6,10 @@ functional framework and simplify customization. Basically, any new Ikomia plugi
 task class derived from the base class :py:mod:`~ikomia.core.pycore.CWorkflowTask` or from a 
 specialization class which itself inherits from this base class.
 
+- :ref:`Mandatory methods<Mandatory methods to implement>`
+- :ref:`Recommended methods<Recommended methods to implement>`
+- :ref:`Metadata<Metadata>`
+
 
 Mandatory methods to implement
 ------------------------------

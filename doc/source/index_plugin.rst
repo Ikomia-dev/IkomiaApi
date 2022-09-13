@@ -7,7 +7,7 @@ in a no-code way. It includes built-in algorithms from well-known libraries like
 the possibility to build complex **workflows** thanks to a flexible graph-based editor.
 
 The aim of this API is to offer a simple Python interface to add user-defined plugin into Ikomia platform. A plugin is a Python implementation of an 
-algorithm executed on image based data. Once implemented, you will be able to handle your plugin like all others algorithms and use it in workflows.
+algorithm executed on image based data. Once implemented, you will be able to handle your plugin like all other algorithms and use it in workflows.
 You will also be able to publish it to the Ikomia HUB and promote your work towards Ikomia community.
 
 The plugin structure

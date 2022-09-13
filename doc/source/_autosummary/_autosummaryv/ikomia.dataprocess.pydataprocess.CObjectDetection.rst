@@ -7,6 +7,7 @@ CObjectDetection
 
     .. rubric:: Attributes
     .. autosummary::
+        ~CObjectDetection.id
         ~CObjectDetection.label
         ~CObjectDetection.confidence
         ~CObjectDetection.box

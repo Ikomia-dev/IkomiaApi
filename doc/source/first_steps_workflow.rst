@@ -28,7 +28,7 @@ Get names of built-in and installed algorithms:
 
     names = ikomia.ik_registry.getAlgorithms()
 
-Get information (name, authors, description...) of HUB algorithms:
+Get information (name, authors, description...) of Ikomia HUB algorithms:
 
 .. code-block:: python
 

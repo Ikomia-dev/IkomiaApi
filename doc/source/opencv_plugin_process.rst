@@ -5,9 +5,10 @@ Code example for OCVBasics process implementation
 
 .. code-block:: python
 
-    from ikomia import core, dataprocess, cv2
+    from ikomia import core, dataprocess
     import copy
     # Your imports below
+    import cv2
 
     # --------------------
     # - Class to handle the process parameters

@@ -6,6 +6,19 @@ Every algorithm in Ikomia platform comes with a list of inputs and outputs. Depe
 you will have to deal with several types. This API provides a comprehensive list of I/O types to 
 address common needs in Computer Vision.
 
+- :ref:`Image<Image>`
+- :ref:`Graphics<Graphics>`
+- :ref:`Numeric values<Numeric values>`
+- :ref:`String values<String values>`
+- :ref:`Blob measures<Blob measures>`
+- :ref:`Multi-dimensional array<Multi-dimensional array>`
+- :ref:`Deep learning dataset<Deep learning dataset>`
+- :ref:`Filesystem path<Filesystem path>`
+- :ref:`Object detection<Object detection I/O>`
+- :ref:`Instance segmentation<Instance segmentation I/O>`
+- :ref:`Semantic segmentation<Semantic segmentation I/O>`
+
+
 Ideally, inputs and outputs should be defined in the constructor of the task.
 
 .. note:: 
@@ -299,3 +312,197 @@ Basic usage:
             # Set path
             path_output = self.getOutput(0)
             path_output.setPath(os.path.dirname(path_in))
+
+
+Object detection I/O
+--------------------
+
+Object detection is a common task in Computer Vision that aims to provide bounding box and class for each detected
+object. We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO` to ease the management
+of object detection results. Such input/output stores essential information in a list of
+:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetection`:
+
+- unique identifier
+- class label
+- confidence
+- box coordinates stored as list of 4 float numbers: [x-coordinate, y-coordinate, width, height]
+- display color
+
+It also provides methods to fill and retrieve results (see
+:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO` for details).
+
+Usage as output:
+
+.. code-block:: python
+
+    from ikomia.dataprocess import C2dImageTask, CObjectDetectionIO
+
+    class MyDetectorPlugin(C2dImageTask):
+
+        def __init__(self, name, param):
+            C2dImageTask.__init__(self, name)
+            # Add object detection output
+            self.addOutput(CObjectDetectionIO())
+            # Load class names
+            self.names = self.load_names()          #to implement
+            # Generate class colors
+            self.colors = self.generate_colors()    #to implement
+
+        def run(self):
+            # Image input :
+            img_input = self.getInput(0)
+            src_image = img_input.getImage()
+            # Forward input image
+            self.forwardInputImage(0, 0)
+            # Object detection output
+            obj_detect_out = self.getOutput(1)
+            obj_detect_out.init("MyDetector", 0)
+            # Model prediction (to replace with your model inference)
+            output = self.model(src_image)
+
+            # Process detections
+            index = 0
+            for *xyxy, conf, cls in output:
+                # Box
+                w = float(xyxy[2] - xyxy[0])
+                h = float(xyxy[3] - xyxy[1])
+                obj_detect_out.addObject(index, self.names[int(cls)], conf.item(),
+                                         float(xyxy[0]), float(xyxy[1]), w, h,
+                                         self.colors[int(cls)])
+            index += 1
+
+.. note::
+    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO` output is displayed as graphics
+    layer on top of reference image (box + label + confidence) and as results table.
+
+
+Instance segmentation I/O
+-------------------------
+
+Instance segmentation is a common task in Computer Vision that aims to provide bounding box, class and mask for each
+detected object (ie instance). We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`
+to ease the management of instance segmentation results. Such input/output stores essential information in a list of
+:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentation`:
+
+- unique identifier
+- instance type (THING or STUFF)
+- class index
+- class label
+- confidence
+- box coordinates stored as list of 4 float numbers: [x-coordinate, y-coordinate, width, height]
+- binary mask
+- display color
+
+It also provides methods to fill and retrieve results (see
+:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO` for details). This input/output type is also suitable
+for **panoptic segmentation**.
+
+Usage as output:
+
+.. code-block:: python
+
+    from ikomia.dataprocess import C2dImageTask, CInstanceSegIO
+
+    class MySegmentorPlugin(C2dImageTask):
+
+        def __init__(self, name, param):
+            C2dImageTask.__init__(self, name)
+            # Add object detection output
+            self.addOutput(CInstanceSegIO())
+            # Load class names
+            self.names = self.load_names()          #to implement
+            # Generate class colors
+            self.colors = self.generate_colors()    #to implement
+
+        def run(self):
+            # Image input :
+            img_input = self.getInput(0)
+            src_image = img_input.getImage()
+            h, w, c = src_image.shape
+            # Forward input image
+            self.forwardInputImage(0, 0)
+            # Object detection output
+            instance_out = self.getOutput(1)
+            instance_out.init("MySegmentor", 0, w, h)
+            # Model prediction (to replace with your model inference)
+            output = self.model(src_image)
+
+            # Process detections
+            instances = outputs["instances"]
+            scores = instances.scores
+            boxes = instances.pred_boxes
+            classes = instances.pred_classes
+            masks = instances.pred_masks
+
+            index = 0
+            for box, score, cls, mask in zip(boxes, scores, classes, masks):
+                x1, y1, x2, y2 = box.numpy()
+                cls = int(cls.numpy())
+                w = float(x2 - x1)
+                h = float(y2 - y1)
+                instance_out.addInstance(index, 0, cls, self.names[cls], float(score),
+                                         float(x1), float(y1), w, h,
+                                         mask.cpu().numpy().astype("uint8"), self.colors[cls+1])
+                index += 1
+
+.. note::
+    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO` output is displayed as graphics
+    layer on top of reference image (box + label + confidence), color mask overlay on reference image, merge mask of
+    all instances and results table.
+
+
+Semantic segmentation I/O
+-------------------------
+
+Semantic segmentation is a common task in Computer Vision that aims to provide mask where a class label value is set
+for all pixels. We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`
+to ease the management of semantic segmentation results. Such input/output stores essential information as described
+below:
+
+- Mask
+- List of class names: index of a given class in this list corresponds to the pixel value in the mask
+- List of colors (one for each class)
+
+It also provides methods to fill and retrieve results (see
+:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO` for details).
+
+Usage as output:
+
+.. code-block:: python
+
+    from ikomia.dataprocess import C2dImageTask, CSemanticSegIO
+
+    class MySegmentorPlugin(C2dImageTask):
+
+        def __init__(self, name, param):
+            C2dImageTask.__init__(self, name)
+            # Add object detection output
+            self.addOutput(CSemanticSegIO())
+            # Load class names
+            self.names = self.load_names()          #to implement
+            # Generate class colors
+            self.colors = self.generate_colors()    #to implement
+
+        def run(self):
+            # Image input :
+            img_input = self.getInput(0)
+            src_image = img_input.getImage()
+            # Forward input image
+            self.forwardInputImage(0, 0)
+            # Object detection output
+            semantic_output = self.getOutput(1)
+            # Model prediction (to replace with your model inference)
+            output = self.model(src_image)
+
+            # Process detections
+            mask = outputs["sem_seg"].cpu().numpy()
+
+            semantic_output.setMask(mask)
+            semantic_output.setClassNames(self.names, self.colors)
+
+            # Color mask overlay
+            self.setOutputColorMap(0, 1, self.colors)
+
+.. note::
+    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO` output is displayed as a graylevel
+    mask, a color mask overlay on reference image and a legend image with the color/class mapping.

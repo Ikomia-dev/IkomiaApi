@@ -20,34 +20,37 @@ you will be able to authenticate while using Ikomia API. If we don't have the ch
 Installation
 ------------
 
-You simply install Ikomia API via pip for Linux and Windows (CPU only):
+You simply install Ikomia API via pip for Linux and Windows:
 
 .. code-block:: zsh
 
     pip install ikomia
 
-With GPU enabled:
+Another version is also available which provides a GPU-enabled version of OpenCV (CUDA 11, CuDNN 8). This version give
+you access to OpenCV algorithms with GPU acceleration, especially the Deep Learning inference framework.
 
 .. code-block:: zsh
 
     pip install ikomia==0.7.0+cu11 -f https://packages.ikomia.com/ikomia/index.html
 
 .. note::
-    For this beta version, we provide Python wheel for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2) with CUDA enabled (v11),
-    and CuDNN 8. Thus, you must have CUDA 11 drivers for your graphic card and install machine learning framework compatible with CUDA 11.
-    For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distributions. For 
-    Windows, the wheel is only compatible with Windows 10.
+    For this version, we provide Python wheels for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2). For GPU
+    acceleration with your favorite framework (PyTorch, TensorFlow...), you must have installed CUDA 11 drivers for your
+    graphic card and the GPU-enabled version of this framework.
+
+    For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent
+    distributions.
+
+    For Windows, the wheel is only compatible with Windows 10.
 
 
 .. Important::
     **OpenCV**
     
-    A GPU-enabled version of OpenCV is bundled within the Ikomia package. It includes all the core 
-    and contribution librairies with CUDA support. There is only one important constraint to respect, **you must import Ikomia 
-    module before importing cv2 module**.
-    
-    As a result, the package *opencv-python* from Pypi repository must not be installed in 
-    the same Python environment. This will lead to incompatibility issues.
+    A version of OpenCV with specific options is bundled within the Ikomia package. It includes all the core
+    and contribution librairies. There is only one important constraint to respect, **you must import Ikomia
+    module before importing cv2 module**. As a result, the package *opencv-python* or *opencv-python-headless* from Pypi repository should not be installed in
+    the same Python environment. This may lead to incompatibility issues.
 
 
 Concepts

@@ -26,10 +26,10 @@ Simple OpenCV plugin
 Interactive plugin
 ------------------
 
-- `Plugin interface <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes.py>`_
+- `Plugin interface <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_
 
-- `Process <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_process.py>`_
+- `Process <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_process.py>`_
 
-- `Widget <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_
+- `Widget <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_
 
-- `Requirements <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/requirements.txt>`_
+- `Requirements <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/requirements.txt>`_

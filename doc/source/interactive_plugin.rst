@@ -80,9 +80,10 @@ Import statements in *skimage_morpho_snakes_process.py*:
 
 .. code-block:: python
 
-    from ikomia import core, dataprocess, cv2
+    from ikomia import core, dataprocess
     import copy
     # your imports below
+    import cv2
     from skimage.segmentation import (morphological_geodesic_active_contour, inverse_gaussian_gradient, morphological_chan_vese)
     from skimage import img_as_float
     import numpy as np
@@ -415,14 +416,14 @@ Global widget initialization
             self.gridLayout.setRowStretch(3,3)
 
             # PyQt -> Qt wrapping
-            layoutPtr = utils.PyQtToQt(self.gridLayout)
+            layoutPtr = qtconversion.PyQtToQt(self.gridLayout)
 
             # Set widget layout
             self.setLayout(layoutPtr)
 
             # update left parameter panel
             if self.parameters.method != "mgac":
-            self.comboMethod.setCurrentIndex(1)
+                self.comboMethod.setCurrentIndex(1)
 
 Note: *self.gridLayout.setRowStretch(n, n)* forces items to stay on top of the gridlayout.
 
@@ -446,7 +447,7 @@ Method selection:
             self.gridLayout.setRowStretch(2,2)
 
 
-MGAC method parameters (see `source code <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_ for details)
+MGAC method parameters (see `source code <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
 
 .. code-block:: python
 
@@ -456,7 +457,7 @@ MGAC method parameters (see `source code <https://github.com/Ikomia-dev/IkomiaPl
             ...
 
 
-Chan Vese method parameters (see `source code <https://github.com/Ikomia-dev/IkomiaPluginsPython/blob/master/scikit_MorphoSnakes/scikit_MorphoSnakes_widget.py>`_ for details)
+Chan Vese method parameters (see `source code <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
 
 .. code-block:: python
 
