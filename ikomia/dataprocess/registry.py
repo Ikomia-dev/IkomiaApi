@@ -176,6 +176,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         plugin, language, plugin_dir = self._download_algorithm(name)
 
         # Install requirements
+        logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
         utils.plugintools.install_requirements(plugin_dir)
 
         # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
@@ -185,9 +186,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Remove plugin specific blacklisted packages
         needless_path = os.path.join(plugin_dir, "needless.txt")
-        with open(needless_path, "r") as f:
-            for line in f:
-                utils.plugintools.uninstall_package(line.rstrip())
+        if os.path.exists(needless_path):
+            with open(needless_path, "r") as f:
+                for line in f:
+                    utils.plugintools.uninstall_package(line.rstrip())
 
         # Load it
         if language == utils.ApiLanguage.PYTHON:
