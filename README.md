@@ -5,8 +5,8 @@
 This project provides Python API to leverage state of the art algorithms for your own computer vision application. Ikomia API is framework-agnostic, algorithms can be implemented in your favorite Python library (PyTorch, TensorFlow, Scikit-image ...).
 
 You will be led to use this API for two reasons:
-- **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to use your algorithm from a user friendly software [Ikomia Studio](https://github.com/Ikomia-dev/IkomiaStudio) and a flexible workflow API (see below). Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
 - **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms, yours and those from the Marketplace directly in your application. Run single algorithm or workflows with few lines of code.
+- **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to use your algorithm from a user friendly software [Ikomia Studio](https://github.com/Ikomia-dev/IkomiaStudio) and a flexible workflow API (see below). Moreover, from Ikomia Studio you can publish your work to the Marketplace in one click and share it with the community.
 
 
 > **_Note:_**  This Python API is built on top of a C++ core framework bundled in the provided wheels. This core framework handles plugins connection, workflow management, generic execution runtime and Python bindings.
