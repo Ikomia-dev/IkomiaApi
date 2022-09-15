@@ -72,9 +72,7 @@ class DataDictIO(CWorkflowTaskIO):
         if "json_format" in options:
             json_format = options[options.index("json_format") + 1]
 
-        print(json_format)
         if json_format == "indented":
-            print(json.dumps(self.data, indent=4))
             return json.dumps(self.data, indent=4)
         else:
             return json.dumps(self.data)
