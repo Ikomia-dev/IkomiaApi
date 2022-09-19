@@ -36,7 +36,7 @@ def run_for_test(t):
         logger.error("Run failed")
     else:
         tb = "OK"
-        logger.info("Run succeed")
+        logger.info("Run succeeded")
     finally:
         return task.get_parameters(t), tb
 
