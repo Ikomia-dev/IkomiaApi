@@ -1,1 +1,0 @@
-Folder containing shared libraries from Ikomia Core

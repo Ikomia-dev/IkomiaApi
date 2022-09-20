@@ -61,18 +61,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         r.raise_for_status()
         all_plugins = r.json()
         platform_plugins = []
-        current_os = None
-
-        if sys.platform == "win32":
-            current_os = utils.OSType.WIN
-        elif sys.platform == "darwin":
-            current_os = utils.OSType.OSX
-        else:
-            current_os = utils.OSType.LINUX
 
         for plugin in all_plugins:
-            plugin_os = plugin["os"]
-            if plugin_os == utils.OSType.ALL or plugin_os == current_os:
+            if self._check_compatibility(plugin):
                 platform_plugins.append(plugin)
 
         return platform_plugins
@@ -289,3 +280,23 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         target_dir = utils.conform_plugin_directory(target_dir, plugin)
         return plugin, language, target_dir
+
+    @staticmethod
+    def _check_compatibility(plugin):
+        current_os = None
+        if sys.platform == "win32":
+            current_os = utils.OSType.WIN
+        elif sys.platform == "darwin":
+            current_os = utils.OSType.OSX
+        else:
+            current_os = utils.OSType.LINUX
+
+        plugin_os = plugin["os"]
+        if plugin_os != utils.OSType.ALL and plugin_os != current_os:
+            return False
+
+        language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
+        if language == utils.ApiLanguage.CPP:
+            return utils.checkArchitectureKeywords(plugin["keywords"])
+
+        return True
