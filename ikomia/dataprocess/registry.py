@@ -169,18 +169,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
         utils.plugintools.install_requirements(plugin_dir)
-
-        # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
-        to_remove = self.getBlackListedPackages()
-        for package in to_remove:
-            utils.plugintools.uninstall_package(package)
-
-        # Remove plugin specific blacklisted packages
-        needless_path = os.path.join(plugin_dir, "needless.txt")
-        if os.path.exists(needless_path):
-            with open(needless_path, "r") as f:
-                for line in f:
-                    utils.plugintools.uninstall_package(line.rstrip())
+        self._check_installed_modules(plugin_dir)
 
         # Load it
         if language == utils.ApiLanguage.PYTHON:
@@ -300,3 +289,28 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return utils.checkArchitectureKeywords(plugin["keywords"])
 
         return True
+
+    def _check_installed_modules(self, plugin_dir):
+        modules = utils.plugintools.get_installed_modules()
+
+        # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
+        to_remove = self.getBlackListedPackages()
+        for package in to_remove:
+            module_installed = next((mod for mod in modules if mod["name"] == package), None)
+            if module_installed:
+                if package == "tb-nightly":
+                    utils.plugintools.uninstall_package(package)
+                    tb_installed = next((mod for mod in modules if mod["name"] == "tensorboard"), None)
+
+                    if tb_installed:
+                        utils.plugintools.uninstall_package("tensorboard")
+                        utils.plugintools.install_package("tensorboard", tb_installed["version"])
+                else:
+                    utils.plugintools.uninstall_package(package)
+
+        # Remove plugin specific blacklisted packages
+        needless_path = os.path.join(plugin_dir, "needless.txt")
+        if os.path.exists(needless_path):
+            with open(needless_path, "r") as f:
+                for line in f:
+                    utils.plugintools.uninstall_package(line.rstrip())

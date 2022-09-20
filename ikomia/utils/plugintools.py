@@ -79,7 +79,7 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
 
 
 def get_installed_modules():
-    modules = []
+    modules = {}
     result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"], capture_output=True, text=True)
     if result.stdout:
         modules = json.loads(result.stdout)
@@ -142,12 +142,26 @@ def install_requirements(directory):
     req_files.sort()
 
     for file in req_files:
-        subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
+        except Exception as e:
+            logger.warning(e)
+
+
+def install_package(name, version):
+    if name:
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
+        except Exception as e:
+            logger.warning(e)
 
 
 def uninstall_package(name):
     if name:
-        subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+        except Exception as e:
+            logger.warning(e)
 
 
 def import_plugin_module(directory, name):

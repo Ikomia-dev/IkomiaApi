@@ -167,7 +167,6 @@ if __name__ == "__main__":
 
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = 'auto_completion'
 
     ikomia.authenticate()
 
