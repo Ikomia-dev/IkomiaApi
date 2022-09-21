@@ -80,6 +80,7 @@ class TorchDatasetMapper(Dataset):
 
                     mask = ikdataset.polygon_to_mask(annotation["segmentation_poly"], w, h)
                     mask.reshape((1, h, w))
+                    mask = np.where(mask > 0, 1, 0)
                     np_masks[instance_index, :, :] = mask
 
                 instance_index += 1
