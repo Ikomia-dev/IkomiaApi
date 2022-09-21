@@ -24,6 +24,11 @@ import sys
 import types
 import importlib
 import shutil
+import json
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 SYSMODULES = [
@@ -71,6 +76,17 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
     def __call__(self, node):
         self.name = str(node)
         self.run_script(self.name)
+
+
+def get_installed_modules():
+    modules = {}
+    result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"], capture_output=True, text=True)
+    if result.stdout:
+        modules = json.loads(result.stdout)
+    else:
+        logger.error(result.stderr)
+
+    return modules
 
 
 def get_plugin_dependencies(plugin_folder):
@@ -126,12 +142,26 @@ def install_requirements(directory):
     req_files.sort()
 
     for file in req_files:
-        subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
+        except Exception as e:
+            logger.warning(e)
+
+
+def install_package(name, version):
+    if name:
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
+        except Exception as e:
+            logger.warning(e)
 
 
 def uninstall_package(name):
     if name:
-        subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+        except Exception as e:
+            logger.warning(e)
 
 
 def import_plugin_module(directory, name):
@@ -187,7 +217,7 @@ def conform_plugin_directory(directory, plugin):
 
 
 if __name__ == "__main__":
-    folder = '/home/yom/Ikomia/Plugins/Python/Yolact'
+    folder = 'plugin_folder'
     goodModules, badModules = get_plugin_dependencies(folder)
     print('Dependencies:\n')
     print(goodModules)
