@@ -62,26 +62,33 @@ def _write_auto_complete_str(f, name, skip_params=False):
         f.write(create_line)
 
 
-def _write_auto_complete(f, name, skip_params=False):
+def _write_auto_complete(f, task_name="", task=None, skip_params=False):
+    if not task_name and task is None:
+        raise RuntimeError("Auto-completion: parameters must include either a valid name or task instance.")
+
     forbid_char = "\ |\-|\[|\]"
 
+    if task is not None:
+        task_name = task.name
+
     # create global variable declaration
-    var_name = re.sub(forbid_char, "", name)
-    declaration = var_name + " = " + "\"" + name + "\"\n"
+    var_name = re.sub(forbid_char, "", task_name)
+    declaration = var_name + " = " + "\"" + task_name + "\"\n"
     f.write(declaration)
 
     if not skip_params:
-        # create class with attributes
-        algo = ikomia.ik_registry.create_algorithm(name)
-        if algo is None:
-            return
+        if task is None:
+            # create class with attributes
+            task = ikomia.ik_registry.create_algorithm(task_name)
+            if task is None:
+                raise RuntimeError(f"Auto-completion: enable to create algorithm {task_name}.")
 
-        parameters = algo.getParamValues()
+        parameters = task.getParamValues()
         if len(parameters) == 0:
             f.write("\n")
             return
 
-        class_name = re.sub(forbid_char, "", name)
+        class_name = re.sub(forbid_char, "", task_name)
         declaration = "class " + class_name + "_param:\n"
         f.write(declaration)
 
@@ -135,18 +142,45 @@ def make_local_plugins(force=False):
             folder = local_site
         except Exception:
             logger.warning("Ikomia auto-completion is disable")
-
-    names = ikomia.ik_registry.getAlgorithms()
-    for name in names:
-        _write_auto_complete(f, name, skip_params=False)
-
-    f.close()
+            return
 
     try:
+        names = ikomia.ik_registry.getAlgorithms()
+        for name in names:
+            _write_auto_complete(f, task_name=name, skip_params=False)
+
+        f.close()
         _generate_python_file(folder)
         logger.info("Ikomia auto-completion updated for installed plugins.")
-    except Exception:
+    except Exception as e:
         logger.info("Ikomia auto-completion cannot be generated.")
+        logger.debug(e)
+
+
+def update_local_plugin(task):
+    current_folder = os.path.dirname(__file__) + os.sep
+    cache_file_path1 = current_folder + "autocomplete_local.cache"
+    local_site = site.getusersitepackages() + os.sep + "ikomia" + os.sep + "utils" + os.sep
+    cache_file_path2 = local_site + "autocomplete_local.cache"
+
+    try:
+        f = open(cache_file_path1, "a+")
+        folder = current_folder
+    except Exception:
+        try:
+            f = open(cache_file_path2, "a+")
+            folder = local_site
+        except Exception:
+            logger.warning("Ikomia auto-completion is disable: no update.")
+
+    try:
+        _write_auto_complete(f, task=task, skip_params=False)
+        f.close()
+        _generate_python_file(folder)
+        logger.info("Ikomia auto-completion updated for installed plugin.")
+    except Exception as e:
+        logger.info("Ikomia auto-completion cannot be updated.")
+        logger.debug(e)
 
 
 def make_online_plugins(force=False):
@@ -177,8 +211,8 @@ def make_online_plugins(force=False):
     local_names = ikomia.ik_registry.getAlgorithms()
     for algo in online_algos:
         if algo["name"] not in local_names:
-            _write_auto_complete(f, algo["name"], skip_params=True)
+            _write_auto_complete(f, task_name=algo["name"], skip_params=True)
 
     f.close()
     _generate_python_file(folder)
-    logger.info("Ikomia auto-completion updated for marketplace plugins.")
+    logger.info("Ikomia auto-completion updated for Ikomia HUB algorithms.")

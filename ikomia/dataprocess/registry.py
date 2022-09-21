@@ -15,7 +15,7 @@
 """
 Module dedicated to algorithms management from the Ikomia platform.
 It implements IkomiaRegistry class that offers features to install, update and instanciate
-algorithms from the built-in environment or the Marketplace.
+algorithms from the built-in environment or Ikomia HUB.
 """
 import ikomia
 from ikomia import utils, dataprocess
@@ -43,7 +43,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     @utils.http.http_except
     def get_online_algorithms(self):
         """
-        Get the list of available algorithms from the Ikomia Marketplace.
+        Get the list of available algorithms from Ikomia HUB.
         Each algorithm is identified by a unique name.
         Each algorithm can then be instanciated from this name with the function
         :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
@@ -53,8 +53,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         """
         s = ikomia.ik_api_session
         if s is None or s.token is None:
-            logger.error("Failed to get online algorithms, authentication required.")
-            return
+            logger.error("Failed to get online algorithms from Ikomia HUB, authentication required.")
+            return None
 
         url = config.main_cfg["marketplace"]["url"] + "/api/plugin/"
         r = s.session.get(url)
@@ -73,7 +73,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.getAlgorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
         If algorithm is already in the registry, an object instance is directly returned. Otherwise,
-        the function tries to install it from the Marketplace and add it to the registry if installation success.
+        the function tries to install it from Ikomia HUB and add it to the registry if installation success.
         Finally the object instance is returned.
 
         Args:
@@ -94,7 +94,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 algo = self.createInstance(name, parameters)
 
                 if config.main_cfg["registry"]["auto_completion"]:
-                    autocomplete.make_local_plugins(force=True)
+                    autocomplete.update_local_plugin(algo)
             except ValueError as val_e:
                 logger.error(val_e)
             except ConnectionRefusedError as conn_e:
@@ -104,7 +104,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def update_algorithms(self):
         """
-        Launch automatic update of all algorithms in the registry. It only concerns algorithms of the Marketplace.
+        Launch automatic update of all algorithms in the registry. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
         """
         local_algos = self.getAlgorithms()
@@ -115,7 +115,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def update_algorithm(self, name):
         """
-        Launch update of the given algorithm. It only concerns algorithms of the Marketplace.
+        Launch update of the given algorithm. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
 
         Args:
@@ -140,7 +140,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 break
 
         if online_algo is None:
-            logger.error("Algorithm " + name + " does not exist in the Ikomia Marketplace")
+            logger.error("Algorithm " + name + " does not exist in Ikomia HUB")
             return
 
         info = self.getAlgorithmInfo(name)
@@ -226,7 +226,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 break
 
         if plugin_info is None:
-            error_msg = "Algorithm " + name + " does not exist in the Ikomia Marketplace"
+            error_msg = "Algorithm " + name + " does not exist in the Ikomia HUB"
             raise ValueError(error_msg)
 
         language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
