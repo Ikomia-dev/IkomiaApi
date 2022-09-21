@@ -143,7 +143,7 @@ Metadata
 --------
 
 Ikomia platform allows you to add additionnal information to your plugin. This will help users to 
-know more about your algorithm and give essential visual elements for the marketplace. 
+know more about your algorithm and give essential visual elements in Ikomia HUB.
 
 These information are store in a factory class inherited from :py:class:`~ikomia.dataprocess.pydataprocess.CTaskFactory`. 
 It aims to create instance of your process class. Plugin metadata are set in the constructor within the **CTaskInfo** member variable. 

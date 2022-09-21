@@ -247,8 +247,8 @@ Deep learning dataset
 
 :py:mod:`~ikomia.dnn.datasetio.IkDatasetIO`: input or output dedicated to handle deep learning image dataset. The Ikomia platform aims 
 to simplify the use of state of the art algorithms, especially training algorithms. The idea behind :py:mod:`~ikomia.dnn.datasetio.IkDatasetIO` 
-is to define a common structure so that every datasets converted to Ikomia format can then be used by any training algorithms of Ikomia 
-Marketplace. Ikomia dataset structure is inspired by PyTorch and Detectron2. It is composed of a global dict with 2 main entries 
+is to define a common structure so that every datasets converted to Ikomia format can then be used by any training algorithms from Ikomia
+HUB. Ikomia dataset structure is inspired by PyTorch and Detectron2. It is composed of a global dict with 2 main entries
 ‘images’ and ‘metadata’.
 
 This API provides built-in function to manage standard dataset format:
@@ -280,7 +280,7 @@ Basic usage:
             dataset.data = my_dataset_loader_func()
 
 .. note:: 
-    You will find other dataset loaders in the Ikomia Marketplace. You can also consult our GitHub repository to find implementation details (dataset_wgisd for example).
+    You will find other dataset loaders in Ikomia HUB. You can also consult our GitHub repository to find implementation details (dataset_wgisd for example).
 
 
 Filesystem path
