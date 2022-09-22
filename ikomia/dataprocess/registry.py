@@ -189,7 +189,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 try:
                     self._load_python_algorithm(root + os.sep + directory, directory)
                 except Exception as e:
-                    logger.error(e)
+                    logger.warning(f"Algorithm {directory} not loaded: {e}")
             break
 
     def _load_python_algorithm(self, directory, name):
