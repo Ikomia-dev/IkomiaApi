@@ -38,7 +38,7 @@ Useful links
 
 `Ikomia GitHub repository <https://github.com/Ikomia-dev/>`_
 
-`Ikomia HUB <https://ikomia.com/en/marketplace-en/>`_
+`Ikomia HUB algorithms GitHub repository <https://github.com/Ikomia-hub/>`_
 
 `Ikomia blog <https://blog.ikomia.com/>`_
 

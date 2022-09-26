@@ -69,7 +69,7 @@ Interface implementation
 ------------------------
 
 No features added from the default implementation.
-See `skimage_morpho_snakes.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_.
+See `skimage_morpho_snakes.py <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_.
 
 .. _process_implementation:
 
@@ -447,7 +447,7 @@ Method selection:
             self.gridLayout.setRowStretch(2,2)
 
 
-MGAC method parameters (see `source code <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
+MGAC method parameters (see `source code <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
 
 .. code-block:: python
 
@@ -457,7 +457,7 @@ MGAC method parameters (see `source code <https://github.com/Ikomia-dev/skimage_
             ...
 
 
-Chan Vese method parameters (see `source code <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
+Chan Vese method parameters (see `source code <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_ for details)
 
 .. code-block:: python
 
@@ -538,10 +538,10 @@ see :py:class:`~ikomia.dataprocess.pydataprocess.CTaskInfo` for details.
 Source code
 -----------
 
-`requirements.txt <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/requirements.txt>`_
+`requirements.txt <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/requirements.txt>`_
 
-`skimage_morpho_snakes.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_
+`skimage_morpho_snakes.py <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes.py>`_
 
-`skimage_morpho_snakes_process.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_process.py>`_
+`skimage_morpho_snakes_process.py <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_process.py>`_
 
-`skimage_morpho_snakes_widget.py <https://github.com/Ikomia-dev/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_
+`skimage_morpho_snakes_widget.py <https://github.com/Ikomia-hub/skimage_morpho_snakes/blob/main/skimage_morpho_snakes_widget.py>`_

@@ -31,7 +31,7 @@ you access to OpenCV algorithms with GPU acceleration, especially the Deep Learn
 
 .. code-block:: zsh
 
-    pip install ikomia==0.7.0+cu11 -f https://packages.ikomia.com/ikomia/index.html
+    pip install ikomia==0.8.0+cu11 -f https://packages.ikomia.com/ikomia/index.html
 
 .. note::
     For this version, we provide Python wheels for Python 3.7, 3.8 and 3.9. It includes OpenCV package (v4.5.2). For GPU
@@ -85,7 +85,7 @@ Task
 ^^^^
 
 A task represents the implementation of a specific algorithm. The common usage of the task object is to insert it in a workflow as a node and connect 
-it to others tasks. But a task is also a standalone object that can be executed independently. In Ikomia platform, a task implementation have to 
+it to others tasks. But a task is also a standalone object that can be executed independently. In Ikomia platform, a task implementation has to
 follow a specific architecture (plugin mechanism) as described in :doc:`this section <index_plugin>`. This API provides high level functions to 
 facilitate the use of Ikomia tasks (:py:mod:`~ikomia.core.task`).
 

@@ -120,7 +120,7 @@ start and stop events.
         - callback to manage video start event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notifyVideoStart`.
         - callback to manage video stop event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notifyVideoStop`.
 
-.. note:: Please consult source code of `infer_raft_optical_flow <https://github.com/Ikomia-dev/infer_raft_optical_flow>`_ for implementation example.
+.. note:: Please consult source code of `infer_raft_optical_flow <https://github.com/Ikomia-hub/infer_raft_optical_flow>`_ for implementation example.
 
 
 Deep Learning training algorithms
@@ -136,7 +136,7 @@ training algorithms. This base class integrated training monitoring features for
         - MLflow: a local tracking server is automatically started and ready to use at http://localhost:5000. By default, logging data are saved in the Ikomia folder in *mlflow* subdirectory. The class offers a thin wrapper to access logging methods: model hyper-parameters with :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_param` and :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_params`, model metrics with :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_metric` and :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_metrics` and model artifacts with :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_artifact` and :py:meth:`~ikomia.dnn.dnntrain.TrainProcess.log_artifacts`.
         - Tensorboard: a local tracking server is automatically started and ready to use at http://localhost:6006. By default, logging data are saved in the Ikomia folder in *tensorboard* subdirectory. Use classic Tensorboard functions to log your data.
 
-.. note:: Please consult source code of `train_yolov5 <https://github.com/Ikomia-dev/train_yolo_v5>`_ for implementation example.
+.. note:: Please consult source code of `train_yolov5 <https://github.com/Ikomia-hub/train_yolo_v5>`_ for implementation example.
 
 
 Metadata
