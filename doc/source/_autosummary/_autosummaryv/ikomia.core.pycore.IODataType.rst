@@ -22,12 +22,15 @@
       ~IODataType.IMAGE_BINARY
       ~IODataType.IMAGE_LABEL
       ~IODataType.INPUT_GRAPHICS
+      ~IODataType.INSTANCE_SEGMENTATION
       ~IODataType.LIVE_STREAM
       ~IODataType.LIVE_STREAM_BINARY
       ~IODataType.LIVE_STREAM_LABEL
       ~IODataType.NONE
       ~IODataType.NUMERIC_VALUES
+      ~IODataType.OBJECT_DETECTION
       ~IODataType.OUTPUT_GRAPHICS
+      ~IODataType.SEMANTIC_SEGMENTATION
       ~IODataType.VIDEO
       ~IODataType.VIDEO_BINARY
       ~IODataType.VIDEO_LABEL

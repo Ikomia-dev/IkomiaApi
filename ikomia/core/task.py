@@ -279,3 +279,51 @@ def get_path_output(task, index=-1):
     """
     data_types = [core.IODataType.FOLDER_PATH, core.IODataType.FILE_PATH]
     return _get_outputs(task, data_types, index=index)
+
+
+def get_object_detection_output(task, index=-1):
+    """
+    Get Object Detection output(s) of the given task. A task can have multiple Object Detection outputs so the index
+    argument can be set to specify the wanted output.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+        index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`: output or list of outputs.
+    """
+    data_types = [core.IODataType.OBJECT_DETECTION]
+    return _get_outputs(task, data_types, index=index)
+
+
+def get_instance_segmentation_output(task, index=-1):
+    """
+    Get Instance Segmentation output(s) of the given task. A task can have multiple Instance Segmentation outputs so the
+    index argument can be set to specify the wanted output.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+        index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`: output or list of outputs.
+    """
+    data_types = [core.IODataType.INSTANCE_SEGMENTATION]
+    return _get_outputs(task, data_types, index=index)
+
+
+def get_semantic_segmentation_output(task, index=-1):
+    """
+    Get Semantic Segmentation output(s) of the given task. A task can have multiple Semantic Segmentation outputs so the
+    index argument can be set to specify the wanted output.
+
+    Args:
+        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
+        index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`: output or list of outputs.
+    """
+    data_types = [core.IODataType.SEMANTIC_SEGMENTATION]
+    return _get_outputs(task, data_types, index=index)

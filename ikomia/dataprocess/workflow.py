@@ -366,6 +366,57 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self._get_task_output(task.get_path_output, task_id, task_name, index)
 
+    def get_object_detection_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow Object Detection output(s) for the given task(s). You can either pass a unique task ID or a task
+        name. In the latter case, several tasks of the workflow can match the name. The function will then return all
+        corresponding outputs in a list. Moreover, a task can have multiple Object Detection outputs so the
+        index (zero-based) argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`: output or list of outputs.
+        """
+        return self._get_task_output(task.get_object_detection_output, task_id, task_name, index)
+
+    def get_instance_segmentation_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow Instance Segmentation output(s) for the given task(s). You can either pass a unique task ID or a
+        task name. In the latter case, several tasks of the workflow can match the name. The function will then return
+        all corresponding outputs in a list. Moreover, a task can have multiple Instance Segmentation outputs so the
+        index (zero-based) argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`: output or list of outputs.
+        """
+        return self._get_task_output(task.get_instance_segmentation_output, task_id, task_name, index)
+
+    def get_semantic_segmentation_output(self, task_id=None, task_name="", index=-1):
+        """
+        Get workflow Semantic Segmentation output(s) for the given task(s). You can either pass a unique task ID or a
+        task name. In the latter case, several tasks of the workflow can match the name. The function will then return
+        all corresponding outputs in a list. Moreover, a task can have multiple Semantic Segmentation outputs so the
+        index (zero-based) argument can be set to specify the wanted output.
+
+        Args:
+            task_id (int): unique identifier of the task. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
+
+        Returns:
+            :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`: output or list of outputs.
+        """
+        return self._get_task_output(task.get_semantic_segmentation_output, task_id, task_name, index)
+
     def get_tasks(self):
         """
         Get unique identifier and name for all tasks composing the workflow.

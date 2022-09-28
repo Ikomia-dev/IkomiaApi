@@ -21,13 +21,16 @@ Workflow
         ~Workflow.get_array_output
         ~Workflow.get_blob_measure_output
         ~Workflow.get_dataset_output
+        ~Workflow.get_data_string_output
         ~Workflow.get_graphics_output
         ~Workflow.get_image
         ~Workflow.get_image_output
         ~Workflow.get_image_with_graphics
+        ~Workflow.get_instance_segmentation_output
         ~Workflow.get_numeric_output
-        ~Workflow.get_data_string_output
+        ~Workflow.get_object_detection_output
         ~Workflow.get_path_output
+        ~Workflow.get_semantic_segmentation_output
         ~Workflow.get_tasks
         ~Workflow.get_time_metrics
         ~Workflow.run
@@ -91,6 +94,7 @@ Workflow
     .. automethod:: get_array_output
     .. automethod:: get_blob_measure_output
     .. automethod:: get_dataset_output
+    .. automethod:: get_data_string_output
     .. automethod:: getEdgeInfo
     .. automethod:: getEdgeSource
     .. automethod:: getEdgeTarget
@@ -101,14 +105,16 @@ Workflow
     .. automethod:: get_image_output
     .. automethod:: get_image_with_graphics
     .. automethod:: getInEdges
+    .. automethod:: get_instance_segmentation_output
     .. automethod:: get_numeric_output
-    .. automethod:: get_data_string_output
+    .. automethod:: get_object_detection_output
     .. automethod:: getOutEdges
     .. automethod:: getParents
     .. automethod:: get_path_output
     .. automethod:: getRequiredTasks
     .. automethod:: getRootID
     .. automethod:: getRootTargetTypes
+    .. automethod:: get_semantic_segmentation_output
     .. automethod:: getTask
     .. automethod:: getTaskCount
     .. automethod:: getTaskIDs
