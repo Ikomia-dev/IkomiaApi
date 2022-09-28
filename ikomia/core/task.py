@@ -185,7 +185,7 @@ def get_graphics_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.OUTPUT_GRAPHICS]
     return _get_outputs(task, data_types, index=index)
@@ -201,7 +201,7 @@ def get_numeric_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.NUMERIC_VALUES]
     return _get_outputs(task, data_types, target_class=dataprocess.CNumericIO, index=index)
@@ -217,7 +217,7 @@ def get_data_string_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CDataStringIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CDataStringIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.NUMERIC_VALUES]
     return _get_outputs(task, data_types, target_class=dataprocess.CDataStringIO, index=index)
@@ -233,7 +233,7 @@ def get_blob_measure_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.BLOB_VALUES]
     return _get_outputs(task, data_types, index=index)
@@ -249,7 +249,7 @@ def get_dataset_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.DNN_DATASET]
     return _get_outputs(task, data_types, index=index)
@@ -265,7 +265,7 @@ def get_array_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CArrayIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.ARRAY]
     return _get_outputs(task, data_types, index=index)
@@ -281,7 +281,7 @@ def get_path_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CPathIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.FOLDER_PATH, core.IODataType.FILE_PATH]
     return _get_outputs(task, data_types, index=index)
@@ -297,7 +297,7 @@ def get_object_detection_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.OBJECT_DETECTION]
     return _get_outputs(task, data_types, index=index)
@@ -313,7 +313,7 @@ def get_instance_segmentation_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.INSTANCE_SEGMENTATION]
     return _get_outputs(task, data_types, index=index)
@@ -329,7 +329,7 @@ def get_semantic_segmentation_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.SEMANTIC_SEGMENTATION]
     return _get_outputs(task, data_types, index=index)
