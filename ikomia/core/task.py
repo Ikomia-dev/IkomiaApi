@@ -125,8 +125,6 @@ def _get_outputs(task, types, target_class=None, index=-1):
 
     if 0 <= index < len(outputs):
         return outputs[index]
-    elif len(outputs) == 1:
-        return outputs[0]
     else:
         return outputs
 
@@ -141,7 +139,7 @@ def get_image_output(task, index=-1):
         index (int): zero-based index of the output in case of multiple matches. With default -1, all outputs are returned.
 
     Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`: output or list of outputs.
+        :py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`: output if index is set, list of outputs otherwise.
     """
     data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     return _get_outputs(task, data_types, index=index)
@@ -165,8 +163,16 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
 
     img_data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     img_output = _get_outputs(task, img_data_types, index=image_index)
-    graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS], index=graphics_index)
-    return img_output.getImageWithGraphics(graphics_output)
+    graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS])
+    composite_output = _get_outputs(task, [core.IODataType.OBJECT_DETECTION, core.IODataType.INSTANCE_SEGMENTATION])
+
+    for out in composite_output:
+        graphics_output.append(out.getGraphicsIO())
+
+    if graphics_index < len(graphics_output):
+        return img_output.getImageWithGraphics(graphics_output[graphics_index])
+    else:
+        return None
 
 
 def get_graphics_output(task, index=-1):
