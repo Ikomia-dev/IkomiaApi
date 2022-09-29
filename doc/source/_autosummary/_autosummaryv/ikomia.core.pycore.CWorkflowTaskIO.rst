@@ -16,12 +16,15 @@ CWorkflowTaskIO
       ~CWorkflowTaskIO.__init__
       ~CWorkflowTaskIO.clearData
       ~CWorkflowTaskIO.copyStaticData
+      ~CWorkflowTaskIO.fromJson
       ~CWorkflowTaskIO.getUnitElementCount
       ~CWorkflowTaskIO.isAutoInput
       ~CWorkflowTaskIO.isDataAvailable
+      ~CWorkflowTaskIO.load
+      ~CWorkflowTaskIO.save
       ~CWorkflowTaskIO.setDisplayable
       ~CWorkflowTaskIO.toJson
-      ~CWorkflowTaskIO.fromJson
+
    
    .. rubric:: Attributes
    .. autosummary::
@@ -36,10 +39,13 @@ CWorkflowTaskIO
    .. automethod:: __init__
    .. automethod:: clearData
    .. automethod:: copyStaticData
+   .. automethod:: fromJson
    .. automethod:: getUnitElementCount
    .. automethod:: isAutoInput
    .. automethod:: isDataAvailable
+   .. automethod:: load
+   .. automethod:: save
    .. automethod:: setDisplayable
    .. automethod:: toJson
-   .. automethod:: fromJson
+
    
