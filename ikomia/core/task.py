@@ -17,8 +17,11 @@ Module dedicated to high-level features around task management.
 
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
+import logging
 import ikomia
 from ikomia import core, dataprocess
+
+logger = logging.getLogger(__name__)
 
 
 class TaskParam(core.CWorkflowTaskParam):
@@ -123,10 +126,12 @@ def _get_outputs(task, types, target_class=None, index=-1):
             elif type(output) == target_class:
                 outputs.append(output)
 
-    if 0 <= index < len(outputs):
+    if index == -1:
+        return outputs
+    elif 0 <= index < len(outputs):
         return outputs[index]
     else:
-        return outputs
+        return None
 
 
 def get_image_output(task, index=-1):
@@ -163,6 +168,10 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
 
     img_data_types = [core.IODataType.IMAGE, core.IODataType.IMAGE_BINARY, core.IODataType.IMAGE_LABEL]
     img_output = _get_outputs(task, img_data_types, index=image_index)
+    if img_output is None:
+        logger.error(f"No image output available at index {image_index} in task {task.name}")
+        return None
+
     graphics_output = _get_outputs(task, [core.IODataType.OUTPUT_GRAPHICS])
     composite_output = _get_outputs(task, [core.IODataType.OBJECT_DETECTION, core.IODataType.INSTANCE_SEGMENTATION])
 
@@ -172,6 +181,7 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
     if graphics_index < len(graphics_output):
         return img_output.getImageWithGraphics(graphics_output[graphics_index])
     else:
+        logger.error(f"No graphics output available at index {graphics_index} for task {task.name}")
         return None
 
 
