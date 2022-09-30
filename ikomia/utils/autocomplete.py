@@ -20,8 +20,14 @@ import logging
 import shutil
 import importlib
 import sys
-
 import ikomia
+
+try:
+    from ikomia.utils import ik
+    _ik_auto_complete = True
+except:
+    _ik_auto_complete = False
+
 
 logger = logging.getLogger()
 
@@ -122,6 +128,20 @@ def _generate_python_file(folder):
         importlib.reload(ikomia.utils.ik)
 
 
+def _check_sync():
+    if not _ik_auto_complete:
+        return False
+
+    ik_names = dir(ik)
+    names = ikomia.ik_registry.getAlgorithms()
+
+    for name in names:
+        if name not in ik_names:
+            return False
+
+    return True
+
+
 def make_local_plugins(force=False):
     current_folder = os.path.dirname(__file__) + os.sep
     cache_file_path1 = current_folder + "autocomplete_local.cache"
@@ -129,7 +149,7 @@ def make_local_plugins(force=False):
     cache_file_path2 = local_site + "autocomplete_local.cache"
 
     if not force:
-        if os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2):
+        if _check_sync() and (os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)):
             return
 
     try:
