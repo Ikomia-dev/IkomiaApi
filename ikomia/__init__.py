@@ -41,6 +41,13 @@ global ik_registry
 ik_registry = None
 
 
+if not utils.isAppStarted():
+    ik_registry = registry.IkomiaRegistry()
+
+    if config.main_cfg["registry"]["auto_completion"]:
+        autocomplete.make_local_plugins()
+
+
 def authenticate():
     from dotenv import load_dotenv
     load_dotenv()
@@ -55,8 +62,6 @@ def authenticate():
         autocomplete.make_online_plugins(force=not_auth)
 
 
-if not utils.isAppStarted():
-    ik_registry = registry.IkomiaRegistry()
-
-    if config.main_cfg["registry"]["auto_completion"]:
-        autocomplete.make_local_plugins()
+def make_auto_complete():
+    autocomplete.make_local_plugins(force=True)
+    autocomplete.make_online_plugins(force=True)
