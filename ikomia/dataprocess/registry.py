@@ -218,6 +218,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
+        if available_plugins is None:
+            raise RuntimeError(f"Download algorithm {name} failed. Please check connection and authentication.")
+
         plugin_info = None
 
         for plugin in available_plugins:
