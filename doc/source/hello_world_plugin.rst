@@ -71,7 +71,7 @@ Here are the steps you should follow:
 
         mkdir c:\Users\{username}\Ikomia\Plugins\Python\hello_world
 
-    Linux and Mac OS X
+    Linux
 
     .. code-block:: bash
 
@@ -87,7 +87,7 @@ Here are the steps you should follow:
 
         c:\Users\{username}\Ikomia\Python\
 
-    Linux and Mac OS X
+    Linux
 
     .. code-block:: bash
 
