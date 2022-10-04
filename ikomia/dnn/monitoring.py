@@ -3,6 +3,7 @@ import os
 import requests
 import subprocess
 import logging
+from requests.adapters import HTTPAdapter, Retry
 from ikomia.core import config
 from ikomia.utils import is_colab
 
@@ -28,6 +29,7 @@ def check_mlflow_server():
             store_uri = config.main_cfg["mlflow"]["store_uri"]
             artifact_uri = config.main_cfg["mlflow"]["artifact_uri"]
 
+        logger.info(f"Starting MLflow server...")
         proc = subprocess.Popen(["mlflow", "server",
                                  "--backend-store-uri", store_uri,
                                  "--default-artifact-root", artifact_uri,
@@ -63,15 +65,28 @@ def check_tensorboard_server():
         logger.info("To enable Tensorboard on Colab, please use the magic command: %load_ext tensorboard")
         return
 
+    url = config.main_cfg["tensorboard"]["tracking_uri"]
     try:
-        url = config.main_cfg["tensorboard"]["tracking_uri"]
         r = requests.get(url)
         r.raise_for_status()
         logger.info(f"Tensorboard server is started at {config.main_cfg['tensorboard']['tracking_uri']}")
     except:
         # Start server if needed
+        logger.info(f"Starting Tensorboard server...")
         proc = subprocess.Popen(["tensorboard", "--logdir", config.main_cfg["tensorboard"]["log_uri"]])
         poll = proc.poll()
 
         if poll is None:
+            retries = 5
+            session = requests.session()
+            retry = Retry(
+                total=retries,
+                read=retries,
+                connect=retries,
+                backoff_factor=0.2,
+                status_forcelist=[500, 502, 503, 504], )
+            adapter = HTTPAdapter(max_retries=retry)
+            session.mount("http://", adapter)
+            session.mount("https://", adapter)
+            r = session.get(url)
             logger.info(f"Tensorboard server started successfully at {config.main_cfg['tensorboard']['tracking_uri']}")
