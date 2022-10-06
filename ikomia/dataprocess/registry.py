@@ -56,7 +56,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.error("Failed to get online algorithms from Ikomia HUB, authentication required.")
             return None
 
-        url = config.main_cfg["marketplace"]["url"] + "/api/plugin/"
+        url = config.main_cfg["hub"]["url"] + "/api/plugin/"
         r = s.session.get(url)
         r.raise_for_status()
         all_plugins = r.json()
@@ -246,14 +246,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             raise ConnectionRefusedError(error_msg)
 
         # Get plugin package url
-        url = config.main_cfg["marketplace"]["url"] + "/api/plugin/" + str(plugin_info["id"]) + "/package/"
+        url = config.main_cfg["hub"]["url"] + "/api/plugin/" + str(plugin_info["id"]) + "/package/"
         r = s.session.get(url)
         r.raise_for_status()
         package_info = r.json()
         package_url = package_info["packageFile"]
 
         # Download package
-        url = config.main_cfg["marketplace"]["url"] + package_url
+        url = config.main_cfg["hub"]["url"] + package_url
         file_path = self.getPluginsDirectory() + "/Transfer/" + os.path.basename(package_url)
         utils.http.download_file(url, file_path, public=False)
 
