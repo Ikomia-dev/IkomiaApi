@@ -1,6 +1,6 @@
 # Ikomia API
 
-![](https://ikomia.com/wp-content/uploads/2022/07/carbon6.png)
+![](https://ikomia.com/wp-content/uploads/2022/10/code_yolov7.png)
 
 This project provides Python API to leverage state-of-the-art algorithms for your own computer vision application. Ikomia API is framework-agnostic, algorithms can be implemented in your favorite Python library (PyTorch, TensorFlow, Keras, Scikit-image, OpenCV ... ).
 
