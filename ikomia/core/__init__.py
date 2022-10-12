@@ -13,9 +13,6 @@
 # limitations under the License.
 
 import os
-import sys
-import logging
-import time
 
 try:
     # Valid for Ikomia Studio or Linux platform
@@ -25,9 +22,6 @@ except:
     from ikomia.lib.pycore import *
 
 from ikomia.core import config
-
-
-logger = logging.getLogger()
 
 
 def _check_directories():
@@ -43,41 +37,9 @@ def _check_directories():
     os.makedirs(config.main_cfg["tensorboard"]["log_uri"], exist_ok=True)
 
 
-def _init_logging(rank=-1):
-    if rank in [-1, 0]:
-        logger.handlers = []
-        logger.setLevel(logging.INFO)
-
-        # log to stdout and stderr
-        formatter = logging.Formatter("%(message)s")
-        info = logging.StreamHandler(sys.stdout)
-        info.setLevel(logging.INFO)
-        info.setFormatter(formatter)
-        logger.addHandler(info)
-
-        err = logging.StreamHandler(sys.stderr)
-        err.setLevel(logging.ERROR)
-        err.setFormatter(formatter)
-        logger.addHandler(err)
-
-        # log to file
-        log_path = config.main_cfg["root_folder"] + "/log.txt"
-        file_formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s", "%Y-%m-%d %H:%M:%S")
-        file_handler = logging.FileHandler(log_path, 'a')
-        file_handler.setLevel(logging.DEBUG)
-        file_handler.setFormatter(file_formatter)
-        logger.addHandler(file_handler)
-
-        with open(log_path, "w") as f:
-            logger.info(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
-    else:
-        logging.basicConfig(format="%(message)s", level=logging.WARN)
-
-
 def get_ikomia_root_folder():
     return config.main_cfg["root_folder"]
 
 
 # API initialization
 _check_directories()
-_init_logging()
