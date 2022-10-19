@@ -27,4 +27,4 @@ the same Python environment. This will lead to incompatibility issues.
 
 ## Documentation
 
-Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find plugin examples in [our main GitHub account](https://github.com/Ikomia-dev).
+Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub).
