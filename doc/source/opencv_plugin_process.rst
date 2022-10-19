@@ -101,12 +101,12 @@ Code example for OCVBasics process implementation
 
     # --------------------
     # - Factory class to build process object
-    # - Inherits dataprocess.CProcessFactory from Ikomia API
+    # - Inherits dataprocess.CTaskFactory from Ikomia API
     # --------------------
-    class OCVBasicsFactory(dataprocess.CProcessFactory):
+    class OCVBasicsFactory(dataprocess.CTaskFactory):
 
         def __init__(self):
-            dataprocess.CProcessFactory.__init__(self)
+            dataprocess.CTaskFactory.__init__(self)
             # Set process information as string here
             self.info.name = "ocv_basics"
             self.info.shortDescription = "OpenCV Canny"

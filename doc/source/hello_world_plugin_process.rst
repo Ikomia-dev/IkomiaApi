@@ -90,7 +90,7 @@ Code example for process implementation
 
     # --------------------
     # - Factory class to build process object
-    # - Inherits CProcessFactory from Ikomia API
+    # - Inherits CTaskFactory from Ikomia API
     # --------------------
     class HelloWorldFactory(dataprocess.CTaskFactory):
 
