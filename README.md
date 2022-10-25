@@ -109,6 +109,10 @@ img_bbox = cv2.cvtColor(img_bbox, cv2.COLOR_RGB2BGR)
 cv2.imshow(img_bbox)
 
 ```
+<p float="left">
+  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot.png?raw=true" width="500" /> 
+  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot_bbox.png?raw=true" width="500" />
+</p>
 
 You can also change each algorithms parameters.
 
