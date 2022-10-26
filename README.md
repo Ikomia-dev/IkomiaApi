@@ -1,6 +1,5 @@
 <a name="readme-top"></a>
 
-
 <p align="center">
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/stargazers">
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
@@ -39,7 +38,6 @@
     <a href="https://github.com/Ikomia-dev/IkomiaApi/discussions/categories/q-a">Ask a question</a>
   </p>
 </div>
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -259,6 +257,11 @@ Notebooks | Google Colab
 
 Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub).
 
+
+<!-- DOCUMENTATION -->
+## Our stargazers
+
+[![Stargazers repo roster for @Ikomia-dev/IkomiaApi](https://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
 
 <!-- LICENSE -->
 ## License
