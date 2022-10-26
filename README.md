@@ -74,7 +74,7 @@ You simply install Ikomia API via pip for Linux and Windows :
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+### Usage
 
 Ikomia API has already more than 180 pre-integrated algorithms (mainly OpenCV) but the most interesting algorithms are in [Ikomia HUB](https://github.com/Ikomia-hub).
 That's why, you need to connect to Ikomia HUB when you want to download/install these algorithms.
@@ -152,6 +152,11 @@ If you don't know what are the parameters (which is often the case), just print 
 ``` python
 print(yolo)
 ```
+
+<details><summary>Show print</summary>
+<p>
+
+
 ```
 ###################################
 #	infer_yolo_v7
@@ -222,6 +227,10 @@ Save format: .json
 Dimension count: 0
 ```
 
+</p>
+</details>
+
+
 Then you can easily save your workflow as JSON file for reuse.
 ``` python
 wf.save("path/to/your/workflow.json")
@@ -242,7 +251,7 @@ output_list[0].toJson()
 ```
 
 <!-- EXAMPLES -->
-## Examples
+### Examples
 
 You can find some notebooks [here](https://github.com/Ikomia-dev/notebooks).
 
@@ -261,7 +270,7 @@ Notebooks | Google Colab
 Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub).
 
 
-<!-- DOCUMENTATION -->
+<!-- STARGAZERS -->
 ## Our stargazers
 
 [![Stargazers repo roster for @Ikomia-dev/IkomiaApi](https://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
