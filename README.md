@@ -47,9 +47,9 @@
 This project provides Python API to leverage state-of-the-art algorithms for your own computer vision application. Ikomia API is framework-agnostic, algorithms can be implemented in your favorite Python library (PyTorch, TensorFlow, Keras, Scikit-image, OpenCV ... ).
 
 You will be led to use this API for two reasons:
-- **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms, yours and those from Ikomia HUB directly in your application. Run single algorithm or workflows with a few lines of code.
+- **Use Ikomia algorithms and workflows in your custom applications**: leverage built-in algorithms, yours and those from [Ikomia HUB](https://github.com/Ikomia-hub) directly in your application. Run single algorithm or workflows with a few lines of code.
 
-- **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to use your algorithm from a user friendly software [Ikomia Studio](https://github.com/Ikomia-dev/IkomiaStudio) and a flexible workflow API (see below). Moreover, from Ikomia Studio you can publish your work to Ikomia HUB in one click and share it with the community.
+- **Create plugins for Ikomia platform**: with a little wrap around your Python code, you are able to use your algorithm from a user friendly software [Ikomia Studio](https://github.com/Ikomia-dev/IkomiaStudio) and a flexible workflow API (see below). Moreover, from Ikomia Studio you can publish your work to [Ikomia HUB](https://github.com/Ikomia-hub) in one click and share it with the community.
 
 
 > **_Note:_**  This Python API is built on top of a C++ core framework bundled in the provided wheels. This core framework handles plugins connection, workflow management, generic execution runtime and Python bindings.
@@ -72,8 +72,24 @@ You simply install Ikomia API via pip for Linux and Windows :
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Ikomia API is built around a workflow system (think of an oriented graph). Each node is an algorithm and each edge is an input/output such as images, videos, graphics, measures and so on.
-When you want to use an algorithm, it's always the same pattern which is useful when you want to test multiple algorithms effortlessly.
+Ikomia API has already more than 180 pre-integrated algorithms (mainly OpenCV) but the most interesting algorithms are in [Ikomia HUB](https://github.com/Ikomia-hub).
+That's why, you need to connect to Ikomia HUB when you want to download/install these algorithms.
+Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this snippet code:
+
+``` python
+import ikomia
+import os
+
+os.environ['IKOMIA_USER'] = "your_login"
+os.environ['IKOMIA_PWD'] = "your_password"
+
+ikomia.authenticate()
+
+```
+Once you have downloaded and installed what you want, you don't need to connect again unless you want to try an other algorithm.
+
+All that said,  Ikomia API is built around a workflow system (think of an oriented graph). Each node is an algorithm and each edge is an input/output such as images, videos, graphics, measures and so on.
+When you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
 For convenience, We provide an auto-completion mechanism proposing available algorithms while coding (for built-in and installed algorithms only). It is available under the ik namespace.
 
 ``` python
