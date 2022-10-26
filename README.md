@@ -2,24 +2,26 @@
 
 
 <p align="center">
-    <a href="https://github.com/Ikomia-dev/IkomiaAPI/blob/main/LICENSE.md">
-        <img alt="GitHub" src="https://img.shields.io/github/license/Ikomia-dev/IkomiaAPI.svg?color=blue">
+    <a href="https://github.com/Ikomia-dev/IkomiaAPI/stargazers">
+        <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
     </a>
     <a href="https://ikomia.com/en/computer-vision-api/">
         <img alt="Website" src="https://img.shields.io/website/http/ikomia.com/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
-    <a href="https://github.com/huggingface/transformers/releases">
-        <img alt="GitHub release" src="https://img.shields.io/github/v/tag/Ikomia-dev/IkomiaAPI.svg?color=red">
+    <a href="https://github.com/Ikomia-dev/IkomiaAPI/blob/main/LICENSE.md">
+        <img alt="GitHub" src="https://img.shields.io/github/license/Ikomia-dev/IkomiaAPI.svg?color=blue">
+    </a>
+    <a href="https://github.com/Ikomia-dev/IkomiaAPI/tags">
+        <img alt="GitHub tags" src="https://img.shields.io/github/v/tag/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
 </p>
-
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/Ikomia-dev/IkomiaAPI">
-    <img src="images/app.png" alt="Logo" width="80" height="80">
+    <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">Ikomia API</h3>
@@ -33,6 +35,8 @@
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues">Report Bug</a>
     ·
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues">Request Feature</a>
+    ·
+    <a href="https://github.com/Ikomia-dev/IkomiaApi/discussions/categories/q-a">Ask a question</a>
   </p>
 </div>
 
@@ -40,9 +44,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<h3 align="center">
-    <a href="https://ikomia.com"><img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/banner_ikomia.png?raw=true"></a>
-</h3>
+<p align="center">
+  <kbd>
+    <img src="https://user-images.githubusercontent.com/42171814/198096536-e5a9c252-faa8-42cd-9d23-93a5ceff8155.png"/>
+  </kbd>
+</p>
 
 This project provides Python API to leverage state-of-the-art algorithms for your own computer vision application. Ikomia API is framework-agnostic, algorithms can be implemented in your favorite Python library (PyTorch, TensorFlow, Keras, Scikit-image, OpenCV ... ).
 
