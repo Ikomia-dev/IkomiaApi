@@ -39,6 +39,12 @@
   </p>
 </div>
 
+<p align="center">
+  <kbd>
+    <img src="https://user-images.githubusercontent.com/42171814/198855887-cf342fa1-7ba2-4aa4-a1f2-fa4fe0a833a4.png"/>
+  </kbd>
+</p>
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -127,8 +133,8 @@ cv2.imshow(img_bbox)
 
 ```
 <p float="left">
-  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot.png?raw=true" width="500" /> 
-  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot_bbox.png?raw=true" width="500" />
+  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot.png?raw=true" width="400" /> 
+  <img src="https://github.com/Ikomia-dev/notebooks/blob/main/examples/img/img_foot_bbox.png?raw=true" width="400" />
 </p>
 
 You can also change each algorithms parameters.
@@ -241,7 +247,27 @@ output_list = wf.get_object_detection_output(task_name=ik.infer_yolo_v7)
 output_list[0].toJson()
 ```
 ```
-'{"detections":[{"box":{"height":195,"width":463,"x":183,"y":261},"color":{"a":0,"b":192,"g":106,"r":91},"confidence":0.90673828125,"id":0,"label":"car"}]}'
+{
+  "detections": [
+    {
+      "box": {
+        "height": 195,
+        "width": 463,
+        "x": 183,
+        "y": 261
+      },
+      "color": {
+        "a": 0,
+        "b": 192,
+        "g": 106,
+        "r": 91
+      },
+      "confidence": 0.90673828125,
+      "id": 0,
+      "label": "car"
+    }
+  ]
+}
 ```
 
 <!-- EXAMPLES -->
