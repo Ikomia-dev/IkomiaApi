@@ -7,6 +7,9 @@
     <a href="https://ikomia.com/en/computer-vision-api/">
         <img alt="Website" src="https://img.shields.io/website/http/ikomia.com/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
+    <a href="">
+        <img alt="Python" src="https://img.shields.io/badge/python-3.7%2C%203.8%2C%203.9-blueviolet">
+    </a>
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/blob/main/LICENSE.md">
         <img alt="GitHub" src="https://img.shields.io/github/license/Ikomia-dev/IkomiaAPI.svg?color=blue">
     </a>
@@ -69,9 +72,6 @@ No effort, just choose what you want and Ikomia downloads it, installs the requi
 You simply install Ikomia API via pip for Linux and Windows :
 
 `pip install ikomia`
-
->**_Note:_** we provide Python wheel for Python 3.7, 3.8 and 3.9. For Linux users, the wheel targets the platform manylinux2014 so that it should be compatible with most of recent distributions. For Windows, the wheel is only compatible with Windows 10.
-
 
 <!-- USAGE EXAMPLES -->
 ### Usage
