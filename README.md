@@ -60,9 +60,6 @@ No effort, just choose what you want and Ikomia downloads it, installs the requi
 
 ### Installation
 
-
-You simply install Ikomia API via pip for Linux and Windows :
-
 `pip install ikomia`
 
 <!-- USAGE EXAMPLES -->
@@ -100,8 +97,6 @@ wf = workflow.create("YOLO inference")
 
 # Add YOLO and connect it to your input data
 # The same code for every YOLO algorithms !!
-
-# yolo_id, yolo = wf.add_task(ik.infer_yolo_v3)
 # yolo_id, yolo = wf.add_task(ik.infer_yolo_v4)
 # yolo_id, yolo = wf.add_task(ik.infer_yolo_v5)
 yolo_id, yolo = wf.add_task(ik.infer_yolo_v7)
