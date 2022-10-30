@@ -1,5 +1,15 @@
 <a name="readme-top"></a>
 
+<!-- PROJECT LOGO -->
+<div align="center">
+  <a href="https://github.com/Ikomia-dev/IkomiaAPI">
+    <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
+  </a>
+
+  <h3 align="center">Computer Vision, quick and simple !</h3>
+
+</div>
+
 <p align="center">
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/stargazers">
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
@@ -20,30 +30,6 @@
         <img alt="GitHub tags" src="https://img.shields.io/github/v/tag/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
 </p>
-
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/Ikomia-dev/IkomiaAPI">
-    <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
-  </a>
-
-  <h3 align="center">Ikomia API</h3>
-
-  <p align="center">
-    Computer Vision, quick and simple !
-    <br />
-    <a href="https://ikomia-dev.github.io/python-api-documentation/"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues">Request Feature</a>
-    ·
-    <a href="https://github.com/Ikomia-dev/IkomiaApi/discussions/categories/q-a">Ask a question</a>
-  </p>
-</div>
 
 <p align="center">
   <kbd>
