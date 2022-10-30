@@ -290,6 +290,9 @@ Distributed under the Apache-2.0 License. See `LICENSE.md` for more information.
 
 [![Stargazers repo roster for @Ikomia-dev/IkomiaApi](https://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Ikomia-dev/IkomiaAPI&type=Date)](https://star-history.com/#Ikomia-dev/IkomiaAPI&Date)
 
 <!-- CITATION -->
 ## Citing Ikomia
