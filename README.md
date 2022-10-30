@@ -8,6 +8,9 @@
         <img alt="Website" src="https://img.shields.io/website/http/ikomia.com/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
+        <img alt="Python" src="https://img.shields.io/badge/os-win10%2C%20linux-9cf">
+    </a>
+    <a href="">
         <img alt="Python" src="https://img.shields.io/badge/python-3.7%2C%203.8%2C%203.9-blueviolet">
     </a>
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/blob/main/LICENSE.md">
