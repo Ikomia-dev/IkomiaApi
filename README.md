@@ -276,8 +276,8 @@ Notebooks | Google Colab
 
 Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub).
 
-<!-- CONTRIBUTIONS -->
-## Contributions
+<!-- CONTRIBUTING -->
+## Contributing
 
 This part is coming soon...:)
 
