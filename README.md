@@ -36,7 +36,7 @@
 
 <p align="center">
   <kbd>
-    <img src="https://user-images.githubusercontent.com/42171814/198855887-cf342fa1-7ba2-4aa4-a1f2-fa4fe0a833a4.png"/>
+    <img src="https://user-images.githubusercontent.com/42171814/200714085-399b7625-81ae-4c71-bb39-8483bf4e204e.gif"/>
   </kbd>
 </p>
 
@@ -49,9 +49,10 @@ No effort, just choose what you want and Ikomia downloads it, installs the requi
 
 <p align="center">
   <kbd>
-    <img src="https://user-images.githubusercontent.com/42171814/198096536-e5a9c252-faa8-42cd-9d23-93a5ceff8155.png"/>
+    <img src="https://user-images.githubusercontent.com/42171814/200714144-59de3910-3926-4665-b8b0-af6eadfa6ae3.png"/>
   </kbd>
 </p>
+
 
 
 <!-- GETTING STARTED -->
