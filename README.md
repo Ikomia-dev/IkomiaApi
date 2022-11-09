@@ -30,7 +30,7 @@
         <img alt="GitHub" src="https://img.shields.io/github/license/Ikomia-dev/IkomiaAPI.svg?color=blue">
     </a>
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/tags">
-        <img alt="GitHub tags" src="https://img.shields.io/github/v/tag/Ikomia-dev/IkomiaAPI.svg?color=red">
+        <img alt="GitHub tags" src="https://img.shields.io/github/v/release/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
 </p>
 
@@ -87,7 +87,7 @@ Once you have downloaded and installed what you want, you don't need to connect 
 
 All that said,  Ikomia API is built around a workflow system (think of an oriented graph). Each node is an algorithm and each edge is an input/output such as images, videos, graphics, measures and so on.
 When you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
-For convenience, We provide an auto-completion mechanism proposing available algorithms while coding (for built-in and installed algorithms only). It is available under the ik namespace.
+For convenience, we provide an auto-completion mechanism proposing available algorithms while coding (for built-in and installed algorithms only). It is available under the ik namespace.
 
 ``` python
 from ikomia.dataprocess import workflow
