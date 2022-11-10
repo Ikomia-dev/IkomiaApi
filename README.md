@@ -117,7 +117,7 @@ import cv2
 img_bbox = wf.get_image_with_graphics(yolo_id)
 img_bbox = cv2.cvtColor(img_bbox, cv2.COLOR_RGB2BGR)
 
-cv2.imshow(img_bbox)
+cv2.imshow("Ikomia Demo", img_bbox)
 
 ```
 <p float="left">
