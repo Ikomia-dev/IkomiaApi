@@ -5,7 +5,7 @@
   <a href="https://github.com/Ikomia-dev/IkomiaAPI">
     <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">State-of-the-art Computer Vision with a few lines of code</h3>
+  <h1 align="center">State-of-the-art Computer Vision with a few lines of code</h1>
   <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
   <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
