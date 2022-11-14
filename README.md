@@ -69,7 +69,7 @@ No effort, just choose what you want and Ikomia downloads it, installs the requi
 Ikomia API has already more than 180 pre-integrated algorithms (mainly OpenCV) but the most interesting algorithms are in [Ikomia HUB](https://github.com/Ikomia-hub).
 That's why, you need to connect to Ikomia HUB when you want to download/install these algorithms.
 
-You can use our demo credentials below or you can get yours and join our community [here](https://members.ikomia.com/accounts/signup/) :)
+You can use our demo credentials below or you can get yours for free and join our community [here](https://members.ikomia.com/accounts/signup/) :)
 
 Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this code snippet:
 
