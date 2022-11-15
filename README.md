@@ -252,7 +252,7 @@ output_list[0].toJson()
       },
       "confidence": 0.90673828125,
       "id": 0,
-      "label": "car"
+      "label": "ball"
     }
   ]
 }
