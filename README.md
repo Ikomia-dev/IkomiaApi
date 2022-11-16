@@ -32,6 +32,10 @@
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/tags">
         <img alt="GitHub tags" src="https://img.shields.io/github/v/release/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
+    <br>
+    <a href="https://join.slack.com/t/ikomia-community/shared_invite/zt-1ie9k8lw7-IsBaJ~nhGZyc0QfkYO3olA">
+        <img alt="Slack community" src="https://img.shields.io/badge/Slack-white?style=social&logo=slack">
+    </a> 
 </p>
 
 <p align="center">
