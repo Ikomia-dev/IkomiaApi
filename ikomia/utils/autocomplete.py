@@ -29,7 +29,7 @@ except:
     _ik_auto_complete = False
 
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 def _write_auto_complete_str(f, name, skip_params=False):
@@ -87,7 +87,7 @@ def _write_auto_complete(f, task_name="", task=None, skip_params=False):
             # create class with attributes
             task = ikomia.ik_registry.create_algorithm(task_name)
             if task is None:
-                raise RuntimeError(f"Auto-completion: enable to create algorithm {task_name}.")
+                raise RuntimeError(f"Auto-completion: unable to create algorithm {task_name}.")
 
         parameters = task.getParamValues()
         if len(parameters) == 0:
@@ -164,11 +164,16 @@ def make_local_plugins(force=False):
             logger.warning("Ikomia auto-completion is disable")
             return
 
-    try:
-        names = ikomia.ik_registry.getAlgorithms()
-        for name in names:
-            _write_auto_complete(f, task_name=name, skip_params=False)
 
+    names = ikomia.ik_registry.getAlgorithms()
+    for name in names:
+        try:
+            _write_auto_complete(f, task_name=name, skip_params=False)
+        except Exception as e:
+            # SKip failing plugin
+            logger.debug(e)
+
+    try:
         f.close()
         _generate_python_file(folder)
         logger.info("Ikomia auto-completion updated for installed plugins.")
@@ -231,8 +236,16 @@ def make_online_plugins(force=False):
     local_names = ikomia.ik_registry.getAlgorithms()
     for algo in online_algos:
         if algo["name"] not in local_names:
-            _write_auto_complete(f, task_name=algo["name"], skip_params=True)
+            try:
+                _write_auto_complete(f, task_name=algo["name"], skip_params=True)
+            except Exception as e:
+                # SKip failing plugin
+                logger.debug(e)
 
-    f.close()
-    _generate_python_file(folder)
-    logger.info("Ikomia auto-completion updated for Ikomia HUB algorithms.")
+    try:
+        f.close()
+        _generate_python_file(folder)
+        logger.info("Ikomia auto-completion updated for Ikomia HUB algorithms.")
+    except Exception as e:
+        logger.info("Ikomia auto-completion cannot be generated.")
+        logger.debug(e)
