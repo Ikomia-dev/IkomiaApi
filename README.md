@@ -47,7 +47,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Ikomia API is an **open source tool** to build and deploy Computer Vision workflows quickly without much effort. You can mix your preferred frameworks such as **OpenCV**, **Detectron2**, **OpenMMLab** or **YOLO** with the best state-of-the-art algorithms from individual repos.
+Ikomia API is an **open source tool** to easily build and deploy your Computer Vision solutions. You can mix your preferred frameworks such as **OpenCV**, **Detectron2**, **OpenMMLab** or **YOLO** with the best state-of-the-art algorithms from individual repos.
 
 No effort, just choose what you want and Ikomia downloads it, installs the requirements and runs everything in a few lines of code.
 
