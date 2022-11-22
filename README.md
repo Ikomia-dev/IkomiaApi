@@ -44,6 +44,7 @@
   </kbd>
 </p>
 
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -51,13 +52,13 @@ Ikomia API is an **open source tool** to easily build and deploy your Computer V
 
 No effort, just choose what you want and Ikomia downloads it, installs the requirements and runs everything in a few lines of code.
 
+
 <p align="center">
   <kbd>
+    <img src="https://user-images.githubusercontent.com/42171814/203433920-3d2745c6-4dc1-4e5e-8cd9-63d215a8d80e.gif"/>
     <img src="https://user-images.githubusercontent.com/42171814/200714144-59de3910-3926-4665-b8b0-af6eadfa6ae3.png"/>
   </kbd>
 </p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
