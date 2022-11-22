@@ -32,6 +32,10 @@
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/tags">
         <img alt="GitHub tags" src="https://img.shields.io/github/v/release/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
+    <br>
+    <a href="https://join.slack.com/t/ikomia-community/shared_invite/zt-1ie9k8lw7-IsBaJ~nhGZyc0QfkYO3olA">
+        <img alt="Slack community" src="https://img.shields.io/badge/Slack-white?style=social&logo=slack">
+    </a> 
 </p>
 
 <p align="center">
@@ -69,16 +73,16 @@ No effort, just choose what you want and Ikomia downloads it, installs the requi
 Ikomia API has already more than 180 pre-integrated algorithms (mainly OpenCV) but the most interesting algorithms are in [Ikomia HUB](https://github.com/Ikomia-hub).
 That's why, you need to connect to Ikomia HUB when you want to download/install these algorithms.
 
-To get your credentials, you can join our community [here](https://members.ikomia.com/accounts/signup/) :)
+You can use our demo credentials below or you can get yours for free and join our community [here](https://members.ikomia.com/accounts/signup/) :)
 
-Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this snippet code:
+Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this code snippet:
 
 ``` python
 import ikomia
 import os
 
-os.environ['IKOMIA_USER'] = "your_login"
-os.environ['IKOMIA_PWD'] = "your_password"
+os.environ['IKOMIA_USER'] = "demo"
+os.environ['IKOMIA_PWD'] = "jH4q72DApbRPa4k"
 
 ikomia.authenticate()
 
@@ -117,7 +121,7 @@ import cv2
 img_bbox = wf.get_image_with_graphics(yolo_id)
 img_bbox = cv2.cvtColor(img_bbox, cv2.COLOR_RGB2BGR)
 
-cv2.imshow(img_bbox)
+cv2.imshow("Ikomia Demo", img_bbox)
 
 ```
 <p float="left">
@@ -252,7 +256,7 @@ output_list[0].toJson()
       },
       "confidence": 0.90673828125,
       "id": 0,
-      "label": "car"
+      "label": "ball"
     }
   ]
 }
