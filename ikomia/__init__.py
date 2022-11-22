@@ -14,21 +14,54 @@
 
 import os
 import sys
-import logging
 import time
+import logging
+
+#----------------------------------
+#----- Logging initialization -----
+#----------------------------------
+logger = logging.getLogger(__name__)
+logger.handlers = []
+logger.setLevel(logging.DEBUG)
+
+# log to stdout and stderr
+formatter = logging.Formatter("%(message)s")
+info = logging.StreamHandler(sys.stdout)
+info.setLevel(logging.INFO)
+info.setFormatter(formatter)
+logger.addHandler(info)
+
+err = logging.StreamHandler(sys.stderr)
+err.setLevel(logging.ERROR)
+err.setFormatter(formatter)
+logger.addHandler(err)
+
+# log to file
+from ikomia.core import config
+
+log_path = config.main_cfg["root_folder"] + "/log.txt"
+file_formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s", "%Y-%m-%d %H:%M:%S")
+file_handler = logging.FileHandler(log_path, 'a')
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+
+with open(log_path, "w") as f:
+    logger.info(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
+#----------------------------------
+
 from ikomia import utils
 from ikomia.utils import autocomplete
 from ikomia.core.auth import LoginSession
-from ikomia.core import config
 from ikomia.dataprocess import registry
 
-
-logger = logging.getLogger(__name__)
 
 __version__ = "0.8.0"
 
 
-# Add built-in OpenCV to Python path
+#----------------------------------------------
+#----- Add built-in OpenCV to Python path -----
+#----------------------------------------------
 if not utils.isAppStarted():
     if sys.platform == "win32":
         lib_path = os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib"
@@ -36,6 +69,7 @@ if not utils.isAppStarted():
         os.environ["PATH"] += lib_path
     else:
         sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
+#----------------------------------------------
 
 
 global ik_api_session
@@ -45,42 +79,15 @@ global ik_registry
 ik_registry = None
 
 
+#------------------------------------------
+#----- Auto-completion initialization -----
+#------------------------------------------
 if not utils.isAppStarted():
     ik_registry = registry.IkomiaRegistry()
 
     if config.main_cfg["registry"]["auto_completion"]:
         autocomplete.make_local_plugins()
-
-
-def _init_logging(rank=-1):
-    if rank in [-1, 0]:
-        logger.handlers = []
-        logger.setLevel(logging.INFO)
-
-        # log to stdout and stderr
-        formatter = logging.Formatter("%(message)s")
-        info = logging.StreamHandler(sys.stdout)
-        info.setLevel(logging.INFO)
-        info.setFormatter(formatter)
-        logger.addHandler(info)
-
-        err = logging.StreamHandler(sys.stderr)
-        err.setLevel(logging.ERROR)
-        err.setFormatter(formatter)
-        logger.addHandler(err)
-
-        # log to file
-        log_path = config.main_cfg["root_folder"] + "/log.txt"
-        file_formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s", "%Y-%m-%d %H:%M:%S")
-        file_handler = logging.FileHandler(log_path, 'a')
-        file_handler.setLevel(logging.DEBUG)
-        file_handler.setFormatter(file_formatter)
-        logger.addHandler(file_handler)
-
-        with open(log_path, "w") as f:
-            logger.info(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
-    else:
-        logging.basicConfig(format="%(message)s", level=logging.WARN)
+#------------------------------------------
 
 
 def authenticate():
@@ -100,6 +107,3 @@ def authenticate():
 def make_auto_complete():
     autocomplete.make_local_plugins(force=True)
     autocomplete.make_online_plugins(force=True)
-
-
-_init_logging()
