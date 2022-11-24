@@ -18,6 +18,7 @@
         ~CWorkflowTask.addInput
         ~CWorkflowTask.addOutput
         ~CWorkflowTask.beginTaskRun
+        ~CWorkflowTask.download
         ~CWorkflowTask.emitAddSubProgressSteps
         ~CWorkflowTask.emitGraphicsContextChanged
         ~CWorkflowTask.emitOutputChanged
@@ -73,6 +74,7 @@
     .. automethod:: addInput
     .. automethod:: addOutput
     .. automethod:: beginTaskRun
+    .. automethod:: download
     .. automethod:: emitAddSubProgressSteps
     .. automethod:: emitGraphicsContextChanged
     .. automethod:: emitOutputChanged

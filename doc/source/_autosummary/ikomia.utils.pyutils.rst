@@ -8,6 +8,7 @@
 
         getApiVersion
         getCompatibilityState
+        getModelHubUrl
    
     .. rubric:: Classes
     .. autosummary::
