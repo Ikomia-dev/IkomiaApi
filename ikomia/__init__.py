@@ -56,7 +56,7 @@ from ikomia.core.auth import LoginSession
 from ikomia.dataprocess import registry
 
 
-__version__ = "0.8.0"
+__version__ = "0.8.1"
 
 
 #----------------------------------------------
