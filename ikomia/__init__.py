@@ -17,9 +17,9 @@ import sys
 import time
 import logging
 
-#----------------------------------
-#----- Logging initialization -----
-#----------------------------------
+# ----------------------------------
+# ----- Logging initialization -----
+# ----------------------------------
 logger = logging.getLogger(__name__)
 logger.handlers = []
 logger.setLevel(logging.DEBUG)
@@ -45,10 +45,11 @@ file_handler = logging.FileHandler(log_path, 'a')
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
+logger.propagate = False
 
 with open(log_path, "w") as f:
     logger.info(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
-#----------------------------------
+# ----------------------------------
 
 from ikomia import utils
 from ikomia.utils import autocomplete
@@ -59,9 +60,9 @@ from ikomia.dataprocess import registry
 __version__ = "0.8.1"
 
 
-#----------------------------------------------
-#----- Add built-in OpenCV to Python path -----
-#----------------------------------------------
+# ----------------------------------------------
+# ----- Add built-in OpenCV to Python path -----
+# ----------------------------------------------
 if not utils.isAppStarted():
     if sys.platform == "win32":
         lib_path = os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib"
@@ -69,7 +70,7 @@ if not utils.isAppStarted():
         os.environ["PATH"] += lib_path
     else:
         sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
-#----------------------------------------------
+# ----------------------------------------------
 
 
 global ik_api_session
@@ -79,15 +80,15 @@ global ik_registry
 ik_registry = None
 
 
-#------------------------------------------
-#----- Auto-completion initialization -----
-#------------------------------------------
+# ------------------------------------------
+# ----- Auto-completion initialization -----
+# ------------------------------------------
 if not utils.isAppStarted():
     ik_registry = registry.IkomiaRegistry()
 
     if config.main_cfg["registry"]["auto_completion"]:
         autocomplete.make_local_plugins()
-#------------------------------------------
+# ------------------------------------------
 
 
 def authenticate():
