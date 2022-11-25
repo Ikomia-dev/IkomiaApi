@@ -15,11 +15,15 @@
 """
 Module dedicated to Deep Learning training.
 """
+import logging
 import mlflow
 from ikomia.core import config
 from ikomia.dataprocess import CDnnTrainTask
 from ikomia.dnn import datasetio, monitoring
 from datetime import datetime
+
+
+logger = logging.getLogger(__name__)
 
 
 class TrainProcess(CDnnTrainTask):
@@ -62,12 +66,17 @@ class TrainProcess(CDnnTrainTask):
 
         try:
             self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
-        except:
-            print("MLflow server is not accessible.")
+        except Exception as e:
+            logger.warning("MLFlow can't be started so training metrics will not be monitor in it.")
+            logger.debug(e)
 
     @staticmethod
     def _init_tensorboard():
-        monitoring.check_tensorboard_server()
+        try:
+            monitoring.check_tensorboard_server()
+        except Exception as e:
+            logger.warning("TensorBoard can't be started so training metrics will not be monitor in it.")
+            logger.debug(e)
 
     def beginTaskRun(self):
         """
