@@ -13,8 +13,7 @@
 # limitations under the License.
 
 """
-Module providing Ikomia workflow I/O implementation for data stored as Python dict
-Derived from :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.
+Module providing Ikomia workflow I/O implementation for data stored as Python dict.
 """
 
 from ikomia.core import CWorkflowTaskIO, IODataType
@@ -26,7 +25,9 @@ class DataDictIO(CWorkflowTaskIO):
     Class implementing Ikomia workflow input/output object where data is stored as generic Python dict.
     Please note that such unformatted data are meant to be used as task output essentially.
     For complete compatibility with other API features, you must ensure that the dict content is fully
-    JSON serializable.
+    JSON serializable. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.
+
+    :ivar data: data dictionary
     """
     def __init__(self):
         CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)

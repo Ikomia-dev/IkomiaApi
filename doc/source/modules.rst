@@ -31,6 +31,7 @@ the C capital letter.
     ikomia.dataprocess.pydataprocess
     ikomia.dataprocess.registry
     ikomia.dataprocess.workflow
+    ikomia.dataprocess.datadictIO
     ikomia.dataprocess.displayIO
 
 
