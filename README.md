@@ -79,8 +79,8 @@ You can use our demo credentials below or you can get yours for free and join ou
 Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this code snippet:
 
 ``` python
-import ikomia
 import os
+import ikomia
 
 os.environ['IKOMIA_USER'] = "demo"
 os.environ['IKOMIA_PWD'] = "jH4q72DApbRPa4k"
