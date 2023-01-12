@@ -79,8 +79,8 @@ You can use our demo credentials below or you can get yours for free and join ou
 Ikomia authentication is based on two environment variables: IKOMIA_USER=your_login and IKOMIA_PWD=your_password, so you can set these variables by command-lines or use this code snippet:
 
 ``` python
-import ikomia
 import os
+import ikomia
 
 os.environ['IKOMIA_USER'] = "demo"
 os.environ['IKOMIA_PWD'] = "jH4q72DApbRPa4k"
@@ -88,35 +88,26 @@ os.environ['IKOMIA_PWD'] = "jH4q72DApbRPa4k"
 ikomia.authenticate()
 
 ```
-Once you have downloaded and installed what you want, you don't need to connect again unless you want to try an other algorithm.
-
-All that said,  Ikomia API is built around a workflow system (think of an oriented graph). Each node is an algorithm and each edge is an input/output such as images, videos, graphics, measures and so on.
 When you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
-For convenience, we provide an auto-completion mechanism proposing available algorithms while coding (for built-in and installed algorithms only). It is available under the ik namespace.
 
 ``` python
 from ikomia.dataprocess import workflow
-from ikomia.utils import ik
 
 # Init your workflow
 wf = workflow.create("YOLO inference")
 
 # Add YOLO and connect it to your input data
-# The same code for every YOLO algorithms !!
-# yolo_id, yolo = wf.add_task(ik.infer_yolo_v4)
-# yolo_id, yolo = wf.add_task(ik.infer_yolo_v5)
-yolo_id, yolo = wf.add_task(ik.infer_yolo_v7)
+yolo_id, yolo = wf.add_task("infer_yolo_v7")
 wf.connect_tasks(wf.getRootID(), yolo_id)
-
-# Run directly on your image
-wf.run_on(path="path/to/your/image.png")
-
 ```
 
-If you want to display your results, you can easily display what you want.
+Then run and display your results.
 
 ``` python
 import cv2
+
+# Run directly on your image
+wf.run_on(path="path/to/your/image.png")
 
 # YOLO output image with bounding boxes
 img_bbox = wf.get_image_with_graphics(yolo_id)
@@ -134,9 +125,9 @@ You can also change each algorithms parameters.
 
 ``` python
 yolo_params = {
-    ik.infer_yolo_v7_param.custom_train: True,
-    ik.infer_yolo_v7_param.custom_model: "path/to/your/model",
-    ik.infer_yolo_v7_param.thr_conf: 0.25
+    "custom_train": True,
+    "custom_model": "path/to/your/model",
+    "thr_conf": 0.25
 }
 wf.set_parameters(task_id=yolo_id, params=yolo_params)
 ```
@@ -230,13 +221,13 @@ wf.save("path/to/your/workflow.json")
 ```
 ``` python
 wf.load("path/to/your/workflow.json")
-wf.run_on("path/to/your/image.png")
+wf.run_on(path="path/to/your/image.png")
 ```
 
 And finally, you can also export your results as JSON files.
 ``` python
 # Get all object detection outputs (most of the time, there is only one)
-output_list = wf.get_object_detection_output(task_name=ik.infer_yolo_v7)
+output_list = wf.get_object_detection_output(task_name="infer_yolo_v7")
 output_list[0].toJson()
 ```
 ```
