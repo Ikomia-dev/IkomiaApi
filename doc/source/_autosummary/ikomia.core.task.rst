@@ -32,7 +32,6 @@
         get_object_detection_output
         get_path_output
         get_semantic_segmentation_output
-        set_parameters
 
     .. rubric:: Details
 
@@ -49,4 +48,3 @@
     .. autofunction:: get_object_detection_output
     .. autofunction:: get_path_output
     .. autofunction:: get_semantic_segmentation_output
-    .. autofunction:: set_parameters

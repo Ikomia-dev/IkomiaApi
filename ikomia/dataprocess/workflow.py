@@ -145,20 +145,20 @@ class Workflow(dataprocess.CWorkflow):
         if task_id is not None:
             wf_task = self.getTask(task_id)
             if wf_task is not None:
-                task.set_parameters(wf_task, params)
+                wf_task.setParamValues(params)
         elif task_name:
             wf_task = self.find_task(task_name)
             if wf_task is None:
                 return
 
             if not isinstance(wf_task, list):
-                task.set_parameters(wf_task[1], params)
+                wf_task[1].setParamValues(params)
             else:
                 if index == -1:
                     for t in wf_task:
-                        task.set_parameters(t[1], params)
+                        t[1].setParamValues(params)
                 elif 0 <= index < len(wf_task):
-                    task.set_parameters(wf_task[index][1], params)
+                    wf_task[index][1].setParamValues(params)
 
     def get_time_metrics(self):
         """

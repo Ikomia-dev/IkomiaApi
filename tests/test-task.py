@@ -3,7 +3,7 @@ import logging
 import argparse
 import cv2
 from ikomia.utils import tests, ik
-from ikomia.core import task, ParamMap
+from ikomia.core import task
 from ikomia.dataprocess import workflow, displayIO
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ def test_task_parameters():
     algo = task.create(ik.ocv_box_filter)
 
     logger.info("----- Get parameters")
-    logger.info(task.get_parameters(algo))
+    logger.info(algo.getParamValues())
 
     logger.info("----- Use default parameters")
     logger.info(algo.getParam())
@@ -25,21 +25,7 @@ def test_task_parameters():
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
 
-    logger.info("----- Manually set all parameters from ParamMap")
-    params = ParamMap()
-    params[ik.ocv_box_filter_param.borderType] = str(4)
-    params[ik.ocv_box_filter_param.anchorX] = str(-1)
-    params[ik.ocv_box_filter_param.anchorY] = str(-1)
-    params[ik.ocv_box_filter_param.kSizeHeight] = str(13)
-    params[ik.ocv_box_filter_param.kSizeWidth] = str(13)
-    params[ik.ocv_box_filter_param.bNormalize] = str(1)
-    params[ik.ocv_box_filter_param.ddepth] = str(-1)
-    algo.setParamValues(params)
-    logger.info(algo.getParam())
-    algo.run()
-    displayIO.display(algo.getOutput(0), algo.name)
-
-    logger.info("----- Manually set some of the parameters from ParamMap")
+    logger.info("----- Manually set some of the parameters from existing values")
     params = algo.getParamValues()
     params[ik.ocv_box_filter_param.kSizeHeight] = str(31)
     params[ik.ocv_box_filter_param.kSizeWidth] = str(31)
@@ -49,20 +35,20 @@ def test_task_parameters():
     displayIO.display(algo.getOutput(0), algo.name)
 
     logger.info("----- Manually set all parameters from dict")
-    task.set_parameters(algo, {ik.ocv_box_filter_param.borderType: 4,
-                               ik.ocv_box_filter_param.anchorX: -1,
-                               ik.ocv_box_filter_param.anchorX: -1,
-                               ik.ocv_box_filter_param.kSizeHeight: 29,
-                               ik.ocv_box_filter_param.kSizeWidth: 29,
-                               ik.ocv_box_filter_param.bNormalize: 1,
-                               ik.ocv_box_filter_param.ddepth: -1})
+    algo.setParamValues({ik.ocv_box_filter_param.borderType: "4",
+                         ik.ocv_box_filter_param.anchorX: "-1",
+                         ik.ocv_box_filter_param.anchorY: "-1",
+                         ik.ocv_box_filter_param.kSizeHeight: "29",
+                         ik.ocv_box_filter_param.kSizeWidth: "29",
+                         ik.ocv_box_filter_param.bNormalize: "1",
+                         ik.ocv_box_filter_param.ddepth: "-1"})
 
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
 
     logger.info("----- Manually set some parameters from dict")
-    task.set_parameters(algo, {ik.ocv_box_filter_param.kSizeHeight: 29, ik.ocv_box_filter_param.kSizeWidth: 29})
+    algo.setParamValues({ik.ocv_box_filter_param.kSizeHeight: "19", ik.ocv_box_filter_param.kSizeWidth: "19"})
     logger.info(algo.getParam())
     algo.run()
     displayIO.display(algo.getOutput(0), algo.name)
@@ -147,7 +133,6 @@ if __name__ == "__main__":
 
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = "outputs"
 
     if 'all' in running_tests or 'parameters' in running_tests:
         test_task_parameters()

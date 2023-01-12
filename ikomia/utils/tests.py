@@ -38,7 +38,7 @@ def run_for_test(t):
         tb = "OK"
         logger.info("Run succeeded")
     finally:
-        return task.get_parameters(t), tb
+        return t.getParamValues(), tb
 
 
 def get_test_image_directory():

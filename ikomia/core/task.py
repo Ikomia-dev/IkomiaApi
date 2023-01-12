@@ -42,7 +42,7 @@ class TaskParam(core.CWorkflowTaskParam):
         """
         Return parameters for saving in Ikomia Studio.
         """
-        param_map = core.ParamMap()
+        param_map = {}
         for key, value in self.cfg.items():
             param_map[key] = str(value)
 
@@ -70,46 +70,6 @@ def create(name=""):
         return None
 
     return ikomia.ik_registry.create_algorithm(name)
-
-
-def set_parameters(task, params: dict):
-    """
-    Set parameters of the given task from a dict structure.
-
-    Args:
-        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
-        params (dict): pair of key, value for each parameter. The key will be treated as str.
-    """
-    if task is None:
-        return
-
-    param_map = task.getParamValues()
-    for key in params:
-        param_map[str(key)] = str(params[key])
-
-    param = task.getParam()
-    param.setParamMap(param_map)
-
-
-def get_parameters(task):
-    """
-    Get parameters as a dict of key-value pairs for the given task.
-
-    Args:
-        task (:py:class:`~ikomia.core.pycore.CWorkflowTask` or derived): object instance.
-
-    Returns:
-        parameters (dict): pairs of key, value for each parameter.
-    """
-    if task is None:
-        raise RuntimeError("Parameter can't be retrieved from None object")
-
-    params = {}
-    param_map = task.getParamValues()
-    for param in param_map:
-        params[param.key()] = param_map[param.key()]
-
-    return params
 
 
 def _get_outputs(task, types, target_class=None, index=-1):

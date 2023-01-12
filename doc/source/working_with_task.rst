@@ -33,7 +33,7 @@ Consult :py:meth:`~ikomia.core.task.create`, :py:meth:`~ikomia.core.pycore.CWork
 Manage parameters
 -----------------
 
-Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia.core.task.set_parameters`).
+Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia.core.pycore.CWorkflowTask.setParamValues`).
 
 .. code-block:: python
 
@@ -50,7 +50,7 @@ Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia
         ik.ocv_box_filter_param.kSizeHeight: 11,
         ik.ocv_box_filter_param.kSizeWidth: 11
     }
-    task.set_parameters(box_filter, box_filter_params)
+    box_filter.setParamValues(box_filter_params)
 
     # Run
     box_filter.run()

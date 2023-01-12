@@ -177,7 +177,7 @@ def test_yolo_train(wgisd_dataset_dir):
     wgisd.setParamValues(wgisd_params)
 
     yolo_id, yolo = wf.add_task(ik.train_yolo)
-    yolo_params = task.get_parameters(yolo)
+    yolo_params = yolo.getParamValues()
     yolo_params["batchSize"] = 16
     task.set_parameters(yolo, yolo_params)
     wf.connect_tasks(wgisd_id, yolo_id)
