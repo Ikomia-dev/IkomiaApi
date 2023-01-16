@@ -13,13 +13,13 @@
    .. rubric:: Methods
    .. autosummary::
       ~CMemoryInfo.__init__
-      ~CMemoryInfo.availableMemory
-      ~CMemoryInfo.memoryLoad
-      ~CMemoryInfo.totalMemory
+      ~CMemoryInfo.get_available_memory
+      ~CMemoryInfo.get_memory_load
+      ~CMemoryInfo.get_total_memory
 
    .. rubric:: Details
 
    .. automethod:: __init__
-   .. automethod:: availableMemory
-   .. automethod:: memoryLoad
-   .. automethod:: totalMemory
+   .. automethod:: get_available_memory
+   .. automethod:: get_memory_load
+   .. automethod:: get_total_memory

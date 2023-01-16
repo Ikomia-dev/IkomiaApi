@@ -20,8 +20,8 @@
       ~CTimer.get_total_elapsed_ms
       ~CTimer.get_total_elapsed_ns
       ~CTimer.get_total_elapsed_us
-      ~CTimer.printElapsedTime_ms
-      ~CTimer.printTotalElapsedTime_ms
+      ~CTimer.print_elapsed_time_ms
+      ~CTimer.print_total_elapsed_time_ms
       ~CTimer.start
 
    .. rubric:: Details
@@ -33,7 +33,7 @@
    .. automethod:: get_total_elapsed_ms
    .. automethod:: get_total_elapsed_ns
    .. automethod:: get_total_elapsed_us
-   .. automethod:: printElapsedTime_ms
-   .. automethod:: printTotalElapsedTime_ms
+   .. automethod:: print_elapsed_time_ms
+   .. automethod:: print_total_elapsed_time_ms
    .. automethod:: start
    

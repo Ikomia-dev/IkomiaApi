@@ -491,7 +491,6 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = ['train_yolov4']
 
     ikomia.authenticate()
 

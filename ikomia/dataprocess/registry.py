@@ -203,7 +203,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         task_factory.info.internal = False
 
         plugin_version = task_factory.info.ikomiaVersion
-        compatibility_state = utils.getCompatibilityState(plugin_version, utils.ApiLanguage.PYTHON)
+        compatibility_state = utils.get_compatibility_state(plugin_version, utils.ApiLanguage.PYTHON)
 
         if compatibility_state == utils.PluginState.DEPRECATED:
             error_msg = "Plugin " + name + "is deprecated: based on Ikomia " + str(plugin_version) + \
@@ -289,7 +289,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
         if language == utils.ApiLanguage.CPP:
-            return utils.checkArchitectureKeywords(plugin["keywords"])
+            return utils.check_architecture_keywords(plugin["keywords"])
 
         return True
 
