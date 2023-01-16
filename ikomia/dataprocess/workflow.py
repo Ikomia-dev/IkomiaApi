@@ -642,11 +642,11 @@ class Workflow(dataprocess.CWorkflow):
             return True
         elif path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataImageIO.isImageFormat(ext)
+            return dataio.CDataImageIO.is_image_format(ext)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataImageIO.isImageFormat(ext)
+            return dataio.CDataImageIO.is_image_format(ext)
         else:
             return False
 
@@ -654,11 +654,11 @@ class Workflow(dataprocess.CWorkflow):
     def _is_video_input(path="", url=""):
         if path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+            return dataio.CDataVideoIO.is_video_format(ext, True)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+            return dataio.CDataVideoIO.is_video_format(ext, True)
         else:
             return False
 
