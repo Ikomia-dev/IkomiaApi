@@ -16,12 +16,12 @@ CGraphicsRectangle
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CGraphicsRectangle.getBoundingRect
-      ~CGraphicsRectangle.getCategory
-      ~CGraphicsRectangle.getId
-      ~CGraphicsRectangle.getType
-      ~CGraphicsRectangle.isTextItem
-      ~CGraphicsRectangle.setCategory
+      ~CGraphicsRectangle.get_bounding_rect
+      ~CGraphicsRectangle.get_category
+      ~CGraphicsRectangle.get_id
+      ~CGraphicsRectangle.get_type
+      ~CGraphicsRectangle.is_text_item
+      ~CGraphicsRectangle.set_category
    
    .. rubric:: Attributes
    .. autosummary::
@@ -34,9 +34,9 @@ CGraphicsRectangle
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category

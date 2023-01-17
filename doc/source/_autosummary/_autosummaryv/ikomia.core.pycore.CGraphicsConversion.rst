@@ -13,10 +13,10 @@ CGraphicsConversion
    .. rubric:: Methods
    .. autosummary::
       ~CGraphicsConversion.__init__
-      ~CGraphicsConversion.graphicsToBinaryMask
+      ~CGraphicsConversion.graphics_to_binary_mask
 
    .. rubric:: Details
 
    .. automethod:: __init__
-   .. automethod:: graphicsToBinaryMask
+   .. automethod:: graphics_to_binary_mask
    

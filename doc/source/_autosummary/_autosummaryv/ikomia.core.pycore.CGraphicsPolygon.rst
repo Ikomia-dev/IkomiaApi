@@ -16,12 +16,12 @@ CGraphicsPolygon
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CGraphicsPolygon.getBoundingRect
-      ~CGraphicsPolygon.getCategory
-      ~CGraphicsPolygon.getId
-      ~CGraphicsPolygon.getType
-      ~CGraphicsPolygon.isTextItem
-      ~CGraphicsPolygon.setCategory
+      ~CGraphicsPolygon.get_bounding_rect
+      ~CGraphicsPolygon.get_category
+      ~CGraphicsPolygon.get_id
+      ~CGraphicsPolygon.get_type
+      ~CGraphicsPolygon.is_text_item
+      ~CGraphicsPolygon.set_category
    
    .. rubric:: Attributes
    .. autosummary::
@@ -31,10 +31,10 @@ CGraphicsPolygon
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category
    

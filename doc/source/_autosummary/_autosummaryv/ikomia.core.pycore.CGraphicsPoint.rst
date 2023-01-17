@@ -16,12 +16,12 @@ CGraphicsPoint
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CGraphicsPoint.getBoundingRect
-      ~CGraphicsPoint.getCategory
-      ~CGraphicsPoint.getId
-      ~CGraphicsPoint.getType
-      ~CGraphicsPoint.isTextItem
-      ~CGraphicsPoint.setCategory
+      ~CGraphicsPoint.get_bounding_rect
+      ~CGraphicsPoint.get_category
+      ~CGraphicsPoint.get_id
+      ~CGraphicsPoint.get_type
+      ~CGraphicsPoint.is_text_item
+      ~CGraphicsPoint.set_category
    
    .. rubric:: Attributes
    .. autosummary::
@@ -31,10 +31,10 @@ CGraphicsPoint
    .. rubric:: Details
 
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category
    

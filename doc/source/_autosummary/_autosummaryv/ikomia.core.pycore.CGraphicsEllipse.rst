@@ -16,12 +16,12 @@ CGraphicsEllipse
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CGraphicsEllipse.getBoundingRect
-      ~CGraphicsEllipse.getCategory
-      ~CGraphicsEllipse.getId
-      ~CGraphicsEllipse.getType
-      ~CGraphicsEllipse.isTextItem
-      ~CGraphicsEllipse.setCategory
+      ~CGraphicsEllipse.get_bounding_rect
+      ~CGraphicsEllipse.get_category
+      ~CGraphicsEllipse.get_id
+      ~CGraphicsEllipse.get_type
+      ~CGraphicsEllipse.is_text_item
+      ~CGraphicsEllipse.set_category
 
    .. rubric:: Attributes
    .. autosummary::
@@ -35,9 +35,9 @@ CGraphicsEllipse
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category
