@@ -53,14 +53,13 @@ def _write_auto_complete_str(f, name, skip_params=False):
         ctor_line = "        obj = str.__new__(cls, " + "\"" + name + "\")\n"
         f.write(ctor_line)
 
-        parameters = algo.getParamValues()
+        parameters = algo.get_parameters()
         for param in parameters:
-            param_key = param.key()
-            if keyword.iskeyword(param_key):
-                param_key += "_"
+            if keyword.iskeyword(param):
+                param += "_"
 
-            var_name = re.sub(forbid_char, "", param_key)
-            declaration = "        obj." + var_name + " = " + "\"" + param_key + "\"\n"
+            var_name = re.sub(forbid_char, "", param)
+            declaration = "        obj." + var_name + " = " + "\"" + param + "\"\n"
             f.write(declaration)
 
         f.write("        return obj\n\n")
@@ -89,7 +88,7 @@ def _write_auto_complete(f, task_name="", task=None, skip_params=False):
             if task is None:
                 raise RuntimeError(f"Auto-completion: unable to create algorithm {task_name}.")
 
-        parameters = task.getParamValues()
+        parameters = task.get_parameters()
         if len(parameters) == 0:
             f.write("\n")
             return
@@ -99,12 +98,11 @@ def _write_auto_complete(f, task_name="", task=None, skip_params=False):
         f.write(declaration)
 
         for param in parameters:
-            param_key = param.key()
-            if keyword.iskeyword(param_key):
+            if keyword.iskeyword(param):
                 param_key += "_"
 
-            var_name = re.sub(forbid_char, "", param_key)
-            declaration = "    " + var_name + " = " + "\"" + param_key + "\"\n"
+            var_name = re.sub(forbid_char, "", param)
+            declaration = "    " + var_name + " = " + "\"" + param + "\"\n"
             f.write(declaration)
 
         f.write("\n")

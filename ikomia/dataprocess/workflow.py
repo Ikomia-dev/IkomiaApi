@@ -54,8 +54,7 @@ class Workflow(dataprocess.CWorkflow):
             dataprocess.CWorkflow.__init__(self, name, registry)
 
         self.registry = registry
-        output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
-        self.setOutputFolder(output_folder)
+        self.output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
         """
@@ -79,10 +78,10 @@ class Workflow(dataprocess.CWorkflow):
             utils.http.download_file(url, img_path)
             img_input = dataprocess.CImageIO(datatype, "Image", img_path)
 
-        if index == -1 or index >= self.getInputCount():
-            self.addInput(img_input)
+        if index == -1 or index >= self.get_input_count():
+            self.add_input(img_input)
         else:
-            self.setInput(img_input, index, True)
+            self.set_input(img_input, index, True)
 
     def set_video_input(self, path="", url="", index=-1, datatype=core.IODataType.VIDEO):
         """
@@ -103,10 +102,10 @@ class Workflow(dataprocess.CWorkflow):
             utils.http.download_file(url, video_path)
             video_input = dataprocess.CVideoIO(datatype, "Video", video_path)
 
-        if index == -1 or index >= self.getInputCount():
-            self.addInput(video_input)
+        if index == -1 or index >= self.get_input_count():
+            self.add_input(video_input)
         else:
-            self.setInput(video_input, index, True)
+            self.set_input(video_input, index, True)
 
     def set_directory_input(self, folder="", index=-1):
         """
@@ -123,9 +122,9 @@ class Workflow(dataprocess.CWorkflow):
 
         dir_input = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, folder)
         if index == -1:
-            self.addInput(dir_input)
+            self.add_input(dir_input)
         else:
-            self.setInput(dir_input, index, True)
+            self.set_input(dir_input, index, True)
 
     def set_parameters(self, params: dict, task_id=None, task_name="", index=-1):
         """
@@ -134,7 +133,7 @@ class Workflow(dataprocess.CWorkflow):
 
         .. code-block:: python
 
-            print(task_obj.getParam())
+            print(task_obj.get_param_object())
 
         Args:
             params (dict): key-value pairs of parameters to modify.
@@ -145,20 +144,20 @@ class Workflow(dataprocess.CWorkflow):
         if task_id is not None:
             wf_task = self.getTask(task_id)
             if wf_task is not None:
-                wf_task.setParamValues(params)
+                wf_task.set_parameters(params)
         elif task_name:
             wf_task = self.find_task(task_name)
             if wf_task is None:
                 return
 
             if not isinstance(wf_task, list):
-                wf_task[1].setParamValues(params)
+                wf_task[1].set_parameters(params)
             else:
                 if index == -1:
                     for t in wf_task:
-                        t[1].setParamValues(params)
+                        t[1].set_parameters(params)
                 elif 0 <= index < len(wf_task):
-                    wf_task[index][1].setParamValues(params)
+                    wf_task[index][1].set_parameters(params)
 
     def get_time_metrics(self):
         """
@@ -568,10 +567,10 @@ class Workflow(dataprocess.CWorkflow):
         return True
 
     def _run_directory(self):
-        for i in range(self.getInputCount()):
-            input_type = self.getInputDataType(i)
+        for i in range(self.get_input_count()):
+            input_type = self.get_input_data_type(i)
             if input_type == core.IODataType.FOLDER_PATH:
-                dir_input = self.getInput(i)
+                dir_input = self.get_input(i)
 
                 for root, subdirs, files in os.walk(dir_input.getPath(), topdown=True):
                     for file in files:
@@ -592,12 +591,12 @@ class Workflow(dataprocess.CWorkflow):
                             msg = f"Error occurred while processing {file}: {e.__str__()}"
                             logger.error(msg)
 
-                self.setInput(dir_input, i, False)
+                self.set_input(dir_input, i, False)
 
     def _get_run_mode(self):
         input_types = []
-        for i in range(self.getInputCount()):
-            input_types.append(self.getInputDataType(i))
+        for i in range(self.get_input_count()):
+            input_types.append(self.get_input_data_type(i))
 
         target_types = self.getRootTargetTypes()
 

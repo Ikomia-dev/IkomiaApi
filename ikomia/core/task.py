@@ -77,10 +77,11 @@ def _get_outputs(task, types, target_class=None, index=-1):
         raise RuntimeError("Cannot get outputs from None task.")
 
     outputs = []
-    all_outputs = task.getOutputs()
+    all_outputs = task.get_outputs()
 
+    # TODO: manage composite I/O
     for output in all_outputs:
-        if output.dataType in types:
+        if output.data_type in types:
             if target_class is None:
                 outputs.append(output)
             elif type(output) == target_class:

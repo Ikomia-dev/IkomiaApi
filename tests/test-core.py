@@ -87,6 +87,29 @@ def test_cpp_point():
     assert pt.y == 10.0
 
 
+def test_cpp_measure():
+    # Default ctor
+    measure = core.CMeasure()
+    measure_list = measure.get_available_measures()
+    assert len(measure_list) == 9
+
+    # Static method
+    measure_list = core.CMeasure.get_available_measures()
+    assert len(measure_list) == 9
+    measure_name = core.CMeasure.get_name(core.MeasureId.SURFACE)
+    logger.info(f"Measure name: {measure_name}")
+
+    # Ctor with id
+    measure = core.CMeasure(core.MeasureId.SURFACE)
+    assert measure.id == core.MeasureId.SURFACE
+
+    # Ctor with id and name
+    custom_name = "Volume"
+    measure = core.CMeasure(core.MeasureId.CUSTOM, custom_name)
+    assert measure.id == core.MeasureId.CUSTOM
+    assert measure.name == custom_name
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tests",
@@ -101,3 +124,5 @@ if __name__ == "__main__":
         test_cpp_enums()
     if "all" in running_tests or "cpp_point" in running_tests:
         test_cpp_point()
+    if "all" in running_tests or "cpp_measure" in running_tests:
+        test_cpp_measure()

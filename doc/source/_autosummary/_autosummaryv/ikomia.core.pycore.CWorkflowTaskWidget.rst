@@ -13,22 +13,22 @@ CWorkflowTaskWidget
    .. rubric:: Methods
    .. autosummary::
       ~CWorkflowTaskWidget.__init__
-      ~CWorkflowTaskWidget.emitApply
-      ~CWorkflowTaskWidget.emitSendProcessAction
-      ~CWorkflowTaskWidget.emitSetGraphicsCategory
-      ~CWorkflowTaskWidget.emitSetGraphicsTool
-      ~CWorkflowTaskWidget.onApply
-      ~CWorkflowTaskWidget.setApplyBtnHidden
-      ~CWorkflowTaskWidget.setLayout
+      ~CWorkflowTaskWidget.emit_apply
+      ~CWorkflowTaskWidget.emit_send_process_action
+      ~CWorkflowTaskWidget.emit_set_graphics_category
+      ~CWorkflowTaskWidget.emit_set_graphics_tool
+      ~CWorkflowTaskWidget.on_apply
+      ~CWorkflowTaskWidget.set_apply_btn_hidden
+      ~CWorkflowTaskWidget.set_layout
 
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: emitApply
-   .. automethod:: emitSendProcessAction
-   .. automethod:: emitSetGraphicsCategory
-   .. automethod:: emitSetGraphicsTool
-   .. automethod:: onApply
-   .. automethod:: setApplyBtnHidden
-   .. automethod:: setLayout
+   .. automethod:: emit_apply
+   .. automethod:: emit_send_process_action
+   .. automethod:: emit_set_graphics_category
+   .. automethod:: emit_set_graphics_tool
+   .. automethod:: on_apply
+   .. automethod:: set_apply_btn_hidden
+   .. automethod:: set_layout
    

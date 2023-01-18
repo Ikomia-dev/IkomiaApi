@@ -33,7 +33,7 @@ def test_load_builtin():
     logger.info(wf.name)
     logger.info(wf.description)
     logger.info(wf.keywords)
-    logger.info("Input count: " + str(wf.getInputCount()))
+    logger.info("Input count: " + str(wf.get_input_count()))
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
@@ -46,7 +46,7 @@ def test_load_marketplace():
     logger.info(wf.name)
     logger.info(wf.description)
     logger.info(wf.keywords)
-    logger.info("Input count: " + str(wf.getInputCount()))
+    logger.info("Input count: " + str(wf.get_input_count()))
     logger.info("Task count: " + str(wf.getTaskCount()))
 
 
@@ -156,10 +156,10 @@ def test_yolov5_train(wgisd_dataset_dir):
 
     # set dataset directory
     wgisd_id, wgisd = wf.find_task(ik.dataset_wgisd)
-    wgisd_params = wgisd.getParamValues()
+    wgisd_params = wgisd.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
-    wgisd.setParamValues(wgisd_params)
+    wgisd.set_parameters(wgisd_params)
 
     logger.info("Start YoloV5 training...")
     wf.run()
@@ -170,14 +170,14 @@ def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
     wf = workflow.create("YoloTrain")
     wgisd_id, wgisd = wf.add_task(ik.dataset_wgisd)
-    wgisd_params = wgisd.getParamValues()
+    wgisd_params = wgisd.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
-    wgisd.setParamValues(wgisd_params)
+    wgisd.set_parameters(wgisd_params)
 
     yolo_id, yolo = wf.add_task(ik.train_yolo)
-    yolo_params = yolo.getParamValues()
+    yolo_params = yolo.get_parameters()
     yolo_params["batchSize"] = 16
     task.set_parameters(yolo, yolo_params)
     wf.connect_tasks(wgisd_id, yolo_id)
@@ -347,11 +347,11 @@ def test_get_outputs(wgisd_dataset_dir):
 
     # set WGISD_Dataset parameters
     wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
-    wgisd_params = wgisd_task.getParamValues()
+    wgisd_params = wgisd_task.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
-    wgisd_task.setParamValues(wgisd_params)
+    wgisd_task.set_parameters(wgisd_params)
 
     # run workflow
     wf.set_image_input(path=img_path)
@@ -441,17 +441,17 @@ def test_set_task_parameters():
     wf = workflow.load(wf_path)
 
     bf_id, box_filter = wf.find_task(name=ik.ocv_box_filter, index=0)
-    logger.info(box_filter.getParam())
+    logger.info(box_filter.get_param_object())
     wf.set_parameters({ik.ocv_box_filter_param.kSizeHeight: 11,
                        ik.ocv_box_filter_param.kSizeWidth: 11}, task_name=ik.ocv_box_filter, index=0)
-    params = box_filter.getParamValues()
+    params = box_filter.get_parameters()
     assert (params["kSizeHeight"] == str(11) and params["kSizeWidth"] == str(11))
 
     bl_id, bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter, index=0)
-    logger.info(bilateral_filter.getParam())
+    logger.info(bilateral_filter.get_param_object())
     wf.set_parameters({ik.ocv_bilateral_filter_param.sigmaSpace: 31.0,
                        ik.ocv_bilateral_filter_param.sigmaColor: 11.0}, task_id=bl_id)
-    params = bilateral_filter.getParamValues()
+    params = bilateral_filter.get_parameters()
 
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
 

@@ -49,7 +49,7 @@ class TrainProcess(CDnnTrainTask):
             param (:py:class:`~ikomia.core.task.TaskParam`): task parameters
         """
         CDnnTrainTask.__init__(self, name, param)
-        self.addInput(datasetio.IkDatasetIO())
+        self.add_input(datasetio.IkDatasetIO())
         self.experiment_id = -1
         self._init_mlflow()
         self._init_tensorboard()
@@ -92,7 +92,7 @@ class TrainProcess(CDnnTrainTask):
             mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
 
             # Log parameters
-            param = self.getParam()
+            param = self.get_param_object()
             if param is not None:
                 self.log_params(param.cfg)
 

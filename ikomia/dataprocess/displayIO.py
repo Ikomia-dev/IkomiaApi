@@ -568,7 +568,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     _check_backend()
 
     # inputs
-    inputs = obj.getInputs()
+    inputs = obj.get_inputs()
     input_count = len(inputs)
     in_fig = plt.figure(num=1, constrained_layout=True)
     in_fig.suptitle(label + " inputs")
@@ -587,7 +587,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
                 logger.error("No display function available for input " + str(i))
 
     # outputs
-    outputs = obj.getOutputs()
+    outputs = obj.get_outputs()
     output_count = len(outputs)
     out_fig = plt.figure(num=2, constrained_layout=True)
     out_fig.suptitle(label + " outputs")
