@@ -20,13 +20,13 @@ Please find below the generic way to set workflow inputs.
     first_input = CImageIO(IODataType.IMAGE, "1st", "path/to/image1")
     second_input = CImageIO(IODataType.IMAGE, "2nd", "path/to/image2")
     # add 2 inputs
-    wf.addInput(first_input)
-    wf.addInput(second_input)
+    wf.add_input(first_input)
+    wf.add_input(second_input)
     # Or
-    wf.setInput(first_input, 0)
-    wf.setInput(second_input, 1)
+    wf.set_input(first_input, 0)
+    wf.set_input(second_input, 1)
 
-See :py:meth:`~ikomia.dataprocess.workflow.Workflow.addInput` and :py:meth:`~ikomia.dataprocess.workflow.Workflow.setInput` for details.
+See :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_input` and :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_input` for details.
 
 The :py:mod:`~ikomia.dataprocess.workflow.Workflow` class also provides helper functions to ease the management of image inputs. You can use 
 :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_image_input` and :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_directory_input` 
@@ -89,11 +89,11 @@ The generic way to get workflow outputs is to firstly get the task object and th
 
     # Get outputs
     # 1 - Forwarded source image: CImageIO object
-    img_output = yolov4_obj.getOutput(0)
+    img_output = yolov4_obj.get_output(0)
     # 2 - Graphics objects (box): CGraphicsOutput object
-    graphics_output = yolov4_obj.getOutput(1)
+    graphics_output = yolov4_obj.get_output(1)
     # 3- Box information: CBlobMeasureIO object
-    box_output = yolov4_obj.getOutput(2)
+    box_output = yolov4_obj.get_output(2)
 
 The :py:mod:`~ikomia.dataprocess.workflow.Workflow` class provides convenient methods to get outputs by type. For all these methods, 
 you could get outputs from the task name or the task id (faster). When using task name, the methods will return a list of outputs for all matching 
@@ -115,7 +115,7 @@ tasks. When a task has several outputs of the same type, you can specify the out
     wf = workflow.create("ObjectDetection")
     # Store id and object instance while adding task to the workflow
     yolov4_id, yolov4_obj = wf.add_task("infer_yolo_v4")
-    wf.connect_tasks(wf.getRootID(), yolov4_id)
+    wf.connect_tasks(wf.get_root_id(), yolov4_id)
 
     wf.run_on(path="path/to/image.png")
 
@@ -153,7 +153,7 @@ In the following example, we will create a simple workflow composed by a Box Fil
     box_filter_id, box_filter = wf.add_task(ik.ocv_box_filter)
 
     # Connect to root (auto-connection)
-    wf.connect_tasks(wf.getRootID(), box_filter_id)
+    wf.connect_tasks(wf.get_root_id(), box_filter_id)
 
     # Add CLAHE
     clahe_id, clahe = wf.add_task(ik.ocv_clahe)
@@ -233,7 +233,7 @@ Processing video files is available out of the box. Ikomia API leverages OpenCV 
 any workflows on whole video. Basically, it will execute the workflow on every frames and return when all frames are
 processed. You should enable the auto-save mode (:py:meth:`~ikomia.core.pycore.CWorkflowTask.setAutoSave`) at
 workflow or task level to save outputs to disk. Output folder can be set at either workflow or task level also
-(:py:meth:`~ikomia.core.pycore.CWorkflowTask.setOutputFolder`), default is the user home folder.
+(:py:meth:`~ikomia.core.pycore.CWorkflowTask.set_outputFolder`), default is the user home folder.
 
 .. code-block::
 
@@ -241,7 +241,7 @@ workflow or task level to save outputs to disk. Output folder can be set at eith
 
     wf = workflow.load("path_to_your_workflow")
     # Enable auto-save mode to let Ikomia API save outputs to disk for all tasks
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
     # Video from local filesystem
     wf.run_on(path="path_to_your_video.avi")
     # Video from public url
@@ -301,11 +301,11 @@ Get the total time (:py:meth:`~ikomia.dataprocess.workflow.Workflow.getTotalElap
     wf.run()
 
     # Executing time in ms
-    time_ms = wf.getTotalElapsedTime()
+    time_ms = wf.get_total_elapsed_time()
 
 Get executing time for each task 
-(:py:meth:`~ikomia.core.pycore.CWorkflowTask.getElapsedTime` and 
-:py:meth:`~ikomia.dataprocess.workflow.Workflow.getElapsedTimeTo`):
+(:py:meth:`~ikomia.core.pycore.CWorkflowTask.get_elapsed_time` and
+:py:meth:`~ikomia.dataprocess.workflow.Workflow.get_elapsed_timeTo`):
 
 .. code-block::
 
@@ -317,9 +317,9 @@ Get executing time for each task
 
     ids = wf.getTaskIDs()
     for task_id in ids:
-        task = wf.getTask(task_id)
-        time_ms = task.getElapsedTime()
-        time_to_ms = wf.getElapsedTimeTo(task_id)
+        task = wf.get_task(task_id)
+        time_ms = task.get_elapsed_time()
+        time_to_ms = wf.get_elapsed_time_to(task_id)
 
 You can also get all metrics in a dict structure (:py:meth:`~ikomia.dataprocess.workflow.Workflow.get_time_metrics`):
 

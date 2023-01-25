@@ -22,19 +22,18 @@
       CGraphicsInput
       CGraphicsOutput
       CImageIO
-      CInstanceSegIO
-      CObjectMeasure
+      CInstanceSegmentation
+      CInstanceSegmentationIO
+      NumericOutputType
       CNumericIO
+      CObjectMeasure
+      CObjectDetection
       CObjectDetectionIO
       CPathIO
-      CSemanticSegIO
+      CSemanticSegmentationIO
       CVideoIO
       CWidgetOutput
-      CInstanceSegmentation
-      CObjectDetection
-      NumericOutputType
       PlotType
-      MapIntStr
 
    .. rubric:: Task management
    .. autosummary::

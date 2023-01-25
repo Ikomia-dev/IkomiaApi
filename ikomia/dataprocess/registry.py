@@ -84,14 +84,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
         """
         algo = None
-        available_algos = self.getAlgorithms()
+        available_algos = self.get_algorithms()
 
         if name in available_algos:
-            algo = self.createInstance(name, parameters)
+            algo = self.create_instance(name, parameters)
         else:
             try:
                 self.install_algorithm(name)
-                algo = self.createInstance(name, parameters)
+                algo = self.create_instance(name, parameters)
 
                 if config.main_cfg["registry"]["auto_completion"]:
                     autocomplete.update_local_plugin(algo)
@@ -107,9 +107,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Launch automatic update of all algorithms in the registry. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
         """
-        local_algos = self.getAlgorithms()
+        local_algos = self.get_algorithms()
         for algo in local_algos:
-            info = self.getAlgorithmInfo(algo)
+            info = self.get_algorithm_info(algo)
             if not info.internal:
                 self.update_algorithm(algo)
 
@@ -121,7 +121,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Args:
              name (str): algorithm unique name
         """
-        local_algos = self.getAlgorithms()
+        local_algos = self.get_algorithms()
         if local_algos is None:
             logger.error("Ikomia algorithm registry is empty.")
 
@@ -143,7 +143,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.error("Algorithm " + name + " does not exist in Ikomia HUB")
             return
 
-        info = self.getAlgorithmInfo(name)
+        info = self.get_algorithm_info(name)
         if info.version >= online_algo["version"] and info.ikomiaVersion >= online_algo["ikomiaVersion"]:
             logger.info("Algorithm " + name + " is already up to date")
             return
@@ -158,7 +158,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             name (str): algorithm unique name
             force (bool): force package installation even if the algorithm is already installed
         """
-        available_algos = self.getAlgorithms()
+        available_algos = self.get_algorithms()
         if name in available_algos and not force:
             logger.info(f"Skip installation of {name} as it is already installed.")
             return
@@ -175,10 +175,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if language == utils.ApiLanguage.PYTHON:
             self._load_python_algorithm(plugin_dir, plugin["name"])
         else:
-            self.loadCppPlugin(plugin_dir)
+            self.load_cpp_plugin(plugin_dir)
 
     def load_python_algorithms(self):
-        root_dir = self.getPluginsDirectory() + os.sep + "Python"
+        root_dir = self.get_plugins_directory() + os.sep + "Python"
 
         if root_dir not in sys.path:
             sys.path.insert(0, root_dir)
@@ -197,7 +197,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         main_module = utils.import_plugin_module(directory, main_module_name)
         main_class = getattr(main_module, "IkomiaPlugin")
         main_obj = main_class()
-        task_factory = main_obj.getProcessFactory()
+        task_factory = main_obj.get_process_factory()
         task_factory.info.language = utils.ApiLanguage.PYTHON
         task_factory.info.os = utils.OSType.ALL
         task_factory.info.internal = False
@@ -207,14 +207,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         if compatibility_state == utils.PluginState.DEPRECATED:
             error_msg = "Plugin " + name + "is deprecated: based on Ikomia " + str(plugin_version) + \
-                        "while the current version is " + str(utils.getApiVersion())
+                        "while the current version is " + str(utils.get_api_version())
             raise ValueError(error_msg)
         elif compatibility_state == utils.PluginState.UPDATED:
             logger.warning("Plugin " + name + "is based on Ikomia " + str(plugin_version) +
-                           " while the current version is " + str(utils.getApiVersion()) +
+                           " while the current version is " + str(utils.get_api_version()) +
                            ". You should consider updating Ikomia API.")
 
-        self.registerTask(task_factory)
+        self.register_task(task_factory)
 
     def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
@@ -233,7 +233,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             raise ValueError(error_msg)
 
         language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
-        state = utils.getCompatibilityState(plugin["ikomiaVersion"], language)
+        state = utils.get_compatibility_state(plugin["ikomiaVersion"], language)
 
         if state != utils.PluginState.VALID:
             error_msg = "Plugin " + plugin["name"] + " can't be installed due to version incompatibility.\n"
@@ -254,12 +254,12 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Download package
         url = config.main_cfg["hub"]["url"] + package_url
-        file_path = self.getPluginsDirectory() + "/Transfer/" + os.path.basename(package_url)
+        file_path = self.get_plugins_directory() + "/Transfer/" + os.path.basename(package_url)
         utils.http.download_file(url, file_path, public=False)
 
         # Unzip
         language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
-        target_dir = self.getPluginsDirectory() + os.sep + language_folder + os.sep + plugin["name"]
+        target_dir = self.get_plugins_directory() + os.sep + language_folder + os.sep + plugin["name"]
 
         if os.path.isdir(target_dir):
             shutil.rmtree(target_dir)
@@ -297,7 +297,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         modules = utils.plugintools.get_installed_modules()
 
         # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
-        to_remove = self.getBlackListedPackages()
+        to_remove = self.get_black_listed_packages()
         for package in to_remove:
             module_installed = next((mod for mod in modules if mod["name"] == package), None)
             if module_installed:

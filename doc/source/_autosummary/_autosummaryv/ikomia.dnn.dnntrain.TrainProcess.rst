@@ -9,8 +9,8 @@
     .. autosummary::
 
         ~TrainProcess.__init__
-        ~TrainProcess.beginTaskRun
-        ~TrainProcess.endTaskRun
+        ~TrainProcess.begin_task_run
+        ~TrainProcess.end_task_run
         ~TrainProcess.log_param
         ~TrainProcess.log_params
         ~TrainProcess.log_metric
@@ -22,90 +22,90 @@
     .. rubric:: Inherited methods
     .. autosummary::
 
-        ~TrainProcess.addInput
-        ~TrainProcess.addOutput
-        ~TrainProcess.emitAddSubProgressSteps
-        ~TrainProcess.emitGraphicsContextChanged
-        ~TrainProcess.emitOutputChanged
-        ~TrainProcess.emitStepProgress
-        ~TrainProcess.enableMlflow
-        ~TrainProcess.enableTensorboard
-        ~TrainProcess.executeActions
-        ~TrainProcess.getElapsedTime
-        ~TrainProcess.getInput
-        ~TrainProcess.getInputCount
-        ~TrainProcess.getInputDataType
-        ~TrainProcess.getInputs
-        ~TrainProcess.getOutput
-        ~TrainProcess.getOutputCount
-        ~TrainProcess.getOutputDataType
-        ~TrainProcess.getOutputs
-        ~TrainProcess.getParam
-        ~TrainProcess.getProgressSteps
-        ~TrainProcess.globalInputChanged
-        ~TrainProcess.graphicsChanged
-        ~TrainProcess.isGraphicsChangedListening
-        ~TrainProcess.parametersModified
-        ~TrainProcess.removeInput
+        ~TrainProcess.add_input
+        ~TrainProcess.add_output
+        ~TrainProcess.emit_add_sub_progress_steps
+        ~TrainProcess.emit_graphics_context_changed
+        ~TrainProcess.emit_output_changed
+        ~TrainProcess.emit_step_progress
+        ~TrainProcess.enable_mlflow
+        ~TrainProcess.enable_tensorboard
+        ~TrainProcess.execute_actions
+        ~TrainProcess.get_elapsed_time
+        ~TrainProcess.get_input
+        ~TrainProcess.get_input_count
+        ~TrainProcess.get_input_data_type
+        ~TrainProcess.get_inputs
+        ~TrainProcess.get_output
+        ~TrainProcess.get_output_count
+        ~TrainProcess.get_output_data_type
+        ~TrainProcess.get_outputs
+        ~TrainProcess.get_parameters
+        ~TrainProcess.get_progress_steps
+        ~TrainProcess.global_input_changed
+        ~TrainProcess.graphics_changed
+        ~TrainProcess.is_graphics_changed_listening
+        ~TrainProcess.parameters_modified
+        ~TrainProcess.remove_input
         ~TrainProcess.run
-        ~TrainProcess.setActionFlag
-        ~TrainProcess.setActive
-        ~TrainProcess.setInput
-        ~TrainProcess.setInputDataType
-        ~TrainProcess.setInputs
-        ~TrainProcess.setOutput
-        ~TrainProcess.setOutputDataType
-        ~TrainProcess.setOutputs
-        ~TrainProcess.setParam
-        ~TrainProcess.updateStaticOutputs
+        ~TrainProcess.set_action_flag
+        ~TrainProcess.set_active
+        ~TrainProcess.set_input
+        ~TrainProcess.set_input_data_type
+        ~TrainProcess.set_inputs
+        ~TrainProcess.set_output
+        ~TrainProcess.set_output_data_type
+        ~TrainProcess.set_outputs
+        ~TrainProcess.set_parameters
+        ~TrainProcess.update_static_outputs
 
     .. rubric:: Details
     .. automethod:: __init__
     .. automethod:: stop
-    .. automethod:: addInput
-    .. automethod:: addOutput
-    .. automethod:: beginTaskRun
-    .. automethod:: emitAddSubProgressSteps
-    .. automethod:: emitGraphicsContextChanged
-    .. automethod:: emitOutputChanged
-    .. automethod:: emitStepProgress
-    .. automethod:: enableMlflow
-    .. automethod:: enableTensorboard
-    .. automethod:: endTaskRun
-    .. automethod:: executeActions
-    .. automethod:: getElapsedTime
-    .. automethod:: getInput
-    .. automethod:: getInputCount
-    .. automethod:: getInputDataType
-    .. automethod:: getInputs
-    .. automethod:: getOutput
-    .. automethod:: getOutputCount
-    .. automethod:: getOutputDataType
-    .. automethod:: getOutputs
-    .. automethod:: getParam
-    .. automethod:: getProgressSteps
-    .. automethod:: globalInputChanged
-    .. automethod:: graphicsChanged
-    .. automethod:: isGraphicsChangedListening
+    .. automethod:: add_input
+    .. automethod:: add_output
+    .. automethod:: begin_task_run
+    .. automethod:: emit_add_sub_progress_steps
+    .. automethod:: emit_graphics_context_changed
+    .. automethod:: emit_output_changed
+    .. automethod:: emit_step_progress
+    .. automethod:: enable_mlflow
+    .. automethod:: enable_tensorboard
+    .. automethod:: end_task_run
+    .. automethod:: execute_actions
+    .. automethod:: get_elapsed_time
+    .. automethod:: get_input
+    .. automethod:: get_input_count
+    .. automethod:: get_input_data_type
+    .. automethod:: get_inputs
+    .. automethod:: get_output
+    .. automethod:: get_output_count
+    .. automethod:: get_output_data_type
+    .. automethod:: get_outputs
+    .. automethod:: get_parameters
+    .. automethod:: get_progress_steps
+    .. automethod:: global_input_changed
+    .. automethod:: graphics_changed
+    .. automethod:: is_graphics_changed_listening
     .. automethod:: log_param
     .. automethod:: log_params
     .. automethod:: log_metric
     .. automethod:: log_metrics
     .. automethod:: log_artifact
     .. automethod:: log_artifacts
-    .. automethod:: parametersModified
-    .. automethod:: removeInput
+    .. automethod:: parameters_modified
+    .. automethod:: remove_input
     .. automethod:: run
-    .. automethod:: setActionFlag
-    .. automethod:: setActive
-    .. automethod:: setInput
-    .. automethod:: setInputDataType
-    .. automethod:: setInputs
-    .. automethod:: setOutput
-    .. automethod:: setOutputDataType
-    .. automethod:: setOutputs
-    .. automethod:: setParam
-    .. automethod:: updateStaticOutputs
+    .. automethod:: set_action_flag
+    .. automethod:: set_active
+    .. automethod:: set_input
+    .. automethod:: set_input_data_type
+    .. automethod:: set_inputs
+    .. automethod:: set_output
+    .. automethod:: set_output_data_type
+    .. automethod:: set_outputs
+    .. automethod:: set_parameters
+    .. automethod:: update_static_outputs
 
     .. rubric:: Attributes
     .. autosummary::

@@ -131,7 +131,7 @@ def _check_sync():
         return False
 
     ik_names = dir(ik)
-    names = ikomia.ik_registry.getAlgorithms()
+    names = ikomia.ik_registry.get_algorithms()
 
     for name in names:
         if name not in ik_names:
@@ -163,7 +163,7 @@ def make_local_plugins(force=False):
             return
 
 
-    names = ikomia.ik_registry.getAlgorithms()
+    names = ikomia.ik_registry.get_algorithms()
     for name in names:
         try:
             _write_auto_complete(f, task_name=name, skip_params=False)
@@ -231,7 +231,7 @@ def make_online_plugins(force=False):
     if online_algos is None:
         return
 
-    local_names = ikomia.ik_registry.getAlgorithms()
+    local_names = ikomia.ik_registry.get_algorithms()
     for algo in online_algos:
         if algo["name"] not in local_names:
             try:

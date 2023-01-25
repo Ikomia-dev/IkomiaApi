@@ -82,7 +82,7 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.isDataAvailable:
+    if not obj.is_data_available():
         return
 
     if fig is not None:
@@ -93,7 +93,7 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
         fig, ax = plt.subplots(1, 1)
 
     ax.set_title(label)
-    ax.imshow(obj.getImage())
+    ax.imshow(obj.get_image())
     ax.axis("off")
 
     if not child:
@@ -109,7 +109,7 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.isDataAvailable:
+    if not obj.is_data_available:
         return
 
     if fig is not None:
@@ -120,7 +120,7 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
         fig, ax = plt.subplots(1, 1)
 
     ax.set_title(label)
-    items = obj.getItems()
+    items = obj.get_items()
     x_min = y_min = sys.maxsize
     x_max = y_max = 0
 
@@ -132,7 +132,7 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
         y_max = max(y_max, y)
 
     for item in items:
-        item_type = item.getType()
+        item_type = item.get_type()
 
         if item_type == core.GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
@@ -226,7 +226,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.isDataAvailable:
+    if not obj.is_data_available():
         return
 
     if fig is not None:
@@ -237,7 +237,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
         fig, ax = plt.subplots(1, 1)
 
     ax.set_title(label)
-    items = obj.getItems()
+    items = obj.get_items()
     x_min = y_min = sys.maxsize
     x_max = y_max = 0
 
@@ -249,7 +249,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
         y_max = max(y_max, y)
 
     for item in items:
-        item_type = item.getType()
+        item_type = item.get_type()
 
         if item_type == core.GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
@@ -343,7 +343,7 @@ def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.isDataAvailable:
+    if not obj.is_data_available():
         return
 
     if fig is None:
@@ -351,10 +351,10 @@ def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
     else:
         child = True
 
-    labels = obj.getAllLabelList()
-    col_labels = obj.getAllHeaderLabels()
-    values = obj.getAllValueList()
-    out_type = obj.getOutputType()
+    labels = obj.get_all_label_list()
+    col_labels = obj.get_all_header_labels()
+    values = obj.get_all_value_list()
+    out_type = obj.get_output_type()
 
     if out_type == dataprocess.NumericOutputType.TABLE:
         if fig is None:
@@ -385,7 +385,7 @@ def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
         ax.axis("off")
 
     elif out_type == dataprocess.NumericOutputType.PLOT:
-        plot_type = obj.getPlotType()
+        plot_type = obj.get_plot_type()
 
         # HISTOGRAM
         if plot_type == dataprocess.PlotType.HISTOGRAM or plot_type == dataprocess.PlotType.BAR:
@@ -496,7 +496,7 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.isDataAvailable:
+    if not obj.is_data_available():
         return
 
     if fig is not None:
@@ -506,14 +506,14 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
         child = False
         fig, ax = plt.subplots(1, 1)
 
-    measures = obj.getMeasures()
+    measures = obj.get_masures()
     row_labels = list(range(len(measures)))
     col_labels = ["Graphics ID", "Label"]
     max_value_length = 9
 
     for blob_measures in measures:
         for measure in blob_measures:
-            measure_info = measure.getMeasureInfo()
+            measure_info = measure.get_measure_info()
 
             if measure_info.name not in col_labels:
                 col_labels.append(measure_info.name)
@@ -527,8 +527,8 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
 
     for i, blob_measures in enumerate(measures):
         for measure in blob_measures:
-            measure_info = measure.getMeasureInfo()
-            values[i][0] = str(measure.graphicsId)
+            measure_info = measure.get_measure_info()
+            values[i][0] = str(measure.graphics_id)
             values[i][1] = str(measure.label)
 
             try:
@@ -616,7 +616,7 @@ def _(obj: dataprocess.CWorkflow, label="", **kwargs):
     from graphviz import Source
     dot_file_name = obj.name + ".dot"
     path = os.path.join(core.config.main_cfg["data"]["path"], dot_file_name)
-    obj.exportGraphviz(path)
+    obj.export_graphviz(path)
     s = Source.from_file(path)
     s.view()
 

@@ -17,7 +17,7 @@ CGraphicsItem
       ~CGraphicsItem.get_category
       ~CGraphicsItem.get_id
       ~CGraphicsItem.get_type
-      ~CGraphicsItem.insertToImage
+      ~CGraphicsItem.insert_to_image
       ~CGraphicsItem.is_text_item
       ~CGraphicsItem.set_category
 

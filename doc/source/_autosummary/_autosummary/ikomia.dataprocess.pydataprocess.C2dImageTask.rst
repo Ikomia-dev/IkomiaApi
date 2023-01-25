@@ -14,56 +14,56 @@
    .. rubric:: Methods
    .. autosummary::
       ~C2dImageTask.__init__
-      ~C2dImageTask.applyGraphicsMask
-      ~C2dImageTask.applyGraphicsMaskToBinary
-      ~C2dImageTask.createInputGraphicsMask
-      ~C2dImageTask.createGraphicsMask
-      ~C2dImageTask.emitAddSubProgressSteps
-      ~C2dImageTask.emitGraphicsContextChanged
-      ~C2dImageTask.emitOutputChanged
-      ~C2dImageTask.emitStepProgress
-      ~C2dImageTask.forwardInputImage
-      ~C2dImageTask.getGraphicsMask
-      ~C2dImageTask.isMaskAvailable
-      ~C2dImageTask.setOutputColorMap
+      ~C2dImageTask.apply_graphics_mask
+      ~C2dImageTask.apply_graphics_mask_to_binary
+      ~C2dImageTask.create_input_graphics_mask
+      ~C2dImageTask.create_graphics_mask
+      ~C2dImageTask.emit_add_sub_progress_steps
+      ~C2dImageTask.emit_graphics_context_changed
+      ~C2dImageTask.emit_output_changed
+      ~C2dImageTask.emit_step_progress
+      ~C2dImageTask.forward_input_image
+      ~C2dImageTask.get_graphics_mask
+      ~C2dImageTask.is_mask_available
+      ~C2dImageTask.set_output_color_map
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~C2dImageTask.beginTaskRun
-      ~C2dImageTask.endTaskRun
-      ~C2dImageTask.graphicsChanged
-      ~C2dImageTask.setActive
-      ~C2dImageTask.updateStaticOutputs
+      ~C2dImageTask.begin_task_run
+      ~C2dImageTask.end_task_run
+      ~C2dImageTask.graphics_changed
+      ~C2dImageTask.set_active
+      ~C2dImageTask.update_static_outputs
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~C2dImageTask.addInput
-      ~C2dImageTask.addOutput
-      ~C2dImageTask.executeActions
-      ~C2dImageTask.getElapsedTime
-      ~C2dImageTask.getInput
-      ~C2dImageTask.getInputCount
-      ~C2dImageTask.getInputDataType
-      ~C2dImageTask.getInputs
-      ~C2dImageTask.getOutput
-      ~C2dImageTask.getOutputCount
-      ~C2dImageTask.getOutputDataType
-      ~C2dImageTask.getOutputs
-      ~C2dImageTask.getParam
-      ~C2dImageTask.getProgressSteps
-      ~C2dImageTask.globalInputChanged      
-      ~C2dImageTask.isGraphicsChangedListening      
-      ~C2dImageTask.parametersModified
-      ~C2dImageTask.removeInput
+      ~C2dImageTask.add_input
+      ~C2dImageTask.add_output
+      ~C2dImageTask.execute_actions
+      ~C2dImageTask.get_elapsed_time
+      ~C2dImageTask.get_input
+      ~C2dImageTask.get_input_count
+      ~C2dImageTask.get_input_data_type
+      ~C2dImageTask.get_inputs
+      ~C2dImageTask.get_output
+      ~C2dImageTask.get_output_count
+      ~C2dImageTask.get_output_data_type
+      ~C2dImageTask.get_outputs
+      ~C2dImageTask.get_parameters
+      ~C2dImageTask.get_progress_steps
+      ~C2dImageTask.global_input_changed
+      ~C2dImageTask.is_graphics_changed_listening
+      ~C2dImageTask.parameters_modified
+      ~C2dImageTask.remove_input
       ~C2dImageTask.run
-      ~C2dImageTask.setActionFlag      
-      ~C2dImageTask.setInput
-      ~C2dImageTask.setInputDataType
-      ~C2dImageTask.setInputs
-      ~C2dImageTask.setOutput      
-      ~C2dImageTask.setOutputDataType
-      ~C2dImageTask.setOutputs
-      ~C2dImageTask.setParam
+      ~C2dImageTask.set_action_flag
+      ~C2dImageTask.set_input
+      ~C2dImageTask.set_input_data_type
+      ~C2dImageTask.set_inputs
+      ~C2dImageTask.set_output
+      ~C2dImageTask.set_output_data_type
+      ~C2dImageTask.set_outputs
+      ~C2dImageTask.set_parameters
       ~C2dImageTask.stop      
    
    .. rubric:: Attributes
@@ -73,49 +73,49 @@
    
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: addInput
-   .. automethod:: addOutput
-   .. automethod:: applyGraphicsMask
-   .. automethod:: applyGraphicsMaskToBinary
-   .. automethod:: beginTaskRun
-   .. automethod:: createInputGraphicsMask
-   .. automethod:: createGraphicsMask
-   .. automethod:: emitAddSubProgressSteps
-   .. automethod:: emitGraphicsContextChanged
-   .. automethod:: emitOutputChanged
-   .. automethod:: emitStepProgress
-   .. automethod:: endTaskRun
-   .. automethod:: executeActions
-   .. automethod:: forwardInputImage
-   .. automethod:: getElapsedTime
-   .. automethod:: getGraphicsMask
-   .. automethod:: getInput
-   .. automethod:: getInputCount
-   .. automethod:: getInputDataType
-   .. automethod:: getInputs
-   .. automethod:: getOutput
-   .. automethod:: getOutputCount
-   .. automethod:: getOutputDataType
-   .. automethod:: getOutputs
-   .. automethod:: getParam
-   .. automethod:: getProgressSteps
-   .. automethod:: globalInputChanged
-   .. automethod:: graphicsChanged
-   .. automethod:: isGraphicsChangedListening
-   .. automethod:: isMaskAvailable
-   .. automethod:: parametersModified
-   .. automethod:: removeInput
+   .. automethod:: add_input
+   .. automethod:: add_output
+   .. automethod:: apply_graphics_mask
+   .. automethod:: apply_graphics_mask_to_binary
+   .. automethod:: begin_task_run
+   .. automethod:: create_input_graphics_mask
+   .. automethod:: create_graphics_mask
+   .. automethod:: emit_add_sub_progress_steps
+   .. automethod:: emit_graphics_context_changed
+   .. automethod:: emit_output_changed
+   .. automethod:: emit_step_progress
+   .. automethod:: end_task_run
+   .. automethod:: execute_actions
+   .. automethod:: forward_input_image
+   .. automethod:: get_elapsed_time
+   .. automethod:: get_graphics_mask
+   .. automethod:: get_input
+   .. automethod:: get_input_count
+   .. automethod:: get_input_data_type
+   .. automethod:: get_inputs
+   .. automethod:: get_output
+   .. automethod:: get_output_count
+   .. automethod:: get_output_data_type
+   .. automethod:: get_outputs
+   .. automethod:: get_parameters
+   .. automethod:: get_progress_steps
+   .. automethod:: global_input_changed
+   .. automethod:: graphics_changed
+   .. automethod:: is_graphics_changed_listening
+   .. automethod:: is_mask_available
+   .. automethod:: parameters_modified
+   .. automethod:: remove_input
    .. automethod:: run
-   .. automethod:: setActionFlag
-   .. automethod:: setActive
-   .. automethod:: setInput
-   .. automethod:: setInputDataType
-   .. automethod:: setInputs
-   .. automethod:: setOutput
-   .. automethod:: setOutputColorMap
-   .. automethod:: setOutputDataType
-   .. automethod:: setOutputs
-   .. automethod:: setParam
+   .. automethod:: set_action_flag
+   .. automethod:: set_active
+   .. automethod:: set_input
+   .. automethod:: set_input_data_type
+   .. automethod:: set_inputs
+   .. automethod:: set_output
+   .. automethod:: set_output_color_map
+   .. automethod:: set_output_data_type
+   .. automethod:: set_outputs
+   .. automethod:: set_parameters
    .. automethod:: stop
-   .. automethod:: updateStaticOutputs
+   .. automethod:: update_static_outputs
    

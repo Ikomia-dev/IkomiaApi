@@ -13,44 +13,47 @@ CObjectDetectionIO
     .. rubric:: Methods
     .. autosummary::
         ~CObjectDetectionIO.__init__
-        ~CObjectDetectionIO.addObject
-        ~CObjectDetectionIO.getObjectCount
-        ~CObjectDetectionIO.getObject
-        ~CObjectDetectionIO.getObjects
+        ~CObjectDetectionIO.add_object
+        ~CObjectDetectionIO.get_object_count
+        ~CObjectDetectionIO.get_object
+        ~CObjectDetectionIO.get_objects
         ~CObjectDetectionIO.init
 
     .. rubric:: Overridden methods
     .. autosummary::
-        ~CObjectDetectionIO.clearData
-        ~CObjectDetectionIO.isDataAvailable
+        ~CObjectDetectionIO.clear_data
+        ~CObjectDetectionIO.is_data_available
         ~CObjectDetectionIO.load
         ~CObjectDetectionIO.save
-        ~CObjectDetectionIO.toJson
-        ~CObjectDetectionIO.fromJson
+        ~CObjectDetectionIO.to_json
+        ~CObjectDetectionIO.from_json
 
     .. rubric:: Inherited methods
     .. autosummary::
-        ~CObjectDetectionIO.copyStaticData
-        ~CObjectDetectionIO.getUnitElementCount
-        ~CObjectDetectionIO.isAutoInput
-        ~CObjectDetectionIO.setDisplayable
+        ~CObjectDetectionIO.copy_static_data
+        ~CObjectDetectionIO.get_unit_element_count
+        ~CObjectDetectionIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
-        ~CObjectDetectionIO.dataType
+        ~CObjectDetectionIO.auto_save
+        ~CObjectDetectionIO.data_type
+        ~CObjectDetectionIO.dim_count
         ~CObjectDetectionIO.description
-        ~CObjectDetectionIO.dimCount
+        ~CObjectDetectionIO.displayable
+        ~CObjectDetectionIO.name
+        ~CObjectDetectionIO.source_file_path
 
     .. rubric:: Details
     .. automethod:: __init__
-    .. automethod:: addObject
-    .. automethod:: clearData
-    .. automethod:: getObjectCount
-    .. automethod:: getObject
-    .. automethod:: getObjects
+    .. automethod:: add_object
+    .. automethod:: clear_data
+    .. automethod:: get_object_count
+    .. automethod:: get_object
+    .. automethod:: get_objects
     .. automethod:: init
-    .. automethod:: isDataAvailable
+    .. automethod:: is_data_available
     .. automethod:: load
     .. automethod:: save
-    .. automethod:: toJson
-    .. automethod:: fromJson
+    .. automethod:: to_json
+    .. automethod:: from_json

@@ -23,22 +23,22 @@ Code example for OCVBasics process implementation
             self.sigma_x = 1.0
             self.sigma_y = 1.0
 
-        def setParam(self, paramMap):
+        def set_values(self, params):
             # Set parameters values from Ikomia application (user inputs)
             # Parameters values are stored as string and accessible like a python dict
-            self.kernel_size = (int(paramMap["kernel_size_x"]), int(paramMap["kernel_size_y"]))
-            self.sigma_x = int(paramMap["sigma_x"])
-            self.sigma_y = int(paramMap["sigma_y"])
+            self.kernel_size = (int(params["kernel_size_x"]), int(params["kernel_size_y"]))
+            self.sigma_x = int(params["sigma_x"])
+            self.sigma_y = int(params["sigma_y"])
 
-        def getParam(self):
+        def get_values(self):
             # Send parameters values to Ikomia application (workflow)
             # Create the specific dict structure (string container)
-            paramMap = core.ParamMap()
-            paramMap["kernel_size_x"] = str(self.kernel_size[0])
-            paramMap["kernel_size_y"] = str(self.kernel_size[1])
-            paramMap["sigma_x"] = str(self.sigma_x)
-            paramMap["sigma_y"] = str(self.sigma_y)
-            return paramMap
+            params = {}
+            params["kernel_size_x"] = str(self.kernel_size[0])
+            params["kernel_size_y"] = str(self.kernel_size[1])
+            params["sigma_x"] = str(self.sigma_x)
+            params["sigma_y"] = str(self.sigma_y)
+            return params
 
 
     # --------------------
@@ -50,33 +50,33 @@ Code example for OCVBasics process implementation
         def __init__(self, name, param):
             dataprocess.C2dImageTask.__init__(self, name)
             # Add input/output of the process here
-            # Example :  self.addInput(core.CImageProcessIO())
-            #           self.addOutput(core.CImageProcessIO())
+            # Example :  self.add_input(core.CImageProcessIO())
+            #           self.add_output(core.CImageProcessIO())
 
             #Create parameters class
             if param is None:
-                self.setParam(OCVBasicsParam())
+                self.set_param_object(OCVBasicsParam())
             else:
-                self.setParam(copy.deepcopy(param))
+                self.set_param_object(copy.deepcopy(param))
 
-        def getProgressSteps(self):
+        def get_progress_steps(self):
             # Function returning the number of progress steps for this process
             # This is handled by the main progress bar of Ikomia application
             return 1
 
         def run(self):
             # Core function of your process
-            # Call beginTaskRun for initialization
-            self.beginTaskRun()
+            # Call begin_task_run for initialization
+            self.begin_task_run()
 
             # Get parameters :
-            param = self.getParam()
+            param = self.get_param_object()
 
             # Get input :
-            input_img = self.getInput(0)
+            input_img = self.get_input(0)
 
             # Get image from input (numpy array):
-            src_image = input_img.getImage()
+            src_image = input_img.get_image()
 
             # Call to the process main routine
             # Grayscale conversion
@@ -87,16 +87,16 @@ Code example for OCVBasics process implementation
             proc_img = cv2.Canny(proc_img, 0, 255)
 
             # Get output :
-            output = self.getOutput(0)
+            output = self.get_output(0)
 
             # Set image of output (numpy array):
-            output.setImage(proc_img)
+            output.set_image(proc_img)
 
             # Step progress bar:
-            self.emitStepProgress()
+            self.emit_step_progress()
 
-            # Call endTaskRun to finalize process
-            self.endTaskRun()
+            # Call end_task_run to finalize process
+            self.end_task_run()
 
 
     # --------------------

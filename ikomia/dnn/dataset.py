@@ -241,7 +241,7 @@ def load_yolo_dataset(folder_path, class_path):
     return data
 
 
-def annToRLE(img, ann):
+def ann_to_rle(img, ann):
     """
     Convert annotation which can be polygons, uncompressed RLE to RLE.
     :return: binary mask (numpy 2D array)

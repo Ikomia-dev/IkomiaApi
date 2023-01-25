@@ -15,39 +15,40 @@ CWorkflow
     .. autosummary::
 
         ~CWorkflow.__init__
-        ~CWorkflow.addInput
-        ~CWorkflow.addTask
+        ~CWorkflow.add_input
+        ~CWorkflow.add_task
         ~CWorkflow.clear
-        ~CWorkflow.clearInputs
-        ~CWorkflow.clearOutputData
+        ~CWorkflow.clear_inputs
+        ~CWorkflow.clear_output_data
         ~CWorkflow.connect
-        ~CWorkflow.deleteEdge
-        ~CWorkflow.deleteTask
-        ~CWorkflow.exportGraphviz
-        ~CWorkflow.getChildren
-        ~CWorkflow.getEdgeInfo
-        ~CWorkflow.getEdgeSource
-        ~CWorkflow.getEdgeTarget
-        ~CWorkflow.getElapsedTimeTo
-        ~CWorkflow.getFinalTasks
-        ~CWorkflow.getInEdges
-        ~CWorkflow.getOutEdges
-        ~CWorkflow.getParents
-        ~CWorkflow.getRootID
-        ~CWorkflow.getRootTargetTypes
-        ~CWorkflow.getTask
-        ~CWorkflow.getTaskCount
-        ~CWorkflow.getTaskIDs
-        ~CWorkflow.getTotalElapsedTime
+        ~CWorkflow.delete_edge
+        ~CWorkflow.delete_task
+        ~CWorkflow.export_graphviz
+        ~CWorkflow.get_children
+        ~CWorkflow.get_edge_info
+        ~CWorkflow.get_edge_source
+        ~CWorkflow.get_edge_target
+        ~CWorkflow.get_elapsed_time_to
+        ~CWorkflow.get_final_tasks
+        ~CWorkflow.get_in_edges
+        ~CWorkflow.get_last_run_folder
+        ~CWorkflow.get_out_edges
+        ~CWorkflow.get_parents
+        ~CWorkflow.get_root_id
+        ~CWorkflow.get_root_target_types
+        ~CWorkflow.get_task
+        ~CWorkflow.get_task_count
+        ~CWorkflow.get_task_ids
+        ~CWorkflow.get_total_elapsed_time
         ~CWorkflow.load
-        ~CWorkflow.removeInput
+        ~CWorkflow.remove_input
         ~CWorkflow.run
         ~CWorkflow.save
-        ~CWorkflow.setAutoSave
-        ~CWorkflow.setInput
-        ~CWorkflow.setOutputFolder
+        ~CWorkflow.set_auto_save
+        ~CWorkflow.set_input
+        ~CWorkflow.set_output_folder
         ~CWorkflow.stop
-        ~CWorkflow.updateStartTime
+        ~CWorkflow.update_start_time
 
 
     .. rubric:: Attributes
@@ -59,36 +60,37 @@ CWorkflow
     .. rubric:: Details
 
     .. automethod:: __init__
-    .. automethod:: addInput
-    .. automethod:: addTask
+    .. automethod:: add_input
+    .. automethod:: add_task
     .. automethod:: clear
-    .. automethod:: clearInputs
-    .. automethod:: clearOutputData
+    .. automethod:: clear_inputs
+    .. automethod:: clear_output_data
     .. automethod:: connect
-    .. automethod:: deleteEdge
-    .. automethod:: deleteTask
-    .. automethod:: exportGraphviz
-    .. automethod:: getChildren
-    .. automethod:: getEdgeInfo
-    .. automethod:: getEdgeSource
-    .. automethod:: getEdgeTarget
-    .. automethod:: getElapsedTimeTo
-    .. automethod:: getFinalTasks
-    .. automethod:: getInEdges
-    .. automethod:: getOutEdges
-    .. automethod:: getParents
-    .. automethod:: getRootID
-    .. automethod:: getRootTargetTypes
-    .. automethod:: getTask
-    .. automethod:: getTaskCount
-    .. automethod:: getTaskIDs
-    .. automethod:: getTotalElapsedTime
+    .. automethod:: delete_edge
+    .. automethod:: delete_task
+    .. automethod:: export_graphviz
+    .. automethod:: get_children
+    .. automethod:: get_edge_info
+    .. automethod:: get_edge_source
+    .. automethod:: get_edge_target
+    .. automethod:: get_elapsed_time_to
+    .. automethod:: get_final_tasks
+    .. automethod:: get_in_edges
+    .. automethod:: get_last_run_folder
+    .. automethod:: get_out_edges
+    .. automethod:: get_parents
+    .. automethod:: get_root_id
+    .. automethod:: get_root_target_types
+    .. automethod:: get_task
+    .. automethod:: get_task_count
+    .. automethod:: get_task_ids
+    .. automethod:: get_total_elapsed_time
     .. automethod:: load
-    .. automethod:: removeInput
+    .. automethod:: remove_input
     .. automethod:: run
     .. automethod:: save
-    .. automethod:: setAutoSave
-    .. automethod:: setInput
-    .. automethod:: setOutputFolder
+    .. automethod:: set_auto_save
+    .. automethod:: set_input
+    .. automethod:: set_output_folder
     .. automethod:: stop
-    .. automethod:: updateStartTime
+    .. automethod:: update_start_time

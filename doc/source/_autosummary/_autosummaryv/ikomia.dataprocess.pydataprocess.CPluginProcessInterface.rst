@@ -13,8 +13,8 @@ CPluginProcessInterface
    .. rubric:: Methods
    .. autosummary::
       ~CPluginProcessInterface.__init__
-      ~CPluginProcessInterface.getProcessFactory
-      ~CPluginProcessInterface.getWidgetFactory
+      ~CPluginProcessInterface.get_process_factory
+      ~CPluginProcessInterface.get_widget_factory
 
 
    See this :doc:`example<../../hello_world_plugin_interface>` for implementation details.
@@ -23,6 +23,6 @@ CPluginProcessInterface
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getProcessFactory
-   .. automethod:: getWidgetFactory
+   .. automethod:: get_process_factory
+   .. automethod:: get_widget_factory
    

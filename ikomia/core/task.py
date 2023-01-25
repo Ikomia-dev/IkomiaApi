@@ -38,7 +38,7 @@ class TaskParam(core.CWorkflowTaskParam):
         core.CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
-    def getParamMap(self):
+    def get_values(self):
         """
         Return parameters for saving in Ikomia Studio.
         """
@@ -48,7 +48,7 @@ class TaskParam(core.CWorkflowTaskParam):
 
         return param_map
 
-    def setParamMap(self, param_map):
+    def set_values(self, params):
         """
         Generic way to set parameters of CWorkflowTask-based object. Must be reimplemented.
         """
@@ -140,7 +140,7 @@ def get_image_with_graphics(task, image_index=0, graphics_index=0):
         graphics_output.append(out.getGraphicsIO())
 
     if graphics_index < len(graphics_output):
-        return img_output.getImageWithGraphics(graphics_output[graphics_index])
+        return img_output.get_image_with_graphics(graphics_output[graphics_index])
     else:
         logger.error(f"No graphics output available at index {graphics_index} for task {task.name}")
         return None

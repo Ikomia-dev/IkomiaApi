@@ -5,39 +5,44 @@ CPathIO
 
 .. autoclass:: CPathIO
 
-   .. rubric:: Import
-   .. code-block:: python
+    .. rubric:: Import
+    .. code-block:: python
 
-         from ikomia.dataprocess import CPathIO
+        from ikomia.dataprocess import CPathIO
 
-   .. rubric:: Methods
-   .. autosummary::
-      ~CPathIO.__init__
-      ~CPathIO.getPath
-      ~CPathIO.setPath
+    .. rubric:: Methods
+    .. autosummary::
+        ~CPathIO.__init__
+        ~CPathIO.get_path
+        ~CPathIO.set_path
 
-   .. rubric:: Overridden methods
-   .. autosummary::
-      ~CPathIO.clearData
-      ~CPathIO.isAutoInput
-      ~CPathIO.isDataAvailable
+    .. rubric:: Overridden methods
+    .. autosummary::
+        ~CPathIO.clear_data
+        ~CPathIO.is_auto_input
+        ~CPathIO.is_data_available
 
-   .. rubric:: Inherited methods
-   .. autosummary::
-      ~CPathIO.copyStaticData
-      ~CPathIO.getUnitElementCount
+    .. rubric:: Inherited methods
+    .. autosummary::
+        ~CPathIO.copy_static_data
+        ~CPathIO.get_unit_element_count
 
-   .. rubric:: Attributes
-   .. autosummary::
-      ~CPathIO.dataType
-      ~CPathIO.dimCount
+    .. rubric:: Attributes
+    .. autosummary::
+        ~CPathIO.auto_save
+        ~CPathIO.data_type
+        ~CPathIO.dim_count
+        ~CPathIO.description
+        ~CPathIO.displayable
+        ~CPathIO.name
+        ~CPathIO.source_file_path
    
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: clearData
-   .. automethod:: copyStaticData
-   .. automethod:: getPath
-   .. automethod:: getUnitElementCount
-   .. automethod:: isAutoInput
-   .. automethod:: isDataAvailable
-   .. automethod:: setPath
+   .. automethod:: clear_data
+   .. automethod:: copy_static_data
+   .. automethod:: get_path
+   .. automethod:: get_unit_element_count
+   .. automethod:: is_auto_input
+   .. automethod:: is_data_available
+   .. automethod:: set_path

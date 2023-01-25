@@ -14,14 +14,14 @@ CObjectMeasure
    .. rubric:: Methods
    .. autosummary::
       ~CObjectMeasure.__init__
-      ~CObjectMeasure.getMeasureInfo
+      ~CObjectMeasure.get_measure_info
 
    .. rubric:: Attributes
    .. autosummary::
       ~CObjectMeasure.values
-      ~CObjectMeasure.graphicsId
+      ~CObjectMeasure.graphics_id
       ~CObjectMeasure.label
 
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: getMeasureInfo
+   .. automethod:: get_measure_info
