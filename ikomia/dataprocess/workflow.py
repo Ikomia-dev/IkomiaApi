@@ -54,8 +54,7 @@ class Workflow(dataprocess.CWorkflow):
             dataprocess.CWorkflow.__init__(self, name, registry)
 
         self.registry = registry
-        output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
-        self.setOutputFolder(output_folder)
+        self.output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
         """
@@ -79,10 +78,10 @@ class Workflow(dataprocess.CWorkflow):
             utils.http.download_file(url, img_path)
             img_input = dataprocess.CImageIO(datatype, "Image", img_path)
 
-        if index == -1 or index >= self.getInputCount():
-            self.addInput(img_input)
+        if index == -1 or index >= self.get_input_count():
+            self.add_input(img_input)
         else:
-            self.setInput(img_input, index, True)
+            self.set_input(img_input, index, True)
 
     def set_video_input(self, path="", url="", index=-1, datatype=core.IODataType.VIDEO):
         """
@@ -103,10 +102,10 @@ class Workflow(dataprocess.CWorkflow):
             utils.http.download_file(url, video_path)
             video_input = dataprocess.CVideoIO(datatype, "Video", video_path)
 
-        if index == -1 or index >= self.getInputCount():
-            self.addInput(video_input)
+        if index == -1 or index >= self.get_input_count():
+            self.add_input(video_input)
         else:
-            self.setInput(video_input, index, True)
+            self.set_input(video_input, index, True)
 
     def set_directory_input(self, folder="", index=-1):
         """
@@ -123,9 +122,9 @@ class Workflow(dataprocess.CWorkflow):
 
         dir_input = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, folder)
         if index == -1:
-            self.addInput(dir_input)
+            self.add_input(dir_input)
         else:
-            self.setInput(dir_input, index, True)
+            self.set_input(dir_input, index, True)
 
     def set_parameters(self, params: dict, task_id=None, task_name="", index=-1):
         """
@@ -134,7 +133,7 @@ class Workflow(dataprocess.CWorkflow):
 
         .. code-block:: python
 
-            print(task_obj.getParam())
+            print(task_obj.get_param_object())
 
         Args:
             params (dict): key-value pairs of parameters to modify.
@@ -143,22 +142,22 @@ class Workflow(dataprocess.CWorkflow):
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
         """
         if task_id is not None:
-            wf_task = self.getTask(task_id)
+            wf_task = self.get_task(task_id)
             if wf_task is not None:
-                wf_task.setParamValues(params)
+                wf_task.set_parameters(params)
         elif task_name:
             wf_task = self.find_task(task_name)
             if wf_task is None:
                 return
 
             if not isinstance(wf_task, list):
-                wf_task[1].setParamValues(params)
+                wf_task[1].set_parameters(params)
             else:
                 if index == -1:
                     for t in wf_task:
-                        t[1].setParamValues(params)
+                        t[1].set_parameters(params)
                 elif 0 <= index < len(wf_task):
-                    wf_task[index][1].setParamValues(params)
+                    wf_task[index][1].set_parameters(params)
 
     def get_time_metrics(self):
         """
@@ -168,12 +167,12 @@ class Workflow(dataprocess.CWorkflow):
         Returns:
              dict: metrics
         """
-        metrics = {"total_time": self.getTotalElapsedTime()}
-        ids = self.getTaskIDs()
+        metrics = {"total_time": self.get_total_elapsed_time()}
+        ids = self.get_task_ids()
 
         for task_id in ids:
-            t = self.getTask(task_id)
-            task_metrics = {"task_time": t.getElapsedTime(), "time_from_start": self.getElapsedTimeTo(task_id)}
+            t = self.get_task(task_id)
+            task_metrics = {"task_time": t.get_elapsed_time(), "time_from_start": self.get_elapsed_time_to(task_id)}
             metrics[t.name] = task_metrics
 
         return metrics
@@ -213,10 +212,10 @@ class Workflow(dataprocess.CWorkflow):
         if isinstance(outputs, list):
             images = []
             for output in outputs:
-                images.append(output.getImage())
+                images.append(output.get_tmage())
             return images
         else:
-            return outputs.getImage()
+            return outputs.get_image()
 
     def get_image_with_graphics(self, task_id=None, task_name="", image_index=0, graphics_index=0):
         """
@@ -425,9 +424,9 @@ class Workflow(dataprocess.CWorkflow):
              list of tuple (id (int), name (str)
         """
         tasks = []
-        ids = self.getTaskIDs()
+        ids = self.get_task_ids()
         for task_id in ids:
-            t = self.getTask(task_id)
+            t = self.get_task(task_id)
             if t is not None:
                 tasks.append((task_id, t.name))
 
@@ -449,7 +448,7 @@ class Workflow(dataprocess.CWorkflow):
         if algo is None:
             raise RuntimeError(f"Algorithm {name} can't be created.")
 
-        return self.addTask(algo), algo
+        return self.add_task(algo), algo
 
     def find_task(self, name: str, index=-1):
         """
@@ -463,10 +462,10 @@ class Workflow(dataprocess.CWorkflow):
             list of pairs (tuple): 1- task identifier 2- task object instance
         """
         tasks = []
-        ids = self.getTaskIDs()
+        ids = self.get_task_ids()
 
         for task_id in ids:
-            task = self.getTask(task_id)
+            task = self.get_task(task_id)
             if task.name == name:
                 tasks.append((task_id, task))
 
@@ -499,11 +498,11 @@ class Workflow(dataprocess.CWorkflow):
         Start workflow execution on global input. Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived
         must reimplement the *run()* function that will be called in the right order by the workflow. Please note that
         global inputs should be set before calling this function (see
-        :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.setInput`,
+        :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.set_input`,
         :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_image_input`,
         :py:meth:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`).
         """
-        self.updateStartTime()
+        self.update_start_time()
         run_mode = self._get_run_mode()
 
         if run_mode == Workflow.RunMode.SINGLE:
@@ -528,7 +527,7 @@ class Workflow(dataprocess.CWorkflow):
             raise RuntimeError("Workflow input is invalid: you must pass either an numpy array, a path to image/video"
                                "or a folder containing images or videos.")
 
-        self.updateStartTime()
+        self.update_start_time()
 
         if folder:
             self.set_directory_input(folder=folder)
@@ -536,18 +535,18 @@ class Workflow(dataprocess.CWorkflow):
         else:
             if self._is_image_input(array, path, url):
                 self.set_image_input(array=array, path=path, url=url, index=0)
-                self.setCfgEntry("WholeVideo", str(int(False)))
+                self.set_cfg_entry("WholeVideo", str(int(False)))
             elif self._is_video_input(path, url):
                 self.set_video_input(path=path, url=url, index=0)
-                self.setCfgEntry("WholeVideo", str(int(True)))
+                self.set_cfg_entry("WholeVideo", str(int(True)))
             else:
                 raise RuntimeError("Workflow run failed: unsupported input type.")
 
             self.run()
 
     def prepare_runtime_env(self, path):
-        tasks = self.getRequiredTasks(path)
-        available_tasks = ikomia.ik_registry.getAlgorithms()
+        tasks = self.get_required_tasks(path)
+        available_tasks = ikomia.ik_registry.get_algorithms()
         online_tasks = ikomia.ik_registry.get_online_algorithms()
 
         for t in tasks:
@@ -568,20 +567,20 @@ class Workflow(dataprocess.CWorkflow):
         return True
 
     def _run_directory(self):
-        for i in range(self.getInputCount()):
-            input_type = self.getInputDataType(i)
+        for i in range(self.get_input_count()):
+            input_type = self.get_input_data_type(i)
             if input_type == core.IODataType.FOLDER_PATH:
-                dir_input = self.getInput(i)
+                dir_input = self.get_input(i)
 
                 for root, subdirs, files in os.walk(dir_input.getPath(), topdown=True):
                     for file in files:
                         file_path = os.path.join(root, file)
                         if self._is_image_input(path=file_path):
                             self.set_image_input(path=file_path, index=i)
-                            self.setCfgEntry("WholeVideo", str(int(False)))
+                            self.set_cfg_entry("WholeVideo", str(int(False)))
                         elif self._is_video_input(path=file_path):
                             self.set_video_input(path=file_path, index=i)
-                            self.setCfgEntry("WholeVideo", str(int(True)))
+                            self.set_cfg_entry("WholeVideo", str(int(True)))
                         else:
                             logger.warning(f"Skipping file {file} as it is neither a supported image or video.")
                             continue
@@ -592,14 +591,14 @@ class Workflow(dataprocess.CWorkflow):
                             msg = f"Error occurred while processing {file}: {e.__str__()}"
                             logger.error(msg)
 
-                self.setInput(dir_input, i, False)
+                self.set_input(dir_input, i, False)
 
     def _get_run_mode(self):
         input_types = []
-        for i in range(self.getInputCount()):
-            input_types.append(self.getInputDataType(i))
+        for i in range(self.get_input_count()):
+            input_types.append(self.get_input_data_type(i))
 
-        target_types = self.getRootTargetTypes()
+        target_types = self.get_root_target_types()
 
         if core.IODataType.FOLDER_PATH in input_types and core.IODataType.FOLDER_PATH not in target_types:
             return Workflow.RunMode.DIRECTORY
@@ -609,7 +608,7 @@ class Workflow(dataprocess.CWorkflow):
     def _get_task_output(self, get_output_func, task_id=None, task_name="", index=-1):
         wf_task = None
         if task_id is not None:
-            wf_task = self.getTask(task_id)
+            wf_task = self.get_task(task_id)
             if wf_task is None:
                 return None
 
@@ -642,11 +641,11 @@ class Workflow(dataprocess.CWorkflow):
             return True
         elif path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataImageIO.isImageFormat(ext)
+            return dataio.CDataImageIO.is_image_format(ext)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataImageIO.isImageFormat(ext)
+            return dataio.CDataImageIO.is_image_format(ext)
         else:
             return False
 
@@ -654,11 +653,11 @@ class Workflow(dataprocess.CWorkflow):
     def _is_video_input(path="", url=""):
         if path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+            return dataio.CDataVideoIO.is_video_format(ext, True)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataVideoIO.isVideoFormat(ext, True)
+            return dataio.CDataVideoIO.is_video_format(ext, True)
         else:
             return False
 
@@ -706,9 +705,9 @@ def install_requirements(path):
         True if all installations succeeded else False
     """
     wf = Workflow("untitled", ikomia.ik_registry)
-    tasks = wf.getRequiredTasks(path)
-    available_tasks = ikomia.ik_registry.getAlgorithms()
-    plugins_directory = ikomia.ik_registry.getPluginsDirectory()
+    tasks = wf.get_required_tasks(path)
+    available_tasks = ikomia.ik_registry.get_algorithms()
+    plugins_directory = ikomia.ik_registry.get_plugins_directory()
     for t in tasks:
         if t not in available_tasks:
             plugin_dir = os.path.join(plugins_directory, "Python", t)

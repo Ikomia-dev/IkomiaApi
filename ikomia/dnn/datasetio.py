@@ -73,7 +73,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         self.category_colors = {}
         self.has_bckgnd_class = False
 
-    def getImagePaths(self):
+    def get_image_paths(self):
         """
         Return the list of all images path contained in the dataset.
 
@@ -87,20 +87,20 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return paths
 
-    def getCategories(self):
+    def get_categories(self):
         """
         Return the list of categories (ie instance classes) in the dataset.
 
         Returns:
             :py:class:`~ikomia.dataprocess.pydataprocess.MapIntStr` list: categories (dict-like structure)
         """
-        categories = core.MapIntStr()
+        categories = {}
         for category_id in self.data["metadata"]["category_names"]:
             categories[category_id] = self.data["metadata"]["category_names"][category_id]
 
         return categories
 
-    def getCategoryCount(self):
+    def get_category_count(self):
         """
         Return the number of categories (ie instance classes) in the dataset.
 
@@ -114,7 +114,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return category_max + 1
 
-    def getMaskPath(self, img_path):
+    def get_mask_path(self, img_path):
         """
         Return the file path of the segmentation mask for the given image.
 
@@ -138,7 +138,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return ""
 
-    def getGraphicsAnnotations(self, img_path):
+    def get_graphics_annotations(self, img_path):
         """
         Return a list of Ikomia graphics items corresponding
         to the annotations of a given image (bounding box, polygons).
@@ -231,7 +231,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return graphics
 
-    def isDataAvailable(self):
+    def is_data_available(self):
         """
         Check whether the dataset structure contains data.
 
@@ -243,7 +243,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         else:
             return False
 
-    def clearData(self):
+    def clear_data(self):
         """
         Clear whole dataset structure
         """
@@ -280,8 +280,8 @@ class IkDatasetIO(dataprocess.CDatasetIO):
                 self.data["metadata"]["category_names"] = {int(k): v for k, v in
                                                            self.data["metadata"]["category_names"].items()}
 
-    def toJson(self, options=[]):
+    def to_json(self, options=[]):
         return json.dumps(self.data)
 
-    def fromJson(self, json_string):
+    def from_json(self, json_string):
         self.data = json.loads(json_string)

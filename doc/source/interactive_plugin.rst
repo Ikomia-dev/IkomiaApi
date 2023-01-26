@@ -110,7 +110,7 @@ So we need to add a new image-based input of type :py:class:`~ikomia.dataprocess
             dataprocess.C2dImageTask.__init__(self, name)
             ...
             # add input -> initial level set
-            self.addInput(dataprocess.CImageIO())
+            self.add_input(dataprocess.CImageIO())
             ...
 
 .. _outputs:
@@ -136,7 +136,7 @@ So we need to add a new image-based output of type :py:class:`~ikomia.dataproces
             dataprocess.C2dImageTask.__init__(self, name)
             ...
             # add output -> results image
-            self.addOutput(dataprocess.CImageIO())
+            self.add_output(dataprocess.CImageIO())
             ...
 
 .. _active_contour_methods:
@@ -158,14 +158,14 @@ Otherwise we will process graphics input. Let’s implement that in the *run()* 
     def run(self):
         ...
         # initial level set
-        initlevelSetInput = self.getInput(2)
-        if initlevelSetInput.isDataAvailable():
+        initlevelset_input = self.get_input(2)
+        if initlevelset_input.is_data_available():
             # input set by previous operation in worflow  
             ...
         else :
             # input set by user
-            graphInput = self.getInput(1)
-            if graphInput.isDataAvailable():
+            graphInput = self.get_input(1)
+            if graphInput.is_data_available():
                 ...
             else:
                 raise Exception("No initial level-set given: it must be graphics input or binary image.")
@@ -178,8 +178,8 @@ the scikit-image functions as both structures are numpy arrays.
 
     def run(self):
         ...
-        if initlevelSetInput.isDataAvailable():
-            initlevelSetBinary = initlevelSetInput.getImage()
+        if initlevelset_input.is_data_available():
+            initlevelSetBinary = initlevelset_input.get_image()
             if param.method == "mgac":
                 proc_img = morphological_geodesic_active_contour(gimage, 100, init_level_set=initlevelSetBinary)
             else:
@@ -189,16 +189,16 @@ the scikit-image functions as both structures are numpy arrays.
 For graphics input, we need to generate a binary mask representing active contour seeds from graphics drawn by users. 
 We will use 2 methods of :py:class:`~ikomia.dataprocess.pydataprocess.C2dImageTask` to achieve that:
 
-- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.createGraphicsMask`: create a binary mask from :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput` and append it to the internal mask list.
-- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.getGraphicsMask`: get a mask from the internal mask list as numpy array.
+- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.create_graphics_mask`: create a binary mask from :py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput` and append it to the internal mask list.
+- :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.get_graphics_mask`: get a mask from the internal mask list as numpy array.
 
 .. code-block:: python
 
     def run(self):
         ...
-        if graphInput.isDataAvailable():
-            self.createGraphicsMask(imagef.shape[1], imagef.shape[0], graphInput)
-            binImg = self.getGraphicsMask(0)
+        if graphInput.is_data_available():
+            self.create_graphics_mask(imagef.shape[1], imagef.shape[0], graphInput)
+            binImg = self.get_graphics_mask(0)
             ...
             proc_img = morphological_geodesic_active_contour(gimage, 100, init_level_set=binImg, ...)
             ...
@@ -221,9 +221,9 @@ by the scikit-image functions.
 .. code-block:: python
 
     # Get output
-    output = self.getOutput(0)
+    output = self.get_output(0)
     # set output mask binary image
-    output.setImage(proc_img)
+    output.set_image(proc_img)
 
 
 The second result is the visualization of the segmented objects on top of the original image. 
@@ -233,17 +233,17 @@ Ikomia software will then display the mask in a transparent overlay on top of th
 Colors are fully customizable, you can set a single color for binary mask or a complete colormap for grayscale mask.
 
 In our example, we want to display the final level set on top of the original image, so we need 
-to forward the original input to a given output (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.forwardInputImage`):
+to forward the original input to a given output (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.forward_input_image`):
 
 .. code-block:: python
 
-    self.forwardInputImage(0, 1) 
+    self.forward_input_image(0, 1)
 
-And we apply the color mask vizualisation in red (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.setOutputColorMap`):
+And we apply the color mask vizualisation in red (see :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.set_output_color_map`):
 
 .. code-block:: python
 
-    self.setOutputColorMap(1, 0, [[255,0,0]])
+    self.set_output_color_map(1, 0, [[255,0,0]])
 
 .. _progress_bar:
 
@@ -252,22 +252,22 @@ Progress bar
 
 Note that functions *morphological_geodesic_active_contour()* and *morphological_chan_vese()* from scikit-image 
 have one specificity that can be usefull for us. They have an *iter_callback* parameter called once per iteration
-we can use to refresh the progress bar of Ikomia software. We call :py:meth:`~ikomia.core.pycore.CWorkflowTask.emitStepProgress`
+we can use to refresh the progress bar of Ikomia software. We call :py:meth:`~ikomia.core.pycore.CWorkflowTask.emit_step_progress`
 in a lambda function given *to iter_callback* parameter:
 
 .. code-block:: python
 
-    proc_img = morphological_geodesic_active_contour(..., iter_callback=(lambda callback: self.emitStepProgress())
+    proc_img = morphological_geodesic_active_contour(..., iter_callback=(lambda callback: self.emit_step_progress())
 
 We also need to specify the number of iterations (steps) to our progress bar by overriding 
-:py:meth:`~ikomia.core.pycore.CWorkflowTask.getProgressSteps`:
+:py:meth:`~ikomia.core.pycore.CWorkflowTask.get_progress_steps`:
 
 .. code-block:: python
 
     class MorphoSnakes(dataprocess.C2dImageTask):
 
-        def getProgressSteps(self, eltCount=1):
-            param = self.getParam()
+        def get_progress_steps(self, eltCount=1):
+            param = self.get_parameters()
             if param.method == "mgac":
                 nb_iter = param.mgac_iterations
             else :
@@ -303,8 +303,8 @@ Morphological Chan Vese:
 - iter_callback : function called once per iteration, optional
 
 First, we add member variables in the parameters class, they will be accessible from the process.
-Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and
-:py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.getParamMap()` which are required to save/load values when user wants to save his workflow.
+Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.set_values` and
+:py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.get_values()` which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
 
@@ -324,34 +324,34 @@ Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.
             self.mcv_lambda1 = 1
             self.mcv_lambda2 = 1
 
-        def setParamMap(self, paramMap):
+        def set_values(self, params):
             # Set parameters values from Ikomia application
-            self.method = int(paramMap["method"])
-            self.mgac_amplification_contour = int(paramMap["mgac_amplification_contour"])
-            self.mgac_iterations = int(paramMap["mgac_iterations"])
-            self.mgac_smoothing = int(paramMap["mgac_smoothing"])
-            self.mgac_threshold = int(paramMap["mgac_threshold"])
-            self.mgac_balloon = int(paramMap["mgac_balloon"])
-            self.mcv_iterations = int(paramMap["mcv_iterations"])
-            self.mcv_smoothing = int(paramMap["mcv_smoothing"])
-            self.mcv_lambda1 = int(paramMap["mcv_lambda1"])
-            self.mcv_lambda2 = int(paramMap["mcv_lambda2"])
+            self.method = int(params["method"])
+            self.mgac_amplification_contour = int(params["mgac_amplification_contour"])
+            self.mgac_iterations = int(params["mgac_iterations"])
+            self.mgac_smoothing = int(params["mgac_smoothing"])
+            self.mgac_threshold = int(params["mgac_threshold"])
+            self.mgac_balloon = int(params["mgac_balloon"])
+            self.mcv_iterations = int(params["mcv_iterations"])
+            self.mcv_smoothing = int(params["mcv_smoothing"])
+            self.mcv_lambda1 = int(params["mcv_lambda1"])
+            self.mcv_lambda2 = int(params["mcv_lambda2"])
 
-        def getParamMap(self):
+        def get_values(self):
             # Send parameters values to Ikomia application
             # Create the specific dict structure (string container)
-            paramMap = core.ParamMap()
-            paramMap["method"] = str(self.method)
-            paramMap["mgac_amplification_contour"] = str(self.mgac_amplification_contour)
-            paramMap["mgac_iterations"] = str(self.mgac_iterations)
-            paramMap["mgac_smoothing"] = str(self.mgac_smoothing)
-            paramMap["mgac_threshold"] = str(self.mgac_threshold)
-            paramMap["mgac_balloon"] = str(self.mgac_balloon)
-            paramMap["mcv_iterations"] = str(self.mcv_iterations)
-            paramMap["mcv_smoothing"] = str(self.mcv_smoothing)
-            paramMap["mcv_lambda1"] = str(self.mcv_lambda1)
-            paramMap["mcv_lambda2"] = str(self.mcv_lambda2)
-            return paramMap
+            params = {}
+            params["method"] = str(self.method)
+            params["mgac_amplification_contour"] = str(self.mgac_amplification_contour)
+            params["mgac_iterations"] = str(self.mgac_iterations)
+            params["mgac_smoothing"] = str(self.mgac_smoothing)
+            params["mgac_threshold"] = str(self.mgac_threshold)
+            params["mgac_balloon"] = str(self.mgac_balloon)
+            params["mcv_iterations"] = str(self.mcv_iterations)
+            params["mcv_smoothing"] = str(self.mcv_smoothing)
+            params["mcv_lambda1"] = str(self.mcv_lambda1)
+            params["mcv_lambda2"] = str(self.mcv_lambda2)
+            return params
 
 We now modify the *run()* method to give parameters to our function:
 
@@ -362,7 +362,7 @@ We now modify the *run()* method to give parameters to our function:
         def run(self):
             ...
             # Get parameters
-            param = self.getParam()
+            param = self.get_param_object()
             ...
 
             proc_img = morphological_geodesic_active_contour(
@@ -372,7 +372,7 @@ We now modify the *run()* method to give parameters to our function:
                 smoothing=param.mgac_smoothing, 
                 threshold=param.mgac_threshold,
                 balloon=param.mgac_balloon, 
-                iter_callback=(lambda callback: self.emitStepProgress())).astype(np.uint8) * 255
+                iter_callback=(lambda callback: self.emit_step_progress())).astype(np.uint8) * 255
 
 .. _process_widget:
 
@@ -419,7 +419,7 @@ Global widget initialization
             layoutPtr = qtconversion.PyQtToQt(self.gridLayout)
 
             # Set widget layout
-            self.setLayout(layoutPtr)
+            self.set_layout(layoutPtr)
 
             # update left parameter panel
             if self.parameters.method != "mgac":

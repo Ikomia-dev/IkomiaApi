@@ -5,46 +5,49 @@ CBlobMeasureIO
 
 .. autoclass:: CBlobMeasureIO
 
-   .. rubric:: Import
-   .. code-block:: python
+    .. rubric:: Import
+    .. code-block:: python
 
-         from ikomia.dataprocess import CBlobMeasureIO
+        from ikomia.dataprocess import CBlobMeasureIO
 
 
-   .. rubric:: Methods
-   .. autosummary::
-      ~CBlobMeasureIO.__init__
-      ~CBlobMeasureIO.addObjectMeasure
-      ~CBlobMeasureIO.addObjectMeasures
-      ~CBlobMeasureIO.getMeasures
-      ~CBlobMeasureIO.setObjectMeasure
+    .. rubric:: Methods
+    .. autosummary::
+        ~CBlobMeasureIO.__init__
+        ~CBlobMeasureIO.add_object_measure
+        ~CBlobMeasureIO.add_object_measures
+        ~CBlobMeasureIO.get_measures
+        ~CBlobMeasureIO.set_object_measure
 
-   .. rubric:: Overridden methods
-   .. autosummary::
-      ~CImageIO.clearData
-      ~CImageIO.fromJson
-      ~CImageIO.isDataAvailable
-      ~CImageIO.toJson
+    .. rubric:: Overridden methods
+    .. autosummary::
+        ~CBlobMeasureIO.clear_data
+        ~CBlobMeasureIO.from_json
+        ~CBlobMeasureIO.is_data_available
+        ~CBlobMeasureIO.to_json
 
-   .. rubric:: Inherited methods
-   .. autosummary::
-      ~CImageIO.isAutoInput
-      ~CImageIO.setDisplayable
+    .. rubric:: Inherited methods
+    .. autosummary::
+        ~CBlobMeasureIO.is_auto_input
 
-   .. rubric:: Attributes
-   .. autosummary::
-      ~CImageIO.dataType
-      ~CImageIO.dimCount
+    .. rubric:: Attributes
+    .. autosummary::
+        ~CBlobMeasureIO.auto_save
+        ~CBlobMeasureIO.data_type
+        ~CBlobMeasureIO.dim_count
+        ~CBlobMeasureIO.description
+        ~CBlobMeasureIO.displayable
+        ~CBlobMeasureIO.name
+        ~CBlobMeasureIO.source_file_path
 
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: addObjectMeasure
-   .. automethod:: addObjectMeasures
-   .. automethod:: fromJson
-   .. automethod:: getMeasures
-   .. automethod:: setObjectMeasure
-   .. automethod:: clearData
-   .. automethod:: isDataAvailable
-   .. automethod:: isAutoInput
-   .. automethod:: setDisplayable
-   .. automethod:: toJson
+   .. automethod:: add_object_measure
+   .. automethod:: add_object_measures
+   .. automethod:: from_json
+   .. automethod:: get_measures
+   .. automethod:: set_object_measure
+   .. automethod:: clear_data
+   .. automethod:: is_data_available
+   .. automethod:: is_auto_input
+   .. automethod:: to_json

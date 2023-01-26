@@ -23,8 +23,8 @@ Ideally, inputs and outputs should be defined in the constructor of the task.
 
 .. note:: 
     In some case, you may need to dynamically set inputs and/or outputs based on parameters values. You can handle such case by implementing 
-    :py:meth:`~ikomia.core.pycore.CWorkflowTask.parametersModified` and calling either :py:meth:`~ikomia.core.pycore.CWorkflowTask.addInput` or 
-    :py:meth:`~ikomia.core.pycore.CWorkflowTask.removeInput` from your task class.
+    :py:meth:`~ikomia.core.pycore.CWorkflowTask.parameters_modified` and calling either :py:meth:`~ikomia.core.pycore.CWorkflowTask.add_input` or
+    :py:meth:`~ikomia.core.pycore.CWorkflowTask.remove_input` from your task class.
 
 
 Image
@@ -42,15 +42,15 @@ Basic usage:
     class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add image input
-            self.addInput(dataprocess.CImageIO())
+            self.add_input(dataprocess.CImageIO())
             # Add image output
-            self.addOutput(dataprocess.CImageIO())
+            self.add_output(dataprocess.CImageIO())
 
         def run(self):
             # Get input
-            image_input = self.getInput(0)
+            image_input = self.get_input(0)
             # Get image as Numpy array
-            image = image_input.getImage()
+            image = image_input.get_image()
 
 Please consult :py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO` for details.
 
@@ -80,14 +80,14 @@ Basic usage:
     class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add graphics input
-            self.addInput(dataprocess.CGraphicsInput())
+            self.add_input(dataprocess.CGraphicsInput())
             # Add graphics output
-            self.addOutput(dataprocess.CGraphicsOutput())
+            self.add_output(dataprocess.CGraphicsOutput())
 
         def run(self):
             # Get graphics input: from another algorithm or user
-            graphics_input = self.getInput(0)
-            items = graphics_input.getItems()
+            graphics_input = self.get_input(0)
+            items = graphics_input.get_items()
 
             for item in items:
                 if item.getType() == core.GraphicsItem.RECTANGLE:
@@ -96,14 +96,14 @@ Basic usage:
                     height = item.height
 
             # Fill graphics output
-            graphics_output = self.getOutput(0)
-            graphics_output.addEllipse(0, 0, 100, 200)
-            graphics_output.addItem(core.CGraphicRectangle(0, 0, 100, 200))
+            graphics_output = self.get_output(0)
+            graphics_output.add_ellipse(0, 0, 100, 200)
+            graphics_output.add_item(core.CGraphicRectangle(0, 0, 100, 200))
             
 .. note:: 
-    - In Ikomia Studio, you can display items of graphics output as an overlay layer on top of an image I/O. You just have to call :py:meth:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput.setImageIndex` and specify the index of the desired image I/O. 
+    - In Ikomia Studio, you can display items of graphics output as an overlay layer on top of an image I/O. You just have to call :py:meth:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput.set_image_index` and specify the index of the desired image I/O.
     - Some useful functions are implemented in :py:mod:`~ikomia.dataprocess.pydataprocess.C2dImageTask` to manage graphics items.
-    - From :py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO` you can burn items of a :py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` object directly into the image array. See :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.getImageWithGraphics` and :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.drawGraphics`.
+    - From :py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO` you can burn items of a :py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` object directly into the image array. See :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.get_image_with_graphics` and :py:meth:`~ikomia.dataprocess.pydataprocess.CImageIO.draw_graphics`.
 
 
 Numeric values
@@ -122,20 +122,20 @@ Basic usage:
     class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add numeric output
-            self.addOutput(dataprocess.CNumericIO())
+            self.add_output(dataprocess.CNumericIO())
 
         def run(self):
             # Fill numeric output
             header = "Confidence"
             labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
             confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
-            numeric_output = self.getOutput(0)
-            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_output.addValueList(confidences, header, labels)
+            numeric_output = self.get_output(0)
+            numeric_output.set_output_type(dataprocess.NumericOutputType.TABLE)
+            numeric_output.add_value_list(confidences, header, labels)
 
 .. note:: 
-    In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO` can be display differently depending on the value set with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setOutputType`. 
-    Possible values are listed in :py:mod:`~ikomia.dataprocess.pydataprocess.NumericOutputType`. If **PLOT** is choosen, then you have to select the plot type with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.setPlotType`.
+    In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CNumericIO` can be display differently depending on the value set with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.set_output_type`.
+    Possible values are listed in :py:mod:`~ikomia.dataprocess.pydataprocess.NumericOutputType`. If **PLOT** is choosen, then you have to select the plot type with :py:meth:`~ikomia.dataprocess.pydataprocess.CNumericIO.set_plot_type`.
 
 Basic usage:
 
@@ -146,16 +146,16 @@ Basic usage:
     class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add numeric output
-            self.addOutput(dataprocess.CNumericIO())
+            self.add_output(dataprocess.CNumericIO())
 
         def run(self):
             # Fill numeric output
             header = "Confidence"
             labels = ["Car", "Truck", "Moto", "Bike", "Plane", "Train"]
             confidences = [0.8, 0.75, 0.2, 0.05, 0.04, 0.01]
-            numeric_output = self.getOutput(0)
-            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_output.addValueList(confidences, header, labels)
+            numeric_output = self.get_output(0)
+            numeric_output.set_output_type(dataprocess.NumericOutputType.TABLE)
+            numeric_output.add_value_list(confidences, header, labels)
 
 
 String values
@@ -174,16 +174,16 @@ Basic usage:
     class MyPlugin(core.CWorkflowTask):
         def init(self, name, param):
             # Add numeric output
-            self.addOutput(dataprocess.CDataStringIO())
+            self.add_output(dataprocess.CDataStringIO())
 
         def run(self):
             # Fill numeric output
             header = "TextRecognition"
             labels = ["Distributor", "Date", "Article", "Price", "Currency"]
             ocr_res = ["eShop", "04/12/2021", "smartphone", "199.90", "euro"]
-            numeric_output = self.getOutput(0)
-            numeric_output.setOutputType(dataprocess.NumericOutputType.TABLE)
-            numeric_output.addValueList(ocr_res, header, labels)
+            numeric_output = self.get_output(0)
+            numeric_output.set_output_type(dataprocess.NumericOutputType.TABLE)
+            numeric_output.add_value_list(ocr_res, header, labels)
 
 
 Blob measures
@@ -216,11 +216,11 @@ Basic usage:
     class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add BLOB measure output
-            self.addOutput(CBlobMeasureIO())
+            self.add_output(CBlobMeasureIO())
 
         def run(self):
             # Fill blob measure output
-            blob_output = self.getOutput(0)
+            blob_output = self.get_output(0)
             boxes, confidences = my_object_detection_func()
             measures = []
             graphics_id = -1
@@ -228,7 +228,7 @@ Basic usage:
             for box, conf in zip(boxes, confidences):
                 measures.append(CObjectMeasure(CMeasure(MeasureId.BBOX), [box.x, box.y, box.width, box.height], graphics_id, "label"))
                 measures.append(CObjectMeasure(CMeasure(MeasureId.CUSTOM, "Confidence"), conf, graphics_id, "label"))
-                blob_output.addObjectMeasures(measures)
+                blob_output.add_object_measures(measures)
 
 
 .. note:: In Ikomia Studio, :py:mod:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO` outputs are visualized in tables.
@@ -270,13 +270,13 @@ Basic usage:
     class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add dataset input
-            self.addInput(IkDatasetIO())
+            self.add_input(IkDatasetIO())
             # Add dataset output
-            self.addOutput(IkDatasetIO())
+            self.add_output(IkDatasetIO())
 
         def run(self):
             # Load dataset
-            dataset = self.getOutput(0)
+            dataset = self.get_output(0)
             dataset.data = my_dataset_loader_func()
 
 .. note:: 
@@ -299,19 +299,19 @@ Basic usage:
     class MyPlugin(CWorkflowTask):
         def init(self, name, param):
             # Add path input
-            self.addInput(CPathIO(IODataType.FILE_PATH))
+            self.add_input(CPathIO(IODataType.FILE_PATH))
             # Add path output
             default_path = "/usr/local"
-            self.addOutput(CPathIO(IODataType.FOLDER_PATH, default_path))
+            self.add_output(CPathIO(IODataType.FOLDER_PATH, default_path))
 
         def run(self):
             # Get path
-            path_input = self.getInput(0)
-            path_in = path_input.getPath()
+            path_input = self.get_input(0)
+            path_in = path_input.get_path()
 
             # Set path
-            path_output = self.getOutput(0)
-            path_output.setPath(os.path.dirname(path_in))
+            path_output = self.get_output(0)
+            path_output.set_path(os.path.dirname(path_in))
 
 
 Object detection I/O
@@ -342,7 +342,7 @@ Usage as output:
         def __init__(self, name, param):
             C2dImageTask.__init__(self, name)
             # Add object detection output
-            self.addOutput(CObjectDetectionIO())
+            self.add_output(CObjectDetectionIO())
             # Load class names
             self.names = self.load_names()          #to implement
             # Generate class colors
@@ -350,12 +350,12 @@ Usage as output:
 
         def run(self):
             # Image input :
-            img_input = self.getInput(0)
-            src_image = img_input.getImage()
+            img_input = self.get_input(0)
+            src_image = img_input.get_image()
             # Forward input image
-            self.forwardInputImage(0, 0)
+            self.forward_input_image(0, 0)
             # Object detection output
-            obj_detect_out = self.getOutput(1)
+            obj_detect_out = self.get_output(1)
             obj_detect_out.init("MyDetector", 0)
             # Model prediction (to replace with your model inference)
             output = self.model(src_image)
@@ -366,9 +366,9 @@ Usage as output:
                 # Box
                 w = float(xyxy[2] - xyxy[0])
                 h = float(xyxy[3] - xyxy[1])
-                obj_detect_out.addObject(index, self.names[int(cls)], conf.item(),
-                                         float(xyxy[0]), float(xyxy[1]), w, h,
-                                         self.colors[int(cls)])
+                obj_detect_out.add_object(index, self.names[int(cls)], conf.item(),
+                                            float(xyxy[0]), float(xyxy[1]), w, h,
+                                            self.colors[int(cls)])
             index += 1
 
 .. note::
@@ -380,7 +380,7 @@ Instance segmentation I/O
 -------------------------
 
 Instance segmentation is a common task in Computer Vision that aims to provide bounding box, class and mask for each
-detected object (ie instance). We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO`
+detected object (ie instance). We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`
 to ease the management of instance segmentation results. Such input/output stores essential information in a list of
 :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentation`:
 
@@ -394,21 +394,21 @@ to ease the management of instance segmentation results. Such input/output store
 - display color
 
 It also provides methods to fill and retrieve results (see
-:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO` for details). This input/output type is also suitable
+:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO` for details). This input/output type is also suitable
 for **panoptic segmentation**.
 
 Usage as output:
 
 .. code-block:: python
 
-    from ikomia.dataprocess import C2dImageTask, CInstanceSegIO
+    from ikomia.dataprocess import C2dImageTask, CInstanceSegmentationIO
 
     class MySegmentorPlugin(C2dImageTask):
 
         def __init__(self, name, param):
             C2dImageTask.__init__(self, name)
             # Add object detection output
-            self.addOutput(CInstanceSegIO())
+            self.add_output(CInstanceSegmentationIO())
             # Load class names
             self.names = self.load_names()          #to implement
             # Generate class colors
@@ -416,13 +416,13 @@ Usage as output:
 
         def run(self):
             # Image input :
-            img_input = self.getInput(0)
+            img_input = self.get_input(0)
             src_image = img_input.getImage()
             h, w, c = src_image.shape
             # Forward input image
-            self.forwardInputImage(0, 0)
+            self.forward_input_image(0, 0)
             # Object detection output
-            instance_out = self.getOutput(1)
+            instance_out = self.get_output(1)
             instance_out.init("MySegmentor", 0, w, h)
             # Model prediction (to replace with your model inference)
             output = self.model(src_image)
@@ -440,13 +440,13 @@ Usage as output:
                 cls = int(cls.numpy())
                 w = float(x2 - x1)
                 h = float(y2 - y1)
-                instance_out.addInstance(index, 0, cls, self.names[cls], float(score),
+                instance_out.add_instance(index, 0, cls, self.names[cls], float(score),
                                          float(x1), float(y1), w, h,
                                          mask.cpu().numpy().astype("uint8"), self.colors[cls+1])
                 index += 1
 
 .. note::
-    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegIO` output is displayed as graphics
+    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO` output is displayed as graphics
     layer on top of reference image (box + label + confidence), color mask overlay on reference image, merge mask of
     all instances and results table.
 
@@ -455,7 +455,7 @@ Semantic segmentation I/O
 -------------------------
 
 Semantic segmentation is a common task in Computer Vision that aims to provide mask where a class label value is set
-for all pixels. We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO`
+for all pixels. We provide the class :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`
 to ease the management of semantic segmentation results. Such input/output stores essential information as described
 below:
 
@@ -464,20 +464,20 @@ below:
 - List of colors (one for each class)
 
 It also provides methods to fill and retrieve results (see
-:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO` for details).
+:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO` for details).
 
 Usage as output:
 
 .. code-block:: python
 
-    from ikomia.dataprocess import C2dImageTask, CSemanticSegIO
+    from ikomia.dataprocess import C2dImageTask, CSemanticSegmentationIO
 
     class MySegmentorPlugin(C2dImageTask):
 
         def __init__(self, name, param):
             C2dImageTask.__init__(self, name)
             # Add object detection output
-            self.addOutput(CSemanticSegIO())
+            self.add_output(CSemanticSegmentationIO())
             # Load class names
             self.names = self.load_names()          #to implement
             # Generate class colors
@@ -485,24 +485,24 @@ Usage as output:
 
         def run(self):
             # Image input :
-            img_input = self.getInput(0)
+            img_input = self.get_input(0)
             src_image = img_input.getImage()
             # Forward input image
-            self.forwardInputImage(0, 0)
+            self.forward_input_image(0, 0)
             # Object detection output
-            semantic_output = self.getOutput(1)
+            semantic_output = self.get_output(1)
             # Model prediction (to replace with your model inference)
             output = self.model(src_image)
 
             # Process detections
             mask = outputs["sem_seg"].cpu().numpy()
 
-            semantic_output.setMask(mask)
-            semantic_output.setClassNames(self.names, self.colors)
+            semantic_output.set_mask(mask)
+            semantic_output.set_class_names(self.names, self.colors)
 
             # Color mask overlay
-            self.setOutputColorMap(0, 1, self.colors)
+            self.set_output_color_map(0, 1, self.colors)
 
 .. note::
-    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegIO` output is displayed as a graylevel
+    In Ikomia Studio, :py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO` output is displayed as a graylevel
     mask, a color mask overlay on reference image and a legend image with the color/class mapping.

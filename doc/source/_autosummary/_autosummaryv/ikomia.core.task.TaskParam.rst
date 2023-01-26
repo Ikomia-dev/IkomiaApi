@@ -15,11 +15,11 @@ TaskParam
     .. autosummary::
 
         ~TaskParam.__init__
-        ~TaskParam.getParamMap
-        ~TaskParam.setParamMap
+        ~TaskParam.get_values
+        ~TaskParam.set_values
 
     .. rubric:: Details
 
     .. automethod:: __init__
-    .. automethod:: getParamMap
-    .. automethod:: setParamMap
+    .. automethod:: get_values
+    .. automethod:: set_values

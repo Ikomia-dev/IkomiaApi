@@ -16,12 +16,12 @@ CGraphicsPolyline
 
    .. rubric:: Inherited methods
    .. autosummary::
-      ~CGraphicsPolyline.getBoundingRect
-      ~CGraphicsPolyline.getCategory
-      ~CGraphicsPolyline.getId
-      ~CGraphicsPolyline.getType
-      ~CGraphicsPolyline.isTextItem
-      ~CGraphicsPolyline.setCategory
+      ~CGraphicsPolyline.get_bounding_rect
+      ~CGraphicsPolyline.get_category
+      ~CGraphicsPolyline.get_id
+      ~CGraphicsPolyline.get_type
+      ~CGraphicsPolyline.is_text_item
+      ~CGraphicsPolyline.set_category
    
    .. rubric:: Attributes
    .. autosummary::
@@ -31,9 +31,9 @@ CGraphicsPolyline
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category

@@ -63,7 +63,7 @@ __version__ = "0.8.1"
 # ----------------------------------------------
 # ----- Add built-in OpenCV to Python path -----
 # ----------------------------------------------
-if not utils.isAppStarted():
+if not utils.is_app_started():
     if sys.platform == "win32":
         lib_path = os.path.dirname(os.path.realpath(__file__)) + os.sep + "lib"
         sys.path.insert(0, lib_path)
@@ -83,7 +83,7 @@ ik_registry = None
 # ------------------------------------------
 # ----- Auto-completion initialization -----
 # ------------------------------------------
-if not utils.isAppStarted():
+if not utils.is_app_started():
     ik_registry = registry.IkomiaRegistry()
 
     if config.main_cfg["registry"]["auto_completion"]:

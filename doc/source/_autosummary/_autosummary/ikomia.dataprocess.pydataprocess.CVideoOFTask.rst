@@ -13,57 +13,57 @@ CVideoOFTask
    .. rubric:: Methods
    .. autosummary::
       ~CVideoOFTask.__init__
-      ~CVideoOFTask.drawOptFlowMap
-      ~CVideoOFTask.flowToDisplay
+      ~CVideoOFTask.draw_opt_flow_map
+      ~CVideoOFTask.flow_to_display
 
    .. rubric:: Inherited methods
    .. autosummary::      
-      ~CVideoOFTask.addInput
-      ~CVideoOFTask.addOutput
-      ~CVideoOFTask.applyGraphicsMask
-      ~CVideoOFTask.applyGraphicsMaskToBinary
-      ~CVideoOFTask.beginTaskRun
-      ~CVideoOFTask.createGraphicsMask
-      ~CVideoOFTask.emitAddSubProgressSteps
-      ~CVideoOFTask.emitGraphicsContextChanged
-      ~CVideoOFTask.emitOutputChanged
-      ~CVideoOFTask.emitStepProgress
-      ~CVideoOFTask.endTaskRun
-      ~CVideoOFTask.executeActions      
-      ~CVideoOFTask.forwardInputImage
-      ~CVideoOFTask.getElapsedTime
-      ~CVideoOFTask.getGraphicsMask
-      ~CVideoOFTask.getInput
-      ~CVideoOFTask.getInputCount
-      ~CVideoOFTask.getInputDataType
-      ~CVideoOFTask.getInputs
-      ~CVideoOFTask.getOutput
-      ~CVideoOFTask.getOutputCount
-      ~CVideoOFTask.getOutputDataType
-      ~CVideoOFTask.getOutputs
-      ~CVideoOFTask.getParam
-      ~CVideoOFTask.getProgressSteps
-      ~CVideoOFTask.globalInputChanged
-      ~CVideoOFTask.graphicsChanged
-      ~CVideoOFTask.isGraphicsChangedListening
-      ~CVideoOFTask.isMaskAvailable
-      ~CVideoOFTask.notifyVideoEnd
-      ~CVideoOFTask.notifyVideoStart
-      ~CVideoOFTask.parametersModified
-      ~CVideoOFTask.removeInput
+      ~CVideoOFTask.add_input
+      ~CVideoOFTask.add_output
+      ~CVideoOFTask.apply_graphics_mask
+      ~CVideoOFTask.apply_graphics_mask_to_binary
+      ~CVideoOFTask.begin_task_run
+      ~CVideoOFTask.create_graphics_mask
+      ~CVideoOFTask.emit_add_sub_progress_steps
+      ~CVideoOFTask.emit_graphics_context_changed
+      ~CVideoOFTask.emit_output_changed
+      ~CVideoOFTask.emit_step_progress
+      ~CVideoOFTask.end_task_run
+      ~CVideoOFTask.execute_actions
+      ~CVideoOFTask.forward_input_image
+      ~CVideoOFTask.get_elapsed_time
+      ~CVideoOFTask.get_graphics_mask
+      ~CVideoOFTask.get_input
+      ~CVideoOFTask.get_input_count
+      ~CVideoOFTask.get_input_data_type
+      ~CVideoOFTask.get_inputs
+      ~CVideoOFTask.get_output
+      ~CVideoOFTask.get_output_count
+      ~CVideoOFTask.get_output_data_type
+      ~CVideoOFTask.get_outputs
+      ~CVideoOFTask.get_parameters
+      ~CVideoOFTask.get_progress_steps
+      ~CVideoOFTask.global_input_changed
+      ~CVideoOFTask.graphics_changed
+      ~CVideoOFTask.is_graphics_changed_listening
+      ~CVideoOFTask.is_mask_available
+      ~CVideoOFTask.notify_video_end
+      ~CVideoOFTask.notify_video_start
+      ~CVideoOFTask.parameters_modified
+      ~CVideoOFTask.remove_input
       ~CVideoOFTask.run
-      ~CVideoOFTask.setActionFlag
-      ~CVideoOFTask.setActive
-      ~CVideoOFTask.setInput
-      ~CVideoOFTask.setInputDataType
-      ~CVideoOFTask.setInputs
-      ~CVideoOFTask.setOutput
-      ~CVideoOFTask.setOutputColorMap
-      ~CVideoOFTask.setOutputDataType
-      ~CVideoOFTask.setOutputs
-      ~CVideoOFTask.setParam
+      ~CVideoOFTask.set_action_flag
+      ~CVideoOFTask.set_active
+      ~CVideoOFTask.set_input
+      ~CVideoOFTask.set_input_data_type
+      ~CVideoOFTask.set_inputs
+      ~CVideoOFTask.set_output
+      ~CVideoOFTask.set_output_color_map
+      ~CVideoOFTask.set_output_data_type
+      ~CVideoOFTask.set_outputs
+      ~CVideoOFTask.set_parameters
       ~CVideoOFTask.stop
-      ~CVideoOFTask.updateStaticOutputs
+      ~CVideoOFTask.update_static_outputs
 
    .. rubric:: Attributes
    .. autosummary::
@@ -72,52 +72,52 @@ CVideoOFTask
 
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: addInput
-   .. automethod:: addOutput
-   .. automethod:: applyGraphicsMask
-   .. automethod:: applyGraphicsMaskToBinary
-   .. automethod:: beginTaskRun
-   .. automethod:: createGraphicsMask
-   .. automethod:: drawOptFlowMap
-   .. automethod:: emitAddSubProgressSteps
-   .. automethod:: emitGraphicsContextChanged
-   .. automethod:: emitOutputChanged
-   .. automethod:: emitStepProgress
-   .. automethod:: endTaskRun
-   .. automethod:: executeActions
-   .. automethod:: flowToDisplay
-   .. automethod:: forwardInputImage
-   .. automethod:: getElapsedTime
-   .. automethod:: getGraphicsMask
-   .. automethod:: getInput
-   .. automethod:: getInputCount
-   .. automethod:: getInputDataType
-   .. automethod:: getInputs
-   .. automethod:: getOutput
-   .. automethod:: getOutputCount
-   .. automethod:: getOutputDataType
-   .. automethod:: getOutputs
-   .. automethod:: getParam
-   .. automethod:: getProgressSteps
-   .. automethod:: globalInputChanged
-   .. automethod:: graphicsChanged
-   .. automethod:: isGraphicsChangedListening
-   .. automethod:: isMaskAvailable
-   .. automethod:: notifyVideoEnd
-   .. automethod:: notifyVideoStart
-   .. automethod:: parametersModified
-   .. automethod:: removeInput
+   .. automethod:: add_input
+   .. automethod:: add_output
+   .. automethod:: apply_graphics_mask
+   .. automethod:: apply_graphics_mask_to_binary
+   .. automethod:: begin_task_run
+   .. automethod:: create_graphics_mask
+   .. automethod:: draw_opt_flow_map
+   .. automethod:: emit_add_sub_progress_steps
+   .. automethod:: emit_graphics_context_changed
+   .. automethod:: emit_output_changed
+   .. automethod:: emit_step_progress
+   .. automethod:: end_task_run
+   .. automethod:: execute_actions
+   .. automethod:: flow_to_display
+   .. automethod:: forward_input_image
+   .. automethod:: get_elapsed_time
+   .. automethod:: get_graphics_mask
+   .. automethod:: get_input
+   .. automethod:: get_input_count
+   .. automethod:: get_input_data_type
+   .. automethod:: get_inputs
+   .. automethod:: get_output
+   .. automethod:: get_output_count
+   .. automethod:: get_output_data_type
+   .. automethod:: get_outputs
+   .. automethod:: get_parameters
+   .. automethod:: get_progress_steps
+   .. automethod:: global_input_changed
+   .. automethod:: graphics_changed
+   .. automethod:: is_graphics_changed_listening
+   .. automethod:: is_mask_available
+   .. automethod:: notify_video_end
+   .. automethod:: notify_video_start
+   .. automethod:: parameters_modified
+   .. automethod:: remove_input
    .. automethod:: run
-   .. automethod:: setActionFlag
-   .. automethod:: setActive
-   .. automethod:: setInput
-   .. automethod:: setInputDataType
-   .. automethod:: setInputs
-   .. automethod:: setOutput
-   .. automethod:: setOutputColorMap
-   .. automethod:: setOutputDataType
-   .. automethod:: setOutputs
-   .. automethod:: setParam
+   .. automethod:: set_action_flag
+   .. automethod:: set_active
+   .. automethod:: set_input
+   .. automethod:: set_input_data_type
+   .. automethod:: set_inputs
+   .. automethod:: set_output
+   .. automethod:: set_output_color_map
+   .. automethod:: set_output_data_type
+   .. automethod:: set_outputs
+   .. automethod:: set_parameters
    .. automethod:: stop
-   .. automethod:: updateStaticOutputs
+   .. automethod:: update_static_outputs
    

@@ -46,14 +46,14 @@ In the *run* method, we now have to retrieve source image from input, add OpenCV
 
         def run(self):
             # Core function of your process
-            # Call beginTaskRun for initialization
-            self.beginTaskRun()
+            # Call begin_task_run for initialization
+            self.begin_task_run()
 
             # Get input :
-            input_img = self.getInput(0)
+            input_img = self.get_input(0)
 
             # Get image from input (numpy array):
-            src_image = input_img.getImage()
+            src_image = input_img.get_image()
 
             # Call to the process main routine
             # Grayscale conversion
@@ -64,16 +64,16 @@ In the *run* method, we now have to retrieve source image from input, add OpenCV
             proc_img = cv2.Canny(proc_img, 0, 255)
 
             # Get output :
-            output = self.getOutput(0)
+            output = self.get_output(0)
 
             # Set image of output (numpy array):
-            output.setImage(proc_img)
+            output.set_image(proc_img)
 
             # Step progress bar:
-            self.emitStepProgress()
+            self.emit_step_progress()
 
-            # Call endTaskRun to finalize process
-            self.endTaskRun()
+            # Call end_task_run to finalize process
+            self.end_task_run()
 
 Reload plugin in Ikomia software (with Plugin Manager or in the main menu), add it to a new workflow to test the results. You should have this:
 
@@ -91,7 +91,7 @@ Let's say we want to control blur strength of the Gaussian filter, we have to ma
 - Sigma Y
 
 First, we add member variables in the parameters class, they will be accessible from the process. 
-Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.setParamMap` and :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.getParamMap`
+Note the presence of functions :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.set_parametersMap` and :py:meth:`~ikomia.core.pycore.CWorkflowTaskParam.get_parametersMap`
 which are required to save/load values when user wants to save his workflow.
 
 .. code-block:: python
@@ -105,22 +105,22 @@ which are required to save/load values when user wants to save his workflow.
             self.sigma_x = 1.0
             self.sigma_y = 1.0
 
-        def setParam(self, paramMap):
+        def set_values(self, params):
             # Set parameters values from Ikomia application (user inputs)
             # Parameters values are stored as string and accessible like a python dict
-            self.kernel_size = (int(paramMap["kernel_size_x"]), int(paramMap["kernel_size_y"]))
-            self.sigma_x = int(paramMap["sigma_x"])
-            self.sigma_y = int(paramMap["sigma_y"])
+            self.kernel_size = (int(params["kernel_size_x"]), int(params["kernel_size_y"]))
+            self.sigma_x = int(params["sigma_x"])
+            self.sigma_y = int(params["sigma_y"])
 
-        def getParam(self):
+        def get_values(self):
             # Send parameters values to Ikomia application (workflow)
             # Create the specific dict structure (string container)
-            paramMap = core.ParamMap()
-            paramMap["kernel_size_x"] = str(self.kernel_size[0])
-            paramMap["kernel_size_y"] = str(self.kernel_size[1])
-            paramMap["sigma_x"] = str(self.sigma_x)
-            paramMap["sigma_y"] = str(self.sigma_y)
-            return paramMap
+            params = {}
+            params["kernel_size_x"] = str(self.kernel_size[0])
+            params["kernel_size_y"] = str(self.kernel_size[1])
+            params["sigma_x"] = str(self.sigma_x)
+            params["sigma_y"] = str(self.sigma_y)
+            return params
 
 We are now able to manage parameters from the process. The constructor receives an instance of the parameters structure that we should copy. This instance has values set from the Ikomia application (default or user-defined).
 
@@ -133,9 +133,9 @@ We are now able to manage parameters from the process. The constructor receives 
 
             #Create parameters class
             if param is None:
-                self.setParam(OCVBasicsParam())
+                self.set_param_object(OCVBasicsParam())
             else:       
-                self.setParam(copy.deepcopy(param))
+                self.set_param_object(copy.deepcopy(param))
 
 Finally, we modify the *run* method to pass parameters to GaussianBlur function:
 
@@ -145,11 +145,11 @@ Finally, we modify the *run* method to pass parameters to GaussianBlur function:
 
         def run(self):
             # Core function of your process
-            # Call beginTaskRun for initialization
-            self.beginTaskRun()
+            # Call begin_task_run for initialization
+            self.begin_task_run()
 
             # Get parameters :
-            param = self.getParam()
+            param = self.get_param_object()
 
             #...
 
@@ -227,7 +227,7 @@ Like the process class, the constructor receives an instance of the parameters s
             layoutPtr = qtconversion.PyQtToQt(self.gridLayout)
 
             # Set widget layout
-            self.setLayout(layoutPtr)
+            self.set_layout(layoutPtr)
 
 In Ikomia, plugin widgets are shown in 2 different places:
 
@@ -255,7 +255,7 @@ It is called when user clicks the *Apply* button.
             self.parameters.sigma_y = self.spin_sigma_y.value()
 
             # Send signal to launch the process
-            self.emitApply(self.parameters)
+            self.emit_apply(self.parameters)
 
 Our plugin is now fully functional!
 

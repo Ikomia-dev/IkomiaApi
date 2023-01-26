@@ -6,31 +6,33 @@ logger = logging.getLogger(__name__)
 
 
 def test_set_values():
+    logger.info("===== Test: set values =====")
     param_obj = CWorkflowTaskParam()
 
     # Set parameters with valid dict
     values = {"param1": "value1", "param2": "value2", "param3": "value3"}
-    param_obj.setParamMap(values)
+    param_obj.set_values(values)
     logger.info(param_obj)
 
     # Set parameters with mixed-type dict
     values = {"param1": 0, "param2": "value2", "param3": 1.0}
     try:
-        param_obj.setParamMap(values)
+        param_obj.set_values(values)
     except TypeError as e:
         logger.error(e)
 
 
 def test_get_values():
+    logger.info("===== Test: get values =====")
     param_obj = CWorkflowTaskParam()
-    values = param_obj.getParamMap()
+    values = param_obj.get_values()
     assert(type(values) == dict)
     assert(len(values) == 0)
 
     # Set parameters with valid dict
     values = {"param1": "value1", "param2": "value2", "param3": "value3"}
-    param_obj.setParamMap(values)
-    values = param_obj.getParamMap()
+    param_obj.set_values(values)
+    values = param_obj.get_values()
     assert (type(values) == dict)
     assert (len(values) == 3)
 

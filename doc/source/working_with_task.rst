@@ -20,20 +20,20 @@ The example below illustrates the steps to run a single algorithm.
 
     # Set input(s)
     img = cv2.imread("path/to/image.png")
-    img_input = box_filter.getInput(0)
-    img_input.setImage(img)
+    img_input = box_filter.get_input(0)
+    img_input.set_image(img)
 
     # Run
     box_filter.run()
 
-Consult :py:meth:`~ikomia.core.task.create`, :py:meth:`~ikomia.core.pycore.CWorkflowTask.getInput` and 
+Consult :py:meth:`~ikomia.core.task.create`, :py:meth:`~ikomia.core.pycore.CWorkflowTask.get_input` and
 :py:meth:`~ikomia.core.pycore.CWorkflowTask.run` for details.
 
 
 Manage parameters
 -----------------
 
-Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia.core.pycore.CWorkflowTask.setParamValues`).
+Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia.core.pycore.CWorkflowTask.set_parametersValues`).
 
 .. code-block:: python
 
@@ -50,7 +50,7 @@ Algorithm behavior can be adjusted by setting task parameters (:py:meth:`~ikomia
         ik.ocv_box_filter_param.kSizeHeight: 11,
         ik.ocv_box_filter_param.kSizeWidth: 11
     }
-    box_filter.setParamValues(box_filter_params)
+    box_filter.set_parameters(box_filter_params)
 
     # Run
     box_filter.run()
@@ -62,7 +62,7 @@ Manage inputs/outputs
 Inputs
 ^^^^^^
 
-From a task object instance, you access inputs with :py:meth:`~ikomia.core.pycore.CWorkflowTask.getInput`. 
+From a task object instance, you access inputs with :py:meth:`~ikomia.core.pycore.CWorkflowTask.get_input`.
 Depending on algorithm, inputs can be of various type. Please consult this :doc:`page<plugin_io>` to have more 
 information about possible input types.
 
@@ -92,8 +92,8 @@ Here is a example with image output:
 
     # Set input(s)
     img = cv2.imread("path/to/image.png")
-    img_input = box_filter.getInput(0)
-    img_input.setImage(img)
+    img_input = box_filter.get_input(0)
+    img_input.set_image(img)
 
     # Run
     box_filter.run()

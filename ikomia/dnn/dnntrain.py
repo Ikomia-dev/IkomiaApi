@@ -49,7 +49,7 @@ class TrainProcess(CDnnTrainTask):
             param (:py:class:`~ikomia.core.task.TaskParam`): task parameters
         """
         CDnnTrainTask.__init__(self, name, param)
-        self.addInput(datasetio.IkDatasetIO())
+        self.add_input(datasetio.IkDatasetIO())
         self.experiment_id = -1
         self._init_mlflow()
         self._init_tensorboard()
@@ -78,21 +78,21 @@ class TrainProcess(CDnnTrainTask):
             logger.warning("TensorBoard can't be started so training metrics will not be monitor in it.")
             logger.debug(e)
 
-    def beginTaskRun(self):
+    def begin_task_run(self):
         """
         Proceed to training job initialization:
 
             - start new MLflow run
             - log hyper-parameters contained in :py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`
         """
-        super().beginTaskRun()
+        super().begin_task_run()
         mlflow.end_run()
 
         if self.experiment_id != -1:
             mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
 
             # Log parameters
-            param = self.getParam()
+            param = self.get_param_object()
             if param is not None:
                 self.log_params(param.cfg)
 
@@ -124,6 +124,7 @@ class TrainProcess(CDnnTrainTask):
         Args:
             key (str): metric name
             value: metric value (numerical)
+            step (int): epoch/iteration index
         """
         if self.experiment_id != -1:
             mlflow.log_metric(key, value, step)
@@ -134,6 +135,7 @@ class TrainProcess(CDnnTrainTask):
 
         Args:
             metrics (dict): parameters
+            step (int): epoch/iteration index
         """
         if self.experiment_id != -1:
             mlflow.log_metrics(metrics, step)
@@ -160,11 +162,11 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id != -1:
             mlflow.log_artifacts(folder_path)
 
-    def endTaskRun(self):
+    def end_task_run(self):
         """
         Finalize MLflow run.
         """
-        super().endTaskRun()
+        super().end_task_run()
         mlflow.end_run()
 
     def stop(self):

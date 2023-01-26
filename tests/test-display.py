@@ -71,19 +71,19 @@ def test_display_table():
     img = cv2.imread(img_path)
     # run ResNet classification
     algo = ikomia.ik_registry.create_algorithm(ik.infer_torchvision_resnet)
-    input_img = algo.getInput(0)
+    input_img = algo.get_input(0)
     input_img.setImage(img)
     algo.run()
     # display table output
-    displayIO.display(algo.getOutput(2), label="ResNet classification")
+    displayIO.display(algo.get_output(2), label="ResNet classification")
 
     # run YoloV4 detection
     algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v4)
-    input_img = algo.getInput(0)
+    input_img = algo.get_input(0)
     input_img.setImage(img)
     algo.run()
     # display table output
-    displayIO.display(algo.getOutput(2), label="YoloV4 detection")
+    displayIO.display(algo.get_output(2), label="YoloV4 detection")
 
 
 def test_display_plot():
@@ -93,11 +93,11 @@ def test_display_plot():
     img = cv2.imread(img_path)
     # run CalcHist
     algo = ikomia.ik_registry.create_algorithm(ik.ocv_calc_hist)
-    input_img = algo.getInput(0)
+    input_img = algo.get_input(0)
     input_img.setImage(img)
     algo.run()
     # display plot output
-    feature_io = algo.getOutput(1)
+    feature_io = algo.get_output(1)
     displayIO.display(feature_io, label="CalcHist Histogram")
     feature_io.setPlotType(dataprocess.PlotType.CURVE)
     displayIO.display(feature_io, label="CalcHist Curves")
@@ -115,7 +115,7 @@ def test_display_task():
 
     # run MaskRCNN
     algo = ikomia.ik_registry.create_algorithm(ik.infer_mask_rcnn)
-    input_img = algo.getInput(0)
+    input_img = algo.get_input(0)
     input_img.setImage(img)
     algo.run()
     # display task I/O

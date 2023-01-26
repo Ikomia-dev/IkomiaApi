@@ -1,4 +1,5 @@
 import logging
+import argparse
 import numpy as np
 import ikomia
 from ikomia import utils, core, dataprocess, dnn
@@ -14,14 +15,14 @@ def test_utils():
         assert cpp_exc
 
         memory = utils.CMemoryInfo()
-        logger.info("Total memory:" + str(memory.totalMemory()))
-        logger.info("Available memory:" + str(memory.availableMemory()))
-        logger.info("Memory load:" + str(memory.memoryLoad()))
+        logger.info("Total memory:" + str(memory.get_total_memory()))
+        logger.info("Available memory:" + str(memory.get_available_memory()))
+        logger.info("Memory load:" + str(memory.get_memory_load()))
 
         timer = utils.CTimer()
         timer.start()
-        timer.printElapsedTime_ms("Elapsed time")
-        timer.printTotalElapsedTime_ms("Total elapsed time")
+        timer.print_elapsed_time_ms("Elapsed time")
+        timer.print_total_elapsed_time_ms("Total elapsed time")
     except Exception as e:
         logger.error(e)
 
@@ -110,9 +111,23 @@ def test_dnn():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tests",
+                        type=str,
+                        default='all',
+                        help="List of tests to execute (comma-separated string, default=all)")
+    opt = parser.parse_args()
+    running_tests = opt.tests.split(',')
+
     ikomia.authenticate()
-    test_utils()
-    test_core()
-    test_dataprocess()
-    test_dnn()
+
+    if 'all' in running_tests or 'utils' in running_tests:
+        test_utils()
+    if 'all' in running_tests or 'core' in running_tests:
+        test_core()
+    if 'all' in running_tests or 'dataprocess' in running_tests:
+        test_dataprocess()
+    if 'all' in running_tests or 'dnn' in running_tests:
+        test_dnn()
+
     logger.info("Install test run successfully")

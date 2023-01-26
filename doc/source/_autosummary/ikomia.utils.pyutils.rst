@@ -6,9 +6,9 @@
     .. rubric:: Functions
     .. autosummary::
 
-        getApiVersion
-        getCompatibilityState
-        getModelHubUrl
+        get_api_version
+        get_compatibility_state
+        get_model_hub_url
    
     .. rubric:: Classes
     .. autosummary::

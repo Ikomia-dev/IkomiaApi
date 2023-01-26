@@ -14,8 +14,8 @@ CMeasure
    .. rubric:: Methods
    .. autosummary::
       ~CMeasure.__init__
-      ~CMeasure.getAvailableMeasures
-      ~CMeasure.getName
+      ~CMeasure.get_available_measures
+      ~CMeasure.get_name
 
    .. rubric:: Attributes
    .. autosummary::
@@ -25,5 +25,5 @@ CMeasure
    .. rubric:: Details
 
    .. automethod:: __init__
-   .. automethod:: getAvailableMeasures
-   .. automethod:: getName
+   .. automethod:: get_available_measures
+   .. automethod:: get_name

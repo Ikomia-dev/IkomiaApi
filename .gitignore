@@ -27,3 +27,4 @@ ikomia/opencv/*.so
 ikomia/core/config.yaml
 doc/build
 doc/_build
+local_test.py

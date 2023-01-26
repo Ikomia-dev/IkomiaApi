@@ -13,21 +13,21 @@ CGraphicsItem
    .. rubric:: Methods
    .. autosummary::
       ~CGraphicsItem.__init__
-      ~CGraphicsItem.getBoundingRect
-      ~CGraphicsItem.getCategory
-      ~CGraphicsItem.getId
-      ~CGraphicsItem.getType
-      ~CGraphicsItem.insertToImage
-      ~CGraphicsItem.isTextItem
-      ~CGraphicsItem.setCategory
+      ~CGraphicsItem.get_bounding_rect
+      ~CGraphicsItem.get_category
+      ~CGraphicsItem.get_id
+      ~CGraphicsItem.get_type
+      ~CGraphicsItem.insert_to_image
+      ~CGraphicsItem.is_text_item
+      ~CGraphicsItem.set_category
 
    .. rubric:: Details
    
    .. automethod:: __init__
-   .. automethod:: getBoundingRect
-   .. automethod:: getCategory
-   .. automethod:: getId
-   .. automethod:: getType
-   .. automethod:: isTextItem
-   .. automethod:: setCategory
+   .. automethod:: get_bounding_rect
+   .. automethod:: get_category
+   .. automethod:: get_id
+   .. automethod:: get_type
+   .. automethod:: is_text_item
+   .. automethod:: set_category
    

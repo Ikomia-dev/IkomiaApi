@@ -23,13 +23,13 @@ Mandatory methods to implement
         def __init__(self, name, param):
             dataprocess.CWorkflowTask.__init__(self, name)
             # Add image input
-            self.addOutput(dataprocess.CImageIO())
+            self.add_output(dataprocess.CImageIO())
             # Add graphics output
-            self.addOutput(dataprocess.CGraphicsOutput())
+            self.add_output(dataprocess.CGraphicsOutput())
             # Add numeric output
-            self.addOutput(dataprocess.CNumericIO())
+            self.add_output(dataprocess.CNumericIO())
 
-- **run()**: launch the algorithm execution. When the method is called, inputs data are set and ready to process. The method must begin with a call to **beginTaskRun()** and end with a call to **endTaskRun()**. In the code snippet below, you will find the most useful methods that you will need while implementing your own plugin:
+- **run()**: launch the algorithm execution. When the method is called, inputs data are set and ready to process. The method must begin with a call to **begin_task_run()** and end with a call to **end_task_run()**. In the code snippet below, you will find the most useful methods that you will need while implementing your own plugin:
 
 .. code-block:: python
 
@@ -38,21 +38,21 @@ Mandatory methods to implement
         def run(self):
             
             # Execution initialization
-            self.beginTaskRun()
+            self.begin_task_run()
 
             # Get inputs
-            input1 = self.getInput(0)
-            input2 = self.getInput(1)
+            input1 = self.get_input(0)
+            input2 = self.get_input(1)
 
             # Get parameters
-            param = self.getParam()
+            param = self.get_param_object()
 
             # Get outputs
-            output1 = self.getOutput(0)
-            output1 = self.getOutput(1)
+            output1 = self.get_output(0)
+            output1 = self.get_output(1)
 
             # Execution finalization
-            self.endTaskRun()
+            self.end_task_run()
 
 .. note:: See :py:mod:`~ikomia.core.pycore.CWorkflowTask` to have details around all available methods.
 
@@ -60,7 +60,7 @@ Mandatory methods to implement
 Recommended methods to implement
 --------------------------------
 
-- **getProgressSteps()**: Ikomia Studio only. For time consuming algorithms, it could be relevant to split execution into separate parts and give progression feedback after each part (if possible). If so, you have to first implement this method and return the number of execution parts. Then, in your **run()** method, you have to place a call to **self.emitStepProgress()** after each part to notify the main progress bar of Ikomia Studio.
+- **get_progress_steps()**: Ikomia Studio only. For time consuming algorithms, it could be relevant to split execution into separate parts and give progression feedback after each part (if possible). If so, you have to first implement this method and return the number of execution parts. Then, in your **run()** method, you have to place a call to **self.emit_step_progress()** after each part to notify the main progress bar of Ikomia Studio.
 - **stop()**: method called when a user requests the process to stop. For time consuming algorithm it's highly recommended to integrate a stop mechanism inside your algorithm execution code. This method is somehow just a callback.
 
 
@@ -68,7 +68,7 @@ Available specializations
 -------------------------
 
 To ease implementation of common image processing tasks, we provide some specialization classes from 
-which you can inherit. They integrate useful features to speed your developpment.
+which you can inherit. They integrate useful features to speed your development.
 
 
 Simple image processing algorithms
@@ -79,10 +79,10 @@ Simple image processing algorithms
     - Inputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`) and graphics (:py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`).
     - Outputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`).
     - Important features:
-        - create binary mask from graphics. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.createGraphicsMask`.
-        - apply a binary mask to the desired output image so that only masked areas are processed. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.applyGraphicsMask` and :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.applyGraphicsMaskToBinary`.
-        - forward input image to the desired output without modification: :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.forwardInputImage`.
-        - attach a color overlay mask to the desired output (Ikomia Studio only). See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.setOutputColorMap`.
+        - create binary mask from graphics. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.create_graphics_mask`.
+        - apply a binary mask to the desired output image so that only masked areas are processed. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.apply_graphics_mask` and :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.apply_graphics_mask_to_binary`.
+        - forward input image to the desired output without modification: :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.forward_input_image`.
+        - attach a color overlay mask to the desired output (Ikomia Studio only). See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageTask.set_output_color_map`.
         
 .. note:: If any of these features are useful for your own algorithm, inherit your class from this base class instead of CWorkflowTask. Please consult :doc:`this tutorial <opencv_plugin>` for details.
 
@@ -98,11 +98,11 @@ Every changes made by users on this layer are notified and corresponding actions
     - Inputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`) and graphics (:py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`).
     - Outputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`).
     - Important features:
-        - callback to manage interaction layer modification. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.graphcisChanged`.
-        - create binary mask from the graphics interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.createInteractionMask`.
-        - compute connected components from the binary mask generated from the interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.computeBlobs`.
-        - get connected components as a list of polygons (list of points). See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.getBlobs`.
-        - clear interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.clearInteractionLayer`.
+        - callback to manage interaction layer modification. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.graphics_changed`.
+        - create binary mask from the graphics interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.create_interaction_mask`.
+        - compute connected components from the binary mask generated from the interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.compute_blobs`.
+        - get connected components as a list of polygons (list of points). See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.get_blobs`.
+        - clear interaction layer. See :py:meth:`~ikomia.dataprocess.pydataprocess.C2dImageInteractiveTask.clear_interaction_layer`.
 
 .. note:: If any of these features are useful for your own algorithm, inherit your class from this base class instead of CWorkflowTask.
 
@@ -117,8 +117,8 @@ start and stop events.
     - Inputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`) and graphics (:py:mod:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`).
     - Outputs: image (:py:mod:`~ikomia.dataprocess.pydataprocess.CImageIO`).
     - Important features:
-        - callback to manage video start event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notifyVideoStart`.
-        - callback to manage video stop event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notifyVideoStop`.
+        - callback to manage video start event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notify_video_start`.
+        - callback to manage video stop event. See :py:meth:`~ikomia.dataprocess.pydataprocess.CVideoTask.notify_video_stop`.
 
 .. note:: Please consult source code of `infer_raft_optical_flow <https://github.com/Ikomia-hub/infer_raft_optical_flow>`_ for implementation example.
 

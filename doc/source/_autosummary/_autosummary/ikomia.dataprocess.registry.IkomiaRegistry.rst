@@ -24,22 +24,22 @@ IkomiaRegistry
     .. rubric:: Inherited methods
     .. autosummary::
 
-        ~IkomiaRegistry.getAlgorithms
-        ~IkomiaRegistry.getAlgorithmInfo
-        ~IkomiaRegistry.getPluginsDirectory
-        ~IkomiaRegistry.registerTask
-        ~IkomiaRegistry.setPluginsDirectory
+        ~IkomiaRegistry.get_algorithms
+        ~IkomiaRegistry.get_algorithm_info
+        ~IkomiaRegistry.get_plugins_directory
+        ~IkomiaRegistry.register_task
+        ~IkomiaRegistry.set_plugins_directory
 
     .. rubric:: Details
 
     .. automethod:: __init__
     .. automethod:: create_algorithm
-    .. automethod:: getAlgorithms
-    .. automethod:: getAlgorithmInfo
+    .. automethod:: get_algorithms
+    .. automethod:: get_algorithm_info
     .. automethod:: get_online_algorithms
-    .. automethod:: getPluginsDirectory
-    .. automethod:: registerTask
+    .. automethod:: get_plugins_directory
+    .. automethod:: register_task
     .. automethod:: install_algorithm
-    .. automethod:: setPluginsDirectory
+    .. automethod:: set_plugins_directory
     .. automethod:: update_algorithm
     .. automethod:: update_algorithms

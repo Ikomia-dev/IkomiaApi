@@ -18,7 +18,6 @@
         :toctree: _autosummaryv
    
         CWorkflowTaskParam
-        ParamMap
 
     .. rubric:: Task management
     .. autosummary::

@@ -1,9 +1,10 @@
 import logging
 import os
+import shutil
 import argparse
 import ikomia
-from ikomia.dataprocess import workflow, displayIO
-from ikomia.core import config, task
+from ikomia.dataprocess import CWorkflow, CImageIO, workflow, displayIO
+from ikomia.core import config, task, IODataType
 from ikomia.utils import tests, ik
 import numpy as np
 import cv2
@@ -11,17 +12,144 @@ import cv2
 logger = logging.getLogger(__name__)
 
 
-def test_metadata():
-    logger.info("===== Test::set workflow metadata =====")
-    wf = workflow.create("test_metadata")
+def test_cpp_workflow():
+    logger.info("===== Test: CWorkflow =====")
+
+    # Default ctor
+    wf = CWorkflow()
+    assert wf.get_root_id() != 0
+    # Ctor with name
+    name = "Test workflow"
+    wf = CWorkflow(name)
+    assert wf.get_root_id() != 0
+    assert wf.name == name
+    # Ctor with name and registry
+    name = "Test workflow"
+    wf = CWorkflow(name, ikomia.ik_registry)
+    assert wf.get_root_id() != 0
+    assert wf.name == name
+
+    # Metadata
     description = "This is a test workflow"
     keywords = "ikomia,test,empty"
     wf.description = description
     wf.keywords = keywords
-    logger.info(wf.description)
-    logger.info(wf.keywords)
-    assert(wf.description == description)
-    assert(wf.keywords == keywords)
+    assert (wf.description == description)
+    assert (wf.keywords == keywords)
+
+    # Load
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
+    required_tasks = wf.get_required_tasks(wf_path)
+    assert len(required_tasks) == 9
+    wf.load(wf_path)
+
+    # Get IDs
+    ids = wf.get_task_ids()
+    assert len(ids) == len(required_tasks) + 1  # with root
+
+    # Browse tasks
+    for task_id in ids:
+        t = wf.get_task(task_id)
+        logger.info(f"Id: {task_id} - Name: {t.name}")
+        logger.info(t)
+
+    # Get root and retrieve its child tasks
+    root_id = wf.get_root_id()
+    assert (root_id in ids)
+    children = wf.get_children(root_id)
+    assert (len(children) == 2)
+    logger.info(f"Childs of root are: {wf.get_task(children[0]).name} and {wf.get_task(children[1]).name}")
+
+    # Get parents
+    t = wf.get_task(ids[5])
+    parents = wf.get_parents(ids[5])
+    logger.info(f"Parent of {t.name} is {wf.get_task(parents[0]).name}")
+
+    # Get final tasks(leafs)
+    msg = "Final tasks are: "
+    final_tasks = wf.get_final_tasks()
+
+    for t in final_tasks:
+        msg += t.name + ","
+
+    logger.info(msg)
+
+    # Input edges of a task
+    t = wf.get_task(ids[5])
+    in_edges = wf.get_in_edges(ids[5])
+    logger.info(f"Input edges of {t.name}: {len(in_edges)}")
+
+    for edge in in_edges:
+        logger.info(f"Edge port index: {wf.get_edge_info(edge)}")
+
+    # Output edges of a task
+    out_edges = wf.get_out_edges(ids[5])
+    logger.info(f"Output edges of {t.name}: {len(out_edges)}")
+
+    for edge in out_edges:
+        logger.info(f"Edge port index: {wf.get_edge_info(edge)}")
+
+    # Edge source and target
+    src_task_id = wf.get_edge_source(out_edges[0])
+    logger.info(f"Source task of edge # {out_edges[0]} is {wf.get_task(src_task_id).name}")
+    target_task_id = wf.get_edge_target(out_edges[0])
+    logger.info(f"Target task of edge # {out_edges[0]} is {wf.get_task(target_task_id).name}")
+
+    # Set input
+    types = wf.get_root_target_types()
+    assert len(types) == 1
+    image_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
+    img_in = CImageIO(IODataType.IMAGE, "Source image", image_path)
+    wf.set_input(img_in, 0, True)
+    assert wf.get_input_count() == 1
+    assert wf.get_input_data_type(0) == IODataType.IMAGE
+
+    # Run
+    wf.update_start_time()
+    wf.run()
+    logger.info(f"Total elapsed time: {wf.get_total_elapsed_time()} ms")
+    logger.info(f"Elapsed time to {t.name}: {wf.get_elapsed_time_to(ids[5])} ms")
+
+    # Run with auto-save
+    output_folder = os.path.join(tests.get_test_image_directory(), "Tmp")
+    wf.set_output_folder(output_folder)
+    wf.set_auto_save(True)
+    wf.run()
+    output_folder = wf.get_last_run_folder()
+    assert os.path.isdir(output_folder)
+    shutil.rmtree(output_folder)
+
+    # Add/remove input
+    wf.remove_input(0)
+    assert wf.get_input_count() == 0
+    wf.add_input(img_in)
+    assert wf.get_input_count() == 1
+    wf.clear_inputs()
+    assert wf.get_input_count() == 0
+    wf.clear_output_data()
+
+    # Delete edge
+    wf.delete_edge(out_edges[0])
+    out_edges = wf.get_out_edges(ids[5])
+    assert (len(out_edges) == 0)
+
+    # Delete task
+    count_before = len(wf.get_task_ids())
+    logger.info(f"Task count before delete: {count_before}")
+    wf.delete_task(ids[5])
+    count_after = len(wf.get_task_ids())
+    logger.info(f"Task count after delete: {count_after}")
+    assert (count_before == count_after + 1)
+
+    # Save
+    save_path = os.path.join(tests.get_test_workflow_directory(), "workflow_tmp.json")
+    wf.save(save_path)
+    assert os.path.isfile(save_path)
+    os.remove(save_path)
+    save_graphviz = os.path.join(tests.get_test_workflow_directory(), "workflow_graphviz.dot")
+    wf.export_graphviz(save_graphviz)
+    assert os.path.isfile(save_graphviz)
+    os.remove(save_graphviz)
 
 
 def test_load_builtin():
@@ -33,8 +161,8 @@ def test_load_builtin():
     logger.info(wf.name)
     logger.info(wf.description)
     logger.info(wf.keywords)
-    logger.info("Input count: " + str(wf.getInputCount()))
-    logger.info("Task count: " + str(wf.getTaskCount()))
+    logger.info("Input count: " + str(wf.get_input_count()))
+    logger.info("Task count: " + str(wf.get_task_count()))
 
 
 def test_load_marketplace():
@@ -46,8 +174,8 @@ def test_load_marketplace():
     logger.info(wf.name)
     logger.info(wf.description)
     logger.info(wf.keywords)
-    logger.info("Input count: " + str(wf.getInputCount()))
-    logger.info("Task count: " + str(wf.getTaskCount()))
+    logger.info("Input count: " + str(wf.get_input_count()))
+    logger.info("Task count: " + str(wf.get_task_count()))
 
 
 def test_run_single_image():
@@ -55,7 +183,7 @@ def test_run_single_image():
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
 
     # apply on local image
     wf.set_image_input(path=img_path)
@@ -82,7 +210,7 @@ def test_run_image_folder():
     logger.info("===== Test::execute image workflow on folder =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
 
     dir_path = tests.get_test_image_directory()
     wf.set_directory_input(dir_path)
@@ -95,7 +223,7 @@ def test_run_image_common():
     logger.info("===== Test::execute workflow on common image inputs =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
 
     logger.info("----- Run on image from array")
     img_array = np.random.randint(low=0, high=255, size=(512, 512, 3), dtype=np.uint8)
@@ -118,7 +246,7 @@ def test_run_single_video():
     logger.info("===== Test::execute workflow on single video =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
 
     logger.info("----- Run on video from file path")
     video_path = tests.get_test_video_directory() + "/basketball.mp4"
@@ -133,7 +261,7 @@ def test_run_video_folder():
     logger.info("===== Test::execute workflow on folder =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
-    wf.setAutoSave(True)
+    wf.set_auto_save(True)
 
     logger.info("----- Run on video from folder")
     dir_path = tests.get_test_video_directory()
@@ -156,10 +284,10 @@ def test_yolov5_train(wgisd_dataset_dir):
 
     # set dataset directory
     wgisd_id, wgisd = wf.find_task(ik.dataset_wgisd)
-    wgisd_params = wgisd.getParamValues()
+    wgisd_params = wgisd.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
-    wgisd.setParamValues(wgisd_params)
+    wgisd.set_parameters(wgisd_params)
 
     logger.info("Start YoloV5 training...")
     wf.run()
@@ -170,14 +298,14 @@ def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
     wf = workflow.create("YoloTrain")
     wgisd_id, wgisd = wf.add_task(ik.dataset_wgisd)
-    wgisd_params = wgisd.getParamValues()
+    wgisd_params = wgisd.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
-    wgisd.setParamValues(wgisd_params)
+    wgisd.set_parameters(wgisd_params)
 
     yolo_id, yolo = wf.add_task(ik.train_yolo)
-    yolo_params = yolo.getParamValues()
+    yolo_params = yolo.get_parameters()
     yolo_params["batchSize"] = 16
     task.set_parameters(yolo, yolo_params)
     wf.connect_tasks(wgisd_id, yolo_id)
@@ -191,86 +319,7 @@ def test_export_graphviz():
     wf = workflow.load(wf_path)
     dot_file_name = wf.name + ".dot"
     path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
-    wf.exportGraphviz(path)
-
-
-def test_graph_structure():
-    logger.info("===== Test::workflow introspection =====")
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.load(wf_path)
-
-    # get all tasks
-    logger.info(wf.get_tasks())
-
-    # browse tasks
-    ids = wf.getTaskIDs()
-    for task_id in ids:
-        task = wf.getTask(task_id)
-        logger.info("##### Id:" + str(task_id) + " Name:" + task.name)
-        logger.info(task)
-
-    # get root and retrieve its child tasks
-    root_id = wf.getRootID()
-    assert(root_id in ids)
-    childs = wf.getChildren(root_id)
-    assert(len(childs) == 2)
-    logger.info("Childs of root are: " + wf.getTask(childs[0]).name + " and " + wf.getTask(childs[1]).name)
-
-    # find task from name
-    task_id, task_obj = wf.find_task(ik.ocv_clahe)
-    assert(task_id and task_obj is not None)
-
-    # get parents
-    parents = wf.getParents(task_id)
-    logger.info("Parent of CLAHE is " + wf.getTask(parents[0]).name)
-
-    # get final tasks(leafs)
-    msg = "Final tasks are: "
-    final_tasks = wf.getFinalTasks()
-
-    for task in final_tasks:
-        msg += task.name + ","
-
-    logger.info(msg)
-
-    # input edges of a task
-    task_id, task_obj = wf.find_task(ik.ocv_dt_filter)
-    assert(task_id and task_obj is not None)
-    in_edges = wf.getInEdges(task_id)
-    logger.info("Input edges of DTFilter: " + str(len(in_edges)))
-
-    for edge in in_edges:
-        logger.info("Edge port index: " + str(wf.getEdgeInfo(edge)))
-
-    # output edges of a task
-    task_id, task_obj = wf.find_task(ik.ocv_equalize_histogram)
-    assert(task_id and task_obj is not None)
-    out_edges = wf.getOutEdges(task_id)
-    logger.info("Output edges of Equalize histogram: " + str(len(out_edges)))
-
-    for edge in out_edges:
-        logger.info("Edge port index: " + str(wf.getEdgeInfo(edge)))
-
-    # edge source and target
-    src_task_id = wf.getEdgeSource(out_edges[0])
-    logger.info("Source task of edge #" + str(out_edges[0]) + " is " + wf.getTask(src_task_id).name)
-    target_task_id = wf.getEdgeTarget(out_edges[0])
-    logger.info("Target task of edge #" + str(out_edges[0]) + " is " + wf.getTask(target_task_id).name)
-
-    # delete edge
-    wf.deleteEdge(out_edges[0])
-    out_edges = wf.getOutEdges(task_id)
-    assert (len(out_edges) == 1)
-
-    # delete task
-    count_before = len(wf.getTaskIDs())
-    logger.info("Task count before delete: " + str(count_before))
-    wf.deleteTask(task_id)
-    count_after = len(wf.getTaskIDs())
-    logger.info("Task count after delete: " + str(count_after))
-    assert(count_before == count_after + 1)
-    found_task = wf.find_task(ik.ocv_equalize_histogram)
-    assert(len(found_task) == 0)
+    wf.export_graphviz(path)
 
 
 def test_graph_build():
@@ -315,9 +364,9 @@ def test_graph_build():
     wf.run()
 
     # check results
-    leaf_tasks = wf.getFinalTasks()
-    for task in leaf_tasks:
-        displayIO.display(task, task.name)
+    leaf_tasks = wf.get_final_tasks()
+    for t in leaf_tasks:
+        displayIO.display(t, t.name)
 
 
 def test_time_metrics():
@@ -327,13 +376,13 @@ def test_time_metrics():
     wf = workflow.load(wf_path)
     wf.set_image_input(path=img_path)
     wf.run()
-    logger.info("Workflow running time (ms): " + str(wf.getTotalElapsedTime()))
+    logger.info("Workflow running time (ms): " + str(wf.get_total_elapsed_time()))
 
     # manual retrieval
-    ids = wf.getTaskIDs()
+    ids = wf.get_task_ids()
     for task_id in ids:
-        task = wf.getTask(task_id)
-        logger.info(task.name + ":" + str(task.getElapsedTime()) + " - From start: " + str(wf.getElapsedTimeTo(task_id)))
+        t = wf.get_task(task_id)
+        logger.info(f"{t.name}: {t.get_elapsed_time()} - From start: {wf.get_elapsed_time_to(task_id)}")
 
     # tool function
     logger.info(wf.get_time_metrics())
@@ -347,11 +396,11 @@ def test_get_outputs(wgisd_dataset_dir):
 
     # set WGISD_Dataset parameters
     wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
-    wgisd_params = wgisd_task.getParamValues()
+    wgisd_params = wgisd_task.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
-    wgisd_task.setParamValues(wgisd_params)
+    wgisd_task.set_parameters(wgisd_params)
 
     # run workflow
     wf.set_image_input(path=img_path)
@@ -441,17 +490,17 @@ def test_set_task_parameters():
     wf = workflow.load(wf_path)
 
     bf_id, box_filter = wf.find_task(name=ik.ocv_box_filter, index=0)
-    logger.info(box_filter.getParam())
+    logger.info(box_filter.get_param_object())
     wf.set_parameters({ik.ocv_box_filter_param.kSizeHeight: 11,
                        ik.ocv_box_filter_param.kSizeWidth: 11}, task_name=ik.ocv_box_filter, index=0)
-    params = box_filter.getParamValues()
+    params = box_filter.get_parameters()
     assert (params["kSizeHeight"] == str(11) and params["kSizeWidth"] == str(11))
 
     bl_id, bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter, index=0)
-    logger.info(bilateral_filter.getParam())
+    logger.info(bilateral_filter.get_param_object())
     wf.set_parameters({ik.ocv_bilateral_filter_param.sigmaSpace: 31.0,
                        ik.ocv_bilateral_filter_param.sigmaColor: 11.0}, task_id=bl_id)
-    params = bilateral_filter.getParamValues()
+    params = bilateral_filter.get_parameters()
 
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
 
@@ -491,12 +540,11 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-    running_tests = ['train_yolov4']
 
     ikomia.authenticate()
 
-    if 'all' in running_tests or 'metadata' in running_tests:
-        test_metadata()
+    if 'all' in running_tests or 'cpp_workflow' in running_tests:
+        test_cpp_workflow()
     if 'all' in running_tests or 'builtin' in running_tests:
         test_load_builtin()
     if 'all' in running_tests or 'marketplace' in running_tests:
@@ -513,8 +561,6 @@ if __name__ == "__main__":
         test_run_video_folder()
     if 'all' in running_tests or 'graphviz' in running_tests:
         test_export_graphviz()
-    if 'all' in running_tests or 'graph_struct' in running_tests:
-        test_graph_structure()
     if 'all' in running_tests or 'time_metrics' in running_tests:
         test_time_metrics()
     if 'all' in running_tests or 'graph_build' in running_tests:
