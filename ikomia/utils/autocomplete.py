@@ -109,14 +109,14 @@ def _write_auto_complete(f, task_name="", task=None, skip_params=False):
 
 
 def _generate_python_file(folder):
-    ik_file_path = folder + "ik.py"
+    ik_file_path = os.path.join(folder, "ik.py")
     with open(ik_file_path, 'w+') as f:
-        cache_file_path = folder + "autocomplete_local.cache"
+        cache_file_path = os.path.join(folder, "autocomplete_local.cache")
         if os.path.isfile(cache_file_path):
             with open(cache_file_path, "r") as f_cache:
                 shutil.copyfileobj(f_cache, f)
 
-        cache_file_path = folder + "autocomplete_online.cache"
+        cache_file_path = os.path.join(folder, "autocomplete_online.cache")
         if os.path.isfile(cache_file_path):
             with open(cache_file_path, "r") as f_cache:
                 shutil.copyfileobj(f_cache, f)
@@ -140,28 +140,45 @@ def _check_sync():
     return True
 
 
-def make_local_plugins(force=False):
-    current_folder = os.path.dirname(__file__) + os.sep
-    cache_file_path1 = current_folder + "autocomplete_local.cache"
-    local_site = site.getusersitepackages() + os.sep + "ikomia" + os.sep + "utils" + os.sep
-    cache_file_path2 = local_site + "autocomplete_local.cache"
+def _has_local_cache():
+    filename = "autocomplete_local.cache"
+    cache_file_path1 = os.path.join(os.path.dirname(__file__), filename)
+    local_site = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+    cache_file_path2 = os.path.join(local_site, filename)
+    return os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)
 
+
+def _has_online_cache():
+    filename = "autocomplete_online.cache"
+    cache_file_path1 = os.path.join(os.path.dirname(__file__), filename)
+    local_site = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+    cache_file_path2 = os.path.join(local_site, filename)
+    return os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)
+
+
+def make_local_plugins(force=False):
     if not force:
-        if _check_sync() and (os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)):
+        if _check_sync() and _has_local_cache():
             return
 
+    cache_name = "autocomplete_local.cache"
+
+    if not ikomia.ik_registry.is_all_loaded():
+        ikomia.ik_registry.load_algorithms()
+
     try:
+        folder = os.path.dirname(__file__)
+        cache_file_path1 = os.path.join(folder, cache_name)
         f = open(cache_file_path1, "w+")
-        folder = current_folder
     except Exception:
         try:
-            os.makedirs(local_site, exist_ok=True)
+            folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+            cache_file_path2 = os.path.join(folder, cache_name)
+            os.makedirs(folder, exist_ok=True)
             f = open(cache_file_path2, "w+")
-            folder = local_site
         except Exception:
             logger.warning("Ikomia auto-completion is disable")
             return
-
 
     names = ikomia.ik_registry.get_algorithms()
     for name in names:
@@ -181,18 +198,17 @@ def make_local_plugins(force=False):
 
 
 def update_local_plugin(task):
-    current_folder = os.path.dirname(__file__) + os.sep
-    cache_file_path1 = current_folder + "autocomplete_local.cache"
-    local_site = site.getusersitepackages() + os.sep + "ikomia" + os.sep + "utils" + os.sep
-    cache_file_path2 = local_site + "autocomplete_local.cache"
+    cache_name = "autocomplete_local.cache"
 
     try:
+        folder = os.path.dirname(__file__)
+        cache_file_path1 = os.path.join(folder, cache_name)
         f = open(cache_file_path1, "a+")
-        folder = current_folder
     except Exception:
         try:
+            folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+            cache_file_path2 = os.path.join(local_site, cache_name)
             f = open(cache_file_path2, "a+")
-            folder = local_site
         except Exception:
             logger.warning("Ikomia auto-completion is disable: no update.")
 
@@ -207,23 +223,21 @@ def update_local_plugin(task):
 
 
 def make_online_plugins(force=False):
-    current_folder = os.path.dirname(__file__) + os.sep
-    cache_file_path1 = current_folder + "autocomplete_online.cache"
-    local_site = site.getusersitepackages() + os.sep + "ikomia" + os.sep + "utils" + os.sep
-    cache_file_path2 = local_site + "autocomplete_online.cache"
+    if not force and _has_online_cache():
+        return
 
-    if not force:
-        if os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2):
-            return
+    cache_name = "autocomplete_online.cache"
 
     try:
+        folder = os.path.dirname(__file__)
+        cache_file_path1 = os.path.join(folder, cache_name)
         f = open(cache_file_path1, "w+")
-        folder = current_folder
     except Exception:
         try:
-            os.makedirs(local_site, exist_ok=True)
+            folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+            cache_file_path2 = os.path.join(folder, cache_name)
+            os.makedirs(folder, exist_ok=True)
             f = open(cache_file_path2, "w+")
-            folder = local_site
         except Exception:
             logger.warning("Ikomia auto-completion is disable")
 
@@ -247,3 +261,7 @@ def make_online_plugins(force=False):
     except Exception as e:
         logger.info("Ikomia auto-completion cannot be generated.")
         logger.debug(e)
+
+def make(force=False):
+    make_local_plugins(force)
+    make_online_plugins(force)

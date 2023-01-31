@@ -448,7 +448,7 @@ class Workflow(dataprocess.CWorkflow):
         if algo is None:
             raise RuntimeError(f"Algorithm {name} can't be created.")
 
-        return self.add_task(algo), algo
+        return super().add_task(algo), algo
 
     def find_task(self, name: str, index=-1):
         """

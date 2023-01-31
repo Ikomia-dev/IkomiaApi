@@ -3,6 +3,7 @@ hub:
 root_folder:
 registry:
   path:
+  lazy_load: True
   auto_completion: True
 workflow:
   path:

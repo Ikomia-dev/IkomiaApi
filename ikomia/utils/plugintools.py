@@ -166,7 +166,7 @@ def uninstall_package(name):
 
 def import_plugin_module(directory, name):
     if is_module_imported(name):
-        for root, subdirs, files in os.walk(directory, topdown=True):
+        for root, sub_dirs, files in os.walk(directory, topdown=True):
             for file in files:
                 filename, file_extension = os.path.splitext(file)
                 if file_extension == ".py":
