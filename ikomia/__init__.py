@@ -14,50 +14,13 @@
 
 import os
 import sys
-import time
-import logging
-
-# ----------------------------------
-# ----- Logging initialization -----
-# ----------------------------------
-logger = logging.getLogger(__name__)
-logger.handlers = []
-logger.setLevel(logging.DEBUG)
-
-# log to stdout and stderr
-formatter = logging.Formatter("%(message)s")
-info = logging.StreamHandler(sys.stdout)
-info.setLevel(logging.INFO)
-info.setFormatter(formatter)
-logger.addHandler(info)
-
-err = logging.StreamHandler(sys.stderr)
-err.setLevel(logging.ERROR)
-err.setFormatter(formatter)
-logger.addHandler(err)
-
-# log to file
-from ikomia.core import config
-
-log_path = config.main_cfg["root_folder"] + "/log.txt"
-file_formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s", "%Y-%m-%d %H:%M:%S")
-file_handler = logging.FileHandler(log_path, 'a')
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(file_formatter)
-logger.addHandler(file_handler)
-logger.propagate = False
-
-with open(log_path, "w") as f:
-    logger.info(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
-# ----------------------------------
-
 from ikomia import utils
 from ikomia.utils import autocomplete
+from ikomia.core import config
 from ikomia.core.auth import LoginSession
 from ikomia.dataprocess import registry
 
-
-__version__ = "0.8.1"
+__version__ = "0.9.0"
 
 
 # ----------------------------------------------
@@ -76,18 +39,21 @@ if not utils.is_app_started():
 global ik_api_session
 ik_api_session = None
 
+# --------------------------------------
+# ----- Ikomia algorithms registry -----
+# --------------------------------------
 global ik_registry
 ik_registry = None
+
+if not utils.is_app_started():
+    ik_registry = registry.IkomiaRegistry(lazy_load=config.main_cfg["registry"]["lazy_load"])
 
 
 # ------------------------------------------
 # ----- Auto-completion initialization -----
 # ------------------------------------------
-if not utils.is_app_started():
-    ik_registry = registry.IkomiaRegistry()
-
-    if config.main_cfg["registry"]["auto_completion"]:
-        autocomplete.make_local_plugins()
+if not utils.is_app_started() and config.main_cfg["registry"]["auto_completion"]:
+    autocomplete.make()
 # ------------------------------------------
 
 
@@ -103,8 +69,3 @@ def authenticate():
 
     if config.main_cfg["registry"]["auto_completion"]:
         autocomplete.make_online_plugins(force=not_auth)
-
-
-def make_auto_complete():
-    autocomplete.make_local_plugins(force=True)
-    autocomplete.make_online_plugins(force=True)
