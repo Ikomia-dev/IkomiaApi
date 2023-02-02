@@ -55,8 +55,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         """
         s = ikomia.ik_api_session
         if s is None or s.token is None:
-            logger.error("Failed to get online algorithms from Ikomia HUB, authentication required.")
-            return None
+            raise ConnectionError("Failed to get online algorithms from Ikomia HUB, authentication required.")
 
         url = config.main_cfg["hub"]["url"] + "/api/plugin/"
         r = s.session.get(url)
@@ -134,8 +133,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.error(f"Algorithm {name} can't be updated as it is not installed.")
             return
 
-        online_algos = self.get_online_algorithms()
-        if online_algos is None:
+        try:
+            online_algos = self.get_online_algorithms()
+        except Exception as e:
+            logger.error(e)
             return
 
         online_algo = None
@@ -203,8 +204,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
     def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
-        if available_plugins is None:
-            raise RuntimeError(f"Unable to fetch available algorithms from Ikomia HUB. Please check connection.")
 
         plugin_info = None
         for plugin in available_plugins:

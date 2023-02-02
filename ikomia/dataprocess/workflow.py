@@ -554,7 +554,11 @@ class Workflow(dataprocess.CWorkflow):
     def prepare_runtime_env(self, path):
         tasks = self.get_required_tasks(path)
         available_tasks = ikomia.ik_registry.get_algorithms()
-        online_tasks = ikomia.ik_registry.get_online_algorithms()
+
+        try:
+            online_tasks = ikomia.ik_registry.get_online_algorithms()
+        except:
+            online_tasks = None
 
         for t in tasks:
             if t not in available_tasks:
