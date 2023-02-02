@@ -32,85 +32,67 @@ except:
 logger = logging.getLogger(__name__)
 
 
-def _write_auto_complete_str(f, name, skip_params=False):
-    forbid_char = "\ |\-|\[|\]"
-
-    if skip_params:
-        # create global variable declaration
-        var_name = re.sub(forbid_char, "", name)
-        declaration = var_name + " = " + "\"" + name + "\"\n\n"
-        f.write(declaration)
-    else:
-        # create class inherited from str
-        algo = ikomia.ik_registry.create_algorithm(name)
-        if algo is None:
-            return
-
-        class_name = re.sub(forbid_char, "", name)
-        declaration = "class " + class_name + "(str):\n"
-        f.write(declaration)
-        f.write("    def __new__(cls):\n")
-        ctor_line = "        obj = str.__new__(cls, " + "\"" + name + "\")\n"
-        f.write(ctor_line)
-
-        parameters = algo.get_parameters()
-        for param in parameters:
-            if keyword.iskeyword(param):
-                param += "_"
-
-            var_name = re.sub(forbid_char, "", param)
-            declaration = "        obj." + var_name + " = " + "\"" + param + "\"\n"
-            f.write(declaration)
-
-        f.write("        return obj\n\n")
-        create_line = name + " = " + class_name + "()\n\n"
-        f.write(create_line)
-
-
-def _write_auto_complete(f, task_name="", task=None, skip_params=False):
+def _write_auto_complete(f, task_name="", task=None, local=True):
     if not task_name and task is None:
         raise RuntimeError("Auto-completion: parameters must include either a valid name or task instance.")
 
     forbid_char = "\ |\-|\[|\]"
+    parameters = {}
 
     if task is not None:
         task_name = task.name
 
-    # create global variable declaration
-    var_name = re.sub(forbid_char, "", task_name)
-    declaration = var_name + " = " + "\"" + task_name + "\"\n"
-    f.write(declaration)
-
-    if not skip_params:
+    if local:
         if task is None:
-            # create class with attributes
             task = ikomia.ik_registry.create_algorithm(task_name)
-            if task is None:
-                raise RuntimeError(f"Auto-completion: unable to create algorithm {task_name}.")
 
         parameters = task.get_parameters()
-        if len(parameters) == 0:
-            f.write("\n")
-            return
 
-        class_name = re.sub(forbid_char, "", task_name)
-        declaration = "class " + class_name + "_param:\n"
-        f.write(declaration)
+    # Class definition
+    class_name = re.sub(forbid_char, "", task_name)
+    f.write(f"class {class_name}:\n")
+
+    if not local or len(parameters) == 0:
+        # Ctor
+        f.write("    def __init__(self):\n")
+        f.write("        self.params = {}\n\n")
+        # __call__ method
+        f.write("    def __call__(self):\n")
+        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{class_name}\", None)\n")
+        f.write("        return algo\n\n")
+    else:
+        # Ctor
+        ctor_params = "self"
+        params_dict = "        self.params = {\n"
 
         for param in parameters:
             if keyword.iskeyword(param):
-                param_key += "_"
+                param_var = f"{param}_"
+            else:
+                param_var = param
 
-            var_name = re.sub(forbid_char, "", param)
-            declaration = "    " + var_name + " = " + "\"" + param + "\"\n"
-            f.write(declaration)
+            param_var = re.sub(forbid_char, "", param_var)
+            ctor_params += f", {param_var}: str=\"{str(parameters[param])}\""
+            params_dict += f"            \"{param}\": {param_var},\n"
 
-        f.write("\n")
+        params_dict += "        }\n\n"
+        f.write(f"    def __init__({ctor_params}):\n")
+        f.write(params_dict)
+
+        # __call__ method
+        f.write("    def __call__(self):\n")
+        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{class_name}\", None)\n")
+        f.write("        algo.set_parameters(self.params)\n")
+        f.write("        return algo\n\n")
 
 
 def _generate_python_file(folder):
     ik_file_path = os.path.join(folder, "ik.py")
     with open(ik_file_path, 'w+') as f:
+        # Imports
+        f.write("import ikomia\n\n")
+
+        # Class definitions from cache files
         cache_file_path = os.path.join(folder, "autocomplete_local.cache")
         if os.path.isfile(cache_file_path):
             with open(cache_file_path, "r") as f_cache:
@@ -121,7 +103,7 @@ def _generate_python_file(folder):
             with open(cache_file_path, "r") as f_cache:
                 shutil.copyfileobj(f_cache, f)
 
-    # reload module
+    # Reload module
     if "ikomia.utils.ik" in sys.modules:
         importlib.reload(ikomia.utils.ik)
 
@@ -183,7 +165,7 @@ def make_local_plugins(force=False):
     names = ikomia.ik_registry.get_algorithms()
     for name in names:
         try:
-            _write_auto_complete(f, task_name=name, skip_params=False)
+            _write_auto_complete(f, task_name=name, local=True)
         except Exception as e:
             # SKip failing plugin
             logger.debug(e)
@@ -213,7 +195,7 @@ def update_local_plugin(task):
             logger.warning("Ikomia auto-completion is disable: no update.")
 
     try:
-        _write_auto_complete(f, task=task, skip_params=False)
+        _write_auto_complete(f, task=task, local=True)
         f.close()
         _generate_python_file(folder)
         logger.info("Ikomia auto-completion updated for installed plugin.")
@@ -249,7 +231,7 @@ def make_online_plugins(force=False):
     for algo in online_algos:
         if algo["name"] not in local_names:
             try:
-                _write_auto_complete(f, task_name=algo["name"], skip_params=True)
+                _write_auto_complete(f, task_name=algo["name"], local=False)
             except Exception as e:
                 # SKip failing plugin
                 logger.debug(e)
@@ -261,6 +243,7 @@ def make_online_plugins(force=False):
     except Exception as e:
         logger.info("Ikomia auto-completion cannot be generated.")
         logger.debug(e)
+
 
 def make(force=False):
     make_local_plugins(force)
