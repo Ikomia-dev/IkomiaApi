@@ -98,11 +98,11 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                     logger.warning(f"Try installing {name} from Ikomia HUB...")
                     self.install_algorithm(name)
                     algo = self.create_instance(name, parameters)
-
-                    if config.main_cfg["registry"]["auto_completion"]:
-                        autocomplete.update_local_plugin(algo)
                 except Exception as e:
                     logger.error(e)
+
+        if algo is not None and config.main_cfg["registry"]["auto_completion"]:
+            autocomplete.update_local_plugin(algo)
 
         return algo
 

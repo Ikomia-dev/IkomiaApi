@@ -11,11 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import json
 import os
 import re
 import site
 import keyword
+import inspect
 import logging
 import shutil
 import importlib
@@ -130,6 +131,34 @@ def _check_online_sync():
     return True
 
 
+def _check_task_params(task):
+    if not _ik_auto_complete:
+        return False
+
+    params = task.get_parameters()
+    ik_content = inspect.getsource(ik)
+    regex_str = f"def {task.name}" + "\(([^\)]+)"
+    result = re.search(regex_str, ik_content)
+
+    if result is None:
+        return len(params) == 0
+    else:
+        params_dict_str = result.group(1)
+        params_groups = params_dict_str.split(", ")
+        param_keys = []
+
+        for group in params_groups:
+            result = re.search("(.+):", group)
+            if result is not None:
+                param_keys.append(result.group(1))
+
+        for key in param_keys:
+            if key not in params.keys():
+                return False
+
+        return True
+
+
 def _has_local_cache():
     filename = "autocomplete_local.cache"
     cache_file_path1 = os.path.join(os.path.dirname(__file__), filename)
@@ -188,6 +217,9 @@ def make_local_plugins(force=False):
 
 
 def update_local_plugin(task):
+    if _check_local_sync() and _check_task_params(task):
+        return
+
     cache_name = "autocomplete_local.cache"
 
     try:
