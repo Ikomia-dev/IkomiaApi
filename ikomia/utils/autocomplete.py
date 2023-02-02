@@ -48,22 +48,16 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
 
         parameters = task.get_parameters()
 
-    # Class definition
-    class_name = re.sub(forbid_char, "", task_name)
-    f.write(f"class {class_name}:\n")
+    # Function definition
+    function_name = re.sub(forbid_char, "", task_name)
 
     if not local or len(parameters) == 0:
-        # Ctor
-        f.write("    def __init__(self):\n")
-        f.write("        self.params = {}\n\n")
-        # __call__ method
-        f.write("    def __call__(self):\n")
-        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{class_name}\", None)\n")
-        f.write("        return algo\n\n")
+        f.write(f"def {function_name}():\n")
+        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
+        f.write(f"    return algo\n\n")
     else:
-        # Ctor
-        ctor_params = "self"
-        params_dict = "        self.params = {\n"
+        function_params = ""
+        params_dict = "{\n"
 
         for param in parameters:
             if keyword.iskeyword(param):
@@ -72,18 +66,14 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
                 param_var = param
 
             param_var = re.sub(forbid_char, "", param_var)
-            ctor_params += f", {param_var}: str=\"{str(parameters[param])}\""
-            params_dict += f"            \"{param}\": {param_var},\n"
+            function_params += f"{param_var}: str=\"{str(parameters[param])}\", "
+            params_dict += f"        \"{param}\": {param_var},\n"
 
-        params_dict += "        }\n\n"
-        f.write(f"    def __init__({ctor_params}):\n")
-        f.write(params_dict)
-
-        # __call__ method
-        f.write("    def __call__(self):\n")
-        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{class_name}\", None)\n")
-        f.write("        algo.set_parameters(self.params)\n")
-        f.write("        return algo\n\n")
+        params_dict += "    }"
+        f.write(f"def {function_name}({function_params}):\n")
+        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
+        f.write(f"    algo.set_parameters({params_dict})\n")
+        f.write(f"    return algo\n\n")
 
 
 def _generate_python_file(folder):
@@ -108,7 +98,7 @@ def _generate_python_file(folder):
         importlib.reload(ikomia.utils.ik)
 
 
-def _check_sync():
+def _check_local_sync():
     if not _ik_auto_complete:
         return False
 
@@ -117,6 +107,24 @@ def _check_sync():
 
     for name in names:
         if name not in ik_names:
+            return False
+
+    return True
+
+
+def _check_online_sync():
+    if not _ik_auto_complete:
+        return False
+
+    ik_names = dir(ik)
+
+    try:
+        algos = ikomia.ik_registry.get_online_algorithms()
+    except:
+        return True
+
+    for algo in algos:
+        if algo["name"] not in ik_names:
             return False
 
     return True
@@ -140,7 +148,7 @@ def _has_online_cache():
 
 def make_local_plugins(force=False):
     if not force:
-        if _check_sync() and _has_local_cache():
+        if _check_local_sync() and _has_local_cache():
             return
 
     cache_name = "autocomplete_local.cache"
@@ -205,6 +213,9 @@ def update_local_plugin(task):
 
 
 def make_online_plugins(force=False):
+    if _check_online_sync():
+        return
+
     if not force and _has_online_cache():
         return
 
@@ -223,8 +234,11 @@ def make_online_plugins(force=False):
         except Exception:
             logger.warning("Ikomia auto-completion is disable")
 
-    online_algos = ikomia.ik_registry.get_online_algorithms()
-    if online_algos is None:
+    try:
+        online_algos = ikomia.ik_registry.get_online_algorithms()
+    except Exception as e:
+        logger.debug("Auto-completion: skip generating online cache (see error message below).")
+        logger.debug(e)
         return
 
     local_names = ikomia.ik_registry.get_algorithms()
