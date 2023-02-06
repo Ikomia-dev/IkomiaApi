@@ -66,8 +66,11 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
             else:
                 param_var = param
 
+            if function_params:
+                function_params += ", "
+
             param_var = re.sub(forbid_char, "", param_var)
-            function_params += f"{param_var}: str=\"{str(parameters[param])}\", "
+            function_params += f"{param_var}: str=\"{str(parameters[param])}\""
             params_dict += f"        \"{param}\": {param_var},\n"
 
         params_dict += "    }"
@@ -216,32 +219,40 @@ def make_local_plugins(force=False):
         logger.debug(e)
 
 
-def update_local_plugin(task):
-    if _check_local_sync() and _check_task_params(task):
+def update_local_plugin(name):
+    task = ikomia.ik_registry.create_instance(name)
+    if task is None:
         return
 
-    cache_name = "autocomplete_local.cache"
+    info = ikomia.ik_registry.get_algorithm_info(name)
+    if info.internal:
+        return
+    elif not _check_task_params(task):
+        # TODO change only function definition instead of rebuild all
+        make_local_plugins(force=True)
+    elif not _check_local_sync():
+        cache_name = "autocomplete_local.cache"
 
-    try:
-        folder = os.path.dirname(__file__)
-        cache_file_path1 = os.path.join(folder, cache_name)
-        f = open(cache_file_path1, "a+")
-    except Exception:
         try:
-            folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
-            cache_file_path2 = os.path.join(local_site, cache_name)
-            f = open(cache_file_path2, "a+")
+            folder = os.path.dirname(__file__)
+            cache_file_path1 = os.path.join(folder, cache_name)
+            f = open(cache_file_path1, "a+")
         except Exception:
-            logger.warning("Ikomia auto-completion is disable: no update.")
+            try:
+                folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
+                cache_file_path2 = os.path.join(local_site, cache_name)
+                f = open(cache_file_path2, "a+")
+            except Exception:
+                logger.warning("Ikomia auto-completion is disable: no update.")
 
-    try:
-        _write_auto_complete(f, task=task, local=True)
-        f.close()
-        _generate_python_file(folder)
-        logger.info("Ikomia auto-completion updated for installed plugin.")
-    except Exception as e:
-        logger.info("Ikomia auto-completion cannot be updated.")
-        logger.debug(e)
+        try:
+            _write_auto_complete(f, task=task, local=True)
+            f.close()
+            _generate_python_file(folder)
+            logger.info("Ikomia auto-completion updated for installed plugin.")
+        except Exception as e:
+            logger.info("Ikomia auto-completion cannot be updated.")
+            logger.debug(e)
 
 
 def make_online_plugins(force=False):
@@ -250,6 +261,9 @@ def make_online_plugins(force=False):
 
     if not force and _has_online_cache():
         return
+
+    if not ikomia.ik_registry.is_all_loaded():
+        ikomia.ik_registry.load_algorithms()
 
     cache_name = "autocomplete_online.cache"
 
