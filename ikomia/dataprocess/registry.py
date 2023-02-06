@@ -101,9 +101,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 except Exception as e:
                     logger.error(e)
 
-        if algo is not None and config.main_cfg["registry"]["auto_completion"]:
-            autocomplete.update_local_plugin(algo)
-
         return algo
 
     def update_algorithms(self):
@@ -182,25 +179,34 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         self._check_installed_modules(plugin_dir)
 
         # Load it
-        if language == utils.ApiLanguage.PYTHON:
-            self.load_python_algorithm(plugin_dir)
-        else:
-            self.load_cpp_algorithm(plugin_dir)
-            if update:
-                logger.warning(f"C++ algorithm {plugin['name']} can't be reloaded at runtime. "
-                               f"It will be updated on next start.")
+        self._load_algorithm(name, language)
+        if language == utils.ApiLanguage.CPP and update:
+            logger.warning(f"C++ algorithm {plugin['name']} can't be reloaded at runtime. "
+                           f"It will be updated on next start.")
 
-    def _load_algorithm(self, name):
-        # C++ or Python algorithm?
-        cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
-        python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
+    def _load_algorithm(self, name, language=None):
+        if language is None:
+            # C++ or Python algorithm?
+            cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
+            python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
 
-        if os.path.isdir(cpp_algo_dir):
-            self.load_cpp_algorithm(cpp_algo_dir)
-        elif os.path.isdir(python_algo_dir):
+            if os.path.isdir(cpp_algo_dir):
+                self.load_cpp_algorithm(cpp_algo_dir)
+            elif os.path.isdir(python_algo_dir):
+                self.load_python_algorithm(python_algo_dir)
+            else:
+                raise RuntimeError(f"Algorithm {name} is not installed.")
+        elif language == utils.ApiLanguage.PYTHON:
+            python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
             self.load_python_algorithm(python_algo_dir)
+        elif language == utils.ApiLanguage.CPP:
+            cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
+            self.load_cpp_algorithm(plugin_dir)
         else:
-            raise RuntimeError(f"Algorithm {name} is not installed.")
+            raise RuntimeError(f"Unsupported language for algorithm {name}.")
+
+        if config.main_cfg["registry"]["auto_completion"]:
+            autocomplete.update_local_plugin(name)
 
     def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
