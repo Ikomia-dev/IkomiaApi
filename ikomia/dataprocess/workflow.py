@@ -432,7 +432,7 @@ class Workflow(dataprocess.CWorkflow):
 
         return tasks
 
-    def add_task(self, name, param=None):
+    def add_task(self, task=None, name:str="", params:dict={}):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB.
@@ -444,11 +444,18 @@ class Workflow(dataprocess.CWorkflow):
         Returns:
             pair (tuple): 1- unique task identifier 2- task object
         """
-        algo = self.registry.create_algorithm(name, param)
-        if algo is None:
-            raise RuntimeError(f"Algorithm {name} can't be created.")
+        if task is None and not name:
+            raise RuntimeError("Unable to add task to workflow: parameters must include either a valid name or task instance.")
 
-        return super().add_task(algo), algo
+        if task is None:
+            task = self.registry.create_algorithm(name, None)
+            if task is None:
+                raise RuntimeError(f"Algorithm {name} can't be created.")
+
+        if len(params) > 0:
+            task.set_parameters(params)
+
+        return super().add_task(task), task
 
     def find_task(self, name: str, index=-1):
         """
@@ -547,7 +554,11 @@ class Workflow(dataprocess.CWorkflow):
     def prepare_runtime_env(self, path):
         tasks = self.get_required_tasks(path)
         available_tasks = ikomia.ik_registry.get_algorithms()
-        online_tasks = ikomia.ik_registry.get_online_algorithms()
+
+        try:
+            online_tasks = ikomia.ik_registry.get_online_algorithms()
+        except:
+            online_tasks = None
 
         for t in tasks:
             if t not in available_tasks:
