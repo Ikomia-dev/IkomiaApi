@@ -23,6 +23,7 @@ CClassificationTask
         ~CClassificationTask.is_whole_image_classification
         ~CClassificationTask.read_class_names
         ~CClassificationTask.set_colors
+        ~CClassificationTask.set_names
         ~CClassificationTask.set_whole_image_results
         ~CClassificationTask.emit_add_sub_progress_steps
         ~CClassificationTask.emit_graphics_context_changed
@@ -92,6 +93,7 @@ CClassificationTask
     .. automethod:: is_whole_image_classification
     .. automethod:: read_class_names
     .. automethod:: set_colors
+    .. automethod:: set_names
     .. automethod:: set_whole_image_results
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed

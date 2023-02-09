@@ -44,6 +44,7 @@
         CClassificationTask
         CDnnTrainTask
         CIkomiaRegistry
+        CObjectDetectionTask
         CTaskInfo
         CVideoTask
         CVideoOFTask
