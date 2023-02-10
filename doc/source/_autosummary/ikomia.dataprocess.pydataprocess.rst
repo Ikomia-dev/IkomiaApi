@@ -45,6 +45,7 @@
         CDnnTrainTask
         CIkomiaRegistry
         CObjectDetectionTask
+        CSemanticSegmentationTask
         CTaskInfo
         CVideoTask
         CVideoOFTask
