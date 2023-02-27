@@ -24,6 +24,9 @@
         CImageIO
         CInstanceSegmentation
         CInstanceSegmentationIO
+        CObjectKeypoints
+        CKeypointLink
+        CKeypointsIO
         NumericOutputType
         CNumericIO
         CObjectMeasure
