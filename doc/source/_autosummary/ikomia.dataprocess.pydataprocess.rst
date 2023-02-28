@@ -48,6 +48,7 @@
         CDnnTrainTask
         CIkomiaRegistry
         CInstanceSegmentationTask
+        CKeypointDetectionTask
         CObjectDetectionTask
         CSemanticSegmentationTask
         CTaskInfo
