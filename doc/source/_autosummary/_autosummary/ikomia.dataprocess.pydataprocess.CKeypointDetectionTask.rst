@@ -19,6 +19,7 @@ CKeypointDetectionTask
         ~CKeypointDetectionTask.get_keypoint_names
         ~CKeypointDetectionTask.get_object_names
         ~CKeypointDetectionTask.get_results
+        ~CKeypointDetectionTask.get_visualization_image
         ~CKeypointDetectionTask.read_class_names
         ~CKeypointDetectionTask.set_keypoint_links
         ~CKeypointDetectionTask.set_keypoint_names
@@ -88,6 +89,7 @@ CKeypointDetectionTask
     .. automethod:: get_keypoint_names
     .. automethod:: get_object_names
     .. automethod:: get_results
+    .. automethod:: get_visualization_image
     .. automethod:: read_class_names
     .. automethod:: set_keypoint_links
     .. automethod:: set_keypoint_names

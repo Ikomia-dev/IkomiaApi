@@ -16,7 +16,7 @@ CSemanticSegmentationTask
         ~CSemanticSegmentationTask.__init__
         ~CSemanticSegmentationTask.get_names
         ~CSemanticSegmentationTask.get_results
-        ~CSemanticSegmentationTask.get_color_mask_image
+        ~CSemanticSegmentationTask.get_visualization_image
         ~CSemanticSegmentationTask.read_class_names
         ~CSemanticSegmentationTask.set_colors
         ~CSemanticSegmentationTask.set_names
@@ -82,7 +82,7 @@ CSemanticSegmentationTask
     .. automethod:: __init__
     .. automethod:: get_names
     .. automethod:: get_results
-    .. automethod:: get_color_mask_image
+    .. automethod:: get_visualization_image
     .. automethod:: read_class_names
     .. automethod:: set_colors
     .. automethod:: set_names
