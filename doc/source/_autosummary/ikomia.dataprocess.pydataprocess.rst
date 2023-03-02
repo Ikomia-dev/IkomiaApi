@@ -34,6 +34,8 @@
         CObjectDetectionIO
         CPathIO
         CSemanticSegmentationIO
+        CTextField
+        CTextIO
         CVideoIO
         CWidgetOutput
         PlotType
