@@ -781,7 +781,8 @@ def test_cpp_semantic_segmentation_io():
     # Set classes and colors
     classes = ["sky", "mountain"]
     colors = [[255, 0, 100], [0, 100, 255]]
-    io.set_class_names(classes, colors)
+    io.set_class_names(classes)
+    io.set_class_colors(colors)
     assert io.get_class_names() == classes
     assert io.get_colors() == colors
 
@@ -797,6 +798,54 @@ def test_cpp_semantic_segmentation_io():
     assert loaded_io.is_data_available()
     os.remove(path)
     loaded_io = dataprocess.CSemanticSegmentationIO()
+    loaded_io.from_json(json_data)
+    assert loaded_io.is_data_available()
+
+    # Clear
+    loaded_io.clear_data()
+    assert not loaded_io.is_data_available()
+
+
+def test_cpp_text_io():
+    logger.info("===== Test: CTextIO =====")
+    io = dataprocess.CTextIO()
+    assert not io.is_data_available()
+
+    # Add objects
+    io.add_text_field(0, "Name", "Mickael Jordan", 0.96, 0, 0, 65, 56, [255, 0, 100, 255])
+    polygon = [core.CPointF(0, 0), core.CPointF(30, 30), core.CPointF(100, 30), core.CPointF(130, 100)]
+    io.add_text_field(1, "Name", "Magic Johnson", 0.99, polygon, [0, 100, 100, 255])
+    assert io.is_data_available()
+    assert io.get_text_field_count() == 2
+    assert len(io.get_text_fields()) == 2
+    obj = io.get_text_field(1)
+    assert type(obj) == dataprocess.CTextField
+    assert obj.id == 1
+    assert obj.label == "Name"
+    assert obj.text == "Magic Johnson"
+    assert obj.confidence == 0.99
+    assert len(obj.polygon) == len(polygon)
+    assert obj.color == [0, 100, 100, 255]
+    graphics_io = io.get_graphics_io()
+    assert type(graphics_io) == dataprocess.CGraphicsOutput
+
+    # Export
+    json_data = io.to_json()
+    logger.info(f"Detected text fields: {json_data}")
+    path = os.path.join(tests.get_test_image_directory(), "test_text_field_detection.json")
+    io.save(path)
+    assert os.path.isfile(path)
+
+    # Init
+    io.init("MMOcr", 0)
+    assert not io.is_data_available()
+
+    # Import
+    loaded_io = dataprocess.CTextIO()
+    loaded_io.load(path)
+    assert loaded_io.is_data_available()
+    os.remove(path)
+    loaded_io = dataprocess.CTextIO()
     loaded_io.from_json(json_data)
     assert loaded_io.is_data_available()
 
@@ -843,3 +892,5 @@ if __name__ == "__main__":
         test_cpp_instance_segmentation_io()
     if 'all' in running_tests or 'cpp_semantic_segmentation_io' in running_tests:
         test_cpp_semantic_segmentation_io()
+    if 'all' in running_tests or 'cpp_text_io' in running_tests:
+        test_cpp_text_io()
