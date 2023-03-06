@@ -211,7 +211,7 @@ class Workflow(dataprocess.CWorkflow):
         if isinstance(outputs, list):
             images = []
             for output in outputs:
-                images.append(output.get_tmage())
+                images.append(output.get_image())
             return images
         else:
             return outputs.get_image()
