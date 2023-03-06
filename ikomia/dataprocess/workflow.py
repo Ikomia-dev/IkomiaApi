@@ -20,7 +20,6 @@ Ikomia algorithms or any of those available in Ikomia HUB.
 import os
 import logging
 import enum
-
 import ikomia
 from ikomia import utils, core, dataprocess, dataio
 from ikomia.core import config, task
@@ -42,7 +41,7 @@ class Workflow(dataprocess.CWorkflow):
         SINGLE = 1
         DIRECTORY = 2
 
-    def __init__(self, name="Untitled", registry=None):
+    def __init__(self, name="Untitled", registry=ikomia.ik_registry):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
