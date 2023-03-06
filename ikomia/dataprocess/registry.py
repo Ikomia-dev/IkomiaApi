@@ -54,8 +54,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
              list of dict: list of algorithms information
         """
         s = ikomia.ik_api_session
-        if s is None or s.token is None:
-            raise ConnectionError("Failed to get online algorithms from Ikomia HUB, authentication required.")
+        if s is None:
+            raise ConnectionError("Failed to get online algorithms from Ikomia HUB.")
 
         url = config.main_cfg["hub"]["url"] + "/api/plugin/"
         r = s.session.get(url)
@@ -230,12 +230,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                         f"while the current version is {utils.getApiVersion()}."
             raise ValueError(error_msg)
 
-        s = ikomia.ik_api_session
-        if s.token is None:
-            error_msg = "Online algorithms retrieval failed, authentication required."
-            raise ConnectionRefusedError(error_msg)
-
         # Get plugin package url
+        s = ikomia.ik_api_session
         url = config.main_cfg["hub"]["url"] + "/api/plugin/" + str(plugin_info["id"]) + "/package/"
         r = s.session.get(url)
         r.raise_for_status()
@@ -245,7 +241,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         # Download package
         url = config.main_cfg["hub"]["url"] + package_url
         file_path = os.path.join(self.get_plugins_directory(), "Transfer", os.path.basename(package_url))
-        utils.http.download_file(url, file_path, public=False)
+        utils.http.download_file(url, file_path, public=True)
 
         # Unzip
         language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"

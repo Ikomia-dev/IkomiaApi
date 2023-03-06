@@ -56,7 +56,7 @@ def download_file(url, path, public=True):
     else:
         s = ikomia.ik_api_session
         if s.token is None:
-            logger.error("Download failed, authentication required.")
+            logger.error("Download private file failed, authentication required.")
             return
 
         with s.session.get(url, stream=True) as r:
