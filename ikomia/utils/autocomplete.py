@@ -106,32 +106,23 @@ def _check_local_sync():
     if not _ik_auto_complete:
         return False
 
-    ik_names = dir(ik)
-    names = ikomia.ik_registry.get_algorithms()
-
-    for name in names:
-        if name not in ik_names:
-            return False
-
-    return True
+    ik_names_set = set(ik.local_names)
+    local_names_set = set(ikomia.ik_registry.get_algorithms())
+    return ik_names_set == local_names_set
 
 
 def _check_online_sync():
     if not _ik_auto_complete:
         return False
 
-    ik_names = dir(ik)
-
     try:
         algos = ikomia.ik_registry.get_online_algorithms()
     except:
         return True
 
-    for algo in algos:
-        if algo["name"] not in ik_names:
-            return False
-
-    return True
+    ik_names_set = set(ik.online_names)
+    online_names_set = {algo["name"] for algo in algos}
+    return ik_names_set == online_names_set
 
 
 def _check_task_params(task):
@@ -203,6 +194,14 @@ def make_local_plugins(force=False):
             return
 
     names = ikomia.ik_registry.get_algorithms()
+
+    # Write local names list declaration
+    f.write("local_names = [\n")
+    for name in names:
+        f.write(f"    '{name}',\n")
+    f.write(f"]\n\n")
+
+    # Write instanciation functions
     for name in names:
         try:
             _write_auto_complete(f, task_name=name, local=True)
@@ -228,8 +227,10 @@ def update_local_plugin(name):
     if info.internal:
         return
     elif not _check_task_params(task):
-        # TODO change only function definition instead of rebuild all
+        # TODO change only function definition instead of rebuild all?
         make_local_plugins(force=True)
+        # TODO remove function definition instead of rebuild all?
+        make_online_plugins(force=True)
     elif not _check_local_sync():
         cache_name = "autocomplete_local.cache"
 
@@ -247,6 +248,9 @@ def update_local_plugin(name):
 
         try:
             _write_auto_complete(f, task=task, local=True)
+            ik.local_names.append(task.name)
+            # TODO remove function definition instead of rebuild all?
+            make_online_plugins(force=True)
             f.close()
             _generate_python_file(folder)
             logger.info("Ikomia auto-completion updated for installed plugin.")
@@ -256,10 +260,7 @@ def update_local_plugin(name):
 
 
 def make_online_plugins(force=False):
-    if _check_online_sync():
-        return
-
-    if not force and _has_online_cache():
+    if not force and _has_online_cache() and _check_online_sync():
         return
 
     if not ikomia.ik_registry.is_all_loaded():
@@ -287,6 +288,13 @@ def make_online_plugins(force=False):
         logger.debug(e)
         return
 
+    # Write online names list declaration
+    f.write("online_names = [\n")
+    for algo in online_algos:
+        f.write(f"    '{algo['name']}',\n")
+    f.write(f"]\n\n")
+
+    # Write instanciation functions
     local_names = ikomia.ik_registry.get_algorithms()
     for algo in online_algos:
         if algo["name"] not in local_names:
