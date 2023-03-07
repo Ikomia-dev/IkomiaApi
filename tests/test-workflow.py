@@ -244,12 +244,12 @@ def test_run_image_common():
 
 def test_run_single_video():
     logger.info("===== Test::execute workflow on single video =====")
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestVideo.json")
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
 
     logger.info("----- Run on video from file path")
-    video_path = tests.get_test_video_directory() + "/basketball.mp4"
+    video_path = os.path.join(tests.get_test_video_directory(), "basketball.mp4")
     wf.run_on(path=video_path)
 
     logger.info("----- Run on video from URL")
@@ -259,7 +259,7 @@ def test_run_single_video():
 
 def test_run_video_folder():
     logger.info("===== Test::execute workflow on folder =====")
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestVideo.json")
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
 
@@ -297,25 +297,25 @@ def test_yolov5_train(wgisd_dataset_dir):
 def test_yolo_train(wgisd_dataset_dir):
     logger.info("===== Test::launch Darknet YOLO training =====")
     wf = workflow.create("YoloTrain")
-    wgisd_id, wgisd = wf.add_task(ik.dataset_wgisd)
+    wgisd = wf.add_task(ik.dataset_wgisd)
     wgisd_params = wgisd.get_parameters()
     wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
     wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
     wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
     wgisd.set_parameters(wgisd_params)
 
-    yolo_id, yolo = wf.add_task(ik.train_yolo)
+    yolo = wf.add_task(ik.train_yolo)
     yolo_params = yolo.get_parameters()
     yolo_params["batchSize"] = 16
     task.set_parameters(yolo, yolo_params)
-    wf.connect_tasks(wgisd_id, yolo_id)
+    wf.connect_tasks(wgisd, yolo)
 
     wf.run()
 
 
 def test_export_graphviz():
     logger.info("===== Test::export workflow as Graphviz =====")
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
     dot_file_name = wf.name + ".dot"
     path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
@@ -327,39 +327,39 @@ def test_graph_build():
     wf = workflow.create("FromScratch")
 
     # branch with auto-connection
-    box_filter_id, box_filter = wf.add_task(ik.ocv_box_filter)
-    wf.connect_tasks(wf.getRootID(), box_filter_id)
+    box_filter = wf.add_task(ik.ocv_box_filter())
+    wf.connect_tasks(wf.root, box_filter)
 
-    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
-    wf.connect_tasks(box_filter_id, clahe_id)
+    clahe = wf.add_task(ik.ocv_clahe())
+    wf.connect_tasks(box_filter, clahe)
 
-    dtfilterenhance_id, dtfilterenhance = wf.add_task(ik.ocv_dt_filter_enhance)
-    wf.connect_tasks(clahe_id, dtfilterenhance_id)
+    dtfilterenhance = wf.add_task(ik.ocv_dt_filter_enhance())
+    wf.connect_tasks(clahe, dtfilterenhance)
 
-    lsc_id, lsc = wf.add_task(ik.ocv_superpixel_lsc)
-    wf.connect_tasks(dtfilterenhance_id, lsc_id)
+    lsc = wf.add_task(ik.ocv_superpixel_lsc())
+    wf.connect_tasks(dtfilterenhance, lsc)
 
     # branch with manual connection
-    bilateral_id, bilateral = wf.add_task(ik.ocv_bilateral_filter)
-    wf.connect_tasks(wf.getRootID(), bilateral_id, [(0, 0)])
+    bilateral = wf.add_task(ik.ocv_bilateral_filter())
+    wf.connect_tasks(wf.root, bilateral, [(0, 0)])
 
-    equalize_id, equalize = wf.add_task(ik.ocv_equalize_histogram)
-    wf.connect_tasks(bilateral_id, equalize_id, [(0, 0)])
+    equalize = wf.add_task(ik.ocv_equalize_histogram())
+    wf.connect_tasks(bilateral, equalize, [(0, 0)])
 
-    dtfilter_id, dtfilter = wf.add_task(ik.ocv_dt_filter)
-    wf.connect_tasks(equalize_id, dtfilter_id, [(0, 0), (0, 1)])
+    dtfilter = wf.add_task(ik.ocv_dt_filter())
+    wf.connect_tasks(equalize, dtfilter, [(0, 0), (0, 1)])
 
-    convert_id, convert = wf.add_task(ik.ocv_convert_to)
-    wf.connect_tasks(dtfilter_id, convert_id, [(0, 0)])
+    convert = wf.add_task(ik.ocv_convert_to())
+    wf.connect_tasks(dtfilter, convert, [(0, 0)])
 
-    seeds_id, seeds = wf.add_task(ik.ocv_superpixel_seeds)
-    wf.connect_tasks(convert_id, seeds_id, [(0, 0)])
+    seeds = wf.add_task(ik.ocv_superpixel_seeds())
+    wf.connect_tasks(convert, seeds, [(0, 0)])
 
     # visualization
     displayIO.display(wf, "Manually built workflow")
 
     # run
-    img_path = tests.get_test_image_directory() + "/Lena.png"
+    img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf.set_image_input(path=img_path)
     wf.run()
 
@@ -371,8 +371,8 @@ def test_graph_build():
 
 def test_time_metrics():
     logger.info("===== Test::compute workflow time metrics =====")
-    img_path = tests.get_test_image_directory() + "/Lena.png"
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
     wf.set_image_input(path=img_path)
     wf.run()
@@ -390,16 +390,17 @@ def test_time_metrics():
 
 def test_get_outputs(wgisd_dataset_dir):
     logger.info("===== Test::get workflow outputs of various data types =====")
-    img_path = tests.get_test_image_directory() + "/Lena.png"
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTestOutput.json"
+    img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestOutput.json")
     wf = workflow.load(wf_path)
 
     # set WGISD_Dataset parameters
-    wgisd_task = wf.find_task(ik.dataset_wgisd, 0)[1]
-    wgisd_params = wgisd_task.get_parameters()
-    wgisd_params[ik.dataset_wgisd_param.data_folder_path] = wgisd_dataset_dir + "/data"
-    wgisd_params[ik.dataset_wgisd_param.class_file_path] = wgisd_dataset_dir + "/classes.txt"
-    wgisd_params[ik.dataset_wgisd_param.seg_mask_mode] = "None"
+    wgisd_task = wf.find_task(ik.dataset_wgisd.name(), 0)
+    wgisd_params = {
+        ik.dataset_wgisd.data_folder_path: os.path.join(wgisd_dataset_dir, "data"),
+        ik.dataset_wgisd.class_file_path: os.path.join(wgisd_dataset_dir, "classes.txt"),
+        ik.dataset_wgisd.seg_mask_mode: "None",
+    }
     wgisd_task.set_parameters(wgisd_params)
 
     # run workflow
@@ -407,32 +408,32 @@ def test_get_outputs(wgisd_dataset_dir):
     wf.run()
 
     logger.info("----- Get MobileNet SSD outputs: image, graphics and blob measure")
-    img_out = wf.get_image_output(task_name=ik.infer_mobilenet_ssd)
+    img_out = wf.get_image_output(task_name=ik.infer_mobilenet_ssd.name())
     assert (img_out is not None)
     displayIO.display(img_out, "MobileNet SSD")
-    graphics_out = wf.get_graphics_output(task_name=ik.infer_mobilenet_ssd)
+    graphics_out = wf.get_graphics_output(task_name=ik.infer_mobilenet_ssd.name())
     assert (graphics_out is not None)
     displayIO.display(graphics_out, "MobileNet SSD")
-    blob_out = wf.get_blob_measure_output(task_name=ik.infer_mobilenet_ssd)
+    blob_out = wf.get_blob_measure_output(task_name=ik.infer_mobilenet_ssd.name())
     assert (blob_out is not None)
     displayIO.display(blob_out, "MobileNet SSD")
 
     logger.info("----- Get Split Operator outputs: 3 images")
-    img_out = wf.get_image_output(task_name=ik.ocv_split)
+    img_out = wf.get_image_output(task_name=ik.ocv_split.name())
     assert (img_out is not None)
     assert (len(img_out) == 3)
-    img_out = wf.get_image_output(task_name=ik.ocv_split, index=2)
+    img_out = wf.get_image_output(task_name=ik.ocv_split.name(), index=2)
     assert (img_out is not None)
     displayIO.display(img_out, "Blue channel")
 
     logger.info("----- Get CalcHist outputs: numeric")
-    hist_task_id = wf.find_task(ik.ocv_calc_hist, 0)[0]
-    numeric_out = wf.get_numeric_output(task_id=hist_task_id)
+    hist_task = wf.find_task(ik.ocv_calc_hist.name(), 0)
+    numeric_out = wf.get_numeric_output(task_id=wf.get_task_id(hist_task))
     assert (numeric_out is not None)
     displayIO.display(numeric_out, "CalcHist")
 
     logger.info("----- Get WGISD_Dataset outputs: dataset")
-    dataset_out = wf.get_dataset_output(task_name=ik.dataset_wgisd)
+    dataset_out = wf.get_dataset_output(task_name=ik.dataset_wgisd.name())
     assert (dataset_out is not None)
     assert (dataset_out.getCategoryCount() > 0)
     assert (len(dataset_out.getImagePaths()) > 0)
@@ -441,25 +442,25 @@ def test_get_outputs(wgisd_dataset_dir):
 def test_get_image_with_graphics():
     logger.info("===== Test::get image with graphics =====")
     # create workflow with MobileNet SSD task
-    img_path = tests.get_test_image_directory() + "/Lena.png"
+    img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf = workflow.create("ImageWithGraphics")
-    id1, t1 = wf.add_task(ik.infer_mobilenet_ssd)
-    wf.connect_tasks(wf.getRootID(), id1)
+    t1 = wf.add_task(ik.infer_mobilenet_ssd())
+    wf.connect_tasks(wf.root, t1)
     wf.run_on(path=img_path)
 
     logger.info("-----Get image from task id")
-    image1 = wf.get_image_with_graphics(task_id=id1, image_index=0, graphics_index=0)
+    image1 = wf.get_image_with_graphics(task_id=wf.get_task_id(t1), image_index=0, graphics_index=0)
     assert(image1 is not None)
     cv2.imshow("MobileNet SSD", image1)
     cv2.waitKey(0)
 
     # add second MobileNet SSD task
-    id2, t2 = wf.add_task(ik.infer_mobilenet_ssd)
-    wf.connect_tasks(wf.getRootID(), id2)
+    t2 = wf.add_task(ik.infer_mobilenet_ssd())
+    wf.connect_tasks(wf.root, t2)
     wf.run_on(path=img_path)
 
     logger.info("-----Get image from task name")
-    images = wf.get_image_with_graphics(task_name=ik.infer_mobilenet_ssd, image_index=0, graphics_index=0)
+    images = wf.get_image_with_graphics(task_name=ik.infer_mobilenet_ssd.name(), image_index=0, graphics_index=0)
     assert(len(images) == 2)
     cv2.imshow("MobileNet SSD #1", images[0])
     cv2.imshow("MobileNet SSD #2", images[1])
@@ -468,38 +469,38 @@ def test_get_image_with_graphics():
 
 def test_get_image():
     logger.info("===== Test::get image =====")
-    img_path = tests.get_test_image_directory() + "/Lena.png"
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
     wf.run_on(path=img_path)
 
-    image = wf.get_image(task_name=ik.ocv_box_filter)
+    image = wf.get_image(task_name=ik.ocv_box_filter.name())
     assert image.size != 0
-    clahe_id, clahe = wf.find_task(name=ik.ocv_clahe)
-    image = wf.get_image(task_id=clahe_id)
+    clahe = wf.find_task(name=ik.ocv_clahe.name())
+    image = wf.get_image(task_id=wf.get_task_id(clahe))
     assert image.size != 0
-    images = wf.get_image(task_name=ik.ocv_superpixel_lsc)
+    images = wf.get_image(task_name=ik.ocv_superpixel_lsc.name())
     assert(len(images) == 3)
-    image = wf.get_image(task_name=ik.ocv_superpixel_lsc, index=0)
+    image = wf.get_image(task_name=ik.ocv_superpixel_lsc.name(), index=0)
     assert image.size != 0
 
 
 def test_set_task_parameters():
     logger.info("===== Test::set parameters of specific tasks =====")
-    wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
 
-    bf_id, box_filter = wf.find_task(name=ik.ocv_box_filter, index=0)
+    box_filter = wf.find_task(name=ik.ocv_box_filter.name(), index=0)
     logger.info(box_filter.get_param_object())
-    wf.set_parameters({ik.ocv_box_filter_param.kSizeHeight: 11,
-                       ik.ocv_box_filter_param.kSizeWidth: 11}, task_name=ik.ocv_box_filter, index=0)
+    wf.set_parameters({ik.ocv_box_filter.kSizeHeight: "11", ik.ocv_box_filter.kSizeWidth: "11"},
+                      task_name=ik.ocv_box_filter.name(), index=0)
     params = box_filter.get_parameters()
-    assert (params["kSizeHeight"] == str(11) and params["kSizeWidth"] == str(11))
+    assert (params["kSizeHeight"] == "11" and params["kSizeWidth"] == "11")
 
-    bl_id, bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter, index=0)
+    bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter.name(), index=0)
     logger.info(bilateral_filter.get_param_object())
-    wf.set_parameters({ik.ocv_bilateral_filter_param.sigmaSpace: 31.0,
-                       ik.ocv_bilateral_filter_param.sigmaColor: 11.0}, task_id=bl_id)
+    wf.set_parameters({ik.ocv_bilateral_filter.sigmaSpace: "31.0", ik.ocv_bilateral_filter.sigmaColor: "11.0"},
+                      task_id=wf.get_task_id(bilateral_filter))
     params = bilateral_filter.get_parameters()
 
     assert (float(params["sigmaSpace"]) == 31.0 and float(params["sigmaColor"]) == 11.0)
@@ -509,15 +510,15 @@ def test_video_stream():
     cap = cv2.VideoCapture(0)
 
     wf = workflow.create("Video Processing")
-    clahe_id, clahe = wf.add_task(ik.ocv_clahe)
-    wf.connect_tasks(wf.getRootID(), clahe_id)
-    canny_id, canny = wf.add_task(ik.ocv_canny)
-    wf.connect_tasks(clahe_id, canny_id)
+    clahe = wf.add_task(ik.ocv_clahe())
+    wf.connect_tasks(wf.root, clahe)
+    canny = wf.add_task(ik.ocv_canny())
+    wf.connect_tasks(clahe, canny)
 
     while True:
         ret, img = cap.read()
         wf.run_on(array=img)
-        res_img = wf.get_image(canny_id, 0)
+        res_img = wf.get_image(wf.get_task_id(canny), 0)
         cv2.imshow("Result", res_img)
 
         if cv2.waitKey(1) == 27:
@@ -540,8 +541,6 @@ if __name__ == "__main__":
                         help="List of tests to execute (comma-separated string, default=all)")
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
-
-    ikomia.authenticate()
 
     if 'all' in running_tests or 'cpp_workflow' in running_tests:
         test_cpp_workflow()
