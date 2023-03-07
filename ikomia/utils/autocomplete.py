@@ -49,13 +49,15 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
 
         parameters = task.get_parameters()
 
-    # Function definition
-    function_name = re.sub(forbid_char, "", task_name)
+    # Class definition
+    class_name = re.sub(forbid_char, "", task_name)
+    f.write(f"class {class_name}:\n")
 
     if not local or len(parameters) == 0:
-        f.write(f"def {function_name}():\n")
-        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
-        f.write(f"    return algo\n\n")
+        # __new__() return task object instance
+        f.write("    def __new__(cls):\n")
+        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+        f.write(f"        return algo\n\n")
     else:
         function_params = ""
         params_dict = "{\n"
@@ -69,15 +71,24 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
             if function_params:
                 function_params += ", "
 
+            # Compute _new_() parameters
             param_var = re.sub(forbid_char, "", param_var)
             function_params += f"{param_var}: str=\"{str(parameters[param])}\""
-            params_dict += f"        \"{param}\": {param_var},\n"
+            # Compute parameters dict
+            params_dict += f"            \"{param}\": {param_var},\n"
+            # Static class variable for names
+            f.write(f"    {param_var} = \"{param_var}\"\n")
 
-        params_dict += "    }"
-        f.write(f"def {function_name}({function_params}):\n")
-        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
-        f.write(f"    algo.set_parameters({params_dict})\n")
-        f.write(f"    return algo\n\n")
+        # __new__() return task object instance
+        params_dict += "        }"
+        f.write(f"\n    def __new__(cls, {function_params}):\n")
+        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+        f.write(f"        algo.set_parameters({params_dict})\n")
+        f.write(f"        return algo\n\n")
+
+        # name() return task name
+        f.write("    def name():\n")
+        f.write(f"        return \"{task_name}\"\n\n")
 
 
 def _generate_python_file(folder):
