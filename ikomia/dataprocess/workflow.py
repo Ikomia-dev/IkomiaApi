@@ -53,7 +53,9 @@ class Workflow(dataprocess.CWorkflow):
             dataprocess.CWorkflow.__init__(self, name, registry)
 
         self.registry = registry
+        self.task_to_id = {}
         self.output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
+        self.root = self.get_task(self.get_root_id())
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
         """
@@ -150,13 +152,13 @@ class Workflow(dataprocess.CWorkflow):
                 return
 
             if not isinstance(wf_task, list):
-                wf_task[1].set_parameters(params)
+                wf_task.set_parameters(params)
             else:
                 if index == -1:
                     for t in wf_task:
-                        t[1].set_parameters(params)
+                        t.set_parameters(params)
                 elif 0 <= index < len(wf_task):
-                    wf_task[index][1].set_parameters(params)
+                    wf_task[index].set_parameters(params)
 
     def get_time_metrics(self):
         """
@@ -417,31 +419,44 @@ class Workflow(dataprocess.CWorkflow):
 
     def get_tasks(self):
         """
-        Get unique identifier and name for all tasks composing the workflow.
+        Get all tasks composing the workflow.
 
         Returns:
-             list of tuple (id (int), name (str)
+             list of :py:class:`~ikomia.core.pycore.CWorkflowTask` based object
         """
         tasks = []
         ids = self.get_task_ids()
         for task_id in ids:
             t = self.get_task(task_id)
             if t is not None:
-                tasks.append((task_id, t.name))
+                tasks.append(t)
 
         return tasks
+
+    def get_task_id(self, task):
+        """
+        Get task unique identifier from the task instance/
+
+        Args:
+            task (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): task instance
+
+        Returns:
+            int: task unique identifier
+        """
+        return self.task_to_id[task.uuid]
 
     def add_task(self, task=None, name:str="", params:dict={}):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
-        firstly downloaded and installed from Ikomia HUB.
+        firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
+        :py:meth:`get_task_id`.
 
         Args:
             name (str): algorithm unique name
-            param (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` or derived): algorithm parameters
+            param (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object): algorithm parameters
 
         Returns:
-            pair (tuple): 1- unique task identifier 2- task object
+            :py:class:`~ikomia.core.pycore.CWorkflowTask` based object: task instance
         """
         if task is None and not name:
             raise RuntimeError("Unable to add task to workflow: parameters must include either a valid name or task instance.")
@@ -454,7 +469,29 @@ class Workflow(dataprocess.CWorkflow):
         if len(params) > 0:
             task.set_parameters(params)
 
-        return super().add_task(task), task
+        task_id = super().add_task(task)
+        self.task_to_id[task.uuid] = task_id
+        return task
+
+    def remove_task(self, task="None", name: str="", index: int=0):
+        """
+        Remove task from workflow specified by task instance or name (with corresponding index).
+
+        Args:
+            task (:py:class:`~ikomia.core.pycore.CWorkflowTask`): task object instance
+            name (str): algorithm name
+            index (int): zero-based index of the wanted task.
+        """
+        if task is None and not name:
+            raise RuntimeError("Unable to remove task: parameters must include either a valid name or task instance.")
+
+        if task is None:
+            task = self.find_task(name, index)
+            if task is None:
+                raise RuntimeError(f"Algorithm {name} can't be found.")
+
+        super().delete_task(self.task_to_id[task.uuid])
+        del self.task_to_id[task.uuid]
 
     def find_task(self, name: str, index=-1):
         """
@@ -465,7 +502,8 @@ class Workflow(dataprocess.CWorkflow):
              index (int): zero-based index of the wanted task. If -1, the function returns all candidates.
 
         Returns:
-            list of pairs (tuple): 1- task identifier 2- task object instance
+            list of :py:class:`~ikomia.core.pycore.CWorkflowTask` based objects: if index == -1
+            :py:class:`~ikomia.core.pycore.CWorkflowTask` based object : if index != -1
         """
         tasks = []
         ids = self.get_task_ids()
@@ -473,12 +511,10 @@ class Workflow(dataprocess.CWorkflow):
         for task_id in ids:
             task = self.get_task(task_id)
             if task.name == name:
-                tasks.append((task_id, task))
+                tasks.append(task)
 
         if 0 <= index < len(tasks):
             return tasks[index]
-        elif len(tasks) == 1:
-            return tasks[0]
         else:
             return tasks
 
@@ -489,15 +525,22 @@ class Workflow(dataprocess.CWorkflow):
         and the input index of the target task.
 
         Args:
-            src (int): source task identifier
-            target (int): target task identifier
+            src (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): source task or None (connect to root)
+            target (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): target task
             edges (list of pair): connections. If *None* is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
         """
+        if src == self.root:
+            src_id = self.get_root_id()
+        else:
+            src_id = self.get_task_id(src)
+
+        target_id = self.get_task_id(target)
+
         if edges is None:
-            self.connect(src, target, -1, -1)
+            self.connect(src_id, target_id, -1, -1)
         else:
             for edge in edges:
-                self.connect(src, target, edge[0], edge[1])
+                self.connect(src_id, target_id, edge[0], edge[1])
 
     def run(self):
         """
@@ -576,13 +619,26 @@ class Workflow(dataprocess.CWorkflow):
 
         return True
 
+    def load(self, path):
+        super().load(path)
+
+        # Update map task -> id
+        self.task_to_id.clear()
+        ids = self.get_task_ids()
+
+        for task_id in ids:
+            task = self.get_task(task_id)
+            self.task_to_id[task.uuid] = task_id
+
+        print(self.task_to_id)
+
     def _run_directory(self):
         for i in range(self.get_input_count()):
             input_type = self.get_input_data_type(i)
             if input_type == core.IODataType.FOLDER_PATH:
                 dir_input = self.get_input(i)
 
-                for root, subdirs, files in os.walk(dir_input.getPath(), topdown=True):
+                for root, subdirs, files in os.walk(dir_input.get_path(), topdown=True):
                     for file in files:
                         file_path = os.path.join(root, file)
                         if self._is_image_input(path=file_path):
@@ -633,7 +689,7 @@ class Workflow(dataprocess.CWorkflow):
             else:
                 wf_outputs = []
                 for t in wf_task:
-                    outs = get_output_func(t[1], index)
+                    outs = get_output_func(t, index)
                     if isinstance(outs, list):
                         wf_outputs.extend(outs)
                     else:
