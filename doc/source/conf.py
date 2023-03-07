@@ -17,11 +17,11 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Ikomia API'
-copyright = '2020, Ikomia SAS'
+copyright = '2023, Ikomia SAS'
 author = 'Ludovic Barusseau'
 
 # The full version, including alpha/beta/rc tags
-version = '0.8.1'
+version = '0.9.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -36,6 +36,10 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
     'sphinx_rtd_theme',
+    'sphinx_copybutton',
+    'sphinx_inline_tabs',
+    'myst_parser',
+    'sphinxcontrib.mermaid'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,7 +57,7 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 #html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -97,16 +101,16 @@ autosummary_generate = False
 html_theme_options = {
     #'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
     #'analytics_anonymize_ip': False,
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'both',
-    'style_external_links': False,
-    'vcs_pageview_mode': 'blob',
-    'style_nav_header_background': '#150E83',
+    #'logo_only': False,
+    #'display_version': True,
+    #'prev_next_buttons_location': 'both',
+    #'style_external_links': False,
+    #'vcs_pageview_mode': 'blob',
+    #'style_nav_header_background': '#150E83',
     # Toc options
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 3,
-    'includehidden': True,
-    'titles_only': False
+    #'collapse_navigation': True,
+    #'sticky_navigation': True,
+    #'navigation_depth': 3,
+    #'includehidden': True,
+    #'titles_only': False
 }
