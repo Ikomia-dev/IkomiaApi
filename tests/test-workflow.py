@@ -328,7 +328,7 @@ def test_graph_build():
 
     # branch with auto-connection
     box_filter = wf.add_task(ik.ocv_box_filter())
-    wf.connect_tasks(wf.root, box_filter)
+    wf.connect_tasks(wf.root(), box_filter)
 
     clahe = wf.add_task(ik.ocv_clahe())
     wf.connect_tasks(box_filter, clahe)
@@ -341,7 +341,7 @@ def test_graph_build():
 
     # branch with manual connection
     bilateral = wf.add_task(ik.ocv_bilateral_filter())
-    wf.connect_tasks(wf.root, bilateral, [(0, 0)])
+    wf.connect_tasks(wf.root(), bilateral, [(0, 0)])
 
     equalize = wf.add_task(ik.ocv_equalize_histogram())
     wf.connect_tasks(bilateral, equalize, [(0, 0)])
@@ -445,7 +445,7 @@ def test_get_image_with_graphics():
     img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf = workflow.create("ImageWithGraphics")
     t1 = wf.add_task(ik.infer_mobilenet_ssd())
-    wf.connect_tasks(wf.root, t1)
+    wf.connect_tasks(wf.root(), t1)
     wf.run_on(path=img_path)
 
     logger.info("-----Get image from task id")
@@ -456,7 +456,7 @@ def test_get_image_with_graphics():
 
     # add second MobileNet SSD task
     t2 = wf.add_task(ik.infer_mobilenet_ssd())
-    wf.connect_tasks(wf.root, t2)
+    wf.connect_tasks(wf.root(), t2)
     wf.run_on(path=img_path)
 
     logger.info("-----Get image from task name")
@@ -511,7 +511,7 @@ def test_video_stream():
 
     wf = workflow.create("Video Processing")
     clahe = wf.add_task(ik.ocv_clahe())
-    wf.connect_tasks(wf.root, clahe)
+    wf.connect_tasks(wf.root(), clahe)
     canny = wf.add_task(ik.ocv_canny())
     wf.connect_tasks(clahe, canny)
 
