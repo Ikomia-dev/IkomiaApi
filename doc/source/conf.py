@@ -21,7 +21,7 @@ copyright = '2020, Ikomia SAS'
 author = 'Ludovic Barusseau'
 
 # The full version, including alpha/beta/rc tags
-version = '0.8.1'
+version = '0.9.0'
 
 
 # -- General configuration ---------------------------------------------------
