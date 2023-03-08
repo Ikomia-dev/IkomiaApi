@@ -475,7 +475,7 @@ class Workflow(dataprocess.CWorkflow):
         if len(params) > 0:
             task.set_parameters(params)
 
-        parent_id = self.get_active_task_id()
+        parent_id = self.get_last_task_id()
         task_id = super().add_task(task)
         self.task_to_id[task.uuid] = task_id
 
@@ -644,8 +644,6 @@ class Workflow(dataprocess.CWorkflow):
         for task_id in ids:
             task = self.get_task(task_id)
             self.task_to_id[task.uuid] = task_id
-
-        print(self.task_to_id)
 
     def _run_directory(self):
         for i in range(self.get_input_count()):
