@@ -55,7 +55,13 @@ class Workflow(dataprocess.CWorkflow):
         self.registry = registry
         self.task_to_id = {}
         self.output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
-        self.root = self.get_task(self.get_root_id())
+        self.root_uuid = self.get_task(self.get_root_id()).uuid
+
+    def root(self):
+        """
+        Get workflow root node.
+        """
+        return self.get_task(self.get_root_id())
 
     def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
         """
@@ -445,7 +451,7 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self.task_to_id[task.uuid]
 
-    def add_task(self, task=None, name:str="", params:dict={}):
+    def add_task(self, task=None, name:str="", params:dict={}, auto_connect:bool=False):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
@@ -469,8 +475,17 @@ class Workflow(dataprocess.CWorkflow):
         if len(params) > 0:
             task.set_parameters(params)
 
+        parent_id = self.get_active_task_id()
         task_id = super().add_task(task)
         self.task_to_id[task.uuid] = task_id
+
+        if (auto_connect):
+            parent_task = self.get_task(parent_id)
+            if parent_task is not None:
+                self.connect_tasks(parent_task, task)
+            else:
+                self.connect_tasks(self.root(), task)
+
         return task
 
     def remove_task(self, task="None", name: str="", index: int=0):
@@ -529,7 +544,7 @@ class Workflow(dataprocess.CWorkflow):
             target (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): target task
             edges (list of pair): connections. If *None* is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
         """
-        if src == self.root:
+        if src.uuid == self.root_uuid:
             src_id = self.get_root_id()
         else:
             src_id = self.get_task_id(src)
