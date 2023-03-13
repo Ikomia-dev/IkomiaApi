@@ -120,7 +120,26 @@ def _check_local_sync():
 
     ik_names_set = set(ik.local_names)
     local_names_set = set(ikomia.ik_registry.get_algorithms())
-    return ik_names_set == local_names_set
+
+    if ik_names_set == local_names_set:
+        return True
+    elif len(ik_names_set) >= len(local_names_set):
+        # Normal: lazy loading -> check if algorithm folder is still there
+        diff_local = ik_names_set - local_names_set
+        python_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "Python")
+        cpp_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "C++")
+
+        for name in diff_local:
+            algo_dir = os.path.join(python_plugin_folder, name)
+            if not os.path.exists(algo_dir):
+                algo_dir = os.path.join(cpp_plugin_folder, name)
+                if not os.path.exists(algo_dir):
+                    return False
+
+        return True
+    else:
+        # New local plugins has been loaded
+        return False
 
 
 def _check_online_sync():
@@ -142,27 +161,14 @@ def _check_task_params(task):
         return False
 
     params = task.get_parameters()
-    ik_content = inspect.getsource(ik)
-    regex_str = f"def {task.name}" + "\(([^\)]+)"
-    result = re.search(regex_str, ik_content)
+    ik_class = getattr(ik, task.name)
+    ik_class_vars = vars(ik_class)
 
-    if result is None:
-        return len(params) == 0
-    else:
-        params_dict_str = result.group(1)
-        params_groups = params_dict_str.split(", ")
-        param_keys = []
+    for param_key in params:
+        if param_key not in ik_class_vars:
+            return False
 
-        for group in params_groups:
-            result = re.search("(.+):", group)
-            if result is not None:
-                param_keys.append(result.group(1))
-
-        for key in param_keys:
-            if key not in params.keys():
-                return False
-
-        return True
+    return True
 
 
 def _has_local_cache():
