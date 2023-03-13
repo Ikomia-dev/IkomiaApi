@@ -1,5 +1,9 @@
 {
-    "connections": [{
+    "api": {
+        "version": "0.8.1"
+    },
+    "connections": [
+        {
             "source_id": -1,
             "source_index": 0,
             "target_id": 0,
@@ -16,6 +20,18 @@
             "source_index": 0,
             "target_id": 2,
             "target_index": 0
+        },
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 3,
+            "target_index": 0
+        },
+        {
+            "source_id": -1,
+            "source_index": 0,
+            "target_id": 4,
+            "target_index": 0
         }
     ],
     "metadata": {
@@ -23,10 +39,13 @@
         "keywords": "",
         "name": "MultiOutputTypes"
     },
-    "tasks": [{
+    "tasks": [
+        {
             "task_data": {
+                "language": 0,
                 "name": "infer_mobilenet_ssd",
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "structureFile",
                         "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.prototxt"
                     },
@@ -70,24 +89,30 @@
                         "name": "backend",
                         "value": "0"
                     }
-                ]
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_mobilenet_ssd"
             },
             "task_id": 0
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_split",
-                "parameters": [{
-                    "name": "outputCount",
-                    "value": "3"
-                }]
+                "parameters": [
+                    {
+                        "name": "outputCount",
+                        "value": "3"
+                    }
+                ]
             },
             "task_id": 1
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_calc_hist",
-                "parameters": [{
+                "parameters": [
+                    {
                         "name": "nChannels",
                         "value": "1"
                     },
@@ -121,10 +146,103 @@
         },
         {
             "task_data": {
-                "name": "dataset_wgisd",
-                "parameters": []
+                "language": 0,
+                "name": "infer_inception_v3",
+                "parameters": [
+                    {
+                        "name": "structureFile",
+                        "value": ""
+                    },
+                    {
+                        "name": "labelsFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_inception_v3/Model/imagenet_names.txt"
+                    },
+                    {
+                        "name": "modelFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_inception_v3/Model/tensorflow_inception_graph.pb"
+                    },
+                    {
+                        "name": "datasetName",
+                        "value": ""
+                    },
+                    {
+                        "name": "inputSize",
+                        "value": "416"
+                    },
+                    {
+                        "name": "framework",
+                        "value": "0"
+                    },
+                    {
+                        "name": "modelName",
+                        "value": ""
+                    },
+                    {
+                        "name": "target",
+                        "value": "0"
+                    },
+                    {
+                        "name": "backend",
+                        "value": "0"
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_inception_v3"
             },
             "task_id": 3
+        },
+        {
+            "task_data": {
+                "language": 0,
+                "name": "infer_mask_rcnn",
+                "parameters": [
+                    {
+                        "name": "maskThreshold",
+                        "value": "0.300000"
+                    },
+                    {
+                        "name": "structureFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/mask_rcnn_inception_v2_coco_2018_01_28.pbtxt"
+                    },
+                    {
+                        "name": "labelsFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/coco_names.txt"
+                    },
+                    {
+                        "name": "modelFile",
+                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/frozen_inference_graph.pb"
+                    },
+                    {
+                        "name": "datasetName",
+                        "value": ""
+                    },
+                    {
+                        "name": "inputSize",
+                        "value": "416"
+                    },
+                    {
+                        "name": "confidence",
+                        "value": "0.500000"
+                    },
+                    {
+                        "name": "framework",
+                        "value": "0"
+                    },
+                    {
+                        "name": "modelName",
+                        "value": ""
+                    },
+                    {
+                        "name": "target",
+                        "value": "0"
+                    },
+                    {
+                        "name": "backend",
+                        "value": "0"
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn"
+            },
+            "task_id": 4
         }
     ]
 }
