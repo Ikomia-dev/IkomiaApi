@@ -86,9 +86,10 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
         f.write(f"        algo.set_parameters({params_dict})\n")
         f.write(f"        return algo\n\n")
 
-        # name() return task name
-        f.write("    def name():\n")
-        f.write(f"        return \"{task_name}\"\n\n")
+    # name() return task name
+    f.write("    @staticmethod\n")
+    f.write("    def name():\n")
+    f.write(f"        return \"{task_name}\"\n\n")
 
 
 def _generate_python_file(folder):
