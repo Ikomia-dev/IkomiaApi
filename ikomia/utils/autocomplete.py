@@ -259,7 +259,7 @@ def update_local_plugin(name):
         except Exception:
             try:
                 folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
-                cache_file_path2 = os.path.join(local_site, cache_name)
+                cache_file_path2 = os.path.join(folder, cache_name)
                 f = open(cache_file_path2, "a+")
             except Exception:
                 logger.warning("Ikomia auto-completion is disable: no update.")
