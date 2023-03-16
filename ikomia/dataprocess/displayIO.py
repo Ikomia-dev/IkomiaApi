@@ -19,12 +19,14 @@ functions for each type of components: workflow, task, input and output (for deb
 import sys
 import os
 import logging
+import numpy
 import numpy as np
 from functools import singledispatch
 from ikomia import core, dataprocess
 import matplotlib
 import matplotlib.patches as patches
 from matplotlib.cbook import flatten
+from PIL import Image
 
 # Matplotlib backend choice
 _backend_name = None
@@ -620,3 +622,8 @@ def _(obj: dataprocess.CWorkflow, label="", **kwargs):
     s = Source.from_file(path)
     s.view()
 
+
+@display.register
+def _(obj: numpy.ndarray, label="", **kwargs):
+    img_in = Image.fromarray(obj)
+    img_in.show()
