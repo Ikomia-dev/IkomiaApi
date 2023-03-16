@@ -13,7 +13,7 @@ the C capital letter.
     ikomia.utils.pyutils
     ikomia.utils.pyqtutils
     ikomia.utils.qtconversion
-
+    ikomia.utils.displayIO
 
 
 .. rubric:: Core module
@@ -32,7 +32,6 @@ the C capital letter.
     ikomia.dataprocess.registry
     ikomia.dataprocess.workflow
     ikomia.dataprocess.datadictIO
-    ikomia.dataprocess.displayIO
 
 
 .. rubric:: DNN module

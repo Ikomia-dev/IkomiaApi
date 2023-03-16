@@ -4,8 +4,7 @@ import shutil
 import argparse
 import ikomia
 from ikomia.dataprocess import \
-    workflow, CWorkflow, displayIO, \
-    CImageIO, CVideoIO, CPathIO, CNumericIO, CObjectDetectionIO, CInstanceSegmentationIO
+    workflow, CWorkflow, CImageIO, CVideoIO, CPathIO, CNumericIO, CObjectDetectionIO, CInstanceSegmentationIO
 from ikomia.core import IODataType
 from ikomia.utils import tests, ik
 import numpy as np
