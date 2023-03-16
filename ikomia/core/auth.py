@@ -28,7 +28,7 @@ class LoginSession:
         if username is not None and pwd is not None:
             self.authenticate(username, pwd)
 
-    @http.http_except
+    @http.http_no_raise
     def authenticate(self, username, pwd):
         url = config.main_cfg["hub"]["url"] + "/api/rest-auth/login/"
         data = {"username": username, "password": pwd}

@@ -22,7 +22,7 @@ from tqdm import tqdm
 logger = logging.getLogger(__name__)
 
 
-def http_except(func):
+def http_no_raise(func):
     @functools.wraps(func)
     def wrapper(*argc, **kwargs):
         try:
@@ -39,7 +39,7 @@ def http_except(func):
     return wrapper
 
 
-@http_except
+@http_no_raise
 def download_file(url, path, public=True):
     if public:
         with requests.get(url, stream=True) as r:

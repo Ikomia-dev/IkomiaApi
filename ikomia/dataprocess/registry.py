@@ -42,7 +42,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if not lazy_load:
             self.load_algorithms()
 
-    @utils.http.http_except
     def get_online_algorithms(self):
         """
         Get the list of available algorithms from Ikomia HUB.
@@ -171,7 +170,12 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 update = True
 
         # Download package
-        plugin, language, plugin_dir = self._download_algorithm(name)
+        try:
+            plugin, language, plugin_dir = self._download_algorithm(name)
+        except Exception as e:
+            logger.error(f"Failed to install algorithm {name} for the following reason:")
+            logger.error(e)
+            return
 
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
