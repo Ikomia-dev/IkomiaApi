@@ -1,9 +1,9 @@
 import os.path
 import logging
 import argparse
-from ikomia.utils import tests, ik
+from ikomia.utils import tests, ik, displayIO
 from ikomia import core, dataio, dataprocess
-from ikomia.dataprocess import displayIO, workflow
+from ikomia.dataprocess import workflow
 import cv2
 import numpy as np
 

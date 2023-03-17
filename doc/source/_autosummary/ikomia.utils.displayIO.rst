@@ -1,7 +1,7 @@
 ﻿DisplayIO
 =========
 
-.. automodule:: ikomia.dataprocess.displayIO
+.. automodule:: ikomia.utils.displayIO
 
     .. rubric:: Functions
     .. autosummary::

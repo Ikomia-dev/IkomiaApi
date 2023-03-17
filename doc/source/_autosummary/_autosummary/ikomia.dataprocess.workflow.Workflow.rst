@@ -18,21 +18,13 @@ Workflow
         ~Workflow.add_task
         ~Workflow.connect_tasks
         ~Workflow.find_task
-        ~Workflow.get_array_output
-        ~Workflow.get_blob_measure_output
-        ~Workflow.get_dataset_output
-        ~Workflow.get_data_string_output
-        ~Workflow.get_graphics_output
-        ~Workflow.get_image
-        ~Workflow.get_image_output
-        ~Workflow.get_image_with_graphics
-        ~Workflow.get_instance_segmentation_output
-        ~Workflow.get_numeric_output
-        ~Workflow.get_object_detection_output
-        ~Workflow.get_path_output
-        ~Workflow.get_semantic_segmentation_output
+        ~Workflow.get_task_id
+        ~Workflow.get_task_output
         ~Workflow.get_tasks
         ~Workflow.get_time_metrics
+        ~Workflow.load
+        ~Workflow.remove_task
+        ~Workflow.root
         ~Workflow.run
         ~Workflow.run_on
         ~Workflow.set_directory_input
@@ -91,38 +83,29 @@ Workflow
     .. automethod:: export_graphviz
     .. automethod:: find_task
     .. automethod:: get_children
-    .. automethod:: get_array_output
-    .. automethod:: get_blob_measure_output
-    .. automethod:: get_dataset_output
-    .. automethod:: get_data_string_output
     .. automethod:: get_edge_info
     .. automethod:: get_edge_source
     .. automethod:: get_edge_target
     .. automethod:: get_elapsed_time_to
     .. automethod:: get_final_tasks
-    .. automethod:: get_graphics_output
-    .. automethod:: get_image
-    .. automethod:: get_image_output
-    .. automethod:: get_image_with_graphics
     .. automethod:: get_in_edges
-    .. automethod:: get_instance_segmentation_output
-    .. automethod:: get_numeric_output
-    .. automethod:: get_object_detection_output
     .. automethod:: get_out_edges
     .. automethod:: get_parents
-    .. automethod:: get_path_output
     .. automethod:: get_required_tasks
     .. automethod:: get_root_id
     .. automethod:: get_root_target_types
-    .. automethod:: get_semantic_segmentation_output
     .. automethod:: get_task
+    .. automethod:: get_task_id
     .. automethod:: get_task_count
     .. automethod:: get_task_ids
+    .. automethod:: get_task_output
     .. automethod:: get_tasks
     .. automethod:: get_time_metrics
     .. automethod:: get_total_elapsed_time
     .. automethod:: load
     .. automethod:: remove_input
+    .. automethod:: remove_task
+    .. automethod:: root
     .. automethod:: run
     .. automethod:: run_on
     .. automethod:: set_auto_save
