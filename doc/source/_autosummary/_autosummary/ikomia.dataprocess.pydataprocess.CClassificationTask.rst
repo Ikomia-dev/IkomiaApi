@@ -19,7 +19,7 @@ CClassificationTask
         ~CClassificationTask.get_names
         ~CClassificationTask.get_objects_results
         ~CClassificationTask.get_object_sub_image
-        ~CClassificationTask.get_visualization_image
+        ~CClassificationTask.get_image_with_graphics
         ~CClassificationTask.get_whole_image_results
         ~CClassificationTask.is_whole_image_classification
         ~CClassificationTask.read_class_names
@@ -90,7 +90,7 @@ CClassificationTask
     .. automethod:: get_names
     .. automethod:: get_objects_results
     .. automethod:: get_object_sub_image
-    .. automethod:: get_visualization_image
+    .. automethod:: get_image_with_graphics
     .. automethod:: get_whole_image_results
     .. automethod:: is_whole_image_classification
     .. automethod:: read_class_names

@@ -17,7 +17,9 @@ CInstanceSegmentationTask
         ~CInstanceSegmentationTask.add_instance
         ~CInstanceSegmentationTask.get_names
         ~CInstanceSegmentationTask.get_results
-        ~CInstanceSegmentationTask.get_visualization_image
+        ~CInstanceSegmentationTask.get_image_with_graphics
+        ~CInstanceSegmentationTask.get_image_with_mask
+        ~CInstanceSegmentationTask.get_image_with_mask_and_graphics
         ~CInstanceSegmentationTask.read_class_names
         ~CInstanceSegmentationTask.set_colors
         ~CInstanceSegmentationTask.set_names
@@ -83,7 +85,9 @@ CInstanceSegmentationTask
     .. automethod:: add_instance
     .. automethod:: get_names
     .. automethod:: get_results
-    .. automethod:: get_visualization_image
+    .. automethod:: get_image_with_graphics
+    .. automethod:: get_image_with_mask
+    .. automethod:: get_image_with_mask_and_graphics
     .. automethod:: read_class_names
     .. automethod:: set_colors
     .. automethod:: set_names
