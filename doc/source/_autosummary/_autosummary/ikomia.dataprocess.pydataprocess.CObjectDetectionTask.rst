@@ -17,7 +17,7 @@ CObjectDetectionTask
         ~CObjectDetectionTask.add_object
         ~CObjectDetectionTask.get_names
         ~CObjectDetectionTask.get_results
-        ~CObjectDetectionTask.get_visualization_image
+        ~CObjectDetectionTask.get_image_with_graphics
         ~CObjectDetectionTask.read_class_names
         ~CObjectDetectionTask.set_colors
         ~CObjectDetectionTask.set_names
@@ -83,7 +83,7 @@ CObjectDetectionTask
     .. automethod:: add_object
     .. automethod:: get_names
     .. automethod:: get_results
-    .. automethod:: get_visualization_image
+    .. automethod:: get_image_with_graphics
     .. automethod:: read_class_names
     .. automethod:: set_colors
     .. automethod:: set_names
