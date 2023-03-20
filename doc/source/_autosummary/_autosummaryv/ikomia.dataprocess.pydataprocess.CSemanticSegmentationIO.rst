@@ -16,17 +16,18 @@ CSemanticSegmentationIO
         ~CSemanticSegmentationIO.get_mask
         ~CSemanticSegmentationIO.get_class_names
         ~CSemanticSegmentationIO.get_colors
-        ~CSemanticSegmentationIO.set_mask
+        ~CSemanticSegmentationIO.set_class_colors
         ~CSemanticSegmentationIO.set_class_names
+        ~CSemanticSegmentationIO.set_mask
 
     .. rubric:: Overridden methods
     .. autosummary::
         ~CSemanticSegmentationIO.clear_data
+        ~CSemanticSegmentationIO.from_json
         ~CSemanticSegmentationIO.is_data_available
         ~CSemanticSegmentationIO.load
         ~CSemanticSegmentationIO.save
         ~CSemanticSegmentationIO.to_json
-        ~CSemanticSegmentationIO.from_json
 
     .. rubric:: Inherited methods
     .. autosummary::
@@ -46,13 +47,14 @@ CSemanticSegmentationIO
 
     .. rubric:: Details
     .. automethod:: __init__
+    .. automethod:: from_json
     .. automethod:: get_mask
     .. automethod:: get_class_names
     .. automethod:: get_colors
-    .. automethod:: set_mask
-    .. automethod:: set_class_names
     .. automethod:: is_data_available
     .. automethod:: load
     .. automethod:: save
+    .. automethod:: set_class_names
+    .. automethod:: set_class_colors
+    .. automethod:: set_mask
     .. automethod:: to_json
-    .. automethod:: from_json
