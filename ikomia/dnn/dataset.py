@@ -507,4 +507,4 @@ def polygon_to_mask(polygons, width, height):
         graphics.append(graphics_poly)
 
     conversion = core.CGraphicsConversion(width, height)
-    return conversion.graphicsToBinaryMask(graphics)
+    return conversion.graphics_to_binary_mask(graphics)
