@@ -2,8 +2,8 @@ import logging
 import ikomia
 import cv2
 from ikomia import core, dataprocess
-from ikomia.dataprocess import displayIO, workflow
-from ikomia.utils import tests, ik
+from ikomia.dataprocess import workflow
+from ikomia.utils import tests, ik, displayIO
 
 logger = logging.getLogger(__name__)
 

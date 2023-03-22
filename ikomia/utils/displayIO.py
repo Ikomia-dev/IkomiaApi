@@ -19,12 +19,14 @@ functions for each type of components: workflow, task, input and output (for deb
 import sys
 import os
 import logging
+import numpy
 import numpy as np
 from functools import singledispatch
 from ikomia import core, dataprocess
 import matplotlib
 import matplotlib.patches as patches
 from matplotlib.cbook import flatten
+from PIL import Image
 
 # Matplotlib backend choice
 _backend_name = None
@@ -561,6 +563,83 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
 
 
 @display.register
+def _(obj: dataprocess.CObjectDetectionIO, label="", **kwargs):
+    """
+    Display object detection input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{label}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{label}:results")
+
+
+@display.register
+def _(obj: dataprocess.CInstanceSegmentationIO, label="", **kwargs):
+    """
+    Display instance segmentation input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getMaskImageIO(), f"{label}:segmentation mask")
+    display(obj.getGraphicsIO(), f"{label}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{label}:results")
+
+
+@display.register
+def _(obj: dataprocess.CSemanticSegmentationIO, label="", **kwargs):
+    """
+    Display semantic segmentation input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getMaskImageIO(), f"{label}:segmentation mask")
+    display(obj.getLegendImageIO(), f"{label}:legend")
+
+
+@display.register
+def _(obj: dataprocess.CKeypointsIO, label="", **kwargs):
+    """
+    Display keypoints input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{label}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{label}:results")
+    display(obj.getDataStringIO(), f"{label}:keypoint links")
+
+
+@display.register
+def _(obj: dataprocess.CTextIO, label="", **kwargs):
+    """
+    Display text input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{label}:graphics objects")
+    display(obj.getDataStringIO(), f"{label}:text fields")
+
+
+@display.register
 def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     """
     Display task inputs and outputs (:py:class:`~ikomia.core.pycore.CWorkflowTask`) in two separate Matplotlib figures.
@@ -620,3 +699,8 @@ def _(obj: dataprocess.CWorkflow, label="", **kwargs):
     s = Source.from_file(path)
     s.view()
 
+
+@display.register
+def _(obj: numpy.ndarray, label="", **kwargs):
+    img_in = Image.fromarray(obj)
+    img_in.show()

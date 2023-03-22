@@ -423,31 +423,27 @@ class Workflow(dataprocess.CWorkflow):
 
         for t in tasks:
             if t not in available_tasks:
-                if online_tasks is not None and any(d["name"] == t for d in online_tasks):
-                    # try installation
-                    try:
-                        ikomia.ik_registry.install_algorithm(t)
-                    except Exception:
-                        msg = f"Workflow preparation failed: task {t} cannot be installed."
-                        logger.error(msg)
-                        return False
-                else:
+                try:
+                    ikomia.ik_registry.create_algorithm(t)
+                except Exception as e:
                     msg = f"Workflow preparation failed: task {t} cannot be found."
                     logger.error(msg)
+                    logger.error(e)
                     return False
 
         return True
 
     def load(self, path):
-        super().load(path)
+        if self.prepare_runtime_env(path):
+            super().load(path)
 
-        # Update map task -> id
-        self.task_to_id.clear()
-        ids = self.get_task_ids()
+            # Update map task -> id
+            self.task_to_id.clear()
+            ids = self.get_task_ids()
 
-        for task_id in ids:
-            task = self.get_task(task_id)
-            self.task_to_id[task.uuid] = task_id
+            for task_id in ids:
+                task = self.get_task(task_id)
+                self.task_to_id[task.uuid] = task_id
 
     def _run_directory(self):
         for i in range(self.get_input_count()):
@@ -542,13 +538,9 @@ def load(path):
     Returns:
         :py:class:`~ikomia.dataprocess.workflow.Workflow`: loaded workflow.
     """
-
     wf = Workflow("untitled", ikomia.ik_registry)
-    if wf.prepare_runtime_env(path):
-        wf.load(path)
-        return wf
-
-    return None
+    wf.load(path)
+    return wf
 
 
 def install_requirements(path):

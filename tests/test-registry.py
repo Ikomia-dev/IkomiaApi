@@ -3,8 +3,7 @@ import sys
 import argparse
 import ikomia
 import cv2
-from ikomia.dataprocess import displayIO
-from ikomia.utils import tests, ik
+from ikomia.utils import tests, ik, displayIO
 
 logger = logging.getLogger(__name__)
 
