@@ -68,7 +68,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return platform_plugins
 
-    def create_algorithm(self, name, parameters=None):
+    def create_algorithm(self, name, parameters=None, no_hub=False):
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
@@ -79,6 +79,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Args:
             name (str): unique algorithm name
             parameters (~ikomia.core.CWorkflowTaskParam): initial parameters values
+            no_hub (bool): if True, we don't try to install algorithm from Ikomia Hub
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
@@ -92,13 +93,16 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             try:
                 self._load_algorithm(name)
                 algo = self.create_instance(name, parameters)
-            except:
-                try:
-                    logger.warning(f"Try installing {name} from Ikomia HUB...")
-                    self.install_algorithm(name)
-                    algo = self.create_instance(name, parameters)
-                except Exception as e:
+            except Exception as e:
+                if no_hub:
                     logger.error(e)
+                else:
+                    try:
+                        logger.warning(f"Try installing {name} from Ikomia HUB...")
+                        self.install_algorithm(name)
+                        algo = self.create_instance(name, parameters)
+                    except Exception as e:
+                        logger.error(e)
 
         return algo
 
