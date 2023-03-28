@@ -114,32 +114,57 @@ def _generate_python_file(folder):
         importlib.reload(ikomia.utils.ik)
 
 
+def _is_valid_python_plugin_folder(name:str, folder_path:str):
+    main_python_file = os.path.join(folder_path, f"{name}.py")
+    return os.path.exists(main_python_file)
+
+
+def _is_valid_cpp_plugin_folder(name:str, folder_path:str):
+    for name in os.listdir(folder_path):
+        # Just check if at least one shared library exists -> maybe not sufficient...
+        filename, ext = os.path.splitext(name)
+        if ".so" in ext or ".dll" in ext:
+            return True
+
+    return False
+
+
 def _check_local_sync():
     if not _ik_auto_complete:
         return False
 
+    # Get local algorithm names from plugin directories
+    local_folder_names = set()
+    python_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "Python")
+    cpp_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "C++")
+
+    for name in os.listdir(python_plugin_folder):
+        folder_path = os.path.join(python_plugin_folder, name)
+        if os.path.isdir(folder_path) and _is_valid_python_plugin_folder(name, folder_path):
+            local_folder_names.add(name)
+
+    for name in os.listdir(cpp_plugin_folder):
+        folder_path = os.path.join(cpp_plugin_folder, name)
+        if os.path.isdir(folder_path) and _is_valid_cpp_plugin_folder(name, folder_path):
+            local_folder_names.add(name)
+
+    # Get auto-completion local list
     ik_names_set = set(ik.local_names)
-    local_names_set = set(ikomia.ik_registry.get_algorithms())
 
-    if ik_names_set == local_names_set:
-        return True
-    elif len(ik_names_set) >= len(local_names_set):
-        # Normal: lazy loading -> check if algorithm folder is still there
-        diff_local = ik_names_set - local_names_set
-        python_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "Python")
-        cpp_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "C++")
-
-        for name in diff_local:
-            algo_dir = os.path.join(python_plugin_folder, name)
-            if not os.path.exists(algo_dir):
-                algo_dir = os.path.join(cpp_plugin_folder, name)
-                if not os.path.exists(algo_dir):
-                    return False
-
+    # Check changes
+    if ik_names_set == local_folder_names:
         return True
     else:
-        # New local plugins has been loaded
-        return False
+        # Local plugins has changed
+        diff_local = local_folder_names - ik_names_set
+
+        # Try to load them -> auto-completion has to be updated if at least one is valid
+        for name in diff_local:
+            algo = ikomia.ik_registry.create_algorithm(name=name, no_hub=True)
+            if algo is not None:
+                return False
+
+        return True
 
 
 def _check_online_sync():
