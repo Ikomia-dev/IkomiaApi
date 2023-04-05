@@ -36,11 +36,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
-    def __init__(self, lazy_load:bool = True ):
+    def __init__(self, lazy_load:bool = True):
         dataprocess.CIkomiaRegistry.__init__(self)
 
         if not lazy_load:
             self.load_algorithms()
+
+    def __repr__(self):
+        return f"IkomiaRegistry()"
 
     def get_online_algorithms(self):
         """

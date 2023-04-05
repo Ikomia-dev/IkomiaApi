@@ -58,6 +58,9 @@ class Workflow(dataprocess.CWorkflow):
         self.root_uuid = self.get_task(root_id).uuid
         self.task_to_id = {self.root_uuid: root_id}
 
+    def __repr__(self):
+        return f"Workflow(\"{self.name}\")"
+
     def root(self):
         """
         Get workflow root node.
