@@ -64,7 +64,7 @@ html_theme = 'furo'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['ikomia.css', ]
+#html_css_files = ['ikomia.css', ]
 
 html_logo = '_static/app.png'
 
@@ -72,6 +72,17 @@ html_logo = '_static/app.png'
 autosummary_generate = False
 
 # Style customization - Alabaster
+html_theme_options = {
+    "light_css_variables": {
+        "color-sidebar-caption-text": "#CC5A20",
+        #"font-stack": "_static/Avenue Mono.woff2", # Regular text
+        #"font-stack--monospace": "_static/n27-regular-webfont.ttf", # Code blocks + inline code
+    },
+}
+
+pygments_style = "friendly"
+pygments_dark_style = "native"
+
 #html_theme_options = {
 #    'description': 'A shared vision of research',
 #    'fixed_sidebar': 'true',
@@ -96,21 +107,3 @@ autosummary_generate = False
 #    'font_size': '15px',
 #    'sidebar_width': '250px'
 #}
-
-# Style customization - ReadTHeDocs
-html_theme_options = {
-    #'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
-    #'analytics_anonymize_ip': False,
-    #'logo_only': False,
-    #'display_version': True,
-    #'prev_next_buttons_location': 'both',
-    #'style_external_links': False,
-    #'vcs_pageview_mode': 'blob',
-    #'style_nav_header_background': '#150E83',
-    # Toc options
-    #'collapse_navigation': True,
-    #'sticky_navigation': True,
-    #'navigation_depth': 3,
-    #'includehidden': True,
-    #'titles_only': False
-}
