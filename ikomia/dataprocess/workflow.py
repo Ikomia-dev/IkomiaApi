@@ -58,6 +58,9 @@ class Workflow(dataprocess.CWorkflow):
         self.root_uuid = self.get_task(root_id).uuid
         self.task_to_id = {self.root_uuid: root_id}
 
+    def __repr__(self):
+        return f"Workflow(\"{self.name}\")"
+
     def root(self):
         """
         Get workflow root node.
@@ -374,6 +377,7 @@ class Workflow(dataprocess.CWorkflow):
             super().run()
         else:
             self._run_directory()
+            logger.info(f"Workflow output data are saved in {self.get_last_run_folder()}")
 
         metrics = self.get_time_metrics()
         logger.info(f"Workflow {self.name} run successfully in {metrics['total_time']} ms.")
@@ -395,9 +399,8 @@ class Workflow(dataprocess.CWorkflow):
             raise RuntimeError("Workflow input is invalid: you must pass either an numpy array, a path to image/video"
                                "or a folder containing images or videos.")
 
-        self.update_start_time()
-
         if folder:
+            self.set_auto_save(True)
             self.set_directory_input(folder=folder)
             self.run()
         else:

@@ -33,13 +33,13 @@ class DataDictIO(CWorkflowTaskIO):
         CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
         self.data = {}
 
-    def clearData(self):
+    def clear_data(self):
         """
         Clear whole data dict.
         """
         self.data.clear()
 
-    def isDataAvailable(self):
+    def is_data_available(self):
         """
         Check whether the dataset structure contains data.
 
@@ -68,7 +68,7 @@ class DataDictIO(CWorkflowTaskIO):
         with open(path, "r") as infile:
             self.data = json.load(infile)
 
-    def toJson(self, options=[]):
+    def to_json(self, options=[]):
         json_format = "compact"
         if "json_format" in options:
             json_format = options[options.index("json_format") + 1]
@@ -78,5 +78,5 @@ class DataDictIO(CWorkflowTaskIO):
         else:
             return json.dumps(self.data)
 
-    def fromJson(self, json_string):
+    def from_json(self, json_string):
         self.data = json.loads(json_string)
