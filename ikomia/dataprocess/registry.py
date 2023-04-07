@@ -195,6 +195,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.warning(f"C++ algorithm {plugin['name']} can't be reloaded at runtime. "
                            f"It will be updated on next start.")
 
+        if config.main_cfg["registry"]["auto_completion"]:
+            autocomplete.update_local_plugin(name)
+
     def _load_algorithm(self, name, language=None):
         if language is None:
             # C++ or Python algorithm?
@@ -216,9 +219,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
-        if config.main_cfg["registry"]["auto_completion"]:
-            autocomplete.update_local_plugin(name)
-
     def _download_algorithm(self, name):
         available_plugins = self.get_online_algorithms()
 
@@ -238,7 +238,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if state != utils.PluginState.VALID:
             error_msg = f"Plugin {plugin['name']} can't be installed due to version incompatibility.\n"\
                         f"Based on Ikomia {plugin['ikomiaVersion']} " \
-                        f"while the current version is {utils.getApiVersion()}."
+                        f"while the current version is {utils.get_api_version()}."
             raise ValueError(error_msg)
 
         # Get plugin package url
