@@ -33,7 +33,6 @@ CSemanticSegmentationIO
     .. autosummary::
         ~CSemanticSegmentationIO.copy_static_data
         ~CSemanticSegmentationIO.get_unit_element_count
-        ~CSemanticSegmentationIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::

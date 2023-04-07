@@ -42,48 +42,62 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
 
     if task is not None:
         task_name = task.name
-
-    if local:
-        if task is None:
-            task = ikomia.ik_registry.create_algorithm(task_name)
-
-        parameters = task.get_parameters()
+    elif local:
+        task = ikomia.ik_registry.create_algorithm(task_name)
 
     # Class definition
     class_name = re.sub(forbid_char, "", task_name)
     f.write(f"class {class_name}:\n")
 
-    if not local or len(parameters) == 0:
-        # __new__() return task object instance
-        f.write("    def __new__(cls):\n")
-        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
-        f.write(f"        return algo\n\n")
+    if local:
+        # Algorithm already installed
+        parameters = task.get_parameters()
+        if len(parameters) == 0:
+            # __new__() return task object instance
+            f.write("    def __new__(cls):\n")
+            f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+            f.write(f"        return algo\n\n")
+        else:
+            function_params = ""
+            params_dict = "{\n"
+
+            for param in parameters:
+                if keyword.iskeyword(param):
+                    param_var = f"{param}_"
+                else:
+                    param_var = param
+
+                if function_params:
+                    function_params += ", "
+
+                # Compute _new_() parameters
+                param_var = re.sub(forbid_char, "", param_var)
+                param_value = str(parameters[param]).replace("\\", "/")
+                function_params += f"{param_var}: str=\"{param_value}\""
+                # Compute parameters dict
+                params_dict += f"            \"{param}\": {param_var},\n"
+                # Static class variable for names
+                f.write(f"    {param_var} = \"{param_var}\"\n")
+
+            # __new__() return task object instance
+            params_dict += "        }"
+            f.write(f"\n    def __new__(cls, {function_params}):\n")
+            f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+            f.write(f"        algo.set_parameters({params_dict})\n")
+            f.write(f"        return algo\n\n")
     else:
-        function_params = ""
-        params_dict = "{\n"
-
-        for param in parameters:
-            if keyword.iskeyword(param):
-                param_var = f"{param}_"
-            else:
-                param_var = param
-
-            if function_params:
-                function_params += ", "
-
-            # Compute _new_() parameters
-            param_var = re.sub(forbid_char, "", param_var)
-            function_params += f"{param_var}: str=\"{str(parameters[param])}\""
-            # Compute parameters dict
-            params_dict += f"            \"{param}\": {param_var},\n"
-            # Static class variable for names
-            f.write(f"    {param_var} = \"{param_var}\"\n")
-
+        # Algorithm from Ikomia Hub
         # __new__() return task object instance
-        params_dict += "        }"
-        f.write(f"\n    def __new__(cls, {function_params}):\n")
+        f.write("    def __new__(cls, **kwargs):\n")
         f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
-        f.write(f"        algo.set_parameters({params_dict})\n")
+        f.write("        if algo is not None:\n")
+        f.write("            params = {}\n")
+        f.write("            for arg in kwargs:\n")
+        f.write("                if isinstance(kwargs[arg], str):\n")
+        f.write("                    params[arg] = kwargs[arg]\n")
+        f.write("                else:\n")
+        f.write("                    params[arg] = str(kwargs[arg])\n\n")
+        f.write("            algo.set_parameters(params)\n\n")
         f.write(f"        return algo\n\n")
 
     # name() return task name
@@ -186,7 +200,12 @@ def _check_task_params(task):
         return False
 
     params = task.get_parameters()
-    ik_class = getattr(ik, task.name)
+
+    try:
+        ik_class = getattr(ik, task.name)
+    except:
+        return False
+
     ik_class_vars = vars(ik_class)
 
     for param_key in params:

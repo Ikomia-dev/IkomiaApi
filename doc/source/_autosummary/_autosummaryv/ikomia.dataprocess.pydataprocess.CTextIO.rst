@@ -34,7 +34,6 @@ CTextIO
     .. autosummary::
         ~CTextIO.copy_static_data
         ~CTextIO.get_unit_element_count
-        ~CTextIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::

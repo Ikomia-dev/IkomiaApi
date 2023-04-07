@@ -27,7 +27,6 @@ CDatasetIO
     .. autosummary::
         ~CDatasetIO.clear_data
         ~CDatasetIO.from_json
-        ~CDatasetIO.is_auto_input
         ~CDatasetIO.is_data_available
         ~CDatasetIO.save
         ~CDatasetIO.to_json
@@ -58,7 +57,6 @@ CDatasetIO
    .. automethod:: get_image_paths
    .. automethod:: get_mask_path
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: save
    .. automethod:: to_json

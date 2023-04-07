@@ -30,7 +30,6 @@ CGraphicsInput
     .. autosummary::
         ~CGraphicsInput.copy_static_data
         ~CGraphicsInput.get_unit_element_count
-        ~CGraphicsInput.is_auto_input
    
     .. rubric:: Attributes
     .. autosummary::
@@ -49,7 +48,6 @@ CGraphicsInput
    .. automethod:: from_json
    .. automethod:: get_items
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: load
    .. automethod:: save

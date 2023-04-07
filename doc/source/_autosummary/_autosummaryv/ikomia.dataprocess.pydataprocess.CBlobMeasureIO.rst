@@ -26,10 +26,6 @@ CBlobMeasureIO
         ~CBlobMeasureIO.is_data_available
         ~CBlobMeasureIO.to_json
 
-    .. rubric:: Inherited methods
-    .. autosummary::
-        ~CBlobMeasureIO.is_auto_input
-
     .. rubric:: Attributes
     .. autosummary::
         ~CBlobMeasureIO.auto_save
@@ -49,5 +45,4 @@ CBlobMeasureIO
    .. automethod:: set_object_measure
    .. automethod:: clear_data
    .. automethod:: is_data_available
-   .. automethod:: is_auto_input
    .. automethod:: to_json

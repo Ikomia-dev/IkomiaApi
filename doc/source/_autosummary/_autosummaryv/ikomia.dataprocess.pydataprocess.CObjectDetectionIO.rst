@@ -32,7 +32,6 @@ CObjectDetectionIO
     .. autosummary::
         ~CObjectDetectionIO.copy_static_data
         ~CObjectDetectionIO.get_unit_element_count
-        ~CObjectDetectionIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::

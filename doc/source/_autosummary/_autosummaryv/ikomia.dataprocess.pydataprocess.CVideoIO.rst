@@ -43,7 +43,6 @@ CVideoIO
         ~CVideoIO.get_channel_count
         ~CVideoIO.get_data
         ~CVideoIO.get_overlay_mask
-        ~CVideoIO.is_auto_input
         ~CVideoIO.is_overlay_available
         ~CVideoIO.set_channel_count
         ~CVideoIO.set_current_image
