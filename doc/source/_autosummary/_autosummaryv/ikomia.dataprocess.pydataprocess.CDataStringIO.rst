@@ -38,7 +38,6 @@ String specialization of C++ template class CNumericIO.
     .. autosummary::
         ~CNumericIO.copy_static_data
         ~CNumericIO.get_unit_element_count
-        ~CNumericIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
@@ -63,7 +62,6 @@ String specialization of C++ template class CNumericIO.
    .. automethod:: get_plot_type
    .. automethod:: get_unit_element_count
    .. automethod:: get_value_list
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: load
    .. automethod:: save

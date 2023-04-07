@@ -19,7 +19,6 @@ CPathIO
     .. rubric:: Overridden methods
     .. autosummary::
         ~CPathIO.clear_data
-        ~CPathIO.is_auto_input
         ~CPathIO.is_data_available
 
     .. rubric:: Inherited methods
@@ -43,6 +42,5 @@ CPathIO
    .. automethod:: copy_static_data
    .. automethod:: get_path
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: set_path

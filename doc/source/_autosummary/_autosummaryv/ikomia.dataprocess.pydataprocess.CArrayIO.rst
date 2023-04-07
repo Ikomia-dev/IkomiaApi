@@ -26,7 +26,6 @@ CArrayIO
     .. rubric:: Inherited methods
     .. autosummary::
         ~CArrayIO.copy_static_data
-        ~CArrayIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
@@ -44,7 +43,6 @@ CArrayIO
     .. automethod:: copy_static_data
     .. automethod:: get_array
     .. automethod:: get_unit_element_count
-    .. automethod:: is_auto_input
     .. automethod:: is_data_available
     .. automethod:: set_array
    

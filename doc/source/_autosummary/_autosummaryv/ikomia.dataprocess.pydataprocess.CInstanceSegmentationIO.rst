@@ -33,7 +33,6 @@ CInstanceSegmentationIO
     .. autosummary::
         ~CInstanceSegmentationIO.copy_static_data
         ~CInstanceSegmentationIO.get_unit_element_count
-        ~CInstanceSegmentationIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
