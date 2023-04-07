@@ -56,7 +56,6 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
 html_theme = 'furo'
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -74,7 +73,7 @@ autosummary_generate = False
 # Style customization - Alabaster
 html_theme_options = {
     "light_css_variables": {
-        "color-sidebar-caption-text": "#CC5A20",
+        #"color-sidebar-caption-text": "#CC5A20",
         #"font-stack": "_static/Avenue Mono.woff2", # Regular text
         #"font-stack--monospace": "_static/n27-regular-webfont.ttf", # Code blocks + inline code
     },
@@ -82,28 +81,3 @@ html_theme_options = {
 
 pygments_style = "friendly"
 pygments_dark_style = "native"
-
-#html_theme_options = {
-#    'description': 'A shared vision of research',
-#    'fixed_sidebar': 'true',
-#    'logo': 'app.png',
-#    'logo_name': 'true',
-#    'logo_text_align': 'center',
-#    'github_button': 'true',
-#    'github_user': 'Ikomia-dev',
-#    'github_repo': '/',
-#    'extra_nav_links': {
-#        'Website': 'https://ikomia.com',
-#        'Blog': 'https://blog.ikomia.com'},
-#    'show_powered_by': 'false',
-#    'show_relbars': 'true',
-
-    #colors
-#    'link': '#cc5a20',
-#    'pre_bg': '#fcf0ea',
-#    'link_hover': '#944117',
-#    'sidebar_header': '#303030',
-#    'sidebar_link': '#cc5a20',
-#    'font_size': '15px',
-#    'sidebar_width': '250px'
-#}
