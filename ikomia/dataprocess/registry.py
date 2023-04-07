@@ -97,9 +97,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 self._load_algorithm(name)
                 algo = self.create_instance(name, parameters)
             except Exception as e:
-                if no_hub:
-                    logger.error(e)
-                else:
+                logger.warning(e)
+                if not no_hub:
                     try:
                         logger.warning(f"Try installing {name} from Ikomia HUB...")
                         self.install_algorithm(name)
