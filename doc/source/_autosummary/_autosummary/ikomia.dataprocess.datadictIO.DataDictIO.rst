@@ -13,18 +13,18 @@ DataDictIO
 
    .. rubric:: Overridden methods
    .. autosummary::
-      ~DataDictIO.clearData
-      ~DataDictIO.isDataAvailable
+      ~DataDictIO.clear_data
+      ~DataDictIO.is_data_available
       ~DataDictIO.load
       ~DataDictIO.save
-      ~DataDictIO.toJson
-      ~DataDictIO.fromJson
+      ~DataDictIO.to_json
+      ~DataDictIO.from_json
 
    .. rubric:: Details
    .. automethod:: __init__
-   .. automethod:: clearData
-   .. automethod:: fromJson
-   .. automethod:: isDataAvailable
+   .. automethod:: clear_data
+   .. automethod:: from_json
+   .. automethod:: is_data_available
    .. automethod:: load
    .. automethod:: save
-   .. automethod:: toJson
+   .. automethod:: to_json
