@@ -64,11 +64,13 @@ CGraphicsOutput
    .. automethod:: clear_data
    .. automethod:: copy_static_data
    .. automethod:: from_json
+   .. automethod:: get_items
    .. automethod:: get_image_index
    .. automethod:: get_unit_element_count
    .. automethod:: is_data_available
    .. automethod:: load
    .. automethod:: save
+   .. automethod:: set_items
    .. automethod:: set_image_index
    .. automethod:: set_new_layer
    .. automethod:: to_json
