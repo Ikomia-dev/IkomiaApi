@@ -71,7 +71,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return platform_plugins
 
-    def create_algorithm(self, name, parameters=None, no_hub=False):
+    def create_algorithm(self, name:str, parameters=None, no_hub:bool=False):
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
@@ -94,11 +94,15 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             algo = self.create_instance(name, parameters)
         else:
             try:
-                self._load_algorithm(name)
+                algo_dir, language = self._get_algorithm_directory(name)
+                self._load_algorithm(name, algo_dir, language)
                 algo = self.create_instance(name, parameters)
             except Exception as e:
                 logger.warning(e)
-                if not no_hub:
+
+                # If algorithm is installed but not functional (algo_dir is not empty), it may be a plugin
+                # in developpement and we should not overwrite it with the Ikomia Hub version
+                if not no_hub and not algo_dir:
                     try:
                         logger.warning(f"Try installing {name} from Ikomia HUB...")
                         self.install_algorithm(name)
@@ -119,7 +123,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             if not info.internal:
                 self.update_algorithm(algo)
 
-    def update_algorithm(self, name):
+    def update_algorithm(self, name:str):
         """
         Launch update of the given algorithm. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
@@ -157,7 +161,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             self.install_algorithm(name, force=True)
 
-    def install_algorithm(self, name, force=False):
+    def install_algorithm(self, name:str, force:bool=False):
         """
         Launch algorithm installation from Ikomia HUB given its unique name.
 
@@ -177,7 +181,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Download package
         try:
-            plugin, language, plugin_dir = self._download_algorithm(name)
+            plugin, language, algo_dir = self._download_algorithm(name)
         except Exception as e:
             logger.error(f"Failed to install algorithm {name} for the following reason:")
             logger.error(e)
@@ -185,11 +189,11 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
-        utils.plugintools.install_requirements(plugin_dir)
-        self._check_installed_modules(plugin_dir)
+        utils.plugintools.install_requirements(algo_dir)
+        self._check_installed_modules(algo_dir)
 
         # Load it
-        self._load_algorithm(name, language)
+        self._load_algorithm(name, algo_dir, language)
         if language == utils.ApiLanguage.CPP and update:
             logger.warning(f"C++ algorithm {plugin['name']} can't be reloaded at runtime. "
                            f"It will be updated on next start.")
@@ -197,28 +201,30 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if config.main_cfg["registry"]["auto_completion"]:
             autocomplete.update_local_plugin(name)
 
-    def _load_algorithm(self, name, language=None):
-        if language is None:
-            # C++ or Python algorithm?
-            cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
-            python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
+    def _get_algorithm_directory(self, name:str):
+        # C++ or Python algorithm?
+        cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
+        python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
 
-            if os.path.isdir(cpp_algo_dir):
-                self.load_cpp_algorithm(cpp_algo_dir)
-            elif os.path.isdir(python_algo_dir):
-                self.load_python_algorithm(python_algo_dir)
-            else:
-                raise RuntimeError(f"Algorithm {name} is not installed.")
-        elif language == utils.ApiLanguage.PYTHON:
-            python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
-            self.load_python_algorithm(python_algo_dir)
+        if os.path.isdir(cpp_algo_dir):
+            return cpp_algo_dir, utils.ApiLanguage.CPP
+        elif os.path.isdir(python_algo_dir):
+            return python_algo_dir, utils.ApiLanguage.PYTHON
+        else:
+            return "", None
+
+    def _load_algorithm(self, name:str, directory:str, language:utils.ApiLanguage):
+        if not os.path.isdir(directory):
+            raise RuntimeError(f"Algorithm {name} is not installed.")
+
+        if language == utils.ApiLanguage.PYTHON:
+            self.load_python_algorithm(directory)
         elif language == utils.ApiLanguage.CPP:
-            cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
-            self.load_cpp_algorithm(plugin_dir)
+            self.load_cpp_algorithm(directory)
         else:
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
-    def _download_algorithm(self, name):
+    def _download_algorithm(self, name:str):
         available_plugins = self.get_online_algorithms()
 
         plugin_info = None
@@ -289,7 +295,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return True
 
-    def _check_installed_modules(self, plugin_dir):
+    def _check_installed_modules(self, algo_dir:str):
         modules = utils.plugintools.get_installed_modules()
 
         # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
@@ -308,7 +314,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                     utils.plugintools.uninstall_package(package)
 
         # Remove plugin specific blacklisted packages
-        needless_path = os.path.join(plugin_dir, "needless.txt")
+        needless_path = os.path.join(algo_dir, "needless.txt")
         if os.path.exists(needless_path):
             with open(needless_path, "r") as f:
                 for line in f:
