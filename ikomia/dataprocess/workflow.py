@@ -20,6 +20,7 @@ Ikomia algorithms or any of those available in Ikomia HUB.
 import os
 import logging
 import enum
+import datetime
 import ikomia
 from ikomia import utils, core, dataprocess, dataio
 from ikomia.core import config, task, IODataType
@@ -375,12 +376,16 @@ class Workflow(dataprocess.CWorkflow):
 
         if run_mode == Workflow.RunMode.SINGLE:
             super().run()
+            metrics = self.get_time_metrics()
+            total_time = metrics['total_time']
         else:
+            time_start = datetime.datetime.now()
             self._run_directory()
+            time_stop = datetime.datetime.now()
+            total_time = (time_stop - time_start).total_seconds() * 1000
             logger.info(f"Workflow output data are saved in {self.get_last_run_folder()}")
 
-        metrics = self.get_time_metrics()
-        logger.info(f"Workflow {self.name} run successfully in {metrics['total_time']} ms.")
+        logger.info(f"Workflow {self.name} run successfully in {total_time} ms.")
 
     def run_on(self, array=None, path="", url="", folder=""):
         """
