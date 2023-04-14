@@ -188,11 +188,16 @@ def _check_online_sync():
     try:
         algos = ikomia.ik_registry.get_online_algorithms()
     except:
+        # Connection to Ikomia HUB failed
         return True
 
-    ik_names_set = set(ik.online_names)
-    online_names_set = {algo["name"] for algo in algos}
-    return ik_names_set == online_names_set
+    try:
+        ik_names_set = set(ik.online_names)
+        online_names_set = {algo["name"] for algo in algos}
+        return ik_names_set == online_names_set
+    except:
+        # Auto-completion cache is in not complete
+        return False
 
 
 def _check_task_params(task):
