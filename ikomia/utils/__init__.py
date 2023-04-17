@@ -11,6 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import sys
+import os
+if sys.platform == "win32":
+    try:
+        dll_list = os.environ["PATH"]
+        dlls = dll_list.split(";")
+        for dll in dlls:
+            if dll:
+                os.add_dll_directory(dll)
+    except:
+        pass
+
 from ikomia.utils import iklogger
 
 try:
