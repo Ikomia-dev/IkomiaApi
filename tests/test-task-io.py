@@ -60,8 +60,6 @@ def test_cpp_base_class():
     assert type(elt_count) == int
     data_available = io.is_data_available()
     assert data_available is False
-    auto_input = io.is_auto_input()
-    assert auto_input is False
     composite = io.is_composite()
     assert composite is False
     assert io.displayable is True

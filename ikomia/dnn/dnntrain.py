@@ -59,16 +59,26 @@ class TrainProcess(CDnnTrainTask):
         Internal use only
         """
         monitoring.check_mlflow_server()
-        # Create experiment
-        date_time_obj = datetime.now()
-        time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
         mlflow.set_tracking_uri(config.main_cfg["mlflow"]["tracking_uri"])
+        # Create experiment
+        self._create_mlflow_experiment()
 
+    def _create_mlflow_experiment(self):
         try:
+            date_time_obj = datetime.now()
+            time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
             self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
         except Exception as e:
-            logger.warning("MLFlow can't be started so training metrics will not be monitor in it.")
+            self.experiment_id = -1
+            logger.warning("Unable to create MLFlow experiment. Please check for server startup errors.")
             logger.debug(e)
+
+    def _is_experiment_exists(self):
+        try:
+            current_exp = mlflow.get_experiment(str(self.experiment_id))
+            return current_exp.lifecycle_stage == "active"
+        except:
+            return False
 
     @staticmethod
     def _init_tensorboard():
@@ -89,6 +99,12 @@ class TrainProcess(CDnnTrainTask):
         mlflow.end_run()
 
         if self.experiment_id != -1:
+            # Check if experiment still exists
+            if not self._is_experiment_exists():
+                self._create_mlflow_experiment()
+                if self.experiment_id == -1:
+                    return
+
             mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
 
             # Log parameters

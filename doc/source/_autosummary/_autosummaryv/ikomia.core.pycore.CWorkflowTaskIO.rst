@@ -18,7 +18,6 @@ CWorkflowTaskIO
         ~CWorkflowTaskIO.copy_static_data
         ~CWorkflowTaskIO.from_json
         ~CWorkflowTaskIO.get_unit_element_count
-        ~CWorkflowTaskIO.is_auto_input
         ~CWorkflowTaskIO.is_composite
         ~CWorkflowTaskIO.is_data_available
         ~CWorkflowTaskIO.load
@@ -45,7 +44,6 @@ CWorkflowTaskIO
     .. automethod:: copy_static_data
     .. automethod:: from_json
     .. automethod:: get_unit_element_count
-    .. automethod:: is_auto_input
     .. automethod:: is_composite
     .. automethod:: is_data_available
     .. automethod:: load

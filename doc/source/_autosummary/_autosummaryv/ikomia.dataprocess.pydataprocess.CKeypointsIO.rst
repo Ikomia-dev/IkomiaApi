@@ -36,7 +36,6 @@ CKeypointsIO
     .. autosummary::
         ~CKeypointsIO.copy_static_data
         ~CKeypointsIO.get_unit_element_count
-        ~CKeypointsIO.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::

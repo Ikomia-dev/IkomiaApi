@@ -21,12 +21,14 @@ logger = logging.getLogger(__name__)
 
 
 class LoginSession:
-    def __init__(self, username, pwd):
+    def __init__(self, username=None, pwd=None):
         self.session = requests.Session()
         self.token = None
-        self.authenticate(username, pwd)
 
-    @http.http_except
+        if username is not None and pwd is not None:
+            self.authenticate(username, pwd)
+
+    @http.http_no_raise
     def authenticate(self, username, pwd):
         url = config.main_cfg["hub"]["url"] + "/api/rest-auth/login/"
         data = {"username": username, "password": pwd}

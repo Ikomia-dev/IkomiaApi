@@ -19,12 +19,15 @@ functions for each type of components: workflow, task, input and output (for deb
 import sys
 import os
 import logging
+import numpy
 import numpy as np
 from functools import singledispatch
 from ikomia import core, dataprocess
 import matplotlib
 import matplotlib.patches as patches
 from matplotlib.cbook import flatten
+from PIL import Image
+import cv2
 
 # Matplotlib backend choice
 _backend_name = None
@@ -68,7 +71,7 @@ def _to_plot_color(color):
 
 
 @singledispatch
-def display(obj, label="", fig=None, **kwargs):
+def display(obj, title: str = "", fig=None, **kwargs):
     """
     Display function for various workflow components.
     """
@@ -76,7 +79,7 @@ def display(obj, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CImageIO, title: str = "", fig=None, **kwargs):
     """
     Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
     """
@@ -92,7 +95,7 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
         child = False
         fig, ax = plt.subplots(1, 1)
 
-    ax.set_title(label)
+    ax.set_title(title)
     ax.imshow(obj.get_image())
     ax.axis("off")
 
@@ -102,7 +105,7 @@ def _(obj: dataprocess.CImageIO, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
     Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
     in a Matplotlib figure.
@@ -119,7 +122,7 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
         child = False
         fig, ax = plt.subplots(1, 1)
 
-    ax.set_title(label)
+    ax.set_title(title)
     items = obj.get_items()
     x_min = y_min = sys.maxsize
     x_max = y_max = 0
@@ -219,7 +222,7 @@ def _(obj: dataprocess.CGraphicsInput, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
     """
     Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
     in a Matplotlib figure.
@@ -236,7 +239,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
         child = False
         fig, ax = plt.subplots(1, 1)
 
-    ax.set_title(label)
+    ax.set_title(title)
     items = obj.get_items()
     x_min = y_min = sys.maxsize
     x_max = y_max = 0
@@ -336,7 +339,7 @@ def _(obj: dataprocess.CGraphicsOutput, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
     """
     Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
     as a table in a Matplotlib figure.
@@ -481,7 +484,7 @@ def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
                 else:
                     ax[i].pie(x=values[i], labels=labels[i], shadow=True)
 
-    fig.suptitle(label)
+    fig.suptitle(title)
 
     if not child:
         fig.tight_layout()
@@ -489,7 +492,7 @@ def _(obj: dataprocess.CNumericIO, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
+def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     """
     Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`)
     as a table in a Matplotlib figure.
@@ -553,7 +556,7 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
     table.set_fontsize(10)
 
     ax.axis("off")
-    fig.suptitle(label)
+    fig.suptitle(title)
 
     if not child:
         fig.tight_layout()
@@ -561,7 +564,84 @@ def _(obj: dataprocess.CBlobMeasureIO, label="", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
+def _(obj: dataprocess.CObjectDetectionIO, title: str = "", **kwargs):
+    """
+    Display object detection input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{title}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{title}:results")
+
+
+@display.register
+def _(obj: dataprocess.CInstanceSegmentationIO, title: str = "", **kwargs):
+    """
+    Display instance segmentation input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getMaskImageIO(), f"{title}:segmentation mask")
+    display(obj.getGraphicsIO(), f"{title}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{title}:results")
+
+
+@display.register
+def _(obj: dataprocess.CSemanticSegmentationIO, title: str = "", **kwargs):
+    """
+    Display semantic segmentation input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getMaskImageIO(), f"{title}:segmentation mask")
+    display(obj.getLegendImageIO(), f"{title}:legend")
+
+
+@display.register
+def _(obj: dataprocess.CKeypointsIO, title: str = "", **kwargs):
+    """
+    Display keypoints input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{title}:graphics objects")
+    display(obj.getBlobMeasureIO(), f"{title}:results")
+    display(obj.getDataStringIO(), f"{title}:keypoint links")
+
+
+@display.register
+def _(obj: dataprocess.CTextIO, title: str = "", **kwargs):
+    """
+    Display text input or output
+    (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    display(obj.getGraphicsIO(), f"{title}:graphics objects")
+    display(obj.getDataStringIO(), f"{title}:text fields")
+
+
+@display.register
+def _(obj: dataprocess.CWorkflowTask, title: str = "", **kwargs):
     """
     Display task inputs and outputs (:py:class:`~ikomia.core.pycore.CWorkflowTask`) in two separate Matplotlib figures.
     """
@@ -571,7 +651,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     inputs = obj.get_inputs()
     input_count = len(inputs)
     in_fig = plt.figure(num=1, constrained_layout=True)
-    in_fig.suptitle(label + " inputs")
+    in_fig.suptitle(title + " inputs")
     in_sub_figs = in_fig.subfigures(input_count, 1, wspace=0.07)
 
     if input_count == 1:
@@ -590,7 +670,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
     outputs = obj.get_outputs()
     output_count = len(outputs)
     out_fig = plt.figure(num=2, constrained_layout=True)
-    out_fig.suptitle(label + " outputs")
+    out_fig.suptitle(title + " outputs")
     out_sub_figs = out_fig.subfigures(output_count, 1, wspace=0.07)
 
     if output_count == 1:
@@ -609,7 +689,7 @@ def _(obj: dataprocess.CWorkflowTask, label="", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CWorkflow, label="", **kwargs):
+def _(obj: dataprocess.CWorkflow, title: str = "", **kwargs):
     """
     Display Graphviz representation of a workflow (:py:class:`~ikomia.dataprocess.pydataprocess.CWorkflow`).
     """
@@ -620,3 +700,28 @@ def _(obj: dataprocess.CWorkflow, label="", **kwargs):
     s = Source.from_file(path)
     s.view()
 
+
+@display.register
+def _(obj: numpy.ndarray, title: str = "", **kwargs):
+    if "viewer" not in kwargs or kwargs["viewer"] == "pillow":
+        _display_pillow(obj, title, **kwargs)
+    else:
+        _display_opencv(obj, title, **kwargs)
+
+
+def _display_pillow(image: numpy.ndarray, title: str = "", **kwargs):
+    try:
+        img_in = Image.fromarray(image)
+        img_in.show(title)
+    except Exception as e:
+        # Fallback to OpenCV
+        logger.debug(f"Unable to use Pillow for display: {e}")
+        _display_opencv(image, title, **kwargs)
+
+
+def _display_opencv(image: numpy.ndarray, title: str = "", **kwargs):
+    disp_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    cv2.imshow(title, disp_image)
+
+    if "wait_key" in kwargs:
+        cv2.waitKey(kwargs["wait_key"])

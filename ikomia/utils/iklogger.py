@@ -5,7 +5,7 @@ import logging
 # ----------------------------------
 # ----- Logging initialization -----
 # ----------------------------------
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("ikomia")
 logger.handlers = []
 logger.setLevel(logging.DEBUG)
 

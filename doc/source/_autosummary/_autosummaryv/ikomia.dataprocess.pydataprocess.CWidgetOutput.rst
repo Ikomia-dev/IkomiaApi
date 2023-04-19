@@ -24,7 +24,6 @@ CWidgetOutput
     .. autosummary::
         ~CWidgetOutput.copy_static_data
         ~CWidgetOutput.get_unit_element_count
-        ~CWidgetOutput.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
@@ -41,7 +40,6 @@ CWidgetOutput
    .. automethod:: clear_data
    .. automethod:: copy_static_data
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: set_widget
    

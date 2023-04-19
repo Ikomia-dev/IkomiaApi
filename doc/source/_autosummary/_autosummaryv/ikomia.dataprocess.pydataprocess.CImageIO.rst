@@ -36,10 +36,6 @@ CImageIO
         ~CImageIO.save
         ~CImageIO.to_json
         ~CImageIO.from_json
-
-    .. rubric:: Inherited methods
-    .. autosummary::
-        ~CImageIO.is_auto_input
    
     .. rubric:: Attributes
     .. autosummary::
@@ -63,7 +59,6 @@ CImageIO
    .. automethod:: get_image_with_graphics
    .. automethod:: get_overlay_mask
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: is_overlay_available
    .. automethod:: load

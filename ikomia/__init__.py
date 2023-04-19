@@ -37,7 +37,7 @@ if not utils.is_app_started():
 
 
 global ik_api_session
-ik_api_session = None
+ik_api_session = LoginSession()
 
 # --------------------------------------
 # ----- Ikomia algorithms registry -----
@@ -63,9 +63,4 @@ def authenticate():
     username = os.environ.get("IKOMIA_USER")
     pwd = os.environ.get("IKOMIA_PWD")
     global ik_api_session
-    # check if authentication has be made before
-    not_auth = ik_api_session is None or ik_api_session.token is None
-    ik_api_session = LoginSession(username, pwd)
-
-    if config.main_cfg["registry"]["auto_completion"]:
-        autocomplete.make_online_plugins(force=not_auth)
+    ik_api_session.authenticate(username, pwd)

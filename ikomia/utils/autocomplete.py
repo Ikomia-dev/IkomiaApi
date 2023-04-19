@@ -42,42 +42,68 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
 
     if task is not None:
         task_name = task.name
+    elif local:
+        task = ikomia.ik_registry.create_algorithm(task_name)
+
+    # Class definition
+    class_name = re.sub(forbid_char, "", task_name)
+    f.write(f"class {class_name}:\n")
 
     if local:
-        if task is None:
-            task = ikomia.ik_registry.create_algorithm(task_name)
-
+        # Algorithm already installed
         parameters = task.get_parameters()
+        if len(parameters) == 0:
+            # __new__() return task object instance
+            f.write("    def __new__(cls):\n")
+            f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+            f.write(f"        return algo\n\n")
+        else:
+            function_params = ""
+            params_dict = "{\n"
 
-    # Function definition
-    function_name = re.sub(forbid_char, "", task_name)
+            for param in parameters:
+                if keyword.iskeyword(param):
+                    param_var = f"{param}_"
+                else:
+                    param_var = param
 
-    if not local or len(parameters) == 0:
-        f.write(f"def {function_name}():\n")
-        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
-        f.write(f"    return algo\n\n")
+                if function_params:
+                    function_params += ", "
+
+                # Compute _new_() parameters
+                param_var = re.sub(forbid_char, "", param_var)
+                param_value = str(parameters[param]).replace("\\", "/")
+                function_params += f"{param_var}: str=\"{param_value}\""
+                # Compute parameters dict
+                params_dict += f"            \"{param}\": {param_var},\n"
+                # Static class variable for names
+                f.write(f"    {param_var} = \"{param_var}\"\n")
+
+            # __new__() return task object instance
+            params_dict += "        }"
+            f.write(f"\n    def __new__(cls, {function_params}):\n")
+            f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+            f.write(f"        algo.set_parameters({params_dict})\n")
+            f.write(f"        return algo\n\n")
     else:
-        function_params = ""
-        params_dict = "{\n"
+        # Algorithm from Ikomia Hub
+        # __new__() return task object instance
+        f.write("    def __new__(cls, **kwargs):\n")
+        f.write(f"        algo = ikomia.ik_registry.create_algorithm(\"{task_name}\", None)\n")
+        f.write("        if algo is not None:\n")
+        f.write("            params = {}\n")
+        f.write("            for arg in kwargs:\n")
+        f.write("                if isinstance(kwargs[arg], str):\n")
+        f.write("                    params[arg] = kwargs[arg]\n")
+        f.write("                else:\n")
+        f.write("                    params[arg] = str(kwargs[arg])\n\n")
+        f.write("            algo.set_parameters(params)\n\n")
+        f.write(f"        return algo\n\n")
 
-        for param in parameters:
-            if keyword.iskeyword(param):
-                param_var = f"{param}_"
-            else:
-                param_var = param
-
-            if function_params:
-                function_params += ", "
-
-            param_var = re.sub(forbid_char, "", param_var)
-            function_params += f"{param_var}: str=\"{str(parameters[param])}\""
-            params_dict += f"        \"{param}\": {param_var},\n"
-
-        params_dict += "    }"
-        f.write(f"def {function_name}({function_params}):\n")
-        f.write(f"    algo = ikomia.ik_registry.create_algorithm(\"{function_name}\", None)\n")
-        f.write(f"    algo.set_parameters({params_dict})\n")
-        f.write(f"    return algo\n\n")
+    # name() return task name
+    f.write("    @staticmethod\n")
+    f.write("    def name():\n")
+    f.write(f"        return \"{task_name}\"\n\n")
 
 
 def _generate_python_file(folder):
@@ -102,36 +128,76 @@ def _generate_python_file(folder):
         importlib.reload(ikomia.utils.ik)
 
 
+def _is_valid_python_plugin_folder(name:str, folder_path:str):
+    main_python_file = os.path.join(folder_path, f"{name}.py")
+    return os.path.exists(main_python_file)
+
+
+def _is_valid_cpp_plugin_folder(name:str, folder_path:str):
+    for name in os.listdir(folder_path):
+        # Just check if at least one shared library exists -> maybe not sufficient...
+        filename, ext = os.path.splitext(name)
+        if ".so" in ext or ".dll" in ext:
+            return True
+
+    return False
+
+
 def _check_local_sync():
     if not _ik_auto_complete:
         return False
 
-    ik_names = dir(ik)
-    names = ikomia.ik_registry.get_algorithms()
+    # Get local algorithm names from plugin directories
+    local_folder_names = set()
+    python_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "Python")
+    cpp_plugin_folder = os.path.join(ikomia.ik_registry.get_plugins_directory(), "C++")
 
-    for name in names:
-        if name not in ik_names:
-            return False
+    for name in os.listdir(python_plugin_folder):
+        folder_path = os.path.join(python_plugin_folder, name)
+        if os.path.isdir(folder_path) and _is_valid_python_plugin_folder(name, folder_path):
+            local_folder_names.add(name)
 
-    return True
+    for name in os.listdir(cpp_plugin_folder):
+        folder_path = os.path.join(cpp_plugin_folder, name)
+        if os.path.isdir(folder_path) and _is_valid_cpp_plugin_folder(name, folder_path):
+            local_folder_names.add(name)
+
+    # Get auto-completion local list
+    ik_names_set = set(ik.local_names)
+
+    # Check changes
+    if ik_names_set == local_folder_names:
+        return True
+    else:
+        # Local plugins has changed
+        diff_local = local_folder_names - ik_names_set
+
+        # Try to load them -> auto-completion has to be updated if at least one is valid
+        for name in diff_local:
+            algo = ikomia.ik_registry.create_algorithm(name=name, no_hub=True)
+            if algo is not None:
+                return False
+
+        return True
 
 
 def _check_online_sync():
     if not _ik_auto_complete:
         return False
 
-    ik_names = dir(ik)
-
     try:
         algos = ikomia.ik_registry.get_online_algorithms()
     except:
+        # Connection to Ikomia HUB failed
         return True
 
-    for algo in algos:
-        if algo["name"] not in ik_names:
-            return False
-
-    return True
+    try:
+        ik_names_set = set(ik.online_names)
+        online_names_set = {algo["name"] for algo in algos}
+        return ik_names_set == online_names_set
+    except:
+        # Auto-completion cache is in not complete
+        return False
 
 
 def _check_task_params(task):
@@ -139,27 +205,19 @@ def _check_task_params(task):
         return False
 
     params = task.get_parameters()
-    ik_content = inspect.getsource(ik)
-    regex_str = f"def {task.name}" + "\(([^\)]+)"
-    result = re.search(regex_str, ik_content)
 
-    if result is None:
-        return len(params) == 0
-    else:
-        params_dict_str = result.group(1)
-        params_groups = params_dict_str.split(", ")
-        param_keys = []
+    try:
+        ik_class = getattr(ik, task.name)
+    except:
+        return False
 
-        for group in params_groups:
-            result = re.search("(.+):", group)
-            if result is not None:
-                param_keys.append(result.group(1))
+    ik_class_vars = vars(ik_class)
 
-        for key in param_keys:
-            if key not in params.keys():
-                return False
+    for param_key in params:
+        if param_key not in ik_class_vars:
+            return False
 
-        return True
+    return True
 
 
 def _has_local_cache():
@@ -203,6 +261,14 @@ def make_local_plugins(force=False):
             return
 
     names = ikomia.ik_registry.get_algorithms()
+
+    # Write local names list declaration
+    f.write("local_names = [\n")
+    for name in names:
+        f.write(f"    '{name}',\n")
+    f.write(f"]\n\n")
+
+    # Write instanciation functions
     for name in names:
         try:
             _write_auto_complete(f, task_name=name, local=True)
@@ -228,8 +294,10 @@ def update_local_plugin(name):
     if info.internal:
         return
     elif not _check_task_params(task):
-        # TODO change only function definition instead of rebuild all
+        # TODO change only function definition instead of rebuild all?
         make_local_plugins(force=True)
+        # TODO remove function definition instead of rebuild all?
+        make_online_plugins(force=True)
     elif not _check_local_sync():
         cache_name = "autocomplete_local.cache"
 
@@ -240,13 +308,16 @@ def update_local_plugin(name):
         except Exception:
             try:
                 folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
-                cache_file_path2 = os.path.join(local_site, cache_name)
+                cache_file_path2 = os.path.join(folder, cache_name)
                 f = open(cache_file_path2, "a+")
             except Exception:
                 logger.warning("Ikomia auto-completion is disable: no update.")
 
         try:
             _write_auto_complete(f, task=task, local=True)
+            ik.local_names.append(task.name)
+            # TODO remove function definition instead of rebuild all?
+            make_online_plugins(force=True)
             f.close()
             _generate_python_file(folder)
             logger.info("Ikomia auto-completion updated for installed plugin.")
@@ -256,10 +327,7 @@ def update_local_plugin(name):
 
 
 def make_online_plugins(force=False):
-    if _check_online_sync():
-        return
-
-    if not force and _has_online_cache():
+    if not force and _has_online_cache() and _check_online_sync():
         return
 
     if not ikomia.ik_registry.is_all_loaded():
@@ -287,6 +355,13 @@ def make_online_plugins(force=False):
         logger.debug(e)
         return
 
+    # Write online names list declaration
+    f.write("online_names = [\n")
+    for algo in online_algos:
+        f.write(f"    '{algo['name']}',\n")
+    f.write(f"]\n\n")
+
+    # Write instanciation functions
     local_names = ikomia.ik_registry.get_algorithms()
     for algo in online_algos:
         if algo["name"] not in local_names:

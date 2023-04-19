@@ -40,7 +40,6 @@ CGraphicsOutput
     .. autosummary::
         ~CGraphicsOutput.copy_static_data
         ~CGraphicsOutput.get_unit_element_count
-        ~CGraphicsOutput.is_auto_input
 
     .. rubric:: Attributes
     .. autosummary::
@@ -65,12 +64,13 @@ CGraphicsOutput
    .. automethod:: clear_data
    .. automethod:: copy_static_data
    .. automethod:: from_json
+   .. automethod:: get_items
    .. automethod:: get_image_index
    .. automethod:: get_unit_element_count
-   .. automethod:: is_auto_input
    .. automethod:: is_data_available
    .. automethod:: load
    .. automethod:: save
+   .. automethod:: set_items
    .. automethod:: set_image_index
    .. automethod:: set_new_layer
    .. automethod:: to_json

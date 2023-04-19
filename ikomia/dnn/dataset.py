@@ -23,9 +23,17 @@ from PIL import Image
 from collections import defaultdict
 import xml.etree.ElementTree as ET
 import numpy as np
-from pycocotools.coco import maskUtils
 import cv2
 import random
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+    from pycocotools.coco import maskUtils
+except:
+    logger.info("Pycocotools package is not installed, some dataset loader may not work properly.")
+
 
 _image_extensions = [".jpeg", ".jpg", ".png", ".bmp", ".tiff", ".tif", ".dib", ".jpe", ".jp2", ".webp", ".pbm", ".pgm",
                      ".ppm", ".pxm", ".pnm", ".sr", ".ras", ".exr", ".hdr", ".pic"]
@@ -507,4 +515,4 @@ def polygon_to_mask(polygons, width, height):
         graphics.append(graphics_poly)
 
     conversion = core.CGraphicsConversion(width, height)
-    return conversion.graphicsToBinaryMask(graphics)
+    return conversion.graphics_to_binary_mask(graphics)
