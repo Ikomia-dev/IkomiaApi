@@ -13,10 +13,10 @@ CInstanceSegmentationIO
     .. rubric:: Methods
     .. autosummary::
         ~CInstanceSegmentationIO.__init__
-        ~CInstanceSegmentationIO.add_instance
-        ~CInstanceSegmentationIO.get_instance_count
-        ~CInstanceSegmentationIO.get_instance
-        ~CInstanceSegmentationIO.get_instances
+        ~CInstanceSegmentationIO.add_object
+        ~CInstanceSegmentationIO.get_object_count
+        ~CInstanceSegmentationIO.get_object
+        ~CInstanceSegmentationIO.get_objects
         ~CInstanceSegmentationIO.get_merge_mask
         ~CInstanceSegmentationIO.init
 
@@ -46,11 +46,11 @@ CInstanceSegmentationIO
 
     .. rubric:: Details
     .. automethod:: __init__
-    .. automethod:: add_instance
+    .. automethod:: add_object
     .. automethod:: clear_data
-    .. automethod:: get_instance_count
-    .. automethod:: get_instance
-    .. automethod:: get_instances
+    .. automethod:: get_object_count
+    .. automethod:: get_object
+    .. automethod:: get_objects
     .. automethod:: get_merge_mask
     .. automethod:: init
     .. automethod:: is_data_available

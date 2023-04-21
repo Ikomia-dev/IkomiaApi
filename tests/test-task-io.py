@@ -713,29 +713,29 @@ def test_cpp_instance_segmentation_io():
     h1 = 80
     mask1 = np.zeros((h, w))
     mask1[y1:y1 + h1, x1:x1 + w1] = 1
-    io.add_instance(0, 0, 0, "Car", 0.86, x1, y1, w1, h1, mask1, [255, 0, 100, 255])
+    io.add_object(0, 0, 0, "Car", 0.86, x1, y1, w1, h1, mask1, [255, 0, 100, 255])
     x2 = 125
     y2 = 160
     w2 = 130
     h2 = 90
     mask2 = np.zeros((h, w))
     mask2[y2:y2 + h2, x2:x2 + w2] = 1
-    io.add_instance(1, 0, 1, "Bus", 0.92, x2, y2, w2, h2, mask2, [100, 0, 255, 255])
+    io.add_object(1, 0, 1, "Bus", 0.92, x2, y2, w2, h2, mask2, [100, 0, 255, 255])
 
     assert io.is_data_available()
-    assert io.get_instance_count() == 2
-    assert len(io.get_instances()) == 2
-    instance = io.get_instance(0)
-    assert type(instance) == dataprocess.CInstanceSegmentation
-    assert instance.id == 0
-    assert instance.type == 0
-    assert instance.class_index == 0
-    assert instance.label == "Car"
-    assert instance.confidence == 0.86
-    assert instance.box == [x1, y1, w1, h1]
-    assert instance.mask is not None
-    logger.info(f"Mask shape: {instance.mask.shape}")
-    assert instance.color == [255, 0, 100, 255]
+    assert io.get_object_count() == 2
+    assert len(io.get_objects()) == 2
+    obj = io.get_object(0)
+    assert type(obj) == dataprocess.CInstanceSegmentation
+    assert obj.id == 0
+    assert obj.type == 0
+    assert obj.class_index == 0
+    assert obj.label == "Car"
+    assert obj.confidence == 0.86
+    assert obj.box == [x1, y1, w1, h1]
+    assert obj.mask is not None
+    logger.info(f"Mask shape: {obj.mask.shape}")
+    assert obj.color == [255, 0, 100, 255]
     assert io.get_merge_mask() is not None
 
     # Export
