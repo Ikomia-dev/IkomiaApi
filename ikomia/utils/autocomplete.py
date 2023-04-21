@@ -77,7 +77,7 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
                 # Compute parameters dict
                 params_dict += f"            \"{param}\": {param_var},\n"
                 # Static class variable for names
-                f.write(f"    {param_var} = \"{param_var}\"\n")
+                f.write(f"    {param_var} = \"{param_value}\"\n")
 
             # __new__() return task object instance
             params_dict += "        }"
