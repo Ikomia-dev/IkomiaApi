@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-Module providing dataset loaders from different source format.
+Module providing dataset loaders from various source formats.
 """
 
 import os
