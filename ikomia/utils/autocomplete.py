@@ -77,7 +77,7 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
                 # Compute parameters dict
                 params_dict += f"            \"{param}\": {param_var},\n"
                 # Static class variable for names
-                f.write(f"    {param_var} = \"{param_var}\"\n")
+                f.write(f"    {param_var} = \"{param_value}\"\n")
 
             # __new__() return task object instance
             params_dict += "        }"
@@ -188,11 +188,16 @@ def _check_online_sync():
     try:
         algos = ikomia.ik_registry.get_online_algorithms()
     except:
+        # Connection to Ikomia HUB failed
         return True
 
-    ik_names_set = set(ik.online_names)
-    online_names_set = {algo["name"] for algo in algos}
-    return ik_names_set == online_names_set
+    try:
+        ik_names_set = set(ik.online_names)
+        online_names_set = {algo["name"] for algo in algos}
+        return ik_names_set == online_names_set
+    except:
+        # Auto-completion cache is in not complete
+        return False
 
 
 def _check_task_params(task):

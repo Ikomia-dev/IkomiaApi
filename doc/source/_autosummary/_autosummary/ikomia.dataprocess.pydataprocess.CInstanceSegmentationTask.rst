@@ -14,7 +14,7 @@ CInstanceSegmentationTask
     .. rubric:: Methods
     .. autosummary::
         ~CInstanceSegmentationTask.__init__
-        ~CInstanceSegmentationTask.add_instance
+        ~CInstanceSegmentationTask.add_object
         ~CInstanceSegmentationTask.get_names
         ~CInstanceSegmentationTask.get_results
         ~CInstanceSegmentationTask.get_image_with_graphics
@@ -82,7 +82,7 @@ CInstanceSegmentationTask
 
     .. rubric:: Details
     .. automethod:: __init__
-    .. automethod:: add_instance
+    .. automethod:: add_object
     .. automethod:: get_names
     .. automethod:: get_results
     .. automethod:: get_image_with_graphics
