@@ -174,7 +174,7 @@ def _check_local_sync():
 
         # Try to load them -> auto-completion has to be updated if at least one is valid
         for name in diff_local:
-            algo = ikomia.ik_registry.create_algorithm(name=name, no_hub=True)
+            algo = ikomia.ik_registry.create_algorithm(name=name, hub=False)
             if algo is not None:
                 return False
 
