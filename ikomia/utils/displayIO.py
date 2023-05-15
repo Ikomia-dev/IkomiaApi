@@ -112,7 +112,7 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
     _check_backend()
 
-    if not obj.is_data_available:
+    if not obj.is_data_available():
         return
 
     if fig is not None:
@@ -492,6 +492,62 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
 
 @display.register
+def _(obj: dataprocess.CDataStringIO, title: str = "", fig=None, **kwargs):
+    """
+    Display string values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
+    as a table in a Matplotlib figure.
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    if fig is None:
+        child = False
+    else:
+        child = True
+
+    labels = obj.get_all_label_list()
+    col_labels = obj.get_all_header_labels()
+    values = obj.get_all_value_list()
+    out_type = obj.get_output_type()
+
+    if out_type == dataprocess.NumericOutputType.TABLE:
+        if fig is None:
+            fig, ax = plt.subplots(1, 1)
+        else:
+            ax = fig.subplots(1, 1)
+
+        cell_length_limit = 50
+        rows_count = len(values[0])
+        cols_count = len(values)
+        np_values = np.asarray(values)
+        np_values = np_values.reshape((rows_count, cols_count))
+
+        if len(labels) == 1:
+            row_labels = list(flatten(labels))
+        else:
+            row_labels = labels[0]
+
+        for i, label in enumerate(row_labels):
+            label = (label[:cell_length_limit] + '..') if len(label) > cell_length_limit else label
+            row_labels[i] = label
+
+        col_width = [1 / (cols_count + 1)] * cols_count
+        table = ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels,
+                         cellLoc="left", loc="upper right", colWidths=col_width)
+        table.auto_set_font_size(False)
+        table.set_fontsize(10)
+        ax.axis("off")
+
+    fig.suptitle(title)
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
+
+
+@display.register
 def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     """
     Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`)
@@ -574,8 +630,8 @@ def _(obj: dataprocess.CObjectDetectionIO, title: str = "", **kwargs):
     if not obj.is_data_available():
         return
 
-    display(obj.getGraphicsIO(), f"{title}:graphics objects")
-    display(obj.getBlobMeasureIO(), f"{title}:results")
+    display(obj.get_graphics_io(), f"{title}:graphics objects")
+    display(obj.get_blob_measure_io(), f"{title}:results")
 
 
 @display.register
@@ -589,9 +645,9 @@ def _(obj: dataprocess.CInstanceSegmentationIO, title: str = "", **kwargs):
     if not obj.is_data_available():
         return
 
-    display(obj.getMaskImageIO(), f"{title}:segmentation mask")
-    display(obj.getGraphicsIO(), f"{title}:graphics objects")
-    display(obj.getBlobMeasureIO(), f"{title}:results")
+    display(obj.get_merge_mask(), f"{title}:segmentation mask")
+    display(obj.get_graphics_io(), f"{title}:graphics objects")
+    display(obj.get_blob_measure_io(), f"{title}:results")
 
 
 @display.register
@@ -605,8 +661,8 @@ def _(obj: dataprocess.CSemanticSegmentationIO, title: str = "", **kwargs):
     if not obj.is_data_available():
         return
 
-    display(obj.getMaskImageIO(), f"{title}:segmentation mask")
-    display(obj.getLegendImageIO(), f"{title}:legend")
+    display(obj.get_mask(), f"{title}:segmentation mask")
+    display(obj.get_legend(), f"{title}:legend")
 
 
 @display.register
@@ -620,9 +676,9 @@ def _(obj: dataprocess.CKeypointsIO, title: str = "", **kwargs):
     if not obj.is_data_available():
         return
 
-    display(obj.getGraphicsIO(), f"{title}:graphics objects")
-    display(obj.getBlobMeasureIO(), f"{title}:results")
-    display(obj.getDataStringIO(), f"{title}:keypoint links")
+    display(obj.get_graphics_io(), f"{title}:graphics objects")
+    display(obj.get_blob_measure_io(), f"{title}:results")
+    display(obj.get_data_string_io(), f"{title}:keypoint links")
 
 
 @display.register
@@ -636,8 +692,8 @@ def _(obj: dataprocess.CTextIO, title: str = "", **kwargs):
     if not obj.is_data_available():
         return
 
-    display(obj.getGraphicsIO(), f"{title}:graphics objects")
-    display(obj.getDataStringIO(), f"{title}:text fields")
+    display(obj.get_graphics_io(), f"{title}:graphics objects")
+    display(obj.get_data_string_io(), f"{title}:text fields")
 
 
 @display.register
