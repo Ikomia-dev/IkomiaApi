@@ -1,14 +1,13 @@
-API Reference
-=============
+# API Reference
 
 Ikomia API is divided into 4 main modules, each one may contain sub-modules. A large part of this API is based on
 C++ bindings, those classes are easily identifiable since we apply a naming convention where all C++ classes begin with
 the C capital letter.
 
+```{eval-rst}
 .. rubric:: Utils module
 .. autosummary::
     :toctree: _autosummary
-    :recursive:
 
     ikomia.utils.pyutils
     ikomia.utils.pyqtutils
@@ -43,3 +42,4 @@ the C capital letter.
     ikomia.dnn.dataset
     ikomia.dnn.torch.models
     ikomia.dnn.torch.datasetmapper
+```

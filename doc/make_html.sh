@@ -1,3 +1,3 @@
-LD_LIBRARY_PATH="/usr/local/lib:$(pwd)/../../IkomiaCore/Build/lib:$(pwd)/../../gmic/build"
+LD_LIBRARY_PATH="/usr/local/lib:$(pwd)/../../IkomiaCore/Build/lib:$(pwd)/../../gmic/build:$(pwd)/../../qwt/build/lib"
 export LD_LIBRARY_PATH
-make html
+sphinx-autobuild source build/html

@@ -1,0 +1,6 @@
+furo
+myst-parser
+sphinx-inline-tabs
+sphinx-autobuild
+sphinx-copybutton
+sphinxcontrib-mermaid

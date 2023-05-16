@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Ikomia API'
-copyright = '2020, Ikomia SAS'
+copyright = '2023, Ikomia SAS'
 author = 'Ludovic Barusseau'
 
 # The full version, including alpha/beta/rc tags
@@ -35,7 +35,10 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
-    'sphinx_rtd_theme',
+    'sphinx_copybutton',
+    'sphinx_inline_tabs',
+    'myst_parser',
+    'sphinxcontrib.mermaid'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,15 +55,14 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['ikomia.css', ]
+# html_css_files = ['ikomia.css', ]
 
 html_logo = '_static/app.png'
 
@@ -68,45 +70,13 @@ html_logo = '_static/app.png'
 autosummary_generate = False
 
 # Style customization - Alabaster
-#html_theme_options = {
-#    'description': 'A shared vision of research',
-#    'fixed_sidebar': 'true',
-#    'logo': 'app.png',
-#    'logo_name': 'true',
-#    'logo_text_align': 'center',
-#    'github_button': 'true',
-#    'github_user': 'Ikomia-dev',
-#    'github_repo': '/',
-#    'extra_nav_links': {
-#        'Website': 'https://ikomia.com',
-#        'Blog': 'https://blog.ikomia.com'},
-#    'show_powered_by': 'false',
-#    'show_relbars': 'true',
-
-    #colors
-#    'link': '#cc5a20',
-#    'pre_bg': '#fcf0ea',
-#    'link_hover': '#944117',
-#    'sidebar_header': '#303030',
-#    'sidebar_link': '#cc5a20',
-#    'font_size': '15px',
-#    'sidebar_width': '250px'
-#}
-
-# Style customization - ReadTHeDocs
 html_theme_options = {
-    #'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
-    #'analytics_anonymize_ip': False,
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'both',
-    'style_external_links': False,
-    'vcs_pageview_mode': 'blob',
-    'style_nav_header_background': '#150E83',
-    # Toc options
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 3,
-    'includehidden': True,
-    'titles_only': False
+    "light_css_variables": {
+        # "color-sidebar-caption-text": "#CC5A20",
+        # "font-stack": "_static/Avenue Mono.woff2", # Regular text
+        # "font-stack--monospace": "_static/n27-regular-webfont.ttf", # Code blocks + inline code
+    },
 }
+
+pygments_style = "friendly"
+pygments_dark_style = "native"
