@@ -35,7 +35,6 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
-    'sphinx_rtd_theme',
     'sphinx_copybutton',
     'sphinx_inline_tabs',
     'myst_parser',
@@ -63,7 +62,7 @@ html_theme = 'furo'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-#html_css_files = ['ikomia.css', ]
+# html_css_files = ['ikomia.css', ]
 
 html_logo = '_static/app.png'
 
@@ -73,9 +72,9 @@ autosummary_generate = False
 # Style customization - Alabaster
 html_theme_options = {
     "light_css_variables": {
-        #"color-sidebar-caption-text": "#CC5A20",
-        #"font-stack": "_static/Avenue Mono.woff2", # Regular text
-        #"font-stack--monospace": "_static/n27-regular-webfont.ttf", # Code blocks + inline code
+        # "color-sidebar-caption-text": "#CC5A20",
+        # "font-stack": "_static/Avenue Mono.woff2", # Regular text
+        # "font-stack--monospace": "_static/n27-regular-webfont.ttf", # Code blocks + inline code
     },
 }
 

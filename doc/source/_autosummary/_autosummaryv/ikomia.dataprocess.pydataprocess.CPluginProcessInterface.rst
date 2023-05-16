@@ -16,7 +16,7 @@ CPluginProcessInterface
       ~CPluginProcessInterface.get_process_factory
       ~CPluginProcessInterface.get_widget_factory
 
-
+..
    See this :doc:`example<../../hello_world_plugin_interface>` for implementation details.
 
 
