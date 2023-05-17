@@ -10,6 +10,13 @@ save_and_load_workflow
 
 By the end of this guide, you will have a deeper understanding of how to use the Ikomia API to create complex image processing workflows.
 
+```{important}
+If you use a notebook (Jupyter, Jupyter Lab or Google Colab), please copy/paste this code snippet for a better display of images.
+```
+```python
+from PIL import ImageShow
+ImageShow.register(ImageShow.IPythonViewer(), 0)
+```
 ## Step-by-step explanations
 
 Code example :

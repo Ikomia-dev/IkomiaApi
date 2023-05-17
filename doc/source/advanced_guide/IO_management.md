@@ -13,6 +13,13 @@ wf = Workflow()
 
 yolov7 = wf.add_task(ik.infer_yolo_v7(), auto_connect=True)
 ```
+```{important}
+If you use a notebook (Jupyter, Jupyter Lab or Google Colab), please copy/paste this code snippet for a better display of images.
+```
+```python
+from PIL import ImageShow
+ImageShow.register(ImageShow.IPythonViewer(), 0)
+```
 ## `Print()` is your best friend
 
 ### Inputs
@@ -271,11 +278,10 @@ from ikomia.utils.displayIO import display
 
 wf = Workflow()
 
-pose = wf.add_task(ik.infer_detectron2_keypoints(), auto_connect=True)
+pose = wf.add_task(ik.infer_mmlab_pose_estimation(), auto_connect=True)
 
-# wf.run_on(path="path/to/your/image.png")
 wf.run_on(url="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman.jpg")
 
 display(pose.get_image_with_graphics())
 ```
-![](../_static/display_pose.png)
+![](../_static/img_fireman_pose.png)

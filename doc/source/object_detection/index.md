@@ -21,6 +21,13 @@ In this tutorial, our goal is to detect and count airplanes from aerial images s
 # Set path to your annotated dataset
 dataset_path = "/path/to/aerial"
 ```
+```{important}
+If you use a notebook (Jupyter, Jupyter Lab or Google Colab), please copy/paste this code snippet for a better display of images.
+```
+```python
+from PIL import ImageShow
+ImageShow.register(ImageShow.IPythonViewer(), 0)
+```
 ## Test Object Detection Algorithms
 
 There are many detection algorithms, you can find some of the best ones in the Ikomia HUB.
@@ -71,7 +78,7 @@ wf = Workflow()
 # Add a dataset loader to load your custom data and annotations
 dataset = wf.add_task(ik.dataset_yolo(
     dataset_folder=dataset_path+"/train", 
-    class_file_path=dataset_path+"/train/_darknet.labels"
+    class_file=dataset_path+"/train/_darknet.labels"
     )
 )
 
@@ -108,7 +115,7 @@ wf = Workflow()
 
 # Add an Object Detection algorithm  
 yolo = wf.add_task(ik.infer_yolo_v7(
-        model_name_or_path="output_folder/[timestamp]/weights/best.pt", 
+        model_path="output_folder/[timestamp]/weights/best.pt", 
         conf_thres="0.4"
     ), 
     auto_connect=True)
