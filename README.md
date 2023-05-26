@@ -63,7 +63,7 @@ No effort, just choose what you want and Ikomia runs everything in a few lines o
 <!-- USAGE EXAMPLES -->
 ### Usage 1 : Object Detection Example
 
-When you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
+With Ikomia, when you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
 
 ``` python
 from ikomia.dataprocess.workflow import Workflow
@@ -119,7 +119,7 @@ display(yolov7.get_image_with_graphics())
 
 ### Usage with the `ik` auto-completion system
 
-`ik` is an auto-completion system designed to help developers to find available algorithms in [Ikomia HUB](https://github.com/Ikomia-hub). See the documentation for more explanations [here](https://ikomia-dev.github.io/python-api-documentation/).
+`ik` is an auto-completion system designed to help developers to find available algorithms in [Ikomia HUB](https://github.com/Ikomia-hub). See the documentation for more explanations [here](https://ikomia-dev.github.io/python-api-documentation/getting_started.html).
 
 ```python
 from ikomia.dataprocess.workflow import Workflow
