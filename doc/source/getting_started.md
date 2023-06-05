@@ -30,7 +30,6 @@ ImageShow.register(ImageShow.IPythonViewer(), 0)
 ```
 ___
 ## Basic usage : workflow with 1 algorithm
-___
 
 In this example, we simply use the **Canny Edge Detector** from OpenCV.<br>
 
@@ -81,9 +80,8 @@ Source image               |  Canny Edge Detector
 :-------------------------:|:-------------------------:
 ![](_static/img_work.jpg)  |  ![](_static/img_canny.jpg)
 
-___
+
 ## Basic usage : workflow with 1 algorithm from Ikomia HUB
-___
 
 In this example, we use an algorithm from Ikomia HUB.<br>
 Just run your workflow and at runtime, it will automagically download and install all algorithms (if not already installed) on your machine.
@@ -134,9 +132,8 @@ Source image               |  YOLO v7 Object Detector
 :-------------------------:|:-------------------------:
 ![](_static/img_work.jpg)  |  ![](_static/img_yolo.jpg)
 
-___
+
 ## Advanced usage : workflow with 1 algorithm + custom settings
-___
 
 ### Workflow Structure
 
@@ -211,9 +208,9 @@ For a step by step explanation, see [here](advanced_guide/index).
 Source image                 |  Canny Edge Detector
 :---------------------------:|:-------------------------:
 ![](_static/img_work.jpg)  |  ![](_static/img_canny_thres.jpg)
-___
+
+
 ## Advanced usage : workflow with 2 algorithms + custom settings
-___
 
 ### Workflow Structure
 
@@ -264,9 +261,8 @@ Kornia Face Detector       |  Blurred faces
 :-------------------------:|:-------------------------:
 ![](_static/img_face.jpg)  |  ![](_static/img_blur.jpg)
 
-___
+
 ## Advanced usage : export results to JSON
-___
 
 ### Code
 
@@ -318,7 +314,6 @@ For a step by step explanation, see [here](advanced_guide/index).
 ```
 ___
 ## Advanced usage : export workflow to JSON
-___
 
 ### Code
 
@@ -372,9 +367,9 @@ Source image               |  YOLO v7 Object Detector
 :-------------------------:|:-------------------------:
 ![](_static/img_work.jpg)  |  ![](_static/img_yolo.jpg)
 
-___
+
 ## Conclusion
-___
+
 Congratulations! You've reached the end of the quickstart guide.
 You should now have a good understanding of how to use Ikomia API to create, customize and run workflows with various algorithms.
 Feel free to explore more features and create your own amazing workflows!
