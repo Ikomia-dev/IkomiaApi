@@ -17,8 +17,8 @@
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/stargazers">
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
     </a>
-    <a href="https://ikomia.com/en/computer-vision-api/">
-        <img alt="Website" src="https://img.shields.io/website/http/ikomia.com/en.svg?down_color=red&down_message=offline&up_message=online">
+    <a href="https://www.ikomia.ai/api/">
+        <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
         <img alt="Python" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
