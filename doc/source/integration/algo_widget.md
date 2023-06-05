@@ -1,0 +1,1 @@
+# How to make a nice widget for your algorithm

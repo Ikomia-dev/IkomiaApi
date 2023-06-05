@@ -51,6 +51,7 @@ getting_started
 :hidden:
 
 advanced_guide/index
+integration/index
 ```
 
 ```{toctree}
