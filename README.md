@@ -17,8 +17,8 @@
     <a href="https://github.com/Ikomia-dev/IkomiaAPI/stargazers">
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
     </a>
-    <a href="https://ikomia.com/en/computer-vision-api/">
-        <img alt="Website" src="https://img.shields.io/website/http/ikomia.com/en.svg?down_color=red&down_message=offline&up_message=online">
+    <a href="https://www.ikomia.ai/api/">
+        <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
         <img alt="Python" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
@@ -33,8 +33,8 @@
         <img alt="GitHub tags" src="https://img.shields.io/github/v/release/Ikomia-dev/IkomiaAPI.svg?color=red">
     </a>
     <br>
-    <a href="https://join.slack.com/t/ikomia-community/shared_invite/zt-1ie9k8lw7-IsBaJ~nhGZyc0QfkYO3olA">
-        <img alt="Slack community" src="https://img.shields.io/badge/Slack-white?style=social&logo=slack">
+    <a href="https://discord.com/invite/82Tnw9UGGc">
+        <img alt="Discord community" src="https://img.shields.io/badge/Discord-white?style=social&logo=discord">
     </a> 
 </p>
 
@@ -63,7 +63,7 @@ No effort, just choose what you want and Ikomia runs everything in a few lines o
 <!-- USAGE EXAMPLES -->
 ### Usage 1 : Object Detection Example
 
-When you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
+With Ikomia, when you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
 
 ``` python
 from ikomia.dataprocess.workflow import Workflow
@@ -119,7 +119,7 @@ display(yolov7.get_image_with_graphics())
 
 ### Usage with the `ik` auto-completion system
 
-`ik` is an auto-completion system designed to help developers to find available algorithms in [Ikomia HUB](https://github.com/Ikomia-hub). See the documentation for more explanations [here](https://ikomia-dev.github.io/python-api-documentation/).
+`ik` is an auto-completion system designed to help developers to find available algorithms in [Ikomia HUB](https://github.com/Ikomia-hub). See the documentation for more explanations [here](https://ikomia-dev.github.io/python-api-documentation/getting_started.html).
 
 ```python
 from ikomia.dataprocess.workflow import Workflow

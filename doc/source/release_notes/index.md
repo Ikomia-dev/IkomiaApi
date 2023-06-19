@@ -5,6 +5,45 @@ Version history of the Ikomia API.
 <details>
   <summary>0.9.0</summary>
   
+___
+This release introduces many break changes as we change the naming convention of the Python bindings from the C++ core. The complete API is now in Snake Case style for all functions, there is no more difference between pure Python and C++ API. These changes may occur during the consolidation period of the API marked by the 0.x.x versions.
+
+**New features**:
+
+    OpenCV 4.7.0
+    Python 3.10 support
+    MLFlow 1.30
+    Remove authentication to install and load algorithms from Ikomia HUB
+    Algorithms lazy loading to speed up API initialization
+    New base classes for common computer vision tasks:
+        object detection
+        semantic segmentation
+        instance segmentation
+        keypoints detection
+    Add workflow text I/O
+    Add internal algorithms: OpenCV Blur and StackBlur
+    Add automatic conversion from instance segmentation I/O to semantic I/O
+
+**Improvements**:
+
+    New auto-completion system (ik module)
+    New documentation
+    Algorithm parameters are set from dict structure (not C++ structure anymore)
+    Filtering process for object detection, instance segmentation and semantic segmentation outputs
+    Handle print() function for many API objects
+    System to find best video writer back-end and codec for video export
+    displayIO module (now part of ikomia.utils)
+    Warn user when an algorithm is not connected to any other algorithm in a workflow
+
+**Bug fixes**:
+
+    Fix object detection graphics export
+    Fix elapsed time computation for training workflows
+    Fix JSON serialization of image I/O
+    Fix wrong output filenames on batch processing
+    Fix synchronous download method for workflow tasks
+    ...
+___
 </details>
 
 <details>
@@ -47,7 +86,6 @@ ___
 **Bug fixes**:
 - Disable Tensorboard auto-start to avoid algorithm installation failure
 - ...
-___
 ___
 </details>
 

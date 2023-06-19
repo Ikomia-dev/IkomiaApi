@@ -115,7 +115,7 @@ wf = Workflow()
 
 # Add an Object Detection algorithm  
 yolo = wf.add_task(ik.infer_yolo_v7(
-        model_path="output_folder/[timestamp]/weights/best.pt", 
+        model_weight_file="output_folder/[timestamp]/weights/best.pt", 
         conf_thres="0.4"
     ), 
     auto_connect=True)
