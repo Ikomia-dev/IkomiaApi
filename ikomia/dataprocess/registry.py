@@ -254,6 +254,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         package_info = r.json()
         package_url = package_info["packageFile"]
 
+        if package_url is None:
+            raise RuntimeError(f"Failed to get algorithm package for {name}.")
+
         # Download package
         url = config.main_cfg["hub"]["url"] + package_url
         file_path = os.path.join(self.get_plugins_directory(), "Transfer", os.path.basename(package_url))
