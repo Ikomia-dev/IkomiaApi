@@ -87,6 +87,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
         """
+        if not isinstance(name, str):
+            raise TypeError("Algorithm name required: name parameter must be a string")
+
         algo = None
         available_algos = self.get_algorithms()
 
@@ -156,7 +159,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return
 
         info = self.get_algorithm_info(name)
-        if info.version >= online_algo["version"] and info.ikomiaVersion >= online_algo["ikomiaVersion"]:
+        if info.version >= online_algo["version"] and info.ikomia_version >= online_algo["ikomiaVersion"]:
             logger.info(f"Algorithm {name} is already up to date")
         else:
             self.install_algorithm(name, force=True)
