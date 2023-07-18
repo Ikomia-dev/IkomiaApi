@@ -1,18 +1,18 @@
 import argparse
 import logging
 import os.path
-
+import pytest
 from ikomia import utils, core, dataprocess
 
 logger = logging.getLogger(__name__)
 
 
 def test_cpp_task_info():
-    logger.info("===== Test: CTaskInfo =====")
+    logger.warning("===== Test: CTaskInfo =====")
     info = dataprocess.CTaskInfo()
 
     # Print
-    logger.info(info)
+    logger.warning(info)
 
     # Set attributes
     info.name = "my_algo"
@@ -34,11 +34,11 @@ def test_cpp_task_info():
     info.modified_date = "19/01/2023"
     info.os = utils.OSType.ALL
     info.internal = False
-    logger.info(info)
+    logger.warning(info)
 
 
 def test_cpp_object_measure():
-    logger.info("===== Test: CObjectMeasure =====")
+    logger.warning("===== Test: CObjectMeasure =====")
     # Default ctor
     obj_measure = dataprocess.CObjectMeasure()
     measure = obj_measure.get_measure_info()
@@ -73,7 +73,7 @@ def test_cpp_object_measure():
 
 
 def test_cpp_enums():
-    logger.info("===== Test: enums =====")
+    logger.warning("===== Test: enums =====")
     # NumericOutputType
     out_type = dataprocess.NumericOutputType.NONE
     out_type = dataprocess.NumericOutputType.TABLE
@@ -89,7 +89,7 @@ def test_cpp_enums():
 
 
 def test_cpp_registry():
-    logger.info("===== Test: CIkomiaRegistry =====")
+    logger.warning("===== Test: CIkomiaRegistry =====")
     registry = dataprocess.CIkomiaRegistry()
 
     # Plugins directory
@@ -104,13 +104,15 @@ def test_cpp_registry():
     algos = registry.get_algorithms()
     assert len(algos) > 0
     info = registry.get_algorithm_info(algos[0])
-    info = registry.get_algorithm_info("toto")
-    logger.info(f"Algorithm info: {info}")
+    logger.warning(f"Algorithm info: {info}")
+
+    with pytest.raises(RuntimeError):
+        info = registry.get_algorithm_info("toto")
 
     # Algorithm instantiation
     t = registry.create_instance(algos[0])
     assert t is not None
-    logger.info(f"Algorithm instance: {t}")
+    logger.warning(f"Algorithm instance: {t}")
     param_obj = t.get_param_object()
     t = registry.create_instance(algos[0], param_obj)
     assert t is not None
@@ -120,11 +122,11 @@ def test_cpp_registry():
 
     # Load C++ plugins
     plugin_path = os.path.join(default_dir, "C++", "infer_yolo_v3")
-    registry.load_cpp_plugin(plugin_path)
+    registry.load_cpp_algorithm(plugin_path)
 
     # Black-listed dependency package (static)
     blacklist = dataprocess.CIkomiaRegistry.get_black_listed_packages()
-    logger.info(f"Package black list: {blacklist}")
+    logger.warning(f"Package black list: {blacklist}")
 
 
 if __name__ == "__main__":

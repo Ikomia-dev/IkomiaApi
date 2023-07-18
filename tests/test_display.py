@@ -9,7 +9,16 @@ logger = logging.getLogger(__name__)
 
 
 def test_display_image():
-    logger.info("===== Test::display image IO =====")
+    logger.warning("===== Test::display image IO =====")
+    img_path = tests.get_test_image_directory() + "/Lena.png"
+    img = cv2.imread(img_path)
+    displayIO.display(img, label="Lena.png")
+    displayIO.display(img, label="Lena.png", viewer="pillow")
+    displayIO.display(img, label="Lena.png", viewer="opencv")
+
+
+def test_display_image_io():
+    logger.warning("===== Test::display image IO =====")
     img_path = tests.get_test_image_directory() + "/Lena.png"
     img = cv2.imread(img_path)
     io = dataprocess.CImageIO(core.IODataType.IMAGE, img)
@@ -17,7 +26,7 @@ def test_display_image():
 
 
 def test_display_graphics():
-    logger.info("===== Test::display graphics IO =====")
+    logger.warning("===== Test::display graphics IO =====")
     # graphics input
     items = []
     io = dataprocess.CGraphicsInput()
@@ -45,56 +54,56 @@ def test_display_graphics():
     items.append(graphics_polygon)
     items.append(graphics_text)
     items.append(graphics_complexpoly)
-    io.setItems(items)
+    io.set_items(items)
     displayIO.display(io, label="Input graphics scene")
 
     # graphics output
     io = dataprocess.CGraphicsOutput()
-    io.addPoint(core.CPointF(150, 80))
-    io.addEllipse(0, 0, 100, 50)
-    io.addRectangle(0, 60, 100, 50)
+    io.add_point(core.CPointF(150, 80))
+    io.add_ellipse(0, 0, 100, 50)
+    io.add_rectangle(0, 60, 100, 50)
     points = [core.CPointF(0, 0), core.CPointF(30, 30), core.CPointF(100, 30), core.CPointF(130, 100)]
-    io.addPolyline(points)
+    io.add_polyline(points)
     pts_poly = [core.CPointF(50, 10), core.CPointF(100, 100), core.CPointF(80, 150), core.CPointF(20, 120), core.CPointF(20, 60)]
-    io.addPolygon(pts_poly)
-    io.addText("This is a text", 200, 10)
+    io.add_polygon(pts_poly)
+    io.add_text("This is a text", 200, 10)
     pts_poly = [core.CPointF(250, 10), core.CPointF(300, 100), core.CPointF(280, 150), core.CPointF(220, 120), core.CPointF(220, 60)]
     pts_inner = [[core.CPointF(250, 100), core.CPointF(270, 70), core.CPointF(240, 40)]]
-    io.addComplexPolygon(pts_poly, pts_inner)
+    io.add_complex_polygon(pts_poly, pts_inner)
     displayIO.display(io, label="Output graphics scene")
 
 
 def test_display_table():
-    logger.info("===== Test::display measure IO =====")
+    logger.warning("===== Test::display measure IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run ResNet classification
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_torchvision_resnet)
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_torchvision_resnet.name())
     input_img = algo.get_input(0)
-    input_img.setImage(img)
+    input_img.set_image(img)
     algo.run()
     # display table output
     displayIO.display(algo.get_output(2), label="ResNet classification")
 
-    # run YoloV4 detection
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v4)
+    # run YoloV8 detection
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v8.name())
     input_img = algo.get_input(0)
-    input_img.setImage(img)
+    input_img.set_image(img)
     algo.run()
     # display table output
-    displayIO.display(algo.get_output(2), label="YoloV4 detection")
+    displayIO.display(algo.get_output(2), label="YoloV8 detection")
 
 
 def test_display_plot():
-    logger.info("===== Test::display numeric IO =====")
+    logger.warning("===== Test::display numeric IO =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run CalcHist
-    algo = ikomia.ik_registry.create_algorithm(ik.ocv_calc_hist)
+    algo = ikomia.ik_registry.create_algorithm(ik.ocv_calc_hist.name())
     input_img = algo.get_input(0)
-    input_img.setImage(img)
+    input_img.set_image(img)
     algo.run()
     # display plot output
     feature_io = algo.get_output(1)
@@ -108,22 +117,22 @@ def test_display_plot():
 
 
 def test_display_task():
-    logger.info("===== Test::display task =====")
+    logger.warning("===== Test::display task =====")
     # load image
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
 
     # run MaskRCNN
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_mask_rcnn)
+    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v8_seg.name())
     input_img = algo.get_input(0)
-    input_img.setImage(img)
+    input_img.set_image(img)
     algo.run()
     # display task I/O
-    displayIO.display(algo, "Mask RCNN")
+    displayIO.display(algo, "Yolo V8 Segmentation")
 
 
 def test_display_workflow():
-    logger.info("===== Test::display workflow =====")
+    logger.warning("===== Test::display workflow =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.Workflow("Test Workflow", ikomia.ik_registry)
     wf.load(wf_path)
@@ -132,6 +141,7 @@ def test_display_workflow():
 
 if __name__ == "__main__":
     test_display_image()
+    test_display_image_io()
     test_display_graphics()
     test_display_table()
     test_display_plot()

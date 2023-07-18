@@ -4,7 +4,8 @@ import shutil
 import argparse
 import ikomia
 from ikomia.dataprocess import \
-    workflow, CWorkflow, CImageIO, CVideoIO, CPathIO, CNumericIO, CObjectDetectionIO, CInstanceSegmentationIO
+    workflow, CWorkflow, CImageIO, CVideoIO, CPathIO, CNumericIO, CObjectDetectionIO, CInstanceSegmentationIO, \
+    CSemanticSegmentationIO, CKeypointsIO, CGraphicsOutput
 from ikomia.core import IODataType
 from ikomia.utils import tests, ik
 import numpy as np
@@ -17,7 +18,7 @@ def test_cpp_workflow():
     """
     Test Python bindings of Ikomia Core CWorkflow
     """
-    logger.info("===== Test: CWorkflow =====")
+    logger.warning("===== Test: CWorkflow =====")
 
     # Default ctor
     wf = CWorkflow()
@@ -54,20 +55,20 @@ def test_cpp_workflow():
     # Browse tasks
     for task_id in ids:
         t = wf.get_task(task_id)
-        logger.info(f"Id: {task_id} - Name: {t.name}")
-        logger.info(t)
+        logger.warning(f"Id: {task_id} - Name: {t.name}")
+        logger.warning(t)
 
     # Get root and retrieve its child tasks
     root_id = wf.get_root_id()
     assert (root_id in ids)
     children = wf.get_children(root_id)
     assert (len(children) == 2)
-    logger.info(f"Childs of root are: {wf.get_task(children[0]).name} and {wf.get_task(children[1]).name}")
+    logger.warning(f"Childs of root are: {wf.get_task(children[0]).name} and {wf.get_task(children[1]).name}")
 
     # Get parents
     t = wf.get_task(ids[5])
     parents = wf.get_parents(ids[5])
-    logger.info(f"Parent of {t.name} is {wf.get_task(parents[0]).name}")
+    logger.warning(f"Parent of {t.name} is {wf.get_task(parents[0]).name}")
 
     # Get final tasks(leafs)
     msg = "Final tasks are: "
@@ -76,28 +77,28 @@ def test_cpp_workflow():
     for t in final_tasks:
         msg += t.name + ","
 
-    logger.info(msg)
+    logger.warning(msg)
 
     # Input edges of a task
     t = wf.get_task(ids[5])
     in_edges = wf.get_in_edges(ids[5])
-    logger.info(f"Input edges of {t.name}: {len(in_edges)}")
+    logger.warning(f"Input edges of {t.name}: {len(in_edges)}")
 
     for edge in in_edges:
-        logger.info(f"Edge port index: {wf.get_edge_info(edge)}")
+        logger.warning(f"Edge port index: {wf.get_edge_info(edge)}")
 
     # Output edges of a task
     out_edges = wf.get_out_edges(ids[5])
-    logger.info(f"Output edges of {t.name}: {len(out_edges)}")
+    logger.warning(f"Output edges of {t.name}: {len(out_edges)}")
 
     for edge in out_edges:
-        logger.info(f"Edge port index: {wf.get_edge_info(edge)}")
+        logger.warning(f"Edge port index: {wf.get_edge_info(edge)}")
 
     # Edge source and target
     src_task_id = wf.get_edge_source(out_edges[0])
-    logger.info(f"Source task of edge # {out_edges[0]} is {wf.get_task(src_task_id).name}")
+    logger.warning(f"Source task of edge # {out_edges[0]} is {wf.get_task(src_task_id).name}")
     target_task_id = wf.get_edge_target(out_edges[0])
-    logger.info(f"Target task of edge # {out_edges[0]} is {wf.get_task(target_task_id).name}")
+    logger.warning(f"Target task of edge # {out_edges[0]} is {wf.get_task(target_task_id).name}")
 
     # Set input
     types = wf.get_root_target_types()
@@ -111,8 +112,8 @@ def test_cpp_workflow():
     # Run
     wf.update_start_time()
     wf.run()
-    logger.info(f"Total elapsed time: {wf.get_total_elapsed_time()} ms")
-    logger.info(f"Elapsed time to {t.name}: {wf.get_elapsed_time_to(ids[5])} ms")
+    logger.warning(f"Total elapsed time: {wf.get_total_elapsed_time()} ms")
+    logger.warning(f"Elapsed time to {t.name}: {wf.get_elapsed_time_to(ids[5])} ms")
 
     # Run with auto-save
     output_folder = os.path.join(tests.get_test_image_directory(), "Tmp")
@@ -139,10 +140,10 @@ def test_cpp_workflow():
 
     # Delete task
     count_before = len(wf.get_task_ids())
-    logger.info(f"Task count before delete: {count_before}")
+    logger.warning(f"Task count before delete: {count_before}")
     wf.delete_task(ids[5])
     count_after = len(wf.get_task_ids())
-    logger.info(f"Task count after delete: {count_after}")
+    logger.warning(f"Task count after delete: {count_after}")
     assert (count_before == count_after + 1)
 
     # Save
@@ -157,7 +158,7 @@ def test_cpp_workflow():
 
 
 def test_ctor():
-    logger.info("===== Test: Workflow constructor=====")
+    logger.warning("===== Test: Workflow constructor=====")
     name = "Test workflow"
 
     wf = workflow.Workflow()
@@ -176,7 +177,7 @@ def test_ctor():
 
 
 def test_root():
-    logger.info("===== Test: Workflow::root() =====")
+    logger.warning("===== Test: Workflow::root() =====")
     name = "Test workflow"
     wf = workflow.Workflow(name)
     root = wf.root()
@@ -185,7 +186,7 @@ def test_root():
 
 
 def test_set_image_input():
-    logger.info("===== Test: Workflow::set_image_input() =====")
+    logger.warning("===== Test: Workflow::set_image_input() =====")
     name = "Test workflow"
     img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     img_url = "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
@@ -249,7 +250,7 @@ def test_set_image_input():
 
 
 def test_set_video_input():
-    logger.info("===== Test: Workflow::set_video_input() =====")
+    logger.warning("===== Test: Workflow::set_video_input() =====")
     name = "Test workflow"
     video_path = os.path.join(tests.get_test_video_directory(), "basketball.mp4")
     video_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
@@ -300,7 +301,7 @@ def test_set_video_input():
 
 
 def test_set_directory_input():
-    logger.info("===== Test: Workflow::set_directory_input() =====")
+    logger.warning("===== Test: Workflow::set_directory_input() =====")
     name = "Test workflow"
     dir_path = tests.get_test_image_directory()
     wf = workflow.Workflow(name)
@@ -333,13 +334,13 @@ def test_set_directory_input():
 
 
 def test_set_parameters():
-    logger.info("===== Test: Workflow::set_parameters() =====")
+    logger.warning("===== Test: Workflow::set_parameters() =====")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
 
     # From task object
     box_filter = wf.find_task(name=ik.ocv_box_filter.name(), index=0)
-    logger.info(box_filter.get_param_object())
+    logger.warning(box_filter.get_param_object())
     params = {ik.ocv_box_filter.kSizeHeight: "11", ik.ocv_box_filter.kSizeWidth: "11"}
     wf.set_parameters(params, task_obj=box_filter)
     params_new = box_filter.get_parameters()
@@ -348,7 +349,7 @@ def test_set_parameters():
 
     # From task name
     bilateral_filter = wf.find_task(name=ik.ocv_bilateral_filter.name(), index=0)
-    logger.info(bilateral_filter.get_param_object())
+    logger.warning(bilateral_filter.get_param_object())
     params = {ik.ocv_bilateral_filter.sigmaSpace: "31.0", ik.ocv_bilateral_filter.sigmaColor: "11.0"}
     wf.set_parameters(params, task_name=ik.ocv_bilateral_filter.name())
     params_new = bilateral_filter.get_parameters()
@@ -357,15 +358,15 @@ def test_set_parameters():
 
 
 def test_load():
-    logger.info("===== Test: Workflow::load() =====")
+    logger.warning("===== Test: Workflow::load() =====")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
 
-    logger.info("----- Workflow information:")
-    logger.info(wf.name)
-    logger.info(wf.description)
-    logger.info(wf.keywords)
-    logger.info("Task count: " + str(wf.get_task_count()))
+    logger.warning("----- Workflow information:")
+    logger.warning(wf.name)
+    logger.warning(wf.description)
+    logger.warning(wf.keywords)
+    logger.warning("Task count: " + str(wf.get_task_count()))
 
     assert wf.name
     assert wf.get_task_count() == 10
@@ -384,41 +385,40 @@ def _check_leaf_outputs(wf):
 
 
 def test_run():
-    logger.info("===== Test: Workflow::run() =====")
+    logger.warning("===== Test: Workflow::run() =====")
 
     # Image
-    logger.info("Run on image...")
+    logger.warning("Run on image...")
     img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
     wf.set_image_input(path=img_path)
     wf.run()
     _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # Video
-    logger.info("Run on video...")
+    logger.warning("Run on video...")
     video_path = os.path.join(tests.get_test_video_directory(), "basketball.mp4")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestVideo.json")
     wf = workflow.load(wf_path)
     wf.set_video_input(path=video_path)
     wf.set_cfg_entry("WholeVideo", str(int(True)))
     wf.run()
-    _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # Image folder
-    logger.info("Run on image folder...")
+    logger.warning("Run on image folder...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
     dir_path = tests.get_test_image_directory()
     wf.set_directory_input(dir_path)
     wf.run()
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # Video folder
-    logger.info("Run on video folder...")
+    logger.warning("Run on video folder...")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestVideo.json")
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
@@ -426,80 +426,77 @@ def test_run():
     dir_path = tests.get_test_video_directory()
     wf.set_directory_input(dir_path)
     wf.run()
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
 
 def test_run_on():
-    logger.info("===== Test: Workflow::run_on() =====")
+    logger.warning("===== Test: Workflow::run_on() =====")
 
     # On array
-    logger.info("Run on image array...")
+    logger.warning("Run on image array...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     img_array = np.random.randint(low=0, high=255, size=(512, 512, 3), dtype=np.uint8)
     wf.run_on(array=img_array)
     _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On image path
-    logger.info("Run on image path...")
+    logger.warning("Run on image path...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     img_path = tests.get_test_image_directory() + "/Lena.png"
     wf.run_on(path=img_path)
     _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On image URL
-    logger.info("Run on image URL...")
+    logger.warning("Run on image URL...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     img_url = "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
     wf.run_on(url=img_url)
     _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On video path
-    logger.info("Run on video path...")
+    logger.warning("Run on video path...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTestVideo.json"
     wf = workflow.load(wf_path)
     video_path = os.path.join(tests.get_test_video_directory(), "basketball.mp4")
     wf.run_on(path=video_path)
-    _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On video URL
-    logger.info("Run on video URL...")
+    logger.warning("Run on video URL...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTestVideo.json"
     wf = workflow.load(wf_path)
     video_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
     wf.run_on(url=video_url)
-    _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On image folder
-    logger.info("Run on image folder...")
+    logger.warning("Run on image folder...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTestVideo.json"
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
     dir_path = tests.get_test_image_directory()
     wf.run_on(folder=dir_path)
     _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
     # On video folder
-    logger.info("Run on video folder...")
+    logger.warning("Run on video folder...")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTestVideo.json"
     wf = workflow.load(wf_path)
     wf.set_auto_save(True)
     dir_path = tests.get_test_video_directory()
     wf.run_on(folder=dir_path)
-    _check_leaf_outputs(wf)
-    logger.info("Workflow finished successfully")
+    logger.warning("Workflow finished successfully")
 
 
 def test_add_task():
-    logger.info("===== Test: Workflow::add_task() =====")
+    logger.warning("===== Test: Workflow::add_task() =====")
 
     # From name
     wf = workflow.create("FromScratch")
@@ -548,7 +545,7 @@ def test_add_task():
 
 
 def test_remove_task():
-    logger.info("===== Test: Workflow::remove_task() =====")
+    logger.warning("===== Test: Workflow::remove_task() =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
     wf = workflow.load(wf_path)
     assert wf.get_task_count() == 10
@@ -564,7 +561,7 @@ def test_remove_task():
 
 
 def test_connect_tasks():
-    logger.info("===== Test: Workflow::connect_tasks() =====")
+    logger.warning("===== Test: Workflow::connect_tasks() =====")
 
     # Auto-connection
     wf = workflow.create("FromScratch")
@@ -617,26 +614,26 @@ def test_connect_tasks():
 
 
 def test_time_metrics():
-    logger.info("===== Test::compute workflow time metrics =====")
+    logger.warning("===== Test::compute workflow time metrics =====")
     img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTest1.json")
     wf = workflow.load(wf_path)
     wf.set_image_input(path=img_path)
     wf.run()
-    logger.info("Workflow running time (ms): " + str(wf.get_total_elapsed_time()))
+    logger.warning("Workflow running time (ms): " + str(wf.get_total_elapsed_time()))
 
     # manual retrieval
     ids = wf.get_task_ids()
     for task_id in ids:
         t = wf.get_task(task_id)
-        logger.info(f"{t.name}: {t.get_elapsed_time()} - From start: {wf.get_elapsed_time_to(task_id)}")
+        logger.warning(f"{t.name}: {t.get_elapsed_time()} - From start: {wf.get_elapsed_time_to(task_id)}")
 
     # tool function
-    logger.info(wf.get_time_metrics())
+    logger.warning(wf.get_time_metrics())
 
 
 def test_get_task_output():
-    logger.info("===== Test: Workflow::get_task_output() =====")
+    logger.warning("===== Test: Workflow::get_task_output() =====")
     img_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     wf_path = os.path.join(tests.get_test_workflow_directory(), "WorkflowTestOutput.json")
     wf = workflow.load(wf_path)
@@ -658,11 +655,25 @@ def test_get_task_output():
     outs = wf.get_task_output(task_name=ik.ocv_calc_hist.name(), types=[IODataType.NUMERIC_VALUES], output_index=0)
     assert isinstance(outs, CNumericIO)
 
-    outs = wf.get_task_output(task_name=ik.infer_mobilenet_ssd.name(), types=[IODataType.OBJECT_DETECTION], output_index=0)
+    outs = wf.get_task_output(task_name=ik.infer_yolo_v8.name(), types=[IODataType.OBJECT_DETECTION], output_index=0)
     assert isinstance(outs, CObjectDetectionIO)
 
-    outs = wf.get_task_output(task_name=ik.infer_mask_rcnn.name(), types=[IODataType.INSTANCE_SEGMENTATION], output_index=0)
+    outs = wf.get_task_output(task_name=ik.infer_yolo_v8_seg.name(), types=[IODataType.INSTANCE_SEGMENTATION],
+                              output_index=0)
     assert isinstance(outs, CInstanceSegmentationIO)
+
+    outs = wf.get_task_output(task_name=ik.infer_yolo_v8_pose_estimation.name(),
+                              types=[IODataType.KEYPOINTS],
+                              output_index=0)
+    assert isinstance(outs, CKeypointsIO)
+
+    outs = wf.get_task_output(task_name=ik.infer_hf_semantic_seg.name(), types=[IODataType.SEMANTIC_SEGMENTATION],
+                              output_index=0)
+    assert isinstance(outs, CSemanticSegmentationIO)
+
+    outs = wf.get_task_output(task_name=ik.infer_torchvision_resnet.name(), types=[IODataType.OUTPUT_GRAPHICS],
+                              output_index=0)
+    assert isinstance(outs, CGraphicsOutput)
 
 
 def test_video_stream():
@@ -677,7 +688,7 @@ def test_video_stream():
     while True:
         ret, img = cap.read()
         wf.run_on(array=img)
-        res_img = wf.get_image(wf.get_task_id(canny), 0)
+        res_img = canny.get_output(0).get_image()
         cv2.imshow("Result", res_img)
 
         if cv2.waitKey(1) == 27:

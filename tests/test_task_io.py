@@ -51,11 +51,11 @@ def _create_graphics_list():
 
 
 def test_cpp_base_class():
-    logger.info("===== Test: I/O base class =====")
+    logger.warning("===== Test: I/O base class =====")
     # Default ctor
     io = core.CWorkflowTaskIO()
-    logger.info(f"I/O name: {io.name}")
-    logger.info(f"I/O data type: {io.data_type}")
+    logger.warning(f"I/O name: {io.name}")
+    logger.warning(f"I/O data type: {io.data_type}")
     elt_count = io.get_unit_element_count()
     assert type(elt_count) == int
     data_available = io.is_data_available()
@@ -81,17 +81,17 @@ def test_cpp_base_class():
 
     # Attributes
     io.description = "My description"
-    logger.info(f"I/O description: {io.description}")
+    logger.warning(f"I/O description: {io.description}")
     io.dim_count = 3
-    logger.info(f"I/O dim count: {io.dim_count}")
-    logger.info(f"I/O source path: {io.source_file_path}")
+    logger.warning(f"I/O dim count: {io.dim_count}")
+    logger.warning(f"I/O source path: {io.source_file_path}")
 
     # Print
-    logger.info(io)
+    logger.warning(io)
 
 
 def test_cpp_blob_measure():
-    logger.info("===== Test: CBlobMeasureIO =====")
+    logger.warning("===== Test: CBlobMeasureIO =====")
     # Default ctor
     io = dataprocess.CBlobMeasureIO()
     assert not io.is_data_available()
@@ -121,7 +121,7 @@ def test_cpp_blob_measure():
 
     # Export
     json_data = io.to_json()
-    logger.info(json_data)
+    logger.warning(json_data)
     path = os.path.join(tests.get_test_image_directory(), "blob.csv")
     io.save(path)
     assert os.path.isfile(path)
@@ -141,7 +141,7 @@ def test_cpp_blob_measure():
 
 
 def test_cpp_graphics_in():
-    logger.info("===== Test: CGraphicsInput =====")
+    logger.warning("===== Test: CGraphicsInput =====")
 
     # Default ctor
     io = dataprocess.CGraphicsInput()
@@ -163,7 +163,7 @@ def test_cpp_graphics_in():
 
     # Export
     json_data = io.to_json()
-    logger.info(json_data)
+    logger.warning(json_data)
     path = os.path.join(tests.get_test_image_directory(), "graphics.json")
     io.save(path)
     assert os.path.isfile(path)
@@ -183,7 +183,7 @@ def test_cpp_graphics_in():
 
 
 def test_cpp_graphics_out():
-    logger.info("===== Test: CGraphicsOutput =====")
+    logger.warning("===== Test: CGraphicsOutput =====")
 
     # Default ctor
     io = dataprocess.CGraphicsOutput()
@@ -239,7 +239,7 @@ def test_cpp_graphics_out():
 
     # Export
     json_data = io.to_json()
-    logger.info(json_data)
+    logger.warning(json_data)
     path = os.path.join(tests.get_test_image_directory(), "graphics.json")
     io.save(path)
     assert os.path.isfile(path)
@@ -259,7 +259,7 @@ def test_cpp_graphics_out():
 
 
 def test_cpp_image_io():
-    logger.info("===== Test: CImageIO =====")
+    logger.warning("===== Test: CImageIO =====")
     image_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     image_io = dataio.CDataImageIO(image_path)
     image_data = image_io.read()
@@ -347,7 +347,7 @@ def test_cpp_image_io():
 
 
 def test_cpp_numeric_io():
-    logger.info("===== Test: CNumericIO =====")
+    logger.warning("===== Test: CNumericIO =====")
 
     # Default ctor
     io = dataprocess.CNumericIO()
@@ -407,7 +407,7 @@ def test_cpp_numeric_io():
 
 
 def test_cpp_data_string_io():
-    logger.info("===== Test: CNumericIO =====")
+    logger.warning("===== Test: CNumericIO =====")
 
     # Default ctor
     io = dataprocess.CDataStringIO()
@@ -467,7 +467,7 @@ def test_cpp_data_string_io():
 
 
 def test_cpp_video_io():
-    logger.info("===== Test: CVideoIO =====")
+    logger.warning("===== Test: CVideoIO =====")
     image_path = os.path.join(tests.get_test_image_directory(), "Lena.png")
     video_path = os.path.join(tests.get_test_video_directory(), "basketball.mp4")
     image_io = dataio.CDataImageIO(image_path)
@@ -505,12 +505,12 @@ def test_cpp_video_io():
     assert io.name == name
     assert io.has_video()
     assert io.get_video_path() == video_path
-    logger.info(f"Video frame count: {io.get_video_frame_count()}")
+    logger.warning(f"Video frame count: {io.get_video_frame_count()}")
     assert io.get_current_pos() == 0
     frame = io.get_snapshot(io.get_current_pos())
     assert frame is not None
     h, w, _ = frame.shape
-    logger.info(f"Video frame size: {frame.shape}")
+    logger.warning(f"Video frame size: {frame.shape}")
 
     # Set video pos
     io.set_video_pos(25)
@@ -548,7 +548,7 @@ def test_cpp_video_io():
 
 
 def test_cpp_path_io():
-    logger.info("===== Test: CPathIO =====")
+    logger.warning("===== Test: CPathIO =====")
     # Default ctor
     io = dataprocess.CPathIO()
     assert not io.is_data_available()
@@ -585,7 +585,7 @@ def test_cpp_path_io():
 
 
 def test_cpp_dataset_io():
-    logger.info("===== Test: CDatasetIO =====")
+    logger.warning("===== Test: CDatasetIO =====")
     # Default ctor
     io = dataprocess.CDatasetIO()
     assert not io.is_data_available()
@@ -618,7 +618,7 @@ def test_cpp_dataset_io():
 
 
 def test_cpp_array_io():
-    logger.info("===== Test: CArrayIO =====")
+    logger.warning("===== Test: CArrayIO =====")
     # Default ctor
     io = dataprocess.CArrayIO()
     assert not io.is_data_available()
@@ -650,7 +650,7 @@ def test_cpp_array_io():
 
 
 def test_cpp_object_detection_io():
-    logger.info("===== Test: CObjectDetectionIO =====")
+    logger.warning("===== Test: CObjectDetectionIO =====")
     io = dataprocess.CObjectDetectionIO()
     assert not io.is_data_available()
 
@@ -672,7 +672,7 @@ def test_cpp_object_detection_io():
 
     # Export
     json_data = io.to_json()
-    logger.info(f"Detected objects: {json_data}")
+    logger.warning(f"Detected objects: {json_data}")
     path = os.path.join(tests.get_test_image_directory(), "test_object_detection.json")
     io.save(path)
     assert os.path.isfile(path)
@@ -696,7 +696,7 @@ def test_cpp_object_detection_io():
 
 
 def test_cpp_instance_segmentation_io():
-    logger.info("===== Test: CInstanceSegmentationIO =====")
+    logger.warning("===== Test: CInstanceSegmentationIO =====")
     io = dataprocess.CInstanceSegmentationIO()
     assert not io.is_data_available()
 
@@ -734,7 +734,7 @@ def test_cpp_instance_segmentation_io():
     assert obj.confidence == 0.86
     assert obj.box == [x1, y1, w1, h1]
     assert obj.mask is not None
-    logger.info(f"Mask shape: {obj.mask.shape}")
+    logger.warning(f"Mask shape: {obj.mask.shape}")
     assert obj.color == [255, 0, 100, 255]
     assert io.get_merge_mask() is not None
 
@@ -759,7 +759,7 @@ def test_cpp_instance_segmentation_io():
 
 
 def test_cpp_semantic_segmentation_io():
-    logger.info("===== Test: CSemanticSegmentationIO =====")
+    logger.warning("===== Test: CSemanticSegmentationIO =====")
     io = dataprocess.CSemanticSegmentationIO()
     assert not io.is_data_available()
 
@@ -805,7 +805,7 @@ def test_cpp_semantic_segmentation_io():
 
 
 def test_cpp_text_io():
-    logger.info("===== Test: CTextIO =====")
+    logger.warning("===== Test: CTextIO =====")
     io = dataprocess.CTextIO()
     assert not io.is_data_available()
 
@@ -829,7 +829,7 @@ def test_cpp_text_io():
 
     # Export
     json_data = io.to_json()
-    logger.info(f"Detected text fields: {json_data}")
+    logger.warning(f"Detected text fields: {json_data}")
     path = os.path.join(tests.get_test_image_directory(), "test_text_field_detection.json")
     io.save(path)
     assert os.path.isfile(path)

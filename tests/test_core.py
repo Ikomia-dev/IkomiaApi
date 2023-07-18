@@ -97,7 +97,7 @@ def test_cpp_measure():
     measure_list = core.CMeasure.get_available_measures()
     assert len(measure_list) == 9
     measure_name = core.CMeasure.get_name(core.MeasureId.SURFACE)
-    logger.info(f"Measure name: {measure_name}")
+    logger.warning(f"Measure name: {measure_name}")
 
     # Ctor with id
     measure = core.CMeasure(core.MeasureId.SURFACE)
