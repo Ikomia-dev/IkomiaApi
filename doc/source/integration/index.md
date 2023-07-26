@@ -4,8 +4,8 @@
 :hidden:
 
 algo_parameters
-algo_IO
 algo_widget
+algo_IO
 ```
 
 Creating and integrating your own algorithms into workflows can be a powerful way to automate and streamline your data processing tasks. 
@@ -27,7 +27,7 @@ ikcli algo local create my_first_algo
 This will create a new directory called **"my_first_algo"** in "Ikomia/Plugins/Python/" directory. Inside this directory, you will find several files that make up your algorithm.
 
 3. The main file of your algorithm is **"my_first_algo_process.py"**. This file contains the Python code that implements your algorithm. You can open this file in a text editor or IDE to begin editing it.
-Here's an example of what your this file might look like:
+Here's an example of what this file might look like:
 ```python
 import copy
 
@@ -160,7 +160,7 @@ class MyFirstAlgo(core.CWorkflowTask):
         core.CWorkflowTask.__init__(self, name)
         # Add input/output of the process here
         self.add_input(dataprocess.CImageIO()) # <-- Add input object of type image
-        self.add_output(dataprocess.CImageIO()) # <-- Add output object ot type image
+        self.add_output(dataprocess.CImageIO()) # <-- Add output object of type image
     
         # Create parameters class
         if param is None:
@@ -171,7 +171,7 @@ class MyFirstAlgo(core.CWorkflowTask):
 You now have an algorithm which takes 1 input image and outputs 1 image.
 
 
-Then, you can edit the `run()` function like this :
+Then, you can edit the `run()` function like this (don't forget to import `cv2`) :
 ```python
 import cv2
 ...
@@ -187,16 +187,13 @@ def run(self):
     # Get output :
     task_output = self.get_output(0) # <-- Get first output object
 
-    # Get parameters :
-    # param = self.get_param_object()
-
-    # Get image from input/output (numpy array):
+    # Get input image (numpy array):
     src_image = task_input.get_image() # <-- Get image from your input object
 
     # Call to the process main routine
     dst_image = cv2.Canny(src_image, threshold1=100, threshold2=200) # <-- Use OpenCV Canny edge detector
 
-    # Set image of input/output (numpy array):
+    # Set output image (numpy array):
     task_output.set_image(dst_image) # <-- Set processed image to your output object
 
     # Step progress bar:
@@ -260,49 +257,3 @@ output_data = my_algo.get_output(0).get_image()
 display(output_data)
 ```
 By following these steps, you can easily integrate your algorithm into a larger workflow and process your data with other algorithms. You can also use the Ikomia STUDIO to create and visualize your workflow, and save your workflows for later use.
-
-[comment]: <> (### Graphics)
-
-[comment]: <> (Graphics represent all vectorial items &#40;line, polygon, text...&#41; that )
-
-[comment]: <> (bring additionnal information to images. They can be stored as input &#40;{py:mod}`~ikomia.dataprocess.pydataprocess.CGraphicsInput`&#41; )
-
-[comment]: <> (or output {py:mod}`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`&#41;. Different types of graphics )
-
-[comment]: <> (are provided, each one being implemented in a dedicated class:)
-
-[comment]: <> (- Point: {py:mod}`~ikomia.core.pycore.CGraphicsPoint`)
-
-[comment]: <> (- Polyline: {py:mod}`~ikomia.core.pycore.CGraphicsPolyline`)
-
-[comment]: <> (- Rectangle/Square: {py:mod}`~ikomia.core.pycore.CGraphicsRectangle`)
-
-[comment]: <> (- Ellipse/Circle: {py:mod}`~ikomia.core.pycore.CGraphicsEllipse`)
-
-[comment]: <> (- Polygon: {py:mod}`~ikomia.core.pycore.CGraphicsPolygon`)
-
-[comment]: <> (- Polygon with hole&#40;s&#41;: {py:mod}`~ikomia.core.pycore.CGraphicsComplexPolygon`)
-
-[comment]: <> (- Text: {py:mod}`~ikomia.core.pycore.CGraphicsText`)
-
-[comment]: <> (You can access to every graphics with :)
-
-[comment]: <> (```python)
-
-[comment]: <> (obj_list = output_obj.get_items&#40;&#41;)
-
-[comment]: <> (```)
-
-[comment]: <> ({py:meth}`~ikomia.dataprocess.pydataprocess.CGraphicsOutput.get_items` returns a list of graphical objects so you can iterate on it. )
-
-[comment]: <> (When you have a {py:mod}`~ikomia.dataprocess.pydataprocess.CImageIO` and a {py:mod}`~ikomia.dataprocess.pydataprocess.CGraphicsOutput` as outputs, you can easily burn graphics on your image with {py:func}`~ikomia.dataprocess.pydataprocess.CImageIO.get_image_with_graphics`)
-
-[comment]: <> (```python)
-
-[comment]: <> (from ikomia.utils.displayIO import display)
-
-[comment]: <> (img = yolov7.get_image_with_graphics&#40;&#41;)
-
-[comment]: <> (display&#40;img&#41;)
-
-[comment]: <> (```)
