@@ -3,6 +3,33 @@
 Version history of the Ikomia API.
 
 <details>
+  <summary>0.9.2</summary>
+  
+___
+**Improvements**:
+- Update documentation
+- Manage error if algorithm code package is not found in Ikomia HUB
+- Manage mandatory parameter in IkomiaRegistry::create_algorithm()
+- Update tests and make them compatible with PyTest
+
+
+**Bug fixes**:
+- Fix upper case extension for image and video files
+- Fix I/O retrieval for composite I/O like object detection I/O, instance segmentation I/O, ...
+- Fix typo error in Workflow::set_parameters()
+- ...
+___
+</details>
+
+<details>
+  <summary>0.9.1</summary>
+  
+___
+This minor version only includes the Ikomia domain change: ikomia.com -> ikomia.ai
+___
+</details>
+
+<details>
   <summary>0.9.0</summary>
   
 ___

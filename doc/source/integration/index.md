@@ -18,7 +18,7 @@ The Ikomia API provides a command-line interface tool called `ikomia-cli` that c
 
 1. First, make sure you have the `ikomia-cli` tool installed. You can do this by running the following command in your terminal:
 ```shell
-pip install ikomia-cli
+pip install 'ikomia-cli[full]'
 ```
 2. Once you have installed `ikomia-cli`, you can create a new algorithm by running the following command:
 ```bash
