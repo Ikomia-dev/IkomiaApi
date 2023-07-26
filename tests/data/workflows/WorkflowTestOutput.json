@@ -1,6 +1,6 @@
 {
     "api": {
-        "version": "0.8.1"
+        "version": "0.9.1"
     },
     "connections": [
         {
@@ -10,27 +10,39 @@
             "target_index": 0
         },
         {
-            "source_id": -1,
+            "source_id": 0,
             "source_index": 0,
             "target_id": 1,
             "target_index": 0
         },
         {
-            "source_id": 1,
+            "source_id": -1,
             "source_index": 0,
             "target_id": 2,
             "target_index": 0
         },
         {
-            "source_id": -1,
+            "source_id": 2,
             "source_index": 0,
             "target_id": 3,
             "target_index": 0
         },
         {
-            "source_id": -1,
+            "source_id": 3,
             "source_index": 0,
             "target_id": 4,
+            "target_index": 0
+        },
+        {
+            "source_id": 4,
+            "source_index": 0,
+            "target_id": 5,
+            "target_index": 0
+        },
+        {
+            "source_id": 5,
+            "source_index": 0,
+            "target_id": 6,
             "target_index": 0
         }
     ],
@@ -43,60 +55,6 @@
         {
             "task_data": {
                 "language": 0,
-                "name": "infer_mobilenet_ssd",
-                "parameters": [
-                    {
-                        "name": "structureFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.prototxt"
-                    },
-                    {
-                        "name": "labelsFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/pascalVoc0712_names.txt"
-                    },
-                    {
-                        "name": "modelFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/MobileNetSSD/Model/mobileNetSSD.caffemodel"
-                    },
-                    {
-                        "name": "datasetName",
-                        "value": ""
-                    },
-                    {
-                        "name": "inputSize",
-                        "value": "416"
-                    },
-                    {
-                        "name": "confidence",
-                        "value": "0.500000"
-                    },
-                    {
-                        "name": "framework",
-                        "value": "1"
-                    },
-                    {
-                        "name": "nmsThreshold",
-                        "value": "0.400000"
-                    },
-                    {
-                        "name": "modelName",
-                        "value": ""
-                    },
-                    {
-                        "name": "target",
-                        "value": "0"
-                    },
-                    {
-                        "name": "backend",
-                        "value": "0"
-                    }
-                ],
-                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_mobilenet_ssd"
-            },
-            "task_id": 0
-        },
-        {
-            "task_data": {
-                "language": 0,
                 "name": "ocv_split",
                 "parameters": [
                     {
@@ -105,7 +63,7 @@
                     }
                 ]
             },
-            "task_id": 1
+            "task_id": 0
         },
         {
             "task_data": {
@@ -142,107 +100,173 @@
                     }
                 ]
             },
+            "task_id": 1
+        },
+        {
+            "task_data": {
+                "language": 1,
+                "name": "infer_yolo_v8",
+                "parameters": [
+                    {
+                        "name": "update",
+                        "value": "False"
+                    },
+                    {
+                        "name": "iou_thres",
+                        "value": "0.7"
+                    },
+                    {
+                        "name": "conf_thres",
+                        "value": "0.25"
+                    },
+                    {
+                        "name": "input_size",
+                        "value": "640"
+                    },
+                    {
+                        "name": "cuda",
+                        "value": "True"
+                    },
+                    {
+                        "name": "model_weight_file",
+                        "value": ""
+                    },
+                    {
+                        "name": "model_name",
+                        "value": "yolov8m"
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/infer_yolo_v8"
+            },
             "task_id": 2
         },
         {
             "task_data": {
-                "language": 0,
-                "name": "infer_inception_v3",
+                "language": 1,
+                "name": "infer_yolo_v8_seg",
                 "parameters": [
                     {
-                        "name": "structureFile",
+                        "name": "update",
+                        "value": "False"
+                    },
+                    {
+                        "name": "iou_thres",
+                        "value": "0.7"
+                    },
+                    {
+                        "name": "conf_thres",
+                        "value": "0.25"
+                    },
+                    {
+                        "name": "input_size",
+                        "value": "640"
+                    },
+                    {
+                        "name": "cuda",
+                        "value": "True"
+                    },
+                    {
+                        "name": "model_weight_file",
                         "value": ""
                     },
                     {
-                        "name": "labelsFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_inception_v3/Model/imagenet_names.txt"
-                    },
-                    {
-                        "name": "modelFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_inception_v3/Model/tensorflow_inception_graph.pb"
-                    },
-                    {
-                        "name": "datasetName",
-                        "value": ""
-                    },
-                    {
-                        "name": "inputSize",
-                        "value": "416"
-                    },
-                    {
-                        "name": "framework",
-                        "value": "0"
-                    },
-                    {
-                        "name": "modelName",
-                        "value": ""
-                    },
-                    {
-                        "name": "target",
-                        "value": "0"
-                    },
-                    {
-                        "name": "backend",
-                        "value": "0"
+                        "name": "model_name",
+                        "value": "yolov8m-seg"
                     }
                 ],
-                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_inception_v3"
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/infer_yolo_v8_seg"
             },
             "task_id": 3
         },
         {
             "task_data": {
-                "language": 0,
-                "name": "infer_mask_rcnn",
+                "language": 1,
+                "name": "infer_yolo_v8_pose_estimation",
                 "parameters": [
                     {
-                        "name": "maskThreshold",
-                        "value": "0.300000"
+                        "name": "iou_thres",
+                        "value": "0.7"
                     },
                     {
-                        "name": "structureFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/mask_rcnn_inception_v2_coco_2018_01_28.pbtxt"
+                        "name": "conf_thres",
+                        "value": "0.5"
                     },
                     {
-                        "name": "labelsFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/coco_names.txt"
+                        "name": "input_size",
+                        "value": "640"
                     },
                     {
-                        "name": "modelFile",
-                        "value": "/home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn/Model/frozen_inference_graph.pb"
+                        "name": "cuda",
+                        "value": "True"
                     },
                     {
-                        "name": "datasetName",
-                        "value": ""
-                    },
-                    {
-                        "name": "inputSize",
-                        "value": "416"
-                    },
-                    {
-                        "name": "confidence",
-                        "value": "0.500000"
-                    },
-                    {
-                        "name": "framework",
-                        "value": "0"
-                    },
-                    {
-                        "name": "modelName",
-                        "value": ""
-                    },
-                    {
-                        "name": "target",
-                        "value": "0"
-                    },
-                    {
-                        "name": "backend",
-                        "value": "0"
+                        "name": "model_name",
+                        "value": "yolov8m-pose"
                     }
                 ],
-                "url": "file:///home/ludo/Ikomia/Plugins/C++/infer_mask_rcnn"
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/infer_yolo_v8_pose_estimation"
             },
             "task_id": 4
+        },
+        {
+            "task_data": {
+                "language": 1,
+                "name": "infer_hf_semantic_seg",
+                "parameters": [
+                    {
+                        "name": "update",
+                        "value": "False"
+                    },
+                    {
+                        "name": "use_custom_model",
+                        "value": "False"
+                    },
+                    {
+                        "name": "model_weight_file",
+                        "value": ""
+                    },
+                    {
+                        "name": "model_name",
+                        "value": "nvidia/segformer-b2-finetuned-ade-512-512"
+                    },
+                    {
+                        "name": "cuda",
+                        "value": "True"
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/infer_hf_semantic_seg"
+            },
+            "task_id": 5
+        },
+        {
+            "task_data": {
+                "language": 1,
+                "name": "infer_torchvision_resnet",
+                "parameters": [
+                    {
+                        "name": "class_file",
+                        "value": "/home/ludo/Ikomia/Plugins/Python/infer_torchvision_resnet/models/imagenet_classes.txt"
+                    },
+                    {
+                        "name": "input_size",
+                        "value": "224"
+                    },
+                    {
+                        "name": "dataset",
+                        "value": "ImageNet"
+                    },
+                    {
+                        "name": "model_weight_file",
+                        "value": "Not used"
+                    },
+                    {
+                        "name": "model_name",
+                        "value": "resnet18"
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/infer_torchvision_resnet"
+            },
+            "task_id": 6
         }
     ]
 }

@@ -18,7 +18,7 @@ def test_cpp_bindings():
     image_io = dataio.CDataImageIO(image_path)
     image_data = image_io.read()
     assert image_data is not None
-    logger.info(image_data.shape)
+    logger.warning(image_data.shape)
 
     image_path = os.path.join(tests.get_test_image_directory(), "tmp.png")
     image_io = dataio.CDataImageIO(image_path)
@@ -38,7 +38,7 @@ def test_cpp_bindings():
     video_io = dataio.CDataVideoIO(video_path)
     frame_data = video_io.read()
     assert frame_data is not None
-    logger.info(frame_data.shape)
+    logger.warning(frame_data.shape)
     video_io.stop_read()
 
     video_path = os.path.join(tests.get_test_video_directory(), "tmp.mp4")

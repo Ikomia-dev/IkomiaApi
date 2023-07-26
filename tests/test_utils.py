@@ -1,21 +1,26 @@
 import logging
+import os
 import argparse
 import time
+import ikomia
 from ikomia import utils
 
 logger = logging.getLogger(__name__)
 
 
-def test_plugin_dependencies(plugin_folder):
-    logger.info("===== Test::get plugin dependencies =====")
-    modules = utils.get_plugin_dependencies(plugin_folder)
-    logger.info(modules)
+def test_plugin_dependencies():
+    logger.warning("===== Test::get plugin dependencies =====")
+    directory = ikomia.ik_registry.get_plugins_directory()
+    ikomia.ik_registry.install_algorithm(utils.ik.infer_torchvision_resnet().name)
+    algo_dir = os.path.join(directory, "Python", utils.ik.infer_torchvision_resnet().name)
+    modules = utils.get_plugin_dependencies(algo_dir)
+    logger.warning(modules)
 
 
 def test_installed_modules():
-    logger.info("===== Test::get installed modules =====")
+    logger.warning("===== Test::get installed modules =====")
     mods = utils.get_installed_modules()
-    logger.info(mods)
+    logger.warning(mods)
 
 
 def test_cpp_bindings():
@@ -36,41 +41,39 @@ def test_cpp_bindings():
     language = utils.ApiLanguage.PYTHON
 
     # global functions
-    logger.info(f"API version: {utils.get_api_version()}")
-    logger.info(f"Compatibility check: {utils.get_compatibility_state('0.8.1', utils.ApiLanguage.CPP)}")
-    logger.info(f"Check compile architecture: {utils.check_architecture_keywords('python310,cuda11')}")
-    logger.info(f"App started: {utils.is_app_started()}")
-    logger.info(f"Model HUB url: {utils.get_model_hub_url()}")
+    logger.warning(f"API version: {utils.get_api_version()}")
+    logger.warning(f"Compatibility check: {utils.get_compatibility_state('0.8.1', utils.ApiLanguage.CPP)}")
+    logger.warning(f"Check compile architecture: {utils.check_architecture_keywords('python310,cuda11')}")
+    logger.warning(f"App started: {utils.is_app_started()}")
+    logger.warning(f"Model HUB url: {utils.get_model_hub_url()}")
 
     # Exception
     ex = utils.CException()
-    logger.info(ex.message())
+    logger.warning(ex.message())
     ex = utils.CException(0, "Exception error message", "test_cpp_bindings", __file__, 47)
-    logger.info(ex.message())
+    logger.warning(ex.message())
 
     # Memory info
     mem = utils.CMemoryInfo()
-    logger.info(f"Total memory: {mem.get_total_memory()}")
-    logger.info(f"Available memory: {mem.get_available_memory()}")
-    logger.info(f"Memory load: {mem.get_memory_load()}")
+    logger.warning(f"Total memory: {mem.get_total_memory()}")
+    logger.warning(f"Available memory: {mem.get_available_memory()}")
+    logger.warning(f"Memory load: {mem.get_memory_load()}")
 
     # Timer
     timer = utils.CTimer()
     timer.start()
     time.sleep(1)
     timer.print_elapsed_time_ms("Step1")
-    logger.info(f"Elapsed time (ms, µs, ns): {timer.get_elapsed_ms()} {timer.get_elapsed_us()} {timer.get_elapsed_ns()}")
+    logger.warning(f"Elapsed time (ms, µs, ns): {timer.get_elapsed_ms()} {timer.get_elapsed_us()} {timer.get_elapsed_ns()}")
     time.sleep(1)
     timer.print_elapsed_time_ms("Step2")
-    logger.info(f"Elapsed time (ms, µs, ns): {timer.get_elapsed_ms()} {timer.get_elapsed_us()} {timer.get_elapsed_ns()}")
+    logger.warning(f"Elapsed time (ms, µs, ns): {timer.get_elapsed_ms()} {timer.get_elapsed_us()} {timer.get_elapsed_ns()}")
     timer.print_total_elapsed_time_ms("Step2")
-    logger.info(f"Total elapsed time (ms, µs, ns): {timer.get_total_elapsed_ms()} {timer.get_total_elapsed_us()} {timer.get_total_elapsed_ns()}")
+    logger.warning(f"Total elapsed time (ms, µs, ns): {timer.get_total_elapsed_ms()} {timer.get_total_elapsed_us()} {timer.get_total_elapsed_ns()}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--plugin_folder", type=str, default="/home/ludo/Ikomia/Plugins/Python/infer_torchvision_resnet",
-                        help="Plugin folder to checl")
     parser.add_argument("--tests",
                         type=str,
                         default='all',
@@ -80,7 +83,7 @@ if __name__ == "__main__":
     running_tests = opt.tests.split(',')
 
     if 'all' in running_tests or 'dependencies' in running_tests:
-        test_plugin_dependencies(opt.plugin_folder)
+        test_plugin_dependencies()
 
     if 'all' in running_tests or 'installed_mods' in running_tests:
         test_installed_modules()

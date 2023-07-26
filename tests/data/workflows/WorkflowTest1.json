@@ -1,4 +1,7 @@
 {
+    "api": {
+        "version": "0.9.1"
+    },
     "connections": [
         {
             "source_id": -1,
@@ -62,13 +65,14 @@
         }
     ],
     "metadata": {
-        "description": "Two-rows workflow with built-in OpenCV algorithms",
-        "keywords": "test,blur,enhance,OpenCV",
-        "name": "ProtocolTest1"
+        "description": "",
+        "keywords": "",
+        "name": "WorkflowTest1"
     },
     "tasks": [
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_box_filter",
                 "parameters": [
                     {
@@ -105,6 +109,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_bilateral_filter",
                 "parameters": [
                     {
@@ -129,6 +134,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_clahe",
                 "parameters": [
                     {
@@ -141,6 +147,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_equalize_histogram",
                 "parameters": [
                 ]
@@ -149,6 +156,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_dt_filter_enhance",
                 "parameters": [
                     {
@@ -177,6 +185,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_dt_filter",
                 "parameters": [
                     {
@@ -201,6 +210,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_convert_to",
                 "parameters": [
                     {
@@ -221,6 +231,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_superpixel_lsc",
                 "parameters": [
                     {
@@ -241,6 +252,7 @@
         },
         {
             "task_data": {
+                "language": 0,
                 "name": "ocv_superpixel_seeds",
                 "parameters": [
                     {

@@ -364,9 +364,9 @@ def test_polymorphism():
     items = _create_graphics_list()
     items.append(MyGraphicsItem())
     io = dataprocess.CGraphicsInput()
-    io.setItems(items)
+    io.set_items(items)
 
-    inserted_items = io.getItems()
+    inserted_items = io.get_items()
     for item in inserted_items:
         logger.info(f"Item ID: {item.get_id()}")
         logger.info(f"Item type: {item.get_type()}")

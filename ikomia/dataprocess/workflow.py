@@ -169,7 +169,7 @@ class Workflow(dataprocess.CWorkflow):
                 if index == -1:
                     for t in task_obj:
                         t.set_parameters(params)
-                elif 0 <= index < len(wf_task):
+                elif 0 <= index < len(task_obj):
                     task_obj[index].set_parameters(params)
 
     def get_time_metrics(self):
