@@ -95,7 +95,7 @@ class MyFirstAlgoWidget(core.CWorkflowTaskWidget):
         # Set widget layout
         self.set_layout(layout_ptr)
 ```
-In this code, we use a small utility package called `pyqtutils` which implements basic widgets from PyQt.
+In this code, we use a small utility package called {py:mod}`~ikomia.utils.pyqtutils` which implements basic widgets from PyQt.
 We add a first spin box called `spin_threshold1` to the layout `grid_layout`. We put this widget in the first row `0` with a label, a default value and a range.
 Then we add a second spin box called `spin_threshold2` in the second row `1`.
 
