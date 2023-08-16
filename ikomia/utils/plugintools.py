@@ -142,26 +142,17 @@ def install_requirements(directory):
     req_files.sort()
 
     for file in req_files:
-        try:
-            subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
-        except Exception as e:
-            logger.warning(e)
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
 
 
 def install_package(name, version):
     if name:
-        try:
-            subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
-        except Exception as e:
-            logger.warning(e)
+        subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
 
 
 def uninstall_package(name):
     if name:
-        try:
-            subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
-        except Exception as e:
-            logger.warning(e)
+        subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
 
 
 def import_plugin_module(directory, name):
