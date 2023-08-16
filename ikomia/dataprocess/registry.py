@@ -162,7 +162,11 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if info.version >= online_algo["version"] and info.ikomia_version >= online_algo["ikomiaVersion"]:
             logger.info(f"Algorithm {name} is already up to date")
         else:
-            self.install_algorithm(name, force=True)
+            try:
+                self.install_algorithm(name, force=True)
+            except Exception as e:
+                logger.error(f"Failed to install requirements for algorithm {name} for the following reason:")
+                logger.error(e)
 
     def install_algorithm(self, name:str, force:bool=False):
         """
@@ -310,12 +314,25 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             module_installed = next((mod for mod in modules if mod["name"] == package), None)
             if module_installed:
                 if package == "tb-nightly":
-                    utils.plugintools.uninstall_package(package)
+                    try:
+                        utils.plugintools.uninstall_package(package)
+                    except Exception as e:
+                        logger.error(f"Failed to uninstall {package} for the following reason:")
+                        logger.error(e)
                     tb_installed = next((mod for mod in modules if mod["name"] == "tensorboard"), None)
 
                     if tb_installed:
-                        utils.plugintools.uninstall_package("tensorboard")
-                        utils.plugintools.install_package("tensorboard", tb_installed["version"])
+                        try:
+                            utils.plugintools.uninstall_package("tensorboard")
+                        except Exception as e:
+                            logger.error(f"Failed to uninstall tensorboard for the following reason:")
+                            logger.error(e)
+                        try:
+                            utils.plugintools.install_package("tensorboard", tb_installed["version"])
+                        except Exception as e:
+                            logger.error(f"Failed to install tensorboard=={tb_installed['version']} "
+                                         f"for the following reason:")
+                            logger.error(e)
                 else:
                     utils.plugintools.uninstall_package(package)
 
