@@ -15,9 +15,19 @@ def test_get_local_algorithms():
     logger.warning(algos)
 
 
-def test_get_online_algorithms():
-    logger.info("===== Test::get list of online algorithms =====")
+def test_get_public_online_algorithms():
+    logger.info("===== Test::get list of public online algorithms =====")
     algos = ikomia.ik_registry.get_online_algorithms()
+    logger.warning("Number of online algorithms:" + str(len(algos)))
+
+    for algo in algos:
+        logger.warning(algo["name"])
+
+
+def test_get_all_online_algorithms():
+    logger.info("===== Test::get list of all online algorithms =====")
+    ikomia.authenticate()
+    algos = ikomia.ik_registry.get_online_algorithms(public_only=False)
     logger.warning("Number of online algorithms:" + str(len(algos)))
 
     for algo in algos:
@@ -137,12 +147,12 @@ if __name__ == "__main__":
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
 
-    ikomia.authenticate()
-
     if 'all' in running_tests or 'get_local_algorithms' in running_tests:
         test_get_local_algorithms()
-    if 'all' in running_tests or 'get_online_algorithms' in running_tests:
-        test_get_online_algorithms()
+    if 'all' in running_tests or 'get_public_online_algorithms' in running_tests:
+        test_get_public_online_algorithms()
+    if 'all' in running_tests or 'get_all_online_algorithms' in running_tests:
+        test_get_all_online_algorithms()
     if 'all' in running_tests or 'get_download_plugin' in running_tests:
         test_download_plugin()
     if 'all' in running_tests or 'install_plugin' in running_tests:

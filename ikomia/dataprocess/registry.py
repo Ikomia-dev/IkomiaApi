@@ -26,6 +26,9 @@ import sys
 import logging
 import zipfile
 import shutil
+import platform
+import semver
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +41,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     """
     def __init__(self, lazy_load:bool = True):
         dataprocess.CIkomiaRegistry.__init__(self)
+        self.online_algos = []
 
         if not lazy_load:
             self.load_algorithms()
@@ -45,7 +49,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     def __repr__(self):
         return f"IkomiaRegistry()"
 
-    def get_online_algorithms(self):
+    def get_online_algorithms(self, public_only: bool = True):
         """
         Get the list of available algorithms from Ikomia HUB.
         Each algorithm is identified by a unique name.
@@ -55,21 +59,56 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Returns:
              list of dict: list of algorithms information
         """
-        s = ikomia.ik_api_session
-        if s is None:
+        if ikomia.ik_api_session is None:
             raise ConnectionError("Failed to get online algorithms from Ikomia HUB.")
 
-        url = config.main_cfg["hub"]["url"] + "/api/plugin/"
+        self.online_algos = []
+        self._get_public_online_algos()
+
+        if not public_only:
+            self._get_private_online_algos()
+
+        return self.online_algos
+
+    def _get_public_online_algos(self):
+        url = config.main_cfg["hub"]["url"] + "/v1/hub/"
+        self._get_online_algos(url)
+
+    def _get_private_online_algos(self):
+        s = ikomia.ik_api_session
+        if s.token is None:
+            logger.warning("You must be logged in to get private algorithms")
+            return
+
+        url = config.main_cfg["hub"]["url"] + "/v1/algos/"
+        self._get_online_algos(url)
+
+    def _get_online_algos(self, url):
+        s = ikomia.ik_api_session
+        algos = self._get_all_from_pagination(url)
+
+        for algo in algos:
+            # Get algorithm details
+            r = s.session.get(algo["url"])
+            r.raise_for_status()
+            algo_detail = r.json()
+
+            if self._check_compatibility(algo_detail):
+                self.online_algos.append(algo_detail)
+
+    def _get_all_from_pagination(self, url: str):
+        s = ikomia.ik_api_session
         r = s.session.get(url)
         r.raise_for_status()
-        all_plugins = r.json()
-        platform_plugins = []
+        pagination_data = r.json()
 
-        for plugin in all_plugins:
-            if self._check_compatibility(plugin):
-                platform_plugins.append(plugin)
+        if pagination_data["next"] is not None:
+            url = f"{url}?page_size={pagination_data['count']}"
+            r = s.session.get(url)
+            r.raise_for_status()
+            pagination_data = r.json()
 
-        return platform_plugins
+        return pagination_data["results"]
 
     def create_algorithm(self, name:str, parameters=None, hub:bool=True):
         """
@@ -143,13 +182,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return
 
         try:
-            online_algos = self.get_online_algorithms()
+            if len(self.online_algos) == 0:
+                self.get_online_algorithms()
         except Exception as e:
             logger.error(e)
             return
 
         online_algo = None
-        for algo in online_algos:
+        for algo in self.online_algos:
             if algo["name"] == name:
                 online_algo = algo
                 break
@@ -228,30 +268,31 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
     def _download_algorithm(self, name:str):
-        available_plugins = self.get_online_algorithms()
+        if len(self.online_algos) == 0:
+            self.get_online_algorithms()
 
-        plugin_info = None
-        for plugin in available_plugins:
-            if plugin["name"] == name:
-                plugin_info = plugin
+        algo_info = None
+        for algo in self.online_algos:
+            if algo["name"] == name:
+                algo_info = algo
                 break
 
-        if plugin_info is None:
+        if algo_info is None:
             error_msg = f"Algorithm {name} does not exist in Ikomia HUB."
             raise ValueError(error_msg)
 
-        language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
-        state = utils.get_compatibility_state(plugin["ikomiaVersion"], language)
+        language = utils.ApiLanguage.CPP if algo["language"] == 0 else utils.ApiLanguage.PYTHON
+        state = utils.get_compatibility_state(algo["ikomiaVersion"], language)
 
         if state != utils.PluginState.VALID:
-            error_msg = f"Plugin {plugin['name']} can't be installed due to version incompatibility.\n"\
-                        f"Based on Ikomia {plugin['ikomiaVersion']} " \
+            error_msg = f"Plugin {algo['name']} can't be installed due to version incompatibility.\n"\
+                        f"Based on Ikomia {algo['ikomiaVersion']} " \
                         f"while the current version is {utils.get_api_version()}."
             raise ValueError(error_msg)
 
-        # Get plugin package url
+        # Get algorithm package url
         s = ikomia.ik_api_session
-        url = config.main_cfg["hub"]["url"] + "/api/plugin/" + str(plugin_info["id"]) + "/package/"
+        url = config.main_cfg["hub"]["url"] + "/api/algo/" + str(algo_info["id"]) + "/package/"
         r = s.session.get(url)
         r.raise_for_status()
         package_info = r.json()
@@ -267,7 +308,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Unzip
         language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
-        target_dir = os.path.join(self.get_plugins_directory(), language_folder, plugin["name"])
+        target_dir = os.path.join(self.get_plugins_directory(), language_folder, algo["name"])
 
         if os.path.isdir(target_dir):
             shutil.rmtree(target_dir)
@@ -278,28 +319,83 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if os.path.isfile(file_path):
             os.remove(file_path)
 
-        target_dir = utils.conform_plugin_directory(target_dir, plugin)
-        return plugin, language, target_dir
+        target_dir = utils.conform_plugin_directory(target_dir, algo)
+        return algo, language, target_dir
 
     @staticmethod
-    def _check_compatibility(plugin):
-        current_os = None
-        if sys.platform == "win32":
-            current_os = utils.OSType.WIN
-        elif sys.platform == "darwin":
-            current_os = utils.OSType.OSX
-        else:
-            current_os = utils.OSType.LINUX
+    def _check_compatibility(algo):
+        language = utils.ApiLanguage.PYTHON if algo["language"] == "PYTHON" else utils.ApiLanguage.CPP
+        packages = algo["packages"]
 
-        plugin_os = plugin["os"]
-        if plugin_os != utils.OSType.ALL and plugin_os != current_os:
+        for package in packages:
+            if IkomiaRegistry._check_package_compatibility(package, language):
+                return True
+
+        return False
+
+    @staticmethod
+    def _check_package_compatibility(package, language):
+        if (
+                IkomiaRegistry._check_os_compatibility(package) and
+                IkomiaRegistry._check_ikomia_compatibility(package, language) and
+                IkomiaRegistry._check_python_compatibility(package) and
+                IkomiaRegistry._check_architecture(package, language)
+        ):
+            return True
+        else:
             return False
 
-        language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
-        if language == utils.ApiLanguage.CPP:
-            return utils.check_architecture_keywords(plugin["keywords"])
+    @staticmethod
+    def _check_os_compatibility(package):
+        current_os = None
+        if sys.platform == "win32":
+            current_os = "WINDOWS"
+        elif sys.platform == "darwin":
+            current_os = "OSX"
+        else:
+            current_os = "LINUX"
 
-        return True
+        os_list = package["platform"]["os"]
+        return current_os in os_list
+
+    @staticmethod
+    def _check_ikomia_compatibility(package, language):
+        ikomia_condition = package["platform"]["ikomia"]
+        min_version, max_version = IkomiaRegistry._split_min_max_version(ikomia_condition)
+        state = utils.get_compatibility_state(min_version, max_version, language)
+        return state == utils.PluginState.VALID
+
+    @staticmethod
+    def _check_python_compatibility(package):
+        current_version = platform.python_version()
+        min_version, max_version = IkomiaRegistry._split_min_max_version(package["platform"]["python"])
+        current_sem_ver = semver.Version.parse(current_version)
+        min_sem_ver = semver.Version.parse(min_version, optional_minor_and_patch=True)
+        max_sem_ver = semver.Version.parse(max_version, optional_minor_and_patch=True)
+        return current_sem_ver >= min_sem_ver and current_sem_ver < max_sem_ver
+
+    @staticmethod
+    def _check_architecture(package, language):
+        if language == utils.ApiLanguage.CPP:
+            # TODO: test it!
+            # Check CPU architecture
+            current_arch = utils.get_cpu_arch_name(utils.get_cpu_arch())
+            compatible_arch_list = package["platform"]["architecture"]
+
+            if current_arch not in compatible_arch_list:
+                return False
+
+            # Check features: CUDA version
+            current_features = utils.get_cuda_version()
+            compatible_features = package["platform"]["features"]
+
+            for feat in current_features:
+                if feat not in compatible_features:
+                    return False
+
+            return True
+        else:
+            return True
 
     def _check_installed_modules(self, algo_dir:str):
         modules = utils.plugintools.get_installed_modules()
@@ -325,3 +421,11 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             with open(needless_path, "r") as f:
                 for line in f:
                     utils.plugintools.uninstall_package(line.rstrip())
+
+    @staticmethod
+    def _split_min_max_version(version: str):
+        match = re.search(r">=(\d+\.\d+\.?\d*),?<?(\d*\.?\d*\.?\d*)", version)
+        if match:
+            return match.group(1), match.group(2)
+        else:
+            raise RuntimeError("Invalid version condition string")
