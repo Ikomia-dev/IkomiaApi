@@ -39,9 +39,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
-    def __init__(self, lazy_load:bool = True):
+    def __init__(self, lazy_load:bool=True):
         dataprocess.CIkomiaRegistry.__init__(self)
-        self.online_algos = []
+        self.public_online_algos = None
+        self.private_online_algos = None
 
         if not lazy_load:
             self.load_algorithms()
@@ -49,12 +50,15 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     def __repr__(self):
         return f"IkomiaRegistry()"
 
-    def get_online_algorithms(self, public_only: bool = True):
+    def get_public_hub_algorithms(self, force:bool=False):
         """
-        Get the list of available algorithms from Ikomia HUB.
+        Get the list of available algorithms from public Ikomia HUB.
         Each algorithm is identified by a unique name.
         Each algorithm can then be instanciated from this name with the function
         :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
+
+        Args:
+            force (bool): IkomiaRegistry class use cache for online algorithms. Set this parameter to True to force online list update.
 
         Returns:
              list of dict: list of algorithms information
@@ -62,30 +66,39 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if ikomia.ik_api_session is None:
             raise ConnectionError("Failed to get online algorithms from Ikomia HUB.")
 
-        self.online_algos = []
-        self._get_public_online_algos()
+        if self.public_online_algos is None or force:
+            url = config.main_cfg["hub"]["url"] + "/v1/hub/"
+            self.public_online_algos = self._get_online_algos(url)
 
-        if not public_only:
-            self._get_private_online_algos()
+        return self.public_online_algos
 
-        return self.online_algos
+    def get_private_hub_algorithms(self, force:bool=False):
+        """
+        Get the list of available algorithms from private Ikomia HUB (authentication required).
+        Each algorithm is identified by a unique name.
+        Each algorithm can then be instanciated from this name with the function
+        :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
 
-    def _get_public_online_algos(self):
-        url = config.main_cfg["hub"]["url"] + "/v1/hub/"
-        self._get_online_algos(url)
+        Args:
+            force (bool): IkomiaRegistry class use cache for online algorithms. Set this parameter to True to force online list update.
 
-    def _get_private_online_algos(self):
+        Returns:
+             list of dict: list of algorithms information
+        """
         s = ikomia.ik_api_session
         if s.token is None:
-            logger.warning("You must be logged in to get private algorithms")
-            return
+            raise PermissionError("You must be authenticated to get private algorithms")
 
-        url = config.main_cfg["hub"]["url"] + "/v1/algos/"
-        self._get_online_algos(url)
+        if self.private_online_algos is None or force:
+            url = config.main_cfg["hub"]["url"] + "/v1/algos/"
+            self.private_online_algos = self._get_online_algos(url)
 
-    def _get_online_algos(self, url):
+        return self.private_online_algos
+
+    def _get_online_algos(self, url: str):
         s = ikomia.ik_api_session
         algos = self._get_all_from_pagination(url)
+        valid_algos = []
 
         for algo in algos:
             # Get algorithm details
@@ -94,7 +107,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             algo_detail = r.json()
 
             if self._check_compatibility(algo_detail):
-                self.online_algos.append(algo_detail)
+                valid_algos.append(algo_detail)
+
+        return valid_algos
 
     def _get_all_from_pagination(self, url: str):
         s = ikomia.ik_api_session
@@ -110,18 +125,20 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return pagination_data["results"]
 
-    def create_algorithm(self, name:str, parameters=None, hub:bool=True):
+    def create_algorithm(self, name:str, parameters=None, public_hub:bool=True, private_hub=False):
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
-        :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
+        :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_public_hub_algorithms` or
+        :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_private_hub_algorithms` to get valid names.
         If algorithm is already in the registry, an object instance is directly returned. Otherwise,
-        the function tries to install it from Ikomia HUB and add it to the registry if installation success.
-        Finally the object instance is returned.
+        the function tries to install it from public Ikomia HUB first, and private Ikomia HUB at the end. It finally
+        adds it to the registry if installation succeed and returns the object instance.
 
         Args:
             name (str): unique algorithm name
             parameters (~ikomia.core.CWorkflowTaskParam): initial parameters values
-            hub (bool): if False, we don't try to install algorithm from Ikomia Hub
+            public_hub (bool): if False, we don't try to install algorithm from public Ikomia Hub
+            private_hub (bool): if False, we don't try to install algorithm from private Ikomia Hub
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
@@ -144,34 +161,41 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
                 # If algorithm is installed but not functional (algo_dir is not empty), it may be a plugin
                 # in developpement and we should not overwrite it with the Ikomia Hub version
-                if hub and not algo_dir:
+                if (public_hub or private_hub) and not algo_dir:
                     try:
                         logger.warning(f"Try installing {name} from Ikomia HUB...")
-                        self.install_algorithm(name)
+                        self.install_algorithm(name, public_hub, private_hub)
                         algo = self.create_instance(name, parameters)
                     except Exception as e:
                         logger.error(e)
 
         return algo
 
-    def update_algorithms(self):
+    def update_algorithms(self, public_hub:bool=True, private_hub:bool=False):
         """
         Launch automatic update of all algorithms in the registry. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
+
+        Args:
+            public_hub (bool): update public algorithms from Ikomia HUB if True
+            private_hub (bool): update private algorithms from Ikomia HUB if True
         """
         local_algos = self.get_algorithms()
         for algo in local_algos:
             info = self.get_algorithm_info(algo)
             if not info.internal:
-                self.update_algorithm(algo)
+                self.update_algorithm(algo, public_hub, private_hub)
 
-    def update_algorithm(self, name:str):
+    def update_algorithm(self, name:str, public_hub:bool=True, private_hub:bool=False):
         """
-        Launch update of the given algorithm. It only concerns algorithms of Ikomia HUB.
-        The function checks version compatibility.
+        Launch update of the given algorithm. It only concerns algorithms from Ikomia HUB. In case where algorithm name
+        is both available in public and private HUBs, you should set parameters public_hub and private_hub to
+        explicitly set the source. If both are set to True, the function will update local version from public HUB.
 
         Args:
              name (str): algorithm unique name
+             public_hub (bool): update public algorithm from Ikomia HUB if True
+             private_hub (bool): update private algorithm from Ikomia HUB if True
         """
         local_algos = self.get_algorithms()
         if local_algos is None:
@@ -182,34 +206,50 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return
 
         try:
-            if len(self.online_algos) == 0:
-                self.get_online_algorithms()
+            if public_hub:
+                hub_algo = self._find_hub_algo(name, self.get_public_hub_algorithms())
+                if hub_algo:
+                    if self._has_to_be_updated(name, hub_algo):
+                        self.install_algorithm(name, force=True)
+                    else:
+                        logger.info(f"Algorithm {name} is already up to date")
+                    return
+
+            if private_hub:
+                hub_algo = self._find_hub_algo(name, self.get_private_hub_algorithms())
+                if hub_algo:
+                    if self._has_to_be_updated(name, hub_algo):
+                        self.install_algorithm(name, force=True)
+                    else:
+                        logger.info(f"Algorithm {name} is already up to date")
+                    return
         except Exception as e:
             logger.error(e)
             return
 
-        online_algo = None
-        for algo in self.online_algos:
+        logger.error(f"Algorithm {name} does not exist in Ikomia HUB")
+
+    def _has_to_be_updated(self, name:str, hub_info: dict):
+        local_info = self.get_algorithm_info(name)
+        current_version = semver.Version.parse(local_info.version)
+        hub_version = semver.Version.parse(hub_info["version"])
+        return current_version < hub_version
+
+    def _find_hub_algo(self, name: str, hub_list: list):
+        for algo in hub_list:
             if algo["name"] == name:
-                online_algo = algo
-                break
+                return algo
 
-        if online_algo is None:
-            logger.error(f"Algorithm {name} does not exist in Ikomia HUB")
-            return
+        return None
 
-        info = self.get_algorithm_info(name)
-        if info.version >= online_algo["version"] and info.ikomia_version >= online_algo["ikomiaVersion"]:
-            logger.info(f"Algorithm {name} is already up to date")
-        else:
-            self.install_algorithm(name, force=True)
-
-    def install_algorithm(self, name:str, force:bool=False):
+    def install_algorithm(self, name:str, public_hub: bool = True, private_hub: bool = False, force:bool=False):
         """
         Launch algorithm installation from Ikomia HUB given its unique name.
 
         Args:
             name (str): algorithm unique name
+            public_hub (bool): search algorithm in public Ikomia HUB if True
+            private_hub (bool): search algorithm in private Ikomia HUB if True
             force (bool): force package installation even if the algorithm is already installed
         """
         available_algos = self.get_algorithms()
@@ -224,11 +264,9 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Download package
         try:
-            plugin, language, algo_dir = self._download_algorithm(name)
+            plugin, language, algo_dir = self._download_algorithm(name, public_hub, private_hub)
         except Exception as e:
-            logger.error(f"Failed to install algorithm {name} for the following reason:")
-            logger.error(e)
-            return
+            raise RuntimeError(f"Failed to install algorithm {name} for the following reason: {e}")
 
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
@@ -267,48 +305,34 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
-    def _download_algorithm(self, name:str):
-        if len(self.online_algos) == 0:
-            self.get_online_algorithms()
-
+    def _download_algorithm(self, name:str, public_hub: bool = True, private_hub: bool = False):
         algo_info = None
-        for algo in self.online_algos:
-            if algo["name"] == name:
-                algo_info = algo
-                break
+
+        if public_hub:
+            public_algos = self.get_public_hub_algorithms()
+            algo_info = self._find_hub_algo(name, public_algos)
+
+        if private_hub and algo_info is None:
+            private_algos = self.get_private_hub_algorithms()
+            algo_info = self._find_hub_algo(name, private_algos)
 
         if algo_info is None:
-            error_msg = f"Algorithm {name} does not exist in Ikomia HUB."
-            raise ValueError(error_msg)
-
-        language = utils.ApiLanguage.CPP if algo["language"] == 0 else utils.ApiLanguage.PYTHON
-        state = utils.get_compatibility_state(algo["ikomiaVersion"], language)
-
-        if state != utils.PluginState.VALID:
-            error_msg = f"Plugin {algo['name']} can't be installed due to version incompatibility.\n"\
-                        f"Based on Ikomia {algo['ikomiaVersion']} " \
-                        f"while the current version is {utils.get_api_version()}."
+            error_msg = f"Algorithm {name} does not exist in Ikomia HUB or is not compatible with your environment."
             raise ValueError(error_msg)
 
         # Get algorithm package url
-        s = ikomia.ik_api_session
-        url = config.main_cfg["hub"]["url"] + "/api/algo/" + str(algo_info["id"]) + "/package/"
-        r = s.session.get(url)
-        r.raise_for_status()
-        package_info = r.json()
-        package_url = package_info["packageFile"]
-
+        package_url = self._find_best_package_url(algo_info["packages"])
         if package_url is None:
             raise RuntimeError(f"Failed to get algorithm package for {name}.")
 
         # Download package
-        url = config.main_cfg["hub"]["url"] + package_url
-        file_path = os.path.join(self.get_plugins_directory(), "Transfer", os.path.basename(package_url))
-        utils.http.download_file(url, file_path, public=True)
+        file_path = os.path.join(self.get_plugins_directory(), "Transfer", f"{name}.zip")
+        utils.http.download_file(f"{package_url}download/", file_path)
 
         # Unzip
+        language = utils.ApiLanguage.PYTHON if algo_info["language"] == "PYTHON" else utils.ApiLanguage.CPP
         language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
-        target_dir = os.path.join(self.get_plugins_directory(), language_folder, algo["name"])
+        target_dir = os.path.join(self.get_plugins_directory(), language_folder, algo_info["name"])
 
         if os.path.isdir(target_dir):
             shutil.rmtree(target_dir)
@@ -319,8 +343,28 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if os.path.isfile(file_path):
             os.remove(file_path)
 
-        target_dir = utils.conform_plugin_directory(target_dir, algo)
-        return algo, language, target_dir
+        return algo_info, language, target_dir
+
+    def _find_best_package_url(self, packages:list):
+        """
+        At this point, plugins are already filtered to ensure compatibility.
+        So for now, we just want to pick the latest version
+        """
+        url = None
+        last_version = semver.Version.parse("0.0.0")
+
+        for package in packages:
+            if "version" in package:
+                # Public hub algorithm
+                package_version = semver.Version.parse(package["version"])
+                if package_version > last_version:
+                    url = package["url"]
+                    last_version = package_version
+            elif "tag" in package:
+                # Private hub algorithm
+                url = package["url"]
+
+        return url
 
     @staticmethod
     def _check_compatibility(algo):
