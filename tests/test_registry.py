@@ -1,9 +1,10 @@
 import logging
+import shutil
 import pytest
 import argparse
 import ikomia
 import cv2
-from ikomia.utils import tests, ik
+from ikomia.utils import tests
 
 logger = logging.getLogger(__name__)
 
@@ -45,35 +46,37 @@ def test_download_algorithm():
     logger.warning("===== Test::download hub algorithm =====")
     logger.warning("Downloading dataset_coco...")
     algo_name = "dataset_coco"
+    algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(algo_name)
     ikomia.ik_registry._download_algorithm(algo_name, public_hub=True, private_hub=False)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
     with pytest.raises(PermissionError):
         ikomia.ik_registry._download_algorithm(algo_name, public_hub=False, private_hub=True)
 
     ikomia.authenticate()
     ikomia.ik_registry._download_algorithm(algo_name, public_hub=False, private_hub=True)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
     ikomia.ik_registry._download_algorithm(algo_name, public_hub=True, private_hub=True)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
 
 def test_install_public_algorithm():
     logger.warning("===== Test::install online algorithms =====")
     logger.warning("Installing dataset_coco...")
     algo_name = "dataset_coco"
-    local_algos = ikomia.ik_registry.get_algorithms()
-    assert algo_name not in local_algos
-
     ikomia.ik_registry.install_algorithm(algo_name, public_hub=True, private_hub=False)
     local_algos = ikomia.ik_registry.get_algorithms()
     assert algo_name in local_algos
+
+    algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(algo_name)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
 
 def test_install_private_algorithm():
     logger.warning("===== Test::install online algorithms =====")
     logger.warning("Installing dataset_coco...")
-    algo_name = "dataset_coco"
-    local_algos = ikomia.ik_registry.get_algorithms()
-    assert algo_name not in local_algos
+    algo_name = "dataset_yolo"
 
     with pytest.raises(RuntimeError):
         ikomia.ik_registry.install_algorithm(algo_name, public_hub=False, private_hub=True)
@@ -82,6 +85,9 @@ def test_install_private_algorithm():
     ikomia.ik_registry.install_algorithm(algo_name, public_hub=False, private_hub=True)
     local_algos = ikomia.ik_registry.get_algorithms()
     assert algo_name in local_algos
+
+    algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(algo_name)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
 
 def test_local_instantiation():
@@ -106,53 +112,68 @@ def test_instantiation():
     logger.warning(f"Instantiate {algo_name} algorithm...")
     algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=False)
     assert(algo is not None)
-    logger.warning("Done.")
 
     # Public Python algo
     algo_name = "dataset_coco"
-    logger.warning(f"Instantiate {algo_name} algorithm...")
+    logger.warning(f"Instantiate public {algo_name} algorithm...")
     algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=True, private_hub=False)
     assert (algo is not None)
-    logger.warning("Done.")
+    algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(algo_name)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
     # Private Python algo
     algo_name = "dataset_yolo"
-    logger.warning(f"Instantiate {algo_name} algorithm...")
-    algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
-    assert (algo is None)
+    logger.warning(f"Instantiate private {algo_name} algorithm...")
+    with pytest.raises(RuntimeError):
+        algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
+
     ikomia.authenticate()
     algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
     assert (algo is not None)
-    logger.warning("Done.")
 
     # Public C++ algo
     # algo_name = "infer_facemark_lbf"
-    # logger.info("Instantiate {algo_name} algorithm...")
+    # logger.info("Instantiate public {algo_name} algorithm...")
     # algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=True, private_hub=False)
     # assert (algo is not None)
-    # logger.info("Done.")
 
     # Private C++ algo
     # algo_name = "infer_facemark_lbf"
-    # logger.info("Instantiate {algo_name} algorithm...")
+    # logger.info("Instantiate private {algo_name} algorithm...")
     # algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
     # assert (algo is not None)
-    # logger.info("Done.")
 
     # Local Python algo
     algo_name = "dataset_yolo"
     logger.warning(f"Instantiate local {algo_name} algorithm...")
     algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=False)
     assert (algo is not None)
-    logger.warning("Done.")
+
+    algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(algo_name)
+    shutil.rmtree(path=algo_dir, ignore_errors=True)
 
 
 def test_update():
     logger.warning("===== Test::update algorithms =====")
-    logger.warning("Updating ResNet Train algorithm...")
-    ikomia.ik_registry.update_algorithm(ik.train_torchvision_resnet)
+    algo_names = ["dataset_coco", "dataset_yolo"]
+    logger.warning(f"Updating not installed {algo_names[0]} algorithm...")
+    ikomia.ik_registry.update_algorithm(algo_names[0])
+
+    logger.warning(f"Updating public {algo_names[0]} algorithm...")
+    ikomia.ik_registry.install_algorithm(name=algo_names[0], public_hub=True, private_hub=False)
+    ikomia.ik_registry.update_algorithm(algo_names[0])
+
+    logger.warning(f"Updating private {algo_names[1]} algorithm...")
+    ikomia.authenticate()
+    ikomia.ik_registry.install_algorithm(name=algo_names[1], public_hub=False, private_hub=True)
+    ikomia.ik_registry.update_algorithm(algo_names[1], public_hub=False, private_hub=True)
+
     logger.warning("Updating all algorithms...")
     ikomia.ik_registry.update_algorithms()
+
+    for name in algo_names:
+        algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(name)
+        shutil.rmtree(path=algo_dir, ignore_errors=True)
 
 
 def test_execution():

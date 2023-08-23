@@ -29,6 +29,8 @@ import shutil
 import platform
 import semver
 import re
+import time
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -150,24 +152,27 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         available_algos = self.get_algorithms()
 
         if name in available_algos:
+            # Algorithm is loaded, instanciate it
             algo = self.create_instance(name, parameters)
         else:
             try:
+                # Algorithm is not loaded (lazy load), check if folder is found locally and try to load it
                 algo_dir, language = self._get_algorithm_directory(name)
                 self._load_algorithm(name, algo_dir, language)
                 algo = self.create_instance(name, parameters)
             except Exception as e:
                 logger.warning(e)
 
-                # If algorithm is installed but not functional (algo_dir is not empty), it may be a plugin
-                # in developpement and we should not overwrite it with the Ikomia Hub version
                 if (public_hub or private_hub) and not algo_dir:
-                    try:
-                        logger.warning(f"Try installing {name} from Ikomia HUB...")
-                        self.install_algorithm(name, public_hub, private_hub)
-                        algo = self.create_instance(name, parameters)
-                    except Exception as e:
-                        logger.error(e)
+                    # Algorithm is not installed, so try to install it from HUB
+                    logger.warning(f"Try installing {name} from Ikomia HUB...")
+                    self.install_algorithm(name, public_hub, private_hub)
+                    algo = self.create_instance(name, parameters)
+                else:
+                    # If algorithm is installed lcoally but not functional (algo_dir is not empty), it may be a plugin
+                    # in developpement and we should not overwrite it with the Ikomia Hub version
+                    raise RuntimeError(f"Algorithm {name} is installed locally but not functional. "
+                                       f"Check your code or your Python environment please.")
 
         return algo
 
@@ -181,10 +186,15 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             private_hub (bool): update private algorithms from Ikomia HUB if True
         """
         local_algos = self.get_algorithms()
+        algo_count = 0
+
         for algo in local_algos:
             info = self.get_algorithm_info(algo)
             if not info.internal:
                 self.update_algorithm(algo, public_hub, private_hub)
+                algo_count += 1
+
+        logger.info(f"{algo_count} algorithms have been updated successfully")
 
     def update_algorithm(self, name:str, public_hub:bool=True, private_hub:bool=False):
         """
@@ -202,38 +212,50 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             logger.error("Ikomia algorithm registry is empty.")
 
         if name not in local_algos:
-            logger.error(f"Algorithm {name} can't be updated as it is not installed.")
-            return
+            try:
+                # Lazy loading
+                algo_dir, language = ikomia.ik_registry._get_algorithm_directory(name)
+                self._load_algorithm(name, algo_dir, language)
+            except:
+                logger.error(f"Algorithm {name} can't be updated as it is not installed.")
+                return
 
-        try:
-            if public_hub:
-                hub_algo = self._find_hub_algo(name, self.get_public_hub_algorithms())
-                if hub_algo:
-                    if self._has_to_be_updated(name, hub_algo):
-                        self.install_algorithm(name, force=True)
-                    else:
-                        logger.info(f"Algorithm {name} is already up to date")
-                    return
+        if public_hub:
+            hub_algo = self._find_hub_algo(name, self.get_public_hub_algorithms())
+            if hub_algo:
+                if self._has_to_be_updated(name, hub_algo):
+                    self.install_algorithm(name, force=True)
+                else:
+                    logger.info(f"Algorithm {name} is already up to date")
+                return
 
-            if private_hub:
-                hub_algo = self._find_hub_algo(name, self.get_private_hub_algorithms())
-                if hub_algo:
-                    if self._has_to_be_updated(name, hub_algo):
-                        self.install_algorithm(name, force=True)
-                    else:
-                        logger.info(f"Algorithm {name} is already up to date")
-                    return
-        except Exception as e:
-            logger.error(e)
-            return
+        if private_hub:
+            hub_algo = self._find_hub_algo(name, self.get_private_hub_algorithms())
+            if hub_algo:
+                if self._has_to_be_updated(name, hub_algo):
+                    self.install_algorithm(name, force=True)
+                else:
+                    logger.info(f"Algorithm {name} is already up to date")
+                return
 
-        logger.error(f"Algorithm {name} does not exist in Ikomia HUB")
+        raise RuntimeError(f"Algorithm {name} does not exist in Ikomia HUB")
 
     def _has_to_be_updated(self, name:str, hub_info: dict):
         local_info = self.get_algorithm_info(name)
         current_version = semver.Version.parse(local_info.version)
-        hub_version = semver.Version.parse(hub_info["version"])
-        return current_version < hub_version
+
+        if "version" in hub_info:
+            # Public algorithm
+            hub_version = semver.Version.parse(hub_info["version"])
+            return current_version < hub_version
+        else:
+            # Private algorithm
+            hub_modif_date = datetime.strptime(hub_info["updated_at"], "%Y-%m-%dT%H:%M:%S.%fZ")
+            algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(name)
+            local_time = time.localtime(os.path.getmtime(os.path.join(algo_dir, f"{name}_process.py")))
+            local_format_time = time.strftime("%Y-%m-%dT%H:%M:%S", local_time)
+            local_modif_date = datetime.strptime(local_format_time, "%Y-%m-%dT%H:%M:%S")
+            return hub_modif_date > local_modif_date
 
     def _find_hub_algo(self, name: str, hub_list: list):
         for algo in hub_list:
@@ -263,10 +285,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 update = True
 
         # Download package
-        try:
-            plugin, language, algo_dir = self._download_algorithm(name, public_hub, private_hub)
-        except Exception as e:
-            raise RuntimeError(f"Failed to install algorithm {name} for the following reason: {e}")
+        plugin, language, algo_dir = self._download_algorithm(name, public_hub, private_hub)
 
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
@@ -313,8 +332,11 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             algo_info = self._find_hub_algo(name, public_algos)
 
         if private_hub and algo_info is None:
-            private_algos = self.get_private_hub_algorithms()
-            algo_info = self._find_hub_algo(name, private_algos)
+            try:
+                private_algos = self.get_private_hub_algorithms()
+                algo_info = self._find_hub_algo(name, private_algos)
+            except Exception as e:
+                raise RuntimeError(f"Failed to search for {name} algorithm in private Ikomia HUB for the following reason: {e}")
 
         if algo_info is None:
             error_msg = f"Algorithm {name} does not exist in Ikomia HUB or is not compatible with your environment."
@@ -327,7 +349,10 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         # Download package
         file_path = os.path.join(self.get_plugins_directory(), "Transfer", f"{name}.zip")
-        utils.http.download_file(f"{package_url}download/", file_path)
+        try:
+            utils.http.download_file(f"{package_url}download/", file_path)
+        except Exception as e:
+            raise RuntimeError(f"Failed to download algorithm {name} for the following reason: {e}")
 
         # Unzip
         language = utils.ApiLanguage.PYTHON if algo_info["language"] == "PYTHON" else utils.ApiLanguage.CPP
