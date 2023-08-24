@@ -55,7 +55,7 @@ Within a unified framework, developers can craft workflows and seamlessly blend 
 
 By democratizing advanced technologies, we strive to accelerate innovation in AI, computer vision, and machine learning. Our platform empowers developers to leverage cutting-edge algorithms effortlessly, thereby fostering collaboration and transformative applications.
 
-*In conclusion, let us emphasize our forthcoming SaaS platform, designed to simplify the publication and deployment of workflows onto dedicated CPU or GPU endpoints (please contact us at team@ikomia.ai for more information).*
+*Stay tuned for our forthcoming SaaS platform, designed to simplify workflow publication and deployment on dedicated CPU or GPU endpoints. Contact us at team@ikomia.ai for more information.*
 
 <!-- GETTING STARTED -->
 ## Getting Started
