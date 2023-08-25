@@ -55,13 +55,15 @@ class TaskParam(core.CWorkflowTaskParam):
         raise NotImplementedError
 
 
-def create(name=""):
+def create(name="", public_hub:bool=True, private_hub:bool=False):
     """
     Create task instance (ie algorithm) from the given name.
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
 
     Args:
         name (str): unique algorithm name
+        public_hub (bool): if True, try to install from public HUB if not installed locally
+        private_hub (bool): if True, try to install from private HUB if not installed locally
 
     Returns:
         :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
@@ -69,10 +71,10 @@ def create(name=""):
     if not name:
         return None
 
-    return ikomia.ik_registry.create_algorithm(name)
+    return ikomia.ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
 
 
-def get_output(task_obj, types, index=-1):
+def get_output(task_obj, types:list, index:int=-1):
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 

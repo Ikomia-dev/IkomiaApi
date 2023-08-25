@@ -139,8 +139,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         Args:
             name (str): unique algorithm name
             parameters (~ikomia.core.CWorkflowTaskParam): initial parameters values
-            public_hub (bool): if False, we don't try to install algorithm from public Ikomia Hub
-            private_hub (bool): if False, we don't try to install algorithm from private Ikomia Hub
+            public_hub (bool): try to install algorithm from public Ikomia Hub if True
+            private_hub (bool): try to install algorithm from private Ikomia Hub if True
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
@@ -224,7 +224,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             hub_algo = self._find_hub_algo(name, self.get_public_hub_algorithms())
             if hub_algo:
                 if self._has_to_be_updated(name, hub_algo):
-                    self.install_algorithm(name, force=True)
+                    self.install_algorithm(name, force=True, public_hub=True, private_hub=False)
                 else:
                     logger.info(f"Algorithm {name} is already up to date")
                 return
@@ -233,7 +233,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             hub_algo = self._find_hub_algo(name, self.get_private_hub_algorithms())
             if hub_algo:
                 if self._has_to_be_updated(name, hub_algo):
-                    self.install_algorithm(name, force=True)
+                    self.install_algorithm(name, force=True, public_hub=False, private_hub=True)
                 else:
                     logger.info(f"Algorithm {name} is already up to date")
                 return

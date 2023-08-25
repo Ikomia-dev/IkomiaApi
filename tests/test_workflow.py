@@ -697,14 +697,19 @@ def test_video_stream():
     cv2.destroyAllWindows()
 
 
+def test_prepare_runtime_env():
+    wf_path = os.path.join(tests.get_test_workflow_directory(), "PrepareRuntime.json")
+    workflow.prepare_runtime_env(wf_path)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--classif_dataset_dir",
                         type=str,
-                        default="/home/ludo/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
+                        default="~/Images/Datasets/hymenoptera_data", help="Classification datatset folder")
     parser.add_argument("--detect_dataset_dir",
                         type=str,
-                        default="/home/ludo/Images/Datasets/wgisd", help="Object detection datatset folder")
+                        default="~/Images/Datasets/wgisd", help="Object detection datatset folder")
     parser.add_argument("--tests",
                         type=str,
                         default='all',
@@ -744,3 +749,5 @@ if __name__ == "__main__":
         test_get_task_output()
     if 'all' in running_tests or 'test_video_stream' in running_tests:
         test_video_stream()
+    if 'all' in running_tests or 'test_prepare_runtime_env' in running_tests:
+        test_prepare_runtime_env()
