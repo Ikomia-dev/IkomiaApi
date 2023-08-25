@@ -55,7 +55,19 @@ class LoginSession:
         url = f"{config.main_cfg['hub']['url']}/v1/users/me/"
         r = self.session.get(url)
         r.raise_for_status()
-        logger.debug(r.json())
+
+    def is_authenticated(self):
+        if self.token is None:
+            return False
+
+        url = f"{config.main_cfg['hub']['url']}/v1/users/me/"
+        try:
+            r = self.session.get(url)
+            r.raise_for_status()
+        except:
+            return False
+
+        return True
 
     def _create_token(self, ttl: int = 3600):
         url = config.main_cfg["hub"]["url"] + "/v1/users/me/tokens/"
