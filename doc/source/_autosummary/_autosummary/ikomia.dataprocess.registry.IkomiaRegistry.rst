@@ -16,7 +16,8 @@ IkomiaRegistry
 
         ~IkomiaRegistry.__init__
         ~IkomiaRegistry.create_algorithm
-        ~IkomiaRegistry.get_online_algorithms
+        ~IkomiaRegistry.get_public_hub_algorithms
+        ~IkomiaRegistry.get_private_hub_algorithms
         ~IkomiaRegistry.install_algorithm
         ~IkomiaRegistry.update_algorithm
         ~IkomiaRegistry.update_algorithms
@@ -36,7 +37,8 @@ IkomiaRegistry
     .. automethod:: create_algorithm
     .. automethod:: get_algorithms
     .. automethod:: get_algorithm_info
-    .. automethod:: get_online_algorithms
+    .. automethod:: get_public_hub_algorithms
+    .. automethod:: get_private_hub_algorithms
     .. automethod:: get_plugins_directory
     .. automethod:: register_task
     .. automethod:: install_algorithm
