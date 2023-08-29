@@ -5,7 +5,7 @@
   <a href="https://github.com/Ikomia-dev/IkomiaAPI">
     <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">State-of-the-art Computer Vision with a few lines of code</h3>
+  <h3 align="center">Build and deploy Computer Vision solutions with a few lines of code</h3>
   <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
   <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
@@ -21,7 +21,7 @@
         <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
-        <img alt="Python" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
+        <img alt="OS" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
     </a>
     <a href="">
         <img alt="Python" src="https://img.shields.io/badge/python-3.7%2C%203.8%2C%203.9%2C%203.10-blueviolet">
@@ -48,9 +48,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Ikomia API is an **open source tool** to easily build and deploy your Computer Vision solutions. You can mix your preferred frameworks such as **OpenCV**, **Detectron2**, **OpenMMLab** or **YOLO** with the best state-of-the-art algorithms from individual repos.
+At Ikomia, we deeply believe that sharing scientific knowledge is the key to success. This belief drives us to make research-based algorithms ready-to-use for developers through our Python library (Ikomia API) and desktop software ([Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio)).
 
-No effort, just choose what you want and Ikomia runs everything in a few lines of code.
+Our main goal is to convert existing Python code into easily accessible and deployable algorithms. This approach enables us to integrate repositories from researchers, labs, and renowned frameworks like [OpenCV](https://github.com/opencv/opencv), [Detectron2](https://github.com/facebookresearch/detectron2), [OpenMMLab](https://github.com/open-mmlab) and [Hugging Face](https://github.com/huggingface). 
+Within a unified framework, developers can craft workflows and seamlessly blend these cutting-edge algorithms, streamlining the integration process by eliminating its complexities.
+
+By democratizing advanced technologies, we strive to accelerate innovation in AI, computer vision, and machine learning. Our platform empowers developers to leverage cutting-edge algorithms effortlessly, thereby fostering collaboration and transformative applications.
+
+*Stay tuned for our forthcoming SaaS platform, designed to simplify workflow publication and deployment on dedicated CPU or GPU endpoints. Contact us at team@ikomia.ai for more information.*
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -139,6 +144,21 @@ display(yolov7.get_image_with_mask_and_graphics())
 ```
 ![](https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/display_inst_seg.png)
 
+### Export your workflow
+
+```python
+from ikomia.dataprocess.workflow import Workflow
+from ikomia.utils import ik
+
+wf = Workflow("Dog instance segmentation with YOLOv7")
+
+yolov7 = wf.add_task(ik.infer_yolo_v7_instance_segmentation(), auto_connect=True)
+filter = wf.add_task(ik.ik_instance_segmentation_filter(categories="dog", confidence="0.90"), auto_connect=True)
+
+wf.save("path/to/your_workflow.json")
+```
+Once you export your workflow, you can share it with others, use it with [Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio) or push it on our SaaS platform for deployment (contact us at team@ikomia.ai for more information).
+
 <!-- EXAMPLES -->
 ### Examples
 
@@ -156,7 +176,9 @@ Notebooks | Google Colab
 <!-- DOCUMENTATION -->
 ## Documentation
 
-Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub).
+Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). 
+
+You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub) and all algorithms on [our website](https://app.ikomia.ai/hub/).
 
 <!-- CONTRIBUTING -->
 ## Contributing
