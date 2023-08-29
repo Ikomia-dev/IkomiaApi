@@ -21,7 +21,7 @@
         <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
-        <img alt="Python" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
+        <img alt="OS" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
     </a>
     <a href="">
         <img alt="Python" src="https://img.shields.io/badge/python-3.7%2C%203.8%2C%203.9%2C%203.10-blueviolet">
