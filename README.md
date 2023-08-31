@@ -150,7 +150,7 @@ filter = wf.add_task(ik.ik_instance_segmentation_filter(categories="dog", confid
 
 wf.save("path/to/your_workflow.json")
 ```
-Once you export your workflow, you can share it with others, use it with [Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio) or push it on our SaaS platform for deployment (contact us at team@ikomia.ai for more information).
+Once you export your workflow, you can share it with others or use it with [Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio).
 
 <!-- EXAMPLES -->
 ### Examples
