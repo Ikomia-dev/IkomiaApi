@@ -6,11 +6,6 @@
     <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
   <h3 align="center">Build and deploy Computer Vision solutions with a few lines of code</h3>
-  <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
-  ·
-  <a href="https://github.com/Ikomia-dev/IkomiaAPI/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  .
-  <a href="https://github.com/Ikomia-dev/IkomiaAPI/discussions">Ask a Question</a>
 </div>
 <br />
 <p align="center">
@@ -54,8 +49,6 @@ Our main goal is to convert existing Python code into easily accessible and depl
 Within a unified framework, developers can craft workflows and seamlessly blend these cutting-edge algorithms, streamlining the integration process by eliminating its complexities.
 
 By democratizing advanced technologies, we strive to accelerate innovation in AI, computer vision, and machine learning. Our platform empowers developers to leverage cutting-edge algorithms effortlessly, thereby fostering collaboration and transformative applications.
-
-*Stay tuned for our forthcoming SaaS platform, designed to simplify workflow publication and deployment on dedicated CPU or GPU endpoints. Contact us at team@ikomia.ai for more information.*
 
 <!-- GETTING STARTED -->
 ## Getting Started
