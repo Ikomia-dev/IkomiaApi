@@ -1,4 +1,5 @@
 import logging
+import os
 import shutil
 import pytest
 import argparse
@@ -7,6 +8,7 @@ import cv2
 from ikomia.utils import tests
 
 logger = logging.getLogger(__name__)
+_ikomia_token = os.environ["IKOMIA_TEST_TOKEN"]
 
 
 def test_get_local_algorithms():
@@ -28,12 +30,14 @@ def test_get_public_hub_algorithms():
 
 def test_get_private_hub_algorithms():
     logger.info("===== Test::get list of all online algorithms =====")
-    # Without authentication
-    with pytest.raises(PermissionError) as e:
-        algos = ikomia.ik_registry.get_private_hub_algorithms()
+
+    if ikomia.ik_api_session.token is None:
+        # Without authentication
+        with pytest.raises(PermissionError) as e:
+            algos = ikomia.ik_registry.get_private_hub_algorithms()
 
     # With authentication
-    ikomia.authenticate()
+    ikomia.authenticate(token=_ikomia_token)
     algos = ikomia.ik_registry.get_private_hub_algorithms()
     assert algos is not None
     logger.warning("Number of private algorithms:" + str(len(algos)))
@@ -50,10 +54,11 @@ def test_download_algorithm():
     ikomia.ik_registry._download_algorithm(algo_name, public_hub=True, private_hub=False)
     shutil.rmtree(path=algo_dir, ignore_errors=True)
 
-    with pytest.raises(PermissionError):
-        ikomia.ik_registry._download_algorithm(algo_name, public_hub=False, private_hub=True)
+    if ikomia.ik_api_session.token is None:
+        with pytest.raises(RuntimeError):
+            ikomia.ik_registry._download_algorithm(algo_name, public_hub=False, private_hub=True)
 
-    ikomia.authenticate()
+    ikomia.authenticate(token=_ikomia_token)
     ikomia.ik_registry._download_algorithm(algo_name, public_hub=False, private_hub=True)
     shutil.rmtree(path=algo_dir, ignore_errors=True)
 
@@ -75,13 +80,14 @@ def test_install_public_algorithm():
 
 def test_install_private_algorithm():
     logger.warning("===== Test::install online algorithms =====")
-    logger.warning("Installing dataset_coco...")
+    logger.warning("Installing dataset_yolo...")
     algo_name = "dataset_yolo"
 
-    with pytest.raises(RuntimeError):
-        ikomia.ik_registry.install_algorithm(algo_name, public_hub=False, private_hub=True)
+    if ikomia.ik_api_session.token is None:
+        with pytest.raises(RuntimeError):
+            ikomia.ik_registry.install_algorithm(algo_name, public_hub=False, private_hub=True)
 
-    ikomia.authenticate()
+    ikomia.authenticate(token=_ikomia_token)
     ikomia.ik_registry.install_algorithm(algo_name, public_hub=False, private_hub=True)
     local_algos = ikomia.ik_registry.get_algorithms()
     assert algo_name in local_algos
@@ -106,7 +112,7 @@ def test_local_instantiation():
 
 
 def test_instantiation():
-    logger.warning("===== Test::instanciate online algorithms =====")
+    logger.warning("===== Test::instantiate online algorithms =====")
     # Local C++ algo
     algo_name = "ocv_clahe"
     logger.warning(f"Instantiate {algo_name} algorithm...")
@@ -124,10 +130,12 @@ def test_instantiation():
     # Private Python algo
     algo_name = "dataset_yolo"
     logger.warning(f"Instantiate private {algo_name} algorithm...")
-    with pytest.raises(RuntimeError):
-        algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
 
-    ikomia.authenticate()
+    if ikomia.ik_api_session.token is None:
+        with pytest.raises(RuntimeError):
+            algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
+
+    ikomia.authenticate(token=_ikomia_token)
     algo = ikomia.ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=True)
     assert (algo is not None)
 
@@ -164,12 +172,12 @@ def test_update():
     ikomia.ik_registry.update_algorithm(algo_names[0])
 
     logger.warning(f"Updating private {algo_names[1]} algorithm...")
-    ikomia.authenticate()
+    ikomia.authenticate(token=_ikomia_token)
     ikomia.ik_registry.install_algorithm(name=algo_names[1], public_hub=False, private_hub=True)
     ikomia.ik_registry.update_algorithm(algo_names[1], public_hub=False, private_hub=True)
 
     logger.warning("Updating all algorithms...")
-    ikomia.ik_registry.update_algorithms()
+    ikomia.ik_registry.update_algorithms(public_hub=True, private_hub=True)
 
     for name in algo_names:
         algo_dir, _ = ikomia.ik_registry._get_algorithm_directory(name)
