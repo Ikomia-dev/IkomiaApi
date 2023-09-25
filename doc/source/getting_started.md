@@ -2,7 +2,7 @@
 
 ## Installation
 
-We strongly recommend uding a virtual environment. 
+We strongly recommend using a virtual environment. 
 If you're not sure where to start, we offer a tutorial [here](bonus/virtual_env).
 
 ### Installing Ikomia API
