@@ -27,9 +27,7 @@ import shutil
 import json
 import logging
 
-
 logger = logging.getLogger(__name__)
-
 
 SYSMODULES = [
     "__main__", "__future__", "string", "re",
@@ -62,8 +60,8 @@ SYSMODULES = [
     "py_compile", "compileall", "dis", "pickletools", "formatter", "msilib",
     "msvcrt", "winreg", "winsound", "posix", "pwd", "spwd", "grp", "crypt",
     "termios", "tty", "pty", "fcntl", "pipes", "resource", "nis", "syslog"
-    "optparse", "imp"
-    ]
+                                                                  "optparse", "imp"
+]
 
 
 class SingleFileModuleFinder(modulefinder.ModuleFinder):
@@ -176,7 +174,18 @@ def is_module_imported(name):
 
 def unload_plugin_module(name):
     modules_to_delete = [m for m in sys.modules.keys() if name == m]
-    for m in modules_to_delete: del(sys.modules[m])
+    for m in modules_to_delete: del (sys.modules[m])
+
+
+def valid_plugin_directory(directory):
+    plugin_name = os.path.basename(directory)
+    mandatory_files = [directory, os.path.join(directory, plugin_name + "_process.py"),
+                       os.path.join(directory, plugin_name + "_widget.py"),
+                       os.path.join(directory, plugin_name + ".py")]
+    for f in mandatory_files:
+        if not os.path.exists(f):
+            return False
+    return True
 
 
 def conform_plugin_directory(directory, plugin):
@@ -214,4 +223,3 @@ if __name__ == "__main__":
     print(goodModules)
     print('\n\nMissing:\n')
     print(badModules)
-
