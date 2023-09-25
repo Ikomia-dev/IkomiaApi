@@ -569,7 +569,11 @@ def install_requirements(path):
         if t not in available_tasks:
             plugin_dir = os.path.join(plugins_directory, "Python", t)
             if os.path.isdir(plugin_dir):
-                utils.plugintools.install_requirements(plugin_dir)
+                try:
+                    utils.plugintools.install_requirements(plugin_dir)
+                except Exception as e:
+                    logger.error(f"Failed to install requirements for algorithm {t.name} for the following reason:")
+                    logger.error(e)
             else:
                 msg = f"Workflow preparation failed: task {t} cannot be found."
                 logger.error(msg)

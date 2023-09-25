@@ -36,7 +36,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
-    def __init__(self, lazy_load:bool = True):
+
+    def __init__(self, lazy_load: bool = True):
         dataprocess.CIkomiaRegistry.__init__(self)
 
         if not lazy_load:
@@ -71,7 +72,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return platform_plugins
 
-    def create_algorithm(self, name:str, parameters=None, hub:bool=True):
+    def create_algorithm(self, name: str, parameters=None, hub: bool = True):
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_online_algorithms` to get valid names.
@@ -126,7 +127,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             if not info.internal:
                 self.update_algorithm(algo)
 
-    def update_algorithm(self, name:str):
+    def update_algorithm(self, name: str):
         """
         Launch update of the given algorithm. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
@@ -162,9 +163,13 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if info.version >= online_algo["version"] and info.ikomia_version >= online_algo["ikomiaVersion"]:
             logger.info(f"Algorithm {name} is already up to date")
         else:
-            self.install_algorithm(name, force=True)
+            try:
+                self.install_algorithm(name, force=True)
+            except Exception as e:
+                logger.error(f"Failed to install requirements for algorithm {name} for the following reason:")
+                logger.error(e)
 
-    def install_algorithm(self, name:str, force:bool=False):
+    def install_algorithm(self, name: str, force: bool = False):
         """
         Launch algorithm installation from Ikomia HUB given its unique name.
 
@@ -182,13 +187,35 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             else:
                 update = True
 
-        # Download package
-        try:
-            plugin, language, algo_dir = self._download_algorithm(name)
-        except Exception as e:
-            logger.error(f"Failed to install algorithm {name} for the following reason:")
-            logger.error(e)
-            return
+        online_algos = self.get_online_algorithms()
+
+        plugin_info = None
+        for plugin in online_algos:
+            if plugin["name"] == name:
+                plugin_info = plugin
+                break
+
+        if plugin_info is None:
+            error_msg = f"Algorithm {name} does not exist in Ikomia HUB."
+            raise ValueError(error_msg)
+
+        language = utils.ApiLanguage.CPP if plugin["language"] == 0 else utils.ApiLanguage.PYTHON
+        state = utils.get_compatibility_state(plugin["ikomiaVersion"], language)
+
+        if state != utils.PluginState.VALID:
+            error_msg = f"Plugin {plugin['name']} can't be installed due to version incompatibility.\n" \
+                        f"Based on Ikomia {plugin['ikomiaVersion']} " \
+                        f"while the current version is {utils.get_api_version()}."
+            raise ValueError(error_msg)
+
+        language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
+        algo_dir = os.path.join(self.get_plugins_directory(), language_folder, plugin["name"])
+        
+        if force or not utils.valid_plugin_directory(algo_dir):
+            # Download package
+            plugin, language, algo_dir = self._download_algorithm(name, force)
+        else:
+            logger.info(f"Skipping {name} download because its directory is already valid")
 
         # Install requirements
         logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
@@ -204,7 +231,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if config.main_cfg["registry"]["auto_completion"]:
             autocomplete.update_local_plugin(name)
 
-    def _get_algorithm_directory(self, name:str):
+    def _get_algorithm_directory(self, name: str):
         # C++ or Python algorithm?
         cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
         python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
@@ -216,7 +243,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             return "", None
 
-    def _load_algorithm(self, name:str, directory:str, language:utils.ApiLanguage):
+    def _load_algorithm(self, name: str, directory: str, language: utils.ApiLanguage):
         if not os.path.isdir(directory):
             raise RuntimeError(f"Algorithm {name} is not installed.")
 
@@ -227,7 +254,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         else:
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
-    def _download_algorithm(self, name:str):
+    def _download_algorithm(self, name: str, force: bool = True):
         available_plugins = self.get_online_algorithms()
 
         plugin_info = None
@@ -244,10 +271,17 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         state = utils.get_compatibility_state(plugin["ikomiaVersion"], language)
 
         if state != utils.PluginState.VALID:
-            error_msg = f"Plugin {plugin['name']} can't be installed due to version incompatibility.\n"\
+            error_msg = f"Plugin {plugin['name']} can't be installed due to version incompatibility.\n" \
                         f"Based on Ikomia {plugin['ikomiaVersion']} " \
                         f"while the current version is {utils.get_api_version()}."
             raise ValueError(error_msg)
+
+        language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
+        target_dir = os.path.join(self.get_plugins_directory(), language_folder, plugin["name"])
+
+        if not force and os.path.isdir(target_dir):
+            target_dir = utils.conform_plugin_directory(target_dir, plugin)
+            return plugin, language, target_dir
 
         # Get plugin package url
         s = ikomia.ik_api_session
@@ -266,9 +300,6 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         utils.http.download_file(url, file_path, public=True)
 
         # Unzip
-        language_folder = "C++" if language == utils.ApiLanguage.CPP else "Python"
-        target_dir = os.path.join(self.get_plugins_directory(), language_folder, plugin["name"])
-
         if os.path.isdir(target_dir):
             shutil.rmtree(target_dir)
 
@@ -301,7 +332,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return True
 
-    def _check_installed_modules(self, algo_dir:str):
+    def _check_installed_modules(self, algo_dir: str):
         modules = utils.plugintools.get_installed_modules()
 
         # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
@@ -310,12 +341,25 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             module_installed = next((mod for mod in modules if mod["name"] == package), None)
             if module_installed:
                 if package == "tb-nightly":
-                    utils.plugintools.uninstall_package(package)
+                    try:
+                        utils.plugintools.uninstall_package(package)
+                    except Exception as e:
+                        logger.error(f"Failed to uninstall {package} for the following reason:")
+                        logger.error(e)
                     tb_installed = next((mod for mod in modules if mod["name"] == "tensorboard"), None)
 
                     if tb_installed:
-                        utils.plugintools.uninstall_package("tensorboard")
-                        utils.plugintools.install_package("tensorboard", tb_installed["version"])
+                        try:
+                            utils.plugintools.uninstall_package("tensorboard")
+                        except Exception as e:
+                            logger.error(f"Failed to uninstall tensorboard for the following reason:")
+                            logger.error(e)
+                        try:
+                            utils.plugintools.install_package("tensorboard", tb_installed["version"])
+                        except Exception as e:
+                            logger.error(f"Failed to install tensorboard=={tb_installed['version']} "
+                                         f"for the following reason:")
+                            logger.error(e)
                 else:
                     utils.plugintools.uninstall_package(package)
 
