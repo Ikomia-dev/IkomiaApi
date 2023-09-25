@@ -17,6 +17,7 @@ CWorkflowTaskIO
         ~CWorkflowTaskIO.clear_data
         ~CWorkflowTaskIO.copy_static_data
         ~CWorkflowTaskIO.from_json
+        ~CWorkflowTaskIO.get_sub_io_list
         ~CWorkflowTaskIO.get_unit_element_count
         ~CWorkflowTaskIO.is_composite
         ~CWorkflowTaskIO.is_data_available
@@ -43,6 +44,7 @@ CWorkflowTaskIO
     .. automethod:: clear_data
     .. automethod:: copy_static_data
     .. automethod:: from_json
+    .. automethod:: get_sub_io_list
     .. automethod:: get_unit_element_count
     .. automethod:: is_composite
     .. automethod:: is_data_available
