@@ -439,9 +439,17 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         current_version = platform.python_version()
         min_version, max_version = IkomiaRegistry._split_min_max_version(package["platform"]["python"])
         current_sem_ver = semver.Version.parse(current_version)
-        min_sem_ver = semver.Version.parse(min_version, optional_minor_and_patch=True)
-        max_sem_ver = semver.Version.parse(max_version, optional_minor_and_patch=True)
-        return current_sem_ver >= min_sem_ver and current_sem_ver < max_sem_ver
+
+        if min_version:
+            min_sem_ver = semver.Version.parse(min_version, optional_minor_and_patch=True)
+            if current_sem_ver < min_sem_ver:
+                return False
+
+        if max_version:
+            max_sem_ver = semver.Version.parse(max_version, optional_minor_and_patch=True)
+            return current_sem_ver < max_sem_ver
+
+        return True
 
     @staticmethod
     def _check_architecture(package, language):
