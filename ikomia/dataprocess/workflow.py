@@ -256,7 +256,8 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self.task_to_id[task.uuid]
 
-    def add_task(self, task=None, name:str="", params:dict={}, auto_connect:bool=False):
+    def add_task(self, task=None, name:str="", params:dict={}, auto_connect:bool=False,
+                 public_hub:bool=True, private_hub=False):
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
@@ -273,7 +274,10 @@ class Workflow(dataprocess.CWorkflow):
             raise RuntimeError("Unable to add task to workflow: parameters must include either a valid name or task instance.")
 
         if task is None:
-            task = self.registry.create_algorithm(name, None)
+            task = self.registry.create_algorithm(name=name,
+                                                  parameters=None,
+                                                  public_hub=public_hub,
+                                                  private_hub=private_hub)
             if task is None:
                 raise RuntimeError(f"Algorithm {name} can't be created.")
 
@@ -420,38 +424,17 @@ class Workflow(dataprocess.CWorkflow):
 
             self.run()
 
-    def prepare_runtime_env(self, path):
-        tasks = self.get_required_tasks(path)
-        available_tasks = ikomia.ik_registry.get_algorithms()
-
-        try:
-            online_tasks = ikomia.ik_registry.get_online_algorithms()
-        except:
-            online_tasks = None
-
-        for t in tasks:
-            if t not in available_tasks:
-                try:
-                    ikomia.ik_registry.create_algorithm(t)
-                except Exception as e:
-                    msg = f"Workflow preparation failed: task {t} cannot be found."
-                    logger.error(msg)
-                    logger.error(e)
-                    return False
-
-        return True
-
     def load(self, path):
-        if self.prepare_runtime_env(path):
-            super().load(path)
+        prepare_runtime_env(path)
+        super().load(path)
 
-            # Update map task -> id
-            self.task_to_id.clear()
-            ids = self.get_task_ids()
+        # Update map task -> id
+        self.task_to_id.clear()
+        ids = self.get_task_ids()
 
-            for task_id in ids:
-                task = self.get_task(task_id)
-                self.task_to_id[task.uuid] = task_id
+        for task_id in ids:
+            task = self.get_task(task_id)
+            self.task_to_id[task.uuid] = task_id
 
     def _run_directory(self):
         for i in range(self.get_input_count()):
@@ -551,9 +534,33 @@ def load(path):
     return wf
 
 
+def prepare_runtime_env(workflow_path:str):
+    """
+    Install all algorithms needed to execute the workflow stored at the given path.
+    If algorithms are not locally installed, the function will try to install them
+    from Ikomia HUB (public and private if authenticated).
+    """
+    wf = Workflow()
+    tasks = wf.get_required_tasks(workflow_path)
+    available_tasks = ikomia.ik_registry.get_algorithms()
+
+    if ikomia.ik_api_session.is_authenticated():
+        private_hub = True
+    else:
+        private_hub = False
+
+    for t in tasks:
+        if t not in available_tasks:
+            try:
+                ikomia.ik_registry.create_algorithm(name=t, public_hub=True, private_hub=private_hub)
+            except Exception as e:
+                raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}")
+
+
 def install_requirements(path):
     """
-    Install needed requirements from the given workflow path.
+    Install Python requirements from all algorithms of the workflow stored at the given path.
+    Algorithms must be installed locally before calling this function.
 
     Args:
         path (str)

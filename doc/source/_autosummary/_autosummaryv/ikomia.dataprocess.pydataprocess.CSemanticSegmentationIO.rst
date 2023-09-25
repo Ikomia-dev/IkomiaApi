@@ -16,6 +16,7 @@ CSemanticSegmentationIO
         ~CSemanticSegmentationIO.get_mask
         ~CSemanticSegmentationIO.get_class_names
         ~CSemanticSegmentationIO.get_colors
+        ~CSemanticSegmentationIO.get_polygons
         ~CSemanticSegmentationIO.set_class_colors
         ~CSemanticSegmentationIO.set_class_names
         ~CSemanticSegmentationIO.set_mask
@@ -50,6 +51,7 @@ CSemanticSegmentationIO
     .. automethod:: get_mask
     .. automethod:: get_class_names
     .. automethod:: get_colors
+    .. automethod:: get_polygons
     .. automethod:: is_data_available
     .. automethod:: load
     .. automethod:: save

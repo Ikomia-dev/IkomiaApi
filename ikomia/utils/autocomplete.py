@@ -43,7 +43,7 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
     if task is not None:
         task_name = task.name
     elif local:
-        task = ikomia.ik_registry.create_algorithm(task_name)
+        task = ikomia.ik_registry.create_algorithm(task_name, public_hub=False, private_hub=False)
 
     # Class definition
     class_name = re.sub(forbid_char, "", task_name)
@@ -186,7 +186,7 @@ def _check_online_sync():
         return False
 
     try:
-        algos = ikomia.ik_registry.get_online_algorithms()
+        algos = ikomia.ik_registry.get_public_hub_algorithms()
     except:
         # Connection to Ikomia HUB failed
         return True
@@ -349,7 +349,7 @@ def make_online_plugins(force=False):
             logger.warning("Ikomia auto-completion is disable")
 
     try:
-        online_algos = ikomia.ik_registry.get_online_algorithms()
+        online_algos = ikomia.ik_registry.get_public_hub_algorithms()
     except Exception as e:
         logger.debug("Auto-completion: skip generating online cache (see error message below).")
         logger.debug(e)

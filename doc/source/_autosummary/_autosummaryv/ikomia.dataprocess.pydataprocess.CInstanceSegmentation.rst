@@ -15,3 +15,4 @@ CInstanceSegmentation
         ~CInstanceSegmentation.box
         ~CInstanceSegmentation.mask
         ~CInstanceSegmentation.color
+        ~CInstanceSegmentation.polygons

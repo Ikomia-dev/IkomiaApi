@@ -20,9 +20,13 @@
     .. autosummary::
 
         create
+        install_requirements
         load
+        prepare_runtime_env
 
     .. rubric:: Details
 
     .. autofunction:: create
+    .. autofunction:: install_requirements
     .. autofunction:: load
+    .. autofunction:: prepare_runtime_env

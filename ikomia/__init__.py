@@ -20,7 +20,7 @@ from ikomia.core import config
 from ikomia.core.auth import LoginSession
 from ikomia.dataprocess import registry
 
-__version__ = "0.9.2"
+__version__ = "0.10.0"
 
 
 # ----------------------------------------------
@@ -57,10 +57,11 @@ if not utils.is_app_started() and config.main_cfg["registry"]["auto_completion"]
 # ------------------------------------------
 
 
-def authenticate():
-    from dotenv import load_dotenv
-    load_dotenv()
-    username = os.environ.get("IKOMIA_USER")
-    pwd = os.environ.get("IKOMIA_PWD")
+def authenticate(token: str = None, username: str = None, password: str = None):
+    """
+    Authentication to Ikomia Scale. Mandatory if user need access to private algorithms.
+    If no credentials are provided, Ikomia API will try to load them from environment variables:
+    IKOMIA_TOKEN or (IKOMIA_USER, IKOMIA_PWD).
+    """
     global ik_api_session
-    ik_api_session.authenticate(username, pwd)
+    ik_api_session.authenticate(token=token, username=username, password=password)

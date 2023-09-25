@@ -19,6 +19,8 @@ CImageIO
         ~CImageIO.get_data
         ~CImageIO.get_image
         ~CImageIO.get_image_with_graphics
+        ~CImageIO.get_image_with_mask
+        ~CImageIO.get_image_with_mask_and_graphics
         ~CImageIO.get_overlay_mask
         ~CImageIO.is_overlay_available
         ~CImageIO.set_channel_count

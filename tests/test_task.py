@@ -418,7 +418,7 @@ def test_cpp_dnn_train_task():
 
 def test_task_parameters():
     logger.warning("===== Test: set task parameters =====")
-    algo = core.task.create(ik.ocv_box_filter().name)
+    algo = core.task.create(name=ik.ocv_box_filter().name)
     params = algo.get_parameters()
     assert len(params) > 0
 

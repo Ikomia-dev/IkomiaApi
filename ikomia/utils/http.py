@@ -39,34 +39,16 @@ def http_no_raise(func):
     return wrapper
 
 
-@http_no_raise
-def download_file(url, path, public=True):
-    if public:
-        with requests.get(url, stream=True) as r:
-            r.raise_for_status()
-            total_size = int(r.headers.get('content-length', 0))
-            name = os.path.basename(path)
+def download_file(url, path):
+    s = ikomia.ik_api_session
+    with s.session.get(url, stream=True) as r:
+        r.raise_for_status()
+        total_size = int(r.headers.get('content-length', 0))
+        name = os.path.basename(path)
 
-            with open(path, "wb") as f, \
-                    tqdm(desc=name, total=total_size, unit='iB', unit_scale=True, unit_divisor=1024, ) as bar:
-                for data in r.iter_content(chunk_size=1024):
-                    if data:
-                        size = f.write(data)
-                        bar.update(size)
-    else:
-        s = ikomia.ik_api_session
-        if s.token is None:
-            logger.error("Download private file failed, authentication required.")
-            return
-
-        with s.session.get(url, stream=True) as r:
-            r.raise_for_status()
-            total_size = int(r.headers.get('content-length', 0))
-            name = os.path.basename(path)
-
-            with open(path, "wb") as f,\
-                    tqdm(desc=name, total=total_size, unit='iB', unit_scale=True, unit_divisor=1024,) as bar:
-                for data in r.iter_content(chunk_size=1024):
-                    if data:
-                        size = f.write(data)
-                        bar.update(size)
+        with open(path, "wb") as f,\
+                tqdm(desc=name, total=total_size, unit='iB', unit_scale=True, unit_divisor=1024,) as bar:
+            for data in r.iter_content(chunk_size=1024):
+                if data:
+                    size = f.write(data)
+                    bar.update(size)

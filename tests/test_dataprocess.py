@@ -33,7 +33,6 @@ def test_cpp_task_info():
     info.created_date = "01/01/2023"
     info.modified_date = "19/01/2023"
     info.os = utils.OSType.ALL
-    info.internal = False
     logger.warning(info)
 
 

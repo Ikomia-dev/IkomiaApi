@@ -27,7 +27,6 @@ def test_cpp_bindings():
     # Plugin state enum
     state = utils.PluginState.VALID
     state = utils.PluginState.DEPRECATED
-    state = utils.PluginState.UPDATED
     state = utils.PluginState.INVALID
 
     # Operating System enum
@@ -42,8 +41,10 @@ def test_cpp_bindings():
 
     # global functions
     logger.warning(f"API version: {utils.get_api_version()}")
-    logger.warning(f"Compatibility check: {utils.get_compatibility_state('0.8.1', utils.ApiLanguage.CPP)}")
-    logger.warning(f"Check compile architecture: {utils.check_architecture_keywords('python310,cuda11')}")
+    logger.warning(f"Compatibility check: {utils.get_compatibility_state('0.8.1', '0.10.0', utils.ApiLanguage.CPP)}")
+    logger.warning(f"CPU architecture: {utils.get_cpu_arch()}")
+    logger.warning(f"CPU architecture name: {utils.get_cpu_arch_name(utils.get_cpu_arch())}")
+    logger.warning(f"CUDA version: {utils.get_cuda_version()}")
     logger.warning(f"App started: {utils.is_app_started()}")
     logger.warning(f"Model HUB url: {utils.get_model_hub_url()}")
 

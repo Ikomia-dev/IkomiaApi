@@ -15,5 +15,4 @@ PluginState
     .. autosummary::
         ~PluginState.VALID
         ~PluginState.DEPRECATED
-        ~PluginState.UPDATED
         ~PluginState.INVALID
