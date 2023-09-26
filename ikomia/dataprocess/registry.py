@@ -161,7 +161,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                 self._load_algorithm(name, algo_dir, language)
                 algo = self.create_instance(name, parameters)
             except Exception as e:
-                logger.warning(e)
+                logger.debug(e)
 
                 if (public_hub or private_hub) and not algo_dir:
                     # Algorithm is not installed, so try to install it from HUB
@@ -169,7 +169,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                     self.install_algorithm(name, public_hub, private_hub)
                     algo = self.create_instance(name, parameters)
                 else:
-                    # If algorithm is installed lcoally but not functional (algo_dir is not empty), it may be a plugin
+                    # If algorithm is installed locally but not functional (algo_dir is not empty), it may be a plugin
                     # in developpement and we should not overwrite it with the Ikomia Hub version
                     raise RuntimeError(f"Algorithm {name} is installed locally but not functional. "
                                        f"Check your code or your Python environment please.")

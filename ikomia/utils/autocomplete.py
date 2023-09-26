@@ -22,6 +22,7 @@ import shutil
 import importlib
 import sys
 import ikomia
+import time
 
 try:
     from ikomia.utils import ik
@@ -187,6 +188,16 @@ def _check_local_sync():
 def _check_online_sync():
     if not _ik_auto_complete:
         return False
+
+    # Update every 4 hours because call to get_public_hub_algorithms() is time consuming
+    ik_last_update = os.path.getmtime(ik.__file__)
+    now = time.time()
+
+    if now - ik_last_update < 14400:
+        return True
+
+    # Update modified time
+    os.utime(ik.__file__)
 
     try:
         algos = ikomia.ik_registry.get_public_hub_algorithms()
