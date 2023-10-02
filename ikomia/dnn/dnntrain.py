@@ -60,8 +60,6 @@ class TrainProcess(CDnnTrainTask):
         """
         monitoring.check_mlflow_server()
         mlflow.set_tracking_uri(config.main_cfg["mlflow"]["tracking_uri"])
-        # Create experiment
-        self._create_mlflow_experiment()
 
     def _create_mlflow_experiment(self):
         try:
@@ -98,19 +96,17 @@ class TrainProcess(CDnnTrainTask):
         super().begin_task_run()
         mlflow.end_run()
 
-        if self.experiment_id != -1:
-            # Check if experiment still exists
-            if not self._is_experiment_exists():
-                self._create_mlflow_experiment()
-                if self.experiment_id == -1:
-                    return
+        if self.experiment_id == -1 or not self._is_experiment_exists():
+            self._create_mlflow_experiment()
+            if self.experiment_id == -1:
+                return
 
-            mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
+        mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
 
-            # Log parameters
-            param = self.get_param_object()
-            if param is not None:
-                self.log_params(param.cfg)
+        # Log parameters
+        param = self.get_param_object()
+        if param is not None:
+            self.log_params(param.cfg)
 
     def log_param(self, key, value):
         """
