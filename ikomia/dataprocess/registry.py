@@ -350,7 +350,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         # Download package
         file_path = os.path.join(self.get_plugins_directory(), "Transfer", f"{name}.zip")
         try:
-            utils.http.download_file(f"{package_url}download/", file_path)
+            utils.http.download_file(f"{package_url}download/", file_path, ikomia.ik_api_session)
         except Exception as e:
             raise RuntimeError(f"Failed to download algorithm {name} for the following reason: {e}")
 

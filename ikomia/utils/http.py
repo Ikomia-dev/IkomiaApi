@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os.path
-import ikomia
 import functools
 import requests
 import logging
@@ -39,9 +38,13 @@ def http_no_raise(func):
     return wrapper
 
 
-def download_file(url, path):
-    s = ikomia.ik_api_session
-    with s.session.get(url, stream=True) as r:
+def download_file(url, path, ik_session=None):
+    if ik_session is None:
+        s = requests.Session()
+    else:
+        s = ik_session.session
+
+    with s.get(url, stream=True) as r:
         r.raise_for_status()
         total_size = int(r.headers.get('content-length', 0))
         name = os.path.basename(path)
