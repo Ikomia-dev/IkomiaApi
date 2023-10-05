@@ -20,6 +20,7 @@
         ApiLanguage
         CException
         CMemoryInfo
+        CpuArch
         CTimer
         OSType
         PluginState

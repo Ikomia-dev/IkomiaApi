@@ -3,6 +3,33 @@
 Version history of the Ikomia API.
 
 <details>
+  <summary>0.10.0</summary>
+  
+___
+This release marks the transition to the new Ikomia Scale platform. This platform includes a new version of Ikomia HUB with more insights on how to use every algorithms with this API. 
+
+**New features**:
+- Switch to new Ikomia HUB from Ikomia Scale platform
+- Add possibility to manage public and private HUBs
+- Token-based authentication for private HUB
+- 
+
+**Improvements**:
+- Add polygons output for instance and semantic segmentation algorithms
+- Add methods in CImageIO class to get visual image from other I/O (graphics, object detection, segmentation...)
+- Improve speed of auto-completion system (ik module)
+
+**Bug fixes**:
+- Export segmentation masks in PNG format for JSON serialization
+- Missing Python binding for CInstanceSegIO::is_data_available()
+- Windows: fix download function with correct path separators
+- Avoid creating MLFlow experiment in training algorithm constructor
+- ...
+
+___
+</details>
+
+<details>
   <summary>0.9.2</summary>
   
 ___

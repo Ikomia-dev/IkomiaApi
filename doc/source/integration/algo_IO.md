@@ -24,4 +24,4 @@
 
 {py:mod}`~ikomia.dataprocess.pydataprocess.CKeypointsIO`: manage Keypoint objects (points, links, names, ...)
 
-
+{py:mod}`~ikomia.dataprocess.pydataprocess.CTextIO`: manage Text objects (bounding boxes, text, label...)

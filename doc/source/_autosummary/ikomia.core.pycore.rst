@@ -24,6 +24,7 @@
         :toctree: _autosummaryv
 
         ActionFlag
+        AlgoType
         TaskType
         CWorkflowTask
 
