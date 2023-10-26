@@ -5,7 +5,7 @@
   <a href="https://github.com/Ikomia-dev/IkomiaAPI">
     <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">IkomiaApi: Simplifying Computer Vision Deployment</h3>
+  <h3 align="center">Ikomia: Simplifying Computer Vision Deployment</h3>
 </div>
 <br />
 <p align="center">
@@ -39,9 +39,9 @@
   </kbd>
 </p>
 
-Welcome to IkomiaApi, where we transform intricate research algorithms into user-friendly, deployable solutions for computer vision enthusiasts and professionals alike.
+Welcome to Ikomia, where we transform intricate research algorithms into user-friendly, deployable solutions for computer vision enthusiasts and professionals alike.
 
-## **🌟 Why Choose IkomiaApi?**
+## **🌟 Why Choose Ikomia?**
 
 - **Research Meets Reality**: We bridge the gap between cutting-edge research and real-world applications. With Ikomia, you get access to algorithms from renowned sources like OpenCV, Detectron2, OpenMMLab, and Hugging Face.
   
@@ -109,7 +109,7 @@ display(yolov7.get_image_with_mask_and_graphics())
 
 ## **📦 Exporting Your Workflow**
 
-With IkomiaApi, sharing your crafted workflows is a breeze. Whether you want to collaborate with peers or integrate with Ikomia STUDIO, our export feature has got you covered.
+With Ikomia, sharing your crafted workflows is a breeze. Whether you want to collaborate with peers or integrate with Ikomia STUDIO, our export feature has got you covered.
 
 ```python
 from ikomia.dataprocess.workflow import Workflow
@@ -145,7 +145,7 @@ We believe in the power of community. If you have suggestions, improvements, or 
 
 ## **📜 License**
 
-We believe in open-source. IkomiaApi is licensed under the Apache-2.0 License, promoting collaboration with transparency.
+We believe in open-source. Ikomia is licensed under the Apache-2.0 License, promoting collaboration with transparency.
 
 ## **💖 Support & Feedback**
 
