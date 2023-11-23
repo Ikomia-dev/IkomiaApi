@@ -5,7 +5,7 @@
   <a href="https://github.com/Ikomia-dev/IkomiaAPI">
     <img src="https://avatars.githubusercontent.com/u/53618017?s=400&u=e9c62c77b7c33b6b7f4883b115a0d7d05dcca9ec&v=4" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">Build and deploy Computer Vision solutions with a few lines of code</h3>
+  <h3 align="center">Ikomia: Simplifying Computer Vision Deployment</h3>
 </div>
 <br />
 <p align="center">
@@ -39,44 +39,33 @@
   </kbd>
 </p>
 
+Welcome to Ikomia, where we transform intricate research algorithms into user-friendly, deployable solutions for computer vision enthusiasts and professionals alike.
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+## **🌟 Why Choose Ikomia?**
 
-At Ikomia, we deeply believe that sharing scientific knowledge is the key to success. This belief drives us to make research-based algorithms ready-to-use for developers through our Python library (Ikomia API) and desktop software ([Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio)).
+- **Research Meets Reality**: We bridge the gap between cutting-edge research and real-world applications. With Ikomia, you get access to algorithms from renowned sources like OpenCV, Detectron2, OpenMMLab, and Hugging Face.
+  
+- **Unified Framework**: Say goodbye to integration complexities. Craft workflows and blend algorithms seamlessly, all under one roof.
+  
+- **Empowerment**: We're not just about providing tools; we're about building a community. By democratizing AI and computer vision technologies, we aim to foster collaboration and innovation.
 
-Our main goal is to convert existing Python code into easily accessible and deployable algorithms. This approach enables us to integrate repositories from researchers, labs, and renowned frameworks like [OpenCV](https://github.com/opencv/opencv), [Detectron2](https://github.com/facebookresearch/detectron2), [OpenMMLab](https://github.com/open-mmlab) and [Hugging Face](https://github.com/huggingface). 
-Within a unified framework, developers can craft workflows and seamlessly blend these cutting-edge algorithms, streamlining the integration process by eliminating its complexities.
+## **🚀 Getting Started**
 
-By democratizing advanced technologies, we strive to accelerate innovation in AI, computer vision, and machine learning. Our platform empowers developers to leverage cutting-edge algorithms effortlessly, thereby fostering collaboration and transformative applications.
+### **Installation**
+```bash
+pip install ikomia
+```
 
-<!-- GETTING STARTED -->
-## Getting Started
+### **Quick Examples**
 
-
-### Installation
-
-`pip install ikomia`
-
-<!-- USAGE EXAMPLES -->
-### Usage 1 : Object Detection Example
-
-With Ikomia, when you want to use an algorithm, it's always the same code pattern which is useful when you want to test multiple algorithms effortlessly.
-
-``` python
+#### Object Detection
+```python
 from ikomia.dataprocess.workflow import Workflow
 from ikomia.utils.displayIO import display
 
-# Init your workflow
 wf = Workflow()
-
-# Add YOLO and connect it to your input data
 yolov7 = wf.add_task(name="infer_yolo_v7", auto_connect=True)
-
-# Run directly on your image
 wf.run_on(url="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman.jpg")
-
-# YOLO output image with bounding boxes
 display(yolov7.get_image_with_graphics())
 ```
 <p float="left">
@@ -84,40 +73,21 @@ display(yolov7.get_image_with_graphics())
   <img src="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman_bbox.png" width="400" />
 </p>
 
-
-And finally, you can also export your results as JSON files.
-``` python
-# Get all object detection
-json_results = yolov7.get_results().to_json()
-print(json_results)
-```
-### Usage 2 : Pose Estimation Example
-
-``` python
-from ikomia.dataprocess.workflow import Workflow
-from ikomia.utils.displayIO import display
-
-# Init your workflow
+#### Pose Estimation
+```python
+# ... [similar imports]
 wf = Workflow()
-
-# Add YOLO and connect it to your input data
-yolov7 = wf.add_task(name="infer_mmlab_pose_estimation", auto_connect=True)
-
-# Run directly on your image
+pose_estimation = wf.add_task(name="infer_mmlab_pose_estimation", auto_connect=True)
 wf.run_on(url="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman.jpg")
-
-# YOLO output image with bounding boxes
-display(yolov7.get_image_with_graphics())
+display(pose_estimation.get_image_with_graphics())
 ```
 <p float="left">
   <img src="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman.jpg" width="400" /> 
   <img src="https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/img_fireman_pose.png" width="400" />
 </p>
 
-
-### Usage with the `ik` auto-completion system
-
-`ik` is an auto-completion system designed to help developers to find available algorithms in [Ikomia HUB](https://github.com/Ikomia-hub). See the documentation for more explanations [here](https://ikomia-dev.github.io/python-api-documentation/getting_started.html).
+### **Discover with 'ik'**
+Our auto-completion system, 'ik', is designed to assist developers in discovering available algorithms in Ikomia HUB. Dive into our detailed documentation to explore its capabilities.
 
 ```python
 from ikomia.dataprocess.workflow import Workflow
@@ -137,23 +107,23 @@ display(yolov7.get_image_with_mask_and_graphics())
 ```
 ![](https://raw.githubusercontent.com/Ikomia-dev/notebooks/main/examples/img/display_inst_seg.png)
 
-### Export your workflow
+## **📦 Exporting Your Workflow**
+
+With Ikomia, sharing your crafted workflows is a breeze. Whether you want to collaborate with peers or integrate with Ikomia STUDIO, our export feature has got you covered.
 
 ```python
 from ikomia.dataprocess.workflow import Workflow
 from ikomia.utils import ik
 
-wf = Workflow("Dog instance segmentation with YOLOv7")
-
+wf = Workflow("Instance Segmentation with YOLOv7")
 yolov7 = wf.add_task(ik.infer_yolo_v7_instance_segmentation(), auto_connect=True)
-filter = wf.add_task(ik.ik_instance_segmentation_filter(categories="dog", confidence="0.90"), auto_connect=True)
-
+filter_task = wf.add_task(ik.ik_instance_segmentation_filter(categories="dog", confidence="0.90"), auto_connect=True)
 wf.save("path/to/your_workflow.json")
 ```
-Once you export your workflow, you can share it with others or use it with [Ikomia STUDIO](https://github.com/Ikomia-dev/IkomiaStudio).
 
-<!-- EXAMPLES -->
-### Examples
+Once you've exported your workflow, you can easily share it with others, ensuring reproducibility and collaboration.
+
+## **🧪 Notebooks**
 
 You can find some notebooks [here](https://github.com/Ikomia-dev/notebooks).
 
@@ -164,25 +134,22 @@ Notebooks | Google Colab
 [How to run Neural Style Transfer](https://github.com/Ikomia-dev/notebooks/blob/main/examples/HOWTO_run_Neural_Style_Transfer_with_Ikomia_API.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ikomia-dev/notebooks/blob/main/examples/HOWTO_run_Neural_Style_Transfer_with_Ikomia_API.ipynb) 
 [How to train and run YOLO v7 on your datasets](https://github.com/Ikomia-dev/notebooks/blob/main/examples/HOWTO_train_YOLO_v7_with_Ikomia_API.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ikomia-dev/notebooks/blob/main/examples/HOWTO_train_YOLO_v7_with_Ikomia_API.ipynb)
 [How to use Detectron2 Object Detection](https://github.com/Ikomia-dev/notebooks/blob/main/examples/HOWTO_use_Detectron2_Object_Detection_with_Ikomia_API.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ikomia-dev/notebooks/blob/main/examples/HOWTO_use_Detectron2_Object_Detection_with_Ikomia_API.ipynb)
- 
 
-<!-- DOCUMENTATION -->
-## Documentation
+## **📚 Comprehensive Documentation**
 
-Python API documentation can be found [here](https://ikomia-dev.github.io/python-api-documentation/). 
+For those who love details, our [comprehensive documentation](https://ikomia-dev.github.io/python-api-documentation/) is a treasure trove of information. From basic setups to advanced configurations, we've got you covered.
 
-You will find Ikomia HUB algorithms code source in [our Ikomia HUB GitHub](https://github.com/Ikomia-hub) and all algorithms on [our website](https://app.ikomia.ai/hub/).
+## **🤝 Contributing**
 
-<!-- CONTRIBUTING -->
-## Contributing
+We believe in the power of community. If you have suggestions, improvements, or want to contribute in any way, we're all ears! Stay tuned for our detailed contribution guidelines.
 
-This part is coming soon...:)
+## **📜 License**
 
-<!-- LICENSE -->
-## License
+We believe in open-source. Ikomia is licensed under the Apache-2.0 License, promoting collaboration with transparency.
 
-Distributed under the Apache-2.0 License. See `LICENSE.md` for more information.
+## **💖 Support & Feedback**
 
+Your feedback drives our progress. If you find Ikomia useful, give us a :star:! For queries, issues, or just to say hi, drop us an email at team@ikomia.com or join our [discord channel](https://discord.com/invite/82Tnw9UGGc).
 
 <!-- STARGAZERS -->
 ## They like us, we love them  :heart_eyes:
@@ -206,18 +173,4 @@ If you use Ikomia in your research, please use the following BibTeX entry.
   year =         {2019}
 }
 ```
-
-<!-- SUPPORT -->
-## Support
-
-Contributions, issues, and feature requests are welcome!
-Give a :star: if you like this project!
-
-
-<!-- CONTACT -->
-## Contact
-
-Ikomia - [@IkomiaOfficial](https://twitter.com/ikomiaofficial) - team@ikomia.com
-
-Project Link: [https://github.com/Ikomia-dev/IkomiaAPI](https://github.com/Ikomia-dev/IkomiaAPI)
 
