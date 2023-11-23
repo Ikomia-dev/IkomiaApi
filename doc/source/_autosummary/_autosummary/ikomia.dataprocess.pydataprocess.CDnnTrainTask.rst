@@ -21,6 +21,7 @@ CDnnTrainTask
         ~CDnnTrainTask.emit_add_sub_progress_steps
         ~CDnnTrainTask.emit_graphics_context_changed
         ~CDnnTrainTask.emit_output_changed
+        ~CDnnTrainTask.emit_parameters_changed
         ~CDnnTrainTask.emit_step_progress
         ~CDnnTrainTask.end_task_run
         ~CDnnTrainTask.execute_actions
@@ -67,6 +68,7 @@ CDnnTrainTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
+    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: enable_mlflow
     .. automethod:: enable_tensorboard

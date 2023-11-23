@@ -26,6 +26,7 @@ CInstanceSegmentationTask
         ~CInstanceSegmentationTask.emit_add_sub_progress_steps
         ~CInstanceSegmentationTask.emit_graphics_context_changed
         ~CInstanceSegmentationTask.emit_output_changed
+        ~CInstanceSegmentationTask.emit_parameters_changed
         ~CInstanceSegmentationTask.emit_step_progress
 
     .. rubric:: Overridden methods
@@ -94,5 +95,6 @@ CInstanceSegmentationTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
+    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run

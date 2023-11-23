@@ -24,6 +24,7 @@ CObjectDetectionTask
         ~CObjectDetectionTask.emit_add_sub_progress_steps
         ~CObjectDetectionTask.emit_graphics_context_changed
         ~CObjectDetectionTask.emit_output_changed
+        ~CObjectDetectionTask.emit_parameters_changed
         ~CObjectDetectionTask.emit_step_progress
 
     .. rubric:: Overridden methods
@@ -90,5 +91,6 @@ CObjectDetectionTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
+    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
