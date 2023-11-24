@@ -13,7 +13,7 @@
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
     </a>
     <a href="https://www.ikomia.ai/api/">
-        <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
+        <img alt="Website" src="https://img.shields.io/website/https/ikomia.ai.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
         <img alt="OS" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
