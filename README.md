@@ -154,7 +154,7 @@ Your feedback drives our progress. If you find Ikomia useful, give us a :star:! 
 <!-- STARGAZERS -->
 ## They like us, we love them  :heart_eyes:
 
-[![Stargazers repo roster for @Ikomia-dev/IkomiaApi](https://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
+[![Stargazers repo roster for @Ikomia-dev/IkomiaApi](http://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
 
 ## Star History
 
