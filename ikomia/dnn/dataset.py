@@ -359,12 +359,9 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
                             # Polygon
                             instance["segmentation_poly"] = ann["segmentation"]
                             if sem_seg:
-                                if np.shape(instance["segmentation_poly"])[0] == 1:
-                                    poly = [np.array(instance["segmentation_poly"], dtype='int').reshape((-1, 2))]
-                                else:
-                                    poly = []
-                                    for pts in instance["segmentation_poly"]:
-                                        poly.append(np.array(pts, dtype='int').reshape((-1, 2)))
+                                poly = []
+                                for pts in instance["segmentation_poly"]:
+                                    poly.append(np.array(pts, dtype='int').reshape((-1, 2)))
                                 color = int(instance["category_id"])
                                 cv2.fillPoly(mask,
                                              poly,
