@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class TrainProcess(CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
-    It includes MLflow framework and Tensorboard and handle connections with them:
+    It includes mlflow framework and Tensorboard and handle connections with them:
 
         - experiment creation
         - runs management
@@ -37,12 +37,12 @@ class TrainProcess(CDnnTrainTask):
         - metrics logging
         - training dashboard
 
-    It must be use with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
+    It must be used with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDnnTrainTask`.
     """
     def __init__(self, name, param):
         """
-        Constructor. Initialize MLflow local server.
+        Constructor. Initialize mlflow local server.
 
         Args:
             name (str): task name
@@ -50,11 +50,12 @@ class TrainProcess(CDnnTrainTask):
         """
         CDnnTrainTask.__init__(self, name, param)
         self.add_input(datasetio.IkDatasetIO())
-        self.experiment_id = -1
+        self.experiment_id = None
         self._init_mlflow()
         self._init_tensorboard()
 
-    def _init_mlflow(self):
+    @staticmethod
+    def _init_mlflow():
         """
         Internal use only
         """
@@ -67,7 +68,7 @@ class TrainProcess(CDnnTrainTask):
             time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
             self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
         except Exception as e:
-            self.experiment_id = -1
+            self.experiment_id = None
             logger.warning("Unable to create MLFlow experiment. Please check for server startup errors.")
             logger.debug(e)
 
@@ -90,15 +91,15 @@ class TrainProcess(CDnnTrainTask):
         """
         Proceed to training job initialization:
 
-            - start new MLflow run
-            - log hyper-parameters contained in :py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`
+            - start new mlflow run
+            - log hyperparameters contained in :py:class:`~ikomia.dataprocess.PyDataProcess.CDnnTrainProcessParam`
         """
         super().begin_task_run()
         mlflow.end_run()
 
-        if self.experiment_id == -1 or not self._is_experiment_exists():
+        if self.experiment_id is None or not self._is_experiment_exists():
             self._create_mlflow_experiment()
-            if self.experiment_id == -1:
+            if self.experiment_id is None:
                 return
 
         mlflow.start_run(experiment_id=self.experiment_id, run_name=self.name)
@@ -110,73 +111,73 @@ class TrainProcess(CDnnTrainTask):
 
     def log_param(self, key, value):
         """
-        Log parameter to MLflow server
+        Log parameter to mlflow server
 
         Args:
             key (str): parameter name
             value: parameter value (numerical)
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_param(key, value)
 
     def log_params(self, params):
         """
-        Log parameters to MLflow server
+        Log parameters to mlflow server
 
         Args:
             params (dict): parameters
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_params(params)
 
     def log_metric(self, key, value, step=None):
         """
-        Log metric to MLflow server
+        Log metric to mlflow server
 
         Args:
             key (str): metric name
             value: metric value (numerical)
             step (int): epoch/iteration index
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_metric(key, value, step)
 
     def log_metrics(self, metrics, step=None):
         """
-        Log metrics to MLflow server
+        Log metrics to mlflow server
 
         Args:
             metrics (dict): parameters
             step (int): epoch/iteration index
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_metrics(metrics, step)
 
     def log_artifact(self, file_path):
         """
-        Log artifact to MLflow server.
+        Log artifact to mlflow server.
         Artifact could be any file (model weights, configuration file...)
 
         Args:
             file_path (str): source file
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_artifact(file_path)
 
     def log_artifacts(self, folder_path):
         """
-        Log artifacts to MLflow server.
+        Log artifacts to mlflow server.
         Artifacts could be any files stored in the same folder (model weights, configuration file...)
 
         Args:
             folder_path (str): artifacts folder
         """
-        if self.experiment_id != -1:
+        if self.experiment_id is not None:
             mlflow.log_artifacts(folder_path)
 
     def end_task_run(self):
         """
-        Finalize MLflow run.
+        Finalize mlflow run.
         """
         super().end_task_run()
         mlflow.end_run()
