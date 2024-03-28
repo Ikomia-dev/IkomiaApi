@@ -365,10 +365,9 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
                                     poly = []
                                     for pts in instance["segmentation_poly"]:
                                         poly.append(np.array(pts, dtype='int').reshape((-1, 2)))
+
                                 color = int(instance["category_id"])
-                                cv2.fillPoly(mask,
-                                             poly,
-                                             color)
+                                cv2.fillPoly(mask, poly, color)
 
                     if "keypoints" in ann:
                         instance["keypoints"] = ann["keypoints"]
