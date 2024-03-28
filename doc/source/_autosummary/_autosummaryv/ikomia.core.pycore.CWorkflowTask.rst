@@ -18,6 +18,8 @@
         ~CWorkflowTask.add_input
         ~CWorkflowTask.add_output
         ~CWorkflowTask.begin_task_run
+        ~CWorkflowTask.clear_inputs
+        ~CWorkflowTask.clear_outputs
         ~CWorkflowTask.download
         ~CWorkflowTask.emit_add_sub_progress_steps
         ~CWorkflowTask.emit_graphics_context_changed
@@ -75,6 +77,8 @@
     .. automethod:: add_input
     .. automethod:: add_output
     .. automethod:: begin_task_run
+    .. automethod:: clear_inputs
+    .. automethod:: clear_outputs
     .. automethod:: download
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
