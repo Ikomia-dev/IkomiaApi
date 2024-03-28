@@ -13,7 +13,7 @@
         <img alt="Stars" src="https://img.shields.io/github/stars/Ikomia-dev/IkomiaAPI">
     </a>
     <a href="https://www.ikomia.ai/api/">
-        <img alt="Website" src="https://img.shields.io/website/http/ikomia.ai/en.svg?down_color=red&down_message=offline&up_message=online">
+        <img alt="Website" src="https://img.shields.io/website/https/ikomia.ai.svg?down_color=red&down_message=offline&up_message=online">
     </a>
     <a href="">
         <img alt="OS" src="https://img.shields.io/badge/os-win%2C%20linux-9cf">
@@ -154,7 +154,7 @@ Your feedback drives our progress. If you find Ikomia useful, give us a :star:! 
 <!-- STARGAZERS -->
 ## They like us, we love them  :heart_eyes:
 
-[![Stargazers repo roster for @Ikomia-dev/IkomiaApi](https://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
+[![Stargazers repo roster for @Ikomia-dev/IkomiaApi](http://reporoster.com/stars/Ikomia-dev/IkomiaApi)](https://github.com/Ikomia-dev/IkomiaApi/stargazers)
 
 ## Star History
 
