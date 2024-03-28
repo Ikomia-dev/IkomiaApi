@@ -14,13 +14,17 @@
 
 import os
 import sys
+import time
 from ikomia import utils
 from ikomia.utils import autocomplete
 from ikomia.core import config
 from ikomia.core.auth import LoginSession
 from ikomia.dataprocess import registry
+import logging
 
-__version__ = "0.10.0"
+__version__ = "0.11.0"
+
+logger = logging.getLogger(__name__)
 
 
 # ----------------------------------------------
@@ -36,17 +40,28 @@ if not utils.is_app_started():
 # ----------------------------------------------
 
 
-global ik_api_session
+# -------------------------------------
+# ----- Create new empty log file -----
+# -------------------------------------
+if not utils.is_app_started():
+    log_path = config.main_cfg["root_folder"] + "/log.txt"
+    with open(log_path, "w") as f:
+        logger.debug(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
+# -------------------------------------
+
+
+# -------------------------------------------
+# ----- Initialize Ikomia Scale session -----
+# -------------------------------------------
 ik_api_session = LoginSession()
+# -------------------------------------------
+
 
 # --------------------------------------
 # ----- Ikomia algorithms registry -----
 # --------------------------------------
-global ik_registry
-ik_registry = None
-
-if not utils.is_app_started():
-    ik_registry = registry.IkomiaRegistry(lazy_load=config.main_cfg["registry"]["lazy_load"])
+ik_registry = registry.IkomiaRegistry(lazy_load=config.main_cfg["registry"]["lazy_load"])
+# -------------------------------------------
 
 
 # ------------------------------------------

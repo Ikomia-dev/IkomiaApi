@@ -1,5 +1,4 @@
 import sys
-import time
 import logging
 
 # ----------------------------------
@@ -31,6 +30,3 @@ file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 logger.propagate = False
-
-with open(log_path, "w") as f:
-    logger.debug(f"Logging started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
