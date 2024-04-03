@@ -60,7 +60,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
                 - keypoint_connection_rules (list[tuple(str, str, (r,g,b))]): each tuple specifies a pair of connected keypoints and the color to use for the line between them.
     """
 
-    def __init__(self, format="other"):
+    def __init__(self, format: str = "other"):
         """
         Constructor
 
@@ -73,7 +73,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         self.category_colors = {}
         self.has_bckgnd_class = False
 
-    def get_image_paths(self):
+    def get_image_paths(self) -> list:
         """
         Return the list of all images path contained in the dataset.
 
@@ -87,12 +87,12 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return paths
 
-    def get_categories(self):
+    def get_categories(self) -> dict:
         """
         Return the list of categories (ie instance classes) in the dataset.
 
         Returns:
-            :py:class:`~ikomia.dataprocess.pydataprocess.MapIntStr` list: categories (dict-like structure)
+            categories (dict)
         """
         categories = {}
         for category_id in self.data["metadata"]["category_names"]:
@@ -100,7 +100,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return categories
 
-    def get_category_count(self):
+    def get_category_count(self) -> int:
         """
         Return the number of categories (ie instance classes) in the dataset.
 
@@ -114,7 +114,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return category_max + 1
 
-    def get_mask_path(self, img_path):
+    def get_mask_path(self, img_path: str) -> str:
         """
         Return the file path of the segmentation mask for the given image.
 
@@ -138,7 +138,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return ""
 
-    def get_graphics_annotations(self, img_path):
+    def get_graphics_annotations(self, img_path: str) -> list:
         """
         Return a list of Ikomia graphics items corresponding
         to the annotations of a given image (bounding box, polygons).
@@ -231,7 +231,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
 
         return graphics
 
-    def is_data_available(self):
+    def is_data_available(self) -> bool:
         """
         Check whether the dataset structure contains data.
 
@@ -249,7 +249,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         """
         self.data.clear()
 
-    def _get_random_category_colors(self):
+    def _get_random_category_colors(self) -> dict:
         random.seed(1)
         colors = {}
         for categ_id in self.data["metadata"]["category_names"]:
@@ -257,7 +257,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
             colors[categ_id] = color
         return colors
 
-    def save(self, path):
+    def save(self, path: str):
         """
         Save dataset structure as JSON.
 
@@ -267,7 +267,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         with open(path, "w") as outfile:
             json.dump(self.data, outfile)
 
-    def load(self, path):
+    def load(self, path: str):
         """
         Load JSON as dataset structure.
 
@@ -280,8 +280,8 @@ class IkDatasetIO(dataprocess.CDatasetIO):
                 self.data["metadata"]["category_names"] = {int(k): v for k, v in
                                                            self.data["metadata"]["category_names"].items()}
 
-    def to_json(self, options=[]):
+    def to_json(self, options: list = []) -> str:
         return json.dumps(self.data)
 
-    def from_json(self, json_string):
+    def from_json(self, json_string: str):
         self.data = json.loads(json_string)

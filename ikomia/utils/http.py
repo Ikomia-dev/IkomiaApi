@@ -38,7 +38,7 @@ def http_no_raise(func):
     return wrapper
 
 
-def download_file(url, path, ik_session=None):
+def download_file(url: str, path: str, ik_session=None):
     if ik_session is None:
         s = requests.Session()
     else:

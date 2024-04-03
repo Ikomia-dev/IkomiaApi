@@ -21,8 +21,11 @@ TorchVision pages:
 - `Torchvision object detection and segmentation <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
 """
 
+import logging
 import torch
 from torchvision import models
+
+logger = logging.getLogger(__name__)
 
 
 def set_parameter_requires_grad(model, feature_extracting):
@@ -31,7 +34,8 @@ def set_parameter_requires_grad(model, feature_extracting):
             param.requires_grad = False
 
 
-def resnet(model_name='resnet50', train_mode=False, use_pretrained=False, feature_extract=False, classes=2):
+def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretrained: bool = False,
+           feature_extract: bool = False, classes: int = 2):
     """
     Create Torchvision ResNet model for training or inference.
 
@@ -72,11 +76,12 @@ def resnet(model_name='resnet50', train_mode=False, use_pretrained=False, featur
         model_ft.eval()
 
     # Print the model we just instantiated
-    print(model_ft)
+    logger.debug(model_ft)
     return model_ft
 
 
-def resnext(model_name='resnext50', train_mode=False, use_pretrained=False, feature_extract=False, classes=2):
+def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrained: bool = False,
+            feature_extract: bool = False, classes: int = 2):
     """
     Create Torchvision ResNeXt model for training or inference.
 
@@ -111,16 +116,15 @@ def resnext(model_name='resnext50', train_mode=False, use_pretrained=False, feat
         model_ft.eval()
 
     # Print the model we just instantiated
-    print(model_ft)
+    logger.debug(model_ft)
     return model_ft
 
 
-def mnasnet(train_mode=False, use_pretrained=False, feature_extract=False, classes=2):
+def mnasnet(train_mode: bool = False, use_pretrained: bool = False, feature_extract: bool = False, classes: int = 2):
     """
     Create Torchvision MnasNet model for training or inference.
 
     Args:
-        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
@@ -142,16 +146,15 @@ def mnasnet(train_mode=False, use_pretrained=False, feature_extract=False, class
         model_ft.eval()
 
     # Print the model we just instantiated
-    print(model_ft)
+    logger.debug(model_ft)
     return model_ft
 
 
-def faster_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2):
+def faster_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_size: int = 800, classes: int = 2):
     """
     Create Torchvision Faster RCNN model for training or inference.
 
     Args:
-        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
@@ -171,16 +174,15 @@ def faster_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2
     if not train_mode:
         model_ft.eval()
 
-    print(model_ft)
+    logger.debug(model_ft)
     return model_ft
 
 
-def mask_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2):
+def mask_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_size: int = 800, classes: int = 2):
     """
     Create Torchvision Mask RCNN model for training or inference.
 
     Args:
-        model_name (str): model name
         train_mode (boolean): True or False
         use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
@@ -205,5 +207,5 @@ def mask_rcnn(train_mode=False, use_pretrained=True, input_size=800, classes=2):
     if not train_mode:
         model_ft.eval()
 
-    print(model_ft)
+    logger.debug(model_ft)
     return model_ft

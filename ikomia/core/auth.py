@@ -56,7 +56,7 @@ class LoginSession:
         r = self.session.get(url)
         r.raise_for_status()
 
-    def is_authenticated(self):
+    def is_authenticated(self) -> bool:
         if self.token is None:
             return False
 

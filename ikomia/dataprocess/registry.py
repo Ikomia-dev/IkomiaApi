@@ -41,7 +41,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
-    def __init__(self, lazy_load:bool=True):
+    def __init__(self, lazy_load: bool = True):
         dataprocess.CIkomiaRegistry.__init__(self)
         self.public_online_algos = None
         self.private_online_algos = None
@@ -52,7 +52,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
     def __repr__(self):
         return f"IkomiaRegistry()"
 
-    def get_public_hub_algorithms(self, force:bool=False):
+    def get_public_hub_algorithms(self, force: bool = False) -> list:
         """
         Get the list of available algorithms from public Ikomia HUB.
         Each algorithm is identified by a unique name.
@@ -74,7 +74,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return self.public_online_algos
 
-    def get_private_hub_algorithms(self, force:bool=False):
+    def get_private_hub_algorithms(self, force:bool=False) -> list:
         """
         Get the list of available algorithms from private Ikomia HUB (authentication required).
         Each algorithm is identified by a unique name.
@@ -97,7 +97,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return self.private_online_algos
 
-    def _get_online_algos(self, url: str):
+    def _get_online_algos(self, url: str) -> list:
         s = ikomia.ik_api_session
         algos = self._get_all_from_pagination(url)
         valid_algos = []
@@ -113,7 +113,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return valid_algos
 
-    def _get_all_from_pagination(self, url: str):
+    def _get_all_from_pagination(self, url: str) -> dict:
         s = ikomia.ik_api_session
         r = s.session.get(url)
         r.raise_for_status()
@@ -127,7 +127,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return pagination_data["results"]
 
-    def create_algorithm(self, name:str, parameters=None, public_hub:bool=True, private_hub=False):
+    def create_algorithm(self, name:str, parameters: core.CWorkflowTaskParam = None,
+                         public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_public_hub_algorithms` or
@@ -240,7 +241,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         raise RuntimeError(f"Algorithm {name} does not exist in Ikomia HUB")
 
-    def _has_to_be_updated(self, name:str, hub_info: dict):
+    def _has_to_be_updated(self, name:str, hub_info: dict) -> bool:
         local_info = self.get_algorithm_info(name)
         current_version = semver.Version.parse(local_info.version)
 
@@ -257,7 +258,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             local_modif_date = datetime.strptime(local_format_time, "%Y-%m-%dT%H:%M:%S")
             return hub_modif_date > local_modif_date
 
-    def _find_hub_algo(self, name: str, hub_list: list):
+    def _find_hub_algo(self, name: str, hub_list: list) -> dict | None:
         for algo in hub_list:
             if algo["name"] == name:
                 return algo
@@ -301,7 +302,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         if config.main_cfg["registry"]["auto_completion"]:
             autocomplete.update_local_plugin(name)
 
-    def _get_algorithm_directory(self, name:str):
+    def _get_algorithm_directory(self, name:str) -> tuple:
         # C++ or Python algorithm?
         cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
         python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
@@ -370,7 +371,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return algo_info, language, target_dir
 
-    def _find_best_package_url(self, packages:list):
+    def _find_best_package_url(self, packages: list) -> str:
         """
         At this point, plugins are already filtered to ensure compatibility.
         So for now, we just want to pick the latest version
@@ -392,7 +393,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return url
 
     @staticmethod
-    def _check_compatibility(algo):
+    def _check_compatibility(algo: dict) -> bool:
         language = utils.ApiLanguage.PYTHON if algo["language"] == "PYTHON" else utils.ApiLanguage.CPP
         packages = algo["packages"]
 
@@ -403,7 +404,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return False
 
     @staticmethod
-    def _check_package_compatibility(package, language):
+    def _check_package_compatibility(package: dict, language: utils.ApiLanguage) -> bool:
         if (
                 IkomiaRegistry._check_os_compatibility(package) and
                 IkomiaRegistry._check_ikomia_compatibility(package, language) and
@@ -415,7 +416,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             return False
 
     @staticmethod
-    def _check_os_compatibility(package):
+    def _check_os_compatibility(package: dict) -> bool:
         current_os = None
         if sys.platform == "win32":
             current_os = "WINDOWS"
@@ -428,14 +429,14 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return current_os in os_list
 
     @staticmethod
-    def _check_ikomia_compatibility(package, language):
+    def _check_ikomia_compatibility(package: dict, language: utils.ApiLanguage) -> bool:
         ikomia_condition = package["platform"]["ikomia"]
         min_version, max_version = IkomiaRegistry._split_min_max_version(ikomia_condition)
         state = utils.get_compatibility_state(min_version, max_version, language)
         return state == utils.PluginState.VALID
 
     @staticmethod
-    def _check_python_compatibility(package):
+    def _check_python_compatibility(package: dict) -> bool:
         current_version = platform.python_version()
         min_version, max_version = IkomiaRegistry._split_min_max_version(package["platform"]["python"])
         current_sem_ver = semver.Version.parse(current_version)
@@ -452,7 +453,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
         return True
 
     @staticmethod
-    def _check_architecture(package, language):
+    def _check_architecture(package: dict, language: utils.ApiLanguage) -> bool:
         if language == utils.ApiLanguage.CPP:
             # TODO: test it!
             # Check CPU architecture
@@ -500,7 +501,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                     utils.plugintools.uninstall_package(line.rstrip())
 
     @staticmethod
-    def _split_min_max_version(version: str):
+    def _split_min_max_version(version: str) -> str:
         match = re.search(r">=(\d+\.\d+\.?\d*),?<?(\d*\.?\d*\.?\d*)", version)
         if match:
             return match.group(1), match.group(2)

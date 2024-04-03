@@ -38,7 +38,7 @@ class TaskParam(core.CWorkflowTaskParam):
         core.CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
-    def get_values(self):
+    def get_values(self) -> dict:
         """
         Return parameters for saving in Ikomia Studio.
         """
@@ -48,14 +48,14 @@ class TaskParam(core.CWorkflowTaskParam):
 
         return param_map
 
-    def set_values(self, params):
+    def set_values(self, params: dict):
         """
         Generic way to set parameters of CWorkflowTask-based object. Must be reimplemented.
         """
         raise NotImplementedError
 
 
-def create(name="", public_hub:bool=True, private_hub:bool=False):
+def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
@@ -74,7 +74,7 @@ def create(name="", public_hub:bool=True, private_hub:bool=False):
     return ikomia.ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
 
 
-def get_output(task_obj, types:list, index:int=-1):
+def get_output(task_obj: core.CWorkflowTask, types: list, index: int = -1) -> dataprocess.CWorkflowTaskIO:
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 

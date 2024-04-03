@@ -65,7 +65,7 @@ def _check_backend():
         matplotlib.use(_backend_name)
 
 
-def _to_plot_color(color):
+def _to_plot_color(color: list) -> list:
     plot_color = [val / 255.0 for val in color]
     return plot_color
 

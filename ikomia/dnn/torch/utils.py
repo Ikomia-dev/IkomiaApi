@@ -15,10 +15,10 @@
 import torch
 
 
-def save_pth(model, path):
+def save_pth(model, path: str):
     torch.save(model.state_dict(), path)
 
 
-def save_onnx(model, input_shape, device, path):
+def save_onnx(model, input_shape, device, path: str):
     dummy_input = torch.randn(input_shape, device=device)
     torch.onnx.export(model, dummy_input, path)

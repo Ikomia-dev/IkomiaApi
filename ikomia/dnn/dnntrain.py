@@ -17,7 +17,8 @@ Module dedicated to Deep Learning training.
 """
 import logging
 import mlflow
-from ikomia.core import config
+from typing import Optional
+from ikomia.core import config, CWorkflowTaskParam
 from ikomia.dataprocess import CDnnTrainTask
 from ikomia.dnn import datasetio, monitoring
 from datetime import datetime
@@ -40,7 +41,7 @@ class TrainProcess(CDnnTrainTask):
     It must be used with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDnnTrainTask`.
     """
-    def __init__(self, name, param):
+    def __init__(self, name: str, param: CWorkflowTaskParam):
         """
         Constructor. Initialize mlflow local server.
 
@@ -72,7 +73,7 @@ class TrainProcess(CDnnTrainTask):
             logger.warning("Unable to create MLFlow experiment. Please check for server startup errors.")
             logger.debug(e)
 
-    def _is_experiment_exists(self):
+    def _is_experiment_exists(self) -> bool:
         try:
             current_exp = mlflow.get_experiment(str(self.experiment_id))
             return current_exp.lifecycle_stage == "active"
@@ -109,7 +110,7 @@ class TrainProcess(CDnnTrainTask):
         if param is not None:
             self.log_params(param.cfg)
 
-    def log_param(self, key, value):
+    def log_param(self, key: str, value: any):
         """
         Log parameter to mlflow server
 
@@ -120,7 +121,7 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id is not None:
             mlflow.log_param(key, value)
 
-    def log_params(self, params):
+    def log_params(self, params: dict):
         """
         Log parameters to mlflow server
 
@@ -130,7 +131,7 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id is not None:
             mlflow.log_params(params)
 
-    def log_metric(self, key, value, step=None):
+    def log_metric(self, key: str, value: any, step: Optional[int] = None):
         """
         Log metric to mlflow server
 
@@ -142,7 +143,7 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id is not None:
             mlflow.log_metric(key, value, step)
 
-    def log_metrics(self, metrics, step=None):
+    def log_metrics(self, metrics: dict, step: Optional[int] = None):
         """
         Log metrics to mlflow server
 
@@ -153,7 +154,7 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id is not None:
             mlflow.log_metrics(metrics, step)
 
-    def log_artifact(self, file_path):
+    def log_artifact(self, file_path: str):
         """
         Log artifact to mlflow server.
         Artifact could be any file (model weights, configuration file...)
@@ -164,7 +165,7 @@ class TrainProcess(CDnnTrainTask):
         if self.experiment_id is not None:
             mlflow.log_artifact(file_path)
 
-    def log_artifacts(self, folder_path):
+    def log_artifacts(self, folder_path: str):
         """
         Log artifacts to mlflow server.
         Artifacts could be any files stored in the same folder (model weights, configuration file...)

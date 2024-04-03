@@ -32,7 +32,7 @@ class TorchDatasetMapper(Dataset):
     Class derived from torch.utils.data.Dataset.
     """
 
-    def __init__(self, ik_dataset, has_bckgnd_class, transforms):
+    def __init__(self, ik_dataset: dict, has_bckgnd_class: bool, transforms):
         self.ik_dataset = ik_dataset
         self.has_bckgnd_class = has_bckgnd_class
         self.transforms = transforms
@@ -40,7 +40,7 @@ class TorchDatasetMapper(Dataset):
     def __len__(self):
         return len(self.ik_dataset["images"])
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int):
         img_data = self.ik_dataset["images"][idx]
         # Load image
         img = Image.open(img_data["filename"]).convert("RGB")
@@ -113,7 +113,8 @@ class TorchDatasetMapper(Dataset):
 
         return img, target
 
-    def _load_instance_seg_masks(self, path):
+    @staticmethod
+    def _load_instance_seg_masks(path: str):
         # Load mask as [N H W] numpy array
         filename, extension = os.path.splitext(path)
 
@@ -139,7 +140,8 @@ class TorchDatasetMapper(Dataset):
             print("Error: segmentation mask format not supported")
             return None
 
-    def _load_semantic_seg_masks(self, path):
+    @staticmethod
+    def _load_semantic_seg_masks(path: str):
         # Load mask as [N H W] numpy array
         filename, extension = os.path.splitext(path)
 

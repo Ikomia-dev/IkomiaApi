@@ -21,6 +21,7 @@ import os
 import logging
 import enum
 import datetime
+import numpy as np
 import ikomia
 from ikomia import utils, core, dataprocess, dataio
 from ikomia.core import config, task, IODataType
@@ -42,7 +43,7 @@ class Workflow(dataprocess.CWorkflow):
         SINGLE = 1
         DIRECTORY = 2
 
-    def __init__(self, name="Untitled", registry=ikomia.ik_registry):
+    def __init__(self, name: str ="Untitled", registry: dataprocess.registry.IkomiaRegistry = ikomia.ik_registry):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
@@ -68,13 +69,14 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self.get_task(self.get_root_id())
 
-    def set_image_input(self, array=None, path="", url="", index=-1, datatype=core.IODataType.IMAGE):
+    def set_image_input(self, array: np.ndarray = None, path: str ="", url: str = "", index: int = -1,
+                        datatype: core.IODataType = core.IODataType.IMAGE):
         """
         Set image as global input of the workflow. Image can be specified by a Numpy array, a path or an URL thanks to
         keyword arguments, you have to choose one of them.
 
         Args:
-            array: image input as Numpy array
+            array (ndarray): image input as Numpy array
             path (str): image input as file path (valid formats are those managed by OpenCV)
             url (str): valid URL to image file (valid formats are those managed by OpenCV)
             index (int): zero-based input index, if -1 a new input is added
@@ -95,7 +97,8 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self.set_input(img_input, index, True)
 
-    def set_video_input(self, path="", url="", index=-1, datatype=core.IODataType.VIDEO):
+    def set_video_input(self, path: str = "", url: str = "", index: int = -1,
+                        datatype: core.IODataType = core.IODataType.VIDEO):
         """
         Set video as global input of the workflow. Video can be specified by a path or an URL thanks to
         keyword arguments, you have to choose one of them.
@@ -119,7 +122,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self.set_input(video_input, index, True)
 
-    def set_directory_input(self, folder="", index=-1):
+    def set_directory_input(self, folder: str = "", index: int = -1):
         """
         Set folder as global input of the workflow. For image-based workflows, all images inside the directory
         (recursively) will be processed.
@@ -138,7 +141,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             self.set_input(dir_input, index, True)
 
-    def set_parameters(self, params: dict, task_obj=None, task_name="", index=-1):
+    def set_parameters(self, params: dict, task_obj: core.CWorkflowTask = None, task_name: str = "", index: int = -1):
         """
         Set task parameters as a simple key-value dict.
         You can get parameters keys for each by calling:
@@ -172,7 +175,12 @@ class Workflow(dataprocess.CWorkflow):
                 elif 0 <= index < len(task_obj):
                     task_obj[index].set_parameters(params)
 
-    def get_time_metrics(self):
+    def expose_task_parameters(self):
+        """
+        """
+
+
+    def get_time_metrics(self) -> dict:
         """
         Get metrics around workflow execution time. This includes the total execution time of the workflow, and for
         each task, the execution time and the execution time from the start.
@@ -190,7 +198,8 @@ class Workflow(dataprocess.CWorkflow):
 
         return metrics
 
-    def get_task_output(self, task_obj=None, task_name="", task_index=0, types=[IODataType.IMAGE], output_index=-1):
+    def get_task_output(self, task_obj=None, task_name: str = "", task_index: int = 0, types: list = [IODataType.IMAGE],
+                        output_index: int = -1) -> core.CWorkflowTaskIO:
         """
         Get specific output(s) defined by their types (:py:class:`~ikomia.core.PyCore.IODataType`) for the given task.
 
@@ -228,7 +237,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             return task.get_output(task_obj, types, output_index)
 
-    def get_tasks(self):
+    def get_tasks(self) -> list:
         """
         Get all tasks composing the workflow.
 
@@ -244,7 +253,7 @@ class Workflow(dataprocess.CWorkflow):
 
         return tasks
 
-    def get_task_id(self, task):
+    def get_task_id(self, task) -> int:
         """
         Get task unique identifier from the task instance/
 
@@ -256,8 +265,8 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self.task_to_id[task.uuid]
 
-    def add_task(self, task=None, name:str="", params:dict={}, auto_connect:bool=False,
-                 public_hub:bool=True, private_hub=False):
+    def add_task(self, task: core.CWorkflowTask = None, name: str = "", params: dict = {}, auto_connect: bool=False,
+                 public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
@@ -297,7 +306,7 @@ class Workflow(dataprocess.CWorkflow):
 
         return task
 
-    def remove_task(self, task=None, name: str="", index: int=0):
+    def remove_task(self, task: core.CWorkflowTask = None, name: str = "", index: int = 0):
         """
         Remove task from workflow specified by task instance or name (with corresponding index).
 
@@ -317,7 +326,7 @@ class Workflow(dataprocess.CWorkflow):
         super().delete_task(self.task_to_id[task.uuid])
         del self.task_to_id[task.uuid]
 
-    def find_task(self, name: str, index=-1):
+    def find_task(self, name: str, index: int = -1) -> core.CWorkflowTask | list:
         """
         Get identifiers and instance of tasks with the given name in the workflow.
 
@@ -342,7 +351,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             return tasks
 
-    def connect_tasks(self, src, target, edges=None):
+    def connect_tasks(self, src: core.CWorkflowTask, target: core.CWorkflowTask, edges: list = []):
         """
         Connect two tasks of the workflow. Depending of the inputs/outputs configuration, multiple connections between
         the two tasks can be set. A connection is a pair (ie tuple) composed by the output index of the source task
@@ -351,7 +360,7 @@ class Workflow(dataprocess.CWorkflow):
         Args:
             src (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): source task or None (connect to root)
             target (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): target task
-            edges (list of pair): connections. If *None* is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
+            edges (list of pair): connections. If empty list is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
         """
         if src.uuid == self.root_uuid:
             src_id = self.get_root_id()
@@ -360,7 +369,7 @@ class Workflow(dataprocess.CWorkflow):
 
         target_id = self.get_task_id(target)
 
-        if edges is None:
+        if len(edges) == 0:
             self.connect(src_id, target_id, -1, -1)
         else:
             for edge in edges:
@@ -391,7 +400,7 @@ class Workflow(dataprocess.CWorkflow):
 
         logger.info(f"Workflow {self.name} run successfully in {total_time} ms.")
 
-    def run_on(self, array=None, path="", url="", folder=""):
+    def run_on(self, array: np.ndarray = None, path: str = "", url: str = "", folder: str = ""):
         """
         Convenient function to run the workflow on common inputs. For more advanced use, please consult
         :py:class:`~ikomia.dataprocess.workflow.Workflow`.
@@ -424,7 +433,13 @@ class Workflow(dataprocess.CWorkflow):
 
             self.run()
 
-    def load(self, path):
+    def load(self, path: str):
+        """
+        Load the worflow file at the given path. The function will try to install algorithms if they are not available.
+
+        Args:
+            path (str): full path to the workflow definition file to load.
+        """
         prepare_runtime_env(path)
         super().load(path)
 
@@ -476,11 +491,11 @@ class Workflow(dataprocess.CWorkflow):
             return Workflow.RunMode.SINGLE
 
     @staticmethod
-    def _check_run_input(array, path, url, folder):
+    def _check_run_input(array: np.ndarray, path: str, url: str, folder: str) -> bool:
         return array is not None or path or url or folder
 
     @staticmethod
-    def _is_image_input(array=None, path="", url=""):
+    def _is_image_input(array: np.ndarray = None, path: str = "", url: str = "") -> bool:
         if array is not None:
             return True
         elif path:
@@ -494,7 +509,7 @@ class Workflow(dataprocess.CWorkflow):
             return False
 
     @staticmethod
-    def _is_video_input(path="", url=""):
+    def _is_video_input(path: str = "", url: str = "") -> bool:
         if path:
             filename, ext = os.path.splitext(path)
             return dataio.CDataVideoIO.is_video_format(ext, True)
@@ -506,7 +521,7 @@ class Workflow(dataprocess.CWorkflow):
             return False
 
 
-def create(name="untitled"):
+def create(name: str = "untitled"):
     """
     Create new empty workflow.
     See also :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`,
@@ -519,7 +534,7 @@ def create(name="untitled"):
     return Workflow(name, ikomia.ik_registry)
 
 
-def load(path):
+def load(path: str) -> Workflow:
     """
     Load Ikomia workflow from the given path.
 
@@ -557,7 +572,7 @@ def prepare_runtime_env(workflow_path:str):
                 raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}")
 
 
-def install_requirements(path):
+def install_requirements(path: str) -> bool:
     """
     Install Python requirements from all algorithms of the workflow stored at the given path.
     Algorithms must be installed locally before calling this function.

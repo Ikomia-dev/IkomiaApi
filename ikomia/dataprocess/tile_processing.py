@@ -16,9 +16,9 @@ import numpy as np
 import math
 
 
-def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_size, process):
+def tile_process(img: np.ndarray, tile_size: int, overlap_ratio: float, sf: float, size_divisible_by: int,
+                 minimum_size: int, process) -> np.ndarray:
     """
-
     :param img: image (numpy array) to process tile by tile
     :param tile_size: tile size in pixels
     :param overlap_ratio: overlap between 2 tiles in percentage
@@ -36,8 +36,7 @@ def tile_process(img, tile_size, overlap_ratio, sf, size_divisible_by, minimum_s
     elif len(shape) == 2:
         img_up = np.zeros((sf * h, sf * w), dtype='half')
     else:
-        print("Not an image")
-        return
+        raise RuntimeError("Not an image")
 
     img = img[:h, :w]
     tile_h = min(tile_size, h)

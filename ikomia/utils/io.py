@@ -1,10 +1,10 @@
 from ikomia import dataprocess
-from ikomia.core import IODataType
+from ikomia.core import IODataType, CWorkflowTaskIO
 from ikomia.dnn.datasetio import IkDatasetIO
 from ikomia.dataprocess.datadictIO import DataDictIO
 
 
-def get_io_type_from_string(type_str: str):
+def get_io_type_from_string(type_str: str) -> IODataType:
     """
     Helper function to get :py:class:`~ikomia.core.pycore.IODataType` enum value from string.
 
@@ -74,7 +74,7 @@ def get_io_type_from_string(type_str: str):
         return IODataType.NONE
 
 
-def create_task_io(io_type: IODataType):
+def create_task_io(io_type: IODataType) -> CWorkflowTaskIO:
     """
     Helper function to create task I/O object from the given data type.
 
