@@ -182,6 +182,24 @@ class Workflow(CWorkflow):
                 elif 0 <= index < len(task_obj):
                     task_obj[index].set_parameters(params)
 
+    def set_workflow_parameters(self, params: dict):
+        """
+        Set workflow parameters. Available parameters are those exposed when workflow is saved.
+        Actually, an exposed parameter is bound to a task parameter within a workflow.
+        The aim is to be able to select meaningfull parameters with respect to the workflow objective.
+
+        Args:
+            params (dict): key-value pairs
+        """
+        try:
+            params = task.conform_parameters(params)
+            for name in params:
+                self.set_exposed_parameter(name, params[name])
+        except RuntimeError as e:
+            available_params = self.get_exposed_parameters()
+            logger.error(e)
+            logger.error(f"Available parameters: {available_params}")
+
     def get_time_metrics(self) -> dict:
         """
         Get metrics around workflow execution time. This includes the total execution time of the workflow, and for
@@ -266,6 +284,9 @@ class Workflow(CWorkflow):
             int: task unique identifier
         """
         return self.task_to_id[task.uuid]
+
+    def get_workflow_parameters(self):
+        return self.get_exposed_parameters()
 
     def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = {}, auto_connect: bool=False,
                  public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
@@ -550,16 +571,22 @@ class Workflow(CWorkflow):
             else:
                 raise TypeError("Task identification must be either a task instance, a task id or a task name.")
 
-            for param_name, info in exposed_params[task_key].items():
-                if type(param_name) is not str:
-                    raise TypeError("String expected for task parameter name.")
+            if len(exposed_params[task_key]) == 0:
+                # Expose all parameters
+                t = self.get_task(task_id)
+                task_params = t.get_parameters()
 
-                if "name" not in info:
-                    raise ValueError("Exposed parameter dict must have a name field (str).")
-                if "description" not in info:
-                    raise ValueError("Exposed parameter dict must have a description field (str).")
+                for param in task_params:
+                    self.add_parameter("", "", task_id, param)
+            else:
+                # Expose specified parameters only
+                for param_name, info in exposed_params[task_key].items():
+                    if type(param_name) is not str:
+                        raise TypeError("String expected for task parameter name.")
 
-                self.add_parameter(info["name"], info["description"], task_id, param_name)
+                    name = info["name"] if "name" in info else ""
+                    description = info["description"] if "description" in info else ""
+                    self.add_parameter(name, description, task_id, param_name)
 
 
 def create(name: str = "untitled"):
