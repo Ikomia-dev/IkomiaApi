@@ -18,12 +18,13 @@ Ikomia Deep Learning dataset structure.
 Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 """
 
-from ikomia import core, dataprocess
+from ikomia import core
+from ikomia.dataprocess import CDatasetIO
 import random
 import json
 
 
-class IkDatasetIO(dataprocess.CDatasetIO):
+class IkDatasetIO(CDatasetIO):
     """
         Define task input or output containing deep learning dataset structure.
         Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
@@ -67,7 +68,7 @@ class IkDatasetIO(dataprocess.CDatasetIO):
         Args:
             format (str): dataset source format.
         """
-        dataprocess.CDatasetIO.__init__(self, format)
+        CDatasetIO.__init__(self, format)
         # Data are stored into a dict
         self.data = {}
         self.category_colors = {}

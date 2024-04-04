@@ -19,12 +19,13 @@ See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods
 """
 import logging
 import ikomia
-from ikomia import core, dataprocess
+from ikomia.core import CWorkflowTaskParam, CWorkflowTask
+from ikomia.dataprocess import CWorkflowTaskIO
 
 logger = logging.getLogger(__name__)
 
 
-class TaskParam(core.CWorkflowTaskParam):
+class TaskParam(CWorkflowTaskParam):
     """
     Base class to manage task parameters. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
     It includes a dict structure to store parameter values.
@@ -35,7 +36,7 @@ class TaskParam(core.CWorkflowTaskParam):
         """
         Constructor. Initialize an empty dict structure.
         """
-        core.CWorkflowTaskParam.__init__(self)
+        CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
     def get_values(self) -> dict:
@@ -55,7 +56,7 @@ class TaskParam(core.CWorkflowTaskParam):
         raise NotImplementedError
 
 
-def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
+def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
@@ -74,7 +75,7 @@ def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -
     return ikomia.ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
 
 
-def get_output(task_obj: core.CWorkflowTask, types: list, index: int = -1) -> dataprocess.CWorkflowTaskIO:
+def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkflowTaskIO:
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 

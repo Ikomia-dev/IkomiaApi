@@ -565,7 +565,7 @@ def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
         child = False
         fig, ax = plt.subplots(1, 1)
 
-    measures = obj.get_masures()
+    measures = obj.get_measures()
     row_labels = list(range(len(measures)))
     col_labels = ["Graphics ID", "Label"]
     max_value_length = 9

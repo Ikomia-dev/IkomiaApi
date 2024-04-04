@@ -20,6 +20,7 @@ your own task widget. It uses the PyQt5 framework.
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from typing import Optional
 
 
 class BrowseFileWidget(QWidget):
@@ -29,7 +30,7 @@ class BrowseFileWidget(QWidget):
     file_changed = pyqtSignal()
 
     def __init__(self, path: str, filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile,
-                 parent: QObject | None = None):
+                 parent: Optional[QObject] = None):
         QWidget.__init__(self, parent)
         self.path = path
         self.tooltip = tooltip

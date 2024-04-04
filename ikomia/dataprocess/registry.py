@@ -18,9 +18,9 @@ It implements IkomiaRegistry class that offers features to install, update and i
 algorithms from the built-in environment or Ikomia HUB.
 """
 import ikomia
-from ikomia import utils, dataprocess
-from ikomia.utils import autocomplete
-from ikomia.core import config
+from ikomia import utils
+from ikomia.core import config, CWorkflowTaskParam, CWorkflowTask
+from ikomia.dataprocess import CIkomiaRegistry
 import os
 import sys
 import logging
@@ -31,18 +31,19 @@ import semver
 import re
 import time
 from datetime import datetime
+from typing import Union
 
 logger = logging.getLogger(__name__)
 
 
-class IkomiaRegistry(dataprocess.CIkomiaRegistry):
+class IkomiaRegistry(CIkomiaRegistry):
     """
     Registry for all Ikomia algorithms (built-in and Ikomia HUB). It stores all algorithms references and allows to
     install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
     def __init__(self, lazy_load: bool = True):
-        dataprocess.CIkomiaRegistry.__init__(self)
+        CIkomiaRegistry.__init__(self)
         self.public_online_algos = None
         self.private_online_algos = None
 
@@ -127,8 +128,8 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
 
         return pagination_data["results"]
 
-    def create_algorithm(self, name:str, parameters: core.CWorkflowTaskParam = None,
-                         public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
+    def create_algorithm(self, name:str, parameters: CWorkflowTaskParam = None,
+                         public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_public_hub_algorithms` or
@@ -258,7 +259,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
             local_modif_date = datetime.strptime(local_format_time, "%Y-%m-%dT%H:%M:%S")
             return hub_modif_date > local_modif_date
 
-    def _find_hub_algo(self, name: str, hub_list: list) -> dict | None:
+    def _find_hub_algo(self, name: str, hub_list: list) -> Union[dict, None]:
         for algo in hub_list:
             if algo["name"] == name:
                 return algo
@@ -300,7 +301,7 @@ class IkomiaRegistry(dataprocess.CIkomiaRegistry):
                            f"It will be updated on next start.")
 
         if config.main_cfg["registry"]["auto_completion"]:
-            autocomplete.update_local_plugin(name)
+            utils.autocomplete.update_local_plugin(name)
 
     def _get_algorithm_directory(self, name:str) -> tuple:
         # C++ or Python algorithm?

@@ -18,7 +18,7 @@ Module providing dataset loaders from various source formats.
 
 import os
 import json
-from ikomia import core
+from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion
 from PIL import Image
 from collections import defaultdict
 import xml.etree.ElementTree as ET
@@ -506,11 +506,11 @@ def polygon_to_mask(polygons: list, width: int, height: int) -> np.ndarray:
             if y > height - 1:
                 y = height - 1
 
-            pts.append(core.CPointF(x, y))
+            pts.append(CPointF(x, y))
             i += 2
 
-        graphics_poly = core.CGraphicsPolygon(pts)
+        graphics_poly = CGraphicsPolygon(pts)
         graphics.append(graphics_poly)
 
-    conversion = core.CGraphicsConversion(width, height)
+    conversion = CGraphicsConversion(width, height)
     return conversion.graphics_to_binary_mask(graphics)
