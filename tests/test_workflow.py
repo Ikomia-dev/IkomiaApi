@@ -356,6 +356,13 @@ def test_set_parameters():
     assert float(params_new[ik.ocv_bilateral_filter.sigmaSpace]) == float(params[ik.ocv_bilateral_filter.sigmaSpace])
     assert float(params_new[ik.ocv_bilateral_filter.sigmaColor]) == float(params[ik.ocv_bilateral_filter.sigmaColor])
 
+    # Pass non string values
+    params = {ik.ocv_bilateral_filter.sigmaSpace: 35.0, ik.ocv_bilateral_filter.sigmaColor: 9.0}
+    wf.set_parameters(params, task_name=ik.ocv_bilateral_filter.name())
+    params_new = bilateral_filter.get_parameters()
+    assert float(params_new[ik.ocv_bilateral_filter.sigmaSpace]) == params[ik.ocv_bilateral_filter.sigmaSpace]
+    assert float(params_new[ik.ocv_bilateral_filter.sigmaColor]) == params[ik.ocv_bilateral_filter.sigmaColor]
+
 
 def test_load():
     logger.warning("===== Test: Workflow::load() =====")

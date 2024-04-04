@@ -103,3 +103,24 @@ def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkfl
         return outputs[index]
     else:
         raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
+
+
+def conform_parameters(params: dict) -> dict:
+    """
+    Conform parameters dict structure to ensure that all values are string.
+
+    Args:
+        params (dict): parameters as key-value pairs
+    """
+    valid_params = {}
+    for key in params:
+        if type(key) is not str:
+            raise TypeError("Parameter key must be a string.")
+
+        value = params[key]
+        if type(params[key]) is not str:
+            valid_params[key] = str(value)
+        else:
+            valid_params[key] = value
+
+    return valid_params

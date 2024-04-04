@@ -160,9 +160,11 @@ class Workflow(CWorkflow):
             task_name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one. Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
         """
-        # TODO: conform dict values as we want only string
         if task_obj is None and not task_name:
             raise RuntimeError("Unable to set task parameters: parameters must include either a valid name or task instance.")
+
+        # Ensure parameter values are string due to C++ typing constraint
+        params = task.conform_parameters(params)
 
         if task_obj is not None:
             task_obj.set_parameters(params)
