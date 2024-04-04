@@ -108,11 +108,11 @@ def test_display_plot():
     # display plot output
     feature_io = algo.get_output(1)
     displayIO.display(feature_io, label="CalcHist Histogram")
-    feature_io.setPlotType(dataprocess.PlotType.CURVE)
+    feature_io.set_plot_type(dataprocess.PlotType.CURVE)
     displayIO.display(feature_io, label="CalcHist Curves")
-    feature_io.setPlotType(dataprocess.PlotType.MULTIBAR)
+    feature_io.set_plot_type(dataprocess.PlotType.MULTIBAR)
     displayIO.display(feature_io, label="CalcHist Multi-bar")
-    feature_io.setPlotType(dataprocess.PlotType.PIE)
+    feature_io.set_plot_type(dataprocess.PlotType.PIE)
     displayIO.display(feature_io, label="CalcHist Pie chart")
 
 

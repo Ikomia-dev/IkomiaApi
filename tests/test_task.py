@@ -3,6 +3,7 @@ import logging
 import argparse
 from ikomia.utils import tests, ik
 from ikomia import core, dataio, dataprocess
+from ikomia.core import task
 import cv2
 import numpy as np
 
@@ -418,7 +419,7 @@ def test_cpp_dnn_train_task():
 
 def test_task_parameters():
     logger.warning("===== Test: set task parameters =====")
-    algo = core.task.create(name=ik.ocv_box_filter().name)
+    algo = task.create(name=ik.ocv_box_filter().name)
     params = algo.get_parameters()
     assert len(params) > 0
 
