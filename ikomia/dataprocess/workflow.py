@@ -23,14 +23,18 @@ import enum
 import datetime
 import numpy as np
 import ikomia
-from ikomia import utils, core, dataprocess, dataio
-from ikomia.core import config, task, IODataType
+from ikomia import utils
+from ikomia.core import config, task, IODataType, CWorkflowTask, CWorkflowTaskIO
+from ikomia.dataio import CDataImageIO, CDataVideoIO
+from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO
+from ikomia.dataprocess.registry import IkomiaRegistry
 from urllib.parse import urlparse
+from typing import Optional, Union
 
 logger = logging.getLogger(__name__)
 
 
-class Workflow(dataprocess.CWorkflow):
+class Workflow(CWorkflow):
     """
     Workflow management of Computer Vision tasks. Implement features to create, modify and run graph-based pipeline of
     :py:class:`~ikomia.core.pycore.CWorkflowTask` objects or derived. Workflows can be created from scratch
@@ -43,16 +47,16 @@ class Workflow(dataprocess.CWorkflow):
         SINGLE = 1
         DIRECTORY = 2
 
-    def __init__(self, name: str ="Untitled", registry: dataprocess.registry.IkomiaRegistry = ikomia.ik_registry):
+    def __init__(self, name: str ="Untitled", registry: IkomiaRegistry = ikomia.ik_registry):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
         you are able to use any Ikomia algorithms (built-in and Ikomia HUB) in your workflow.
         """
         if registry is None:
-            dataprocess.CWorkflow.__init__(self, name)
+            CWorkflow.__init__(self, name)
         else:
-            dataprocess.CWorkflow.__init__(self, name, registry)
+            CWorkflow.__init__(self, name, registry)
 
         self.registry = registry
         self.output_folder = os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
@@ -70,7 +74,7 @@ class Workflow(dataprocess.CWorkflow):
         return self.get_task(self.get_root_id())
 
     def set_image_input(self, array: np.ndarray = None, path: str ="", url: str = "", index: int = -1,
-                        datatype: core.IODataType = core.IODataType.IMAGE):
+                        datatype: IODataType = IODataType.IMAGE):
         """
         Set image as global input of the workflow. Image can be specified by a Numpy array, a path or an URL thanks to
         keyword arguments, you have to choose one of them.
@@ -83,14 +87,14 @@ class Workflow(dataprocess.CWorkflow):
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
         """
         if array is not None:
-            img_input = dataprocess.CImageIO(datatype, array, "")
+            img_input = CImageIO(datatype, array, "")
         elif path:
-            img_input = dataprocess.CImageIO(datatype, "", path)
+            img_input = CImageIO(datatype, "", path)
         elif url:
             parsed = urlparse(url)
             img_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
             utils.http.download_file(url, img_path)
-            img_input = dataprocess.CImageIO(datatype, "Image", img_path)
+            img_input = CImageIO(datatype, "Image", img_path)
 
         if index == -1 or index >= self.get_input_count():
             self.add_input(img_input)
@@ -98,7 +102,7 @@ class Workflow(dataprocess.CWorkflow):
             self.set_input(img_input, index, True)
 
     def set_video_input(self, path: str = "", url: str = "", index: int = -1,
-                        datatype: core.IODataType = core.IODataType.VIDEO):
+                        datatype: IODataType = IODataType.VIDEO):
         """
         Set video as global input of the workflow. Video can be specified by a path or an URL thanks to
         keyword arguments, you have to choose one of them.
@@ -110,12 +114,12 @@ class Workflow(dataprocess.CWorkflow):
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
         """
         if path:
-            video_input = dataprocess.CVideoIO(datatype, "", path)
+            video_input = CVideoIO(datatype, "", path)
         elif url:
             parsed = urlparse(url)
             video_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
             utils.http.download_file(url, video_path)
-            video_input = dataprocess.CVideoIO(datatype, "Video", video_path)
+            video_input = CVideoIO(datatype, "Video", video_path)
 
         if index == -1 or index >= self.get_input_count():
             self.add_input(video_input)
@@ -135,13 +139,13 @@ class Workflow(dataprocess.CWorkflow):
             logger.error("Directory input not set: you must pass an existing directory.")
             return
 
-        dir_input = dataprocess.CPathIO(core.IODataType.FOLDER_PATH, folder)
+        dir_input = CPathIO(IODataType.FOLDER_PATH, folder)
         if index == -1 or index >= self.get_input_count():
             self.add_input(dir_input)
         else:
             self.set_input(dir_input, index, True)
 
-    def set_parameters(self, params: dict, task_obj: core.CWorkflowTask = None, task_name: str = "", index: int = -1):
+    def set_parameters(self, params: dict, task_obj: CWorkflowTask = None, task_name: str = "", index: int = -1):
         """
         Set task parameters as a simple key-value dict.
         You can get parameters keys for each by calling:
@@ -156,6 +160,7 @@ class Workflow(dataprocess.CWorkflow):
             task_name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one. Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
         """
+        # TODO: conform dict values as we want only string
         if task_obj is None and not task_name:
             raise RuntimeError("Unable to set task parameters: parameters must include either a valid name or task instance.")
 
@@ -174,11 +179,6 @@ class Workflow(dataprocess.CWorkflow):
                         t.set_parameters(params)
                 elif 0 <= index < len(task_obj):
                     task_obj[index].set_parameters(params)
-
-    def expose_task_parameters(self):
-        """
-        """
-
 
     def get_time_metrics(self) -> dict:
         """
@@ -199,7 +199,7 @@ class Workflow(dataprocess.CWorkflow):
         return metrics
 
     def get_task_output(self, task_obj=None, task_name: str = "", task_index: int = 0, types: list = [IODataType.IMAGE],
-                        output_index: int = -1) -> core.CWorkflowTaskIO:
+                        output_index: int = -1) -> CWorkflowTaskIO:
         """
         Get specific output(s) defined by their types (:py:class:`~ikomia.core.PyCore.IODataType`) for the given task.
 
@@ -255,7 +255,7 @@ class Workflow(dataprocess.CWorkflow):
 
     def get_task_id(self, task) -> int:
         """
-        Get task unique identifier from the task instance/
+        Get task unique identifier from the task instance.
 
         Args:
             task (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): task instance
@@ -265,8 +265,8 @@ class Workflow(dataprocess.CWorkflow):
         """
         return self.task_to_id[task.uuid]
 
-    def add_task(self, task: core.CWorkflowTask = None, name: str = "", params: dict = {}, auto_connect: bool=False,
-                 public_hub: bool = True, private_hub: bool = False) -> core.CWorkflowTask:
+    def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = {}, auto_connect: bool=False,
+                 public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
@@ -306,7 +306,7 @@ class Workflow(dataprocess.CWorkflow):
 
         return task
 
-    def remove_task(self, task: core.CWorkflowTask = None, name: str = "", index: int = 0):
+    def remove_task(self, task: CWorkflowTask = None, name: str = "", index: int = 0):
         """
         Remove task from workflow specified by task instance or name (with corresponding index).
 
@@ -326,7 +326,7 @@ class Workflow(dataprocess.CWorkflow):
         super().delete_task(self.task_to_id[task.uuid])
         del self.task_to_id[task.uuid]
 
-    def find_task(self, name: str, index: int = -1) -> core.CWorkflowTask | list:
+    def find_task(self, name: str, index: int = -1) -> Union[CWorkflowTask, list]:
         """
         Get identifiers and instance of tasks with the given name in the workflow.
 
@@ -351,7 +351,7 @@ class Workflow(dataprocess.CWorkflow):
         else:
             return tasks
 
-    def connect_tasks(self, src: core.CWorkflowTask, target: core.CWorkflowTask, edges: list = []):
+    def connect_tasks(self, src: CWorkflowTask, target: CWorkflowTask, edges: list = []):
         """
         Connect two tasks of the workflow. Depending of the inputs/outputs configuration, multiple connections between
         the two tasks can be set. A connection is a pair (ie tuple) composed by the output index of the source task
@@ -451,10 +451,23 @@ class Workflow(dataprocess.CWorkflow):
             task = self.get_task(task_id)
             self.task_to_id[task.uuid] = task_id
 
+    def save(self, path: str, exposed_params: Optional[dict] = None):
+        """
+        Save workflow into a JSON definition file.
+
+        Args:
+            path (str): full path to the workflow definition file to save.
+            exposed_params (dict)
+        """
+        if exposed_params:
+            self._expose_parameters(exposed_params)
+
+        super().save(path)
+
     def _run_directory(self):
         for i in range(self.get_input_count()):
             input_type = self.get_input_data_type(i)
-            if input_type == core.IODataType.FOLDER_PATH:
+            if input_type == IODataType.FOLDER_PATH:
                 dir_input = self.get_input(i)
 
                 for root, subdirs, files in os.walk(dir_input.get_path(), topdown=True):
@@ -485,7 +498,7 @@ class Workflow(dataprocess.CWorkflow):
 
         target_types = self.get_root_target_types()
 
-        if core.IODataType.FOLDER_PATH in input_types and core.IODataType.FOLDER_PATH not in target_types:
+        if IODataType.FOLDER_PATH in input_types and IODataType.FOLDER_PATH not in target_types:
             return Workflow.RunMode.DIRECTORY
         else:
             return Workflow.RunMode.SINGLE
@@ -500,11 +513,11 @@ class Workflow(dataprocess.CWorkflow):
             return True
         elif path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataImageIO.is_image_format(ext)
+            return CDataImageIO.is_image_format(ext)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataImageIO.is_image_format(ext)
+            return CDataImageIO.is_image_format(ext)
         else:
             return False
 
@@ -512,13 +525,39 @@ class Workflow(dataprocess.CWorkflow):
     def _is_video_input(path: str = "", url: str = "") -> bool:
         if path:
             filename, ext = os.path.splitext(path)
-            return dataio.CDataVideoIO.is_video_format(ext, True)
+            return CDataVideoIO.is_video_format(ext, True)
         elif url:
             parsed_url = urlparse(url)
             filename, ext = os.path.splitext(parsed_url.path)
-            return dataio.CDataVideoIO.is_video_format(ext, True)
+            return CDataVideoIO.is_video_format(ext, True)
         else:
             return False
+
+    def _expose_parameters(self, exposed_params: dict):
+        self.clear_exposed_parameters()
+
+        for task_key in exposed_params:
+            if type(task_key) is CWorkflowTask:
+                task_id = self.task_to_id[task_key.uuid]
+            elif type(task_key) is int:
+                task_id = task_key
+            elif type(task_key) is str:
+                # TODO: how to manage multiple tasks with the same name
+                task = self.find_task(task_key, 0)
+                task_id = self.task_to_id[task.uuid]
+            else:
+                raise TypeError("Task identification must be either a task instance, a task id or a task name.")
+
+            for param_name, info in exposed_params[task_key].items():
+                if type(param_name) is not str:
+                    raise TypeError("String expected for task parameter name.")
+
+                if "name" not in info:
+                    raise ValueError("Exposed parameter dict must have a name field (str).")
+                if "description" not in info:
+                    raise ValueError("Exposed parameter dict must have a description field (str).")
+
+                self.add_parameter(info["name"], info["description"], task_id, param_name)
 
 
 def create(name: str = "untitled"):
