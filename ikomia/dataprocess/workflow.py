@@ -480,7 +480,36 @@ class Workflow(CWorkflow):
 
         Args:
             path (str): full path to the workflow definition file to save.
-            exposed_params (dict)
+            exposed_params (dict): set the list of task parameters that has to be exposed at workflow level. The aim is
+                to be able to select meaningfull parameters with respect to the workflow objective.
+
+                Example of the dict structure:
+
+                .. code-block:: python
+
+                    exposed_params = {
+                        "task_name": {
+                            "task_parameter_name_1": {
+                                "name": "my_workflow_parameter_name_1",
+                                "description": "my_description_1",
+                            },
+                            "task_parameter_name_2": {
+                                "name": "my_workflow_parameter_name_2",
+                                "description": "my_description_2",
+                            },
+                        }
+                    }
+
+                To specify a task, you can give a task name, a task instance or a task id. Be careful with task name
+                because, in case of workflow involving several times the same task, the function will expose parameters
+                of the first task only. Prefer using task instance or task id in this case.
+
+                If 'name" field is empty, the original task parameter name is used.
+
+                The 'description' field is also optional.
+
+                If you want to expose all parameters of a task, just pass an empty dict for the value of the
+                task name key.
         """
         if exposed_params:
             self._expose_parameters(exposed_params)
