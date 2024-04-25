@@ -173,8 +173,7 @@ class IkomiaRegistry(CIkomiaRegistry):
                 else:
                     # If algorithm is installed locally but not functional (algo_dir is not empty), it may be a plugin
                     # in developpement and we should not overwrite it with the Ikomia Hub version
-                    raise RuntimeError(f"Algorithm {name} is installed locally but not functional. "
-                                       f"Check your code or your Python environment please.")
+                    raise RuntimeError(f"Algorithm {name} is installed locally but not functional: {e}")
 
         return algo
 
