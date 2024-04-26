@@ -474,7 +474,7 @@ class Workflow(CWorkflow):
             task = self.get_task(task_id)
             self.task_to_id[task.uuid] = task_id
 
-    def save(self, path: str, exposed_params: Optional[dict] = None):
+    def save(self, path: str, exposed_params: Optional[dict] = None, exposed_outputs: Optional[dict] = None):
         """
         Save workflow into a JSON definition file.
 
@@ -510,9 +510,40 @@ class Workflow(CWorkflow):
 
                 If you want to expose all parameters of a task, just pass an empty dict for the value of the
                 task name key.
+            exposed_outputs (dict): set the list of outputs that has to be exposed at workflow level. The aim is
+                to be able to select meaningfull outputs with respect to the workflow objective.
+
+                Example of the dict structure:
+
+                .. code-block:: python
+
+                    exposed_outputs = {
+                        "task_name": [
+                            {
+                                "description": "my_description_1",
+                                "index": 0,
+                            },
+                            {
+                                "description": "my_description_2",
+                                "index": 1,
+                            },
+                        ]
+                    }
+
+                To specify a task, you can give a task name, a task instance or a task id. Be careful with task name
+                because, in case of workflow involving several times the same task, the function will expose parameters
+                of the first task only. Prefer using task instance or task id in this case.
+
+                The 'description' field is optional.
+
+                If you want to expose all outputs of a task, just pass an empty list for the value of the
+                task name key.
         """
         if exposed_params:
             self._expose_parameters(exposed_params)
+
+        if exposed_outputs:
+            self._expose_outputs(exposed_outputs)
 
         super().save(path)
 
@@ -616,6 +647,34 @@ class Workflow(CWorkflow):
                     name = info["name"] if "name" in info else ""
                     description = info["description"] if "description" in info else ""
                     self.add_parameter(name, description, task_id, param_name)
+
+    def _expose_outputs(self, outputs: dict):
+        self.clear_outputs()
+
+        for task_key in outputs:
+            if type(task_key) is CWorkflowTask:
+                task_id = self.task_to_id[task_key.uuid]
+            elif type(task_key) is int:
+                task_id = task_key
+            elif type(task_key) is str:
+                # TODO: how to manage multiple tasks with the same name
+                task = self.find_task(task_key, 0)
+                task_id = self.task_to_id[task.uuid]
+            else:
+                raise TypeError("Task identification must be either a task instance, a task id or a task name.")
+
+            if len(outputs[task_key]) == 0:
+                # Expose all outputs
+                t = self.get_task(task_id)
+                task_outputs = t.get_outputs()
+
+                for i, output in enumerate(task_outputs):
+                    self.add_output("", task_id, i)
+            else:
+                # Expose specified output only
+                for output_info in outputs[task_key]:
+                    description = output_info["description"] if "description" in output_info else ""
+                    self.add_output(description, task_id, output_info["index"])
 
 
 def create(name: str = "untitled"):
