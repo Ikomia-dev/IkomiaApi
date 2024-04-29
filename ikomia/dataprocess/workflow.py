@@ -637,7 +637,7 @@ class Workflow(CWorkflow):
                 task_params = t.get_parameters()
 
                 for param in task_params:
-                    self.add_parameter("", "", task_id, param)
+                    self.add_exposed_parameter("", "", task_id, param)
             else:
                 # Expose specified parameters only
                 for param_name, info in exposed_params[task_key].items():
@@ -646,7 +646,7 @@ class Workflow(CWorkflow):
 
                     name = info["name"] if "name" in info else ""
                     description = info["description"] if "description" in info else ""
-                    self.add_parameter(name, description, task_id, param_name)
+                    self.add_exposed_parameter(name, description, task_id, param_name)
 
     def _expose_outputs(self, outputs: dict):
         self.clear_outputs()
