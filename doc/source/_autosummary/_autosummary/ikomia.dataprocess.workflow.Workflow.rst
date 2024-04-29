@@ -22,15 +22,18 @@ Workflow
         ~Workflow.get_task_output
         ~Workflow.get_tasks
         ~Workflow.get_time_metrics
+        ~Workflow.get_workflow_parameters
         ~Workflow.load
         ~Workflow.remove_task
         ~Workflow.root
         ~Workflow.run
         ~Workflow.run_on
+        ~Workflow.save
         ~Workflow.set_directory_input
         ~Workflow.set_image_input
         ~Workflow.set_video_input
         ~Workflow.set_parameters
+        ~Workflow.set_workflow_parameters
 
 
     .. rubric:: Inherited methods
@@ -59,12 +62,10 @@ Workflow
         ~Workflow.get_task_count
         ~Workflow.get_task_ids
         ~Workflow.get_total_elapsed_time
-        ~Workflow.load
         ~Workflow.remove_input
         ~Workflow.set_auto_save
         ~Workflow.set_input
         ~Workflow.set_output_folder
-        ~Workflow.save
         ~Workflow.stop
         ~Workflow.update_start_time
 
@@ -102,6 +103,7 @@ Workflow
     .. automethod:: get_tasks
     .. automethod:: get_time_metrics
     .. automethod:: get_total_elapsed_time
+    .. automethod:: get_workflow_parameters
     .. automethod:: load
     .. automethod:: remove_input
     .. automethod:: remove_task
@@ -115,6 +117,7 @@ Workflow
     .. automethod:: set_input
     .. automethod:: set_output_folder
     .. automethod:: set_parameters
+    .. automethod:: set_workflow_parameters
     .. automethod:: save
     .. automethod:: stop
     .. automethod:: update_start_time
