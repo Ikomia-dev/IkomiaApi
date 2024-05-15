@@ -25,7 +25,7 @@ from ikomia.utils.plugintools import *
 from ikomia.utils.data import *
 
 
-def is_colab():
+def is_colab() -> bool:
     # Is environment a Google Colab instance?
     try:
         import google.colab
@@ -34,7 +34,7 @@ def is_colab():
         return False
 
 
-def strtobool(val):
+def strtobool(val: str) -> bool:
     """Convert a string representation of truth to true (1) or false (0).
     True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
     are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if

@@ -39,7 +39,7 @@ class DataDictIO(CWorkflowTaskIO):
         """
         self.data.clear()
 
-    def is_data_available(self):
+    def is_data_available(self) -> bool:
         """
         Check whether the dataset structure contains data.
 
@@ -48,27 +48,27 @@ class DataDictIO(CWorkflowTaskIO):
         """
         return len(self.data) > 0
 
-    def save(self, path):
+    def save(self, path: str):
         """
         Save data dict as JSON.
 
         Args:
-            path: file path where data is saved
+            path (str): file path where data is saved
         """
         with open(path, "w") as outfile:
             json.dump(self.data, outfile)
 
-    def load(self, path):
+    def load(self, path: str):
         """
         Load JSON as data dict I/O.
 
         Args:
-            path: file path where dataset is saved
+            path (str): file path where dataset is saved
         """
         with open(path, "r") as infile:
             self.data = json.load(infile)
 
-    def to_json(self, options=[]):
+    def to_json(self, options: list = []) -> str:
         json_format = "compact"
         if "json_format" in options:
             json_format = options[options.index("json_format") + 1]
@@ -78,5 +78,5 @@ class DataDictIO(CWorkflowTaskIO):
         else:
             return json.dumps(self.data)
 
-    def from_json(self, json_string):
+    def from_json(self, json_string: str):
         self.data = json.loads(json_string)

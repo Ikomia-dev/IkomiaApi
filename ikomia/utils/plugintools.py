@@ -68,7 +68,7 @@ SYSMODULES = [
 
 class SingleFileModuleFinder(modulefinder.ModuleFinder):
 
-    def import_hook(self, name, caller, *arg, **kwarg):
+    def import_hook(self, name: str, caller, *arg, **kwarg):
         if caller is not None and caller.__file__ == self.name:
             # Only call the parent at the top level.
             return modulefinder.ModuleFinder.import_hook(self, name, caller, *arg, **kwarg)
@@ -78,7 +78,7 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
         self.run_script(self.name)
 
 
-def get_installed_modules():
+def get_installed_modules() -> dict:
     modules = {}
     result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"], capture_output=True, text=True)
     if result.stdout:
@@ -89,7 +89,7 @@ def get_installed_modules():
     return modules
 
 
-def get_plugin_dependencies(plugin_folder):
+def get_plugin_dependencies(plugin_folder: str) -> list:
     good_modules = []
     bad_modules = []
     file_paths = []
@@ -131,7 +131,7 @@ def get_plugin_dependencies(plugin_folder):
     return list(set(good_modules)), list(set(bad_modules))
 
 
-def install_requirements(directory):
+def install_requirements(directory: str):
     req_files = []
     for root, subdirs, files in os.walk(directory, topdown=True):
         for file in files:
@@ -148,7 +148,7 @@ def install_requirements(directory):
             logger.warning(e)
 
 
-def install_package(name, version):
+def install_package(name: str, version: str):
     if name:
         try:
             subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
@@ -156,7 +156,7 @@ def install_package(name, version):
             logger.warning(e)
 
 
-def uninstall_package(name):
+def uninstall_package(name: str):
     if name:
         try:
             subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
@@ -164,7 +164,7 @@ def uninstall_package(name):
             logger.warning(e)
 
 
-def import_plugin_module(directory, name):
+def import_plugin_module(directory: str, name: str):
     if is_module_imported(name):
         for root, sub_dirs, files in os.walk(directory, topdown=True):
             for file in files:
@@ -175,7 +175,7 @@ def import_plugin_module(directory, name):
     return importlib.import_module(name)
 
 
-def is_module_imported(name):
+def is_module_imported(name: str) -> bool:
     for n, val in globals().items():
         if isinstance(val, types.ModuleType) and name == val.__name__:
             return True
@@ -183,12 +183,13 @@ def is_module_imported(name):
     return False
 
 
-def unload_plugin_module(name):
+def unload_plugin_module(name: str):
     modules_to_delete = [m for m in sys.modules.keys() if name == m]
-    for m in modules_to_delete: del(sys.modules[m])
+    for m in modules_to_delete:
+        del sys.modules[m]
 
 
-def conform_plugin_directory(directory, plugin):
+def conform_plugin_directory(directory: str, plugin: dict) -> str:
     good_dir_name = directory
     base_name = os.path.basename(directory)
 

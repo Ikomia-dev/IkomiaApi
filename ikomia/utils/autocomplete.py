@@ -34,7 +34,7 @@ except:
 logger = logging.getLogger(__name__)
 
 
-def _write_auto_complete(f, task_name="", task=None, local=True):
+def _write_auto_complete(f, task_name: str = "", task: ikomia.core.CWorkflowTask = None, local: bool = True):
     if not task_name and task is None:
         raise RuntimeError("Auto-completion: parameters must include either a valid name or task instance.")
 
@@ -107,7 +107,7 @@ def _write_auto_complete(f, task_name="", task=None, local=True):
     f.write(f"        return \"{task_name}\"\n\n")
 
 
-def _generate_python_file(folder):
+def _generate_python_file(folder: str):
     ik_file_path = os.path.join(folder, "ik.py")
     with open(ik_file_path, 'w+') as f:
         # Imports
@@ -129,12 +129,12 @@ def _generate_python_file(folder):
         importlib.reload(ikomia.utils.ik)
 
 
-def _is_valid_python_plugin_folder(name:str, folder_path:str):
+def _is_valid_python_plugin_folder(name: str, folder_path: str) -> bool:
     main_python_file = os.path.join(folder_path, f"{name}.py")
     return os.path.exists(main_python_file)
 
 
-def _is_valid_cpp_plugin_folder(name:str, folder_path:str):
+def _is_valid_cpp_plugin_folder(name: str, folder_path: str) -> bool:
     for name in os.listdir(folder_path):
         # Just check if at least one shared library exists -> maybe not sufficient...
         filename, ext = os.path.splitext(name)
@@ -144,7 +144,7 @@ def _is_valid_cpp_plugin_folder(name:str, folder_path:str):
     return False
 
 
-def _check_local_sync():
+def _check_local_sync() -> bool:
     if not _ik_auto_complete:
         return False
 
@@ -185,7 +185,7 @@ def _check_local_sync():
         return True
 
 
-def _check_online_sync():
+def _check_online_sync() -> bool:
     if not _ik_auto_complete:
         return False
 
@@ -214,7 +214,7 @@ def _check_online_sync():
         return False
 
 
-def _check_task_params(task):
+def _check_task_params(task: ikomia.core.CWorkflowTask) -> bool:
     if not _ik_auto_complete:
         return False
 
@@ -234,7 +234,7 @@ def _check_task_params(task):
     return True
 
 
-def _has_local_cache():
+def _has_local_cache() -> bool:
     filename = "autocomplete_local.cache"
     cache_file_path1 = os.path.join(os.path.dirname(__file__), filename)
     local_site = os.path.join(site.getusersitepackages(), "ikomia", "utils")
@@ -242,7 +242,7 @@ def _has_local_cache():
     return os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)
 
 
-def _has_online_cache():
+def _has_online_cache() -> bool:
     filename = "autocomplete_online.cache"
     cache_file_path1 = os.path.join(os.path.dirname(__file__), filename)
     local_site = os.path.join(site.getusersitepackages(), "ikomia", "utils")
@@ -250,7 +250,7 @@ def _has_online_cache():
     return os.path.isfile(cache_file_path1) or os.path.isfile(cache_file_path2)
 
 
-def make_local_plugins(force=False):
+def make_local_plugins(force: bool = False):
     if not force:
         if _check_local_sync() and _has_local_cache():
             return
@@ -299,7 +299,7 @@ def make_local_plugins(force=False):
         logger.debug(e)
 
 
-def update_local_plugin(name):
+def update_local_plugin(name: str):
     task = ikomia.ik_registry.create_instance(name)
     if task is None:
         return
@@ -340,7 +340,7 @@ def update_local_plugin(name):
             logger.debug(e)
 
 
-def make_online_plugins(force=False):
+def make_online_plugins(force: bool = False):
     if not force and _has_online_cache() and _check_online_sync():
         return
 
@@ -394,6 +394,6 @@ def make_online_plugins(force=False):
         logger.debug(e)
 
 
-def make(force=False):
+def make(force: bool = False):
     make_local_plugins(force)
     make_online_plugins(force)

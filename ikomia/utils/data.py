@@ -21,7 +21,7 @@ import numpy as np
 
 
 class NumpyImage:
-    def __init__(self, path, key):
+    def __init__(self, path: str, key: str):
         self.path = path
         self.data = None
         filename, extension = os.path.splitext(path)
@@ -43,7 +43,7 @@ class NumpyImage:
         else:
             return self.data
 
-    def get_2d_data(self, index, dtype=None):
+    def get_2d_data(self, index: int, dtype=None):
         dim_count = len(self.data.shape)
         data = None
 

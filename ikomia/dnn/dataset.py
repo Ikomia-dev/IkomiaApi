@@ -18,7 +18,7 @@ Module providing dataset loaders from various source formats.
 
 import os
 import json
-from ikomia import core
+from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion
 from PIL import Image
 from collections import defaultdict
 import xml.etree.ElementTree as ET
@@ -39,7 +39,7 @@ _image_extensions = [".jpeg", ".jpg", ".png", ".bmp", ".tiff", ".tif", ".dib", "
                      ".ppm", ".pxm", ".pnm", ".sr", ".ras", ".exr", ".hdr", ".pic"]
 
 
-def load_via_dataset(path):
+def load_via_dataset(path: str) -> dict:
     """
     Load VGG Image Annotator (VIA) dataset.
     VIA dataset is a single JSON file containing all information.
@@ -131,7 +131,7 @@ def load_via_dataset(path):
     return data
 
 
-def read_class_names(txt_path):
+def read_class_names(txt_path: str) -> list:
     """
     Helper function to parse text file and extract class names.
     The text file must be structured so that one line = one class name.
@@ -148,7 +148,7 @@ def read_class_names(txt_path):
     return classes
 
 
-def load_yolo_dataset(folder_path, class_path):
+def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     """
     Load YOLO dataset.
     YOLO dataset consists of a list of text files with
@@ -249,28 +249,30 @@ def load_yolo_dataset(folder_path, class_path):
     return data
 
 
-def ann_to_rle(img, ann):
+def ann_to_rle(img: np.ndarray, ann: dict) -> np.ndarray:
     """
     Convert annotation which can be polygons, uncompressed RLE to RLE.
     :return: binary mask (numpy 2D array)
     """
     h, w = img['height'], img['width']
     segm = ann['segmentation']
-    if type(segm) == list:
+    if type(segm) is list:
         # polygon -- a single object might consist of multiple parts
         # we merge all parts into one mask rle code
         rles = maskUtils.frPyObjects(segm, h, w)
         rle = maskUtils.merge(rles)
-    elif type(segm['counts']) == list:
+    elif type(segm['counts']) is list:
         # uncompressed RLE
         rle = maskUtils.frPyObjects(segm, h, w)
     else:
         # rle
         rle = ann['segmentation']
+
     return rle
 
 
-def load_coco_dataset(path, image_folder, task="instance_segmentation", output_folder=""):
+def load_coco_dataset(path: str, image_folder: str,
+                      task: str = "instance_segmentation", output_folder: str = "") -> dict:
     """
     Load COCO dataset (2017 version).
     COCO dataset consists in a JSON file describing annotations
@@ -381,7 +383,7 @@ def load_coco_dataset(path, image_folder, task="instance_segmentation", output_f
     return data
 
 
-def load_pascalvoc_dataset(annotation_folder, img_folder, instance_seg_folder, class_path):
+def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg_folder: str, class_path: str) -> dict:
     """
     Load PASCAL-VOC dataset (version 2012).
     PASCAL-VOC dataset is structured in different folders:
@@ -477,7 +479,7 @@ def load_pascalvoc_dataset(annotation_folder, img_folder, instance_seg_folder, c
     return data
 
 
-def polygon_to_mask(polygons, width, height):
+def polygon_to_mask(polygons: list, width: int, height: int) -> np.ndarray:
     """
     Helper function to generate image mask from a list of polygons.
     The function assumes that each polygon is a list of xy coordinates.
@@ -504,11 +506,11 @@ def polygon_to_mask(polygons, width, height):
             if y > height - 1:
                 y = height - 1
 
-            pts.append(core.CPointF(x, y))
+            pts.append(CPointF(x, y))
             i += 2
 
-        graphics_poly = core.CGraphicsPolygon(pts)
+        graphics_poly = CGraphicsPolygon(pts)
         graphics.append(graphics_poly)
 
-    conversion = core.CGraphicsConversion(width, height)
+    conversion = CGraphicsConversion(width, height)
     return conversion.graphics_to_binary_mask(graphics)

@@ -19,12 +19,13 @@ See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods
 """
 import logging
 import ikomia
-from ikomia import core, dataprocess
+from ikomia.core import CWorkflowTaskParam, CWorkflowTask
+from ikomia.dataprocess import CWorkflowTaskIO
 
 logger = logging.getLogger(__name__)
 
 
-class TaskParam(core.CWorkflowTaskParam):
+class TaskParam(CWorkflowTaskParam):
     """
     Base class to manage task parameters. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
     It includes a dict structure to store parameter values.
@@ -35,10 +36,10 @@ class TaskParam(core.CWorkflowTaskParam):
         """
         Constructor. Initialize an empty dict structure.
         """
-        core.CWorkflowTaskParam.__init__(self)
+        CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
-    def get_values(self):
+    def get_values(self) -> dict:
         """
         Return parameters for saving in Ikomia Studio.
         """
@@ -48,14 +49,14 @@ class TaskParam(core.CWorkflowTaskParam):
 
         return param_map
 
-    def set_values(self, params):
+    def set_values(self, params: dict):
         """
         Generic way to set parameters of CWorkflowTask-based object. Must be reimplemented.
         """
         raise NotImplementedError
 
 
-def create(name="", public_hub:bool=True, private_hub:bool=False):
+def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
@@ -74,7 +75,7 @@ def create(name="", public_hub:bool=True, private_hub:bool=False):
     return ikomia.ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
 
 
-def get_output(task_obj, types:list, index:int=-1):
+def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkflowTaskIO:
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 
@@ -102,3 +103,24 @@ def get_output(task_obj, types:list, index:int=-1):
         return outputs[index]
     else:
         raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
+
+
+def conform_parameters(params: dict) -> dict:
+    """
+    Conform parameters dict structure to ensure that all values are string.
+
+    Args:
+        params (dict): parameters as key-value pairs
+    """
+    valid_params = {}
+    for key in params:
+        if type(key) is not str:
+            raise TypeError("Parameter key must be a string.")
+
+        value = params[key]
+        if type(params[key]) is not str:
+            valid_params[key] = str(value)
+        else:
+            valid_params[key] = value
+
+    return valid_params

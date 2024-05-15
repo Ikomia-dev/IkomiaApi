@@ -37,7 +37,7 @@ def _check_directories():
     os.makedirs(config.main_cfg["tensorboard"]["log_uri"], exist_ok=True)
 
 
-def get_ikomia_root_folder():
+def get_ikomia_root_folder() -> str:
     return config.main_cfg["root_folder"]
 
 

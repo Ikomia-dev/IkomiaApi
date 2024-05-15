@@ -8,7 +8,7 @@ import cv2
 from ikomia.utils import tests
 
 logger = logging.getLogger(__name__)
-_ikomia_token = os.environ["IKOMIA_TEST_TOKEN"]
+_ikomia_token = os.environ["IKOMIA_TOKEN"]
 
 
 def test_get_local_algorithms():

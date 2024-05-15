@@ -13,14 +13,15 @@
 # limitations under the License.
 
 import os
-from ikomia.core import task
 import traceback
 import logging
+from ikomia import core
+
 
 logger = logging.getLogger(__name__)
 
 
-def run_for_test(t):
+def run_for_test(t: core.CWorkflowTask) -> tuple:
     logger.info("Running once...")
     try:
         import torch.cuda
@@ -29,6 +30,7 @@ def run_for_test(t):
         logger.info("Cuda torch cache cleaned...")
     except:
         pass
+
     try:
         t.run()
     except Exception as e:
@@ -41,16 +43,16 @@ def run_for_test(t):
         return t.get_parameters(), tb
 
 
-def get_test_image_directory():
+def get_test_image_directory() -> str:
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/images")
 
 
-def get_test_video_directory():
+def get_test_video_directory() -> str:
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/videos")
 
 
-def get_test_workflow_directory():
+def get_test_workflow_directory() -> str:
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/workflows")
