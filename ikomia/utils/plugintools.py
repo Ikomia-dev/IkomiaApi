@@ -63,7 +63,7 @@ SYSMODULES = [
     "msvcrt", "winreg", "winsound", "posix", "pwd", "spwd", "grp", "crypt",
     "termios", "tty", "pty", "fcntl", "pipes", "resource", "nis", "syslog"
     "optparse", "imp"
-    ]
+]
 
 
 class SingleFileModuleFinder(modulefinder.ModuleFinder):

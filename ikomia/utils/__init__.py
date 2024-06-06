@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from ikomia.utils import update_sys_path
-from ikomia.utils import iklogger
 
 try:
     # Valid for Ikomia Studio or Linux platform
@@ -20,9 +19,6 @@ try:
 except:
     # Valid for Windows standalone API
     from ikomia.lib.pyutils import *
-
-from ikomia.utils.plugintools import *
-from ikomia.utils.data import *
 
 
 def is_colab() -> bool:

@@ -4,6 +4,7 @@ import argparse
 import time
 import ikomia
 from ikomia import utils
+from ikomia.utils.plugintools import get_plugin_dependencies, get_installed_modules
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +14,13 @@ def test_plugin_dependencies():
     directory = ikomia.ik_registry.get_plugins_directory()
     ikomia.ik_registry.install_algorithm(utils.ik.infer_torchvision_resnet().name)
     algo_dir = os.path.join(directory, "Python", utils.ik.infer_torchvision_resnet().name)
-    modules = utils.get_plugin_dependencies(algo_dir)
+    modules = get_plugin_dependencies(algo_dir)
     logger.warning(modules)
 
 
 def test_installed_modules():
     logger.warning("===== Test::get installed modules =====")
-    mods = utils.get_installed_modules()
+    mods = get_installed_modules()
     logger.warning(mods)
 
 

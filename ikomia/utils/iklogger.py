@@ -1,5 +1,6 @@
 import sys
 import logging
+from ikomia.core import config
 
 # ----------------------------------
 # ----- Logging initialization -----
@@ -21,8 +22,6 @@ err.setFormatter(formatter)
 logger.addHandler(err)
 
 # Log to file
-from ikomia.core import config
-
 log_path = config.main_cfg["root_folder"] + "/log.txt"
 file_formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s", "%Y-%m-%d %H:%M:%S")
 file_handler = logging.FileHandler(log_path, 'a')

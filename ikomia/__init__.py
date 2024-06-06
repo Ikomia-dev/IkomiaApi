@@ -16,8 +16,9 @@ import os
 import sys
 import time
 from ikomia import utils
-from ikomia.utils import autocomplete
 from ikomia.core import config
+from ikomia.utils import iklogger
+from ikomia.utils import autocomplete
 from ikomia.core.auth import LoginSession
 from ikomia.dataprocess import registry
 import logging
