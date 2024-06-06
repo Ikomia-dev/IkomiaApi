@@ -14,6 +14,11 @@
 
 import os
 import yaml
+from ikomia import utils
+from dotenv import load_dotenv
+
+# Load local environment variables
+load_dotenv()
 
 directory = os.path.dirname(os.path.abspath(__file__))
 main_cfg = yaml.safe_load(open(directory + "/config.yaml"))
@@ -44,3 +49,7 @@ if not main_cfg["mlflow"]["store_uri"]:
 # Tensorboard
 if not main_cfg["tensorboard"]["log_uri"]:
     main_cfg["tensorboard"]["log_uri"] = os.path.join(main_cfg["root_folder"], "Tensorboard") + os.sep
+
+# Auto-completion: could be override by environment variable
+if "IKOMIA_AUTO_COMPLETION" in os.environ:
+    main_cfg["registry"]["auto_completion"] = utils.strtobool(os.getenv("IKOMIA_AUTO_COMPLETION"))

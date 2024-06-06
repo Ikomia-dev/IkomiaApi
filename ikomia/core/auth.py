@@ -17,14 +17,12 @@ from ikomia.utils import http
 import logging
 import requests
 from requests.auth import HTTPBasicAuth
-from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
 
 class LoginSession:
     def __init__(self):
-        load_dotenv()
         self.session = requests.Session()
         self.token = os.environ.get("IKOMIA_TOKEN")
         self.username = os.environ.get("IKOMIA_USER")
