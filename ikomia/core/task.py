@@ -18,9 +18,9 @@ Module dedicated to high-level features around task management.
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
 import logging
-import ikomia
 from ikomia.core import CWorkflowTaskParam, CWorkflowTask
 from ikomia.dataprocess import CWorkflowTaskIO
+from ikomia.dataprocess.registry import ik_registry
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -
     if not name:
         return None
 
-    return ikomia.ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
+    return ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
 
 
 def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkflowTaskIO:
@@ -99,10 +99,11 @@ def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkfl
 
     if index == -1:
         return outputs
-    elif 0 <= index < len(outputs):
+
+    if 0 <= index < len(outputs):
         return outputs[index]
-    else:
-        raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
+
+    raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
 
 
 def conform_parameters(params: dict) -> dict:
@@ -114,11 +115,11 @@ def conform_parameters(params: dict) -> dict:
     """
     valid_params = {}
     for key in params:
-        if type(key) is not str:
+        if not isinstance(key, str):
             raise TypeError("Parameter key must be a string.")
 
         value = params[key]
-        if type(params[key]) is not str:
+        if not isinstance(params[key], str):
             valid_params[key] = str(value)
         else:
             valid_params[key] = value

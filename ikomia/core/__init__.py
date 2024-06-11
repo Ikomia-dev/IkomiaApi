@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+The core is mainly a Python binding of the corresponding C++ library from Ikomia Core.
+"""
 import os
 
 try:
     # Valid for Ikomia Studio or Linux platform
     from ikomia.core.pycore import *
-except:
+except ImportError:
     # Valid for Windows standalone API
     from ikomia.lib.pycore import *
 
@@ -38,6 +41,12 @@ def _check_directories():
 
 
 def get_ikomia_root_folder() -> str:
+    """
+    Get root Ikomia folder.
+
+    Returns:
+        str: root folder, default: '$HOME/Ikomia' on Linux and 'C:\\Users\\your-user\\Ikomia on Windows'.
+    """
     return config.main_cfg["root_folder"]
 
 

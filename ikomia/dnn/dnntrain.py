@@ -16,12 +16,12 @@
 Module dedicated to Deep Learning training.
 """
 import logging
-import mlflow
 from typing import Optional
+from datetime import datetime
+import mlflow
 from ikomia.core import config, CWorkflowTaskParam
 from ikomia.dataprocess import CDnnTrainTask
 from ikomia.dnn import datasetio, monitoring
-from datetime import datetime
 
 
 logger = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ class TrainProcess(CDnnTrainTask):
         try:
             current_exp = mlflow.get_experiment(str(self.experiment_id))
             return current_exp.lifecycle_stage == "active"
-        except:
+        except Exception:
             return False
 
     @staticmethod

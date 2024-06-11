@@ -11,17 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+The module auth manages authentication to the Ikomia Scale platform (private algorithms HUB)
+"""
 import os
-from ikomia.core import config
-from ikomia.utils import http
 import logging
 import requests
 from requests.auth import HTTPBasicAuth
+from ikomia.core import config
 
 logger = logging.getLogger(__name__)
 
 
 class LoginSession:
+    """
+    Session class to ease communication with Ikomia Scale/HUB through authenticated http requests.
+    """
     def __init__(self):
         self.session = requests.Session()
         self.token = os.environ.get("IKOMIA_TOKEN")
@@ -29,6 +35,14 @@ class LoginSession:
         self.password = os.environ.get("IKOMIA_PWD")
 
     def authenticate(self, token: str = None, username: str = None, password: str = None):
+        """
+        Authenticate user from token or classical credentials (username - password).
+
+        Args:
+            token (str): access token generated from Ikomia Scale platform or Ikomia CLI.
+            username (str): username of your Ikomia Scale account.
+            password (str): password of your Ikomia Scale account.
+        """
         if token is not None:
             self.token = token
         elif username is not None and password is not None:
@@ -55,6 +69,12 @@ class LoginSession:
         r.raise_for_status()
 
     def is_authenticated(self) -> bool:
+        """
+        Check if user is authenticated.
+
+        Returns:
+            bool: authentication status.
+        """
         if self.token is None:
             return False
 
@@ -62,7 +82,7 @@ class LoginSession:
         try:
             r = self.session.get(url)
             r.raise_for_status()
-        except:
+        except Exception:
             return False
 
         return True
@@ -76,4 +96,8 @@ class LoginSession:
         return json_response["clear_token"]
 
 
-
+# ---------------------------------------
+# ----- Global Ikomia Scale session -----
+# ---------------------------------------
+ik_api_session = LoginSession()
+# ---------------------------------------

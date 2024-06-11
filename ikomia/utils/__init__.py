@@ -11,22 +11,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core.
+"""
 from ikomia.utils import update_sys_path
 
 try:
     # Valid for Ikomia Studio or Linux platform
     from ikomia.utils.pyutils import *
-except:
+except ImportError:
     # Valid for Windows standalone API
     from ikomia.lib.pyutils import *
 
 
 def is_colab() -> bool:
+    """
+    Helper function to check if we are in a Google Colab environment.
+
+    Returns:
+        bool: True in Colab environment, False otherwise
+    """
     # Is environment a Google Colab instance?
     try:
         import google.colab
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 
@@ -35,11 +45,18 @@ def strtobool(val: str) -> bool:
     True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
     are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
     'val' is anything else.
+
+    Args:
+        val (str): value to convert
+
+    Returns:
+        bool: boolean conversion from val
     """
     val = val.lower()
     if val in ('y', 'yes', 't', 'true', 'on', '1'):
         return True
-    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+
+    if val in ('n', 'no', 'f', 'false', 'off', '0'):
         return False
-    else:
-        raise ValueError("invalid truth value %r" % (val,))
+
+    raise ValueError(f"invalid truth value: {val}")

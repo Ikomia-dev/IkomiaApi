@@ -21,15 +21,16 @@ import os
 import logging
 import enum
 import datetime
-import numpy as np
-import ikomia
-from ikomia import utils
-from ikomia.core import config, task, IODataType, CWorkflowTask, CWorkflowTaskIO
-from ikomia.dataio import CDataImageIO, CDataVideoIO
-from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO
-from ikomia.dataprocess.registry import IkomiaRegistry
 from urllib.parse import urlparse
 from typing import Optional, Union
+import numpy as np
+from ikomia import utils
+from ikomia.core import config, IODataType, CWorkflowTask, CWorkflowTaskIO, auth
+from ikomia.core.task import conform_parameters, get_output
+from ikomia.dataio import CDataImageIO, CDataVideoIO
+from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO
+from ikomia.dataprocess.registry import IkomiaRegistry, ik_registry
+
 
 logger = logging.getLogger(__name__)
 
@@ -44,10 +45,13 @@ class Workflow(CWorkflow):
     """
     @enum.unique
     class RunMode(enum.Enum):
+        """
+        Enum for processing mode
+        """
         SINGLE = 1
         DIRECTORY = 2
 
-    def __init__(self, name: str ="Untitled", registry: IkomiaRegistry = ikomia.ik_registry):
+    def __init__(self, name: str ="Untitled", registry: IkomiaRegistry = ik_registry):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
@@ -164,7 +168,7 @@ class Workflow(CWorkflow):
             raise RuntimeError("Unable to set task parameters: parameters must include either a valid name or task instance.")
 
         # Ensure parameter values are string due to C++ typing constraint
-        params = task.conform_parameters(params)
+        params = conform_parameters(params)
 
         if task_obj is not None:
             task_obj.set_parameters(params)
@@ -192,7 +196,7 @@ class Workflow(CWorkflow):
             params (dict): key-value pairs
         """
         try:
-            params = task.conform_parameters(params)
+            params = conform_parameters(params)
             for name in params:
                 self.set_exposed_parameter(name, params[name])
         except RuntimeError as e:
@@ -244,18 +248,18 @@ class Workflow(CWorkflow):
         outputs = []
         if isinstance(task_obj, list):
             if len(task_obj) == 1:
-                return task.get_output(task_obj[0], types, output_index)
-            else:
-                for t in task_obj:
-                    outs = task.get_output(t, types, output_index)
-                    if isinstance(outs, list):
-                        outputs.extend(outs)
-                    else:
-                        outputs.append(outs)
+                return get_output(task_obj[0], types, output_index)
 
-                return outputs
-        else:
-            return task.get_output(task_obj, types, output_index)
+            for t in task_obj:
+                outs = get_output(t, types, output_index)
+                if isinstance(outs, list):
+                    outputs.extend(outs)
+                else:
+                    outputs.append(outs)
+
+            return outputs
+
+        return get_output(task_obj, types, output_index)
 
     def get_tasks(self) -> list:
         """
@@ -286,9 +290,15 @@ class Workflow(CWorkflow):
         return self.task_to_id[task.uuid]
 
     def get_workflow_parameters(self):
+        """
+        Get parameters exposed at workflow level.
+
+        Returns:
+            dict: list of key-values
+        """
         return self.get_exposed_parameters()
 
-    def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = {}, auto_connect: bool=False,
+    def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = None, auto_connect: bool=False,
                  public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
@@ -313,14 +323,14 @@ class Workflow(CWorkflow):
             if task is None:
                 raise RuntimeError(f"Algorithm {name} can't be created.")
 
-        if len(params) > 0:
+        if params is not None and len(params) > 0:
             task.set_parameters(params)
 
         parent_id = self.get_last_task_id()
         task_id = super().add_task(task)
         self.task_to_id[task.uuid] = task_id
 
-        if (auto_connect):
+        if auto_connect:
             parent_task = self.get_task(parent_id)
             if parent_task is not None:
                 self.connect_tasks(parent_task, task)
@@ -371,10 +381,10 @@ class Workflow(CWorkflow):
 
         if 0 <= index < len(tasks):
             return tasks[index]
-        else:
-            return tasks
 
-    def connect_tasks(self, src: CWorkflowTask, target: CWorkflowTask, edges: list = []):
+        return tasks
+
+    def connect_tasks(self, src: CWorkflowTask, target: CWorkflowTask, edges: list = None):
         """
         Connect two tasks of the workflow. Depending of the inputs/outputs configuration, multiple connections between
         the two tasks can be set. A connection is a pair (ie tuple) composed by the output index of the source task
@@ -392,7 +402,7 @@ class Workflow(CWorkflow):
 
         target_id = self.get_task_id(target)
 
-        if len(edges) == 0:
+        if edges is None or len(edges) == 0:
             self.connect(src_id, target_id, -1, -1)
         else:
             for edge in edges:
@@ -553,7 +563,7 @@ class Workflow(CWorkflow):
             if input_type == IODataType.FOLDER_PATH:
                 dir_input = self.get_input(i)
 
-                for root, subdirs, files in os.walk(dir_input.get_path(), topdown=True):
+                for root, _, files in os.walk(dir_input.get_path(), topdown=True):
                     for file in files:
                         file_path = os.path.join(root, file)
                         if self._is_image_input(path=file_path):
@@ -569,7 +579,7 @@ class Workflow(CWorkflow):
                         try:
                             super().run()
                         except Exception as e:
-                            msg = f"Error occurred while processing {file}: {e.__str__()}"
+                            msg = f"Error occurred while processing {file}: {e}"
                             logger.error(msg)
 
                 self.set_input(dir_input, i, False)
@@ -583,8 +593,8 @@ class Workflow(CWorkflow):
 
         if IODataType.FOLDER_PATH in input_types and IODataType.FOLDER_PATH not in target_types:
             return Workflow.RunMode.DIRECTORY
-        else:
-            return Workflow.RunMode.SINGLE
+
+        return Workflow.RunMode.SINGLE
 
     @staticmethod
     def _check_run_input(array: np.ndarray, path: str, url: str, folder: str) -> bool:
@@ -594,37 +604,40 @@ class Workflow(CWorkflow):
     def _is_image_input(array: np.ndarray = None, path: str = "", url: str = "") -> bool:
         if array is not None:
             return True
-        elif path:
-            filename, ext = os.path.splitext(path)
+
+        if path:
+            _, ext = os.path.splitext(path)
             return CDataImageIO.is_image_format(ext)
-        elif url:
+
+        if url:
             parsed_url = urlparse(url)
-            filename, ext = os.path.splitext(parsed_url.path)
+            _, ext = os.path.splitext(parsed_url.path)
             return CDataImageIO.is_image_format(ext)
-        else:
-            return False
+
+        return False
 
     @staticmethod
     def _is_video_input(path: str = "", url: str = "") -> bool:
         if path:
-            filename, ext = os.path.splitext(path)
+            _, ext = os.path.splitext(path)
             return CDataVideoIO.is_video_format(ext, True)
-        elif url:
+
+        if url:
             parsed_url = urlparse(url)
-            filename, ext = os.path.splitext(parsed_url.path)
+            _, ext = os.path.splitext(parsed_url.path)
             return CDataVideoIO.is_video_format(ext, True)
-        else:
-            return False
+
+        return False
 
     def _expose_parameters(self, exposed_params: dict):
         self.clear_exposed_parameters()
 
         for task_key in exposed_params:
-            if type(task_key) is CWorkflowTask:
+            if isinstance(task_key, CWorkflowTask):
                 task_id = self.task_to_id[task_key.uuid]
-            elif type(task_key) is int:
+            elif isinstance(task_key, int):
                 task_id = task_key
-            elif type(task_key) is str:
+            elif isinstance(task_key, str):
                 # TODO: how to manage multiple tasks with the same name
                 task = self.find_task(task_key, 0)
                 task_id = self.task_to_id[task.uuid]
@@ -641,7 +654,7 @@ class Workflow(CWorkflow):
             else:
                 # Expose specified parameters only
                 for param_name, info in exposed_params[task_key].items():
-                    if type(param_name) is not str:
+                    if not isinstance(param_name, str):
                         raise TypeError("String expected for task parameter name.")
 
                     name = info["name"] if "name" in info else ""
@@ -652,11 +665,11 @@ class Workflow(CWorkflow):
         self.clear_outputs()
 
         for task_key in outputs:
-            if type(task_key) is CWorkflowTask:
+            if isinstance(task_key, CWorkflowTask):
                 task_id = self.task_to_id[task_key.uuid]
-            elif type(task_key) is int:
+            elif isinstance(task_key, int):
                 task_id = task_key
-            elif type(task_key) is str:
+            elif isinstance(task_key, str):
                 # TODO: how to manage multiple tasks with the same name
                 task = self.find_task(task_key, 0)
                 task_id = self.task_to_id[task.uuid]
@@ -668,7 +681,7 @@ class Workflow(CWorkflow):
                 t = self.get_task(task_id)
                 task_outputs = t.get_outputs()
 
-                for i, output in enumerate(task_outputs):
+                for i, _ in enumerate(task_outputs):
                     self.add_output("", task_id, i)
             else:
                 # Expose specified output only
@@ -687,7 +700,7 @@ def create(name: str = "untitled"):
     Args:
         name (str): workflow name.
     """
-    return Workflow(name, ikomia.ik_registry)
+    return Workflow(name, ik_registry)
 
 
 def load(path: str) -> Workflow:
@@ -700,7 +713,7 @@ def load(path: str) -> Workflow:
     Returns:
         :py:class:`~ikomia.dataprocess.workflow.Workflow`: loaded workflow.
     """
-    wf = Workflow("untitled", ikomia.ik_registry)
+    wf = Workflow("untitled", ik_registry)
     wf.load(path)
     return wf
 
@@ -713,9 +726,9 @@ def prepare_runtime_env(workflow_path:str):
     """
     wf = Workflow()
     tasks = wf.get_required_tasks(workflow_path)
-    available_tasks = ikomia.ik_registry.get_algorithms()
+    available_tasks = ik_registry.get_algorithms()
 
-    if ikomia.ik_api_session.is_authenticated():
+    if auth.ik_api_session.is_authenticated():
         private_hub = True
     else:
         private_hub = False
@@ -723,7 +736,7 @@ def prepare_runtime_env(workflow_path:str):
     for t in tasks:
         if t not in available_tasks:
             try:
-                ikomia.ik_registry.create_algorithm(name=t, public_hub=True, private_hub=private_hub)
+                ik_registry.create_algorithm(name=t, public_hub=True, private_hub=private_hub)
             except Exception as e:
                 raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}")
 
@@ -739,10 +752,10 @@ def install_requirements(path: str) -> bool:
     Returns:
         True if all installations succeeded else False
     """
-    wf = Workflow("untitled", ikomia.ik_registry)
+    wf = Workflow("untitled", ik_registry)
     tasks = wf.get_required_tasks(path)
-    available_tasks = ikomia.ik_registry.get_algorithms()
-    plugins_directory = ikomia.ik_registry.get_plugins_directory()
+    available_tasks = ik_registry.get_algorithms()
+    plugins_directory = ik_registry.get_plugins_directory()
     for t in tasks:
         if t not in available_tasks:
             plugin_dir = os.path.join(plugins_directory, "Python", t)
@@ -753,4 +766,3 @@ def install_requirements(path: str) -> bool:
                 logger.error(msg)
                 return False
     return True
-

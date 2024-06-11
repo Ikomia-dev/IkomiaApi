@@ -1,9 +1,9 @@
 import logging
-import ikomia
-import cv2
 from ikomia import core, dataprocess
 from ikomia.dataprocess import workflow
+from ikomia.dataprocess.registry import ik_registry
 from ikomia.utils import tests, ik, displayIO
+import cv2
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ def test_display_table():
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run ResNet classification
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_torchvision_resnet.name())
+    algo = ik_registry.create_algorithm(ik.infer_torchvision_resnet.name())
     input_img = algo.get_input(0)
     input_img.set_image(img)
     algo.run()
@@ -87,7 +87,7 @@ def test_display_table():
     displayIO.display(algo.get_output(2), label="ResNet classification")
 
     # run YoloV8 detection
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v8.name())
+    algo = ik_registry.create_algorithm(ik.infer_yolo_v8.name())
     input_img = algo.get_input(0)
     input_img.set_image(img)
     algo.run()
@@ -101,7 +101,7 @@ def test_display_plot():
     img_path = tests.get_test_image_directory() + "/example_05.jpg"
     img = cv2.imread(img_path)
     # run CalcHist
-    algo = ikomia.ik_registry.create_algorithm(ik.ocv_calc_hist.name())
+    algo = ik_registry.create_algorithm(ik.ocv_calc_hist.name())
     input_img = algo.get_input(0)
     input_img.set_image(img)
     algo.run()
@@ -123,7 +123,7 @@ def test_display_task():
     img = cv2.imread(img_path)
 
     # run MaskRCNN
-    algo = ikomia.ik_registry.create_algorithm(ik.infer_yolo_v8_seg.name())
+    algo = ik_registry.create_algorithm(ik.infer_yolo_v8_seg.name())
     input_img = algo.get_input(0)
     input_img.set_image(img)
     algo.run()
@@ -134,7 +134,7 @@ def test_display_task():
 def test_display_workflow():
     logger.warning("===== Test::display workflow =====")
     wf_path = tests.get_test_workflow_directory() + "/WorkflowTest1.json"
-    wf = workflow.Workflow("Test Workflow", ikomia.ik_registry)
+    wf = workflow.Workflow("Test Workflow", ik_registry)
     wf.load(wf_path)
     displayIO.display(wf, wf.name)
 

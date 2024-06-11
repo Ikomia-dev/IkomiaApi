@@ -1,3 +1,6 @@
+"""
+Main Ikomia logger.
+"""
 import sys
 import logging
 from ikomia.core import config

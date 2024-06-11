@@ -12,44 +12,49 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+The module config loads the local configuration.
+This configuration stands in a file named config.yaml where parameters can be changed.
+"""
 import os
 import yaml
-from ikomia import utils
 from dotenv import load_dotenv
+from ikomia import utils
 
 # Load local environment variables
 load_dotenv()
 
-directory = os.path.dirname(os.path.abspath(__file__))
-main_cfg = yaml.safe_load(open(directory + "/config.yaml"))
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
+with open(config_path, "r") as f:
+    main_cfg = yaml.safe_load(f)
 
-# Ikomia root folder
-if not main_cfg["root_folder"]:
-    main_cfg["root_folder"] = os.path.join(os.path.expanduser("~"), "Ikomia")
+    # Ikomia root folder
+    if not main_cfg["root_folder"]:
+        main_cfg["root_folder"] = os.path.join(os.path.expanduser("~"), "Ikomia")
 
-# Ikomia registry
-if not main_cfg["registry"]["path"]:
-    main_cfg["registry"]["path"] = os.path.join(main_cfg["root_folder"], "Plugins") + os.sep
+    # Ikomia registry
+    if not main_cfg["registry"]["path"]:
+        main_cfg["registry"]["path"] = os.path.join(main_cfg["root_folder"], "Plugins") + os.sep
 
-# Ikomia workflows
-if not main_cfg["workflow"]["path"]:
-    main_cfg["workflow"]["path"] = os.path.join(main_cfg["root_folder"], "Workflows") + os.sep
+    # Ikomia workflows
+    if not main_cfg["workflow"]["path"]:
+        main_cfg["workflow"]["path"] = os.path.join(main_cfg["root_folder"], "Workflows") + os.sep
 
-# Data directory
-if not main_cfg["data"]["path"]:
-    main_cfg["data"]["path"] = os.path.join(main_cfg["root_folder"], "Data") + os.sep
+    # Data directory
+    if not main_cfg["data"]["path"]:
+        main_cfg["data"]["path"] = os.path.join(main_cfg["root_folder"], "Data") + os.sep
 
-# MLflow
-if not main_cfg["mlflow"]["artifact_uri"]:
-    main_cfg["mlflow"]["artifact_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
+    # MLflow
+    if not main_cfg["mlflow"]["artifact_uri"]:
+        main_cfg["mlflow"]["artifact_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
 
-if not main_cfg["mlflow"]["store_uri"]:
-    main_cfg["mlflow"]["store_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
+    if not main_cfg["mlflow"]["store_uri"]:
+        main_cfg["mlflow"]["store_uri"] = os.path.join(main_cfg["root_folder"], "MLflow") + os.sep
 
-# Tensorboard
-if not main_cfg["tensorboard"]["log_uri"]:
-    main_cfg["tensorboard"]["log_uri"] = os.path.join(main_cfg["root_folder"], "Tensorboard") + os.sep
+    # Tensorboard
+    if not main_cfg["tensorboard"]["log_uri"]:
+        main_cfg["tensorboard"]["log_uri"] = os.path.join(main_cfg["root_folder"], "Tensorboard") + os.sep
 
-# Auto-completion: could be override by environment variable
-if "IKOMIA_AUTO_COMPLETION" in os.environ:
-    main_cfg["registry"]["auto_completion"] = utils.strtobool(os.getenv("IKOMIA_AUTO_COMPLETION"))
+    # Auto-completion: could be override by environment variable
+    if "IKOMIA_AUTO_COMPLETION" in os.environ:
+        main_cfg["registry"]["auto_completion"] = utils.strtobool(os.getenv("IKOMIA_AUTO_COMPLETION"))

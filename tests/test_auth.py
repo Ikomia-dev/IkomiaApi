@@ -1,7 +1,8 @@
 import logging
 import argparse
 import os
-import ikomia
+from ikomia import authenticate
+from ikomia.core.auth import ik_api_session
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -9,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 def test_authenticate_from_env():
     logger.info("===== Test::authentication from env =====")
-    ikomia.authenticate()
-    assert ikomia.ik_api_session is not None
-    assert ikomia.ik_api_session.token is not None
+    authenticate()
+    assert ik_api_session is not None
+    assert ik_api_session.token is not None
 
 
 def test_authenticate_from_params():
@@ -19,14 +20,14 @@ def test_authenticate_from_params():
     load_dotenv()
     username = os.environ.get("IKOMIA_USER")
     password = os.environ.get("IKOMIA_PWD")
-    ikomia.authenticate(username=username, password=password)
-    assert ikomia.ik_api_session is not None
-    assert ikomia.ik_api_session.token is not None
+    authenticate(username=username, password=password)
+    assert ik_api_session is not None
+    assert ik_api_session.token is not None
 
     token = os.environ.get("IKOMIA_TOKEN")
-    ikomia.authenticate(token=token)
-    assert ikomia.ik_api_session is not None
-    assert ikomia.ik_api_session.token is not None
+    authenticate(token=token)
+    assert ik_api_session is not None
+    assert ik_api_session.token is not None
 
 
 if __name__ == "__main__":

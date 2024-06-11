@@ -18,10 +18,10 @@ Ikomia Deep Learning dataset structure.
 Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 """
 
-from ikomia import core
-from ikomia.dataprocess import CDatasetIO
 import random
 import json
+from ikomia import core
+from ikomia.dataprocess import CDatasetIO
 
 
 class IkDatasetIO(CDatasetIO):
@@ -58,17 +58,18 @@ class IkDatasetIO(CDatasetIO):
                 - category_names (dict(id, name)).
                 - category_colors (list[tuple(r,g,b)]).
                 - keypoint_names (list[str]).
-                - keypoint_connection_rules (list[tuple(str, str, (r,g,b))]): each tuple specifies a pair of connected keypoints and the color to use for the line between them.
+                - keypoint_connection_rules (list[tuple(str, str, (r,g,b))]): each tuple specifies a pair of connected
+                keypoints and the color to use for the line between them.
     """
 
-    def __init__(self, format: str = "other"):
+    def __init__(self, dataset_format: str = "other"):
         """
         Constructor
 
         Args:
             format (str): dataset source format.
         """
-        CDatasetIO.__init__(self, format)
+        CDatasetIO.__init__(self, dataset_format)
         # Data are stored into a dict
         self.data = {}
         self.category_colors = {}
@@ -132,10 +133,10 @@ class IkDatasetIO(CDatasetIO):
             if img_data["filename"] == img_path:
                 if instance_key in img_data:
                     return img_data[instance_key]
-                elif semantic_key in img_data:
+                if semantic_key in img_data:
                     return img_data[semantic_key]
-                else:
-                    break
+
+                break
 
         return ""
 
@@ -241,8 +242,8 @@ class IkDatasetIO(CDatasetIO):
         """
         if "images" in self.data:
             return len(self.data["images"]) > 0
-        else:
-            return False
+
+        return False
 
     def clear_data(self):
         """
@@ -281,8 +282,21 @@ class IkDatasetIO(CDatasetIO):
                 self.data["metadata"]["category_names"] = {int(k): v for k, v in
                                                            self.data["metadata"]["category_names"].items()}
 
-    def to_json(self, options: list = []) -> str:
+    def to_json(self, options: list = None) -> str:
+        """
+        Convert dataset i/o data to JSON formatted string.
+
+        Returns:
+            str: JSON formatted string
+        """
+        del options
         return json.dumps(self.data)
 
     def from_json(self, json_string: str):
+        """
+        Set dataset i/o data from JSON formatted string.
+
+        Args:
+            json_string (str): data as JSON formatted string
+        """
         self.data = json.loads(json_string)

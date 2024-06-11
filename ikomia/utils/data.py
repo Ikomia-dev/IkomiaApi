@@ -15,46 +15,79 @@
 """
 Internal use only
 """
-
 import os
 import numpy as np
 
 
 class NumpyImage:
+    """
+    Helper class to manage 2D image structure of Numpy .npz file.
+    """
     def __init__(self, path: str, key: str):
         self.path = path
         self.data = None
-        filename, extension = os.path.splitext(path)
+        _, extension = os.path.splitext(path)
 
         if extension != ".npz":
-            raise Exception("File format not supported")
+            raise ValueError("File format not supported")
 
         self.data = np.load(self.path)[key]
 
     def get_dims(self):
+        """
+        Get image dimensions.
+
+        Returns:
+            tuple: image dimensions
+        """
         return self.data.shape
 
     def set_dim_order(self, dims):
+        """
+        Set image dimensions order.
+
+        Args:
+            dimensions order (tuple)
+        """
         self.data = np.transpose(self.data, dims)
 
     def get_data(self, dtype=None):
+        """
+        Return image data structure.
+
+        Args:
+            dtype: data type
+
+        Returns:
+            Numpy nd array: image data
+        """
         if dtype is not None:
             return self.data.astype(dtype)
-        else:
-            return self.data
+
+        return self.data
 
     def get_2d_data(self, index: int, dtype=None):
+        """
+        Return 2D image data.
+
+        Args:
+            index (int): zero-based index of the 2D image
+            dtype: data type
+
+        Returns:
+            Numpy array: 2D image array
+        """
         dim_count = len(self.data.shape)
         data = None
 
-        if dim_count == 1 or dim_count == 2:
+        if dim_count in (1, 2):
             data = self.data
         elif dim_count == 3:
             data = self.data[index]
         else:
-            raise Exception("Array structure not supported")
+            raise ValueError("Array structure not supported")
 
         if dtype is not None:
             return data.astype(dtype)
-        else:
-            return data
+
+        return data

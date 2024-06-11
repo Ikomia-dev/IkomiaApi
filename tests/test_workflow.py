@@ -2,13 +2,13 @@ import logging
 import os
 import shutil
 import argparse
-import ikomia
+import numpy as np
+from ikomia.utils import tests, ik
+from ikomia.core import IODataType
 from ikomia.dataprocess import \
     workflow, CWorkflow, CImageIO, CVideoIO, CPathIO, CNumericIO, CObjectDetectionIO, CInstanceSegmentationIO, \
     CSemanticSegmentationIO, CKeypointsIO, CGraphicsOutput
-from ikomia.core import IODataType
-from ikomia.utils import tests, ik
-import numpy as np
+from ikomia.dataprocess.registry import ik_registry
 import cv2
 
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def test_cpp_workflow():
     assert wf.name == name
     # Ctor with name and registry
     name = "Test workflow"
-    wf = CWorkflow(name, ikomia.ik_registry)
+    wf = CWorkflow(name, ik_registry)
     assert wf.get_root_id() != 0
     assert wf.name == name
 
@@ -514,7 +514,7 @@ def test_add_task():
 
     # From task object
     wf = workflow.create("FromScratch")
-    box_filter = ikomia.ik_registry.create_algorithm(name=ik.ocv_box_filter.name())
+    box_filter = ik_registry.create_algorithm(name=ik.ocv_box_filter.name())
     box_filter_added = wf.add_task(task=box_filter)
     assert box_filter_added == box_filter
     assert wf.get_task_count() == 2

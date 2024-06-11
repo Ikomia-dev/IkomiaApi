@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core.
+"""
 try:
     # Valid for Ikomia Studio or Linux platform
     from ikomia.core.pycore import *
     from ikomia.dataprocess.pydataprocess import *
-except:
+except ImportError:
     # Valid for Windows standalone API
     from ikomia.lib.pycore import *
     from ikomia.lib.pydataprocess import *

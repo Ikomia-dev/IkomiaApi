@@ -1,9 +1,9 @@
 import logging
 import argparse
 import numpy as np
-import ikomia
-from ikomia import utils, core, dataprocess, dnn
+from ikomia import utils, core, dataprocess, dnn, authenticate
 from ikomia.core.task import TaskParam
+from ikomia.dataprocess.registry import ik_registry
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ def test_dataprocess():
     info = dataprocess.CTaskInfo()
     assert info
 
-    logger.info("Installed algorithms : " + str(len(ikomia.ik_registry.get_algorithms())))
+    logger.info("Installed algorithms : " + str(len(ik_registry.get_algorithms())))
 
 
 def test_dnn():
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     opt = parser.parse_args()
     running_tests = opt.tests.split(',')
 
-    ikomia.authenticate()
+    authenticate()
 
     if 'all' in running_tests or 'utils' in running_tests:
         test_utils()

@@ -18,20 +18,20 @@ Module providing dataset loaders from various source formats.
 
 import os
 import json
-from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion
-from PIL import Image
-from collections import defaultdict
-import xml.etree.ElementTree as ET
-import numpy as np
-import cv2
 import random
 import logging
+import xml.etree.ElementTree as ET
+from collections import defaultdict
+from PIL import Image
+import numpy as np
+from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion
+import cv2
 
 logger = logging.getLogger(__name__)
 
 try:
     from pycocotools.coco import maskUtils
-except:
+except ImportError:
     logger.info("Pycocotools package is not installed, some dataset loader may not work properly.")
 
 
@@ -171,7 +171,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     img_id = 0
 
     # Collect annotations
-    root, dirs, files = next(os.walk(folder_path))
+    root, _, files = next(os.walk(folder_path))
     for file in files:
         img_data = {}
         filename, extension = os.path.splitext(file)
@@ -242,7 +242,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     category_names = {}
     categories = read_class_names(class_path)
 
-    for i in range(len(categories)):
+    for i in enumerate(categories):
         category_names[i] = categories[i]
 
     data["metadata"] = {"category_names": category_names}
@@ -252,16 +252,22 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
 def ann_to_rle(img: np.ndarray, ann: dict) -> np.ndarray:
     """
     Convert annotation which can be polygons, uncompressed RLE to RLE.
-    :return: binary mask (numpy 2D array)
+
+    Args:
+        img (numpy.ndarray): image from which annotations come
+        ann (dict): annotations to compress to RLE
+
+    Return:
+        binary mask (numpy 2D array)
     """
     h, w = img['height'], img['width']
     segm = ann['segmentation']
-    if type(segm) is list:
+    if isinstance(segm, list):
         # polygon -- a single object might consist of multiple parts
         # we merge all parts into one mask rle code
         rles = maskUtils.frPyObjects(segm, h, w)
         rle = maskUtils.merge(rles)
-    elif type(segm['counts']) is list:
+    elif isinstance(segm['counts'], list):
         # uncompressed RLE
         rle = maskUtils.frPyObjects(segm, h, w)
     else:
@@ -330,7 +336,8 @@ def load_coco_dataset(path: str, image_folder: str,
                     data["metadata"]["keypoint_flip_map"] = []
                     for body_part in data["metadata"]["keypoint_names"]:
                         if body_part.startswith("left"):
-                            data["metadata"]["keypoint_flip_map"].append((body_part, body_part.replace("left", "right")))
+                            data["metadata"]["keypoint_flip_map"].append((body_part,
+                                                                          body_part.replace("left", "right")))
                         elif not body_part.startswith("right"):
                             data["metadata"]["keypoint_flip_map"].append((body_part, body_part))
 
@@ -338,26 +345,25 @@ def load_coco_dataset(path: str, image_folder: str,
 
         if "images" in dataset:
             for img in dataset["images"]:
-                img_data = {}
-                img_data["image_id"] = img["id"]
-                img_data["filename"] = image_folder + img["file_name"]
-                img_data["width"] = img["width"]
-                img_data["height"] = img["height"]
-                img_data["annotations"] = []
+                img_data = {
+                    "image_id": img["id"],
+                    "filename": image_folder + img["file_name"],
+                    "width": img["width"],
+                    "height": img["height"],
+                    "annotations": []
+                }
                 if sem_seg:
                     mask = np.zeros((img['height'], img['width']), dtype='uint8')
 
                 for ann in img_to_anns[img["id"]]:
-                    instance = {}
-                    instance["category_id"] = cat_map[ann["category_id"]]
-                    instance["iscrowd"] = ann["iscrowd"]
+                    instance = {"category_id": cat_map[ann["category_id"]], "iscrowd": ann["iscrowd"]}
 
                     if "bbox" in ann:
                         instance["bbox"] = ann["bbox"]
 
                     if "segmentation" in ann:
                         # RLE mask not managed yet
-                        if type(ann["segmentation"]) == list:
+                        if isinstance(ann["segmentation"], list):
                             # Polygon
                             instance["segmentation_poly"] = ann["segmentation"]
                             if sem_seg:
@@ -401,9 +407,9 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
     Returns:
         dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
-    id = 0
+    obj_id = 0
     data = {"images": [], "metadata": {}}
-    ann_root, ann_dirs, ann_files = next(os.walk(annotation_folder))
+    ann_root, _, ann_files = next(os.walk(annotation_folder))
 
     if instance_seg_folder and not instance_seg_folder.endswith("/"):
         instance_seg_folder += "/"
@@ -411,11 +417,11 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
     categories = read_class_names(class_path)
     category_ids = {}
 
-    for i in range(len(categories)):
+    for i in enumerate(categories):
         category_ids[categories[i]] = i
 
     if annotation_folder != img_folder:
-        img_root, img_dirs, img_files = next(os.walk(img_folder))
+        img_root, _, _ = next(os.walk(img_folder))
     else:
         img_root = ann_root
 
@@ -442,8 +448,8 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
 
         filename_node = root.find("filename")
         # Unique id
-        img_data["image_id"] = id
-        id = id + 1
+        img_data["image_id"] = obj_id
+        obj_id = obj_id + 1
         # Full path of the image
         img_data["filename"] = img_root + "/" + filename_node.text
 
@@ -455,12 +461,12 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
         img_data["height"] = int(h_node.text)
 
         img_data["annotations"] = []
-        for object in root.iter("object"):
+        for obj in root.iter("object"):
             instance = {}
             # Category id
-            instance["category_id"] = category_ids[object.find("name").text]
+            instance["category_id"] = category_ids[obj.find("name").text]
             # Bounding box
-            bbox_node = object.find("bndbox")
+            bbox_node = obj.find("bndbox")
             xmin = float(bbox_node.find("xmin").text)
             ymin = float(bbox_node.find("ymin").text)
             xmax = float(bbox_node.find("xmax").text)
@@ -472,7 +478,7 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
             data["images"].append(img_data)
 
     category_names = {}
-    for i in range(len(categories)):
+    for i in enumerate(categories):
         category_names[i] = categories[i]
 
     data["metadata"] = {"category_names": category_names}

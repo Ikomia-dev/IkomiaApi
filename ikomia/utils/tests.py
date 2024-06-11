@@ -12,47 +12,72 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+The module tests provides features to ease test automation of Ikomia algorithms.
+"""
 import os
 import traceback
 import logging
 from ikomia import core
 
-
 logger = logging.getLogger(__name__)
 
 
 def run_for_test(t: core.CWorkflowTask) -> tuple:
+    """
+    Test run() function for the given task.
+
+    Args:
+         t (CWorkflowTask): task (ie algorithm) to test
+    """
     logger.info("Running once...")
     try:
         import torch.cuda
         logger.info("Cleaning cuda torch cache...")
         torch.cuda.empty_cache()
         logger.info("Cuda torch cache cleaned...")
-    except:
+    except ImportError:
         pass
 
     try:
         t.run()
-    except Exception as e:
-        tb = traceback.format_exc()
-        logger.error("Run failed")
-    else:
         tb = "OK"
         logger.info("Run succeeded")
-    finally:
-        return t.get_parameters(), tb
+    except Exception:
+        tb = traceback.format_exc()
+        logger.error("Run failed")
+
+    return t.get_parameters(), tb
 
 
 def get_test_image_directory() -> str:
+    """
+    Get sample's images directory.
+
+    Returns:
+        str: path to the directory
+    """
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/images")
 
 
 def get_test_video_directory() -> str:
+    """
+    Get sample's videos directory.
+
+    Returns:
+        str: path to the directory
+    """
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/videos")
 
 
 def get_test_workflow_directory() -> str:
+    """
+    Get test's workflows directory.
+
+    Returns:
+        str: path to the directory
+    """
     test_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(test_dir,  "../../tests/data/workflows")

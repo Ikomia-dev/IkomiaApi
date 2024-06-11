@@ -15,9 +15,8 @@
 """
 Module providing Ikomia workflow I/O implementation for data stored as Python dict.
 """
-
-from ikomia.core import CWorkflowTaskIO, IODataType
 import json
+from ikomia.core import CWorkflowTaskIO, IODataType
 
 
 class DataDictIO(CWorkflowTaskIO):
@@ -68,15 +67,30 @@ class DataDictIO(CWorkflowTaskIO):
         with open(path, "r") as infile:
             self.data = json.load(infile)
 
-    def to_json(self, options: list = []) -> str:
+    def to_json(self, options: list = None) -> str:
+        """
+        Convert DataDictIO internal data as JSON string.
+
+        Args:
+            options (list): JSON format options ['json_format', 'compact'] or ['json_format', 'indented']
+
+        Returns:
+            str: JSON formatted string
+        """
         json_format = "compact"
-        if "json_format" in options:
+        if options is not None and "json_format" in options:
             json_format = options[options.index("json_format") + 1]
 
         if json_format == "indented":
             return json.dumps(self.data, indent=4)
-        else:
-            return json.dumps(self.data)
+
+        return json.dumps(self.data)
 
     def from_json(self, json_string: str):
+        """
+        Set internal data from JSON string.
+
+        Args:
+            json_string (str): I/O data as JSON formatted string (from to_json() for example)
+        """
         self.data = json.loads(json_string)

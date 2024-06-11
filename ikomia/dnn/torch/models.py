@@ -28,7 +28,14 @@ from torchvision import models
 logger = logging.getLogger(__name__)
 
 
-def set_parameter_requires_grad(model, feature_extracting):
+def set_parameter_requires_grad(model, feature_extracting: bool):
+    """
+    Disable gradient computation when feature extracting mode is enabled.
+
+    Args:
+        model: pytorch model
+        feature_extracting (bool): enabled (True) or disabled (False)
+    """
     if feature_extracting:
         for param in model.parameters():
             param.requires_grad = False
@@ -62,8 +69,7 @@ def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretraine
     elif model_name == "resnet152":
         model_ft = models.resnet152(pretrained=use_pretrained)
     else:
-        print("Invalid model name, exiting...")
-        exit()
+        raise RuntimeError(f"Invalid model name: {model_name}")
 
     if train_mode:
         set_parameter_requires_grad(model_ft, feature_extract)
@@ -102,8 +108,7 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
     elif model_name == 'resnext101':
         model_ft = models.resnext101_32x8d(pretrained=use_pretrained)
     else:
-        print("Invalid model name, exiting...")
-        exit()
+        raise RuntimeError(f"Invalid model name: {model_name}")
 
     if train_mode:
         set_parameter_requires_grad(model_ft, feature_extract)

@@ -19,12 +19,15 @@ PyTorch compatible dataset so that it is possible to use Ikomia dataset
 loaders with PyTorch Deep Learning models.
 """
 
-import torch
 import os
+import logging
+import torch
 from torch.utils.data import Dataset
 from PIL import Image
 import numpy as np
 import ikomia.dnn.dataset as ikdataset
+
+logger = logging.getLogger(__name__)
 
 
 class TorchDatasetMapper(Dataset):
@@ -116,14 +119,15 @@ class TorchDatasetMapper(Dataset):
     @staticmethod
     def _load_instance_seg_masks(path: str):
         # Load mask as [N H W] numpy array
-        filename, extension = os.path.splitext(path)
+        _, extension = os.path.splitext(path)
 
         if extension == ".npz":
             # 3D numpy array saves as compressed npz format
             mask = np.transpose(np.load(path)['arr_0'], (2, 0, 1))
             mask8 = mask.astype(np.uint8)
             return mask8
-        elif extension == ".png":
+
+        if extension == ".png":
             # Labelled mask (one pixel value per object)
             labelled_mask = np.array(Image.open(path))
             labels = np.unique(labelled_mask)
@@ -136,20 +140,20 @@ class TorchDatasetMapper(Dataset):
                 index += 1
 
             return mask
-        else:
-            print("Error: segmentation mask format not supported")
-            return None
+
+        logger.error("Segmentation mask format not supported")
+        return None
 
     @staticmethod
     def _load_semantic_seg_masks(path: str):
         # Load mask as [N H W] numpy array
-        filename, extension = os.path.splitext(path)
+        _, extension = os.path.splitext(path)
 
         if extension == ".png":
             # Labelled mask (one pixel value per category)
             labelled_mask = np.array(Image.open(path))
             mask = labelled_mask.reshape(1, labelled_mask.shape[0], labelled_mask.shape[1])
             return mask
-        else:
-            print("Error: segmentation mask format not supported")
-            return None
+
+        logger.error("Segmentation mask format not supported")
+        return None

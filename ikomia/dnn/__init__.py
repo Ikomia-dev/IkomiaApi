@@ -15,4 +15,3 @@
 from ikomia.dnn.dataset import *
 from ikomia.dnn.datasetio import *
 from ikomia.dnn.dnntrain import *
-from ikomia.dnn.dataset import *

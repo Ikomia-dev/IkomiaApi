@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+The dataio module manages data source from various formats of image and videos.
+It is in fact a Python binding of the corresponding C++ library from Ikomia Core.
+"""
+
 try:
     # Valid for Ikomia Studio or Linux platform
     from ikomia.dataio.pydataio import *
-except:
+except ImportError:
     # Valid for Windows standalone API
     from ikomia.lib.pydataio import *

@@ -19,14 +19,13 @@ functions for each type of components: workflow, task, input and output (for deb
 import sys
 import os
 import logging
-import numpy
-import numpy as np
 from functools import singledispatch
-from ikomia import core, dataprocess
+import numpy as np
 import matplotlib
-import matplotlib.patches as patches
+from matplotlib import patches
 from matplotlib.cbook import flatten
 from PIL import Image
+from ikomia import core, dataprocess
 import cv2
 
 # Matplotlib backend choice
@@ -391,7 +390,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
         plot_type = obj.get_plot_type()
 
         # HISTOGRAM
-        if plot_type == dataprocess.PlotType.HISTOGRAM or plot_type == dataprocess.PlotType.BAR:
+        if plot_type in (dataprocess.PlotType.HISTOGRAM,  dataprocess.PlotType.BAR):
             if fig is None:
                 fig, ax = plt.subplots(1, 1)
             else:
@@ -399,15 +398,15 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in range(len(values)):
+            for i in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
-                    name = "serie" + str(i+1)
+                    name = "serie" + str(i + 1)
                 else:
                     name = col_labels[i]
 
                 if not has_x_values:
                     x = []
-                    for j in range(len(values[i])):
+                    for j in enumerate(values[i]):
                         x.append(j)
 
                     ax.bar(x, values[i], label=name)
@@ -425,7 +424,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in range(len(values)):
+            for i in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
                     name = "serie" + str(i + 1)
                 else:
@@ -433,7 +432,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
                 if not has_x_values:
                     x = []
-                    for j in range(len(values[i])):
+                    for j in enumerate(values[i]):
                         x.append(j)
 
                     ax.plot(x, values[i], label=name)
@@ -451,7 +450,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in range(len(values)):
+            for i in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
                     name = "serie" + str(i + 1)
                 else:
@@ -461,7 +460,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
                 if not has_x_values:
                     x = []
-                    for j in range(len(values[i])):
+                    for j in enumerate(values[i]):
                         x.append(j)
 
                     ax[i].bar(x, values[i])
@@ -478,7 +477,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_labels = len(labels) > 0
 
-            for i in range(len(values)):
+            for i in enumerate(values):
                 if not has_labels or i >= len(labels):
                     ax[i].pie(values[i], shadow=True)
                 else:
@@ -578,7 +577,7 @@ def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
                 col_labels.append(measure_info.name)
 
     cols_count = len(col_labels)
-    values = [["No data" for _ in range(cols_count)] for _ in range(len(measures))]
+    values = [["No data" for _ in range(cols_count)] for _ in enumerate(measures)]
 
     if len(values) == 0:
         values = [["No data" for _ in range(cols_count)]]
@@ -720,7 +719,7 @@ def _(obj: dataprocess.CWorkflowTask, title: str = "", **kwargs):
             try:
                 display(task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs)
             except NotImplementedError:
-                logger.error("No display function available for input " + str(i))
+                logger.error("No display function available for input %s", str(i))
 
     # outputs
     outputs = obj.get_outputs()
@@ -739,7 +738,7 @@ def _(obj: dataprocess.CWorkflowTask, title: str = "", **kwargs):
             try:
                 display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
             except NotImplementedError:
-                logger.error("No display function available for output " + str(i))
+                logger.error("No display function available for output %s", str(i))
 
     plt.show()
 
@@ -758,24 +757,24 @@ def _(obj: dataprocess.CWorkflow, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: numpy.ndarray, title: str = "", **kwargs):
+def _(obj: np.ndarray, title: str = "", **kwargs):
     if "viewer" not in kwargs or kwargs["viewer"] == "pillow":
         _display_pillow(obj, title, **kwargs)
     else:
         _display_opencv(obj, title, **kwargs)
 
 
-def _display_pillow(image: numpy.ndarray, title: str = "", **kwargs):
+def _display_pillow(image: np.ndarray, title: str = "", **kwargs):
     try:
         img_in = Image.fromarray(image)
         img_in.show(title)
     except Exception as e:
         # Fallback to OpenCV
-        logger.debug(f"Unable to use Pillow for display: {e}")
+        logger.debug("Unable to use Pillow for display: %s", e)
         _display_opencv(image, title, **kwargs)
 
 
-def _display_opencv(image: numpy.ndarray, title: str = "", **kwargs):
+def _display_opencv(image: np.ndarray, title: str = "", **kwargs):
     disp_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     cv2.imshow(title, disp_image)
 

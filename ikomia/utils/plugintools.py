@@ -67,11 +67,15 @@ SYSMODULES = [
 
 
 class SingleFileModuleFinder(modulefinder.ModuleFinder):
-
+    """
+    Internal use only.
+    """
     def import_hook(self, name: str, caller, *arg, **kwarg):
         if caller is not None and caller.__file__ == self.name:
             # Only call the parent at the top level.
             return modulefinder.ModuleFinder.import_hook(self, name, caller, *arg, **kwarg)
+
+        return None
 
     def __call__(self, node):
         self.name = str(node)
@@ -79,8 +83,16 @@ class SingleFileModuleFinder(modulefinder.ModuleFinder):
 
 
 def get_installed_modules() -> dict:
+    """
+    Return the list of installed package in the current Python environment.
+
+    Returns:
+        dict: list with package name and version
+    """
     modules = {}
-    result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"],
+                            capture_output=True,
+                            text=True)
     if result.stdout:
         modules = json.loads(result.stdout)
     else:
@@ -90,13 +102,22 @@ def get_installed_modules() -> dict:
 
 
 def get_plugin_dependencies(plugin_folder: str) -> list:
+    """
+    Return the list of Python dependencies for a given Ikomia plugin.
+
+    Args:
+        plugin_folder (str): path to the plugin folder
+
+    Returns:
+        list: list of Python package names
+    """
     good_modules = []
     bad_modules = []
     file_paths = []
     module_names = []
 
     # Get all python files of the plugin (including sub-folders)
-    for r, d, f in os.walk(plugin_folder):
+    for r, _, f in os.walk(plugin_folder):
         for file in f:
             if file.endswith(".py"):
                 module_names.append(os.path.splitext(file)[0])
@@ -132,8 +153,15 @@ def get_plugin_dependencies(plugin_folder: str) -> list:
 
 
 def install_requirements(directory: str):
+    """
+    Install Python dependencies for the given Ikomia Plugin.
+    The function searches for requirements files and iterate over them in the lexicographic order.
+
+    Args:
+        directory (str): path to the plugin directory
+    """
     req_files = []
-    for root, subdirs, files in os.walk(directory, topdown=True):
+    for root, _, files in os.walk(directory, topdown=True):
         for file in files:
             if re.search("[rR]equirements[0-9]*.txt", file):
                 req_files.append(os.path.normpath(os.path.join(root, file)))
@@ -149,6 +177,13 @@ def install_requirements(directory: str):
 
 
 def install_package(name: str, version: str):
+    """
+    Install a specific Python package according to the given package name and version.
+
+    Args:
+        name (str): name of the package to install
+        version (str): version of the package to install
+    """
     if name:
         try:
             subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
@@ -157,6 +192,12 @@ def install_package(name: str, version: str):
 
 
 def uninstall_package(name: str):
+    """
+    Uninstall a specific Python package.
+
+    Args:
+        name (str): name of the package to uninstall
+    """
     if name:
         try:
             subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
@@ -165,8 +206,15 @@ def uninstall_package(name: str):
 
 
 def import_plugin_module(directory: str, name: str):
+    """
+    Import Ikomia plugin programmatically.
+
+    Args:
+        directory (str): path to the plugin directory
+        name (str): name of the plugin
+    """
     if is_module_imported(name):
-        for root, sub_dirs, files in os.walk(directory, topdown=True):
+        for _, _, files in os.walk(directory, topdown=True):
             for file in files:
                 filename, file_extension = os.path.splitext(file)
                 if file_extension == ".py":
@@ -176,7 +224,16 @@ def import_plugin_module(directory: str, name: str):
 
 
 def is_module_imported(name: str) -> bool:
-    for n, val in globals().items():
+    """
+    Check whether a Python module is already imported.
+
+    Args:
+        name (str): module name
+
+    Returns:
+        bool: True if module is already imported, False otherwise
+    """
+    for _, val in globals().items():
         if isinstance(val, types.ModuleType) and name == val.__name__:
             return True
 
@@ -184,20 +241,35 @@ def is_module_imported(name: str) -> bool:
 
 
 def unload_plugin_module(name: str):
+    """
+    Unload the given Python module.
+
+    Args:
+        name (str): module name to unload
+    """
     modules_to_delete = [m for m in sys.modules.keys() if name == m]
     for m in modules_to_delete:
         del sys.modules[m]
 
 
 def conform_plugin_directory(directory: str, plugin: dict) -> str:
+    """
+    Conform plugin directory name to fit the Ikomia naming convention.
+    This function must be call after downloading the plugin package from
+    Ikomia HUB to ensure name validity.
+
+    Args:
+        directory (str): path to the plugin directory
+        plugin (dict): plugin information retrieved from Ikomia HUB
+    """
     good_dir_name = directory
     base_name = os.path.basename(directory)
 
     if plugin["language"] == 1:
         # PYTHON
-        for root, subdirs, files in os.walk(directory, topdown=True):
+        for _, _, files in os.walk(directory, topdown=True):
             for file in files:
-                match = re.search("([a-zA-Z0-9\-\._#@=]+)_process", file)
+                match = re.search(r"([a-zA-Z0-9\-\._#@=]+)_process", file)
                 if match is not None:
                     good_dir_name = directory.replace(base_name, match.group(1))
                     break
@@ -224,4 +296,3 @@ if __name__ == "__main__":
     print(goodModules)
     print('\n\nMissing:\n')
     print(badModules)
-
