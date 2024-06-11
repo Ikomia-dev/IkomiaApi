@@ -29,10 +29,10 @@ class MyFirstAlgoParam(core.CWorkflowTaskParam):
     def get_values(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        params = {}
-        params["threshold1"] = str(self.threshold1)
-        params["threshold2"] = str(self.threshold2)
-
+        params = {
+            "threshold1": str(self.threshold1),
+            "threshold2": = str(self.threshold2),
+        }
         return params
 ```
 

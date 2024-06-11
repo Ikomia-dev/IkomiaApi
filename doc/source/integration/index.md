@@ -124,7 +124,6 @@ class MyFirstAlgoFactory(dataprocess.CTaskFactory):
         # Set process information as string here
         self.info.name = "my_first_algo"
         self.info.short_description = "your short description"
-        self.info.description = "your description"
         # relative path -> as displayed in Ikomia Studio process tree
         self.info.path = "Plugins/Python"
         self.info.version = "1.0.0"
@@ -134,12 +133,33 @@ class MyFirstAlgoFactory(dataprocess.CTaskFactory):
         self.info.journal = "publication journal"
         self.info.year = 2022
         self.info.license = "MIT License"
+        
+        # Ikomia API compatibility
+        # self.info.min_ikomia_version = "0.10.0"
+        # self.info.max_ikomia_version = "0.11.0"
+
+        # Python compatibility
+        # self.info.min_python_version = "3.10.0"
+        # self.info.max_python_version = "3.11.0"
+        
         # URL of documentation
         self.info.documentation_link = ""
+        
         # Code source repository
         self.info.repository = ""
+        self.info.original_repository = ""
+        
         # Keywords used for search
         self.info.keywords = "your,keywords,here"
+        
+        # General type: INFER, TRAIN, DATASET or OTHER
+        # self.info.algo_type = core.AlgoType.OTHER
+
+        # Algorithms tasks: CLASSIFICATION, COLORIZATION, IMAGE_CAPTIONING, IMAGE_GENERATION,
+        # IMAGE_MATTING, INPAINTING, INSTANCE_SEGMENTATION, KEYPOINTS_DETECTION,
+        # OBJECT_DETECTION, OBJECT_TRACKING, OCR, OPTICAL_FLOW, OTHER, PANOPTIC_SEGMENTATION,
+        # SEMANTIC_SEGMENTATION or SUPER_RESOLUTION
+        # self.info.algo_tasks = "OTHER"
 
     def create(self, param=None):
         # Create process object

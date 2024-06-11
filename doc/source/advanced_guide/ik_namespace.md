@@ -32,7 +32,7 @@ class ocv_stack_blur:
     kSizeWidth = "kSizeWidth"
 
     def __new__(cls, kSizeHeight: str="5", kSizeWidth: str="5"):
-        algo = ikomia.ik_registry.create_algorithm("ocv_stack_blur", None)
+        algo = ik_registry.create_algorithm("ocv_stack_blur", None)
         algo.set_parameters({
             "kSizeHeight": kSizeHeight,
             "kSizeWidth": kSizeWidth,
