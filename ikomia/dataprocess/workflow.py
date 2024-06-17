@@ -473,8 +473,12 @@ class Workflow(CWorkflow):
         Args:
             path (str): full path to the workflow definition file to load.
         """
-        prepare_runtime_env(path)
-        super().load(path)
+        try:
+            super().load(path)
+        except RuntimeError:
+            # Some algorithms are missing, try to install it from HUB
+            prepare_runtime_env(path)
+            super().load(path)
 
         # Update map task -> id
         self.task_to_id.clear()
