@@ -183,7 +183,7 @@ def append_combo(grid_layout, label: str) -> QComboBox:
 
 
 def add_spin(grid_layout, row: int, label: str, value: int,
-             min_val: int = 0, max_val: int = 2147483647, step: int = 1) -> QSpinBox:
+             min: int = 0, max: int = 2147483647, step: int = 1) -> QSpinBox:
     """
     Add a composite widget (label + edit box + spin box)
     in the layout at the given row - **integer values**.
@@ -193,8 +193,8 @@ def add_spin(grid_layout, row: int, label: str, value: int,
         row (int): row index in the grid layout
         label (str): label in front of the QSpinBox
         value (int): spin box value
-        min_val (int): minimum value of the spin box
-        max_val (int): maximum value of the spin box
+        min (int): minimum value of the spin box
+        max (int): maximum value of the spin box
         step (int): increment/decrement step of the spin box
 
     Returns:
@@ -202,7 +202,7 @@ def add_spin(grid_layout, row: int, label: str, value: int,
     """
     qlabel = QLabel(label)
     qspin = QSpinBox()
-    qspin.setRange(min_val, max_val)
+    qspin.setRange(min, max)
     qspin.setSingleStep(step)
     qspin.setValue(value)
 
@@ -212,7 +212,7 @@ def add_spin(grid_layout, row: int, label: str, value: int,
 
 
 def append_spin(grid_layout, label: str, value: int,
-                min_val: int = 0, max_val: int = 2147483647, step: int = 1) -> QSpinBox:
+                min: int = 0, max: int = 2147483647, step: int = 1) -> QSpinBox:
     """
     Append a composite widget (label + edit box + spin box) in the layout -
     **integer values**.
@@ -221,19 +221,19 @@ def append_spin(grid_layout, label: str, value: int,
         grid_layout (QGridLayout): Qt grid layout
         label (str): label in front of the QSpinBox
         value (int): spin box value
-        min_val (int): minimum value of the spin box
-        max_val (int): maximum value of the spin box
+        min (int): minimum value of the spin box
+        max (int): maximum value of the spin box
         step (int): increment/decrement step of the spin box
 
     Returns:
         QSpinBox: instance of the QSpinBox added to the layout
     """
     last_pos = grid_layout.rowCount()
-    return add_spin(grid_layout, last_pos, label, value, min_val, max_val, step)
+    return add_spin(grid_layout, last_pos, label, value, min, max, step)
 
 
 def add_double_spin(grid_layout, row: int, label: str,
-                    value: float, min_val: float = 0.0, max_val: float = float('inf'),
+                    value: float, min: float = 0.0, max: float = float('inf'),
                     step: float = 1, decimals: int = 4) -> QDoubleSpinBox:
     """
     Add a composite widget (label + edit box + spin box)
@@ -244,8 +244,8 @@ def add_double_spin(grid_layout, row: int, label: str,
         row (int): row index in the grid layout
         label (str): label in front of the QSpinBox
         value (float): spin box value
-        min_val (float): minimum value of the spin box
-        max_val (float): maximum value of the spin box
+        min (float): minimum value of the spin box
+        max (float): maximum value of the spin box
         step (float): increment/decrement step of the spin box
         decimals (int): number of decimals
 
@@ -255,7 +255,7 @@ def add_double_spin(grid_layout, row: int, label: str,
     qlabel = QLabel(label)
     qspin = QDoubleSpinBox()
     qspin.setDecimals(decimals)
-    qspin.setRange(min_val, max_val)
+    qspin.setRange(min, max)
     qspin.setValue(value)
     qspin.setSingleStep(step)
 
@@ -264,7 +264,7 @@ def add_double_spin(grid_layout, row: int, label: str,
     return qspin
 
 
-def append_double_spin(grid_layout, label: str, value: float, min_val: float = 0.0, max_val: float = float('inf'),
+def append_double_spin(grid_layout, label: str, value: float, min: float = 0.0, max: float = float('inf'),
                        step: float = 1.0, decimals: int = 4) -> QDoubleSpinBox:
     """
     Append a composite widget (label + edit box + spin box) in the layout -
@@ -274,8 +274,8 @@ def append_double_spin(grid_layout, label: str, value: float, min_val: float = 0
         grid_layout (QGridLayout): Qt grid layout
         label (str): label in front of the QSpinBox
         value (float): spin box value
-        min_val (float): minimum value of the spin box
-        max_val (float): maximum value of the spin box
+        min (float): minimum value of the spin box
+        max (float): maximum value of the spin box
         step (float): increment/decrement step of the spin box
         decimals (int): number of decimals
 
@@ -283,7 +283,7 @@ def append_double_spin(grid_layout, label: str, value: float, min_val: float = 0
         QDoubleSpinBox: instance of the QDoubleSpinBox added to the layout
     """
     last_pos = grid_layout.rowCount()
-    return add_double_spin(grid_layout, last_pos, label, value, min_val, max_val, step, decimals)
+    return add_double_spin(grid_layout, last_pos, label, value, min, max, step, decimals)
 
 
 def add_check(grid_layout, row: int, label: str, checked: bool) -> QCheckBox:
@@ -357,7 +357,7 @@ def append_radio(grid_layout, label: str, checked: bool) -> QRadioButton:
 
 
 def add_slider(grid_layout, row: int, label: str, value: int,
-               min_val: int = 0, max_val: int = 2147483647, step: int = 1) -> QSlider:
+               min: int = 0, max: int = 2147483647, step: int = 1) -> QSlider:
     """
     Add a slider and its label in the layout at the given row.
 
@@ -366,8 +366,8 @@ def add_slider(grid_layout, row: int, label: str, value: int,
         row (int): row index in the grid layout
         label (str): label in front of the QSpinBox
         value (int): slider position
-        min_val (int): minimum slider position
-        max_val (int): maximum slider position
+        min (int): minimum slider position
+        max (int): maximum slider position
         step (int): increment/decrement step of the slider
 
     Returns:
@@ -375,7 +375,7 @@ def add_slider(grid_layout, row: int, label: str, value: int,
     """
     qlabel = QLabel(label)
     qslider = QSlider(Qt.Horizontal)
-    qslider.setRange(min_val, max_val)
+    qslider.setRange(min, max)
     qslider.setSingleStep(step)
     qslider.setValue(value)
 
@@ -385,7 +385,7 @@ def add_slider(grid_layout, row: int, label: str, value: int,
 
 
 def append_slider(grid_layout, label: str, value: int,
-                  min_val: int = 0, max_val: int = 2147483647, step: int = 1) -> QSlider:
+                  min: int = 0, max: int = 2147483647, step: int = 1) -> QSlider:
     """
     Append a slider and its label in the layout.
 
@@ -393,15 +393,15 @@ def append_slider(grid_layout, label: str, value: int,
         grid_layout (QGridLayout): Qt grid layout
         label (str): label in front of the QSpinBox
         value (int): slider position
-        min_val (int): minimum slider position
-        max_val (int): maximum slider position
+        min (int): minimum slider position
+        max (int): maximum slider position
         step (int): increment/decrement step of the slider
 
     Returns:
         QSlider: instance of the QSlider added to the layout
     """
     last_pos = grid_layout.rowCount()
-    return add_slider(grid_layout, last_pos, label, value, min_val, max_val, step)
+    return add_slider(grid_layout, last_pos, label, value, min, max, step)
 
 
 def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
