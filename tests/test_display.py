@@ -92,7 +92,7 @@ def test_display_table():
     input_img.set_image(img)
     algo.run()
     # display table output
-    displayIO.display(algo.get_output(2), label="YoloV8 detection")
+    displayIO.display(algo.get_output(1), label="YoloV8 detection")
 
 
 def test_display_plot():
