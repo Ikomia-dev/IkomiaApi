@@ -25,7 +25,11 @@ import matplotlib
 from matplotlib import patches
 from matplotlib.cbook import flatten
 from PIL import Image
-from ikomia import core, dataprocess
+from ikomia.core import config, GraphicsItem  # pylint: disable=E0611
+from ikomia.dataprocess import (  # pylint: disable=E0611
+    CImageIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CObjectDetectionIO, CInstanceSegmentationIO,
+    CSemanticSegmentationIO, CKeypointsIO, CTextIO, NumericOutputType, PlotType, CDataStringIO, CWorkflowTask, CWorkflow
+)
 import cv2
 
 # Matplotlib backend choice
@@ -73,14 +77,24 @@ def _to_plot_color(color: list) -> list:
 def display(obj, title: str = "", fig=None, **kwargs):
     """
     Display function for various workflow components.
+
+    Args:
+        obj: object to display
+        title (str): title of the figure
+        fig: parent figure
     """
     raise NotImplementedError("Unsupported type")
 
 
 @display.register
-def _(obj: dataprocess.CImageIO, title: str = "", fig=None, **kwargs):
+def _(obj: CImageIO, title: str = "", fig=None, **kwargs):
     """
     Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
+
+    Args:
+        obj (CImageIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -104,10 +118,15 @@ def _(obj: dataprocess.CImageIO, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
+def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
     Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
     in a Matplotlib figure.
+
+    Args:
+        obj (CGraphicsInput): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -136,29 +155,29 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
     for item in items:
         item_type = item.get_type()
 
-        if item_type == core.GraphicsItem.ELLIPSE:
+        if item_type == GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
             yc = item.x + item.height / 2
-            ellipse = patches.Ellipse(xy=[xc, yc], width=item.width, height=item.height,
+            ellipse = patches.Ellipse(xy=(xc, yc), width=item.width, height=item.height,
                                       edgecolor=_to_plot_color(item.property.pen_color),
                                       facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == core.GraphicsItem.POINT:
-            circle = patches.Circle(xy=[item.point.x, item.point.y], radius=item.property.size / 2,
+        elif item_type == GraphicsItem.POINT:
+            circle = patches.Circle(xy=(item.point.x, item.point.y), radius=item.property.size / 2,
                                     edgecolor=_to_plot_color(item.property.pen_color),
                                     facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(circle)
             update_min_max(item.point.x, item.point.y)
-        elif item_type == core.GraphicsItem.RECTANGLE:
-            ellipse = patches.Rectangle(xy=[item.x, item.y], width=item.width, height=item.height,
+        elif item_type == GraphicsItem.RECTANGLE:
+            ellipse = patches.Rectangle(xy=(item.x, item.y), width=item.width, height=item.height,
                                         edgecolor=_to_plot_color(item.property.pen_color),
                                         facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == core.GraphicsItem.POLYLINE:
+        elif item_type == GraphicsItem.POLYLINE:
             pts = []
             for pt in item.points:
                 pts.append((pt.x, pt.y))
@@ -167,7 +186,7 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
             poly = patches.Polygon(pts, closed=False, fill=False,
                                    edgecolor=_to_plot_color(item.property.pen_color), **kwargs)
             ax.add_patch(poly)
-        elif item_type == core.GraphicsItem.POLYGON:
+        elif item_type == GraphicsItem.POLYGON:
             pts = []
             for pt in item.points:
                 pts.append((pt.x, pt.y))
@@ -177,7 +196,7 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
                                    edgecolor=_to_plot_color(item.property.pen_color),
                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(poly)
-        elif item_type == core.GraphicsItem.COMPLEX_POLYGON:
+        elif item_type == GraphicsItem.COMPLEX_POLYGON:
             pts = []
             for pt in item.outer:
                 pts.append((pt.x, pt.y))
@@ -198,7 +217,7 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
                                         edgecolor=_to_plot_color(item.property.pen_color),
                                         facecolor=_to_plot_color(item.property.brush_color), **kwargs)
                 ax.add_patch(inner)
-        elif item_type == core.GraphicsItem.TEXT:
+        elif item_type == GraphicsItem.TEXT:
             ax.text(item.x, item.y, item.text, size=item.property.font_size, color=_to_plot_color(item.property.color))
             update_min_max(item.x, item.y)
 
@@ -221,10 +240,15 @@ def _(obj: dataprocess.CGraphicsInput, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
+def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
     """
     Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
     in a Matplotlib figure.
+
+    Args:
+        obj (CGraphicsOutput): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -253,29 +277,29 @@ def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
     for item in items:
         item_type = item.get_type()
 
-        if item_type == core.GraphicsItem.ELLIPSE:
+        if item_type == GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
             yc = item.x + item.height / 2
-            ellipse = patches.Ellipse(xy=[xc, yc], width=item.width, height=item.height,
+            ellipse = patches.Ellipse(xy=(xc, yc), width=item.width, height=item.height,
                                       edgecolor=_to_plot_color(item.property.pen_color),
                                       facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == core.GraphicsItem.POINT:
-            circle = patches.Circle(xy=[item.point.x, item.point.y], radius=item.property.size / 2,
+        elif item_type == GraphicsItem.POINT:
+            circle = patches.Circle(xy=(item.point.x, item.point.y), radius=item.property.size / 2,
                                     edgecolor=_to_plot_color(item.property.pen_color),
                                     facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(circle)
             update_min_max(item.point.x, item.point.y)
-        elif item_type == core.GraphicsItem.RECTANGLE:
-            rect = patches.Rectangle(xy=[item.x, item.y], width=item.width, height=item.height,
+        elif item_type == GraphicsItem.RECTANGLE:
+            rect = patches.Rectangle(xy=(item.x, item.y), width=item.width, height=item.height,
                                      edgecolor=_to_plot_color(item.property.pen_color),
                                      facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(rect)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == core.GraphicsItem.POLYLINE:
+        elif item_type == GraphicsItem.POLYLINE:
             pts = []
             for pt in item.points:
                 pts.append((pt.x, pt.y))
@@ -284,7 +308,7 @@ def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
             poly = patches.Polygon(pts, closed=False, fill=False,
                                    edgecolor=_to_plot_color(item.property.pen_color), **kwargs)
             ax.add_patch(poly)
-        elif item_type == core.GraphicsItem.POLYGON:
+        elif item_type == GraphicsItem.POLYGON:
             pts = []
             for pt in item.points:
                 pts.append((pt.x, pt.y))
@@ -294,7 +318,7 @@ def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
                                    edgecolor=_to_plot_color(item.property.pen_color),
                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
             ax.add_patch(poly)
-        elif item_type == core.GraphicsItem.COMPLEX_POLYGON:
+        elif item_type == GraphicsItem.COMPLEX_POLYGON:
             pts = []
             for pt in item.outer:
                 pts.append((pt.x, pt.y))
@@ -315,7 +339,7 @@ def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
                                         edgecolor=_to_plot_color(item.property.pen_color),
                                         facecolor=_to_plot_color(item.property.brush_color), **kwargs)
                 ax.add_patch(inner)
-        elif item_type == core.GraphicsItem.TEXT:
+        elif item_type == GraphicsItem.TEXT:
             ax.text(item.x, item.y, item.text, size=item.property.font_size, color=_to_plot_color(item.property.color))
             update_min_max(item.x, item.y)
 
@@ -338,10 +362,15 @@ def _(obj: dataprocess.CGraphicsOutput, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
+def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
     """
     Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
     as a table in a Matplotlib figure.
+
+    Args:
+        obj (CNumericIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -358,7 +387,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
     values = obj.get_all_value_list()
     out_type = obj.get_output_type()
 
-    if out_type == dataprocess.NumericOutputType.TABLE:
+    if out_type == NumericOutputType.TABLE:
         if fig is None:
             fig, ax = plt.subplots(1, 1)
         else:
@@ -386,11 +415,11 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
         table.set_fontsize(10)
         ax.axis("off")
 
-    elif out_type == dataprocess.NumericOutputType.PLOT:
+    elif out_type == NumericOutputType.PLOT:
         plot_type = obj.get_plot_type()
 
         # HISTOGRAM
-        if plot_type in (dataprocess.PlotType.HISTOGRAM,  dataprocess.PlotType.BAR):
+        if plot_type in (PlotType.HISTOGRAM,  PlotType.BAR):
             if fig is None:
                 fig, ax = plt.subplots(1, 1)
             else:
@@ -398,7 +427,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in enumerate(values):
+            for i, _ in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
                     name = "serie" + str(i + 1)
                 else:
@@ -406,7 +435,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
                 if not has_x_values:
                     x = []
-                    for j in enumerate(values[i]):
+                    for j, _ in enumerate(values[i]):
                         x.append(j)
 
                     ax.bar(x, values[i], label=name)
@@ -416,7 +445,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
                     ax.bar(labels[i], values[i], label=name)
             ax.legend()
         # CURVE
-        elif plot_type == dataprocess.PlotType.CURVE:
+        elif plot_type == PlotType.CURVE:
             if fig is None:
                 fig, ax = plt.subplots(1, 1)
             else:
@@ -424,7 +453,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in enumerate(values):
+            for i, _ in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
                     name = "serie" + str(i + 1)
                 else:
@@ -432,7 +461,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
                 if not has_x_values:
                     x = []
-                    for j in enumerate(values[i]):
+                    for j, _ in enumerate(values[i]):
                         x.append(j)
 
                     ax.plot(x, values[i], label=name)
@@ -442,7 +471,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
                     ax.plot(labels[i], values[i], label=name)
             ax.legend()
         # MULTI-BAR
-        elif plot_type == dataprocess.PlotType.MULTIBAR:
+        elif plot_type == PlotType.MULTIBAR:
             if fig is None:
                 fig, ax = plt.subplots(1, len(values))
             else:
@@ -450,7 +479,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_x_values = len(labels) > 0
 
-            for i in enumerate(values):
+            for i, _ in enumerate(values):
                 if len(col_labels) == 0 or len(col_labels) != len(values):
                     name = "serie" + str(i + 1)
                 else:
@@ -460,7 +489,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
                 if not has_x_values:
                     x = []
-                    for j in enumerate(values[i]):
+                    for j, _ in enumerate(values[i]):
                         x.append(j)
 
                     ax[i].bar(x, values[i])
@@ -469,7 +498,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
                 else:
                     ax[i].bar(labels[i], values[i])
         # PIE CHART
-        elif plot_type == dataprocess.PlotType.PIE:
+        elif plot_type == PlotType.PIE:
             if fig is None:
                 fig, ax = plt.subplots(1, len(values))
             else:
@@ -477,7 +506,7 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
             has_labels = len(labels) > 0
 
-            for i in enumerate(values):
+            for i, _ in enumerate(values):
                 if not has_labels or i >= len(labels):
                     ax[i].pie(values[i], shadow=True)
                 else:
@@ -491,10 +520,15 @@ def _(obj: dataprocess.CNumericIO, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CDataStringIO, title: str = "", fig=None, **kwargs):
+def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
     """
     Display string values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
     as a table in a Matplotlib figure.
+
+    Args:
+        obj (CDataStringIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -511,7 +545,7 @@ def _(obj: dataprocess.CDataStringIO, title: str = "", fig=None, **kwargs):
     values = obj.get_all_value_list()
     out_type = obj.get_output_type()
 
-    if out_type == dataprocess.NumericOutputType.TABLE:
+    if out_type == NumericOutputType.TABLE:
         if fig is None:
             fig, ax = plt.subplots(1, 1)
         else:
@@ -547,10 +581,15 @@ def _(obj: dataprocess.CDataStringIO, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
+def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     """
     Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`)
     as a table in a Matplotlib figure.
+
+    Args:
+        obj (CBlobMeasureIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
     """
     _check_backend()
 
@@ -619,10 +658,14 @@ def _(obj: dataprocess.CBlobMeasureIO, title: str = "", fig=None, **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CObjectDetectionIO, title: str = "", **kwargs):
+def _(obj: CObjectDetectionIO, title: str = "", **kwargs):
     """
     Display object detection input or output
     (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
+
+    Args:
+        obj (CObjectDetectionIO): I/O instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -634,10 +677,14 @@ def _(obj: dataprocess.CObjectDetectionIO, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CInstanceSegmentationIO, title: str = "", **kwargs):
+def _(obj: CInstanceSegmentationIO, title: str = "", **kwargs):
     """
     Display instance segmentation input or output
     (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
+
+    Args:
+        obj (CInstanceSegmentationIO): I/O instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -650,10 +697,14 @@ def _(obj: dataprocess.CInstanceSegmentationIO, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CSemanticSegmentationIO, title: str = "", **kwargs):
+def _(obj: CSemanticSegmentationIO, title: str = "", **kwargs):
     """
     Display semantic segmentation input or output
     (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
+
+    Args:
+        obj (CSemanticSegmentationIO): I/O instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -665,10 +716,14 @@ def _(obj: dataprocess.CSemanticSegmentationIO, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CKeypointsIO, title: str = "", **kwargs):
+def _(obj: CKeypointsIO, title: str = "", **kwargs):
     """
     Display keypoints input or output
     (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
+
+    Args:
+        obj (CKeypointsIO): I/O instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -681,10 +736,14 @@ def _(obj: dataprocess.CKeypointsIO, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CTextIO, title: str = "", **kwargs):
+def _(obj: CTextIO, title: str = "", **kwargs):
     """
     Display text input or output
     (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
+
+    Args:
+        obj (CTextIO): I/O instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -696,9 +755,13 @@ def _(obj: dataprocess.CTextIO, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CWorkflowTask, title: str = "", **kwargs):
+def _(obj: CWorkflowTask, title: str = "", **kwargs):
     """
     Display task inputs and outputs (:py:class:`~ikomia.core.pycore.CWorkflowTask`) in two separate Matplotlib figures.
+
+    Args:
+        obj (CWorkflowTask): algorithm instance
+        title (str): title of the figure
     """
     _check_backend()
 
@@ -744,13 +807,17 @@ def _(obj: dataprocess.CWorkflowTask, title: str = "", **kwargs):
 
 
 @display.register
-def _(obj: dataprocess.CWorkflow, title: str = "", **kwargs):
+def _(obj: CWorkflow, title: str = "", **kwargs):
     """
     Display Graphviz representation of a workflow (:py:class:`~ikomia.dataprocess.pydataprocess.CWorkflow`).
+
+    Args:
+        obj (CWorkflow): workflow instance
+        title (str): title of the figure
     """
     from graphviz import Source
     dot_file_name = obj.name + ".dot"
-    path = os.path.join(core.config.main_cfg["data"]["path"], dot_file_name)
+    path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
     obj.export_graphviz(path)
     s = Source.from_file(path)
     s.view()
