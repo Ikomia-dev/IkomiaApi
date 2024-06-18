@@ -25,10 +25,10 @@ from urllib.parse import urlparse
 from typing import Optional, Union
 import numpy as np
 from ikomia import utils
-from ikomia.core import config, IODataType, CWorkflowTask, CWorkflowTaskIO, auth
+from ikomia.core import config, IODataType, CWorkflowTask, CWorkflowTaskIO, auth  # pylint: disable=E0611
 from ikomia.core.task import conform_parameters, get_output
-from ikomia.dataio import CDataImageIO, CDataVideoIO
-from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO
+from ikomia.dataio import CDataImageIO, CDataVideoIO  # pylint: disable=E0611
+from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO  # pylint: disable=E0611
 from ikomia.dataprocess.registry import IkomiaRegistry, ik_registry
 
 
@@ -51,11 +51,15 @@ class Workflow(CWorkflow):
         SINGLE = 1
         DIRECTORY = 2
 
-    def __init__(self, name: str ="Untitled", registry: IkomiaRegistry = ik_registry):
+    def __init__(self, name: str = "Untitled", registry: IkomiaRegistry = ik_registry):
         """
         Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
         object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
         you are able to use any Ikomia algorithms (built-in and Ikomia HUB) in your workflow.
+
+        Args:
+            name (str): workflow name
+            registry (IkomiaRegistry): Ikomia algorithm registry, default: global Ikomia registry
         """
         if registry is None:
             CWorkflow.__init__(self, name)
@@ -74,6 +78,9 @@ class Workflow(CWorkflow):
     def root(self):
         """
         Get workflow root node.
+
+        Returns:
+            CWorkflowTask: root task instance
         """
         return self.get_task(self.get_root_id())
 
@@ -202,7 +209,7 @@ class Workflow(CWorkflow):
         except RuntimeError as e:
             available_params = self.get_exposed_parameters()
             logger.error(e)
-            logger.error(f"Available parameters: {available_params}")
+            logger.error("Available parameters: %s", available_params)
 
     def get_time_metrics(self) -> dict:
         """
@@ -222,8 +229,8 @@ class Workflow(CWorkflow):
 
         return metrics
 
-    def get_task_output(self, task_obj=None, task_name: str = "", task_index: int = 0, types: list = [IODataType.IMAGE],
-                        output_index: int = -1) -> CWorkflowTaskIO:
+    def get_task_output(self, task_obj = None, task_name: str = "", task_index: int = 0,
+                        types: list = [IODataType.IMAGE], output_index: int = -1) -> CWorkflowTaskIO:
         """
         Get specific output(s) defined by their types (:py:class:`~ikomia.core.PyCore.IODataType`) for the given task.
 
@@ -298,7 +305,7 @@ class Workflow(CWorkflow):
         """
         return self.get_exposed_parameters()
 
-    def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = None, auto_connect: bool=False,
+    def add_task(self, task: CWorkflowTask = None, name: str = "", params: dict = None, auto_connect: bool = False,
                  public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
@@ -306,8 +313,12 @@ class Workflow(CWorkflow):
         :py:meth:`get_task_id`.
 
         Args:
+            task (CWorkflowTask): algorithm instance
             name (str): algorithm unique name
-            param (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object): algorithm parameters
+            params (:py:class:`~ikomia.core.pycore.CWorkflowTaskParam` based object): algorithm parameters
+            auto_connect (bool): True to connect with parent tasks automatically
+            public_hub (bool): True if algorithm can be installed from Ikomia HUB
+            private_hub (bool): True if algorithm can be installed from private HUB
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` based object: task instance
@@ -429,9 +440,9 @@ class Workflow(CWorkflow):
             self._run_directory()
             time_stop = datetime.datetime.now()
             total_time = (time_stop - time_start).total_seconds() * 1000
-            logger.info(f"Workflow output data are saved in {self.get_last_run_folder()}")
+            logger.info("Workflow output data are saved in %s", self.get_last_run_folder())
 
-        logger.info(f"Workflow {self.name} run successfully in {total_time} ms.")
+        logger.info("Workflow %s run successfully in %s ms.", self.name, total_time)
 
     def run_on(self, array: np.ndarray = None, path: str = "", url: str = "", folder: str = ""):
         """
@@ -577,7 +588,7 @@ class Workflow(CWorkflow):
                             self.set_video_input(path=file_path, index=i)
                             self.set_cfg_entry("WholeVideo", str(int(True)))
                         else:
-                            logger.warning(f"Skipping file {file} as it is neither a supported image or video.")
+                            logger.warning("Skipping file %s as it is neither a supported image or video.", file)
                             continue
 
                         try:
@@ -703,6 +714,9 @@ def create(name: str = "untitled"):
 
     Args:
         name (str): workflow name.
+
+    Returns:
+        Workflow: workflow instance
     """
     return Workflow(name, ik_registry)
 
@@ -722,27 +736,26 @@ def load(path: str) -> Workflow:
     return wf
 
 
-def prepare_runtime_env(workflow_path:str):
+def prepare_runtime_env(workflow_path: str):
     """
     Install all algorithms needed to execute the workflow stored at the given path.
     If algorithms are not locally installed, the function will try to install them
     from Ikomia HUB (public and private if authenticated).
+
+    Args:
+        workflow_path (str): path to workflow definition file (.json)
     """
     wf = Workflow()
     tasks = wf.get_required_tasks(workflow_path)
     available_tasks = ik_registry.get_algorithms()
-
-    if auth.ik_api_session.is_authenticated():
-        private_hub = True
-    else:
-        private_hub = False
+    private_hub = bool(auth.ik_api_session.is_authenticated())
 
     for t in tasks:
         if t not in available_tasks:
             try:
                 ik_registry.create_algorithm(name=t, public_hub=True, private_hub=private_hub)
             except Exception as e:
-                raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}")
+                raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}") from e
 
 
 def install_requirements(path: str) -> bool:
@@ -751,7 +764,7 @@ def install_requirements(path: str) -> bool:
     Algorithms must be installed locally before calling this function.
 
     Args:
-        path (str)
+        path (str): path to workflow definition file (.json)
 
     Returns:
         True if all installations succeeded else False
@@ -760,6 +773,7 @@ def install_requirements(path: str) -> bool:
     tasks = wf.get_required_tasks(path)
     available_tasks = ik_registry.get_algorithms()
     plugins_directory = ik_registry.get_plugins_directory()
+
     for t in tasks:
         if t not in available_tasks:
             plugin_dir = os.path.join(plugins_directory, "Python", t)

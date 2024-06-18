@@ -25,7 +25,7 @@ from ikomia import utils
 load_dotenv()
 
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
-with open(config_path, "r") as f:
+with open(config_path, "r", encoding="utf-8") as f:
     main_cfg = yaml.safe_load(f)
 
     # Ikomia root folder

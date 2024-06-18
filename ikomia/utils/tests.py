@@ -18,17 +18,20 @@ The module tests provides features to ease test automation of Ikomia algorithms.
 import os
 import traceback
 import logging
-from ikomia import core
+from ikomia.core import CWorkflowTask  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
 
 
-def run_for_test(t: core.CWorkflowTask) -> tuple:
+def run_for_test(t: CWorkflowTask) -> tuple:
     """
     Test run() function for the given task.
 
     Args:
          t (CWorkflowTask): task (ie algorithm) to test
+
+    Returns:
+        tuple: (task parameters, status)
     """
     logger.info("Running once...")
     try:

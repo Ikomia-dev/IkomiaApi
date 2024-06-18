@@ -89,7 +89,7 @@ class LoginSession:
 
     def _create_token(self, ttl: int = 3600):
         url = config.main_cfg["hub"]["url"] + "/v1/users/me/tokens/"
-        data =  {"name": "Ikomia API token", "ttl": ttl}
+        data = {"name": "Ikomia API token", "ttl": ttl}
         r = self.session.post(url, json=data, auth=HTTPBasicAuth(self.username, self.password))
         r.raise_for_status()
         json_response = r.json()

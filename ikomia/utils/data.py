@@ -47,7 +47,7 @@ class NumpyImage:
         Set image dimensions order.
 
         Args:
-            dimensions order (tuple)
+            dims (tuple): dimensions order
         """
         self.data = np.transpose(self.data, dims)
 

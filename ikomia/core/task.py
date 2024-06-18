@@ -18,8 +18,8 @@ Module dedicated to high-level features around task management.
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
 import logging
-from ikomia.core import CWorkflowTaskParam, CWorkflowTask
-from ikomia.dataprocess import CWorkflowTaskIO
+from ikomia.core import CWorkflowTaskParam, CWorkflowTask  # pylint: disable=E0611
+from ikomia.dataprocess import CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 
 logger = logging.getLogger(__name__)
@@ -42,6 +42,9 @@ class TaskParam(CWorkflowTaskParam):
     def get_values(self) -> dict:
         """
         Return parameters for saving in Ikomia Studio.
+
+        Returns:
+            dict: parameters as key-value pairs
         """
         param_map = {}
         for key, value in self.cfg.items():
@@ -52,6 +55,9 @@ class TaskParam(CWorkflowTaskParam):
     def set_values(self, params: dict):
         """
         Generic way to set parameters of CWorkflowTask-based object. Must be reimplemented.
+
+        Args:
+            params (dict): parameters as key-value pairs
         """
         raise NotImplementedError
 
@@ -112,6 +118,9 @@ def conform_parameters(params: dict) -> dict:
 
     Args:
         params (dict): parameters as key-value pairs
+
+    Returns:
+        dict: conformed parameters with string values
     """
     valid_params = {}
     for key in params:

@@ -22,7 +22,7 @@ def check_mlflow_server():
         url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
         r = requests.get(url, timeout=5)
         r.raise_for_status()
-        logger.info(f"MLflow server is started at {config.main_cfg['mlflow']['tracking_uri']}")
+        logger.info("MLflow server is started at %s", config.main_cfg['mlflow']['tracking_uri'])
     except Exception:
         # Start server if needed
         if sys.platform == "win32":
@@ -43,7 +43,7 @@ def check_mlflow_server():
                                  "--host", "0.0.0.0"])
         poll = proc.poll()
         if poll is None:
-            logger.info(f"MLflow server started successfully at {config.main_cfg['mlflow']['tracking_uri']}")
+            logger.info("MLflow server started successfully at %s", config.main_cfg['mlflow']['tracking_uri'])
 
     colab = is_colab()
     if colab:
@@ -60,7 +60,7 @@ def check_mlflow_server():
             ngrok.set_auth_token(token)
             # Open an HTTPs tunnel on port 5000 for http://localhost:5000
             ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
-            logger.info(f"MLflow Tracking UI: {ngrok_tunnel.public_url}")
+            logger.info("MLflow Tracking UI: %s", ngrok_tunnel.public_url)
         except Exception:
             logger.error("MLflow dashboard won't be accessible. You need to install pyngrok before starting your "
                          "training workflow: !pip install pyngrok. You also need a free ngrok account at least.")
@@ -80,7 +80,7 @@ def check_tensorboard_server():
     try:
         r = requests.get(url, timeout=5)
         r.raise_for_status()
-        logger.info(f"Tensorboard server is started at {config.main_cfg['tensorboard']['tracking_uri']}")
+        logger.info("Tensorboard server is started at %s", config.main_cfg['tensorboard']['tracking_uri'])
     except Exception:
         # Start server if needed
         logger.info("Starting Tensorboard server...")
@@ -99,5 +99,5 @@ def check_tensorboard_server():
             adapter = HTTPAdapter(max_retries=retry)
             session.mount("http://", adapter)
             session.mount("https://", adapter)
-            r = session.get(url)
-            logger.info(f"Tensorboard server started successfully at {config.main_cfg['tensorboard']['tracking_uri']}")
+            session.get(url)
+            logger.info("Tensorboard server started successfully at %s", config.main_cfg['tensorboard']['tracking_uri'])

@@ -19,8 +19,8 @@ import logging
 from typing import Optional
 from datetime import datetime
 import mlflow
-from ikomia.core import config, CWorkflowTaskParam
-from ikomia.dataprocess import CDnnTrainTask
+from ikomia.core import config, CWorkflowTaskParam  # pylint: disable=E0611
+from ikomia.dataprocess import CDnnTrainTask  # pylint: disable=E0611
 from ikomia.dnn import datasetio, monitoring
 
 

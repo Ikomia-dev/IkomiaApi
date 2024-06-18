@@ -29,10 +29,12 @@ from datetime import datetime
 from typing import Union, Callable
 from collections import defaultdict
 import semver
-from ikomia import utils
-from ikomia.utils import http, plugintools, ApiLanguage
-from ikomia.core import config, CWorkflowTaskParam, CWorkflowTask, auth
-from ikomia.dataprocess import CIkomiaRegistry
+from ikomia.utils import (  # pylint: disable=E0611
+    http, plugintools, ApiLanguage, get_compatibility_state, PluginState,
+    get_cpu_arch_name, get_cpu_arch, get_cuda_version
+)
+from ikomia.core import config, CWorkflowTaskParam, CWorkflowTask, auth  # pylint: disable=E0611
+from ikomia.dataprocess import CIkomiaRegistry  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +97,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return self.public_online_algos
 
-    def get_private_hub_algorithms(self, force:bool=False) -> list:
+    def get_private_hub_algorithms(self, force: bool = False) -> list:
         """
         Get the list of available algorithms from private Ikomia HUB (authentication required).
         Each algorithm is identified by a unique name.
@@ -148,7 +150,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return pagination_data["results"]
 
-    def create_algorithm(self, name:str, parameters: CWorkflowTaskParam = None,
+    def create_algorithm(self, name: str, parameters: CWorkflowTaskParam = None,
                          public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
@@ -187,17 +189,17 @@ class IkomiaRegistry(CIkomiaRegistry):
 
                 if (public_hub or private_hub) and not algo_dir:
                     # Algorithm is not installed, so try to install it from HUB
-                    logger.warning(f"Try installing {name} from Ikomia HUB...")
+                    logger.warning("Try installing %s from Ikomia HUB...", private_hub)
                     self.install_algorithm(name, public_hub, private_hub)
                     algo = self.create_instance(name, parameters)
                 else:
                     # If algorithm is installed locally but not functional (algo_dir is not empty), it may be a plugin
                     # in developpement and we should not overwrite it with the Ikomia Hub version
-                    raise RuntimeError(f"Algorithm {name} is installed locally but not functional: {e}")
+                    raise RuntimeError(f"Algorithm {name} is installed locally but not functional: {e}") from e
 
         return algo
 
-    def update_algorithms(self, public_hub:bool=True, private_hub:bool=False):
+    def update_algorithms(self, public_hub: bool = True, private_hub: bool = False):
         """
         Launch automatic update of all algorithms in the registry. It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
@@ -215,9 +217,9 @@ class IkomiaRegistry(CIkomiaRegistry):
                 self.update_algorithm(algo, public_hub, private_hub)
                 algo_count += 1
 
-        logger.info(f"{algo_count} algorithms have been updated successfully")
+        logger.info("%s algorithms have been updated successfully", algo_count)
 
-    def update_algorithm(self, name:str, public_hub:bool=True, private_hub:bool=False):
+    def update_algorithm(self, name: str, public_hub: bool = True, private_hub: bool = False):
         """
         Launch update of the given algorithm. It only concerns algorithms from Ikomia HUB. In case where algorithm name
         is both available in public and private HUBs, you should set parameters public_hub and private_hub to
@@ -238,7 +240,7 @@ class IkomiaRegistry(CIkomiaRegistry):
                 algo_dir, language = self._get_algorithm_directory(name)
                 self._load_algorithm(name, algo_dir, language)
             except Exception:
-                logger.error(f"Algorithm {name} can't be updated as it is not installed.")
+                logger.error("Algorithm %s can't be updated as it is not installed.", name)
                 return
 
         if public_hub:
@@ -247,7 +249,7 @@ class IkomiaRegistry(CIkomiaRegistry):
                 if self._has_to_be_updated(name, hub_algo):
                     self.install_algorithm(name, force=True, public_hub=True, private_hub=False)
                 else:
-                    logger.info(f"Algorithm {name} is already up to date")
+                    logger.info("Algorithm %s is already up to date", name)
                 return
 
         if private_hub:
@@ -256,12 +258,12 @@ class IkomiaRegistry(CIkomiaRegistry):
                 if self._has_to_be_updated(name, hub_algo):
                     self.install_algorithm(name, force=True, public_hub=False, private_hub=True)
                 else:
-                    logger.info(f"Algorithm {name} is already up to date")
+                    logger.info("Algorithm %s is already up to date", name)
                 return
 
         raise RuntimeError(f"Algorithm {name} does not exist in Ikomia HUB")
 
-    def _has_to_be_updated(self, name:str, hub_info: dict) -> bool:
+    def _has_to_be_updated(self, name: str, hub_info: dict) -> bool:
         local_info = self.get_algorithm_info(name)
         current_version = semver.Version.parse(local_info.version)
 
@@ -290,7 +292,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return None
 
-    def install_algorithm(self, name:str, public_hub: bool = True, private_hub: bool = False, force:bool=False):
+    def install_algorithm(self, name: str, public_hub: bool = True, private_hub: bool = False, force: bool = False):
         """
         Launch algorithm installation from Ikomia HUB given its unique name.
 
@@ -305,7 +307,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         if name in available_algos:
             if not force:
-                logger.info(f"Skip installation of {name} as it is already installed.")
+                logger.info("Skip installation of %s as it is already installed.", name)
                 return
 
             update = True
@@ -314,15 +316,15 @@ class IkomiaRegistry(CIkomiaRegistry):
         plugin, language, algo_dir = self._download_algorithm(name, public_hub, private_hub)
 
         # Install requirements
-        logger.info(f"Installing {name} requirements. This may take a while, please be patient...")
+        logger.info("Installing %s requirements. This may take a while, please be patient...", name)
         plugintools.install_requirements(algo_dir)
         self._check_installed_modules(algo_dir)
 
         # Load it
         self._load_algorithm(name, algo_dir, language)
         if language == ApiLanguage.CPP and update:
-            logger.warning(f"C++ algorithm {plugin['name']} can't be reloaded at runtime. "
-                           f"It will be updated on next start.")
+            logger.warning("C++ algorithm %s can't be reloaded at runtime. It will be updated on next start.",
+                           plugin['name'])
 
         self._notify_event("algorithm_changed", name)
 
@@ -331,7 +333,7 @@ class IkomiaRegistry(CIkomiaRegistry):
             for func in self.callbacks[event]:
                 func(*args, **kwargs)
 
-    def _get_algorithm_directory(self, name:str) -> tuple:
+    def _get_algorithm_directory(self, name: str) -> tuple:
         # C++ or Python algorithm?
         cpp_algo_dir = os.path.join(self.get_plugins_directory(), "C++", name)
         python_algo_dir = os.path.join(self.get_plugins_directory(), "Python", name)
@@ -344,7 +346,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return "", None
 
-    def _load_algorithm(self, name:str, directory:str, language:ApiLanguage):
+    def _load_algorithm(self, name: str, directory: str, language:ApiLanguage):
         if not os.path.isdir(directory):
             raise RuntimeError(f"Algorithm {name} is not installed.")
 
@@ -355,7 +357,7 @@ class IkomiaRegistry(CIkomiaRegistry):
         else:
             raise RuntimeError(f"Unsupported language for algorithm {name}.")
 
-    def _download_algorithm(self, name:str, public_hub: bool = True, private_hub: bool = False):
+    def _download_algorithm(self, name: str, public_hub: bool = True, private_hub: bool = False):
         algo_info = None
 
         if public_hub:
@@ -367,7 +369,7 @@ class IkomiaRegistry(CIkomiaRegistry):
                 private_algos = self.get_private_hub_algorithms()
                 algo_info = self._find_hub_algo(name, private_algos)
             except Exception as e:
-                raise RuntimeError(f"Failed to search for {name} algorithm in private Ikomia HUB for the following reason: {e}")
+                raise RuntimeError(f"Failed to find {name} algorithm in private Ikomia HUB: {e}") from e
 
         if algo_info is None:
             error_msg = f"Algorithm {name} does not exist in Ikomia HUB or is not compatible with your environment."
@@ -383,7 +385,7 @@ class IkomiaRegistry(CIkomiaRegistry):
         try:
             http.download_file(f"{package_url}download/", file_path, auth.ik_api_session)
         except Exception as e:
-            raise RuntimeError(f"Failed to download algorithm {name} for the following reason: {e}")
+            raise RuntimeError(f"Failed to download algorithm {name}: {e}") from e
 
         # Unzip
         language = ApiLanguage.PYTHON if algo_info["language"] == "PYTHON" else ApiLanguage.CPP
@@ -405,6 +407,12 @@ class IkomiaRegistry(CIkomiaRegistry):
         """
         At this point, plugins are already filtered to ensure compatibility.
         So for now, we just want to pick the latest version
+
+        Args:
+            packages (list): list of candidate packages
+
+        Returns:
+            str: URL of best fit package
         """
         url = None
         last_version = semver.Version.parse("0.0.0")
@@ -462,8 +470,8 @@ class IkomiaRegistry(CIkomiaRegistry):
     def _check_ikomia_compatibility(package: dict, language: ApiLanguage) -> bool:
         ikomia_condition = package["platform"]["ikomia"]
         min_version, max_version = IkomiaRegistry._split_min_max_version(ikomia_condition)
-        state = utils.get_compatibility_state(min_version, max_version, language)
-        return state == utils.PluginState.VALID
+        state = get_compatibility_state(min_version, max_version, language)
+        return state == PluginState.VALID
 
     @staticmethod
     def _check_python_compatibility(package: dict) -> bool:
@@ -487,14 +495,14 @@ class IkomiaRegistry(CIkomiaRegistry):
         if language == ApiLanguage.CPP:
             # TODO: test it!
             # Check CPU architecture
-            current_arch = utils.get_cpu_arch_name(utils.get_cpu_arch())
+            current_arch = get_cpu_arch_name(get_cpu_arch())
             compatible_arch_list = package["platform"]["architecture"]
 
             if current_arch not in compatible_arch_list:
                 return False
 
             # Check features: CUDA version
-            current_features = utils.get_cuda_version()
+            current_features = get_cuda_version()
             compatible_features = package["platform"]["features"]
 
             for feat in current_features:
@@ -505,7 +513,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return True
 
-    def _check_installed_modules(self, algo_dir:str):
+    def _check_installed_modules(self, algo_dir: str):
         modules = plugintools.get_installed_modules()
 
         # Uninstall blacklisted packages (conflicting with already bundle packages in Ikomia API)
@@ -526,7 +534,7 @@ class IkomiaRegistry(CIkomiaRegistry):
         # Remove plugin specific blacklisted packages
         needless_path = os.path.join(algo_dir, "needless.txt")
         if os.path.exists(needless_path):
-            with open(needless_path, "r") as f:
+            with open(needless_path, "r", encoding="utf-8") as f:
                 for line in f:
                     plugintools.uninstall_package(line.rstrip())
 

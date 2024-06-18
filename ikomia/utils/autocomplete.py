@@ -27,7 +27,7 @@ import importlib
 import sys
 import time
 from ikomia import utils
-from ikomia.core import CWorkflowTask
+from ikomia.core import CWorkflowTask  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 
 try:
@@ -40,6 +40,9 @@ logger = logging.getLogger(__name__)
 
 
 class AutoComplete:
+    """
+    Generation of auto-completion module.
+    """
     def __init__(self):
         self.registry = ik_registry
         self.registry.register_event_callback("algorithm_changed", self.update_local_plugin)
@@ -118,19 +121,19 @@ class AutoComplete:
 
     def _generate_python_file(self, folder: str):
         ik_file_path = os.path.join(folder, "ik.py")
-        with open(ik_file_path, 'w+') as f:
+        with open(ik_file_path, 'w+', encoding="utf-8") as f:
             # Imports
             f.write("from ikomia.dataprocess.registry import ik_registry\n\n")
 
             # Class definitions from cache files
             cache_file_path = os.path.join(folder, "autocomplete_local.cache")
             if os.path.isfile(cache_file_path):
-                with open(cache_file_path, "r") as f_cache:
+                with open(cache_file_path, "r", encoding="utf-8") as f_cache:
                     shutil.copyfileobj(f_cache, f)
 
             cache_file_path = os.path.join(folder, "autocomplete_online.cache")
             if os.path.isfile(cache_file_path):
-                with open(cache_file_path, "r") as f_cache:
+                with open(cache_file_path, "r", encoding="utf-8") as f_cache:
                     shutil.copyfileobj(f_cache, f)
 
         # Reload module
@@ -271,13 +274,13 @@ class AutoComplete:
         try:
             folder = os.path.dirname(__file__)
             cache_file_path1 = os.path.join(folder, cache_name)
-            f = open(cache_file_path1, "w+")
+            f = open(cache_file_path1, "w+", encoding="utf-8")
         except Exception:
             try:
                 folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
                 cache_file_path2 = os.path.join(folder, cache_name)
                 os.makedirs(folder, exist_ok=True)
-                f = open(cache_file_path2, "w+")
+                f = open(cache_file_path2, "w+", encoding="utf-8")
             except Exception:
                 logger.warning("Ikomia auto-completion is disable")
                 return
@@ -332,12 +335,12 @@ class AutoComplete:
             try:
                 folder = os.path.dirname(__file__)
                 cache_file_path1 = os.path.join(folder, cache_name)
-                f = open(cache_file_path1, "a+")
+                f = open(cache_file_path1, "a+", encoding="utf-8")
             except Exception:
                 try:
                     folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
                     cache_file_path2 = os.path.join(folder, cache_name)
-                    f = open(cache_file_path2, "a+")
+                    f = open(cache_file_path2, "a+", encoding="utf-8")
                 except Exception:
                     logger.warning("Ikomia auto-completion is disable: no update.")
 
@@ -371,13 +374,13 @@ class AutoComplete:
         try:
             folder = os.path.dirname(__file__)
             cache_file_path1 = os.path.join(folder, cache_name)
-            f = open(cache_file_path1, "w+")
+            f = open(cache_file_path1, "w+", encoding="utf-8")
         except Exception:
             try:
                 folder = os.path.join(site.getusersitepackages(), "ikomia", "utils")
                 cache_file_path2 = os.path.join(folder, cache_name)
                 os.makedirs(folder, exist_ok=True)
-                f = open(cache_file_path2, "w+")
+                f = open(cache_file_path2, "w+", encoding="utf-8")
             except Exception:
                 logger.warning("Ikomia auto-completion is disable")
 

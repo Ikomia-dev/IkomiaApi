@@ -48,9 +48,9 @@ def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretraine
 
     Args:
         model_name (str): model name
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
-        feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
+        feature_extract (bool): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
         classes (int): number of classes in the dataset
 
     Returns:
@@ -93,9 +93,9 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
 
     Args:
         model_name (str): model name
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
-        feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
+        feature_extract (bool): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
         classes (int): number of classes in the dataset
 
     Returns:
@@ -103,7 +103,7 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
     """
     model_ft = None
 
-    if model_name =='resnext50':
+    if model_name == 'resnext50':
         model_ft = models.resnext50_32x4d(pretrained=use_pretrained)
     elif model_name == 'resnext101':
         model_ft = models.resnext101_32x8d(pretrained=use_pretrained)
@@ -127,12 +127,12 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
 
 def mnasnet(train_mode: bool = False, use_pretrained: bool = False, feature_extract: bool = False, classes: int = 2):
     """
-    Create Torchvision MnasNet model for training or inference.
+    Create Torchvision MNasNet model for training or inference.
 
     Args:
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
-        feature_extract (boolean): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
+        feature_extract (bool): transfer learning only, True to keep pre-trained features (train last layers only), False to train all layers
         classes (int): number of classes in the dataset
 
     Returns:
@@ -160,8 +160,8 @@ def faster_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_siz
     Create Torchvision Faster RCNN model for training or inference.
 
     Args:
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
         classes (int): number of classes in the dataset
 

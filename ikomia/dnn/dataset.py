@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from PIL import Image
 import numpy as np
-from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion
+from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion  # pylint: disable=E0611
 import cv2
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,7 @@ def load_via_dataset(path: str) -> dict:
     Returns:
         dict: Ikomia dataset structure. See :py:class:`~ikomia.dnn.datasetio.IkDatasetIO`.
     """
-    with open(path) as fp:
+    with open(path, encoding="utf-8") as fp:
         raw_data = json.load(fp)
 
     data = {"images": [], "metadata": {}}
@@ -142,7 +142,7 @@ def read_class_names(txt_path: str) -> list:
     Returns:
         str[]: list of class names
     """
-    with open(txt_path, 'rt') as f:
+    with open(txt_path, 'rt', encoding="utf-8") as f:
         classes = f.read().rstrip('\n').split('\n')
 
     return classes
@@ -161,7 +161,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     the image size.
 
     Args:
-        path (str): path to the dataset folder (image + text files)
+        folder_path (str): path to the dataset folder (image + text files)
         class_path (str): path the text file containing all class names
 
     Returns:
@@ -181,7 +181,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
             continue
 
         lines = []
-        with open(root + os.sep + file, "rt") as f:
+        with open(root + os.sep + file, "rt", encoding="utf-8") as f:
             lines = f.readlines()
 
         # No annotation, skip image
@@ -257,7 +257,7 @@ def ann_to_rle(img: np.ndarray, ann: dict) -> np.ndarray:
         img (numpy.ndarray): image from which annotations come
         ann (dict): annotations to compress to RLE
 
-    Return:
+    Returns:
         binary mask (numpy 2D array)
     """
     h, w = img['height'], img['width']
@@ -288,7 +288,7 @@ def load_coco_dataset(path: str, image_folder: str,
         path (str): path to the JSON annotation file
         image_folder (str): path to the image folder
         task (str): task of the dataset, must be one of the following "detection", "instance_segmentation",
-        "semantic_segmentation" or "keypoints"
+            "semantic_segmentation" or "keypoints"
         output_folder (str): path to output folder only for semantic segmentation
 
     Returns:
@@ -299,12 +299,12 @@ def load_coco_dataset(path: str, image_folder: str,
     sem_seg = task == "semantic_segmentation"
     keypoints = task == "keypoints"
 
-    assert not(sem_seg) or output_folder != "", "Output folder must be set when task is semantic segmentation"
+    assert not sem_seg or output_folder != "", "Output folder must be set when task is semantic segmentation"
 
     if not image_folder.endswith("/"):
         image_folder += "/"
 
-    with open(path, "r") as fp:
+    with open(path, "r", encoding="utf-8") as fp:
         dataset = json.load(fp)
         img_to_anns = defaultdict(list)
         data["metadata"] = {}

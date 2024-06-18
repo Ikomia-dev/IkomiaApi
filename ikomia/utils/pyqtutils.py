@@ -18,8 +18,11 @@ your own task widget. It uses the PyQt5 framework.
 """
 
 from typing import Optional
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from PyQt5.QtWidgets import (  # pylint: disable=E0611
+    QWidget, QLineEdit, QFileDialog, QPushButton, QHBoxLayout, QDialog, QLabel, QComboBox, QSpinBox, QDoubleSpinBox,
+    QCheckBox, QRadioButton, QSlider
+)
+from PyQt5.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
 
 
 class BrowseFileWidget(QWidget):
@@ -77,6 +80,9 @@ class BrowseFileWidget(QWidget):
     def show_select_file_dlg(self):
         """
         Show file selection dialog.
+
+        Returns:
+            str: selected file path
         """
         path = ""
         file_dialog = QFileDialog()

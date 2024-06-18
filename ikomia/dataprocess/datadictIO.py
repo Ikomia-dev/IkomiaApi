@@ -16,7 +16,7 @@
 Module providing Ikomia workflow I/O implementation for data stored as Python dict.
 """
 import json
-from ikomia.core import CWorkflowTaskIO, IODataType
+from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
 
 
 class DataDictIO(CWorkflowTaskIO):
@@ -42,7 +42,7 @@ class DataDictIO(CWorkflowTaskIO):
         """
         Check whether the dataset structure contains data.
 
-        Return:
+        Returns:
             boolean: True or False
         """
         return len(self.data) > 0
@@ -54,7 +54,7 @@ class DataDictIO(CWorkflowTaskIO):
         Args:
             path (str): file path where data is saved
         """
-        with open(path, "w") as outfile:
+        with open(path, "w", encoding="utf-8") as outfile:
             json.dump(self.data, outfile)
 
     def load(self, path: str):
@@ -64,7 +64,7 @@ class DataDictIO(CWorkflowTaskIO):
         Args:
             path (str): file path where dataset is saved
         """
-        with open(path, "r") as infile:
+        with open(path, "r", encoding="utf-8") as infile:
             self.data = json.load(infile)
 
     def to_json(self, options: list = None) -> str:

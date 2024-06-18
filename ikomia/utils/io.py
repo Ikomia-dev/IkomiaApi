@@ -1,9 +1,12 @@
 """
 The module io provides helper functions to manage workflow I/O of Ikomia API.
 """
-from ikomia import dataprocess
-from ikomia.core import IODataType, CWorkflowTaskIO
+from ikomia.core import IODataType, CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dnn.datasetio import IkDatasetIO
+from ikomia.dataprocess import (  # pylint: disable=E0611
+    CImageIO, CVideoIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CWidgetOutput, CPathIO,
+    CArrayIO, CObjectDetectionIO, CInstanceSegmentationIO, CSemanticSegmentationIO, CKeypointsIO, CTextIO
+)
 from ikomia.dataprocess.datadictIO import DataDictIO
 
 
@@ -14,7 +17,7 @@ def get_io_type_from_string(type_str: str) -> IODataType:
     Args:
         type_str (str): string representation of enum field
 
-    Return:
+    Returns:
         IODataType enum value (:py:class:`~ikomia.core.pycore.IODataType`)
     """
     if type_str == "IODataType.IMAGE":
@@ -91,61 +94,61 @@ def create_task_io(io_type: IODataType) -> CWorkflowTaskIO:
     """
     # TODO: use match syntax when minimum Python version will be 3.10
     if io_type == IODataType.IMAGE:
-        io = dataprocess.CImageIO(IODataType.IMAGE)
+        io = CImageIO(IODataType.IMAGE)
     elif io_type == IODataType.IMAGE_BINARY:
-        io = dataprocess.CImageIO(IODataType.IMAGE_BINARY)
+        io = CImageIO(IODataType.IMAGE_BINARY)
     elif io_type == IODataType.IMAGE_LABEL:
-        io = dataprocess.CImageIO(IODataType.IMAGE_LABEL)
+        io = CImageIO(IODataType.IMAGE_LABEL)
     elif io_type == IODataType.VOLUME:
-        io = dataprocess.CImageIO(IODataType.VOLUME)
+        io = CImageIO(IODataType.VOLUME)
     elif io_type == IODataType.VOLUME_BINARY:
-        io = dataprocess.CImageIO(IODataType.VOLUME_BINARY)
+        io = CImageIO(IODataType.VOLUME_BINARY)
     elif io_type == IODataType.VOLUME_LABEL:
-        io = dataprocess.CImageIO(IODataType.VOLUME_LABEL)
+        io = CImageIO(IODataType.VOLUME_LABEL)
     elif io_type == IODataType.VIDEO:
-        io = dataprocess.CVideoIO(IODataType.VIDEO)
+        io = CVideoIO(IODataType.VIDEO)
     elif io_type == IODataType.VIDEO_BINARY:
-        io = dataprocess.CVideoIO(IODataType.VIDEO_BINARY)
+        io = CVideoIO(IODataType.VIDEO_BINARY)
     elif io_type == IODataType.VIDEO_LABEL:
-        io = dataprocess.CVideoIO(IODataType.VIDEO_LABEL)
+        io = CVideoIO(IODataType.VIDEO_LABEL)
     elif io_type == IODataType.LIVE_STREAM:
-        io = dataprocess.CVideoIO(IODataType.LIVE_STREAM)
+        io = CVideoIO(IODataType.LIVE_STREAM)
     elif io_type == IODataType.LIVE_STREAM_BINARY:
-        io = dataprocess.CVideoIO(IODataType.LIVE_STREAM_BINARY)
+        io = CVideoIO(IODataType.LIVE_STREAM_BINARY)
     elif io_type == IODataType.LIVE_STREAM_LABEL:
-        io = dataprocess.CVideoIO(IODataType.LIVE_STREAM_LABEL)
+        io = CVideoIO(IODataType.LIVE_STREAM_LABEL)
     elif io_type == IODataType.INPUT_GRAPHICS:
-        io = dataprocess.CGraphicsInput()
+        io = CGraphicsInput()
     elif io_type == IODataType.OUTPUT_GRAPHICS:
-        io = dataprocess.CGraphicsOutput()
+        io = CGraphicsOutput()
     elif io_type == IODataType.NUMERIC_VALUES:
-        io = dataprocess.CNumericIO()
+        io = CNumericIO()
     elif io_type == IODataType.BLOB_VALUES:
-        io = dataprocess.CBlobMeasureIO()
+        io = CBlobMeasureIO()
     elif io_type == IODataType.DESCRIPTORS:
-        io = dataprocess.CImageIO(IODataType.DESCRIPTORS)
+        io = CImageIO(IODataType.DESCRIPTORS)
     elif io_type == IODataType.WIDGET:
-        io = dataprocess.CWidgetOutput()
+        io = CWidgetOutput()
     elif io_type == IODataType.FOLDER_PATH:
-        io = dataprocess.CPathIO(IODataType.FOLDER_PATH)
+        io = CPathIO(IODataType.FOLDER_PATH)
     elif io_type == IODataType.FILE_PATH:
-        io = dataprocess.CPathIO(IODataType.FILE_PATH)
+        io = CPathIO(IODataType.FILE_PATH)
     elif io_type == IODataType.DNN_DATASET:
         io = IkDatasetIO()
     elif io_type == IODataType.ARRAY:
-        io = dataprocess.CArrayIO()
+        io = CArrayIO()
     elif io_type == IODataType.DATA_DICT:
         io = DataDictIO()
     elif io_type == IODataType.OBJECT_DETECTION:
-        io = dataprocess.CObjectDetectionIO()
+        io = CObjectDetectionIO()
     elif io_type == IODataType.INSTANCE_SEGMENTATION:
-        io = dataprocess.CInstanceSegmentationIO()
+        io = CInstanceSegmentationIO()
     elif io_type == IODataType.SEMANTIC_SEGMENTATION:
-        io = dataprocess.CSemanticSegmentationIO()
+        io = CSemanticSegmentationIO()
     elif io_type == IODataType.KEYPOINTS:
-        io = dataprocess.CKeypointDetectionIO()
+        io = CKeypointsIO()
     elif io_type == IODataType.TEXT:
-        io = dataprocess.CTextIO()
+        io = CTextIO()
     else:
         raise TypeError(f"Unable to create I/O object for the given type {io_type}.")
 

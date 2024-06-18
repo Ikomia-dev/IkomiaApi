@@ -21,13 +21,11 @@ def PyQtToQt(pyqt_widget):
     """
     Wraps PyQt widget instance to C++ Qt
 
-    Parameters
-    ----------
-    pyqt_widget : instance of the PyQt object
+    Args:
+        pyqt_widget (QWidget) : instance of the PyQt object
 
-    Returns
-    -------
-    C++ wrapper instance
+    Returns:
+        QWidget*: C++ wrapper instance
     """
     import sip
     return sip.unwrapinstance(pyqt_widget)
@@ -37,13 +35,11 @@ def PySideToQt(pyside_widget):
     """
     Wraps PySide2 widget instance to C++ Qt
 
-    Parameters
-    ----------
-    pyqt_widget : instance of the PyQt object
+    Args:
+        pyqt_widget : instance of the PyQt object
 
-    Returns
-    -------
-    C++ wrapper instance
+    Returns:
+        QWidget*: C++ wrapper instance
     """
     import shiboken2
     return shiboken2.getCppPointer(pyside_widget)[0]
