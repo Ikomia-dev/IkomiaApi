@@ -189,7 +189,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
                 if (public_hub or private_hub) and not algo_dir:
                     # Algorithm is not installed, so try to install it from HUB
-                    logger.warning("Try installing %s from Ikomia HUB...", private_hub)
+                    logger.warning("Try installing %s from Ikomia HUB...", name)
                     self.install_algorithm(name, public_hub, private_hub)
                     algo = self.create_instance(name, parameters)
                 else:
