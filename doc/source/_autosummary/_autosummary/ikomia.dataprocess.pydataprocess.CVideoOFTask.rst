@@ -27,7 +27,6 @@ CVideoOFTask
         ~CVideoOFTask.emit_add_sub_progress_steps
         ~CVideoOFTask.emit_graphics_context_changed
         ~CVideoOFTask.emit_output_changed
-        ~CVideoOFTask.emit_parameters_changed
         ~CVideoOFTask.emit_step_progress
         ~CVideoOFTask.end_task_run
         ~CVideoOFTask.execute_actions
@@ -83,7 +82,6 @@ CVideoOFTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
     .. automethod:: execute_actions

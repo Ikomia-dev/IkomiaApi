@@ -18,7 +18,7 @@ CWorkflowTaskWidget
         ~CWorkflowTaskWidget.emit_set_graphics_category
         ~CWorkflowTaskWidget.emit_set_graphics_tool
         ~CWorkflowTaskWidget.on_apply
-        ~CWorkflowTaskWidget.on_parameters_changed
+        ~CWorkflowTaskWidget.on_apply
         ~CWorkflowTaskWidget.set_apply_btn_hidden
         ~CWorkflowTaskWidget.set_layout
 
@@ -30,7 +30,6 @@ CWorkflowTaskWidget
     .. automethod:: emit_set_graphics_category
     .. automethod:: emit_set_graphics_tool
     .. automethod:: on_apply
-    .. automethod:: on_parameters_changed
     .. automethod:: set_apply_btn_hidden
     .. automethod:: set_layout
    

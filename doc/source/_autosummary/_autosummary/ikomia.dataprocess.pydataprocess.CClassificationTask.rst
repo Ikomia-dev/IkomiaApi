@@ -29,7 +29,6 @@ CClassificationTask
         ~CClassificationTask.emit_add_sub_progress_steps
         ~CClassificationTask.emit_graphics_context_changed
         ~CClassificationTask.emit_output_changed
-        ~CClassificationTask.emit_parameters_changed
         ~CClassificationTask.emit_step_progress
 
     .. rubric:: Overridden methods
@@ -101,6 +100,5 @@ CClassificationTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run

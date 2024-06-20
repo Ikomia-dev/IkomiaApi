@@ -19,9 +19,9 @@ C2dImageInteractiveTask
         ~C2dImageInteractiveTask.emit_add_sub_progress_steps
         ~C2dImageInteractiveTask.emit_graphics_context_changed
         ~C2dImageInteractiveTask.emit_output_changed
-        ~C2dImageInteractiveTask.emit_parameters_changed
         ~C2dImageInteractiveTask.emit_step_progress
         ~C2dImageInteractiveTask.get_blobs
+        ~C2dImageInteractiveTask.get_interaction_mask
 
     .. rubric:: Overridden methods
     .. autosummary::
@@ -47,7 +47,6 @@ C2dImageInteractiveTask
         ~C2dImageInteractiveTask.get_input_count
         ~C2dImageInteractiveTask.get_input_data_type
         ~C2dImageInteractiveTask.get_inputs
-        ~C2dImageInteractiveTask.get_interaction_mask
         ~C2dImageInteractiveTask.get_output
         ~C2dImageInteractiveTask.get_output_count
         ~C2dImageInteractiveTask.get_output_data_type
@@ -89,7 +88,6 @@ C2dImageInteractiveTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
     .. automethod:: execute_actions

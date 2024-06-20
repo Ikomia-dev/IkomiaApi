@@ -24,7 +24,6 @@
         ~CWorkflowTask.emit_add_sub_progress_steps
         ~CWorkflowTask.emit_graphics_context_changed
         ~CWorkflowTask.emit_output_changed
-        ~CWorkflowTask.emit_parameters_changed
         ~CWorkflowTask.emit_step_progress
         ~CWorkflowTask.end_task_run
         ~CWorkflowTask.execute_actions
@@ -83,7 +82,6 @@
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
     .. automethod:: execute_actions

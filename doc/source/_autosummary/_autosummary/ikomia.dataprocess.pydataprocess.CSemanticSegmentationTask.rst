@@ -26,7 +26,6 @@ CSemanticSegmentationTask
         ~CSemanticSegmentationTask.emit_add_sub_progress_steps
         ~CSemanticSegmentationTask.emit_graphics_context_changed
         ~CSemanticSegmentationTask.emit_output_changed
-        ~CSemanticSegmentationTask.emit_parameters_changed
         ~CSemanticSegmentationTask.emit_step_progress
 
     .. rubric:: Overridden methods
@@ -95,6 +94,5 @@ CSemanticSegmentationTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run

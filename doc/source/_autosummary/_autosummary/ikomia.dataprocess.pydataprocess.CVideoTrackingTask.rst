@@ -32,7 +32,6 @@ CVideoTrackingTask
         ~CVideoTrackingTask.emit_add_sub_progress_steps
         ~CVideoTrackingTask.emit_graphics_context_changed
         ~CVideoTrackingTask.emit_output_changed
-        ~CVideoTrackingTask.emit_parameters_changed
         ~CVideoTrackingTask.emit_step_progress
         ~CVideoTrackingTask.end_task_run
         ~CVideoTrackingTask.execute_actions
@@ -84,7 +83,6 @@ CVideoTrackingTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
     .. automethod:: execute_actions

@@ -28,7 +28,6 @@ CKeypointDetectionTask
         ~CKeypointDetectionTask.emit_add_sub_progress_steps
         ~CKeypointDetectionTask.emit_graphics_context_changed
         ~CKeypointDetectionTask.emit_output_changed
-        ~CKeypointDetectionTask.emit_parameters_changed
         ~CKeypointDetectionTask.emit_step_progress
 
     .. rubric:: Overridden methods
@@ -99,6 +98,5 @@ CKeypointDetectionTask
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run

@@ -16,7 +16,6 @@ CImageIO
         ~CImageIO.__init__
         ~CImageIO.draw_graphics
         ~CImageIO.get_channel_count
-        ~CImageIO.get_current_image_index
         ~CImageIO.get_data
         ~CImageIO.get_image
         ~CImageIO.get_image_with_graphics
@@ -25,7 +24,6 @@ CImageIO
         ~CImageIO.get_overlay_mask
         ~CImageIO.is_overlay_available
         ~CImageIO.set_channel_count
-        ~CImageIO.set_current_image_index
         ~CImageIO.set_image
         ~CImageIO.set_overlay_mask
 
@@ -57,7 +55,6 @@ CImageIO
     .. automethod:: draw_graphics
     .. automethod:: from_json
     .. automethod:: get_channel_count
-    .. automethod:: get_current_image_index
     .. automethod:: get_data
     .. automethod:: get_image
     .. automethod:: get_image_with_graphics
@@ -70,7 +67,6 @@ CImageIO
     .. automethod:: load
     .. automethod:: save
     .. automethod:: set_channel_count
-    .. automethod:: set_current_image_index
     .. automethod:: set_image
     .. automethod:: set_overlay_mask
     .. automethod:: to_json

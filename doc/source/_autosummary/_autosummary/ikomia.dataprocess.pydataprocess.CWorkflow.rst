@@ -20,6 +20,7 @@ CWorkflow
         ~CWorkflow.add_output
         ~CWorkflow.add_task
         ~CWorkflow.clear
+        ~CWorkflow.clear_exposed_parameters
         ~CWorkflow.clear_inputs
         ~CWorkflow.clear_output_data
         ~CWorkflow.clear_outputs
@@ -74,10 +75,10 @@ CWorkflow
     .. automethod:: add_output
     .. automethod:: add_task
     .. automethod:: clear
+    .. automethod:: clear_exposed_parameters
     .. automethod:: clear_inputs
     .. automethod:: clear_output_data
     .. automethod:: clear_outputs
-    .. automethod:: clear_parameters
     .. automethod:: connect
     .. automethod:: delete_edge
     .. automethod:: delete_task
@@ -108,7 +109,7 @@ CWorkflow
     .. automethod:: run
     .. automethod:: save
     .. automethod:: set_auto_save
-    .. automethod:: set_exposed_parameters
+    .. automethod:: set_exposed_parameter
     .. automethod:: set_input
     .. automethod:: set_output_folder
     .. automethod:: stop

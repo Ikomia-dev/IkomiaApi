@@ -21,7 +21,6 @@
         ~C2dImageTask.emit_add_sub_progress_steps
         ~C2dImageTask.emit_graphics_context_changed
         ~C2dImageTask.emit_output_changed
-        ~C2dImageTask.emit_parameters_changed
         ~C2dImageTask.emit_step_progress
         ~C2dImageTask.forward_input_image
         ~C2dImageTask.get_graphics_mask
@@ -84,7 +83,6 @@
     .. automethod:: emit_add_sub_progress_steps
     .. automethod:: emit_graphics_context_changed
     .. automethod:: emit_output_changed
-    .. automethod:: emit_parameters_changed
     .. automethod:: emit_step_progress
     .. automethod:: end_task_run
     .. automethod:: execute_actions
