@@ -242,7 +242,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     category_names = {}
     categories = read_class_names(class_path)
 
-    for i in enumerate(categories):
+    for i, _ in enumerate(categories):
         category_names[i] = categories[i]
 
     data["metadata"] = {"category_names": category_names}
@@ -417,7 +417,7 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
     categories = read_class_names(class_path)
     category_ids = {}
 
-    for i in enumerate(categories):
+    for i, _ in enumerate(categories):
         category_ids[categories[i]] = i
 
     if annotation_folder != img_folder:
@@ -478,7 +478,7 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
             data["images"].append(img_data)
 
     category_names = {}
-    for i in enumerate(categories):
+    for i, _ in enumerate(categories):
         category_names[i] = categories[i]
 
     data["metadata"] = {"category_names": category_names}
