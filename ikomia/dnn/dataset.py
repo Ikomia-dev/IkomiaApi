@@ -242,7 +242,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     category_names = {}
     categories = read_class_names(class_path)
 
-    for i in enumerate(categories):
+    for i in range(len(categories)):
         category_names[i] = categories[i]
 
     data["metadata"] = {"category_names": category_names}
