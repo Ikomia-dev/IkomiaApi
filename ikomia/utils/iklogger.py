@@ -5,6 +5,12 @@ import sys
 import logging
 from ikomia.core import config
 
+
+class _ExcludeStderrFilter(logging.Filter):
+    def filter(self, record):
+        return record.levelno < logging.WARNING
+
+
 # ----------------------------------
 # ----- Logging initialization -----
 # ----------------------------------
@@ -17,6 +23,7 @@ formatter = logging.Formatter("%(message)s")
 info = logging.StreamHandler(sys.stdout)
 info.setLevel(logging.INFO)
 info.setFormatter(formatter)
+info.addFilter(_ExcludeStderrFilter())
 logger.addHandler(info)
 
 err = logging.StreamHandler(sys.stderr)
