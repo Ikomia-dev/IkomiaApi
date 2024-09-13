@@ -28,12 +28,30 @@ def _check_algo_compatibility(algo_name: str) -> bool:
 def create_demo_workflow(algo_name: str, depends_on: Union[list, None] = None) -> Workflow:
     """
     Automatically generate demo workflow for the given algorithm.
+
+    Args:
+        algo_name (str): HUB algorithm name
+        depends_on (list): list of sequential algorithms on which the given algorithm should be connected
+
+    Returns:
+        auto-generated workflow (Workflow)
     """
     algo = ik_registry.create_algorithm(algo_name)
     if not _check_algo_compatibility(algo_name):
         raise RuntimeError(f"Algorithm {algo_name} is not supported for automatic demo workflow")
 
     wf = Workflow(name=algo_name)
+    wf.description = (
+        ":star2: Auto-generated workflow for HUB algorithm deployment with Ikomia Scale.\n\n"
+        "## How to deploy :rocket:\n"
+        "1. Pick your provider\n"
+        "2. Choose the compute infrastructure: serverless, CPU or GPU dedicated instances\n"
+        "3. Select your region\n"
+        "4. Choose the compute size\n"
+        "5. Click 'Add deployment'\n\n"
+        "Then, patiently await its execution and effortlessly test your algorithm with a single click!"
+    )
+    wf.keywords = "HUB,algorithm,deployment"
 
     # Sequential deps only
     if depends_on is not None:
