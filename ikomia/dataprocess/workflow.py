@@ -106,6 +106,8 @@ class Workflow(CWorkflow):
             img_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
             utils.http.download_file(url, img_path)
             img_input = CImageIO(datatype, "Image", img_path)
+        else:
+            raise ValueError("Unable to set input: you must set either array, path or url.")
 
         if index == -1 or index >= self.get_input_count():
             self.add_input(img_input)
@@ -131,6 +133,8 @@ class Workflow(CWorkflow):
             video_path = config.main_cfg["data"]["path"] + os.path.basename(parsed.path)
             utils.http.download_file(url, video_path)
             video_input = CVideoIO(datatype, "Video", video_path)
+        else:
+            raise ValueError("Unable to set input: you must set either path or url.")
 
         if index == -1 or index >= self.get_input_count():
             self.add_input(video_input)
@@ -172,7 +176,7 @@ class Workflow(CWorkflow):
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
         """
         if task_obj is None and not task_name:
-            raise RuntimeError("Unable to set task parameters: parameters must include either a valid name or task instance.")
+            raise RuntimeError("Unable to set parameters: you must set either a valid name or task instance.")
 
         # Ensure parameter values are string due to C++ typing constraint
         params = conform_parameters(params)
@@ -210,6 +214,35 @@ class Workflow(CWorkflow):
             available_params = self.get_exposed_parameters()
             logger.error(e)
             logger.error("Available parameters: %s", available_params)
+
+    def set_task_enabled(self, task: CWorkflowTask = None, name: str = "", index: int = -1, enabled: bool = True):
+        """
+        Enable/Disable task for running.
+
+        Args:
+            task (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): algorithm instance
+            name (str): algorithm unique name
+            index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
+            enabled (bool): True if algorithm has to be ran, False otherwise
+        """
+        if task is None and not name:
+            raise RuntimeError("Unable to set task status: parameters must include either a name or task instance.")
+
+        if task is not None:
+            task.set_enabled(enabled)
+        else:
+            tasks = self.find_task(name=name, index=index)
+            if tasks is None:
+                raise RuntimeError(f"Algorithm {name} can't be found.")
+
+            if not isinstance(tasks, list):
+                tasks.set_enabled(enabled)
+            else:
+                if index == -1:
+                    for t in tasks:
+                        t.set_enabled(enabled)
+                elif 0 <= index < len(tasks):
+                    tasks[index].set_enabled(enabled)
 
     def get_time_metrics(self) -> dict:
         """
@@ -324,7 +357,7 @@ class Workflow(CWorkflow):
             :py:class:`~ikomia.core.pycore.CWorkflowTask` based object: task instance
         """
         if task is None and not name:
-            raise RuntimeError("Unable to add task to workflow: parameters must include either a valid name or task instance.")
+            raise RuntimeError("Unable to add task to workflow: you must set either a valid name or task instance.")
 
         if task is None:
             task = self.registry.create_algorithm(name=name,
