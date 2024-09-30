@@ -23,6 +23,15 @@ from ikomia import utils
 
 
 def load(config_path: str) -> dict:
+    """
+    Load Ikomia API configuration file (YAML)
+
+    Args:
+        config_path (str): path to the configuration file
+
+    Returns:
+        configuration data: dict
+    """
     with open(config_path, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
 
@@ -61,11 +70,22 @@ def load(config_path: str) -> dict:
 
 
 def save(config_path: str, cfg: dict):
-    with open(config_path, "w") as f:
+    """
+    Save given configuration data to file.
+
+    Args:
+        config_path (str): path where the configuration file will be saved
+        cfg (dict): configuration data
+    """
+    with open(config_path, "w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f)
 
 
 def save_main_config():
+    """
+    Save current configuration to file (overwrite).
+    Use this function to change default configuration permanently.
+    """
     save(main_config_path, main_cfg)
 
 
