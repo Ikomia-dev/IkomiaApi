@@ -63,5 +63,6 @@ def create_demo_workflow(algo_name: str, depends_on: Union[list, None] = None) -
             wf.add_task(task=task, auto_connect=True)
 
     # Add main algorithm
-    wf.add_task(task=algo, auto_connect=True)
+    auto_connect = algo.get_input_count() > 0
+    wf.add_task(task=algo, auto_connect=auto_connect)
     return wf
