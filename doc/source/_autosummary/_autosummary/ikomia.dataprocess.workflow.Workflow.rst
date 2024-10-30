@@ -33,6 +33,7 @@ Workflow
         ~Workflow.set_image_input
         ~Workflow.set_video_input
         ~Workflow.set_parameters
+        ~Workflow.set_task_enabled
         ~Workflow.set_workflow_parameters
 
 
@@ -117,6 +118,7 @@ Workflow
     .. automethod:: set_input
     .. automethod:: set_output_folder
     .. automethod:: set_parameters
+    .. automethod:: set_task_enabled
     .. automethod:: set_workflow_parameters
     .. automethod:: save
     .. automethod:: stop

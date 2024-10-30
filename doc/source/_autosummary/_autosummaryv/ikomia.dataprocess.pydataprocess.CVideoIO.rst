@@ -45,7 +45,7 @@ CVideoIO
         ~CVideoIO.get_overlay_mask
         ~CVideoIO.is_overlay_available
         ~CVideoIO.set_channel_count
-        ~CVideoIO.set_current_image
+        ~CVideoIO.set_current_image_index
         ~CVideoIO.set_image
         ~CVideoIO.set_overlay_mask
 
@@ -78,7 +78,7 @@ CVideoIO
    .. automethod:: is_data_available
    .. automethod:: is_overlay_available
    .. automethod:: set_channel_count
-   .. automethod:: set_current_image
+   .. automethod:: set_current_image_index
    .. automethod:: set_image
    .. automethod:: set_overlay_mask
    .. automethod:: set_video_path
