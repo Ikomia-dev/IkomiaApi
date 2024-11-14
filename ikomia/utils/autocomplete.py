@@ -43,6 +43,8 @@ class AutoComplete:
     """
     Generation of auto-completion module.
     """
+    _online_sync_frequency = 14400  # 4 hours
+
     def __init__(self):
         self.registry = ik_registry
         self.registry.register_event_callback("algorithm_changed", self.update_local_plugin)
@@ -154,11 +156,21 @@ class AutoComplete:
 
         return False
 
-    def _check_local_sync(self) -> bool:
-        if not _ik_auto_complete:
-            return False
+    @staticmethod
+    def _get_ik_last_modified() -> float:
+        return os.path.getmtime(ik.__file__)
 
-        # Get local algorithm names from plugin directories
+    @staticmethod
+    def _get_folder_content_last_modified(folder_path: str) -> float:
+        last_modified = 0
+        for root, _, filenames in os.walk(folder_path):
+            for filename in filenames:
+                if filename.endswith("_process.py"):
+                    last_modified = max(last_modified, os.path.getmtime(os.path.join(root, filename)))
+
+        return last_modified
+
+    def _get_local_algorithm_folders(self) -> tuple:
         local_folder_names = set()
         python_plugin_folder = os.path.join(self.registry.get_plugins_directory(), "Python")
         cpp_plugin_folder = os.path.join(self.registry.get_plugins_directory(), "C++")
@@ -172,6 +184,21 @@ class AutoComplete:
             folder_path = os.path.join(cpp_plugin_folder, name)
             if os.path.isdir(folder_path) and self._is_valid_cpp_plugin_folder(name, folder_path):
                 local_folder_names.add(name)
+
+        # Last modification time
+        last_modified = max(self._get_folder_content_last_modified(python_plugin_folder),
+                            self._get_folder_content_last_modified(cpp_plugin_folder))
+
+        return local_folder_names, last_modified
+
+    def _check_local_sync(self) -> bool:
+        if not _ik_auto_complete:
+            return False
+
+        # Get local algorithm names from plugin directories
+        local_folder_names, last_modified = self._get_local_algorithm_folders()
+        if last_modified > self._get_ik_last_modified():
+            return False
 
         # Get auto-completion local list
         ik_names_set = set(ik.local_names)
@@ -199,10 +226,8 @@ class AutoComplete:
             return False
 
         # Update every 4 hours because call to get_public_hub_algorithms() is time consuming
-        ik_last_update = os.path.getmtime(ik.__file__)
         now = time.time()
-
-        if now - ik_last_update < 14400:
+        if now - self._get_ik_last_modified() < self._online_sync_frequency:
             return True
 
         # Update modified time
@@ -397,7 +422,7 @@ class AutoComplete:
             f.write(f"    '{algo['name']}',\n")
         f.write("]\n\n")
 
-        # Write instanciation functions
+        # Write instantiation functions
         local_names = self.registry.get_algorithms()
         for algo in online_algos:
             if algo["name"] not in local_names:
