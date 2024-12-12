@@ -361,14 +361,11 @@ class Workflow(CWorkflow):
 
         if task is None:
             task = self.registry.create_algorithm(name=name,
-                                                  parameters=None,
+                                                  parameters=params,
                                                   public_hub=public_hub,
                                                   private_hub=private_hub)
             if task is None:
                 raise RuntimeError(f"Algorithm {name} can't be created.")
-
-        if params is not None and len(params) > 0:
-            task.set_parameters(params)
 
         parent_id = self.get_last_task_id()
         task_id = super().add_task(task)

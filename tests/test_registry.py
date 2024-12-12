@@ -99,7 +99,7 @@ def test_install_private_algorithm():
 
 
 def test_local_instantiation():
-    logger.info("===== Test::instanciate local algorithms =====")
+    logger.info("===== Test::instantiate local algorithms =====")
     algo_names = ik_registry.get_algorithms()
     algos = []
 
@@ -119,7 +119,7 @@ def test_instantiation():
     algo_name = "ocv_clahe"
     logger.warning(f"Instantiate {algo_name} algorithm...")
     algo = ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=False)
-    assert(algo is not None)
+    assert (algo is not None)
 
     # Public Python algo
     algo_name = "dataset_coco"
@@ -161,6 +161,29 @@ def test_instantiation():
 
     algo_dir, _ = ik_registry._get_algorithm_directory(algo_name)
     shutil.rmtree(path=algo_dir, ignore_errors=True)
+
+
+def test_instantiation_with_parameters():
+    logger.warning("===== Test::instantiate algorithms with initial parameters =====")
+    algo_name = "ocv_blur"
+    logger.warning(f"Instantiate {algo_name} with default parameters...")
+    algo = ik_registry.create_algorithm(algo_name, public_hub=False, private_hub=False)
+    assert (algo is not None)
+
+    logger.warning(f"Instantiate {algo_name} with initial parameters as dict...")
+    algo = ik_registry.create_algorithm(algo_name,
+                                        parameters={"kSizeWidth": "9", "kSizeHeight": "9"},
+                                        public_hub=False,
+                                        private_hub=False)
+    assert (algo is not None)
+
+    algo_name = "ocv_box_filter"
+    logger.warning(f"Instantiate {algo_name} with initial parameters as dict but no param factory...")
+    algo = ik_registry.create_algorithm(algo_name,
+                                        parameters={"kSizeWidth": "9", "kSizeHeight": "9"},
+                                        public_hub=False,
+                                        private_hub=False)
+    assert (algo is not None)
 
 
 def test_update():
@@ -259,6 +282,8 @@ if __name__ == "__main__":
         test_local_instantiation()
     if 'all' in running_tests or 'instantiation' in running_tests:
         test_instantiation()
+    if 'all' in running_tests or 'instantiation_params' in running_tests:
+        test_instantiation_with_parameters()
     if 'all' in running_tests or 'update' in running_tests:
         test_update()
     if 'all' in running_tests or 'execution' in running_tests:

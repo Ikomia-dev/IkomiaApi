@@ -150,7 +150,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         return pagination_data["results"]
 
-    def create_algorithm(self, name: str, parameters: CWorkflowTaskParam = None,
+    def create_algorithm(self, name: str, parameters: Union[CWorkflowTaskParam, dict, None] = None,
                          public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
         """
         Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
@@ -162,7 +162,7 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         Args:
             name (str): unique algorithm name
-            parameters (~ikomia.core.CWorkflowTaskParam): initial parameters values
+            parameters (~ikomia.core.CWorkflowTaskParam or dict): initial parameters values
             public_hub (bool): try to install algorithm from public Ikomia Hub if True
             private_hub (bool): try to install algorithm from private Ikomia Hub if True
 
@@ -176,7 +176,7 @@ class IkomiaRegistry(CIkomiaRegistry):
         available_algos = self.get_algorithms()
 
         if name in available_algos:
-            # Algorithm is loaded, instanciate it
+            # Algorithm is loaded, instantiate it
             algo = self.create_instance(name, parameters)
         else:
             try:
