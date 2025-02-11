@@ -40,6 +40,7 @@ CGraphicsInput
         ~CGraphicsInput.displayable
         ~CGraphicsInput.name
         ~CGraphicsInput.source_file_path
+        ~CGraphicsInput.file_path
 
    .. rubric:: Details
    .. automethod:: __init__

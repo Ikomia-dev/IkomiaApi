@@ -35,6 +35,8 @@ CWorkflowTaskIO
         ~CWorkflowTaskIO.displayable
         ~CWorkflowTaskIO.name
         ~CWorkflowTaskIO.source_file_path
+        ~CWorkflowTaskIO.file_path
+
    
     See :py:class:`~PyCore.IODataType` for available data types.
 

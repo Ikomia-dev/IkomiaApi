@@ -48,6 +48,7 @@ Float specialization of C++ template class CNumericIO.
         ~CNumericIO.displayable
         ~CNumericIO.name
         ~CNumericIO.source_file_path
+        ~CNumericIO.file_path
    
    .. rubric:: Details
    .. automethod:: __init__

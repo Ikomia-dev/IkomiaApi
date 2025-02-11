@@ -46,6 +46,7 @@ CKeypointsIO
         ~CKeypointsIO.displayable
         ~CKeypointsIO.name
         ~CKeypointsIO.source_file_path
+        ~CKeypointsIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

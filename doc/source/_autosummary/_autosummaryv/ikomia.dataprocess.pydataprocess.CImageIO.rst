@@ -47,6 +47,7 @@ CImageIO
         ~CImageIO.displayable
         ~CImageIO.name
         ~CImageIO.source_file_path
+        ~CImageIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

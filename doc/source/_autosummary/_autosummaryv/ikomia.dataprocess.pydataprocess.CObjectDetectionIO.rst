@@ -42,6 +42,7 @@ CObjectDetectionIO
         ~CObjectDetectionIO.displayable
         ~CObjectDetectionIO.name
         ~CObjectDetectionIO.source_file_path
+        ~CObjectDetectionIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

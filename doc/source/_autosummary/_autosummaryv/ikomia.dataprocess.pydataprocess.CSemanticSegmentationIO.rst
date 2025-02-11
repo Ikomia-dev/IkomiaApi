@@ -44,6 +44,7 @@ CSemanticSegmentationIO
         ~CSemanticSegmentationIO.displayable
         ~CSemanticSegmentationIO.name
         ~CSemanticSegmentationIO.source_file_path
+        ~CSemanticSegmentationIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

@@ -35,6 +35,7 @@ CPathIO
         ~CPathIO.displayable
         ~CPathIO.name
         ~CPathIO.source_file_path
+        ~CPathIO.file_path
    
    .. rubric:: Details
    .. automethod:: __init__

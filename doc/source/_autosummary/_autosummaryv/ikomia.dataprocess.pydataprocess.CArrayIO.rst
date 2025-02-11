@@ -36,6 +36,7 @@ CArrayIO
         ~CArrayIO.displayable
         ~CArrayIO.name
         ~CArrayIO.source_file_path
+        ~CArrayIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

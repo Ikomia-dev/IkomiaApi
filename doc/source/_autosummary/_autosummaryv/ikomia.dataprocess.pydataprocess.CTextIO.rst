@@ -44,6 +44,7 @@ CTextIO
         ~CTextIO.displayable
         ~CTextIO.name
         ~CTextIO.source_file_path
+        ~CTextIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

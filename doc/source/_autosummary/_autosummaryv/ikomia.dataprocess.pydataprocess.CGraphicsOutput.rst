@@ -50,6 +50,7 @@ CGraphicsOutput
         ~CGraphicsOutput.displayable
         ~CGraphicsOutput.name
         ~CGraphicsOutput.source_file_path
+        ~CGraphicsOutput.file_path
    
    .. rubric:: Details
    .. automethod:: __init__

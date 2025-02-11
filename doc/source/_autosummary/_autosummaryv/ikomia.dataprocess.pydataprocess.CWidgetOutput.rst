@@ -34,6 +34,7 @@ CWidgetOutput
         ~CWidgetOutput.displayable
         ~CWidgetOutput.name
         ~CWidgetOutput.source_file_path
+        ~CWidgetOutput.file_path
    
    .. rubric:: Details
    .. automethod:: __init__

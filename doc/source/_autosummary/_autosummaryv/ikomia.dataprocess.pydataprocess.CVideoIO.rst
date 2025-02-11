@@ -58,6 +58,7 @@ CVideoIO
         ~CVideoIO.displayable
         ~CVideoIO.name
         ~CVideoIO.source_file_path
+        ~CVideoIO.file_path
 
    .. rubric:: Details
    .. automethod:: __init__

@@ -45,6 +45,7 @@ CDatasetIO
         ~CDatasetIO.displayable
         ~CDatasetIO.name
         ~CDatasetIO.source_file_path
+        ~CDatasetIO.file_path
    
    .. rubric:: Details
    .. automethod:: __init__

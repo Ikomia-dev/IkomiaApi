@@ -43,6 +43,7 @@ CInstanceSegmentationIO
         ~CInstanceSegmentationIO.displayable
         ~CInstanceSegmentationIO.name
         ~CInstanceSegmentationIO.source_file_path
+        ~CInstanceSegmentationIO.file_path
 
     .. rubric:: Details
     .. automethod:: __init__

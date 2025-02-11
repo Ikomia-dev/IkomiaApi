@@ -35,6 +35,7 @@ CBlobMeasureIO
         ~CBlobMeasureIO.displayable
         ~CBlobMeasureIO.name
         ~CBlobMeasureIO.source_file_path
+        ~CBlobMeasureIO.file_path
 
    .. rubric:: Details
    .. automethod:: __init__
