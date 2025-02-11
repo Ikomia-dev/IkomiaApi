@@ -126,29 +126,24 @@ class IkomiaRegistry(CIkomiaRegistry):
         valid_algos = []
 
         for algo in algos:
-            # Get algorithm details
-            r = s.session.get(algo["url"])
-            r.raise_for_status()
-            algo_detail = r.json()
-
-            if self._check_compatibility(algo_detail):
-                valid_algos.append(algo_detail)
+            if self._check_compatibility(algo):
+                valid_algos.append(algo)
 
         return valid_algos
 
     def _get_all_from_pagination(self, url: str) -> dict:
         s = auth.ik_api_session
-        r = s.session.get(url)
+        # Get algo count
+        url_with_param = f"{url}?page_size=1"
+        r = s.session.get(url_with_param)
         r.raise_for_status()
-        pagination_data = r.json()
-
-        if pagination_data["next"] is not None:
-            url = f"{url}?page_size={pagination_data['count']}"
-            r = s.session.get(url)
-            r.raise_for_status()
-            pagination_data = r.json()
-
-        return pagination_data["results"]
+        data = r.json()
+        # Get all fields for all algo
+        url_with_param = f"{url}?page_size={data['count']}&fields=all"
+        r = s.session.get(url_with_param)
+        r.raise_for_status()
+        data = r.json()
+        return data["results"]
 
     def create_algorithm(self, name: str, parameters: Union[CWorkflowTaskParam, dict, None] = None,
                          public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
