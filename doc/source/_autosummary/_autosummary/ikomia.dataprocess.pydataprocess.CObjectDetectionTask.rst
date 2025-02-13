@@ -55,6 +55,7 @@ CObjectDetectionTask
         ~CObjectDetectionTask.get_progress_steps
         ~CObjectDetectionTask.global_input_changed
         ~CObjectDetectionTask.graphics_changed
+        ~CObjectDetectionTask.init_long_process
         ~CObjectDetectionTask.is_graphics_changed_listening
         ~CObjectDetectionTask.is_mask_available
         ~CObjectDetectionTask.parameters_modified

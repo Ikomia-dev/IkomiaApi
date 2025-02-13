@@ -52,6 +52,7 @@
         ~C2dImageTask.get_parameters
         ~C2dImageTask.get_progress_steps
         ~C2dImageTask.global_input_changed
+        ~C2dImageTask.init_long_process
         ~C2dImageTask.is_graphics_changed_listening
         ~C2dImageTask.parameters_modified
         ~C2dImageTask.remove_input
@@ -101,6 +102,7 @@
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: is_mask_available
     .. automethod:: parameters_modified

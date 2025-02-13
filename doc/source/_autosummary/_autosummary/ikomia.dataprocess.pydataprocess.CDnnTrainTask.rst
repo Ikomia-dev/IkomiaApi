@@ -37,6 +37,7 @@ CDnnTrainTask
         ~CDnnTrainTask.get_progress_steps
         ~CDnnTrainTask.global_input_changed
         ~CDnnTrainTask.graphics_changed
+        ~CDnnTrainTask.init_long_process
         ~CDnnTrainTask.is_graphics_changed_listening
         ~CDnnTrainTask.parameters_modified
         ~CDnnTrainTask.remove_input
@@ -86,6 +87,7 @@ CDnnTrainTask
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: parameters_modified
     .. automethod:: remove_input

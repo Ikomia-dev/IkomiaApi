@@ -50,6 +50,7 @@ CVideoTrackingTask
         ~CVideoTrackingTask.get_progress_steps
         ~CVideoTrackingTask.global_input_changed
         ~CVideoTrackingTask.graphics_changed
+        ~CVideoTrackingTask.init_long_process
         ~CVideoTrackingTask.is_graphics_changed_listening
         ~CVideoTrackingTask.is_mask_available
         ~CVideoTrackingTask.parameters_modified
@@ -101,6 +102,7 @@ CVideoTrackingTask
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: is_mask_available
     .. automethod:: manage_outputs

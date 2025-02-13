@@ -44,6 +44,7 @@
         ~TrainProcess.get_progress_steps
         ~TrainProcess.global_input_changed
         ~TrainProcess.graphics_changed
+        ~TrainProcess.init_long_process
         ~TrainProcess.is_graphics_changed_listening
         ~TrainProcess.parameters_modified
         ~TrainProcess.remove_input
@@ -86,6 +87,7 @@
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: log_param
     .. automethod:: log_params

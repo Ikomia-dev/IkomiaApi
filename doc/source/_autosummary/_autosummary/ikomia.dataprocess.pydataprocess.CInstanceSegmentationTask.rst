@@ -57,6 +57,7 @@ CInstanceSegmentationTask
         ~CInstanceSegmentationTask.get_progress_steps
         ~CInstanceSegmentationTask.global_input_changed
         ~CInstanceSegmentationTask.graphics_changed
+        ~CInstanceSegmentationTask.init_long_process
         ~CInstanceSegmentationTask.is_graphics_changed_listening
         ~CInstanceSegmentationTask.is_mask_available
         ~CInstanceSegmentationTask.parameters_modified

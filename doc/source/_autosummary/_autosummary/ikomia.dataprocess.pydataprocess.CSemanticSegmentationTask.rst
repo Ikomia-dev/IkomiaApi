@@ -57,6 +57,7 @@ CSemanticSegmentationTask
         ~CSemanticSegmentationTask.get_progress_steps
         ~CSemanticSegmentationTask.global_input_changed
         ~CSemanticSegmentationTask.graphics_changed
+        ~CSemanticSegmentationTask.init_long_process
         ~CSemanticSegmentationTask.is_graphics_changed_listening
         ~CSemanticSegmentationTask.is_mask_available
         ~CSemanticSegmentationTask.parameters_modified

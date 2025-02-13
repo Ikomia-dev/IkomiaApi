@@ -45,6 +45,7 @@ CVideoOFTask
         ~CVideoOFTask.get_progress_steps
         ~CVideoOFTask.global_input_changed
         ~CVideoOFTask.graphics_changed
+        ~CVideoOFTask.init_long_process
         ~CVideoOFTask.is_graphics_changed_listening
         ~CVideoOFTask.is_mask_available
         ~CVideoOFTask.notify_video_end
@@ -101,6 +102,7 @@ CVideoOFTask
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: is_mask_available
     .. automethod:: notify_video_end

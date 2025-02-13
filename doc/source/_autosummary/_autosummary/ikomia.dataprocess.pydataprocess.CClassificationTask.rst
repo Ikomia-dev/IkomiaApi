@@ -60,6 +60,7 @@ CClassificationTask
         ~CClassificationTask.get_progress_steps
         ~CClassificationTask.global_input_changed
         ~CClassificationTask.graphics_changed
+        ~CClassificationTask.init_long_process
         ~CClassificationTask.is_graphics_changed_listening
         ~CClassificationTask.is_mask_available
         ~CClassificationTask.parameters_modified

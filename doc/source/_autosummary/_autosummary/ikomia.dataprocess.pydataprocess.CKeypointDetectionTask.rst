@@ -59,6 +59,7 @@ CKeypointDetectionTask
         ~CKeypointDetectionTask.get_progress_steps
         ~CKeypointDetectionTask.global_input_changed
         ~CKeypointDetectionTask.graphics_changed
+        ~CKeypointDetectionTask.init_long_process
         ~CKeypointDetectionTask.is_graphics_changed_listening
         ~CKeypointDetectionTask.is_mask_available
         ~CKeypointDetectionTask.parameters_modified

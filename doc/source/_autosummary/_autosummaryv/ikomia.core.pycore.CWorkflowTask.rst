@@ -41,6 +41,7 @@
         ~CWorkflowTask.get_progress_steps
         ~CWorkflowTask.global_input_changed
         ~CWorkflowTask.graphics_changed
+        ~CWorkflowTask.init_long_process
         ~CWorkflowTask.is_graphics_changed_listening
         ~CWorkflowTask.parameters_modified
         ~CWorkflowTask.remove_input
@@ -99,6 +100,7 @@
     .. automethod:: get_progress_steps
     .. automethod:: global_input_changed
     .. automethod:: graphics_changed
+    .. automethod:: init_long_process
     .. automethod:: is_graphics_changed_listening
     .. automethod:: parameters_modified
     .. automethod:: remove_input
