@@ -84,6 +84,17 @@ class Workflow(CWorkflow):
         """
         return self.get_task(self.get_root_id())
 
+    def init_long_process(self):
+        """
+        Perform time consuming initialization process for all tasks.
+        This method gives you the flexibility to perform initialization steps like
+        models downloading, models loading or models compiling when it is best suited for your usecase.
+        Under the hood, it calls virtual method init_long_process() for all tasks.
+        """
+        tasks = self.get_tasks()
+        for t in tasks:
+            t.init_long_process()
+
     def set_image_input(self, array: np.ndarray = None, path: str ="", url: str = "", index: int = -1,
                         datatype: IODataType = IODataType.IMAGE):
         """
