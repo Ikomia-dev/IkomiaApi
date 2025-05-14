@@ -3,6 +3,7 @@ import os
 import argparse
 import time
 from ikomia import utils
+from ikomia.utils.path import to_posix_path
 from ikomia.utils.plugintools import get_plugin_dependencies, get_installed_modules
 from ikomia.dataprocess.registry import ik_registry
 
@@ -72,6 +73,38 @@ def test_cpp_bindings():
     logger.warning(f"Elapsed time (ms, µs, ns): {timer.get_elapsed_ms()} {timer.get_elapsed_us()} {timer.get_elapsed_ns()}")
     timer.print_total_elapsed_time_ms("Step2")
     logger.warning(f"Total elapsed time (ms, µs, ns): {timer.get_total_elapsed_ms()} {timer.get_total_elapsed_us()} {timer.get_total_elapsed_ns()}")
+
+
+def test_posix_path():
+    # Windows
+    test_path = r"C:\Users\Toto"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"C:\Users\Toto\file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"Users\Toto\file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"..\Users\Toto\file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"C:\Users\Toto\..\file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    # Linux
+    test_path = r"/home/Toto"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"/home/Toto/file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"Toto/folder/file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
+    test_path = r"Toto/folder/../file.txt"
+    posix_path = to_posix_path(test_path)
+    print(f"{test_path} --> {posix_path}")
 
 
 if __name__ == "__main__":
