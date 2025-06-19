@@ -33,8 +33,8 @@ def check_mlflow_server():
             store_uri = "file://" + store_uri
             artifact_uri = "file://" + artifact_uri
         else:
-            store_uri = config.main_cfg["mlflow"]["store_uri"]
-            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"]
+            store_uri = "file://" + config.main_cfg["mlflow"]["store_uri"]
+            artifact_uri = "file://" + config.main_cfg["mlflow"]["artifact_uri"]
 
         logger.info("Starting MLflow server...")
         proc = subprocess.Popen(["mlflow", "server",
