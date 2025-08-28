@@ -26,8 +26,8 @@ def check_mlflow_server():
     except Exception:
         # Start server if needed
         if sys.platform == "win32":
-            store_uri = config.main_cfg["mlflow"]["store_uri"].replace(':', '')
-            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace(':', '')
+            store_uri = config.main_cfg["mlflow"]["store_uri"].replace('C:', '')
+            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace('C:', '')
             store_uri = store_uri.replace('\\', '/')
             artifact_uri = artifact_uri.replace('\\', '/')
             store_uri = "file://" + store_uri
