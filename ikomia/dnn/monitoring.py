@@ -25,16 +25,15 @@ def check_mlflow_server():
         logger.info("MLflow server is started at %s", config.main_cfg['mlflow']['tracking_uri'])
     except Exception:
         # Start server if needed
+        # Follow file uri scheme: https://en.wikipedia.org/wiki/File_URI_scheme
         if sys.platform == "win32":
-            store_uri = config.main_cfg["mlflow"]["store_uri"].replace('C:', '')
-            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace('C:', '')
-            store_uri = store_uri.replace('\\', '/')
-            artifact_uri = artifact_uri.replace('\\', '/')
-            store_uri = "file://" + store_uri
-            artifact_uri = "file://" + artifact_uri
+            store_uri = config.main_cfg["mlflow"]["store_uri"].replace('\\', '/')
+            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace('\\', '/')
+            store_uri = "file:///" + store_uri
+            artifact_uri = "file:///" + artifact_uri
         else:
-            store_uri = "file://" + config.main_cfg["mlflow"]["store_uri"]
-            artifact_uri = "file://" + config.main_cfg["mlflow"]["artifact_uri"]
+            store_uri = "file:///" + config.main_cfg["mlflow"]["store_uri"]
+            artifact_uri = "file:///" + config.main_cfg["mlflow"]["artifact_uri"]
 
         logger.info("Starting MLflow server...")
         proc = subprocess.Popen(["mlflow", "server",
