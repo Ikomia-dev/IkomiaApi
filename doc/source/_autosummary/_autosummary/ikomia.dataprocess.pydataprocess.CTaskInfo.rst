@@ -23,6 +23,7 @@ CTaskInfo
         ~CTaskInfo.authors
         ~CTaskInfo.description
         ~CTaskInfo.documentation_link
+        ~CTaskInfo.hardware_config
         ~CTaskInfo.icon_path
         ~CTaskInfo.internal
         ~CTaskInfo.journal

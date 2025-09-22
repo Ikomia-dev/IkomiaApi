@@ -53,6 +53,7 @@
         CKeypointDetectionTask
         CObjectDetectionTask
         CSemanticSegmentationTask
+        CTaskHardwareConfig
         CTaskInfo
         CVideoTask
         CVideoOFTask

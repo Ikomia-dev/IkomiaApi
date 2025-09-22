@@ -17,11 +17,11 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Ikomia API'
-copyright = '2023, Ikomia SAS'
+copyright = '2025, Ikomia SAS'
 author = 'Ludovic Barusseau'
 
 # The full version, including alpha/beta/rc tags
-version = '0.9.0'
+version = '0.15.0'
 
 
 # -- General configuration ---------------------------------------------------
