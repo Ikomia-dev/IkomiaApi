@@ -20,6 +20,7 @@
     .. autosummary::
 
         create
+        get_min_hardware_config
         install_requirements
         load
         prepare_runtime_env
@@ -27,6 +28,7 @@
     .. rubric:: Details
 
     .. autofunction:: create
+    .. autofunction:: get_min_hardware_config
     .. autofunction:: install_requirements
     .. autofunction:: load
     .. autofunction:: prepare_runtime_env

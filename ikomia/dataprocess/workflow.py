@@ -28,7 +28,7 @@ from ikomia import utils
 from ikomia.core import config, IODataType, CWorkflowTask, CWorkflowTaskIO, auth  # pylint: disable=E0611
 from ikomia.core.task import conform_parameters, get_output
 from ikomia.dataio import CDataImageIO, CDataVideoIO  # pylint: disable=E0611
-from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO  # pylint: disable=E0611
+from ikomia.dataprocess import CWorkflow, CImageIO, CVideoIO, CPathIO, CHardwareConfig  # pylint: disable=E0611
 from ikomia.dataprocess.registry import IkomiaRegistry, ik_registry
 
 
@@ -786,8 +786,7 @@ def prepare_runtime_env(workflow_path: str):
     Args:
         workflow_path (str): path to workflow definition file (.json)
     """
-    wf = Workflow()
-    tasks = wf.get_required_tasks(workflow_path)
+    tasks = Workflow.get_required_tasks(workflow_path)
     available_tasks = ik_registry.get_algorithms()
     private_hub = bool(auth.ik_api_session.is_authenticated())
 
@@ -796,7 +795,7 @@ def prepare_runtime_env(workflow_path: str):
             try:
                 ik_registry.create_algorithm(name=t, public_hub=True, private_hub=private_hub)
             except Exception as e:
-                raise RuntimeError(f"Workflow preparation failed at task {t} for the following reason: {e}") from e
+                raise RuntimeError(f"Workflow preparation failed at algorithm {t} for the following reason: {e}") from e
 
 
 def install_requirements(path: str) -> bool:
@@ -810,8 +809,7 @@ def install_requirements(path: str) -> bool:
     Returns:
         True if all installations succeeded else False
     """
-    wf = Workflow("untitled", ik_registry)
-    tasks = wf.get_required_tasks(path)
+    tasks = Workflow.get_required_tasks(path)
     available_tasks = ik_registry.get_algorithms()
     plugins_directory = ik_registry.get_plugins_directory()
 
@@ -821,7 +819,32 @@ def install_requirements(path: str) -> bool:
             if os.path.isdir(plugin_dir):
                 utils.plugintools.install_requirements(plugin_dir)
             else:
-                msg = f"Workflow preparation failed: task {t} cannot be found."
+                msg = f"Requirements installation failed: algorithm folder {t} cannot be found."
                 logger.error(msg)
                 return False
     return True
+
+
+def get_min_hardware_config(path: str) -> CHardwareConfig:
+    """
+    Get minimum hardware configuration for the given workflow file.
+    The configuration is determined from the minimum hardware configuration of workflow tasks.
+
+    Args:
+         path (str): path to workflow definition file (.json)
+
+    Returns:
+        :py:class:`~ikomia.dataprocess.pydataprocess.CHardwareConfig`: hardware configuration
+    """
+    prepare_runtime_env(path)
+    min_hw_config = CHardwareConfig()
+    task_names = Workflow.get_required_tasks(path)
+
+    for name in task_names:
+        info = ik_registry.get_algorithm_info(name)
+        min_hw_config.min_cpu = max(min_hw_config.min_cpu, info.hardware_config.min_cpu)
+        min_hw_config.min_ram = max(min_hw_config.min_ram, info.hardware_config.min_ram)
+        min_hw_config.gpu_required = min_hw_config.gpu_required or info.hardware_config.gpu_required
+        min_hw_config.min_vram = max(min_hw_config.min_vram, info.hardware_config.min_vram)
+
+    return min_hw_config

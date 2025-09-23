@@ -37,6 +37,7 @@ CWorkflow
         ~CWorkflow.get_final_tasks
         ~CWorkflow.get_in_edges
         ~CWorkflow.get_last_run_folder
+        ~CWorkflow.get_min_hardware_config
         ~CWorkflow.get_out_edges
         ~CWorkflow.get_output_count
         ~CWorkflow.get_outputs
@@ -92,6 +93,7 @@ CWorkflow
     .. automethod:: get_final_tasks
     .. automethod:: get_in_edges
     .. automethod:: get_last_run_folder
+    .. automethod:: get_min_hardware_config
     .. automethod:: get_out_edges
     .. automethod:: get_output_count
     .. automethod:: get_outputs
