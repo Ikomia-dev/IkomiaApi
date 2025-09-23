@@ -10,6 +10,7 @@
         CPluginProcessInterface
         CTaskFactory
         CWidgetFactory
+        CHardwareConfig
 
     .. rubric:: Input/Output management
     .. autosummary::
@@ -53,7 +54,6 @@
         CKeypointDetectionTask
         CObjectDetectionTask
         CSemanticSegmentationTask
-        CTaskHardwareConfig
         CTaskInfo
         CVideoTask
         CVideoOFTask
