@@ -18,6 +18,7 @@ CTextStreamIO
         ~CTextStreamIO.is_feed_finished
         ~CTextStreamIO.is_read_finished
         ~CTextStreamIO.read_full
+        ~CTextStreamIO.read_full_async
         ~CTextStreamIO.read_next_async
 
     .. rubric:: Overridden methods
@@ -54,6 +55,7 @@ CTextStreamIO
     .. automethod:: is_read_finished
     .. automethod:: load
     .. automethod:: read_full
+    .. automethod:: read_full_async
     .. automethod:: read_next_async
     .. automethod:: save
     .. automethod:: to_json

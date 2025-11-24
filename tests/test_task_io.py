@@ -856,9 +856,13 @@ def test_cpp_text_io():
 
 def test_cpp_text_stream_io():
     words = ["Il ", "était ", "une ", "fois ", "dans ", "l\'", "Ouest.\n", "Ici ", "c'est ", "La ", "Rochelle", "!"]
-    io = dataprocess.CTextStreamIO()
+    text_src = ''.join(words)
 
-    def feed():
+    #----- Async stream
+    text_streamed = ""
+    io_stream = dataprocess.CTextStreamIO()
+
+    def feed(io: dataprocess.CTextStreamIO):
         for word in words:
             io.feed(word)
             time.sleep(0.5)  # simulate work
@@ -868,28 +872,59 @@ def test_cpp_text_stream_io():
     # Callback to read chunks asynchronously
     def read_callback(chunk):
         if chunk:
+            nonlocal text_streamed
+            text_streamed += chunk
             print(chunk, end="", flush=True)
-            io.read_next_async(1, 10, read_callback)  # re-arm for next
+            io_stream.read_next_async(1, 10, read_callback)  # re-arm for next
             time.sleep(0.6)
 
     def wait_finished():
-        while not io.is_read_finished():
+        while not io_stream.is_read_finished():
             pass
 
     # Create threads
-    t1 = threading.Thread(target=feed)
+    t1 = threading.Thread(target=feed, args=[io_stream])
     t2 = threading.Thread(target=wait_finished)
 
     # Start threads
     t1.start()
     t2.start()
 
-    io.read_next_async(1, 10, read_callback)
+    io_stream.read_next_async(1, 10, read_callback)
 
     # Wait for completion
     t1.join()
     t2.join()
-    print("\nFull text:", io.read_full())
+
+    text_full = io_stream.read_full()
+    print("\nFull text:", text_full)
+    assert text_streamed == text_src
+    assert text_full == text_src
+
+    #----- Async full received
+    read_complete = False
+
+    def full_text_available(text: str):
+        nonlocal text_full
+        nonlocal read_complete
+        text_full = text
+        read_complete = True
+        print("Full text received.")
+
+    def wait_full_finished():
+        nonlocal read_complete
+        while not read_complete:
+            pass
+
+    io_full = dataprocess.CTextStreamIO()
+    feed(io_full)
+    io_full.read_full_async(60, full_text_available)
+    # Create wait thread
+    t1 = threading.Thread(target=wait_full_finished)
+    t1.start()
+    # Wait for completion
+    t1.join()
+    assert text_full == text_src
 
 
 if __name__ == "__main__":
