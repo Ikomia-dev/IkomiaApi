@@ -1,6 +1,8 @@
 import os
 import argparse
 import logging
+import threading
+import time
 import numpy as np
 from ikomia import core, dataio, dataprocess
 from ikomia.utils import tests
@@ -852,6 +854,44 @@ def test_cpp_text_io():
     assert not loaded_io.is_data_available()
 
 
+def test_cpp_text_stream_io():
+    words = ["Il ", "était ", "une ", "fois ", "dans ", "l\'", "Ouest.\n", "Ici ", "c'est ", "La ", "Rochelle", "!"]
+    io = dataprocess.CTextStreamIO()
+
+    def feed():
+        for word in words:
+            io.feed(word)
+            time.sleep(0.5)  # simulate work
+
+        io.close()
+
+    # Callback to read chunks asynchronously
+    def read_callback(chunk):
+        if chunk:
+            print(chunk, end="", flush=True)
+            io.read_next_async(1, 10, read_callback)  # re-arm for next
+            time.sleep(0.6)
+
+    def wait_finished():
+        while not io.is_read_finished():
+            pass
+
+    # Create threads
+    t1 = threading.Thread(target=feed)
+    t2 = threading.Thread(target=wait_finished)
+
+    # Start threads
+    t1.start()
+    t2.start()
+
+    io.read_next_async(1, 10, read_callback)
+
+    # Wait for completion
+    t1.join()
+    t2.join()
+    print("\nFull text:", io.read_full())
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tests",
@@ -892,3 +932,5 @@ if __name__ == "__main__":
         test_cpp_semantic_segmentation_io()
     if 'all' in running_tests or 'cpp_text_io' in running_tests:
         test_cpp_text_io()
+    if 'all' in running_tests or 'cpp_text_stream_io' in running_tests:
+        test_cpp_text_stream_io()
