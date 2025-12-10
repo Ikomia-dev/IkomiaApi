@@ -28,7 +28,7 @@ from ikomia.core import config
 from ikomia.utils import is_app_started, iklogger, autocomplete  # pylint: disable=E0611
 from ikomia.core.auth import ik_api_session
 
-__version__ = "0.15.1"
+__version__ = "0.16.0"
 
 logger = logging.getLogger(__name__)
 
