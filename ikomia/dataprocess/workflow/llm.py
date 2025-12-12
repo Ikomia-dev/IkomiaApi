@@ -2,7 +2,7 @@
 import json
 import logging
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Union, Literal, Optional
 
 import yaml
 
@@ -46,7 +46,7 @@ class LlmWorkflow(Workflow):
         if model_name and self.config:
             self.config["model_name"] = model_name
 
-    def load_config(self, path: str):
+    def load_config(self, path: Union[str, Path]):
         """
         Load custom serving framework configuration.
 
@@ -94,7 +94,7 @@ class LlmWorkflow(Workflow):
                 self.backend = json_wf["llm"]["backend"]
                 config_file_name = json_wf["llm"]["config_file"]
                 wf_path = Path(path)
-                config_path = wf_path.parent.joinpath(f"{config_file_name}")
+                config_path = wf_path.parent.joinpath(config_file_name)
 
                 if config_path.exists():
                     logger.info("Find custom LLM backend config: %s", config_path)
