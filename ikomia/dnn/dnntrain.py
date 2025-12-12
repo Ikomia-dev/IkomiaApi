@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module dedicated to Deep Learning training.
-"""
+"""Module dedicated to Deep Learning training."""
 import logging
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
 import mlflow
-from ikomia.core import config, CWorkflowTaskParam  # pylint: disable=E0611
+
+from ikomia.core import CWorkflowTaskParam, config  # pylint: disable=E0611
 from ikomia.dataprocess import CDnnTrainTask  # pylint: disable=E0611
 from ikomia.dnn import datasetio, monitoring
-
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +29,7 @@ logger = logging.getLogger(__name__)
 class TrainProcess(CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
+
     It includes mlflow framework and Tensorboard and handle connections with them:
 
         - experiment creation
@@ -41,6 +41,7 @@ class TrainProcess(CDnnTrainTask):
     It must be used with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDnnTrainTask`.
     """
+
     def __init__(self, name: str, param: CWorkflowTaskParam):
         """
         Constructor. Initialize mlflow local server.
@@ -57,20 +58,22 @@ class TrainProcess(CDnnTrainTask):
 
     @staticmethod
     def _init_mlflow():
-        """
-        Internal use only
-        """
+        """Internal use only"""
         monitoring.check_mlflow_server()
         mlflow.set_tracking_uri(config.main_cfg["mlflow"]["tracking_uri"])
 
     def _create_mlflow_experiment(self):
         try:
             date_time_obj = datetime.now()
-            time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
-            self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
+            time_stamp_str = date_time_obj.strftime("%d-%m-%Y_%H:%M:%S")
+            self.experiment_id = mlflow.create_experiment(
+                "experiment_" + time_stamp_str
+            )
         except Exception as e:
             self.experiment_id = None
-            logger.warning("Unable to create MLFlow experiment. Please check for server startup errors.")
+            logger.warning(
+                "Unable to create MLFlow experiment. Please check for server startup errors."
+            )
             logger.debug(e)
 
     def _is_experiment_exists(self) -> bool:
@@ -85,7 +88,9 @@ class TrainProcess(CDnnTrainTask):
         try:
             monitoring.check_tensorboard_server()
         except Exception as e:
-            logger.warning("TensorBoard can't be started so training metrics will not be monitor in it.")
+            logger.warning(
+                "TensorBoard can't be started so training metrics will not be monitor in it."
+            )
             logger.debug(e)
 
     def begin_task_run(self):
@@ -157,6 +162,7 @@ class TrainProcess(CDnnTrainTask):
     def log_artifact(self, file_path: str):
         """
         Log artifact to mlflow server.
+
         Artifact could be any file (model weights, configuration file...)
 
         Args:
@@ -168,6 +174,7 @@ class TrainProcess(CDnnTrainTask):
     def log_artifacts(self, folder_path: str):
         """
         Log artifacts to mlflow server.
+
         Artifacts could be any files stored in the same folder (model weights, configuration file...)
 
         Args:
@@ -177,14 +184,10 @@ class TrainProcess(CDnnTrainTask):
             mlflow.log_artifacts(folder_path)
 
     def end_task_run(self):
-        """
-        Finalize mlflow run.
-        """
+        """Finalize mlflow run."""
         super().end_task_run()
         mlflow.end_run()
 
     def stop(self):
-        """
-        Request training job to stop.
-        """
+        """Request training job to stop."""
         super().stop()

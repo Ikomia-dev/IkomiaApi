@@ -13,18 +13,27 @@
 # limitations under the License.
 
 """
-Module dedicated to provide default implementation of
-Ikomia Deep Learning dataset structure.
+Module dedicated to provide default implementation of Ikomia Deep Learning dataset structure.
+
 Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 """
 
-import random
 import json
-from ikomia.core import (  # pylint: disable=E0611
-    CPointF, GraphicsPolygonProperty, CGraphicsPolygon, GraphicsRectProperty, CGraphicsRectangle,
-    GraphicsTextProperty, CGraphicsText, GraphicsPointProperty, CGraphicsPoint,
-    GraphicsPolylineProperty, CGraphicsPolyline
-)
+import random
+
+from ikomia.core import CGraphicsPoint  # pylint: disable=E0611
+from ikomia.core import (
+    CGraphicsPolygon,
+    CGraphicsPolyline,
+    CGraphicsRectangle,
+    CGraphicsText,
+    CPointF,
+    GraphicsPointProperty,
+    GraphicsPolygonProperty,
+    GraphicsPolylineProperty,
+    GraphicsRectProperty,
+    GraphicsTextProperty,
+)  # pylint: disable=E0611
 from ikomia.dataprocess import CDatasetIO  # pylint: disable=E0611
 
 
@@ -68,7 +77,7 @@ class IkDatasetIO(CDatasetIO):
 
     def __init__(self, dataset_format: str = "other"):
         """
-        Constructor
+        Constructor.
 
         Args:
             dataset_format (str): dataset source format.
@@ -102,7 +111,9 @@ class IkDatasetIO(CDatasetIO):
         """
         categories = {}
         for category_id in self.data["metadata"]["category_names"]:
-            categories[category_id] = self.data["metadata"]["category_names"][category_id]
+            categories[category_id] = self.data["metadata"]["category_names"][
+                category_id
+            ]
 
         return categories
 
@@ -146,14 +157,13 @@ class IkDatasetIO(CDatasetIO):
 
     def get_graphics_annotations(self, img_path: str) -> list:
         """
-        Return a list of Ikomia graphics items corresponding
-        to the annotations of a given image (bounding box, polygons).
+        Return a list of graphics items corresponding to the annotations of a given image (bounding box, polygons).
 
         Args:
             img_path (str): path of the image from which we want annotations
 
         Returns:
-            :py:class:`~ikomia.core.pycore.CGraphicsItem` list: graphics items
+            list: graphics items (:py:class:`~ikomia.core.pycore.CGraphicsItem`)
         """
         graphics = []
         if len(self.category_colors) == 0:
@@ -200,26 +210,42 @@ class IkDatasetIO(CDatasetIO):
                             rect_prop = GraphicsRectProperty()
                             rect_prop.category = categ_name
                             rect_prop.pen_color = color
-                            graphics_rect = CGraphicsRectangle(bbox[0], bbox[1], bbox[2], bbox[3], rect_prop)
+                            graphics_rect = CGraphicsRectangle(
+                                bbox[0], bbox[1], bbox[2], bbox[3], rect_prop
+                            )
                             text_prop = GraphicsTextProperty()
                             text_prop.color = color
-                            graphics_text = CGraphicsText(categ_name, bbox[0], bbox[1], text_prop)
+                            graphics_text = CGraphicsText(
+                                categ_name, bbox[0], bbox[1], text_prop
+                            )
                             graphics.append(graphics_rect)
                             graphics.append(graphics_text)
 
                     if "keypoints" in annotation:
                         kp = annotation["keypoints"]
-                        kp_names_id = {pt_name: pt_id for pt_id, pt_name in
-                                       enumerate(self.data["metadata"]["keypoint_names"])}
-                        kp_id_names = {pt_id: pt_name for pt_id, pt_name in
-                                       enumerate(self.data["metadata"]["keypoint_names"])}
+                        kp_names_id = {
+                            pt_name: pt_id
+                            for pt_id, pt_name in enumerate(
+                                self.data["metadata"]["keypoint_names"]
+                            )
+                        }
+                        kp_id_names = {
+                            pt_id: pt_name
+                            for pt_id, pt_name in enumerate(
+                                self.data["metadata"]["keypoint_names"]
+                            )
+                        }
 
                         num_kp = len(kp_names_id)
-                        kp_connection_rules = self.data["metadata"]["keypoint_connection_rules"]
+                        kp_connection_rules = self.data["metadata"][
+                            "keypoint_connection_rules"
+                        ]
                         assert num_kp * 3 == len(kp)
                         pt_prop = GraphicsPointProperty()
                         pt_prop.pen_color = color
-                        for i, (x, y, v) in enumerate(zip(kp[0::3], kp[1::3], kp[2::3])):
+                        for i, (x, y, v) in enumerate(
+                            zip(kp[0::3], kp[1::3], kp[2::3])
+                        ):
                             if v != 0:
                                 pt_prop.category = kp_id_names[i]
                                 graphics_point = CGraphicsPoint(CPointF(x, y), pt_prop)
@@ -232,7 +258,9 @@ class IkDatasetIO(CDatasetIO):
                                 line_prop.pen_color = list(c)
                                 pt1 = CPointF(kp[id_pt1 * 3], kp[id_pt1 * 3 + 1])
                                 pt2 = CPointF(kp[id_pt2 * 3], kp[id_pt2 * 3 + 1])
-                                graphics_kp_poly = CGraphicsPolyline([pt1, pt2], line_prop)
+                                graphics_kp_poly = CGraphicsPolyline(
+                                    [pt1, pt2], line_prop
+                                )
                                 graphics.append(graphics_kp_poly)
 
         return graphics
@@ -242,7 +270,7 @@ class IkDatasetIO(CDatasetIO):
         Check whether the dataset structure contains data.
 
         Returns:
-            boolean: True or False
+            bool: True or False
         """
         if "images" in self.data:
             return len(self.data["images"]) > 0
@@ -250,16 +278,18 @@ class IkDatasetIO(CDatasetIO):
         return False
 
     def clear_data(self):
-        """
-        Clear whole dataset structure
-        """
+        """Clear whole dataset structure."""
         self.data.clear()
 
     def _get_random_category_colors(self) -> dict:
         random.seed(1)
         colors = {}
         for categ_id in self.data["metadata"]["category_names"]:
-            color = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+            color = [
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+            ]
             colors[categ_id] = color
         return colors
 
@@ -283,12 +313,17 @@ class IkDatasetIO(CDatasetIO):
         with open(path, "r", encoding="utf-8") as infile:
             self.data = json.load(infile)
             if "category_names" in self.data["metadata"]:
-                self.data["metadata"]["category_names"] = {int(k): v for k, v in
-                                                           self.data["metadata"]["category_names"].items()}
+                self.data["metadata"]["category_names"] = {
+                    int(k): v
+                    for k, v in self.data["metadata"]["category_names"].items()
+                }
 
     def to_json(self, options: list = None) -> str:
         """
         Convert dataset i/o data to JSON formatted string.
+
+        Args:
+            options (list): not used
 
         Returns:
             str: JSON formatted string

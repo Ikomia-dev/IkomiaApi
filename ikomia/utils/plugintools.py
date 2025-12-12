@@ -12,68 +12,237 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Internal use only
-"""
+"""Internal use only."""
 
-import os
+import importlib
+import json
+import logging
 import modulefinder
+import os
 import re
+import shutil
 import subprocess
 import sys
 import types
-import importlib
-import shutil
-import json
-import logging
-
 
 logger = logging.getLogger(__name__)
 
 
 SYSMODULES = [
-    "__main__", "__future__", "string", "re",
-    "difflib", "textwrap", "unicodedata", "stringprep", "readline",
-    "rlcompleter", "struct", "codecs", "datetime", "calendar", "collections",
-    "heapq", "bisect", "array", "weakref", "types", "copy", "pprint",
-    "reprlib", "enum", "numbers", "math", "cmath", "decimal", "fractions",
-    "random", "statistics", "itertools", "functools", "operator", "pathlib",
-    "fileinput", "stat", "filecmp", "tempfile", "glob", "fnmatch", "linecache",
-    "shutil", "macpath", "pickle", "copyreg", "shelve", "marshal", "dbm",
-    "sqlite3", "zlib", "gzip", "bz2", "lzma", "zipfile", "tarfile", "csv",
-    "configparser", "netrc", "xdrlib", "plistlib", "hashlib", "hmac", "secrets",
-    "os", "io", "time", "argparse", "getopt", "logging", "getpass", "curses",
-    "platform", "errno", "ctypes", "threading", "multiprocessing", "concurrent",
-    "sched", "queue", "_thread", "_dummy_thread", "dummy_threading",
-    "asyncio", "socket", "ssl", "select", "selectors", "asyncore", "asynchat",
-    "signal", "mmap", "email", "json", "mailcap", "mailbox", "mimetypes",
-    "base64", "binhex", "binascii", "quopri", "uu", "html", "xml",
-    "webbrowser", "cgi", "cgitb", "wsgiref", "urllib", "ftplib", "poplib",
-    "imaplib", "nntplib", "smtplib", "smtpd", "telnetlib", "uuid", "socketserver",
-    "xmlrpc", "ipadress", "audioop", "aifc", "sunau", "wave", "chunk", "colorsys",
-    "imghdr", "sndhdr", "ossaudiodev", "gettext", "locale", "turtle", "cmd",
-    "shlex", "tkinter", "typing", "pydoc", "doctest", "unittest", "2to3",
-    "test", "bdb", "faulthandler", "pdb", "timeit", "trace", "tracemalloc",
-    "distutils", "ensurepip", "venv", "zipapp", "sys", "sysconfig", "builtins",
-    "warnings", "dataclasses", "contextlib", "abc", "atexit", "traceback",
-    "gc", "inspect", "site", "code", "codeop", "zipimport", "pkgutil",
-    "modulefinder", "runpy", "importlib", "parser", "ast", "symtable",
-    "symbol", "token", "keyword", "tokenize", "tabnanny", "pyclbr",
-    "py_compile", "compileall", "dis", "pickletools", "formatter", "msilib",
-    "msvcrt", "winreg", "winsound", "posix", "pwd", "spwd", "grp", "crypt",
-    "termios", "tty", "pty", "fcntl", "pipes", "resource", "nis", "syslog"
-    "optparse", "imp"
+    "__main__",
+    "__future__",
+    "string",
+    "re",
+    "difflib",
+    "textwrap",
+    "unicodedata",
+    "stringprep",
+    "readline",
+    "rlcompleter",
+    "struct",
+    "codecs",
+    "datetime",
+    "calendar",
+    "collections",
+    "heapq",
+    "bisect",
+    "array",
+    "weakref",
+    "types",
+    "copy",
+    "pprint",
+    "reprlib",
+    "enum",
+    "numbers",
+    "math",
+    "cmath",
+    "decimal",
+    "fractions",
+    "random",
+    "statistics",
+    "itertools",
+    "functools",
+    "operator",
+    "pathlib",
+    "fileinput",
+    "stat",
+    "filecmp",
+    "tempfile",
+    "glob",
+    "fnmatch",
+    "linecache",
+    "shutil",
+    "macpath",
+    "pickle",
+    "copyreg",
+    "shelve",
+    "marshal",
+    "dbm",
+    "sqlite3",
+    "zlib",
+    "gzip",
+    "bz2",
+    "lzma",
+    "zipfile",
+    "tarfile",
+    "csv",
+    "configparser",
+    "netrc",
+    "xdrlib",
+    "plistlib",
+    "hashlib",
+    "hmac",
+    "secrets",
+    "os",
+    "io",
+    "time",
+    "argparse",
+    "getopt",
+    "logging",
+    "getpass",
+    "curses",
+    "platform",
+    "errno",
+    "ctypes",
+    "threading",
+    "multiprocessing",
+    "concurrent",
+    "sched",
+    "queue",
+    "_thread",
+    "_dummy_thread",
+    "dummy_threading",
+    "asyncio",
+    "socket",
+    "ssl",
+    "select",
+    "selectors",
+    "asyncore",
+    "asynchat",
+    "signal",
+    "mmap",
+    "email",
+    "json",
+    "mailcap",
+    "mailbox",
+    "mimetypes",
+    "base64",
+    "binhex",
+    "binascii",
+    "quopri",
+    "uu",
+    "html",
+    "xml",
+    "webbrowser",
+    "cgi",
+    "cgitb",
+    "wsgiref",
+    "urllib",
+    "ftplib",
+    "poplib",
+    "imaplib",
+    "nntplib",
+    "smtplib",
+    "smtpd",
+    "telnetlib",
+    "uuid",
+    "socketserver",
+    "xmlrpc",
+    "ipadress",
+    "audioop",
+    "aifc",
+    "sunau",
+    "wave",
+    "chunk",
+    "colorsys",
+    "imghdr",
+    "sndhdr",
+    "ossaudiodev",
+    "gettext",
+    "locale",
+    "turtle",
+    "cmd",
+    "shlex",
+    "tkinter",
+    "typing",
+    "pydoc",
+    "doctest",
+    "unittest",
+    "2to3",
+    "test",
+    "bdb",
+    "faulthandler",
+    "pdb",
+    "timeit",
+    "trace",
+    "tracemalloc",
+    "distutils",
+    "ensurepip",
+    "venv",
+    "zipapp",
+    "sys",
+    "sysconfig",
+    "builtins",
+    "warnings",
+    "dataclasses",
+    "contextlib",
+    "abc",
+    "atexit",
+    "traceback",
+    "gc",
+    "inspect",
+    "site",
+    "code",
+    "codeop",
+    "zipimport",
+    "pkgutil",
+    "modulefinder",
+    "runpy",
+    "importlib",
+    "parser",
+    "ast",
+    "symtable",
+    "symbol",
+    "token",
+    "keyword",
+    "tokenize",
+    "tabnanny",
+    "pyclbr",
+    "py_compile",
+    "compileall",
+    "dis",
+    "pickletools",
+    "formatter",
+    "msilib",
+    "msvcrt",
+    "winreg",
+    "winsound",
+    "posix",
+    "pwd",
+    "spwd",
+    "grp",
+    "crypt",
+    "termios",
+    "tty",
+    "pty",
+    "fcntl",
+    "pipes",
+    "resource",
+    "nis",
+    "syslog" "optparse",
+    "imp",
 ]
 
 
 class SingleFileModuleFinder(modulefinder.ModuleFinder):
-    """
-    Internal use only.
-    """
+    """Internal use only."""
+
     def import_hook(self, name: str, caller, *arg, **kwarg):
         if caller is not None and caller.__file__ == self.name:
             # Only call the parent at the top level.
-            return modulefinder.ModuleFinder.import_hook(self, name, caller, *arg, **kwarg)
+            return modulefinder.ModuleFinder.import_hook(
+                self, name, caller, *arg, **kwarg
+            )
 
         return None
 
@@ -90,9 +259,11 @@ def get_installed_modules() -> dict:
         dict: list with package name and version
     """
     modules = {}
-    result = subprocess.run([sys.executable, "-m", "pip", "list", "--format", "json"],
-                            capture_output=True,
-                            text=True)
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "list", "--format", "json"],
+        capture_output=True,
+        text=True,
+    )
     if result.stdout:
         modules = json.loads(result.stdout)
     else:
@@ -136,16 +307,20 @@ def get_plugin_dependencies(plugin_folder: str) -> list:
 
         for mod in mf.modules.keys():
             # Keep only root modules (ex: keep matplotlib when we have import matplotlib.pyplot as plt)
-            root_mod = mod.replace(mod, mod.split('.')[0])
+            root_mod = mod.replace(mod, mod.split(".")[0])
 
             if root_mod not in SYSMODULES and root_mod not in module_names:
                 good_modules.append(root_mod)
 
         for mod in mf.badmodules.keys():
             # Keep only root modules (ex: keep matplotlib when we have import matplotlib.pyplot as plt)
-            root_mod = mod.replace(mod, mod.split('.')[0])
+            root_mod = mod.replace(mod, mod.split(".")[0])
 
-            if root_mod not in SYSMODULES and root_mod not in good_modules and root_mod not in module_names:
+            if (
+                root_mod not in SYSMODULES
+                and root_mod not in good_modules
+                and root_mod not in module_names
+            ):
                 bad_modules.append(root_mod)
 
     # Remove duplicates
@@ -155,6 +330,7 @@ def get_plugin_dependencies(plugin_folder: str) -> list:
 def install_requirements(directory: str):
     """
     Install Python dependencies for the given Ikomia Plugin.
+
     The function searches for requirements files and iterate over them in the lexicographic order.
 
     Args:
@@ -171,7 +347,9 @@ def install_requirements(directory: str):
 
     for file in req_files:
         try:
-            subprocess.run([sys.executable, "-m", "pip", "install", "-r", file], check=True)
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", "-r", file], check=True
+            )
         except Exception as e:
             logger.warning(e)
 
@@ -186,7 +364,10 @@ def install_package(name: str, version: str):
     """
     if name:
         try:
-            subprocess.run([sys.executable, "-m", "pip", "install", f'{name}=={version}'], check=True)
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", f"{name}=={version}"],
+                check=True,
+            )
         except Exception as e:
             logger.warning(e)
 
@@ -200,7 +381,9 @@ def uninstall_package(name: str):
     """
     if name:
         try:
-            subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", name], check=True)
+            subprocess.run(
+                [sys.executable, "-m", "pip", "uninstall", "-y", name], check=True
+            )
         except Exception as e:
             logger.warning(e)
 
@@ -212,6 +395,9 @@ def import_plugin_module(directory: str, name: str):
     Args:
         directory (str): path to the plugin directory
         name (str): name of the plugin
+
+    Returns:
+        module instance
     """
     if is_module_imported(name):
         for _, _, files in os.walk(directory, topdown=True):
@@ -255,12 +441,16 @@ def unload_plugin_module(name: str):
 def conform_plugin_directory(directory: str, plugin: dict) -> str:
     """
     Conform plugin directory name to fit the Ikomia naming convention.
+
     This function must be call after downloading the plugin package from
     Ikomia HUB to ensure name validity.
 
     Args:
         directory (str): path to the plugin directory
         plugin (dict): plugin information retrieved from Ikomia HUB
+
+    Returns:
+        str: well-formed direction path
     """
     good_dir_name = directory
     base_name = os.path.basename(directory)
@@ -290,9 +480,9 @@ def conform_plugin_directory(directory: str, plugin: dict) -> str:
 
 
 if __name__ == "__main__":
-    folder = 'plugin_folder'
+    folder = "plugin_folder"
     goodModules, badModules = get_plugin_dependencies(folder)
-    print('Dependencies:\n')
+    print("Dependencies:\n")
     print(goodModules)
-    print('\n\nMissing:\n')
+    print("\n\nMissing:\n")
     print(badModules)

@@ -18,7 +18,9 @@ Module dedicated to high-level features around task management.
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
 import logging
-from ikomia.core import CWorkflowTaskParam, CWorkflowTask  # pylint: disable=E0611
+
+from ikomia.core import CWorkflowTask  # pylint: disable=E0611
+from ikomia.core import CWorkflowTaskParam  # pylint: disable=E0611
 from ikomia.dataprocess import CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 
@@ -27,15 +29,16 @@ logger = logging.getLogger(__name__)
 
 class TaskParam(CWorkflowTaskParam):
     """
-    Base class to manage task parameters. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
+    Base class to manage task parameters.
+
+    Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
     It includes a dict structure to store parameter values.
 
     :ivar cfg: parameters dict
     """
+
     def __init__(self):
-        """
-        Constructor. Initialize an empty dict structure.
-        """
+        """Constructor. Initialize an empty dict structure."""
         CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
@@ -58,13 +61,19 @@ class TaskParam(CWorkflowTaskParam):
 
         Args:
             params (dict): parameters as key-value pairs
+
+        Raises:
+            NotImplementedError: method must be reimplemented
         """
         raise NotImplementedError
 
 
-def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
+def create(
+    name: str = "", public_hub: bool = True, private_hub: bool = False
+) -> CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
+
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
 
     Args:
@@ -78,10 +87,14 @@ def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -
     if not name:
         return None
 
-    return ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
+    return ik_registry.create_algorithm(
+        name=name, public_hub=public_hub, private_hub=private_hub
+    )
 
 
-def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkflowTaskIO:
+def get_output(
+    task_obj: CWorkflowTask, types: list, index: int = -1
+) -> CWorkflowTaskIO:
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 
@@ -92,6 +105,9 @@ def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkfl
 
     Returns:
         instance or list of :py:class:`~ikomia.dataprocess.pydataprocess.CWorkflowTaskIO` based object: outputs
+
+    Raises:
+        RuntimeError: invalid task instance
     """
     if task_obj is None:
         raise RuntimeError("Cannot get outputs from None object.")
@@ -109,7 +125,9 @@ def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkfl
     if 0 <= index < len(outputs):
         return outputs[index]
 
-    raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
+    raise RuntimeError(
+        f"No output at index {index}: only {len(outputs)} outputs available"
+    )
 
 
 def conform_parameters(params: dict) -> dict:
@@ -121,6 +139,9 @@ def conform_parameters(params: dict) -> dict:
 
     Returns:
         dict: conformed parameters with string values
+
+    Raises:
+        TypeError: parameter key must be a string
     """
     valid_params = {}
     for key in params:

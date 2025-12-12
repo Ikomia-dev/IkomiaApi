@@ -1,13 +1,24 @@
-"""
-The module io provides helper functions to manage workflow I/O of Ikomia API.
-"""
-from ikomia.core import IODataType, CWorkflowTaskIO  # pylint: disable=E0611
-from ikomia.dnn.datasetio import IkDatasetIO
-from ikomia.dataprocess import (  # pylint: disable=E0611
-    CImageIO, CVideoIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CWidgetOutput, CPathIO,
-    CArrayIO, CObjectDetectionIO, CInstanceSegmentationIO, CSemanticSegmentationIO, CKeypointsIO, CTextIO
-)
+"""The module io provides helper functions to manage workflow I/O of Ikomia API."""
+
+from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
+from ikomia.dataprocess import CArrayIO  # pylint: disable=E0611
+from ikomia.dataprocess import (
+    CBlobMeasureIO,
+    CGraphicsInput,
+    CGraphicsOutput,
+    CImageIO,
+    CInstanceSegmentationIO,
+    CKeypointsIO,
+    CNumericIO,
+    CObjectDetectionIO,
+    CPathIO,
+    CSemanticSegmentationIO,
+    CTextIO,
+    CVideoIO,
+    CWidgetOutput,
+)  # pylint: disable=E0611
 from ikomia.dataprocess.datadictIO import DataDictIO
+from ikomia.dnn.datasetio import IkDatasetIO
 
 
 def get_io_type_from_string(type_str: str) -> IODataType:
@@ -91,6 +102,9 @@ def create_task_io(io_type: IODataType) -> CWorkflowTaskIO:
 
     Returns:
         Task I/O object (base class: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`)
+
+    Raises:
+        TypeError: invalid I/O type
     """
     # TODO: use match syntax when minimum Python version will be 3.10
     if io_type == IODataType.IMAGE:

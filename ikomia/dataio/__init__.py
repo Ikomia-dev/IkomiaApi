@@ -14,6 +14,7 @@
 
 """
 The dataio module manages data source from various formats of image and videos.
+
 It is in fact a Python binding of the corresponding C++ library from Ikomia Core.
 """
 

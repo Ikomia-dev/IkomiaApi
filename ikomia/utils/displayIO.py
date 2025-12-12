@@ -13,24 +13,41 @@
 # limitations under the License.
 
 """
-Module dedicated to the visualization of workflow components. The idea is to propose a list of basic visualization
+Module dedicated to the visualization of workflow components.
+
+The idea is to propose a list of basic visualization
 functions for each type of components: workflow, task, input and output (for debug purpose essentially).
 """
-import sys
-import os
 import logging
+import os
+import sys
 from functools import singledispatch
-import numpy as np
+
+import cv2
 import matplotlib
+import numpy as np
 from matplotlib import patches
 from matplotlib.cbook import flatten
 from PIL import Image
-from ikomia.core import config, GraphicsItem  # pylint: disable=E0611
-from ikomia.dataprocess import (  # pylint: disable=E0611
-    CImageIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CObjectDetectionIO, CInstanceSegmentationIO,
-    CSemanticSegmentationIO, CKeypointsIO, CTextIO, NumericOutputType, PlotType, CDataStringIO, CWorkflowTask, CWorkflow
-)
-import cv2
+
+from ikomia.core import GraphicsItem, config  # pylint: disable=E0611
+from ikomia.dataprocess import CBlobMeasureIO  # pylint: disable=E0611
+from ikomia.dataprocess import (
+    CDataStringIO,
+    CGraphicsInput,
+    CGraphicsOutput,
+    CImageIO,
+    CInstanceSegmentationIO,
+    CKeypointsIO,
+    CNumericIO,
+    CObjectDetectionIO,
+    CSemanticSegmentationIO,
+    CTextIO,
+    CWorkflow,
+    CWorkflowTask,
+    NumericOutputType,
+    PlotType,
+)  # pylint: disable=E0611
 
 # Matplotlib backend choice
 _backend_name = None
@@ -39,20 +56,24 @@ _valid_backend = True
 try:
     matplotlib.use("Qt5Agg")
     import matplotlib.pyplot as plt
+
     _backend_name = "Qt5Agg"
 except ImportError:
     try:
         matplotlib.use("GTK3Agg")
         import matplotlib.pyplot as plt
+
         _backend_name = "GTK3Agg"
     except ImportError:
         try:
             matplotlib.use("TkAgg")
             import matplotlib.pyplot as plt
+
             _backend_name = "TkAgg"
         except ImportError:
             try:
                 import matplotlib.pyplot as plt
+
                 _backend_name = plt.get_backend()
             except ImportError:
                 _valid_backend = False
@@ -120,8 +141,7 @@ def _(obj: CImageIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
-    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
-    in a Matplotlib figure.
+    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`) in a Matplotlib figure.
 
     Args:
         obj (CGraphicsInput): I/O instance
@@ -158,22 +178,36 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
         if item_type == GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
             yc = item.x + item.height / 2
-            ellipse = patches.Ellipse(xy=(xc, yc), width=item.width, height=item.height,
-                                      edgecolor=_to_plot_color(item.property.pen_color),
-                                      facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            ellipse = patches.Ellipse(
+                xy=(xc, yc),
+                width=item.width,
+                height=item.height,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
         elif item_type == GraphicsItem.POINT:
-            circle = patches.Circle(xy=(item.point.x, item.point.y), radius=item.property.size / 2,
-                                    edgecolor=_to_plot_color(item.property.pen_color),
-                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            circle = patches.Circle(
+                xy=(item.point.x, item.point.y),
+                radius=item.property.size / 2,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(circle)
             update_min_max(item.point.x, item.point.y)
         elif item_type == GraphicsItem.RECTANGLE:
-            ellipse = patches.Rectangle(xy=(item.x, item.y), width=item.width, height=item.height,
-                                        edgecolor=_to_plot_color(item.property.pen_color),
-                                        facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            ellipse = patches.Rectangle(
+                xy=(item.x, item.y),
+                width=item.width,
+                height=item.height,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
@@ -183,8 +217,13 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            poly = patches.Polygon(pts, closed=False, fill=False,
-                                   edgecolor=_to_plot_color(item.property.pen_color), **kwargs)
+            poly = patches.Polygon(
+                pts,
+                closed=False,
+                fill=False,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                **kwargs,
+            )
             ax.add_patch(poly)
         elif item_type == GraphicsItem.POLYGON:
             pts = []
@@ -192,9 +231,13 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            poly = patches.Polygon(pts, closed=True,
-                                   edgecolor=_to_plot_color(item.property.pen_color),
-                                   facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            poly = patches.Polygon(
+                pts,
+                closed=True,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(poly)
         elif item_type == GraphicsItem.COMPLEX_POLYGON:
             pts = []
@@ -202,9 +245,13 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            outer = patches.Polygon(pts, closed=True,
-                                    edgecolor=_to_plot_color(item.property.pen_color),
-                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            outer = patches.Polygon(
+                pts,
+                closed=True,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(outer)
 
             for inner in item.inners:
@@ -213,26 +260,37 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
                     pts.append((pt.x, pt.y))
                     update_min_max(pt.x, pt.y)
 
-                inner = patches.Polygon(pts, closed=True, fill=False,
-                                        edgecolor=_to_plot_color(item.property.pen_color),
-                                        facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+                inner = patches.Polygon(
+                    pts,
+                    closed=True,
+                    fill=False,
+                    edgecolor=_to_plot_color(item.property.pen_color),
+                    facecolor=_to_plot_color(item.property.brush_color),
+                    **kwargs,
+                )
                 ax.add_patch(inner)
         elif item_type == GraphicsItem.TEXT:
-            ax.text(item.x, item.y, item.text, size=item.property.font_size, color=_to_plot_color(item.property.color))
+            ax.text(
+                item.x,
+                item.y,
+                item.text,
+                size=item.property.font_size,
+                color=_to_plot_color(item.property.color),
+            )
             update_min_max(item.x, item.y)
 
     if x_min == x_max:
         x_min = 0
-        x_max = 2*x_max
+        x_max = 2 * x_max
 
     if y_min == y_max:
         y_min = 0
-        y_max = 2*y_max
+        y_max = 2 * y_max
 
     ax.set_xlim(x_min, x_max)
     ax.set_ylim(y_min, y_max)
     ax.invert_yaxis()
-    plt.gca().set_aspect('equal', adjustable='box')
+    plt.gca().set_aspect("equal", adjustable="box")
 
     if not child:
         fig.tight_layout()
@@ -242,8 +300,7 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
     """
-    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
-    in a Matplotlib figure.
+    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`) in a Matplotlib figure.
 
     Args:
         obj (CGraphicsOutput): I/O instance
@@ -280,22 +337,36 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
         if item_type == GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
             yc = item.x + item.height / 2
-            ellipse = patches.Ellipse(xy=(xc, yc), width=item.width, height=item.height,
-                                      edgecolor=_to_plot_color(item.property.pen_color),
-                                      facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            ellipse = patches.Ellipse(
+                xy=(xc, yc),
+                width=item.width,
+                height=item.height,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(ellipse)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
         elif item_type == GraphicsItem.POINT:
-            circle = patches.Circle(xy=(item.point.x, item.point.y), radius=item.property.size / 2,
-                                    edgecolor=_to_plot_color(item.property.pen_color),
-                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            circle = patches.Circle(
+                xy=(item.point.x, item.point.y),
+                radius=item.property.size / 2,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(circle)
             update_min_max(item.point.x, item.point.y)
         elif item_type == GraphicsItem.RECTANGLE:
-            rect = patches.Rectangle(xy=(item.x, item.y), width=item.width, height=item.height,
-                                     edgecolor=_to_plot_color(item.property.pen_color),
-                                     facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            rect = patches.Rectangle(
+                xy=(item.x, item.y),
+                width=item.width,
+                height=item.height,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(rect)
             update_min_max(item.x, item.y)
             update_min_max(item.x + item.width, item.y + item.height)
@@ -305,8 +376,13 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            poly = patches.Polygon(pts, closed=False, fill=False,
-                                   edgecolor=_to_plot_color(item.property.pen_color), **kwargs)
+            poly = patches.Polygon(
+                pts,
+                closed=False,
+                fill=False,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                **kwargs,
+            )
             ax.add_patch(poly)
         elif item_type == GraphicsItem.POLYGON:
             pts = []
@@ -314,9 +390,13 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            poly = patches.Polygon(pts, closed=True,
-                                   edgecolor=_to_plot_color(item.property.pen_color),
-                                   facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            poly = patches.Polygon(
+                pts,
+                closed=True,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(poly)
         elif item_type == GraphicsItem.COMPLEX_POLYGON:
             pts = []
@@ -324,9 +404,13 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                 pts.append((pt.x, pt.y))
                 update_min_max(pt.x, pt.y)
 
-            outer = patches.Polygon(pts, closed=True,
-                                    edgecolor=_to_plot_color(item.property.pen_color),
-                                    facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+            outer = patches.Polygon(
+                pts,
+                closed=True,
+                edgecolor=_to_plot_color(item.property.pen_color),
+                facecolor=_to_plot_color(item.property.brush_color),
+                **kwargs,
+            )
             ax.add_patch(outer)
 
             for inner in item.inners:
@@ -335,26 +419,37 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                     pts.append((pt.x, pt.y))
                     update_min_max(pt.x, pt.y)
 
-                inner = patches.Polygon(pts, closed=True, fill=False,
-                                        edgecolor=_to_plot_color(item.property.pen_color),
-                                        facecolor=_to_plot_color(item.property.brush_color), **kwargs)
+                inner = patches.Polygon(
+                    pts,
+                    closed=True,
+                    fill=False,
+                    edgecolor=_to_plot_color(item.property.pen_color),
+                    facecolor=_to_plot_color(item.property.brush_color),
+                    **kwargs,
+                )
                 ax.add_patch(inner)
         elif item_type == GraphicsItem.TEXT:
-            ax.text(item.x, item.y, item.text, size=item.property.font_size, color=_to_plot_color(item.property.color))
+            ax.text(
+                item.x,
+                item.y,
+                item.text,
+                size=item.property.font_size,
+                color=_to_plot_color(item.property.color),
+            )
             update_min_max(item.x, item.y)
 
     if x_min == x_max:
         x_min = 0
-        x_max = 2*x_max
+        x_max = 2 * x_max
 
     if y_min == y_max:
         y_min = 0
-        y_max = 2*y_max
+        y_max = 2 * y_max
 
     ax.set_xlim(x_min, x_max)
     ax.set_ylim(y_min, y_max)
     ax.invert_yaxis()
-    plt.gca().set_aspect('equal', adjustable='box')
+    plt.gca().set_aspect("equal", adjustable="box")
 
     if not child:
         fig.tight_layout()
@@ -364,8 +459,9 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
     """
-    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
-    as a table in a Matplotlib figure.
+    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CNumericIO): I/O instance
@@ -405,12 +501,22 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
             row_labels = labels[0]
 
         for i, label in enumerate(row_labels):
-            label = (label[:cell_length_limit] + '..') if len(label) > cell_length_limit else label
+            label = (
+                (label[:cell_length_limit] + "..")
+                if len(label) > cell_length_limit
+                else label
+            )
             row_labels[i] = label
 
         col_width = [1 / (cols_count + 1)] * cols_count
-        table = ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels,
-                         cellLoc="left", loc="upper right", colWidths=col_width)
+        table = ax.table(
+            cellText=np_values,
+            colLabels=col_labels,
+            rowLabels=row_labels,
+            cellLoc="left",
+            loc="upper right",
+            colWidths=col_width,
+        )
         table.auto_set_font_size(False)
         table.set_fontsize(10)
         ax.axis("off")
@@ -419,7 +525,7 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
         plot_type = obj.get_plot_type()
 
         # HISTOGRAM
-        if plot_type in (PlotType.HISTOGRAM,  PlotType.BAR):
+        if plot_type in (PlotType.HISTOGRAM, PlotType.BAR):
             if fig is None:
                 fig, ax = plt.subplots(1, 1)
             else:
@@ -522,8 +628,9 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
     """
-    Display string values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
-    as a table in a Matplotlib figure.
+    Display string values input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CDataStringIO): I/O instance
@@ -563,12 +670,22 @@ def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
             row_labels = labels[0]
 
         for i, label in enumerate(row_labels):
-            label = (label[:cell_length_limit] + '..') if len(label) > cell_length_limit else label
+            label = (
+                (label[:cell_length_limit] + "..")
+                if len(label) > cell_length_limit
+                else label
+            )
             row_labels[i] = label
 
         col_width = [1 / (cols_count + 1)] * cols_count
-        table = ax.table(cellText=np_values, colLabels=col_labels, rowLabels=row_labels,
-                         cellLoc="left", loc="upper right", colWidths=col_width)
+        table = ax.table(
+            cellText=np_values,
+            colLabels=col_labels,
+            rowLabels=row_labels,
+            cellLoc="left",
+            loc="upper right",
+            colWidths=col_width,
+        )
         table.auto_set_font_size(False)
         table.set_fontsize(10)
         ax.axis("off")
@@ -583,8 +700,9 @@ def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     """
-    Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`)
-    as a table in a Matplotlib figure.
+    Display object measures input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CBlobMeasureIO): I/O instance
@@ -632,20 +750,34 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
                 j = col_labels.index(measure_info.name)
                 if len(measure.values) == 1:
                     str_val = str(measure.values[0])
-                    values[i][j] = (str_val[:max_value_length] + '...') if len(str_val) > max_value_length else str_val
+                    values[i][j] = (
+                        (str_val[:max_value_length] + "...")
+                        if len(str_val) > max_value_length
+                        else str_val
+                    )
                 else:
                     measure_val = ""
                     for value in measure.values:
                         str_val = str(value)
-                        str_val = (str_val[:max_value_length] + '...') if len(str_val) > max_value_length else str_val
+                        str_val = (
+                            (str_val[:max_value_length] + "...")
+                            if len(str_val) > max_value_length
+                            else str_val
+                        )
                         measure_val += str_val + ";"
                     values[i][j] = measure_val
             except ValueError:
                 continue
 
     col_width = [1 / (cols_count + 1)] * cols_count
-    table = ax.table(cellText=values, colLabels=col_labels, rowLabels=row_labels,
-                     cellLoc="left", loc="upper left", colWidths=col_width)
+    table = ax.table(
+        cellText=values,
+        colLabels=col_labels,
+        rowLabels=row_labels,
+        cellLoc="left",
+        loc="upper left",
+        colWidths=col_width,
+    )
     table.auto_set_font_size(False)
     table.set_fontsize(10)
 
@@ -660,8 +792,7 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CObjectDetectionIO, title: str = "", **kwargs):
     """
-    Display object detection input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
+    Display object detection input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
 
     Args:
         obj (CObjectDetectionIO): I/O instance
@@ -679,8 +810,7 @@ def _(obj: CObjectDetectionIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CInstanceSegmentationIO, title: str = "", **kwargs):
     """
-    Display instance segmentation input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
+    Display instance segmentation input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
 
     Args:
         obj (CInstanceSegmentationIO): I/O instance
@@ -699,8 +829,7 @@ def _(obj: CInstanceSegmentationIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CSemanticSegmentationIO, title: str = "", **kwargs):
     """
-    Display semantic segmentation input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
+    Display semantic segmentation input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
 
     Args:
         obj (CSemanticSegmentationIO): I/O instance
@@ -718,8 +847,7 @@ def _(obj: CSemanticSegmentationIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CKeypointsIO, title: str = "", **kwargs):
     """
-    Display keypoints input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
+    Display keypoints input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
 
     Args:
         obj (CKeypointsIO): I/O instance
@@ -738,8 +866,7 @@ def _(obj: CKeypointsIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CTextIO, title: str = "", **kwargs):
     """
-    Display text input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
+    Display text input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
 
     Args:
         obj (CTextIO): I/O instance
@@ -780,7 +907,9 @@ def _(obj: CWorkflowTask, title: str = "", **kwargs):
     else:
         for i, task_input in enumerate(inputs):
             try:
-                display(task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs)
+                display(
+                    task_input, type(task_input).__name__, fig=in_sub_figs[i], **kwargs
+                )
             except NotImplementedError:
                 logger.error("No display function available for input %s", str(i))
 
@@ -799,7 +928,12 @@ def _(obj: CWorkflowTask, title: str = "", **kwargs):
     else:
         for i, task_output in enumerate(outputs):
             try:
-                display(task_output, type(task_output).__name__, fig=out_sub_figs[i], **kwargs)
+                display(
+                    task_output,
+                    type(task_output).__name__,
+                    fig=out_sub_figs[i],
+                    **kwargs,
+                )
             except NotImplementedError:
                 logger.error("No display function available for output %s", str(i))
 
@@ -816,6 +950,7 @@ def _(obj: CWorkflow, title: str = "", **kwargs):
         title (str): title of the figure
     """
     from graphviz import Source
+
     dot_file_name = obj.name + ".dot"
     path = os.path.join(config.main_cfg["data"]["path"], dot_file_name)
     obj.export_graphviz(path)

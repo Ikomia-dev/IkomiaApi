@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core.
-"""
+"""The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core."""
 from ikomia.utils import update_sys_path
 
 try:
@@ -35,6 +33,7 @@ def is_colab() -> bool:
     # Is environment a Google Colab instance?
     try:
         import google.colab
+
         return True
     except Exception:
         return False
@@ -42,6 +41,7 @@ def is_colab() -> bool:
 
 def strtobool(val: str) -> bool:
     """Convert a string representation of truth to true (1) or false (0).
+
     True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
     are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
     'val' is anything else.
@@ -51,12 +51,15 @@ def strtobool(val: str) -> bool:
 
     Returns:
         bool: boolean conversion from val
+
+    Raises:
+        ValueError: invalid boolean value
     """
     val = val.lower()
-    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+    if val in ("y", "yes", "t", "true", "on", "1"):
         return True
 
-    if val in ('n', 'no', 'f', 'false', 'off', '0'):
+    if val in ("n", "no", "f", "false", "off", "0"):
         return False
 
     raise ValueError(f"invalid truth value: {val}")

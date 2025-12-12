@@ -13,26 +13,54 @@
 # limitations under the License.
 
 """
-Module providing helper functions to design
-your own task widget. It uses the PyQt5 framework.
+Module providing helper functions to design your own task widget.
+
+It uses the PyQt5 framework.
 """
 
 from typing import Optional
-from PyQt5.QtWidgets import (  # pylint: disable=E0611
-    QWidget, QLineEdit, QFileDialog, QPushButton, QHBoxLayout, QDialog, QLabel, QComboBox, QSpinBox, QDoubleSpinBox,
-    QCheckBox, QRadioButton, QSlider
-)
-from PyQt5.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
+
+from PyQt5.QtCore import QObject, Qt, pyqtSignal  # pylint: disable=E0611
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QComboBox,  # pylint: disable=E0611
+    QDialog,
+    QDoubleSpinBox,
+    QFileDialog,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QRadioButton,
+    QSlider,
+    QSpinBox,
+    QWidget,
+)  # pylint: disable=E0611
 
 
 class BrowseFileWidget(QWidget):
-    """
-    Composite widget to handle file or folder selection.
-    """
+    """Composite widget to handle file or folder selection."""
+
     file_changed = pyqtSignal()
 
-    def __init__(self, path: str, file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile,
-                 parent: Optional[QObject] = None):
+    def __init__(
+        self,
+        path: str,
+        file_filter: str = "",
+        tooltip: str = "",
+        mode=QFileDialog.ExistingFile,
+        parent: Optional[QObject] = None,
+    ):
+        """
+        Widget initialization.
+
+        Args:
+            path (str): default path
+            file_filter (str): file filter by extension
+            tooltip (str): information given while passing mouse over the button
+            mode: file or directory
+            parent: parent window
+        """
         QWidget.__init__(self, parent)
         self.path = path
         self.tooltip = tooltip
@@ -44,9 +72,7 @@ class BrowseFileWidget(QWidget):
         self.init_connections()
 
     def init_layout(self):
-        """
-        Set composite widget horizontal layout.
-        """
+        """Set composite widget horizontal layout."""
         self.qedit_file = QLineEdit(self.path)
         self.qbrowse_btn = QPushButton("...")
         self.qbrowse_btn.setToolTip(self.tooltip)
@@ -57,24 +83,18 @@ class BrowseFileWidget(QWidget):
         self.setLayout(qlayout)
 
     def init_connections(self):
-        """
-        Create connections.
-        """
+        """Create connections."""
         self.qbrowse_btn.clicked.connect(self.on_browse)
         self.qedit_file.editingFinished.connect(self.on_path_changed)
 
     def on_browse(self):
-        """
-        Slot triggered by button click.
-        """
+        """Slot triggered by button click."""
         self.path = self.show_select_file_dlg()
         self.qedit_file.setText(self.path)
         self.file_changed.emit()
 
     def on_path_changed(self):
-        """
-        Slot triggered when new path is selected.
-        """
+        """Slot triggered when new path is selected."""
         self.path = self.qedit_file.text()
 
     def show_select_file_dlg(self):
@@ -110,9 +130,7 @@ class BrowseFileWidget(QWidget):
         self.qedit_file.setText(path)
 
     def clear(self):
-        """
-        Clear current path.
-        """
+        """Clear current path."""
         self.path = ""
         self.qedit_file.clear()
 
@@ -188,11 +206,17 @@ def append_combo(grid_layout, label: str) -> QComboBox:
     return add_combo(grid_layout, last_pos, label)
 
 
-def add_spin(grid_layout, row: int, label: str, value: int,
-             min: int = 0, max: int = 2147483647, step: int = 1) -> QSpinBox:
+def add_spin(
+    grid_layout,
+    row: int,
+    label: str,
+    value: int,
+    min: int = 0,
+    max: int = 2147483647,
+    step: int = 1,
+) -> QSpinBox:
     """
-    Add a composite widget (label + edit box + spin box)
-    in the layout at the given row - **integer values**.
+    Add a composite widget (label + edit box + spin box) in the layout at the given row - **integer values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -217,11 +241,16 @@ def add_spin(grid_layout, row: int, label: str, value: int,
     return qspin
 
 
-def append_spin(grid_layout, label: str, value: int,
-                min: int = 0, max: int = 2147483647, step: int = 1) -> QSpinBox:
+def append_spin(
+    grid_layout,
+    label: str,
+    value: int,
+    min: int = 0,
+    max: int = 2147483647,
+    step: int = 1,
+) -> QSpinBox:
     """
-    Append a composite widget (label + edit box + spin box) in the layout -
-    **integer values**.
+    Append a composite widget (label + edit box + spin box) in the layout - **integer values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -238,12 +267,18 @@ def append_spin(grid_layout, label: str, value: int,
     return add_spin(grid_layout, last_pos, label, value, min, max, step)
 
 
-def add_double_spin(grid_layout, row: int, label: str,
-                    value: float, min: float = 0.0, max: float = float('inf'),
-                    step: float = 1, decimals: int = 4) -> QDoubleSpinBox:
+def add_double_spin(
+    grid_layout,
+    row: int,
+    label: str,
+    value: float,
+    min: float = 0.0,
+    max: float = float("inf"),
+    step: float = 1,
+    decimals: int = 4,
+) -> QDoubleSpinBox:
     """
-    Add a composite widget (label + edit box + spin box)
-    in the layout at the given row - **float values**.
+    Add a composite widget (label + edit box + spin box) in the layout at the given row - **float values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -270,11 +305,17 @@ def add_double_spin(grid_layout, row: int, label: str,
     return qspin
 
 
-def append_double_spin(grid_layout, label: str, value: float, min: float = 0.0, max: float = float('inf'),
-                       step: float = 1.0, decimals: int = 4) -> QDoubleSpinBox:
+def append_double_spin(
+    grid_layout,
+    label: str,
+    value: float,
+    min: float = 0.0,
+    max: float = float("inf"),
+    step: float = 1.0,
+    decimals: int = 4,
+) -> QDoubleSpinBox:
     """
-    Append a composite widget (label + edit box + spin box) in the layout -
-    **float values**.
+    Append a composite widget (label + edit box + spin box) in the layout - **float values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -289,7 +330,9 @@ def append_double_spin(grid_layout, label: str, value: float, min: float = 0.0, 
         QDoubleSpinBox: instance of the QDoubleSpinBox added to the layout
     """
     last_pos = grid_layout.rowCount()
-    return add_double_spin(grid_layout, last_pos, label, value, min, max, step, decimals)
+    return add_double_spin(
+        grid_layout, last_pos, label, value, min, max, step, decimals
+    )
 
 
 def add_check(grid_layout, row: int, label: str, checked: bool) -> QCheckBox:
@@ -362,8 +405,15 @@ def append_radio(grid_layout, label: str, checked: bool) -> QRadioButton:
     return add_radio(grid_layout, last_pos, label, checked)
 
 
-def add_slider(grid_layout, row: int, label: str, value: int,
-               min: int = 0, max: int = 2147483647, step: int = 1) -> QSlider:
+def add_slider(
+    grid_layout,
+    row: int,
+    label: str,
+    value: int,
+    min: int = 0,
+    max: int = 2147483647,
+    step: int = 1,
+) -> QSlider:
     """
     Add a slider and its label in the layout at the given row.
 
@@ -390,8 +440,14 @@ def add_slider(grid_layout, row: int, label: str, value: int,
     return qslider
 
 
-def append_slider(grid_layout, label: str, value: int,
-                  min: int = 0, max: int = 2147483647, step: int = 1) -> QSlider:
+def append_slider(
+    grid_layout,
+    label: str,
+    value: int,
+    min: int = 0,
+    max: int = 2147483647,
+    step: int = 1,
+) -> QSlider:
     """
     Append a slider and its label in the layout.
 
@@ -410,11 +466,17 @@ def append_slider(grid_layout, label: str, value: int,
     return add_slider(grid_layout, last_pos, label, value, min, max, step)
 
 
-def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
-                    file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+def add_browse_file(
+    grid_layout,
+    row: int = 0,
+    label: str = "",
+    path: str = "",
+    file_filter: str = "",
+    tooltip: str = "",
+    mode=QFileDialog.ExistingFile,
+) -> BrowseFileWidget:
     """
-    Add a composite widget (label + edit box + browse button)
-    in the layout at the given row - **file or folder**.
+    Add a composite widget (label + edit box + browse button) in the layout at the given row - **file or folder**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -430,17 +492,24 @@ def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
         BrowseFileWidget: instance of the BrowseFileWidget added to the layout
     """
     qlabel = QLabel(label)
-    qbrowse_widget = BrowseFileWidget(path=path, file_filter=file_filter, tooltip=tooltip, mode=mode)
+    qbrowse_widget = BrowseFileWidget(
+        path=path, file_filter=file_filter, tooltip=tooltip, mode=mode
+    )
     grid_layout.addWidget(qlabel, row, 0)
     grid_layout.addWidget(qbrowse_widget, row, 1)
     return qbrowse_widget
 
 
-def append_browse_file(grid_layout, label: str = "", path: str = "",
-                       file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+def append_browse_file(
+    grid_layout,
+    label: str = "",
+    path: str = "",
+    file_filter: str = "",
+    tooltip: str = "",
+    mode=QFileDialog.ExistingFile,
+) -> BrowseFileWidget:
     """
-    Append a composite widget (label + edit box + browse button) in the layout -
-    **file or folder**.
+    Append a composite widget (label + edit box + browse button) in the layout - **file or folder**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -455,5 +524,12 @@ def append_browse_file(grid_layout, label: str = "", path: str = "",
         BrowseFileWidget: instance of the BrowseFileWidget added to the layout
     """
     last_pos = grid_layout.rowCount()
-    return add_browse_file(grid_layout, row=last_pos, label=label, path=path,
-                           file_filter=file_filter, tooltip=tooltip, mode=mode)
+    return add_browse_file(
+        grid_layout,
+        row=last_pos,
+        label=label,
+        path=path,
+        file_filter=file_filter,
+        tooltip=tooltip,
+        mode=mode,
+    )

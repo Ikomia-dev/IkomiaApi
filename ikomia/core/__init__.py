@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The core is mainly a Python binding of the corresponding C++ library from Ikomia Core.
-"""
+"""The core is mainly a Python binding of the corresponding C++ library from Ikomia Core."""
 import os
 
 try:
@@ -30,9 +28,15 @@ from ikomia.core import config
 def _check_directories():
     os.makedirs(config.main_cfg["root_folder"], exist_ok=True)
     os.makedirs(config.main_cfg["registry"]["path"], exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "C++/"), exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "Python/"), exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "Transfer/"), exist_ok=True)
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "C++/"), exist_ok=True
+    )
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "Python/"), exist_ok=True
+    )
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "Transfer/"), exist_ok=True
+    )
     os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["mlflow"]["artifact_uri"], exist_ok=True)
@@ -45,7 +49,7 @@ def get_ikomia_root_folder() -> str:
     Get root Ikomia folder.
 
     Returns:
-        str: root folder, default: '$HOME/Ikomia' on Linux and 'C:\\Users\\your-user\\Ikomia on Windows'.
+        str: root folder, default: '$HOME/Ikomia' on Linux and 'C:/Users/your-user/Ikomia on Windows'.
     """
     return config.main_cfg["root_folder"]
 

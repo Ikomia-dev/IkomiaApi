@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Helper module to ease somme http operations.
-"""
-import os.path
+"""Helper module to ease somme http operations."""
 import functools
 import logging
+import os.path
+
 import requests
 from tqdm import tqdm
 
@@ -25,9 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 def http_no_raise(func):
-    """
-    Decorator to avoid raising exception when using requests.
-    """
+    """Decorator to avoid raising exception when using requests."""
+
     @functools.wraps(func)
     def wrapper(*argc, **kwargs):
         try:
@@ -62,11 +60,16 @@ def download_file(url: str, path: str, ik_session=None):
 
     with s.get(url, stream=True) as r:
         r.raise_for_status()
-        total_size = int(r.headers.get('content-length', 0))
+        total_size = int(r.headers.get("content-length", 0))
         name = os.path.basename(path)
 
-        with open(path, "wb") as f, \
-                tqdm(desc=name, total=total_size, unit='iB', unit_scale=True, unit_divisor=1024,) as progress:
+        with open(path, "wb") as f, tqdm(
+            desc=name,
+            total=total_size,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as progress:
             for data in r.iter_content(chunk_size=1024):
                 if data:
                     size = f.write(data)

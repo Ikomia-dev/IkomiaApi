@@ -13,15 +13,16 @@
 # limitations under the License.
 
 """
-Model providing helper funtions to create TorchVision Deep Learning models.
+Model providing helper functions to create TorchVision Deep Learning models.
 
 TorchVision pages:
 
-- `Torchvision classication <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+- `Torchvision classification <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
 - `Torchvision object detection and segmentation <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
 """
 
 import logging
+
 import torch
 from torchvision import models
 
@@ -41,8 +42,13 @@ def set_parameter_requires_grad(model, feature_extracting: bool):
             param.requires_grad = False
 
 
-def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretrained: bool = False,
-           feature_extract: bool = False, classes: int = 2):
+def resnet(
+    model_name: str = "resnet50",
+    train_mode: bool = False,
+    use_pretrained: bool = False,
+    feature_extract: bool = False,
+    classes: int = 2,
+):
     """
     Create Torchvision ResNet model for training or inference.
 
@@ -55,6 +61,9 @@ def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretraine
 
     Returns:
         model object
+
+    Raises:
+        RuntimeError: invalid model name
     """
     model_ft = None
 
@@ -86,8 +95,13 @@ def resnet(model_name: str = 'resnet50', train_mode: bool = False, use_pretraine
     return model_ft
 
 
-def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrained: bool = False,
-            feature_extract: bool = False, classes: int = 2):
+def resnext(
+    model_name: str = "resnext50",
+    train_mode: bool = False,
+    use_pretrained: bool = False,
+    feature_extract: bool = False,
+    classes: int = 2,
+):
     """
     Create Torchvision ResNeXt model for training or inference.
 
@@ -100,12 +114,15 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
 
     Returns:
         model object
+
+    Raises:
+        RuntimeError: invalid model name
     """
     model_ft = None
 
-    if model_name == 'resnext50':
+    if model_name == "resnext50":
         model_ft = models.resnext50_32x4d(pretrained=use_pretrained)
-    elif model_name == 'resnext101':
+    elif model_name == "resnext101":
         model_ft = models.resnext101_32x8d(pretrained=use_pretrained)
     else:
         raise RuntimeError(f"Invalid model name: {model_name}")
@@ -125,7 +142,12 @@ def resnext(model_name: str = 'resnext50', train_mode: bool = False, use_pretrai
     return model_ft
 
 
-def mnasnet(train_mode: bool = False, use_pretrained: bool = False, feature_extract: bool = False, classes: int = 2):
+def mnasnet(
+    train_mode: bool = False,
+    use_pretrained: bool = False,
+    feature_extract: bool = False,
+    classes: int = 2,
+):
     """
     Create Torchvision MNasNet model for training or inference.
 
@@ -155,7 +177,12 @@ def mnasnet(train_mode: bool = False, use_pretrained: bool = False, feature_extr
     return model_ft
 
 
-def faster_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_size: int = 800, classes: int = 2):
+def faster_rcnn(
+    train_mode: bool = False,
+    use_pretrained: bool = True,
+    input_size: int = 800,
+    classes: int = 2,
+):
     """
     Create Torchvision Faster RCNN model for training or inference.
 
@@ -174,7 +201,9 @@ def faster_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_siz
 
     if train_mode or not use_pretrained:
         in_features = model_ft.roi_heads.box_predictor.cls_score.in_features
-        model_ft.roi_heads.box_predictor = models.detection.faster_rcnn.FastRCNNPredictor(in_features, classes)
+        model_ft.roi_heads.box_predictor = (
+            models.detection.faster_rcnn.FastRCNNPredictor(in_features, classes)
+        )
 
     if not train_mode:
         model_ft.eval()
@@ -183,13 +212,18 @@ def faster_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_siz
     return model_ft
 
 
-def mask_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_size: int = 800, classes: int = 2):
+def mask_rcnn(
+    train_mode: bool = False,
+    use_pretrained: bool = True,
+    input_size: int = 800,
+    classes: int = 2,
+):
     """
     Create Torchvision Mask RCNN model for training or inference.
 
     Args:
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
         classes (int): number of classes in the dataset
 
@@ -202,12 +236,16 @@ def mask_rcnn(train_mode: bool = False, use_pretrained: bool = True, input_size:
 
     if train_mode or not use_pretrained:
         in_features = model_ft.roi_heads.box_predictor.cls_score.in_features
-        model_ft.roi_heads.box_predictor = models.detection.faster_rcnn.FastRCNNPredictor(in_features, classes)
+        model_ft.roi_heads.box_predictor = (
+            models.detection.faster_rcnn.FastRCNNPredictor(in_features, classes)
+        )
         in_features_mask = model_ft.roi_heads.mask_predictor.conv5_mask.in_channels
         hidden_layer = 256
-        model_ft.roi_heads.mask_predictor = models.detection.mask_rcnn.MaskRCNNPredictor(in_features_mask,
-                                                                                         hidden_layer,
-                                                                                         classes)
+        model_ft.roi_heads.mask_predictor = (
+            models.detection.mask_rcnn.MaskRCNNPredictor(
+                in_features_mask, hidden_layer, classes
+            )
+        )
 
     if not train_mode:
         model_ft.eval()

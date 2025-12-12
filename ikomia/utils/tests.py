@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module tests provides features to ease test automation of Ikomia algorithms.
-"""
+"""The module tests provides features to ease test automation of Ikomia algorithms."""
+import logging
 import os
 import traceback
-import logging
+
 from ikomia.core import CWorkflowTask  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
@@ -36,6 +35,7 @@ def run_for_test(t: CWorkflowTask) -> tuple:
     logger.info("Running once...")
     try:
         import torch.cuda
+
         logger.info("Cleaning cuda torch cache...")
         torch.cuda.empty_cache()
         logger.info("Cuda torch cache cleaned...")
@@ -61,7 +61,7 @@ def get_test_image_directory() -> str:
         str: path to the directory
     """
     test_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(test_dir,  "../../tests/data/images")
+    return os.path.join(test_dir, "../../tests/data/images")
 
 
 def get_test_video_directory() -> str:
@@ -72,7 +72,7 @@ def get_test_video_directory() -> str:
         str: path to the directory
     """
     test_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(test_dir,  "../../tests/data/videos")
+    return os.path.join(test_dir, "../../tests/data/videos")
 
 
 def get_test_workflow_directory() -> str:
@@ -83,4 +83,4 @@ def get_test_workflow_directory() -> str:
         str: path to the directory
     """
     test_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(test_dir,  "../../tests/data/workflows")
+    return os.path.join(test_dir, "../../tests/data/workflows")

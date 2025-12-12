@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module dedicated to wrap widget instance from Qt-based Python frameworks to C++ Qt.
-"""
+"""Module dedicated to wrap widget instance from Qt-based Python frameworks to C++ Qt."""
 
 
 def PyQtToQt(pyqt_widget):
     """
-    Wraps PyQt widget instance to C++ Qt
+    Wrap PyQt widget instance to C++ Qt.
 
     Args:
         pyqt_widget (QWidget) : instance of the PyQt object
@@ -28,18 +26,20 @@ def PyQtToQt(pyqt_widget):
         QWidget*: C++ wrapper instance
     """
     import sip
+
     return sip.unwrapinstance(pyqt_widget)
 
 
 def PySideToQt(pyside_widget):
     """
-    Wraps PySide2 widget instance to C++ Qt
+    Wrap PySide2 widget instance to C++ Qt.
 
     Args:
-        pyqt_widget : instance of the PyQt object
+        pyside_widget : instance of the PyQt object
 
     Returns:
         QWidget*: C++ wrapper instance
     """
     import shiboken2
+
     return shiboken2.getCppPointer(pyside_widget)[0]

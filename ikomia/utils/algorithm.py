@@ -1,10 +1,11 @@
+"""Module compiling algorithm util functions."""
 import logging
 from typing import Union
-from ikomia.utils import OSType
-from ikomia.core import AlgoType, CWorkflowTask
-from ikomia.dataprocess.workflow import Workflow
-from ikomia.dataprocess.registry import ik_registry
 
+from ikomia.core import AlgoType, CWorkflowTask  # pylint: disable=E0611
+from ikomia.dataprocess.registry import ik_registry
+from ikomia.dataprocess.workflow import Workflow
+from ikomia.utils import OSType  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +20,17 @@ def _check_algo_compatibility(algo_name: str) -> bool:
 
     # Check algorithm type
     if info.algo_type == AlgoType.TRAIN or info.algo_type == AlgoType.DATASET:
-        logger.error("Algorithms type %s is not supported for auto demo workflow", str(info.algo_type))
+        logger.error(
+            "Algorithms type %s is not supported for auto demo workflow",
+            str(info.algo_type),
+        )
         return False
 
     return True
 
 
-def create_demo_workflow(algo_name: str, depends_on: Union[list, None] = None) -> Workflow:
+def create_demo_workflow(algo_name: str,
+                         depends_on: Union[list, None] = None) -> Workflow:
     """
     Automatically generate demo workflow for the given algorithm.
 
@@ -35,10 +40,15 @@ def create_demo_workflow(algo_name: str, depends_on: Union[list, None] = None) -
 
     Returns:
         auto-generated workflow (Workflow)
+
+    Raises:
+        RuntimeError: algorithm not supported
     """
     algo = ik_registry.create_algorithm(algo_name)
     if not _check_algo_compatibility(algo_name):
-        raise RuntimeError(f"Algorithm {algo_name} is not supported for automatic demo workflow")
+        raise RuntimeError(
+            f"Algorithm {algo_name} is not supported for automatic demo workflow"
+        )
 
     wf = Workflow(name=algo_name)
     wf.description = (
@@ -58,7 +68,9 @@ def create_demo_workflow(algo_name: str, depends_on: Union[list, None] = None) -
         for task_name in depends_on:
             task = ik_registry.create_algorithm(task_name)
             if not _check_algo_compatibility(task):
-                raise RuntimeError(f"Algorithm {task_name} is not supported for automatic demo workflow")
+                raise RuntimeError(
+                    f"Algorithm {task_name} is not supported for automatic demo workflow"
+                )
 
             wf.add_task(task=task, auto_connect=True)
 

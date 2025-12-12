@@ -13,6 +13,8 @@
 # limitations under the License.
 
 """
+Ikomia Python API.
+
 The ikomia module provides direct access to:
 - Global algorithms registry through ikomia.ik_registry
 - Authentication function
@@ -20,13 +22,14 @@ The ikomia module provides direct access to:
 Import dedicated submodules to leverage all other features.
 """
 
+import logging
 import os
 import sys
 import time
-import logging
+
 from ikomia.core import config
-from ikomia.utils import is_app_started, iklogger, autocomplete  # pylint: disable=E0611
 from ikomia.core.auth import ik_api_session
+from ikomia.utils import autocomplete, iklogger, is_app_started  # pylint: disable=E0611
 
 __version__ = "0.15.1"
 
@@ -42,7 +45,9 @@ if not is_app_started():
         sys.path.insert(0, lib_path)
         os.environ["PATH"] += lib_path
     else:
-        sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv")
+        sys.path.insert(
+            0, os.path.dirname(os.path.realpath(__file__)) + os.sep + "opencv"
+        )
 # ----------------------------------------------
 
 
@@ -52,21 +57,23 @@ if not is_app_started():
 if not is_app_started():
     log_path = config.main_cfg["root_folder"] + "/log.txt"
     with open(log_path, "w", encoding="utf-8") as f:
-        logger.debug("Logging started at %s", time.strftime('%Y-%m-%d %H:%M:%S'))
+        logger.debug("Logging started at %s", time.strftime("%Y-%m-%d %H:%M:%S"))
 # -------------------------------------
 
 
 # ------------------------------------------
 # ----- Auto-completion initialization -----
 # ------------------------------------------
-if not is_app_started() and config.main_cfg["registry"]["auto_completion"]: # noqa 1101
+if not is_app_started() and config.main_cfg["registry"]["auto_completion"]:  # noqa 1101
     autocomplete.ik_autocomplete.make()
 # ------------------------------------------
 
 
 def authenticate(token: str = None, username: str = None, password: str = None):
     """
-    Authentication to Ikomia Scale. Mandatory if user need access to private algorithms.
+    Authentication to Ikomia Scale.
+
+    Mandatory if user need access to private algorithms.
     If no credentials are provided, Ikomia API will try to load them from environment variables:
     IKOMIA_TOKEN or (IKOMIA_USER, IKOMIA_PWD).
 

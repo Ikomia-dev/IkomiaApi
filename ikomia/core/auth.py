@@ -12,29 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module auth manages authentication to the Ikomia Scale platform (private algorithms HUB)
-"""
-import os
+"""The module auth manages authentication to the Ikomia Scale platform (private algorithms HUB)."""
 import logging
+import os
+
 import requests
 from requests.auth import HTTPBasicAuth
+
 from ikomia.core import config
 
 logger = logging.getLogger(__name__)
 
 
 class LoginSession:
-    """
-    Session class to ease communication with Ikomia Scale/HUB through authenticated http requests.
-    """
+    """Session class to ease communication with Ikomia Scale/HUB through authenticated http requests."""
+
     def __init__(self):
+        """Initialize session for environment credentials."""
         self.session = requests.Session()
         self.token = os.environ.get("IKOMIA_TOKEN")
         self.username = os.environ.get("IKOMIA_USER")
         self.password = os.environ.get("IKOMIA_PWD")
 
-    def authenticate(self, token: str = None, username: str = None, password: str = None):
+    def authenticate(
+        self, token: str = None, username: str = None, password: str = None
+    ):
         """
         Authenticate user from token or classical credentials (username - password).
 
@@ -42,6 +44,9 @@ class LoginSession:
             token (str): access token generated from Ikomia Scale platform or Ikomia CLI.
             username (str): username of your Ikomia Scale account.
             password (str): password of your Ikomia Scale account.
+
+        Raises:
+            RuntimeError: authentication failed
         """
         if token is not None:
             self.token = token
@@ -51,7 +56,11 @@ class LoginSession:
             self.token = self._create_token()
         elif self.token:
             pass
-        elif self.token is None and self.username is not None and self.password is not None:
+        elif (
+            self.token is None
+            and self.username is not None
+            and self.password is not None
+        ):
             self.token = self._create_token()
         else:
             raise RuntimeError("Authentication required token or user credentials")
@@ -59,7 +68,7 @@ class LoginSession:
         header = {
             "User-Agent": "Ikomia API",
             "Content-Type": "application/json",
-            "Authorization": "Token " + str(self.token)
+            "Authorization": "Token " + str(self.token),
         }
         self.session.headers.update(header)
 
@@ -90,7 +99,9 @@ class LoginSession:
     def _create_token(self, ttl: int = 3600):
         url = config.main_cfg["hub"]["url"] + "/v1/users/me/tokens/"
         data = {"name": "Ikomia API token", "ttl": ttl}
-        r = self.session.post(url, json=data, auth=HTTPBasicAuth(self.username, self.password))
+        r = self.session.post(
+            url, json=data, auth=HTTPBasicAuth(self.username, self.password)
+        )
         r.raise_for_status()
         json_response = r.json()
         return json_response["clear_token"]

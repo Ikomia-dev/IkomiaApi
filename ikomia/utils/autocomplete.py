@@ -14,44 +14,52 @@
 
 """
 The module autocomplete provides auto-completion capabilities to Ikomia API.
+
 It generates automatically a Python module named ik.
 The aim is to help users to discover algorithm names and parameters.
 """
-import os
-import re
-import site
+import importlib
 import keyword
 import logging
+import os
+import re
 import shutil
-import importlib
+import site
 import sys
 import time
+
 from ikomia import utils
 from ikomia.core import CWorkflowTask  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 
 try:
     from ikomia.utils import ik
-    _ik_auto_complete = True
+
+    _IK_AUTO_COMPLETE = True
 except ImportError:
-    _ik_auto_complete = False
+    _IK_AUTO_COMPLETE = False
 
 logger = logging.getLogger(__name__)
 
 
 class AutoComplete:
-    """
-    Generation of auto-completion module.
-    """
+    """Generation of auto-completion module."""
+
     _online_sync_frequency = 14400  # 4 hours
 
     def __init__(self):
         self.registry = ik_registry
-        self.registry.register_event_callback("algorithm_changed", self.update_local_plugin)
+        self.registry.register_event_callback(
+            "algorithm_changed", self.update_local_plugin
+        )
 
-    def _write_auto_complete(self, fp, task_name: str = "", task: CWorkflowTask = None, local: bool = True):
+    def _write_auto_complete(
+        self, fp, task_name: str = "", task: CWorkflowTask = None, local: bool = True
+    ):
         if not task_name and task is None:
-            raise RuntimeError("Auto-completion: parameters must include either a valid name or task instance.")
+            raise RuntimeError(
+                "Auto-completion: parameters must include either a valid name or task instance."
+            )
 
         forbid_char = r"\ |\-|\[|\]"
         parameters = {}
@@ -59,7 +67,9 @@ class AutoComplete:
         if task is not None:
             task_name = task.name
         elif local:
-            task = self.registry.create_algorithm(task_name, public_hub=False, private_hub=False)
+            task = self.registry.create_algorithm(
+                task_name, public_hub=False, private_hub=False
+            )
 
         # Class definition
         class_name = re.sub(forbid_char, "", task_name)
@@ -71,7 +81,9 @@ class AutoComplete:
             if len(parameters) == 0:
                 # __new__() return task object instance
                 fp.write("    def __new__(cls):\n")
-                fp.write(f"        algo = ik_registry.create_algorithm(\"{task_name}\", None)\n")
+                fp.write(
+                    f'        algo = ik_registry.create_algorithm("{task_name}", None)\n'
+                )
                 fp.write("        return algo\n\n")
             else:
                 function_params = ""
@@ -89,23 +101,27 @@ class AutoComplete:
                     # Compute _new_() parameters
                     param_var = re.sub(forbid_char, "", param_var)
                     param_value = str(parameters[param]).replace("\\", "/")
-                    function_params += f"{param_var}: str=\"{param_value}\""
+                    function_params += f'{param_var}: str="{param_value}"'
                     # Compute parameters dict
-                    params_dict += f"            \"{param}\": {param_var},\n"
+                    params_dict += f'            "{param}": {param_var},\n'
                     # Static class variable for names
-                    fp.write(f"    {param_var} = \"{param}\"\n")
+                    fp.write(f'    {param_var} = "{param}"\n')
 
                 # __new__() return task object instance
                 params_dict += "        }"
                 fp.write(f"\n    def __new__(cls, {function_params}):\n")
-                fp.write(f"        algo = ik_registry.create_algorithm(\"{task_name}\", None)\n")
+                fp.write(
+                    f'        algo = ik_registry.create_algorithm("{task_name}", None)\n'
+                )
                 fp.write(f"        algo.set_parameters({params_dict})\n")
                 fp.write("        return algo\n\n")
         else:
             # Algorithm from Ikomia Hub
             # __new__() return task object instance
             fp.write("    def __new__(cls, **kwargs):\n")
-            fp.write(f"        algo = ik_registry.create_algorithm(\"{task_name}\", None)\n")
+            fp.write(
+                f'        algo = ik_registry.create_algorithm("{task_name}", None)\n'
+            )
             fp.write("        if algo is not None:\n")
             fp.write("            params = {}\n")
             fp.write("            for arg in kwargs:\n")
@@ -119,12 +135,13 @@ class AutoComplete:
         # name() return task name
         fp.write("    @staticmethod\n")
         fp.write("    def name():\n")
-        fp.write(f"        return \"{task_name}\"\n\n")
+        fp.write(f'        return "{task_name}"\n\n')
 
     def _generate_python_file(self, folder: str):
         ik_file_path = os.path.join(folder, "ik.py")
-        with open(ik_file_path, 'w+', encoding="utf-8") as f:
+        with open(ik_file_path, "w+", encoding="utf-8") as f:
             # Imports
+            f.write("# pylint: skip-file\n")
             f.write("from ikomia.dataprocess.registry import ik_registry\n\n")
 
             # Class definitions from cache files
@@ -166,33 +183,43 @@ class AutoComplete:
         for root, _, filenames in os.walk(folder_path):
             for filename in filenames:
                 if filename.endswith("_process.py"):
-                    last_modified = max(last_modified, os.path.getmtime(os.path.join(root, filename)))
+                    last_modified = max(
+                        last_modified, os.path.getmtime(os.path.join(root, filename))
+                    )
 
         return last_modified
 
     def _get_local_algorithm_folders(self) -> tuple:
         local_folder_names = set()
-        python_plugin_folder = os.path.join(self.registry.get_plugins_directory(), "Python")
+        python_plugin_folder = os.path.join(
+            self.registry.get_plugins_directory(), "Python"
+        )
         cpp_plugin_folder = os.path.join(self.registry.get_plugins_directory(), "C++")
 
         for name in os.listdir(python_plugin_folder):
             folder_path = os.path.join(python_plugin_folder, name)
-            if os.path.isdir(folder_path) and self._is_valid_python_plugin_folder(name, folder_path):
+            if os.path.isdir(folder_path) and self._is_valid_python_plugin_folder(
+                name, folder_path
+            ):
                 local_folder_names.add(name)
 
         for name in os.listdir(cpp_plugin_folder):
             folder_path = os.path.join(cpp_plugin_folder, name)
-            if os.path.isdir(folder_path) and self._is_valid_cpp_plugin_folder(name, folder_path):
+            if os.path.isdir(folder_path) and self._is_valid_cpp_plugin_folder(
+                name, folder_path
+            ):
                 local_folder_names.add(name)
 
         # Last modification time
-        last_modified = max(self._get_folder_content_last_modified(python_plugin_folder),
-                            self._get_folder_content_last_modified(cpp_plugin_folder))
+        last_modified = max(
+            self._get_folder_content_last_modified(python_plugin_folder),
+            self._get_folder_content_last_modified(cpp_plugin_folder),
+        )
 
         return local_folder_names, last_modified
 
     def _check_local_sync(self) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         # Get local algorithm names from plugin directories
@@ -213,7 +240,9 @@ class AutoComplete:
         # Try to load them -> auto-completion has to be updated if at least one is valid
         for name in diff_local:
             try:
-                algo = self.registry.create_algorithm(name=name, public_hub=False, private_hub=False)
+                algo = self.registry.create_algorithm(
+                    name=name, public_hub=False, private_hub=False
+                )
                 if algo is not None:
                     return False
             except Exception as e:
@@ -222,7 +251,7 @@ class AutoComplete:
         return True
 
     def _check_online_sync(self) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         # Update every 4 hours because call to get_public_hub_algorithms() is time consuming
@@ -248,7 +277,7 @@ class AutoComplete:
             return False
 
     def _check_task_params(self, task: CWorkflowTask) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         params = task.get_parameters()
@@ -412,7 +441,9 @@ class AutoComplete:
         try:
             online_algos = self.registry.get_public_hub_algorithms()
         except Exception as e:
-            logger.debug("Auto-completion: skip generating online cache (see error message below).")
+            logger.debug(
+                "Auto-completion: skip generating online cache (see error message below)."
+            )
             logger.debug(e)
             return
 

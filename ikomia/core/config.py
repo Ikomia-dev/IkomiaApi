@@ -14,23 +14,26 @@
 
 """
 The module config loads the local configuration.
+
 This configuration stands in a file named config.yaml where parameters can be changed.
 """
 import os
+
 import yaml
 from dotenv import load_dotenv
+
 from ikomia import utils
 
 
 def load(config_path: str) -> dict:
     """
-    Load Ikomia API configuration file (YAML)
+    Load Ikomia API configuration file (YAML).
 
     Args:
         config_path (str): path to the configuration file
 
     Returns:
-        configuration data: dict
+        dict: configuration data
     """
     with open(config_path, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
@@ -41,11 +44,15 @@ def load(config_path: str) -> dict:
 
         # Ikomia registry
         if not cfg["registry"]["path"]:
-            cfg["registry"]["path"] = os.path.join(cfg["root_folder"], "Plugins") + os.sep
+            cfg["registry"]["path"] = (
+                os.path.join(cfg["root_folder"], "Plugins") + os.sep
+            )
 
         # Ikomia workflows
         if not cfg["workflow"]["path"]:
-            cfg["workflow"]["path"] = os.path.join(cfg["root_folder"], "Workflows") + os.sep
+            cfg["workflow"]["path"] = (
+                os.path.join(cfg["root_folder"], "Workflows") + os.sep
+            )
 
         # Data directory
         if not cfg["data"]["path"]:
@@ -53,18 +60,26 @@ def load(config_path: str) -> dict:
 
         # MLflow
         if not cfg["mlflow"]["artifact_uri"]:
-            cfg["mlflow"]["artifact_uri"] = os.path.join(cfg["root_folder"], "MLflow") + os.sep
+            cfg["mlflow"]["artifact_uri"] = (
+                os.path.join(cfg["root_folder"], "MLflow") + os.sep
+            )
 
         if not cfg["mlflow"]["store_uri"]:
-            cfg["mlflow"]["store_uri"] = os.path.join(cfg["root_folder"], "MLflow") + os.sep
+            cfg["mlflow"]["store_uri"] = (
+                os.path.join(cfg["root_folder"], "MLflow") + os.sep
+            )
 
         # Tensorboard
         if not cfg["tensorboard"]["log_uri"]:
-            cfg["tensorboard"]["log_uri"] = os.path.join(cfg["root_folder"], "Tensorboard") + os.sep
+            cfg["tensorboard"]["log_uri"] = (
+                os.path.join(cfg["root_folder"], "Tensorboard") + os.sep
+            )
 
         # Auto-completion: could be override by environment variable
         if "IKOMIA_AUTO_COMPLETION" in os.environ:
-            cfg["registry"]["auto_completion"] = utils.strtobool(os.getenv("IKOMIA_AUTO_COMPLETION"))
+            cfg["registry"]["auto_completion"] = utils.strtobool(
+                os.getenv("IKOMIA_AUTO_COMPLETION")
+            )
 
         return cfg
 
@@ -84,6 +99,7 @@ def save(config_path: str, cfg: dict):
 def save_main_config():
     """
     Save current configuration to file (overwrite).
+
     Use this function to change default configuration permanently.
     """
     save(main_config_path, main_cfg)
@@ -93,5 +109,7 @@ def save_main_config():
 load_dotenv()
 
 # Main config
-main_config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
+main_config_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "config.yaml"
+)
 main_cfg = load(main_config_path)

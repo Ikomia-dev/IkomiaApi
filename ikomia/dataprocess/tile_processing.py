@@ -11,15 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-The module tile_processing provides function to apply algorithms on large image.
-"""
+"""The module tile_processing provides function to apply algorithms on large image."""
 import math
+
 import numpy as np
 
 
-def tile_process(img: np.ndarray, tile_size: int, overlap_ratio: float, sf: float, size_divisible_by: int,
-                 minimum_size: int, process) -> np.ndarray:
+def tile_process(
+    img: np.ndarray,
+    tile_size: int,
+    overlap_ratio: float,
+    sf: float,
+    size_divisible_by: int,
+    minimum_size: int,
+    process,
+) -> np.ndarray:
     """
     Divide input image into tiles and apply the given process function on each tile.
 
@@ -34,15 +40,18 @@ def tile_process(img: np.ndarray, tile_size: int, overlap_ratio: float, sf: floa
 
     Returns:
          numpy.ndarray: smooth stitching of all processed tiles
+
+    Raises:
+        RuntimeError: invalid image format
     """
     shape = np.shape(img)
     h, w = np.shape(img)[:2]
 
     if len(shape) == 3:
         c = np.shape(img)[2]
-        img_up = np.zeros((sf * h, sf * w, c), dtype='half')
+        img_up = np.zeros((sf * h, sf * w, c), dtype="half")
     elif len(shape) == 2:
-        img_up = np.zeros((sf * h, sf * w), dtype='half')
+        img_up = np.zeros((sf * h, sf * w), dtype="half")
     else:
         raise RuntimeError("Not an image")
 
@@ -59,9 +68,11 @@ def tile_process(img: np.ndarray, tile_size: int, overlap_ratio: float, sf: floa
 
     nx = math.ceil((w + overlap_w) / (tile_w - overlap_w))
     ny = math.ceil((h + overlap_h) / (tile_h - overlap_h))
-    mask = _compute_weights((sf * tile_h, sf * tile_w), overlap_ratio_w, overlap_ratio_h)
+    mask = _compute_weights(
+        (sf * tile_h, sf * tile_w), overlap_ratio_w, overlap_ratio_h
+    )
 
-    mask = np.array(mask, dtype='half')
+    mask = np.array(mask, dtype="half")
     nb_tiles = nx * ny
     nb_done = 0
     start_j = 0
@@ -79,43 +90,65 @@ def tile_process(img: np.ndarray, tile_size: int, overlap_ratio: float, sf: floa
             if current_tile_h != tile_h:
                 if start_i == 0:
                     if end_i >= h:
-                        cropped_mask = cropped_mask[sf * overlap_h:-sf * overlap_h]
+                        cropped_mask = cropped_mask[sf * overlap_h : -sf * overlap_h]
                     else:
-                        cropped_mask = cropped_mask[sf * overlap_h:]
+                        cropped_mask = cropped_mask[sf * overlap_h :]
                 else:
-                    cropped_mask = cropped_mask[:sf * current_tile_h]
+                    cropped_mask = cropped_mask[: sf * current_tile_h]
 
             if current_tile_w != tile_w:
                 if start_j == 0:
                     if end_j >= w:
-                        cropped_mask = cropped_mask[:, sf * overlap_w:-sf * overlap_w]
+                        cropped_mask = cropped_mask[:, sf * overlap_w : -sf * overlap_w]
                     else:
-                        cropped_mask = cropped_mask[:, sf * overlap_w:]
+                        cropped_mask = cropped_mask[:, sf * overlap_w :]
                 else:
-                    cropped_mask = cropped_mask[:, :sf * current_tile_w]
+                    cropped_mask = cropped_mask[:, : sf * current_tile_w]
 
             # nothing is done if the area of tile is zero
             if np.prod(np.shape(img_tile)):
                 is_tile_w_too_short = current_tile_w < minimum_size
                 is_tile_h_too_short = current_tile_h < minimum_size
-                pad_w = (math.ceil(current_tile_w + max(0, minimum_size - current_tile_w) / size_divisible_by) *
-                         size_divisible_by - current_tile_w)
-                pad_h = (math.ceil(current_tile_h + max(0, minimum_size - current_tile_h) / size_divisible_by) *
-                         size_divisible_by - current_tile_h)
+                pad_w = (
+                    math.ceil(
+                        current_tile_w
+                        + max(0, minimum_size - current_tile_w) / size_divisible_by
+                    )
+                    * size_divisible_by
+                    - current_tile_w
+                )
+                pad_h = (
+                    math.ceil(
+                        current_tile_h
+                        + max(0, minimum_size - current_tile_h) / size_divisible_by
+                    )
+                    * size_divisible_by
+                    - current_tile_h
+                )
 
                 if is_tile_h_too_short or is_tile_w_too_short:
-                    img_tile = np.pad(img_tile, pad_width=((0, pad_h), (0, pad_w), (0, 0)), mode='reflect')
+                    img_tile = np.pad(
+                        img_tile,
+                        pad_width=((0, pad_h), (0, pad_w), (0, 0)),
+                        mode="reflect",
+                    )
 
                 upscaled_tile = process(img_tile)
-                upscaled_tile = upscaled_tile[:sf * current_tile_h, :sf * current_tile_w]
+                upscaled_tile = upscaled_tile[
+                    : sf * current_tile_h, : sf * current_tile_w
+                ]
 
                 if upscaled_tile.ndim == 3:
                     # shortcut for upscaled_tile *= np.stack([cropped_mask,cropped_mask,cropped_mask],axis=2)
-                    upscaled_tile = np.einsum('ijk,ij->ijk', upscaled_tile, cropped_mask)
+                    upscaled_tile = np.einsum(
+                        "ijk,ij->ijk", upscaled_tile, cropped_mask
+                    )
                 else:
                     upscaled_tile = upscaled_tile * cropped_mask
 
-                img_up[sf * start_i:sf * end_i, sf * start_j:sf * end_j] += upscaled_tile
+                img_up[
+                    sf * start_i : sf * end_i, sf * start_j : sf * end_j
+                ] += upscaled_tile
                 nb_done += 1
 
             print(str(int(nb_done / nb_tiles * 100)) + "%")
@@ -163,15 +196,17 @@ def _compute_weights(size, overlap_ratio_w, overlap_ratio_h):
     # right bottom overlap (between 4 images)
     # this formula comes from the symmetries, and the fact the sum of the mask on the overlapping area of 4 images
     # must be equal to 1
-    res = np.where((xv >= 1 - overlap_ratio_w) & (yv >= 1 - overlap_ratio_h), _f(x_01, y_01), res)
+    res = np.where(
+        (xv >= 1 - overlap_ratio_w) & (yv >= 1 - overlap_ratio_h), _f(x_01, y_01), res
+    )
 
     # vertical symetry
     mx = len(res[0]) // 2
     rx = len(res[0]) % 2
-    res[:, :mx + rx] = res[:, :mx - 1:-1]
+    res[:, : mx + rx] = res[:, : mx - 1 : -1]
 
     # horizontal symetry
     my = len(res) // 2
     ry = len(res) % 2
-    res[:my + ry] = res[:my - 1:-1]
+    res[: my + ry] = res[: my - 1 : -1]
     return res

@@ -1,8 +1,8 @@
-"""
-Main Ikomia logger.
-"""
-import sys
+"""Main Ikomia logger."""
+
 import logging
+import sys
+
 from ikomia.core import config
 
 
@@ -33,8 +33,10 @@ logger.addHandler(err)
 
 # Log to file
 log_path = config.main_cfg["root_folder"] + "/log.txt"
-file_formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s", "%Y-%m-%d %H:%M:%S")
-file_handler = logging.FileHandler(log_path, 'a')
+file_formatter = logging.Formatter(
+    "%(asctime)s:%(levelname)s:%(message)s", "%Y-%m-%d %H:%M:%S"
+)
+file_handler = logging.FileHandler(log_path, "a")
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
