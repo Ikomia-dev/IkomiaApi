@@ -1,0 +1,243 @@
+# vLLM Default Configuration - Organized by Category with Inline Comments
+# Generated from vllm serve CLI arguments
+# Format: argument: value  # description
+
+# ==============
+# Core Options
+# ==============
+aggregate_engine_logging: false  # Log aggregate rather than per-engine statistics
+api_server_count: 1  # How many API server processes to run
+disable_log_stats: false  # Disable logging statistics
+enable_log_requests: false  # Enable logging requests
+headless: false  # Run in headless mode. See multi-node data parallel
+
+# ==========
+# Frontend
+# ==========
+allow_credentials: false  # Allow credentials
+allowed_headers: ['*']  # Allowed headers
+allowed_methods: ['*']  # Allowed methods
+allowed_origins: ['*']  # Allowed origins
+api_key: null
+chat_template: null  # The file path to the chat template
+chat_template_content_format: "auto"  # Format to render message content within a chat template {auto,openai,string}
+disable_fastapi_docs: false  # Disable FastAPI's OpenAPI schema, Swagger UI, and ReDoc endpoint
+disable_frontend_multiprocessing: false  # run the OpenAI frontend server in the same process as the model serving engine
+disable_uvicorn_access_log: false  # Disable uvicorn access log
+enable_auto_tool_choice: false  # Enable auto tool choice for supported models
+enable_force_include_usage: false  # If set to True, including usage on every request
+enable_log_outputs: false  # Log model outputs (generations). Requires --enable-log-requests
+enable_prompt_tokens_details: false  # Enable prompt_tokens_details in usage
+enable_request_id_headers: false  # API server will add X-Request-Id header to responses
+enable_server_load_tracking: false  # Enable tracking server_load_metrics in the app state
+enable_ssl_refresh: false  # Refresh SSL Context when SSL certificate files change
+enable_tokenizer_info_endpoint: false  # Enable the /get_tokenizer_info endpoint
+exclude_tools_when_tool_choice_none: false  # Exclude tool definitions in prompts when tool_choice='none'
+h11_max_header_count: 256  # Maximum number of HTTP headers allowed in a request for h11 parser
+h11_max_incomplete_event_size: 4194304  # Maximum size (bytes) of an incomplete HTTP event (header or body) for h11 parser
+host: null  # Host name
+log_config_file: null  # Path to logging config JSON file for both vllm and uvicorn
+log_error_stack: false  # Log the stack trace of error responses
+lora_modules: null  # LoRA modules configurations
+max_log_len: null  # Max number of prompt characters or prompt ID numbers being printed in log
+middleware: "[]"  # Additional ASGI middleware to apply to the app
+port: 8000  # Port number
+response_role: "assistant"  # The role name to return if `request.add_generation_prompt=true`
+return_tokens_as_token_ids: false
+root_path: null  # FastAPI root_path when app is behind a path based routing proxy
+ssl_ca_certs: null  # CA certificates file
+ssl_cert_reqs: 0  # Whether client certificate is required
+ssl_certfile: null  # File path to the SSL cert file
+ssl_keyfile: null  # File path to the SSL key file
+tokens_only: false  # Only enable the Tokens In<>Out endpoint
+tool_call_parser: null  # Select the tool call parser depending on the model that you're using
+tool_parser_plugin: null  # Special the tool parser plugin write to parse the model-generated tool into OpenAI API format
+tool_server: null  # Comma-separated list of host:port pairs
+trust_request_chat_template: false  # Whether to trust the chat template provided in the request
+uds: null  # Unix domain socket path. If set, host and...
+uvicorn_log_level: "info"  # Log level for uvicorn
+
+# =============
+# ModelConfig
+# =============
+allowed_local_media_path: false  # Allowing API requests to read local images or videos from directories specified by the server file system
+allowed_media_domains: null  # Only media URLs that belong to this domain can be used for multi-modal inputs
+code_revision: null  # The specific revision to use for the model code on the Hugging Face Hub
+config_format: "auto"  # The format of the model config to load ['auto', 'hf', 'mistral']
+convert: "auto"  # Convert the model using adapters {auto,classify,embed,none,reward}
+disable_cascade_attn: false  # Disable cascade attention for V1
+disable_sliding_window: false  # Whether to disable sliding window
+dtype: "auto"  # Data type for model weights and activations {auto,bfloat16,float,float16,float32,half}
+enable_prompt_embeds: false  # Enables passing text embeddings as inputs via the `prompt_embeds` key
+enable_sleep_mode: false  # Enable sleep mode for the engine (only cuda and hip platforms are supported)
+enforce_eager: false  # Whether to always use eager-mode PyTorch
+generation_config: "auto"  # The folder path to the generation config
+hf_config_path: null  # Name or path of the Hugging Face config to use
+hf_token: null  # The token to use as HTTP bearer authorization for remote files
+io_processor_plugin: null  # IOProcessor plugin name to load at model startup
+logits_processor_pattern: null  # Optional regex pattern specifying valid logits processor qualified names
+logits_processors: null  # One or more logits processors' fully-qualified class names or class definitions
+logprobs_mode: "raw_logprobs"  # Indicates the content returned in the logprobs and prompt_logprobs
+max_logprobs: 20  # Maximum number of log probabilities to return when `logprobs` is specified in `SamplingParams`
+max_model_len: null  # Model context length (prompt and output)
+model: "Qwen/Qwen3-0.6B"  # Name or path of the Hugging Face model to use
+model_impl: "auto"  # Which implementation of the model to use ['auto', 'terratorch', 'transformers', 'vllm']
+override_attention_dtype: null  # Override dtype for attention
+override_generation_config: "{}"  # Overrides or sets generation config
+pooler_config: null  # Pooler config which controls the behaviour of output pooling in pooling models
+quantization: null  # Method used to quantize the weights
+revision: null  # The specific model version to use
+runner: "auto"  # The type of model runner to use {auto,draft,generate,pooling}
+seed: 0  # Random seed for reproducibility
+served_model_name: null  # The model name(s) used in the API
+skip_tokenizer_init: false  # Skip initialization of tokenizer and detokenizer
+tokenizer: null  # Name or path of the Hugging Face tokenizer to use
+tokenizer_mode: "auto"  # Tokenizer mode ['auto', 'hf', 'mistral', 'slow']
+tokenizer_revision: null  # The specific revision to use for the tokenizer on the Hugging Face Hub
+trust_remote_code: false  # Trust remote code (e.g., from HuggingFace) when downloading the model and tokenizer
+
+# ============
+# LoadConfig
+# ============
+download_dir: null  # Directory to download and load the weights, default to the default cache directory of Hugging Face
+ignore_patterns: ['original/**/*']  # The list of patterns to ignore when loading the model
+load_format: "auto"  # The format of the model weights to load
+model_loader_extra_config: "{}"  # Extra config for model loader
+pt_load_map_location: "cpu"  # The map location for loading pytorch checkpoint
+safetensors_load_strategy: "lazy"  # Specifies the loading strategy for safetensors weights
+use_tqdm_on_load: true  # Whether to enable tqdm for showing progress bar when loading model weights
+
+# =========================
+# StructuredOutputsConfig
+# =========================
+reasoning_parser: null  # Select the reasoning parser depending on the model that you're using
+reasoning_parser_plugin: null  # Path to a dynamically reasoning parser plugin that can be dynamically loaded and registered
+
+# ================
+# ParallelConfig
+# ================
+all2all_backend: null  # All2All backend for MoE expert parallel communication
+cp_kv_cache_interleave_size: 1  # Interleave size of kv_cache storage while using DCP or PCP
+data_parallel_address: null  # Address of data parallel cluster head-node
+data_parallel_backend: "mp"  # Backend for data parallel, either "mp" or "ray"
+data_parallel_external_lb: false  # Whether to use "external" DP LB mode
+data_parallel_hybrid_lb: false  # Whether to use "hybrid" DP LB mode
+data_parallel_rank: null  # Data parallel rank of this instance
+data_parallel_rpc_port: null  # Port for data parallel RPC communication
+data_parallel_size: 1  # Number of data parallel groups
+data_parallel_size_local: null  # Number of data parallel replicas to run on this node
+data_parallel_start_rank: null  # Starting data parallel rank for secondary nodes
+dbo_decode_token_threshold: 32  # The threshold for dual batch overlap for batches only containing decodes
+dbo_prefill_token_threshold: 512  # The threshold for dual batch overlap for batches that contain one or more prefills
+dcp_kv_cache_interleave_size: 1  # Interleave size of kv_cache storage while using DCP
+decode_context_parallel_size: 1  # Number of decode context parallel groups
+disable_custom_all_reduce: false  # Disable the custom all-reduce kernel and fall back to NCCL
+disable_nccl_for_dp_synchronization: false  # Forces the dp synchronization logic in to use Gloo instead of NCCL for its all reduce
+distributed_executor_backend: null  # Backend to use for distributed model workers ['external_launcher', 'mp', 'ray', 'uni']
+enable_dbo: false  # Enable dual batch overlap for the model executor
+enable_eplb: false  # Enable expert parallelism load balancing for MoE layers
+enable_expert_parallel: false  # Use expert parallelism instead of tensor parallelism for MoE layers
+enable_multimodal_encoder_data_parallel: false
+expert_placement_strategy: "linear"  # The expert placement strategy for MoE layers {linear,round_robin}
+master_addr: "127.0.0.1"  # Distributed master address for multi-node distributed inference when distributed_executor_backend is mp
+master_port: 29501  # Distributed master port for multi-node distributed inference when distributed_executor_backend is mp
+max_parallel_loading_workers: null  # Maximum number of parallel loading workers when loading model sequentially in multiple batches
+nnodes: 1  # Num of nodes for multi-node distributed inference when distributed_executor_backend is mp
+node_rank: 0  # Distributed node rank for multi-node distributed inference when distributed_executor_backend is mp
+pipeline_parallel_size: 1  # Number of pipeline parallel groups
+prefill_context_parallel_size: 1  # Number of prefill context parallel groups
+ray_workers_use_nsight: false  # Whether to profile Ray workers with nsight
+tensor_parallel_size: 1  # Number of tensor parallel groups
+worker_cls: "auto"  # The full name of the worker class to use
+worker_extension_cls: null  # The full name of the worker extension class to use
+
+# =============
+# CacheConfig
+# =============
+block_size: null  # Size of a contiguous cache block in number of tokens {1,8,16,32,64,128,256}
+calculate_kv_scales: false  # This enables dynamic calculation of `k_scale` and `v_scale` when kv_cache_dtype is fp8
+cpu_offload_gb: 0  # The space in GiB to offload to CPU, per GPU
+enable_prefix_caching: null  # Whether to enable prefix caching
+gpu_memory_utilization: 0.9  # The fraction of GPU memory to be used for the model executor, which can range from 0 to 1
+kv_cache_dtype: "auto"  # Data type for kv cache storage {auto,bfloat16,fp8,fp8_ds_mla,fp8_e4m3,fp8_e5m2,fp8_inc}
+kv_cache_memory_bytes: null  # Size of KV Cache per GPU in bytes
+kv_offloading_backend: null  # The backend to use for KV cache offloading {lmcache,native,None}
+kv_offloading_size: null  # Size of the KV cache offloading buffer in GiB
+kv_sharing_fast_prefill: false
+mamba_block_size: null  # Size of a contiguous cache block in number of tokens for mamba cache
+mamba_cache_dtype: "auto"  # The data type to use for the Mamba cache (both the conv and the ssm state) {auto,float32}
+mamba_ssm_cache_dtype: "auto"  # The data type to use for the Mamba cache {auto,float32}
+num_gpu_blocks_override: null  # Number of GPU blocks to use
+prefix_caching_hash_algo: "sha256"  # Set the hash algorithm for prefix caching {sha256,sha256_cbor}
+swap_space: 4  # Size of the CPU swap space per GPU (in GiB)
+
+# ==================
+# MultiModalConfig
+# ==================
+disable_mm_preprocessor_cache: false
+enable_mm_embeds: false  # Enables passing multimodal embeddings
+interleave_mm_strings: false  # Enable fully interleaved support for multimodal prompts, while using --chat-template-content-format=string
+limit_mm_per_prompt: "{}"  # The maximum number of input items and options allowed per prompt for each modality
+media_io_kwargs: "{}"  # Additional args passed to process media inputs, keyed by modalities
+mm_encoder_attn_backend: null  # Optional override for the multi-modal encoder attention backend when using vision transformers
+mm_encoder_tp_mode: "weights"  # Indicates how to optimize multi-modal encoder inference using tensor parallelism (TP) {data,weights}
+mm_processor_cache_gb: 4  # The size (in GiB) of the multi-modal processor cache
+mm_processor_cache_type: "lru"  # Type of cache to use for the multi-modal preprocessor/mapper {lru,shm}
+mm_processor_kwargs: null  # Arguments to be forwarded to the model's processor for multi-modal data, e.g., image processor
+mm_shm_cache_max_object_size_mb: 128  # Size limit (in MiB) for each object stored in the multi-modal processor shared memory cache
+skip_mm_profiling: false  # Skips multimodal memory profiling and only profiles with language backbone model during engine initialization
+video_pruning_rate: null  # Sets pruning rate for video pruning via Efficient Video Sampling
+
+# ============
+# LoRAConfig
+# ============
+default_mm_loras: null  # Dictionary mapping specific modalities to LoRA model paths
+enable_lora: false  # Enable handling of LoRA adapters
+fully_sharded_loras: false  # Enabling this will use the fully sharded layers
+lora_dtype: "auto"  # Data type for LoRA {auto,bfloat16,float16}
+max_cpu_loras: null  # Maximum number of LoRAs to store in CPU memory
+max_lora_rank: 16  # Max LoRA rank {1,8,16,32,64,128,256,320,512}
+max_loras: 1  # Max number of LoRAs in a single batch
+
+# =====================
+# ObservabilityConfig
+# =====================
+collect_detailed_traces: null  # It makes sense to set this only if `--otlp-traces-endpoint` is set {all,model,worker,None}
+kv_cache_metrics: false  # Enable KV cache residency metrics (lifetime, idle time, reuse gaps)
+kv_cache_metrics_sample: 0.01  # Sampling rate for KV cache metrics [0.0 - 1.0]
+otlp_traces_endpoint: null  # Target URL to which OpenTelemetry traces will be sent
+show_hidden_metrics_for_version: null  # Enable deprecated Prometheus metrics that have been hidden since the specified version
+
+# =================
+# SchedulerConfig
+# =================
+async_scheduling: false  # Perform async scheduling
+disable_chunked_mm_input: false  # If chunked prefill is enabled, we do not want to partially schedule a multimodal item
+disable_hybrid_kv_cache_manager: false  # KV cache manager will allocate the same size of KV cache for all attention layers
+enable_chunked_prefill: false  # Prefill requests can be chunked based on the remaining `max_num_batched_tokens`
+long_prefill_token_threshold: 0  # For chunked prefill, a request is considered long if the prompt is longer than this number of tokens
+max_long_partial_prefills: 1  # For chunked prefill, the maximum number of prompts longer than long_prefill_token_threshold that will be prefilled concurrently
+max_num_batched_tokens: null  # Maximum number of tokens to be processed in a single iteration
+max_num_partial_prefills: 1  # For chunked prefill, the maximum number of sequences that can be partially prefilled concurrently
+max_num_seqs: null  # Maximum number of sequences to be processed in a single iteration
+scheduler_cls: null  # The scheduler class to use
+scheduling_policy: "fcfs"  # The scheduling policy to use {fcfs,priority}
+stream_interval: 1  # The interval (or buffer size) for streaming in terms of token length
+
+# ===================
+# CompilationConfig
+# ===================
+cudagraph_capture_sizes: null  # Sizes to capture cudagraph
+max_cudagraph_capture_size: null  # The maximum cudagraph capture size
+
+# ============
+# VllmConfig
+# ============
+additional_config: "{}"  # Additional config for specified platform
+compilation_config: null  # `torch.compile` and cudagraph capture configuration for the model
+ec_transfer_config: null  # The configurations for distributed EC cache transfer
+kv_events_config: null  # The configurations for event publishing
+kv_transfer_config: null  # The configurations for distributed KV cache transfer
+optimization_level: 2  # The optimization level
+speculative_config: null  # Speculative decoding configuration
+structured_outputs_config: false  # Structured outputs configuration
