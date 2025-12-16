@@ -1,0 +1,394 @@
+# SGLang Server Configuration File
+# Complete configuration with all available arguments organized by official documentation categories
+# Format: argument_name: default_value  # description
+
+# ============================================
+# Model and Tokenizer
+# ============================================
+model_path: "Qwen/Qwen3-0.6B"  # The path of the model weights. This can be a local folder or a Hugging Face repo ID.
+tokenizer_path: null  # The path of the tokenizer.
+tokenizer_mode: auto  # Tokenizer mode. 'auto' will use the fast tokenizer if available, and 'slow' will always use the slow tokenizer.
+tokenizer_worker_num: 1  # The worker num of the tokenizer manager.
+skip_tokenizer_init: false  # If set, skip init tokenizer and pass input_ids in generate request.
+load_format: auto  # The format of the model weights to load.
+model_loader_extra_config: "{}"  # Extra config for model loader.
+trust_remote_code: false  # Whether to allow for custom models defined on the Hub in their own modeling files.
+context_length: null  # The model's maximum context length. Defaults to None (will use the value from the model's config.json instead).
+is_embedding: false  # Whether to use a CausalLM as an embedding model.
+enable_multimodal: null  # Enable the multimodal functionality for the served model.
+revision: null  # The specific model version to use.
+model_impl: auto  # Which implementation of the model to use.
+
+# ============================================
+# HTTP Server
+# ============================================
+host: "127.0.0.1"  # Host address to bind the server.
+port: 30000  # Port to bind the server.
+fastapi_root_path: ""  # FastAPI root path.
+grpc_mode: false  # Enable gRPC mode.
+skip_server_warmup: false  # Skip server warmup.
+warmups: null  # Warmup requests.
+nccl_port: null  # NCCL port for distributed communication.
+checkpoint_engine_wait_weights_before_ready: false  # Wait for weights before engine is ready.
+
+# ============================================
+# Quantization and Data Type
+# ============================================
+dtype: auto  # Data type for computation.
+quantization: null  # Quantization method.
+quantization_param_path: null  # Path to quantization parameters.
+kv_cache_dtype: auto  # Data type for KV cache.
+enable_fp32_lm_head: false  # Enable FP32 for LM head.
+modelopt_quant: null  # Modelopt quantization configuration.
+modelopt_checkpoint_restore_path: null  # Path to restore modelopt checkpoint.
+modelopt_checkpoint_save_path: null  # Path to save modelopt checkpoint.
+modelopt_export_path: null  # Path to export modelopt model.
+quantize_and_serve: false  # Quantize model and serve.
+rl_quant_profile: null  # RL quantization profile.
+
+# ============================================
+# Memory and Scheduling
+# ============================================
+mem_fraction_static: null  # Static memory fraction.
+max_running_requests: null  # Maximum number of running requests.
+max_queued_requests: null  # Maximum number of queued requests.
+max_total_tokens: null  # Maximum total tokens.
+chunked_prefill_size: null  # Chunked prefill size.
+enable_dynamic_chunking: false  # Enable dynamic chunking.
+max_prefill_tokens: 16384  # Maximum prefill tokens.
+prefill_max_requests: null  # Maximum prefill requests.
+schedule_policy: "fcfs"  # Scheduling policy.
+enable_priority_scheduling: false  # Enable priority scheduling.
+abort_on_priority_when_disabled: false  # Abort on priority when disabled.
+schedule_low_priority_values_first: false  # Schedule low priority values first.
+priority_scheduling_preemption_threshold: 10  # Priority scheduling preemption threshold.
+schedule_conservativeness: 1.0  # Schedule conservativeness.
+page_size: 1  # Page size.
+hybrid_kvcache_ratio: null  # Hybrid KV cache ratio.
+swa_full_tokens_ratio: 0.8  # SWA full tokens ratio.
+disable_hybrid_swa_memory: false  # Disable hybrid SWA memory.
+radix_eviction_policy: "lru"  # Radix eviction policy.
+
+# ============================================
+# Runtime Options
+# ============================================
+device: null  # Device to use.
+tp_size: 1  # Tensor parallelism size.
+pp_size: 1  # Pipeline parallelism size.
+pp_max_micro_batch_size: null  # PP max micro batch size.
+pp_async_batch_depth: 0  # PP async batch depth.
+stream_interval: 1  # Stream interval.
+stream_output: false  # Stream output.
+random_seed: null  # Random seed.
+constrained_json_whitespace_pattern: null  # Constrained JSON whitespace pattern.
+constrained_json_disable_any_whitespace: false  # Constrained JSON disable any whitespace.
+watchdog_timeout: 300  # Watchdog timeout.
+soft_watchdog_timeout: null  # Soft watchdog timeout.
+dist_timeout: null  # Distributed timeout.
+download_dir: null  # Download directory.
+base_gpu_id: 0  # Base GPU ID.
+gpu_id_step: 1  # GPU ID step.
+sleep_on_idle: false  # Sleep on idle.
+custom_sigquit_handler: null  # Custom SIGQUIT handler.
+
+# ============================================
+# Logging
+# ============================================
+log_level: "info"  # Log level.
+log_level_http: null  # Log level for HTTP.
+log_requests: false  # Log requests.
+log_requests_level: 2  # Log requests level.
+crash_dump_folder: null  # Crash dump folder.
+show_time_cost: false  # Show time cost.
+enable_metrics: false  # Enable metrics.
+enable_metrics_for_all_schedulers: false  # Enable metrics for all schedulers.
+tokenizer_metrics_custom_labels_header: "x-custom-labels"  # Tokenizer metrics custom labels header.
+tokenizer_metrics_allowed_custom_labels: null  # Tokenizer metrics allowed custom labels.
+bucket_time_to_first_token: null
+bucket_inter_token_latency: null
+bucket_e2e_request_latency: null
+collect_tokens_histogram: false
+prompt_tokens_buckets: null
+generation_tokens_buckets: null
+gc_warning_threshold_secs: 0.0
+decode_log_interval: 40
+enable_request_time_stats_logging: false
+kv_events_config: null
+enable_trace: false
+otlp_traces_endpoint: "localhost:4317"
+
+# ============================================
+# API Related
+# ============================================
+api_key: null  # API key for authentication (OpenAI API compatible server).
+served_model_name: null  # Served model name.
+weight_version: "default"  # Weight version.
+chat_template: null  # Chat template.
+completion_template: null  # Completion template.
+file_storage_path: "sglang_storage"  # File storage path.
+enable_cache_report: false  # Enable cache report.
+reasoning_parser: null  # Reasoning parser.
+tool_call_parser: null  # Tool call parser.
+tool_server: null  # Tool server.
+sampling_defaults: "model"  # Sampling defaults.
+
+# ============================================
+# Data Parallelism
+# ============================================
+dp_size: 1  # Data parallelism size.
+load_balance_method: "round_robin"  # Load balance method.
+load_watch_interval: 0.1  # Load watch interval.
+prefill_round_robin_balance: false  # Prefill round-robin balance.
+
+# ============================================
+# Multi-node Distributed Serving
+# ============================================
+dist_init_addr: null  # Distributed init address.
+nnodes: 1  # Number of nodes.
+node_rank: 0  # Node rank.
+
+# ============================================
+# Model Override Args
+# ============================================
+json_model_override_args: "{}"  # JSON model override args.
+preferred_sampling_params: null  # Preferred sampling params.
+
+# ============================================
+# LoRA
+# ============================================
+enable_lora: false  # Enable LoRA.
+max_lora_rank: null  # Max LoRA rank.
+lora_target_modules: null  # LoRA target modules.
+lora_paths: null  # LoRA paths.
+max_loaded_loras: null  # Max loaded LoRAs.
+max_loras_per_batch: 8  # Max LoRAs per batch.
+lora_eviction_policy: "lru"  # LoRA eviction policy.
+lora_backend: "triton"  # LoRA backend.
+max_lora_chunk_size: 16  # Max LoRA chunk size.
+
+# ============================================
+# Kernel Backends
+# ============================================
+attention_backend: null  # Attention backend.
+decode_attention_backend: null  # Decode attention backend.
+prefill_attention_backend: null  # Prefill attention backend.
+sampling_backend: null  # Sampling backend.
+grammar_backend: null  # Grammar backend.
+mm_attention_backend: null  # MM attention backend.
+fp8_gemm_runner_backend: "auto"  # FP8 GEMM runner backend.
+nsa_prefill_backend: "flashmla_sparse"  # NSA prefill backend.
+nsa_decode_backend: "flashmla_kv"  # NSA decode backend.
+enable_flashinfer_autotune: false  # Enable FlashInfer autotune.
+
+# ============================================
+# Speculative Decoding
+# ============================================
+speculative_algorithm: null  # Speculative algorithm.
+speculative_draft_model_path: null  # Speculative draft model path.
+speculative_draft_model_revision: null  # Speculative draft model revision.
+speculative_draft_load_format: null  # Speculative draft load format.
+speculative_num_steps: null  # Speculative num steps.
+speculative_eagle_topk: null  # Speculative eagle topk.
+speculative_num_draft_tokens: null  # Speculative num draft tokens.
+speculative_accept_threshold_single: 1.0  # Speculative accept threshold single.
+speculative_accept_threshold_acc: 1.0  # Speculative accept threshold acc.
+speculative_token_map: null  # Speculative token map.
+speculative_attention_mode: "prefill"  # Speculative attention mode.
+speculative_moe_runner_backend: null  # Speculative MoE runner backend.
+speculative_moe_a2a_backend: null  # Speculative MoE A2A backend.
+speculative_draft_model_quantization: null  # Speculative draft model quantization.
+
+# ============================================
+# Ngram Speculative Decoding
+# ============================================
+speculative_ngram_min_match_window_size: 1  # Speculative ngram min match window size.
+speculative_ngram_max_match_window_size: 12  # Speculative ngram max match window size.
+speculative_ngram_min_bfs_breadth: 1  # Speculative ngram min BFS breadth.
+speculative_ngram_max_bfs_breadth: 10  # Speculative ngram max BFS breadth.
+speculative_ngram_match_type: "BFS"  # Speculative ngram match type.
+speculative_ngram_branch_length: 18  # Speculative ngram branch length.
+speculative_ngram_capacity: 10000000  # Speculative ngram capacity.
+
+# ============================================
+# MoE (Mixture of Experts)
+# ============================================
+ep_size: 1  # Expert parallelism size.
+moe_a2a_backend: none  # MoE A2A backend.
+moe_runner_backend: "auto"  # MoE runner backend.
+flashinfer_mxfp4_moe_precision: "default"  # FlashInfer MXFP4 MoE precision.
+enable_flashinfer_allreduce_fusion: false  # Enable FlashInfer allreduce fusion.
+deepep_mode: "auto"  # Deepep mode.
+ep_num_redundant_experts: 0  # EP num redundant experts.
+ep_dispatch_algorithm: null  # EP dispatch algorithm.
+init_expert_location: "trivial"  # Init expert location.
+enable_eplb: false  # Enable EPLB.
+eplb_algorithm: "auto"  # EPLB algorithm.
+eplb_rebalance_num_iterations: 1000  # EPLB rebalance num iterations.
+eplb_rebalance_layers_per_chunk: null  # EPLB rebalance layers per chunk.
+eplb_min_rebalancing_utilization_threshold: 1.0  # EPLB min rebalancing utilization threshold.
+expert_distribution_recorder_mode: null  # Expert distribution recorder mode.
+expert_distribution_recorder_buffer_size: null  # Expert distribution recorder buffer size.
+enable_expert_distribution_metrics: false  # Enable expert distribution metrics.
+deepep_config: null  # Deepep config.
+moe_dense_tp_size: null  # MoE dense TP size.
+elastic_ep_backend: null  # Elastic EP backend.
+mooncake_ib_device: null  # Mooncake IB device.
+
+# ============================================
+# Mamba Cache
+# ============================================
+max_mamba_cache_size: null  # Max Mamba cache size.
+mamba_ssm_dtype: "float32"  # Mamba SSM dtype.
+mamba_full_memory_ratio: 0.2  # Mamba full memory ratio.
+mamba_scheduler_strategy: "auto"  # Mamba scheduler strategy.
+mamba_track_interval: 256  # Mamba track interval.
+
+# ============================================
+# Hierarchical Cache
+# ============================================
+enable_hierarchical_cache: false  # Enable hierarchical cache.
+hicache_ratio: 2.0  # Hicache ratio.
+hicache_size: 0  # Hicache size.
+hicache_write_policy: "write_through"  # Hicache write policy.
+hicache_io_backend: "kernel"  # Hicache IO backend.
+hicache_mem_layout: "layer_first"  # Hicache mem layout.
+hicache_storage_backend: null  # Hicache storage backend.
+hicache_storage_prefetch_policy: "best_effort"  # Hicache storage prefetch policy.
+hicache_storage_backend_extra_config: null  # Hicache storage backend extra config.
+
+# ============================================
+# LMCache
+# ============================================
+enable_lmcache: false  # Enable LMCache.
+
+# ============================================
+# Double Sparsity
+# ============================================
+enable_double_sparsity: false  # Enable double sparsity attention.
+ds_channel_config_path: null  # The path of the double sparsity channel config.
+ds_heavy_channel_num: 32  # The number of heavy channels in double sparsity attention.
+ds_heavy_token_num: 256  # The number of heavy tokens in double sparsity attention.
+ds_heavy_channel_type: "qk"  # The type of heavy channels in double sparsity attention.
+ds_sparse_decode_threshold: int = 4096  # The minimum decode sequence length required.
+
+# ============================================
+# Offloading
+# ============================================
+cpu_offload_gb: 0  # How many GBs of RAM to reserve for CPU offloading.
+offload_group_size: -1  # Number of layers per group in offloading.
+offload_num_in_group: 1  # Number of layers to be offloaded within a group.
+offload_prefetch_step: 1  # Steps to prefetch in offloading.
+offload_mode: "cpu"  # Mode of offloading.
+
+# ============================================
+# Optimization/Debug Options
+# ============================================
+disable_radix_cache: false  # Disable radix cache.
+cuda_graph_max_bs: null  # CUDA graph max batch size.
+cuda_graph_bs: null  # CUDA graph batch sizes.
+disable_cuda_graph: false  # Disable CUDA graph.
+disable_cuda_graph_padding: false  # Disable CUDA graph padding.
+enable_profile_cuda_graph: false  # Enable profile CUDA graph.
+enable_cudagraph_gc: false  # Enable CUDA graph GC.
+enable_nccl_nvfs: false  # Enable NCCL NVLS for prefill heavy requests when available.
+enable_symm_mem: False
+disable_flashinfer_cutlass_moe_fp4_allgather: false
+enable_tokenizer_batch_encode: false
+disable_tokenizer_batch_decode: false
+disable_outlines_disk_cache: false
+disable_custom_all_reduce: false
+enable_mscclpp: false
+enable_torch_symm_mem: false
+disable_overlap_schedule: false
+enable_mixed_chunk: false
+enable_dp_attention: false
+enable_dp_lm_head: false  # Enable DP LM head.
+enable_two_batch_overlap: false  # Enable two batch overlap.
+enable_single_batch_overlap: false  # Enable single batch overlap.
+tbo_token_distribution_threshold: 0.48  # TBO token distribution threshold.
+enable_torch_compile: false  # Enable torch compile.
+enable_torch_compile_debug_mode: false  # Enable torch compile debug mode.
+enable_piecewise_cuda_graph: false  # Enable piecewise CUDA graph.
+piecewise_cuda_graph_tokens: null  # Piecewise CUDA graph tokens.
+torch_compile_max_bs: 32  # Torch compile max batch size.
+piecewise_cuda_graph_max_tokens: 4096  # Piecewise CUDA graph max tokens.
+piecewise_cuda_graph_compiler: "eager"  # Piecewise CUDA graph compiler.
+torchao_config: ""  # Torchao config.
+enable_nan_detection: false
+enable_p2p_check: false
+triton_attention_reduce_in_fp32: false
+triton_attention_num_kv_splits: 8
+triton_attention_split_tile_size: null
+num_continuous_decode_steps: 1
+delete_ckpt_after_loading: false
+enable_memory_saver: false
+enable_weights_cpu_backup: false
+allow_auto_truncate: false
+enable_custom_logit_processor: false
+flashinfer_mla_disable_ragged: false
+disable_shared_experts_fusion: false
+disable_chunked_prefix_cache: false
+disable_fast_image_processor: false
+keep_mm_feature_on_device: false
+enable_return_hidden_states: false
+scheduler_recv_interval: 1
+numa_node: null
+enable_attn_tp_input_scattered: false
+enable_nsa_prefill_context_parallel: false
+
+# ============================================
+# Forward Hooks
+# ============================================
+forward_hooks: null  # Forward hooks.
+
+# ============================================
+# Debug Tensor Dumps
+# ============================================
+debug_tensor_dump_output_folder: null  # The output folder for dumping tensors.
+debug_tensor_dump_layers: null  # None means dump all layers.
+debug_tensor_dump_input_file: null  # Debug tensor dump input file.
+debug_tensor_dump_inject: false  # Debug tensor dump inject.
+
+# ============================================
+# PD Disaggregation
+# ============================================
+disaggregation_mode: null  # PD disaggregation mode: null, prefill, or decode.
+disaggregation_transfer_backend: "mooncake"  # Disaggregation transfer backend.
+disaggregation_bootstrap_port: 8998  # Disaggregation bootstrap port.
+disaggregation_decode_tp: null  # Disaggregation decode TP.
+disaggregation_decode_dp: null  # Disaggregation decode DP.
+disaggregation_prefill_pp: 1  # Disaggregation prefill PP.
+disaggregation_ib_device: null  # Disaggregation IB device.
+disaggregation_decode_enable_offload_kvcache: false  # Disaggregation decode enable offload KV cache.
+num_reserved_decode_tokens: 512  # Num reserved decode tokens.
+disaggregation_decode_polling_interval: 1  # Disaggregation decode polling interval.
+
+# ============================================
+# Custom Weight Loader
+# ============================================
+custom_weight_loader: null  # Custom weight loader.
+weight_loader_disable_mmap: false  # Weight loader disable mmap.
+remote_instance_weight_loader_seed_instance_ip: null
+remote_instance_weight_loader_seed_instance_service_port: null
+remote_instance_weight_loader_send_weights_group_ports: null
+
+# ============================================
+# PD-Multiplexing
+# ============================================
+enable_pdmux: false  # Enable PD-Multiplexing.
+pdmux_config_path: null  # PD-Multiplexing config file path.
+sm_group_num: 8  # Number of SM partition groups.
+
+# ============================================
+# Deterministic Inference
+# ============================================
+enable_deterministic_inference: false  # Enable deterministic inference mode with batch invariant ops.
+
+# ============================================
+# Multi-Modal
+# ============================================
+mm_max_concurrent_calls: 32  # MM max concurrent calls.
+mm_per_request_timeout: 10.0  # MM per request timeout.
+enable_broadcast_mm_inputs_process: false  # Enable broadcast MM inputs process.
+enable_prefix_mm_cache: false  # Enable prefix MM cache.
+mm_enable_dp_encoder: false  # MM enable DP encoder.
