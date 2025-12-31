@@ -14,15 +14,15 @@
 
 """
 Module providing helper functions to design
-your own task widget. It uses the PyQt5 framework.
+your own task widget. It uses the PyQt6 framework.
 """
 
 from typing import Optional
-from PyQt5.QtWidgets import (  # pylint: disable=E0611
+from PyQt6.QtWidgets import (  # pylint: disable=E0611
     QWidget, QLineEdit, QFileDialog, QPushButton, QHBoxLayout, QDialog, QLabel, QComboBox, QSpinBox, QDoubleSpinBox,
     QCheckBox, QRadioButton, QSlider
 )
-from PyQt5.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
+from PyQt6.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
 
 
 class BrowseFileWidget(QWidget):
