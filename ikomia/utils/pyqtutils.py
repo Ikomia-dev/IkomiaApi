@@ -31,7 +31,7 @@ class BrowseFileWidget(QWidget):
     """
     file_changed = pyqtSignal()
 
-    def __init__(self, path: str, file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile,
+    def __init__(self, path: str, file_filter: str = "", tooltip: str = "", mode=QFileDialog.FileMode.ExistingFile,
                  parent: Optional[QObject] = None):
         QWidget.__init__(self, parent)
         self.path = path
@@ -411,7 +411,8 @@ def append_slider(grid_layout, label: str, value: int,
 
 
 def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
-                    file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+                    file_filter: str = "", tooltip: str = "",
+                    mode=QFileDialog.FileMode.ExistingFile) -> BrowseFileWidget:
     """
     Add a composite widget (label + edit box + browse button)
     in the layout at the given row - **file or folder**.
@@ -437,7 +438,8 @@ def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
 
 
 def append_browse_file(grid_layout, label: str = "", path: str = "",
-                       file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+                       file_filter: str = "", tooltip: str = "",
+                       mode=QFileDialog.FileMode.ExistingFile) -> BrowseFileWidget:
     """
     Append a composite widget (label + edit box + browse button) in the layout -
     **file or folder**.

@@ -27,7 +27,7 @@ def PyQtToQt(pyqt_widget):
     Returns:
         QWidget*: C++ wrapper instance
     """
-    import sip
+    from PyQt6 import sip
     return sip.unwrapinstance(pyqt_widget)
 
 
