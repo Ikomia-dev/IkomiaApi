@@ -33,13 +33,13 @@ def PyQtToQt(pyqt_widget):
 
 def PySideToQt(pyside_widget):
     """
-    Wraps PySide2 widget instance to C++ Qt
+    Wraps PySide6 widget instance to C++ Qt
 
     Args:
-        pyqt_widget : instance of the PyQt object
+        pyside_widget : instance of the PySide object
 
     Returns:
         QWidget*: C++ wrapper instance
     """
-    import shiboken2
-    return shiboken2.getCppPointer(pyside_widget)[0]
+    import shiboken6
+    return shiboken6.getCppPointer(pyside_widget)[0]
