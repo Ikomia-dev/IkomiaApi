@@ -87,13 +87,13 @@ class BrowseFileWidget(QWidget):
         path = ""
         file_dialog = QFileDialog()
         file_dialog.setNameFilter(self.filter)
-        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
         file_dialog.setFileMode(self.mode)
 
-        if self.mode == QFileDialog.Directory:
-            file_dialog.setOption(QFileDialog.ShowDirsOnly, True)
+        if self.mode == QFileDialog.FileMode.Directory:
+            file_dialog.setOption(QFileDialog.Option.ShowDirsOnly, True)
 
-        if file_dialog.exec() == QDialog.Accepted:
+        if file_dialog.exec() == QDialog.DialogCode.Accepted:
             path = file_dialog.selectedFiles()[0]
 
         return path
@@ -380,7 +380,7 @@ def add_slider(grid_layout, row: int, label: str, value: int,
         QSlider: instance of the QSlider added to the layout
     """
     qlabel = QLabel(label)
-    qslider = QSlider(Qt.Horizontal)
+    qslider = QSlider(Qt.Orientation.Horizontal)
     qslider.setRange(min, max)
     qslider.setSingleStep(step)
     qslider.setValue(value)
