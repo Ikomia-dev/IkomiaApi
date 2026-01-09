@@ -15,7 +15,7 @@ from ikomia.utils import pyqtutils, qtconversion
 from my_first_algo.my_first_algo_process import (
     MyFirstAlgoParam,
 )
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 
 # --------------------
