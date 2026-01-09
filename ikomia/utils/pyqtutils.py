@@ -14,15 +14,15 @@
 
 """
 Module providing helper functions to design
-your own task widget. It uses the PyQt5 framework.
+your own task widget. It uses the PyQt6 framework.
 """
 
 from typing import Optional
-from PyQt5.QtWidgets import (  # pylint: disable=E0611
+from PyQt6.QtWidgets import (  # pylint: disable=E0611
     QWidget, QLineEdit, QFileDialog, QPushButton, QHBoxLayout, QDialog, QLabel, QComboBox, QSpinBox, QDoubleSpinBox,
     QCheckBox, QRadioButton, QSlider
 )
-from PyQt5.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
+from PyQt6.QtCore import Qt, QObject, pyqtSignal  # pylint: disable=E0611
 
 
 class BrowseFileWidget(QWidget):
@@ -31,7 +31,7 @@ class BrowseFileWidget(QWidget):
     """
     file_changed = pyqtSignal()
 
-    def __init__(self, path: str, file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile,
+    def __init__(self, path: str, file_filter: str = "", tooltip: str = "", mode=QFileDialog.FileMode.ExistingFile,
                  parent: Optional[QObject] = None):
         QWidget.__init__(self, parent)
         self.path = path
@@ -87,13 +87,13 @@ class BrowseFileWidget(QWidget):
         path = ""
         file_dialog = QFileDialog()
         file_dialog.setNameFilter(self.filter)
-        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
         file_dialog.setFileMode(self.mode)
 
-        if self.mode == QFileDialog.Directory:
-            file_dialog.setOption(QFileDialog.ShowDirsOnly, True)
+        if self.mode == QFileDialog.FileMode.Directory:
+            file_dialog.setOption(QFileDialog.Option.ShowDirsOnly, True)
 
-        if file_dialog.exec() == QDialog.Accepted:
+        if file_dialog.exec() == QDialog.DialogCode.Accepted:
             path = file_dialog.selectedFiles()[0]
 
         return path
@@ -380,7 +380,7 @@ def add_slider(grid_layout, row: int, label: str, value: int,
         QSlider: instance of the QSlider added to the layout
     """
     qlabel = QLabel(label)
-    qslider = QSlider(Qt.Horizontal)
+    qslider = QSlider(Qt.Orientation.Horizontal)
     qslider.setRange(min, max)
     qslider.setSingleStep(step)
     qslider.setValue(value)
@@ -411,7 +411,8 @@ def append_slider(grid_layout, label: str, value: int,
 
 
 def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
-                    file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+                    file_filter: str = "", tooltip: str = "",
+                    mode=QFileDialog.FileMode.ExistingFile) -> BrowseFileWidget:
     """
     Add a composite widget (label + edit box + browse button)
     in the layout at the given row - **file or folder**.
@@ -437,7 +438,8 @@ def add_browse_file(grid_layout, row: int = 0, label: str = "", path: str = "",
 
 
 def append_browse_file(grid_layout, label: str = "", path: str = "",
-                       file_filter: str = "", tooltip: str = "", mode=QFileDialog.ExistingFile) -> BrowseFileWidget:
+                       file_filter: str = "", tooltip: str = "",
+                       mode=QFileDialog.FileMode.ExistingFile) -> BrowseFileWidget:
     """
     Append a composite widget (label + edit box + browse button) in the layout -
     **file or folder**.

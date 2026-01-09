@@ -37,9 +37,9 @@ _backend_name = None
 _valid_backend = True
 
 try:
-    matplotlib.use("Qt5Agg")
+    matplotlib.use("QtAgg")
     import matplotlib.pyplot as plt
-    _backend_name = "Qt5Agg"
+    _backend_name = "QtAgg"
 except ImportError:
     try:
         matplotlib.use("GTK3Agg")
