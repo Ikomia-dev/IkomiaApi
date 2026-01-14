@@ -23,5 +23,3 @@ except ImportError:
     # Valid for Windows standalone API
     from ikomia.lib.pycore import *
     from ikomia.lib.pydataprocess import *
-
-from ikomia.dataprocess.datadictIO import DataDictIO

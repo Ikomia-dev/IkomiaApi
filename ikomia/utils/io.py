@@ -7,7 +7,7 @@ from ikomia.dataprocess import (  # pylint: disable=E0611
     CImageIO, CVideoIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CWidgetOutput, CPathIO,
     CArrayIO, CObjectDetectionIO, CInstanceSegmentationIO, CSemanticSegmentationIO, CKeypointsIO, CTextIO
 )
-from ikomia.dataprocess.datadictIO import DataDictIO
+from ikomia.dataprocess.io.datadictIO import DataDictIO
 
 
 def get_io_type_from_string(type_str: str) -> IODataType:
