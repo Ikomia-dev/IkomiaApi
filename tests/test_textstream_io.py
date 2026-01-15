@@ -74,7 +74,7 @@ def test_pythonic_text_stream_io():
         
         # Stream data
         received_chunks = []
-        for chunk in text_io.stream(min_text_size=1, timeout=5):
+        for chunk in text_io.stream(timeout=5):
             received_chunks.append(chunk)
             logger.debug(f"Received chunk: '{chunk.strip()}'")
         
@@ -145,9 +145,6 @@ def test_pythonic_text_stream_io():
         text_io = TextStreamIO()
         text_io.feed("Test data for cleanup")
         
-        # Test cancellation
-        text_io.cancel_pending_operations()
-        
         # Test clear data
         text_io.clear_data()
         assert not text_io.is_data_available()
@@ -166,7 +163,7 @@ def test_pythonic_text_stream_io():
         text_io.close()  # Close immediately to signal no data
 
         start_time = time.time()
-        chunks = list(text_io.stream(min_text_size=1, timeout=1))  # Short timeout
+        chunks = list(text_io.stream(timeout=1))  # Short timeout
         elapsed_time = time.time() - start_time
 
         # Should return empty list since stream is closed and no data
@@ -190,7 +187,7 @@ def test_pythonic_text_stream_io():
         
         start_time = time.time()
         chunks2 = []
-        for chunk in text_io2.stream(min_text_size=1, timeout=5):  # 5s timeout
+        for chunk in text_io2.stream(timeout=5):  # 5s timeout
             chunks2.append(chunk)
 
         elapsed_time2 = time.time() - start_time
@@ -210,7 +207,7 @@ def test_pythonic_text_stream_io():
         text_io3.close()
 
         start_time = time.time()
-        chunks3 = list(text_io3.stream(min_text_size=1, timeout=1))
+        chunks3 = list(text_io3.stream(timeout=1))
         elapsed_time3 = time.time() - start_time
 
         # Should still get the data quickly

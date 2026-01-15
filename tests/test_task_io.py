@@ -905,7 +905,7 @@ def test_cpp_text_stream_io():
         # Read in chunks
         remaining_text = text_src
         while not io_stream.is_read_finished():
-            chunk = io_stream.read_next(5, 1)  # Read at least 5 bytes, timeout 1s
+            chunk = io_stream.read_next(1)  # Read at least 5 bytes, timeout 1s
             if chunk:
                 assert remaining_text.startswith(chunk), f"Chunk '{chunk}' doesn't match expected start of '{remaining_text}'"
                 remaining_text = remaining_text[len(chunk):]
@@ -974,7 +974,7 @@ def test_cpp_text_stream_io():
         
         # Don't feed any data, just test timeout
         start_time = time.time()
-        chunk = io_stream.read_next(100, 1)  # Try to read 100 bytes with 1s timeout
+        chunk = io_stream.read_next(1)  # Try to read 100 bytes with 1s timeout
         elapsed_time = time.time() - start_time
         
         # Should return empty string due to timeout
