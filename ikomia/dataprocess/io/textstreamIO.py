@@ -15,12 +15,15 @@
 """
 Module providing Pythonic wrapper for text stream I/O using generators.
 """
+import logging
 import queue
 import threading
 from typing import Generator
 
 from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
 from ikomia.dataprocess.pydataprocess import CTextStreamIO
+
+logger = logging.getLogger(__name__)
 
 
 class TextStreamIO(CWorkflowTaskIO):
@@ -42,6 +45,18 @@ class TextStreamIO(CWorkflowTaskIO):
         """
         CWorkflowTaskIO.__init__(self, IODataType.TEXT)
         self._cpp_io = CTextStreamIO()
+        self._chunk_queue = queue.Queue()
+        self._stop_event = threading.Event()
+        self._reader_thread = None
+        self._lock = threading.Lock()
+
+    def __del__(self):
+        """
+        Clean up resources when the object is destroyed.
+        """
+        # Clear all pending operations
+        self._cpp_io.shutdown()
+        self._clear_queue()
 
     def __str__(self) -> str:
         """
@@ -61,8 +76,7 @@ class TextStreamIO(CWorkflowTaskIO):
         """
         return (f"TextStreamIO("
                 f"data_available={self.is_data_available()}, "
-                f"read_finished={self.is_read_finished()}, "
-                f"chunk_queue_size={self._chunk_queue.qsize()})")
+                f"read_finished={self.is_read_finished()}")
 
     def is_data_available(self) -> bool:
         """
@@ -81,6 +95,41 @@ class TextStreamIO(CWorkflowTaskIO):
             bool: True if reading is complete, False otherwise
         """
         return self._cpp_io.is_read_finished()
+
+    def _clear_queue(self):
+        try:
+            while True:
+                self._chunk_queue.get_nowait()
+        except queue.Empty:
+            pass
+
+    def _reader_loop(self):
+        """
+        Background thread that reads chunks from C++ and puts them in the queue.
+        """
+        # Start async reading if not already started
+        try:
+            while not self._stop_event.is_set():
+                chunk = self._cpp_io.read_next(0.001)
+                if chunk:
+                    self._chunk_queue.put(chunk)
+                elif self.is_read_finished():
+                    break
+        finally:
+            self._chunk_queue.put(None)
+
+    def _start_reader_thread(self):
+        """
+        Start the background reader thread if not already running.
+        """
+        with self._lock:
+            if (self._reader_thread is None or not self._reader_thread.is_alive()) and not self._stop_event.is_set():
+                self._reader_thread = threading.Thread(
+                    target=self._reader_loop,
+                    daemon=True,
+                    name="TextStreamQueueReader"
+                )
+                self._reader_thread.start()
         
     def feed(self, text: str):
         """
@@ -106,56 +155,49 @@ class TextStreamIO(CWorkflowTaskIO):
         """
         return self._cpp_io.read_full()
             
-    def stream(self, min_text_size: int = 1, timeout: int = 60) -> Generator[str, None, None]:
+    def stream(self, timeout: int = 60) -> Generator[str, None, None]:
         """
         Generator that yields text chunks as they become available.
         
         This is the main Pythonic interface that hides the callback complexity.
         
         Args:
-            min_text_size (int): minimum text size to read
             timeout (int): read timeout in seconds
             
         Yields:
             str: text chunks as they arrive
         """
-        q = queue.Queue()
-        sentinel = object()
-
-        # Start async reading if not already started
-        def reader():
-            try:
-                while True:
-                    chunk = self._cpp_io.read_next(min_text_size, 0.001)
-                    if chunk:
-                        q.put(chunk)
-                    elif self.is_read_finished():
-                        break
-            finally:
-                self._cpp_io.shutdown()
-                q.put(sentinel)
-
-        threading.Thread(target=reader, daemon=True).start()
+        # Start the reader thread
+        self._start_reader_thread()
 
         while True:
-            item = q.get(block=True, timeout=timeout)
-            if item is sentinel:
+            try:
+                chunk = self._chunk_queue.get(block=True, timeout=timeout)
+                if chunk is None:
+                    break
+
+                yield chunk
+            except queue.Empty:
                 break
 
-            yield item
-                
+        self._stop_streaming()
+
+    def _stop_streaming(self):
+        """
+        Stop the streaming and clean up resources.
+        """
+        with self._lock:
+            if not self._stop_event.is_set():
+                self._stop_event.set()
+                self._reader_thread.join(timeout=1.0)
+                self._stop_event.clear()
+                # Cancel pending operations in C++ layer
+                self._cpp_io.close()
+                self._cpp_io.shutdown()
+
     def clear_data(self):
         """
         Clear all internal data and reset state.
         """
+        self._clear_queue()
         self._cpp_io.clear_data()
-    
-    def cancel_pending_operations(self):
-        """
-        Cancel all pending asynchronous operations.
-        
-        This method should be called before destroying the object
-        to prevent memory corruption from pending callbacks.
-        """
-        # Clear all pending operations
-        self._cpp_io.shutdown()
