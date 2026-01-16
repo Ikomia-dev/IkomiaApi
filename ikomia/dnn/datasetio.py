@@ -21,8 +21,8 @@ Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 import json
 import random
 
-from ikomia.core import CGraphicsPoint  # pylint: disable=E0611
 from ikomia.core import (
+    CGraphicsPoint,  # pylint: disable=E0611
     CGraphicsPolygon,
     CGraphicsPolyline,
     CGraphicsRectangle,
@@ -33,7 +33,7 @@ from ikomia.core import (
     GraphicsPolylineProperty,
     GraphicsRectProperty,
     GraphicsTextProperty,
-)  # pylint: disable=E0611
+)
 from ikomia.dataprocess import CDatasetIO  # pylint: disable=E0611
 
 
@@ -126,8 +126,7 @@ class IkDatasetIO(CDatasetIO):
         """
         category_max = 0
         for category_id in self.data["metadata"]["category_names"]:
-            if category_id > category_max:
-                category_max = category_id
+            category_max = max(category_max, category_id)
 
         return category_max + 1
 

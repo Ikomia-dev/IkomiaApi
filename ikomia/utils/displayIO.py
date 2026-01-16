@@ -31,8 +31,8 @@ from matplotlib.cbook import flatten
 from PIL import Image
 
 from ikomia.core import GraphicsItem, config  # pylint: disable=E0611
-from ikomia.dataprocess import CBlobMeasureIO  # pylint: disable=E0611
 from ikomia.dataprocess import (
+    CBlobMeasureIO,  # pylint: disable=E0611
     CDataStringIO,
     CGraphicsInput,
     CGraphicsOutput,
@@ -47,17 +47,17 @@ from ikomia.dataprocess import (
     CWorkflowTask,
     NumericOutputType,
     PlotType,
-)  # pylint: disable=E0611
+)
 
 # Matplotlib backend choice
 _backend_name = None
 _valid_backend = True
 
 try:
-    matplotlib.use("Qt5Agg")
+    matplotlib.use("QtAgg")
     import matplotlib.pyplot as plt
 
-    _backend_name = "Qt5Agg"
+    _backend_name = "QtAgg"
 except ImportError:
     try:
         matplotlib.use("GTK3Agg")
@@ -440,7 +440,7 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
 
     if x_min == x_max:
         x_min = 0
-        x_max = 2 * x_max
+        x_max = 2*x_max
 
     if y_min == y_max:
         y_min = 0

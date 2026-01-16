@@ -19,7 +19,7 @@ def _check_algo_compatibility(algo_name: str) -> bool:
         return False
 
     # Check algorithm type
-    if info.algo_type == AlgoType.TRAIN or info.algo_type == AlgoType.DATASET:
+    if info.algo_type in [AlgoType.TRAIN, AlgoType.DATASET]:
         logger.error(
             "Algorithms type %s is not supported for auto demo workflow",
             str(info.algo_type),
@@ -29,8 +29,9 @@ def _check_algo_compatibility(algo_name: str) -> bool:
     return True
 
 
-def create_demo_workflow(algo_name: str,
-                         depends_on: Union[list, None] = None) -> Workflow:
+def create_demo_workflow(
+    algo_name: str, depends_on: Union[list, None] = None
+) -> Workflow:
     """
     Automatically generate demo workflow for the given algorithm.
 

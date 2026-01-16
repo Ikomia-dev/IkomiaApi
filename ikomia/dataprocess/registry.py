@@ -32,8 +32,12 @@ from typing import Callable, Union
 
 import semver
 
-from ikomia.core import CWorkflowTask  # pylint: disable=E0611
-from ikomia.core import CWorkflowTaskParam, auth, config
+from ikomia.core import (
+    CWorkflowTask,  # pylint: disable=E0611
+    CWorkflowTaskParam,
+    auth,
+    config,
+)
 from ikomia.dataprocess import CIkomiaRegistry  # pylint: disable=E0611
 from ikomia.utils import (
     ApiLanguage,
@@ -152,7 +156,6 @@ class IkomiaRegistry(CIkomiaRegistry):
         return self.private_online_algos
 
     def _get_online_algos(self, url: str) -> list:
-        s = auth.ik_api_session
         algos = self._get_all_from_pagination(url)
         valid_algos = []
 

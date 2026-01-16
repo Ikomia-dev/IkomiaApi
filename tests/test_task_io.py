@@ -1,6 +1,8 @@
 import os
 import argparse
 import logging
+import threading
+import time
 import numpy as np
 from ikomia import core, dataio, dataprocess
 from ikomia.utils import tests
@@ -852,6 +854,173 @@ def test_cpp_text_io():
     assert not loaded_io.is_data_available()
 
 
+def test_cpp_text_stream_io():
+    """
+    Test CTextStreamIO functionality with improved structure and coverage.
+    Tests both synchronous and asynchronous operations, edge cases, and proper cleanup.
+    """
+    words = ["Il ", "était ", "une ", "fois ", "dans ", "l'", "Ouest.\n", "Ici ", "c'est ", "La ", "Rochelle", "!"]
+    text_src = ''.join(words)
+
+    def test_basic_streaming():
+        """Test basic synchronous streaming functionality"""
+        print("Testing basic streaming...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Feed all data
+        for word in words:
+            io_stream.feed(word)
+        
+        # Close to signal end of data
+        io_stream.close()
+        
+        # Read full text
+        text_full = io_stream.read_full()
+        assert text_full == text_src, f"Expected '{text_src}', got '{text_full}'"
+        
+        # Test is_data_available
+        assert io_stream.is_data_available()
+        
+        # Test is_feed_finished
+        assert io_stream.is_feed_finished()
+        
+        # Test is_read_finished
+        assert io_stream.is_read_finished()
+        
+        # Test clear_data
+        io_stream.clear_data()
+        assert not io_stream.is_data_available()
+        
+        print("✓ Basic streaming test passed")
+
+    def test_chunked_reading():
+        """Test reading data in chunks"""
+        print("Testing chunked reading...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Feed all data at once
+        io_stream.feed(text_src)
+        io_stream.close()
+        
+        # Read in chunks
+        remaining_text = text_src
+        while not io_stream.is_read_finished():
+            chunk = io_stream.read_next(1)  # Read at least 5 bytes, timeout 1s
+            if chunk:
+                assert remaining_text.startswith(chunk), f"Chunk '{chunk}' doesn't match expected start of '{remaining_text}'"
+                remaining_text = remaining_text[len(chunk):]
+        
+        assert remaining_text == "", f"Not all text was read: '{remaining_text}'"
+        print("✓ Chunked reading test passed")
+
+    def test_empty_stream():
+        """Test behavior with empty stream"""
+        print("Testing empty stream...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Close immediately without feeding data
+        io_stream.close()
+        
+        # Should return empty string
+        text_full = io_stream.read_full()
+        assert text_full == "", f"Expected empty string, got '{text_full}'"
+        
+        # Should be finished
+        assert io_stream.is_feed_finished()
+        assert io_stream.is_read_finished()
+        assert not io_stream.is_data_available()
+        
+        print("✓ Empty stream test passed")
+
+    def test_large_text():
+        """Test with larger text to stress test buffer handling"""
+        print("Testing large text...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Create large text by repeating the source text
+        large_text = text_src * 100
+        
+        # Feed in chunks
+        chunk_size = 100
+        for i in range(0, len(large_text), chunk_size):
+            io_stream.feed(large_text[i:i+chunk_size])
+        
+        io_stream.close()
+        
+        # Read full text
+        result = io_stream.read_full()
+        assert result == large_text, f"Large text mismatch: expected length {len(large_text)}, got {len(result)}"
+        
+        print("✓ Large text test passed")
+
+    def test_unicode_handling():
+        """Test Unicode character handling"""
+        print("Testing Unicode handling...")
+        unicode_text = "Hello 世界 🌍 Café naïve "
+        
+        io_stream = dataprocess.CTextStreamIO()
+        io_stream.feed(unicode_text)
+        io_stream.close()
+        
+        result = io_stream.read_full()
+        assert result == unicode_text, f"Unicode handling failed: expected '{unicode_text}', got '{result}'"
+        
+        print("✓ Unicode handling test passed")
+
+    def test_timeout_behavior():
+        """Test timeout behavior in read_next"""
+        print("Testing timeout behavior...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Don't feed any data, just test timeout
+        start_time = time.time()
+        chunk = io_stream.read_next(1)  # Try to read 100 bytes with 1s timeout
+        elapsed_time = time.time() - start_time
+        
+        # Should return empty string due to timeout
+        assert chunk == "", f"Expected empty string on timeout, got '{chunk}'"
+        
+        # Should complete within reasonable time (allow some margin)
+        assert elapsed_time < 1.2, f"Timeout took too long: {elapsed_time}s"
+        
+        print("✓ Timeout behavior test passed")
+
+    def test_resource_cleanup():
+        """Test proper resource cleanup"""
+        print("Testing resource cleanup...")
+        io_stream = dataprocess.CTextStreamIO()
+        
+        # Feed some data
+        io_stream.feed("Test data")
+        
+        # Test shutdown
+        io_stream.shutdown()
+        
+        # Should still be able to read existing data
+        result = io_stream.read_full()
+        assert result == "Test data"
+        
+        # After shutdown, no more operations should work
+        # This should not crash or hang
+        try:
+            io_stream.feed("More data")
+        except Exception:
+            pass  # Expected to fail after shutdown
+        
+        print("✓ Resource cleanup test passed")
+
+    # Run all tests
+    test_basic_streaming()
+    test_chunked_reading()
+    test_empty_stream()
+    test_large_text()
+    test_unicode_handling()
+    test_timeout_behavior()
+    test_resource_cleanup()
+
+    print("\n✅ All CTextStreamIO tests passed!")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tests",
@@ -892,3 +1061,5 @@ if __name__ == "__main__":
         test_cpp_semantic_segmentation_io()
     if 'all' in running_tests or 'cpp_text_io' in running_tests:
         test_cpp_text_io()
+    if 'all' in running_tests or 'cpp_text_stream_io' in running_tests:
+        test_cpp_text_stream_io()

@@ -19,8 +19,7 @@ See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods
 """
 import logging
 
-from ikomia.core import CWorkflowTask  # pylint: disable=E0611
-from ikomia.core import CWorkflowTaskParam  # pylint: disable=E0611
+from ikomia.core import CWorkflowTask, CWorkflowTaskParam  # pylint: disable=E0611
 from ikomia.dataprocess import CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 

@@ -1,8 +1,8 @@
 """The module io provides helper functions to manage workflow I/O of Ikomia API."""
 
 from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
-from ikomia.dataprocess import CArrayIO  # pylint: disable=E0611
 from ikomia.dataprocess import (
+    CArrayIO,  # pylint: disable=E0611
     CBlobMeasureIO,
     CGraphicsInput,
     CGraphicsOutput,
@@ -16,8 +16,8 @@ from ikomia.dataprocess import (
     CTextIO,
     CVideoIO,
     CWidgetOutput,
-)  # pylint: disable=E0611
-from ikomia.dataprocess.datadictIO import DataDictIO
+)
+from ikomia.dataprocess.io.datadictIO import DataDictIO
 from ikomia.dnn.datasetio import IkDatasetIO
 
 

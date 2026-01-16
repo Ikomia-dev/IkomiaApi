@@ -9,12 +9,22 @@ from urllib.parse import urlparse
 import numpy as np
 
 from ikomia import utils
-from ikomia.core import CWorkflowTask  # pylint: disable=E0611
-from ikomia.core import CWorkflowTaskIO, IODataType, auth, config
-from ikomia.core.enums import WorkflowType
+from ikomia.core import (
+    CWorkflowTask,  # pylint: disable=E0611
+    CWorkflowTaskIO,
+    IODataType,
+    auth,
+    config,
+)
 from ikomia.core.task import conform_parameters, get_output
 from ikomia.dataio import CDataImageIO, CDataVideoIO  # pylint: disable=E0611
-from ikomia.dataprocess import CImageIO, CPathIO, CVideoIO, CWorkflow
+from ikomia.dataprocess import (
+    CHardwareConfig,  # pylint: disable=E0611
+    CImageIO,
+    CPathIO,
+    CVideoIO,
+    CWorkflow,
+)
 from ikomia.dataprocess.registry import IkomiaRegistry, ik_registry
 
 logger = logging.getLogger(__name__)
@@ -96,9 +106,7 @@ class Workflow(CWorkflow):
         datatype: IODataType = IODataType.IMAGE,
     ):
         """
-        Set image as global input of the workflow.
-
-        Image can be specified by a Numpy array, a path or a URL thanks to
+        Set image as global input of the workflow. Image can be specified by a Numpy array, a path or an URL thanks to
         keyword arguments, you have to choose one of them.
 
         Args:

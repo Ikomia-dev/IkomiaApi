@@ -229,7 +229,8 @@ SYSMODULES = [
     "pipes",
     "resource",
     "nis",
-    "syslog" "optparse",
+    "syslog",
+    "optparse",
     "imp",
 ]
 
@@ -481,8 +482,6 @@ def conform_plugin_directory(directory: str, plugin: dict) -> str:
 
 if __name__ == "__main__":
     folder = "plugin_folder"
-    goodModules, badModules = get_plugin_dependencies(folder)
-    print("Dependencies:\n")
-    print(goodModules)
-    print("\n\nMissing:\n")
-    print(badModules)
+    good_modules, bad_modules = get_plugin_dependencies(folder)
+    print(f"Dependencies: {good_modules}\n\n")
+    print(f"Missing: {bad_modules}\n")

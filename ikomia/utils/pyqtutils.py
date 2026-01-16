@@ -15,13 +15,13 @@
 """
 Module providing helper functions to design your own task widget.
 
-It uses the PyQt5 framework.
+It uses the PyQt6 framework.
 """
 
 from typing import Optional
 
-from PyQt5.QtCore import QObject, Qt, pyqtSignal  # pylint: disable=E0611
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QObject, Qt, pyqtSignal  # pylint: disable=E0611
+from PyQt6.QtWidgets import (
     QCheckBox,
     QComboBox,  # pylint: disable=E0611
     QDialog,
@@ -35,7 +35,7 @@ from PyQt5.QtWidgets import (
     QSlider,
     QSpinBox,
     QWidget,
-)  # pylint: disable=E0611
+)
 
 
 class BrowseFileWidget(QWidget):
@@ -48,7 +48,7 @@ class BrowseFileWidget(QWidget):
         path: str,
         file_filter: str = "",
         tooltip: str = "",
-        mode=QFileDialog.ExistingFile,
+        mode=QFileDialog.FileMode.ExistingFile,
         parent: Optional[QObject] = None,
     ):
         """
@@ -107,13 +107,13 @@ class BrowseFileWidget(QWidget):
         path = ""
         file_dialog = QFileDialog()
         file_dialog.setNameFilter(self.filter)
-        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
         file_dialog.setFileMode(self.mode)
 
-        if self.mode == QFileDialog.Directory:
-            file_dialog.setOption(QFileDialog.ShowDirsOnly, True)
+        if self.mode == QFileDialog.FileMode.Directory:
+            file_dialog.setOption(QFileDialog.Option.ShowDirsOnly, True)
 
-        if file_dialog.exec() == QDialog.Accepted:
+        if file_dialog.exec() == QDialog.DialogCode.Accepted:
             path = file_dialog.selectedFiles()[0]
 
         return path
@@ -430,7 +430,7 @@ def add_slider(
         QSlider: instance of the QSlider added to the layout
     """
     qlabel = QLabel(label)
-    qslider = QSlider(Qt.Horizontal)
+    qslider = QSlider(Qt.Orientation.Horizontal)
     qslider.setRange(min, max)
     qslider.setSingleStep(step)
     qslider.setValue(value)
@@ -473,7 +473,7 @@ def add_browse_file(
     path: str = "",
     file_filter: str = "",
     tooltip: str = "",
-    mode=QFileDialog.ExistingFile,
+    mode=QFileDialog.FileMode.ExistingFile,
 ) -> BrowseFileWidget:
     """
     Add a composite widget (label + edit box + browse button) in the layout at the given row - **file or folder**.
@@ -506,7 +506,7 @@ def append_browse_file(
     path: str = "",
     file_filter: str = "",
     tooltip: str = "",
-    mode=QFileDialog.ExistingFile,
+    mode=QFileDialog.FileMode.ExistingFile,
 ) -> BrowseFileWidget:
     """
     Append a composite widget (label + edit box + browse button) in the layout - **file or folder**.

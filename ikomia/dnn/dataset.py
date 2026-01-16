@@ -25,8 +25,11 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from ikomia.core import CGraphicsConversion  # pylint: disable=E0611
-from ikomia.core import CGraphicsPolygon, CPointF  # pylint: disable=E0611
+from ikomia.core import (
+    CGraphicsConversion,  # pylint: disable=E0611
+    CGraphicsPolygon,
+    CPointF,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -559,10 +562,8 @@ def polygon_to_mask(polygons: list, width: int, height: int) -> np.ndarray:
         pts = []
         i = 0
         while i < len(poly):
-            x = poly[i]
-            y = poly[i + 1]
-            x = min(x, width - 1)
-            y = min(y, height - 1)
+            x = min(poly[i], width - 1)
+            y = min(poly[i + 1], height - 1)
             pts.append(CPointF(x, y))
             i += 2
 
