@@ -16,6 +16,7 @@
 Internal use only
 """
 import os
+
 import numpy as np
 
 
@@ -23,6 +24,7 @@ class NumpyImage:
     """
     Helper class to manage 2D image structure of Numpy .npz file.
     """
+
     def __init__(self, path: str, key: str):
         self.path = path
         self.data = None

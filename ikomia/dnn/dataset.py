@@ -16,27 +16,55 @@
 Module providing dataset loaders from various source formats.
 """
 
-import os
 import json
-import random
 import logging
+import os
+import random
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from PIL import Image
-import numpy as np
-from ikomia.core import CPointF, CGraphicsPolygon, CGraphicsConversion  # pylint: disable=E0611
+
 import cv2
+import numpy as np
+from PIL import Image
+
+from ikomia.core import (
+    CGraphicsConversion,  # pylint: disable=E0611
+    CGraphicsPolygon,
+    CPointF,
+)
 
 logger = logging.getLogger(__name__)
 
 try:
     from pycocotools.coco import maskUtils
 except ImportError:
-    logger.info("Pycocotools package is not installed, some dataset loader may not work properly.")
+    logger.info(
+        "Pycocotools package is not installed, some dataset loader may not work properly."
+    )
 
 
-_image_extensions = [".jpeg", ".jpg", ".png", ".bmp", ".tiff", ".tif", ".dib", ".jpe", ".jp2", ".webp", ".pbm", ".pgm",
-                     ".ppm", ".pxm", ".pnm", ".sr", ".ras", ".exr", ".hdr", ".pic"]
+_image_extensions = [
+    ".jpeg",
+    ".jpg",
+    ".png",
+    ".bmp",
+    ".tiff",
+    ".tif",
+    ".dib",
+    ".jpe",
+    ".jp2",
+    ".webp",
+    ".pbm",
+    ".pgm",
+    ".ppm",
+    ".pxm",
+    ".pnm",
+    ".sr",
+    ".ras",
+    ".exr",
+    ".hdr",
+    ".pic",
+]
 
 
 def load_via_dataset(path: str) -> dict:
@@ -65,7 +93,7 @@ def load_via_dataset(path: str) -> dict:
         regions = img_obj["regions"]
 
         for region in regions:
-            reg_attr = region['region_attributes']
+            reg_attr = region["region_attributes"]
             for key in reg_attr:
                 category = reg_attr[key]
                 if category not in category_indices:
@@ -88,7 +116,7 @@ def load_via_dataset(path: str) -> dict:
         # Unique id
         img_data["image_id"] = img_id
         # Full path of the image
-        img_data["filename"] = folder + '/' + img_obj["filename"]
+        img_data["filename"] = folder + "/" + img_obj["filename"]
         # Read image to get width and height
         img = Image.open(img_data["filename"])
         img_data["width"], img_data["height"] = img.size
@@ -112,14 +140,16 @@ def load_via_dataset(path: str) -> dict:
                 h = shape_attr["height"]
                 instance["bbox"] = [x, y, w, h]
             else:
-                print('Unmanaged shape attribute, object ignored.')
+                print("Unmanaged shape attribute, object ignored.")
                 continue
 
-            reg_attr = region['region_attributes']
+            reg_attr = region["region_attributes"]
 
             if len(reg_attr) > 1:
-                print("Warning: the VIA dataset loader manages only one attribute to define classes type. "
-                      "The first one is used for class type, others are ignored.")
+                print(
+                    "Warning: the VIA dataset loader manages only one attribute to define classes type. "
+                    "The first one is used for class type, others are ignored."
+                )
 
             attr_type = next(iter(reg_attr))
             instance["category_id"] = category_indices[reg_attr[attr_type]]
@@ -142,8 +172,8 @@ def read_class_names(txt_path: str) -> list:
     Returns:
         str[]: list of class names
     """
-    with open(txt_path, 'rt', encoding="utf-8") as f:
-        classes = f.read().rstrip('\n').split('\n')
+    with open(txt_path, "rt", encoding="utf-8") as f:
+        classes = f.read().rstrip("\n").split("\n")
 
     return classes
 
@@ -217,7 +247,7 @@ def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
             str_values = line.split()
 
             if len(str_values) != 5:
-                print('Invalid box definition in file ', file)
+                print("Invalid box definition in file ", file)
                 continue
 
             instance["category_id"] = int(str_values[0])
@@ -260,25 +290,29 @@ def ann_to_rle(img: np.ndarray, ann: dict) -> np.ndarray:
     Returns:
         binary mask (numpy 2D array)
     """
-    h, w = img['height'], img['width']
-    segm = ann['segmentation']
+    h, w = img["height"], img["width"]
+    segm = ann["segmentation"]
     if isinstance(segm, list):
         # polygon -- a single object might consist of multiple parts
         # we merge all parts into one mask rle code
         rles = maskUtils.frPyObjects(segm, h, w)
         rle = maskUtils.merge(rles)
-    elif isinstance(segm['counts'], list):
+    elif isinstance(segm["counts"], list):
         # uncompressed RLE
         rle = maskUtils.frPyObjects(segm, h, w)
     else:
         # rle
-        rle = ann['segmentation']
+        rle = ann["segmentation"]
 
     return rle
 
 
-def load_coco_dataset(path: str, image_folder: str,
-                      task: str = "instance_segmentation", output_folder: str = "") -> dict:
+def load_coco_dataset(
+    path: str,
+    image_folder: str,
+    task: str = "instance_segmentation",
+    output_folder: str = "",
+) -> dict:
     """
     Load COCO dataset (2017 version).
     COCO dataset consists in a JSON file describing annotations
@@ -299,7 +333,9 @@ def load_coco_dataset(path: str, image_folder: str,
     sem_seg = task == "semantic_segmentation"
     keypoints = task == "keypoints"
 
-    assert not sem_seg or output_folder != "", "Output folder must be set when task is semantic segmentation"
+    assert (
+        not sem_seg or output_folder != ""
+    ), "Output folder must be set when task is semantic segmentation"
 
     if not image_folder.endswith("/"):
         image_folder += "/"
@@ -328,18 +364,27 @@ def load_coco_dataset(path: str, image_folder: str,
                 if keypoints:
                     # We don't support yet multi class keypoints dataset
 
-                    data["metadata"]["keypoint_names"] = dataset["categories"][0]["keypoints"]
+                    data["metadata"]["keypoint_names"] = dataset["categories"][0][
+                        "keypoints"
+                    ]
                     data["metadata"]["keypoint_connection_rules"] = [
-                        (data["metadata"]["keypoint_names"][i1 - 1], data["metadata"]["keypoint_names"][i2 - 1],
-                         tuple([random.randint(0, 255) for i in range(3)]))
-                        for (i1, i2) in dataset["categories"][0]["skeleton"]]
+                        (
+                            data["metadata"]["keypoint_names"][i1 - 1],
+                            data["metadata"]["keypoint_names"][i2 - 1],
+                            tuple([random.randint(0, 255) for i in range(3)]),
+                        )
+                        for (i1, i2) in dataset["categories"][0]["skeleton"]
+                    ]
                     data["metadata"]["keypoint_flip_map"] = []
                     for body_part in data["metadata"]["keypoint_names"]:
                         if body_part.startswith("left"):
-                            data["metadata"]["keypoint_flip_map"].append((body_part,
-                                                                          body_part.replace("left", "right")))
+                            data["metadata"]["keypoint_flip_map"].append(
+                                (body_part, body_part.replace("left", "right"))
+                            )
                         elif not body_part.startswith("right"):
-                            data["metadata"]["keypoint_flip_map"].append((body_part, body_part))
+                            data["metadata"]["keypoint_flip_map"].append(
+                                (body_part, body_part)
+                            )
 
         data["metadata"]["category_names"] = cat_names
 
@@ -350,13 +395,16 @@ def load_coco_dataset(path: str, image_folder: str,
                     "filename": image_folder + img["file_name"],
                     "width": img["width"],
                     "height": img["height"],
-                    "annotations": []
+                    "annotations": [],
                 }
                 if sem_seg:
-                    mask = np.zeros((img['height'], img['width']), dtype='uint8')
+                    mask = np.zeros((img["height"], img["width"]), dtype="uint8")
 
                 for ann in img_to_anns[img["id"]]:
-                    instance = {"category_id": cat_map[ann["category_id"]], "iscrowd": ann["iscrowd"]}
+                    instance = {
+                        "category_id": cat_map[ann["category_id"]],
+                        "iscrowd": ann["iscrowd"],
+                    }
 
                     if "bbox" in ann:
                         instance["bbox"] = ann["bbox"]
@@ -369,7 +417,9 @@ def load_coco_dataset(path: str, image_folder: str,
                             if sem_seg:
                                 poly = []
                                 for pts in instance["segmentation_poly"]:
-                                    poly.append(np.array(pts, dtype='int').reshape((-1, 2)))
+                                    poly.append(
+                                        np.array(pts, dtype="int").reshape((-1, 2))
+                                    )
 
                                 color = int(instance["category_id"])
                                 cv2.fillPoly(mask, poly, color)
@@ -381,15 +431,18 @@ def load_coco_dataset(path: str, image_folder: str,
 
                 if len(img_data["annotations"]) > 0:
                     if sem_seg:
-                        img_data["semantic_seg_masks_file"] = os.path.join(output_folder,
-                                                                           str(img_data["image_id"]) + ".png")
+                        img_data["semantic_seg_masks_file"] = os.path.join(
+                            output_folder, str(img_data["image_id"]) + ".png"
+                        )
                         cv2.imwrite(img_data["semantic_seg_masks_file"], mask)
                     data["images"].append(img_data)
 
     return data
 
 
-def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg_folder: str, class_path: str) -> dict:
+def load_pascalvoc_dataset(
+    annotation_folder: str, img_folder: str, instance_seg_folder: str, class_path: str
+) -> dict:
     """
     Load PASCAL-VOC dataset (version 2012).
     PASCAL-VOC dataset is structured in different folders:
@@ -442,7 +495,9 @@ def load_pascalvoc_dataset(annotation_folder: str, img_folder: str, instance_seg
             is_segmented = int(seg_node.text)
 
             if is_segmented:
-                img_data["instance_seg_masks_file"] = instance_seg_folder + "/" + filename + ".png"
+                img_data["instance_seg_masks_file"] = (
+                    instance_seg_folder + "/" + filename + ".png"
+                )
             else:
                 continue
 
@@ -503,15 +558,8 @@ def polygon_to_mask(polygons: list, width: int, height: int) -> np.ndarray:
         pts = []
         i = 0
         while i < len(poly):
-            x = poly[i]
-            y = poly[i + 1]
-
-            if x > width - 1:
-                x = width - 1
-
-            if y > height - 1:
-                y = height - 1
-
+            x = min(poly[i], width - 1)
+            y = min(poly[i + 1], height - 1)
             pts.append(CPointF(x, y))
             i += 2
 

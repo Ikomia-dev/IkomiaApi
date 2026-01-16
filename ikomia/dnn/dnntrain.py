@@ -16,13 +16,14 @@
 Module dedicated to Deep Learning training.
 """
 import logging
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
 import mlflow
-from ikomia.core import config, CWorkflowTaskParam  # pylint: disable=E0611
+
+from ikomia.core import CWorkflowTaskParam, config  # pylint: disable=E0611
 from ikomia.dataprocess import CDnnTrainTask  # pylint: disable=E0611
 from ikomia.dnn import datasetio, monitoring
-
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ class TrainProcess(CDnnTrainTask):
     It must be used with :py:class:`~ikomia.core.task.TaskParam` or derived for parameters.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDnnTrainTask`.
     """
+
     def __init__(self, name: str, param: CWorkflowTaskParam):
         """
         Constructor. Initialize mlflow local server.
@@ -66,11 +68,15 @@ class TrainProcess(CDnnTrainTask):
     def _create_mlflow_experiment(self):
         try:
             date_time_obj = datetime.now()
-            time_stamp_str = date_time_obj.strftime('%d-%m-%Y_%H:%M:%S')
-            self.experiment_id = mlflow.create_experiment('experiment_' + time_stamp_str)
+            time_stamp_str = date_time_obj.strftime("%d-%m-%Y_%H:%M:%S")
+            self.experiment_id = mlflow.create_experiment(
+                "experiment_" + time_stamp_str
+            )
         except Exception as e:
             self.experiment_id = None
-            logger.warning("Unable to create MLFlow experiment. Please check for server startup errors.")
+            logger.warning(
+                "Unable to create MLFlow experiment. Please check for server startup errors."
+            )
             logger.debug(e)
 
     def _is_experiment_exists(self) -> bool:
@@ -85,7 +91,9 @@ class TrainProcess(CDnnTrainTask):
         try:
             monitoring.check_tensorboard_server()
         except Exception as e:
-            logger.warning("TensorBoard can't be started so training metrics will not be monitor in it.")
+            logger.warning(
+                "TensorBoard can't be started so training metrics will not be monitor in it."
+            )
             logger.debug(e)
 
     def begin_task_run(self):

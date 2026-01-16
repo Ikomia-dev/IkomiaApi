@@ -30,9 +30,15 @@ from ikomia.core import config
 def _check_directories():
     os.makedirs(config.main_cfg["root_folder"], exist_ok=True)
     os.makedirs(config.main_cfg["registry"]["path"], exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "C++/"), exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "Python/"), exist_ok=True)
-    os.makedirs(os.path.join(config.main_cfg["registry"]["path"], "Transfer/"), exist_ok=True)
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "C++/"), exist_ok=True
+    )
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "Python/"), exist_ok=True
+    )
+    os.makedirs(
+        os.path.join(config.main_cfg["registry"]["path"], "Transfer/"), exist_ok=True
+    )
     os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["mlflow"]["artifact_uri"], exist_ok=True)

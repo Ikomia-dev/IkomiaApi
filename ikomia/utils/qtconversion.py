@@ -28,6 +28,7 @@ def PyQtToQt(pyqt_widget):
         QWidget*: C++ wrapper instance
     """
     from PyQt6 import sip
+
     return sip.unwrapinstance(pyqt_widget)
 
 
@@ -42,4 +43,5 @@ def PySideToQt(pyside_widget):
         QWidget*: C++ wrapper instance
     """
     import shiboken6
+
     return shiboken6.getCppPointer(pyside_widget)[0]

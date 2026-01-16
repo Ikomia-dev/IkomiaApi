@@ -19,12 +19,14 @@ PyTorch compatible dataset so that it is possible to use Ikomia dataset
 loaders with PyTorch Deep Learning models.
 """
 
-import os
 import logging
-import torch
-from torch.utils.data import Dataset
-from PIL import Image
+import os
+
 import numpy as np
+import torch
+from PIL import Image
+from torch.utils.data import Dataset
+
 import ikomia.dnn.dataset as ikdataset
 
 logger = logging.getLogger(__name__)
@@ -61,7 +63,7 @@ class TorchDatasetMapper(Dataset):
                 ymin = annotation["bbox"][1]
                 w = annotation["bbox"][2]
                 h = annotation["bbox"][3]
-                boxes.append([xmin, ymin, xmin+w, ymin+h])
+                boxes.append([xmin, ymin, xmin + w, ymin + h])
 
                 if self.has_bckgnd_class:
                     labels.append(annotation["category_id"])
@@ -79,9 +81,13 @@ class TorchDatasetMapper(Dataset):
                     h = img_data["height"]
 
                     if np_masks is None:
-                        np_masks = np.empty((len(img_data["annotations"]), h, w), dtype=np.uint8)
+                        np_masks = np.empty(
+                            (len(img_data["annotations"]), h, w), dtype=np.uint8
+                        )
 
-                    mask = ikdataset.polygon_to_mask(annotation["segmentation_poly"], w, h)
+                    mask = ikdataset.polygon_to_mask(
+                        annotation["segmentation_poly"], w, h
+                    )
                     mask.reshape((1, h, w))
                     mask = np.where(mask > 0, 1, 0)
                     np_masks[instance_index, :, :] = mask
@@ -96,7 +102,13 @@ class TorchDatasetMapper(Dataset):
             iscrowd = torch.as_tensor(iscrowd, dtype=torch.int64)
 
             # Put everything in a dict
-            target = {"boxes": boxes, "labels": labels, "image_id": image_id, "area": area, "iscrowd": iscrowd}
+            target = {
+                "boxes": boxes,
+                "labels": labels,
+                "image_id": image_id,
+                "area": area,
+                "iscrowd": iscrowd,
+            }
 
         # Segmentation masks
         if np_masks is not None:
@@ -123,7 +135,7 @@ class TorchDatasetMapper(Dataset):
 
         if extension == ".npz":
             # 3D numpy array saves as compressed npz format
-            mask = np.transpose(np.load(path)['arr_0'], (2, 0, 1))
+            mask = np.transpose(np.load(path)["arr_0"], (2, 0, 1))
             mask8 = mask.astype(np.uint8)
             return mask8
 
@@ -131,7 +143,10 @@ class TorchDatasetMapper(Dataset):
             # Labelled mask (one pixel value per object)
             labelled_mask = np.array(Image.open(path))
             labels = np.unique(labelled_mask)
-            mask = np.empty((len(labels), labelled_mask.shape[0], labelled_mask.shape[1]), dtype=np.uint8)
+            mask = np.empty(
+                (len(labels), labelled_mask.shape[0], labelled_mask.shape[1]),
+                dtype=np.uint8,
+            )
             index = 0
 
             for label in labels:
@@ -152,7 +167,9 @@ class TorchDatasetMapper(Dataset):
         if extension == ".png":
             # Labelled mask (one pixel value per category)
             labelled_mask = np.array(Image.open(path))
-            mask = labelled_mask.reshape(1, labelled_mask.shape[0], labelled_mask.shape[1])
+            mask = labelled_mask.reshape(
+                1, labelled_mask.shape[0], labelled_mask.shape[1]
+            )
             return mask
 
         logger.error("Segmentation mask format not supported")
