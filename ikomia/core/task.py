@@ -18,7 +18,8 @@ Module dedicated to high-level features around task management.
 See also :py:class:`~ikomia.core.pycore.CWorkflowTask` for all available methods from task object instance.
 """
 import logging
-from ikomia.core import CWorkflowTaskParam, CWorkflowTask  # pylint: disable=E0611
+
+from ikomia.core import CWorkflowTask, CWorkflowTaskParam  # pylint: disable=E0611
 from ikomia.dataprocess import CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 
@@ -32,6 +33,7 @@ class TaskParam(CWorkflowTaskParam):
 
     :ivar cfg: parameters dict
     """
+
     def __init__(self):
         """
         Constructor. Initialize an empty dict structure.
@@ -62,7 +64,9 @@ class TaskParam(CWorkflowTaskParam):
         raise NotImplementedError
 
 
-def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -> CWorkflowTask:
+def create(
+    name: str = "", public_hub: bool = True, private_hub: bool = False
+) -> CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
@@ -78,10 +82,14 @@ def create(name: str = "", public_hub: bool = True, private_hub: bool = False) -
     if not name:
         return None
 
-    return ik_registry.create_algorithm(name=name, public_hub=public_hub, private_hub=private_hub)
+    return ik_registry.create_algorithm(
+        name=name, public_hub=public_hub, private_hub=private_hub
+    )
 
 
-def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkflowTaskIO:
+def get_output(
+    task_obj: CWorkflowTask, types: list, index: int = -1
+) -> CWorkflowTaskIO:
     """
     Get specific output(s) of a task from the given types (:py:class:`~ikomia.core.pycore.IODataType`).
 
@@ -109,7 +117,9 @@ def get_output(task_obj: CWorkflowTask, types: list, index: int = -1) -> CWorkfl
     if 0 <= index < len(outputs):
         return outputs[index]
 
-    raise RuntimeError(f"No output at index {index}: only {len(outputs)} outputs available")
+    raise RuntimeError(
+        f"No output at index {index}: only {len(outputs)} outputs available"
+    )
 
 
 def conform_parameters(params: dict) -> dict:

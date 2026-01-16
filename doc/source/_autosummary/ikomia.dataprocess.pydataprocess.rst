@@ -37,6 +37,7 @@
         CSemanticSegmentationIO
         CTextField
         CTextIO
+        CTextStreamIO
         CVideoIO
         CWidgetOutput
         PlotType

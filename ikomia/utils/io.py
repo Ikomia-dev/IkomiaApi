@@ -1,13 +1,26 @@
 """
 The module io provides helper functions to manage workflow I/O of Ikomia API.
 """
-from ikomia.core import IODataType, CWorkflowTaskIO  # pylint: disable=E0611
-from ikomia.dnn.datasetio import IkDatasetIO
-from ikomia.dataprocess import (  # pylint: disable=E0611
-    CImageIO, CVideoIO, CGraphicsInput, CGraphicsOutput, CNumericIO, CBlobMeasureIO, CWidgetOutput, CPathIO,
-    CArrayIO, CObjectDetectionIO, CInstanceSegmentationIO, CSemanticSegmentationIO, CKeypointsIO, CTextIO
+
+from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
+from ikomia.dataprocess import (
+    CArrayIO,  # pylint: disable=E0611
+    CBlobMeasureIO,
+    CGraphicsInput,
+    CGraphicsOutput,
+    CImageIO,
+    CInstanceSegmentationIO,
+    CKeypointsIO,
+    CNumericIO,
+    CObjectDetectionIO,
+    CPathIO,
+    CSemanticSegmentationIO,
+    CTextIO,
+    CVideoIO,
+    CWidgetOutput,
 )
-from ikomia.dataprocess.datadictIO import DataDictIO
+from ikomia.dataprocess.io.datadictIO import DataDictIO
+from ikomia.dnn.datasetio import IkDatasetIO
 
 
 def get_io_type_from_string(type_str: str) -> IODataType:

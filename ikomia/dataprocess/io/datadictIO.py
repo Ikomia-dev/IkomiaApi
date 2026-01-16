@@ -16,6 +16,7 @@
 Module providing Ikomia workflow I/O implementation for data stored as Python dict.
 """
 import json
+
 from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
 
 
@@ -28,6 +29,7 @@ class DataDictIO(CWorkflowTaskIO):
 
     :ivar data: data dictionary
     """
+
     def __init__(self):
         CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
         self.data = {}

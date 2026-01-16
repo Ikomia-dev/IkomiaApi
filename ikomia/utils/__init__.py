@@ -35,6 +35,7 @@ def is_colab() -> bool:
     # Is environment a Google Colab instance?
     try:
         import google.colab
+
         return True
     except Exception:
         return False
@@ -53,10 +54,10 @@ def strtobool(val: str) -> bool:
         bool: boolean conversion from val
     """
     val = val.lower()
-    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+    if val in ("y", "yes", "t", "true", "on", "1"):
         return True
 
-    if val in ('n', 'no', 'f', 'false', 'off', '0'):
+    if val in ("n", "no", "f", "false", "off", "0"):
         return False
 
     raise ValueError(f"invalid truth value: {val}")

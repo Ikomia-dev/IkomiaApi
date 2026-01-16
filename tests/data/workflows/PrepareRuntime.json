@@ -1,0 +1,40 @@
+{
+    "api": {
+        "version": "0.10.0"
+    },
+    "connections": [
+    ],
+    "metadata": {
+        "description": "",
+        "keywords": "",
+        "name": "prepare_runtime_env"
+    },
+    "tasks": [
+        {
+            "task_data": {
+                "language": 1,
+                "name": "dataset_coco",
+                "parameters": [
+                    {
+                        "name": "output_folder",
+                        "value": ""
+                    },
+                    {
+                        "name": "task",
+                        "value": "instance_segmentation"
+                    },
+                    {
+                        "name": "image_folder",
+                        "value": ""
+                    },
+                    {
+                        "name": "json_file",
+                        "value": ""
+                    }
+                ],
+                "url": "file:///home/ludo/Ikomia/Plugins/Python/dataset_coco"
+            },
+            "task_id": 0
+        }
+    ]
+}

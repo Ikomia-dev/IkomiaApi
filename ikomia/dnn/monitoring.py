@@ -1,12 +1,15 @@
 """
 The module monitoring provides helper functions to manage mlflow and tensorboard tracking servers.
 """
-import sys
+
+import logging
 import os
 import subprocess
-import logging
+import sys
+
 import requests
 from requests.adapters import HTTPAdapter, Retry
+
 from ikomia.core import config
 from ikomia.utils import is_colab
 
@@ -22,13 +25,15 @@ def check_mlflow_server():
         url = config.main_cfg["mlflow"]["tracking_uri"] + "/health"
         r = requests.get(url, timeout=5)
         r.raise_for_status()
-        logger.info("MLflow server is started at %s", config.main_cfg['mlflow']['tracking_uri'])
+        logger.info(
+            "MLflow server is started at %s", config.main_cfg["mlflow"]["tracking_uri"]
+        )
     except Exception:
         # Start server if needed
         # Follow file uri scheme: https://en.wikipedia.org/wiki/File_URI_scheme
         if sys.platform == "win32":
-            store_uri = config.main_cfg["mlflow"]["store_uri"].replace('\\', '/')
-            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace('\\', '/')
+            store_uri = config.main_cfg["mlflow"]["store_uri"].replace("\\", "/")
+            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace("\\", "/")
             store_uri = "file:///" + store_uri
             artifact_uri = "file:///" + artifact_uri
         else:
@@ -36,13 +41,24 @@ def check_mlflow_server():
             artifact_uri = "file:///" + config.main_cfg["mlflow"]["artifact_uri"]
 
         logger.info("Starting MLflow server...")
-        proc = subprocess.Popen(["mlflow", "server",
-                                 "--backend-store-uri", store_uri,
-                                 "--default-artifact-root", artifact_uri,
-                                 "--host", "0.0.0.0"])
+        proc = subprocess.Popen(
+            [
+                "mlflow",
+                "server",
+                "--backend-store-uri",
+                store_uri,
+                "--default-artifact-root",
+                artifact_uri,
+                "--host",
+                "0.0.0.0",
+            ]
+        )
         poll = proc.poll()
         if poll is None:
-            logger.info("MLflow server started successfully at %s", config.main_cfg['mlflow']['tracking_uri'])
+            logger.info(
+                "MLflow server started successfully at %s",
+                config.main_cfg["mlflow"]["tracking_uri"],
+            )
 
     colab = is_colab()
     if colab:
@@ -61,8 +77,10 @@ def check_mlflow_server():
             ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
             logger.info("MLflow Tracking UI: %s", ngrok_tunnel.public_url)
         except Exception:
-            logger.error("MLflow dashboard won't be accessible. You need to install pyngrok before starting your "
-                         "training workflow: !pip install pyngrok. You also need a free ngrok account at least.")
+            logger.error(
+                "MLflow dashboard won't be accessible. You need to install pyngrok before starting your "
+                "training workflow: !pip install pyngrok. You also need a free ngrok account at least."
+            )
 
 
 def check_tensorboard_server():
@@ -72,18 +90,25 @@ def check_tensorboard_server():
     """
     colab = is_colab()
     if colab:
-        logger.info("To enable Tensorboard on Colab, please use the magic command: %load_ext tensorboard")
+        logger.info(
+            "To enable Tensorboard on Colab, please use the magic command: %load_ext tensorboard"
+        )
         return
 
     url = config.main_cfg["tensorboard"]["tracking_uri"]
     try:
         r = requests.get(url, timeout=5)
         r.raise_for_status()
-        logger.info("Tensorboard server is started at %s", config.main_cfg['tensorboard']['tracking_uri'])
+        logger.info(
+            "Tensorboard server is started at %s",
+            config.main_cfg["tensorboard"]["tracking_uri"],
+        )
     except Exception:
         # Start server if needed
         logger.info("Starting Tensorboard server...")
-        proc = subprocess.Popen(["tensorboard", "--logdir", config.main_cfg["tensorboard"]["log_uri"]])
+        proc = subprocess.Popen(
+            ["tensorboard", "--logdir", config.main_cfg["tensorboard"]["log_uri"]]
+        )
         poll = proc.poll()
 
         if poll is None:
@@ -94,9 +119,13 @@ def check_tensorboard_server():
                 read=retries,
                 connect=retries,
                 backoff_factor=0.2,
-                status_forcelist=[500, 502, 503, 504], )
+                status_forcelist=[500, 502, 503, 504],
+            )
             adapter = HTTPAdapter(max_retries=retry)
             session.mount("http://", adapter)
             session.mount("https://", adapter)
             session.get(url)
-            logger.info("Tensorboard server started successfully at %s", config.main_cfg['tensorboard']['tracking_uri'])
+            logger.info(
+                "Tensorboard server started successfully at %s",
+                config.main_cfg["tensorboard"]["tracking_uri"],
+            )
