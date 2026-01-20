@@ -350,7 +350,7 @@ def install_requirements(directory: str):
     for file in req_files:
         try:
             subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-r", file], check=True
+                [sys.executable, "-m", "pip", "install", "-r", file, "--no-build-isolation"], check=True
             )
         except Exception as e:
             logger.warning(e)
@@ -367,7 +367,7 @@ def install_package(name: str, version: str):
     if name:
         try:
             subprocess.run(
-                [sys.executable, "-m", "pip", "install", f"{name}=={version}"],
+                [sys.executable, "-m", "pip", "install", f"{name}=={version}", "--no-build-isolation"],
                 check=True,
             )
         except Exception as e:
