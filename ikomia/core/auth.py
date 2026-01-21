@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module auth manages authentication to the Ikomia Scale platform (private algorithms HUB)
-"""
+"""The module auth manages authentication to the Ikomia Scale platform (private algorithms HUB)."""
 import logging
 import os
 
@@ -27,11 +25,10 @@ logger = logging.getLogger(__name__)
 
 
 class LoginSession:
-    """
-    Session class to ease communication with Ikomia Scale/HUB through authenticated http requests.
-    """
+    """Session class to ease communication with Ikomia Scale/HUB through authenticated http requests."""
 
     def __init__(self):
+        """Initialize session for environment credentials."""
         self.session = requests.Session()
         self.token = os.environ.get("IKOMIA_TOKEN")
         self.username = os.environ.get("IKOMIA_USER")
@@ -47,6 +44,9 @@ class LoginSession:
             token (str): access token generated from Ikomia Scale platform or Ikomia CLI.
             username (str): username of your Ikomia Scale account.
             password (str): password of your Ikomia Scale account.
+
+        Raises:
+            RuntimeError: authentication failed
         """
         if token is not None:
             self.token = token

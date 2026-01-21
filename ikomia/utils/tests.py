@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module tests provides features to ease test automation of Ikomia algorithms.
-"""
+"""The module tests provides features to ease test automation of Ikomia algorithms."""
 import logging
 import os
 import traceback

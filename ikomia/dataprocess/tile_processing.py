@@ -11,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-The module tile_processing provides function to apply algorithms on large image.
-"""
+"""The module tile_processing provides function to apply algorithms on large image."""
 import math
 
 import numpy as np
@@ -42,6 +40,9 @@ def tile_process(
 
     Returns:
          numpy.ndarray: smooth stitching of all processed tiles
+
+    Raises:
+        RuntimeError: invalid image format
     """
     shape = np.shape(img)
     h, w = np.shape(img)[:2]

@@ -14,6 +14,7 @@
 
 """
 The module config loads the local configuration.
+
 This configuration stands in a file named config.yaml where parameters can be changed.
 """
 import os
@@ -26,13 +27,13 @@ from ikomia import utils
 
 def load(config_path: str) -> dict:
     """
-    Load Ikomia API configuration file (YAML)
+    Load Ikomia API configuration file (YAML).
 
     Args:
         config_path (str): path to the configuration file
 
     Returns:
-        configuration data: dict
+        dict: configuration data
     """
     with open(config_path, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
@@ -98,6 +99,7 @@ def save(config_path: str, cfg: dict):
 def save_main_config():
     """
     Save current configuration to file (overwrite).
+
     Use this function to change default configuration permanently.
     """
     save(main_config_path, main_cfg)

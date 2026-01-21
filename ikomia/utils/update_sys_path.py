@@ -1,8 +1,6 @@
 # For Windows users who want to use the standalone API in "dev mode"
 # The user environment variable IKOMIA_DEV = 1 must be set
-"""
-Internal use only.
-"""
+"""Internal use only."""
 import os
 import sys
 

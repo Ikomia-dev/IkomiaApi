@@ -13,11 +13,11 @@
 # limitations under the License.
 
 """
-Model providing helper funtions to create TorchVision Deep Learning models.
+Model providing helper functions to create TorchVision Deep Learning models.
 
 TorchVision pages:
 
-- `Torchvision classication <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
+- `Torchvision classification <https://pytorch.org/docs/stable/torchvision/models.html#classification>`_
 - `Torchvision object detection and segmentation <https://pytorch.org/docs/stable/torchvision/models.html#object-detection-instance-segmentation-and-person-keypoint-detection>`_
 """
 
@@ -61,6 +61,9 @@ def resnet(
 
     Returns:
         model object
+
+    Raises:
+        RuntimeError: invalid model name
     """
     model_ft = None
 
@@ -111,6 +114,9 @@ def resnext(
 
     Returns:
         model object
+
+    Raises:
+        RuntimeError: invalid model name
     """
     model_ft = None
 
@@ -216,8 +222,8 @@ def mask_rcnn(
     Create Torchvision Mask RCNN model for training or inference.
 
     Args:
-        train_mode (boolean): True or False
-        use_pretrained (boolean): True to do transfer learning from pre-trained model, False to train from scratch
+        train_mode (bool): True or False
+        use_pretrained (bool): True to do transfer learning from pre-trained model, False to train from scratch
         input_size (int): input image size
         classes (int): number of classes in the dataset
 

@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module providing Ikomia workflow I/O implementation for data stored as Python dict.
-"""
+"""Module providing Ikomia workflow I/O implementation for data stored as Python dict."""
 import json
 
 from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
@@ -23,6 +21,7 @@ from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
 class DataDictIO(CWorkflowTaskIO):
     """
     Class implementing Ikomia workflow input/output object where data is stored as generic Python dict.
+
     Please note that such unformatted data are meant to be used as task output essentially.
     For complete compatibility with other API features, you must ensure that the dict content is fully
     JSON serializable. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.
@@ -31,13 +30,12 @@ class DataDictIO(CWorkflowTaskIO):
     """
 
     def __init__(self):
+        """Initialize I/O with empty dict."""
         CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
         self.data = {}
 
     def clear_data(self):
-        """
-        Clear whole data dict.
-        """
+        """Clear whole data dict."""
         self.data.clear()
 
     def is_data_available(self) -> bool:
@@ -45,7 +43,7 @@ class DataDictIO(CWorkflowTaskIO):
         Check whether the dataset structure contains data.
 
         Returns:
-            boolean: True or False
+            bool: True or False
         """
         return len(self.data) > 0
 

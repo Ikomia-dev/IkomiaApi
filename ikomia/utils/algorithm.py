@@ -1,11 +1,11 @@
-"""Module providing tool functions around workflow algorithm."""
+"""Module compiling algorithm util functions."""
 import logging
 from typing import Union
 
-from ikomia.core import AlgoType
+from ikomia.core import AlgoType, CWorkflowTask  # pylint: disable=E0611
 from ikomia.dataprocess.registry import ik_registry
 from ikomia.dataprocess.workflow import Workflow
-from ikomia.utils import OSType
+from ikomia.utils import OSType  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +41,9 @@ def create_demo_workflow(
 
     Returns:
         auto-generated workflow (Workflow)
+
+    Raises:
+        RuntimeError: algorithm not supported
     """
     algo = ik_registry.create_algorithm(algo_name)
     if not _check_algo_compatibility(algo_name):

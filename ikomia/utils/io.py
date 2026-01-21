@@ -1,6 +1,4 @@
-"""
-The module io provides helper functions to manage workflow I/O of Ikomia API.
-"""
+"""The module io provides helper functions to manage workflow I/O of Ikomia API."""
 
 from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
 from ikomia.dataprocess import (
@@ -104,6 +102,9 @@ def create_task_io(io_type: IODataType) -> CWorkflowTaskIO:
 
     Returns:
         Task I/O object (base class: :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`)
+
+    Raises:
+        TypeError: invalid I/O type
     """
     # TODO: use match syntax when minimum Python version will be 3.10
     if io_type == IODataType.IMAGE:

@@ -14,6 +14,7 @@
 
 """
 Module dedicated to algorithms management from the Ikomia platform.
+
 It implements IkomiaRegistry class that offers features to install, update and instanciate
 algorithms from the built-in environment or Ikomia HUB.
 """
@@ -54,14 +55,21 @@ logger = logging.getLogger(__name__)
 
 class IkomiaRegistry(CIkomiaRegistry):
     """
-    Registry for all Ikomia algorithms (built-in and Ikomia HUB). It stores all algorithms references and allows to
-    install, update and instanciate any of these algorithms.
+    Registry for all Ikomia algorithms (built-in and Ikomia HUB).
+
+    It stores all algorithms references and allows to install, update and instanciate any of these algorithms.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CIkomiaRegistry`.
     """
 
     events = ["algorithm_changed"]
 
     def __init__(self, lazy_load: bool = True):
+        """
+        Initialize algorithms registry.
+
+        Args:
+            lazy_load (bool): enable lazy loading for fast startup
+        """
         CIkomiaRegistry.__init__(self)
         self.public_online_algos = None
         self.private_online_algos = None
@@ -80,6 +88,9 @@ class IkomiaRegistry(CIkomiaRegistry):
         Args:
             event (str): event name
             callback (Callable): function to call when event is triggered
+
+        Raises:
+            ValueError: unknown event
         """
         if event not in self.events:
             raise ValueError(f"Event {event} is not valid")
@@ -92,15 +103,20 @@ class IkomiaRegistry(CIkomiaRegistry):
     def get_public_hub_algorithms(self, force: bool = False) -> list:
         """
         Get the list of available algorithms from public Ikomia HUB.
+
         Each algorithm is identified by a unique name.
         Each algorithm can then be instanciated from this name with the function
         :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
 
         Args:
-            force (bool): IkomiaRegistry class use cache for online algorithms. Set this parameter to True to force online list update.
+            force (bool): IkomiaRegistry class use cache for online algorithms.
+                Set this parameter to True to force online list update.
 
         Returns:
-             list of dict: list of algorithms information
+             list: list of algorithms information (dict)
+
+        Raises:
+            ConnectionError: connection to HUB failed
         """
         if auth.ik_api_session is None:
             raise ConnectionError("Failed to get online algorithms from Ikomia HUB.")
@@ -114,15 +130,20 @@ class IkomiaRegistry(CIkomiaRegistry):
     def get_private_hub_algorithms(self, force: bool = False) -> list:
         """
         Get the list of available algorithms from private Ikomia HUB (authentication required).
+
         Each algorithm is identified by a unique name.
         Each algorithm can then be instanciated from this name with the function
         :py:meth:`~ikomia.dataprocess.registry.IkomiaRegistry.create_algorithm`.
 
         Args:
-            force (bool): IkomiaRegistry class use cache for online algorithms. Set this parameter to True to force online list update.
+            force (bool): IkomiaRegistry class use cache for online algorithms.
+                Set this parameter to True to force online list update.
 
         Returns:
-             list of dict: list of algorithms information
+             list: list of algorithms information (dict)
+
+        Raises:
+            PermissionError: unauthorized access to private HUB
         """
         s = auth.ik_api_session
         if s.token is None:
@@ -166,7 +187,9 @@ class IkomiaRegistry(CIkomiaRegistry):
         private_hub: bool = False,
     ) -> CWorkflowTask:
         """
-        Instanciate algorithm from its unique name. See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
+        Instanciate algorithm from its unique name.
+
+        See :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_public_hub_algorithms` or
         :py:meth:`~ikomia.dataprocess.IkomiaRegistry.get_private_hub_algorithms` to get valid names.
         If algorithm is already in the registry, an object instance is directly returned. Otherwise,
@@ -181,6 +204,10 @@ class IkomiaRegistry(CIkomiaRegistry):
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` or derived: algorithm instance
+
+        Raises:
+            TypeError: algorithm name as string required
+            RuntimeError: algorithm not functional
         """
         if not isinstance(name, str):
             raise TypeError("Algorithm name required: name parameter must be a string")
@@ -216,7 +243,9 @@ class IkomiaRegistry(CIkomiaRegistry):
 
     def update_algorithms(self, public_hub: bool = True, private_hub: bool = False):
         """
-        Launch automatic update of all algorithms in the registry. It only concerns algorithms of Ikomia HUB.
+        Launch automatic update of all algorithms in the registry.
+
+        It only concerns algorithms of Ikomia HUB.
         The function checks version compatibility.
 
         Args:
@@ -238,7 +267,9 @@ class IkomiaRegistry(CIkomiaRegistry):
         self, name: str, public_hub: bool = True, private_hub: bool = False
     ):
         """
-        Launch update of the given algorithm. It only concerns algorithms from Ikomia HUB. In case where algorithm name
+        Launch update of the given algorithm.
+
+        It only concerns algorithms from Ikomia HUB. In case where algorithm name
         is both available in public and private HUBs, you should set parameters public_hub and private_hub to
         explicitly set the source. If both are set to True, the function will update local version from public HUB.
 
@@ -246,6 +277,9 @@ class IkomiaRegistry(CIkomiaRegistry):
              name (str): algorithm unique name
              public_hub (bool): update public algorithm from Ikomia HUB if True
              private_hub (bool): update private algorithm from Ikomia HUB if True
+
+        Raises:
+            RuntimeError: algorithm not found
         """
         local_algos = self.get_algorithms()
         if local_algos is None:
@@ -455,6 +489,8 @@ class IkomiaRegistry(CIkomiaRegistry):
 
     def _find_best_package_url(self, packages: list) -> str:
         """
+        Find best compatible package.
+
         At this point, plugins are already filtered to ensure compatibility.
         So for now, we just want to pick the latest version
 

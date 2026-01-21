@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Helper module to ease somme http operations.
-"""
+"""Helper module to ease somme http operations."""
 import functools
 import logging
 import os.path
@@ -26,9 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def http_no_raise(func):
-    """
-    Decorator to avoid raising exception when using requests.
-    """
+    """Decorator to avoid raising exception when using requests."""
 
     @functools.wraps(func)
     def wrapper(*argc, **kwargs):

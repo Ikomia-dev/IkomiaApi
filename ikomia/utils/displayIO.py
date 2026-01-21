@@ -13,7 +13,9 @@
 # limitations under the License.
 
 """
-Module dedicated to the visualization of workflow components. The idea is to propose a list of basic visualization
+Module dedicated to the visualization of workflow components.
+
+The idea is to propose a list of basic visualization
 functions for each type of components: workflow, task, input and output (for debug purpose essentially).
 """
 import logging
@@ -139,8 +141,7 @@ def _(obj: CImageIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
-    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
-    in a Matplotlib figure.
+    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`) in a Matplotlib figure.
 
     Args:
         obj (CGraphicsInput): I/O instance
@@ -299,8 +300,7 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
     """
-    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
-    in a Matplotlib figure.
+    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`) in a Matplotlib figure.
 
     Args:
         obj (CGraphicsOutput): I/O instance
@@ -440,7 +440,7 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
 
     if x_min == x_max:
         x_min = 0
-        x_max = 2 * x_max
+        x_max = 2*x_max
 
     if y_min == y_max:
         y_min = 0
@@ -459,8 +459,9 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
     """
-    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
-    as a table in a Matplotlib figure.
+    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CNumericIO): I/O instance
@@ -627,8 +628,9 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
     """
-    Display string values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
-    as a table in a Matplotlib figure.
+    Display string values input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CDataStringIO): I/O instance
@@ -698,8 +700,9 @@ def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     """
-    Display object measures input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`)
-    as a table in a Matplotlib figure.
+    Display object measures input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CBlobMeasureIO`).
+
+    Displayed as a table in a Matplotlib figure.
 
     Args:
         obj (CBlobMeasureIO): I/O instance
@@ -789,8 +792,7 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
 @display.register
 def _(obj: CObjectDetectionIO, title: str = "", **kwargs):
     """
-    Display object detection input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
+    Display object detection input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CObjectDetectionIO`).
 
     Args:
         obj (CObjectDetectionIO): I/O instance
@@ -808,8 +810,7 @@ def _(obj: CObjectDetectionIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CInstanceSegmentationIO, title: str = "", **kwargs):
     """
-    Display instance segmentation input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
+    Display instance segmentation input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CInstanceSegmentationIO`).
 
     Args:
         obj (CInstanceSegmentationIO): I/O instance
@@ -828,8 +829,7 @@ def _(obj: CInstanceSegmentationIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CSemanticSegmentationIO, title: str = "", **kwargs):
     """
-    Display semantic segmentation input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
+    Display semantic segmentation input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CSemanticSegmentationIO`).
 
     Args:
         obj (CSemanticSegmentationIO): I/O instance
@@ -847,8 +847,7 @@ def _(obj: CSemanticSegmentationIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CKeypointsIO, title: str = "", **kwargs):
     """
-    Display keypoints input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
+    Display keypoints input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CKeypointsIO`).
 
     Args:
         obj (CKeypointsIO): I/O instance
@@ -867,8 +866,7 @@ def _(obj: CKeypointsIO, title: str = "", **kwargs):
 @display.register
 def _(obj: CTextIO, title: str = "", **kwargs):
     """
-    Display text input or output
-    (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
+    Display text input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CTextIO`).
 
     Args:
         obj (CTextIO): I/O instance

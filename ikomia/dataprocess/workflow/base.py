@@ -1,22 +1,4 @@
-# Copyright (C) 2021 Ikomia SAS
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-"""
-Module dedicated to workflow management. It implements the Workflow class that offers high-level features
-based on a C++ implementation. You will be able to create, modify, load and run workflows composed by built-in
-Ikomia algorithms or any of those available in Ikomia HUB.
-"""
+"""Generic workflow class."""
 import datetime
 import enum
 import logging
@@ -50,7 +32,9 @@ logger = logging.getLogger(__name__)
 
 class Workflow(CWorkflow):
     """
-    Workflow management of Computer Vision tasks. Implement features to create, modify and run graph-based pipeline of
+    Workflow management of Computer Vision tasks.
+
+    Implement features to create, modify and run graph-based pipeline of
     :py:class:`~ikomia.core.pycore.CWorkflowTask` objects or derived. Workflows can be created from scratch
     by using :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` to instanciate and connect task objects.
     Workflows can also be loaded from JSON file created with the interactive designer of Ikomia Studio.
@@ -59,17 +43,16 @@ class Workflow(CWorkflow):
 
     @enum.unique
     class RunMode(enum.Enum):
-        """
-        Enum for processing mode
-        """
+        """Enum for processing mode."""
 
         SINGLE = 1
         DIRECTORY = 2
 
     def __init__(self, name: str = "Untitled", registry: IkomiaRegistry = ik_registry):
         """
-        Construct Workflow object with the given name and an :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry`
-        object. The latter is used to instanciate algorithm from their unique name when added to the workflow. Thus,
+        Construct Workflow object.
+
+        The latter is used to instantiate algorithm from their unique name when added to the workflow. Thus,
         you are able to use any Ikomia algorithms (built-in and Ikomia HUB) in your workflow.
 
         Args:
@@ -81,6 +64,7 @@ class Workflow(CWorkflow):
         else:
             CWorkflow.__init__(self, name, registry)
 
+        self.type = WorkflowType.GENERIC
         self.registry = registry
         self.output_folder = (
             os.path.join(config.main_cfg["workflow"]["path"], self.name) + os.sep
@@ -103,7 +87,8 @@ class Workflow(CWorkflow):
 
     def init_long_process(self):
         """
-        Perform time consuming initialization process for all tasks.
+        Perform time-consuming initialization process for all tasks.
+
         This method gives you the flexibility to perform initialization steps like
         models downloading, models loading or models compiling when it is best suited for your usecase.
         Under the hood, it calls virtual method init_long_process() for all tasks.
@@ -130,6 +115,9 @@ class Workflow(CWorkflow):
             url (str): valid URL to image file (valid formats are those managed by OpenCV)
             index (int): zero-based input index, if -1 a new input is added
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
+
+        Raises:
+            ValueError: invalid input type
         """
         if array is not None:
             img_input = CImageIO(datatype, array, "")
@@ -158,7 +146,9 @@ class Workflow(CWorkflow):
         datatype: IODataType = IODataType.VIDEO,
     ):
         """
-        Set video as global input of the workflow. Video can be specified by a path or an URL thanks to
+        Set video as global input of the workflow.
+
+        Video can be specified by a path or a URL thanks to
         keyword arguments, you have to choose one of them.
 
         Args:
@@ -166,6 +156,9 @@ class Workflow(CWorkflow):
             url (str): valid URL to image file (valid formats are those managed by OpenCV)
             index (int): zero-based input index, if -1 a new input is added
             datatype (:py:class:`~ikomia.core.pycore.IODataType`): image type
+
+        Raises:
+            ValueError: invalid input type
         """
         if path:
             video_input = CVideoIO(datatype, "", path)
@@ -184,8 +177,9 @@ class Workflow(CWorkflow):
 
     def set_directory_input(self, folder: str = "", index: int = -1):
         """
-        Set folder as global input of the workflow. For image-based workflows, all images inside the directory
-        (recursively) will be processed.
+        Set folder as global input of the workflow.
+
+        For image-based workflows, all images inside the directory (recursively) will be processed.
 
         Args:
             folder (str): images folder
@@ -212,6 +206,7 @@ class Workflow(CWorkflow):
     ):
         """
         Set task parameters as a simple key-value dict.
+
         You can get parameters keys for each by calling:
 
         .. code-block:: python
@@ -220,9 +215,15 @@ class Workflow(CWorkflow):
 
         Args:
             params (dict): key-value pairs of parameters to modify.
-            task_obj (:py:class:`~ikomia.core.CWorkflowTask` based object): task instance. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
-            task_name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one. Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            task_obj (:py:class:`~ikomia.core.CWorkflowTask` based object): task instance.
+                See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): algorithm name to be found.
+                Multiple candidates may exist, so use task_index parameter to specify one.
+                Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
+
+        Raises:
+            RuntimeError: invalid task specification
         """
         if task_obj is None and not task_name:
             raise RuntimeError(
@@ -250,7 +251,9 @@ class Workflow(CWorkflow):
 
     def set_workflow_parameters(self, params: dict):
         """
-        Set workflow parameters. Available parameters are those exposed when workflow is saved.
+        Set workflow parameters.
+
+        Available parameters are those exposed when workflow is saved.
         Actually, an exposed parameter is bound to a task parameter within a workflow.
         The aim is to be able to select meaningfull parameters with respect to the workflow objective.
 
@@ -280,7 +283,10 @@ class Workflow(CWorkflow):
             task (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): algorithm instance
             name (str): algorithm unique name
             index (int): zero-based index of the wanted task. If -1, the function modifies all candidates parameters.
-            enabled (bool): True if algorithm has to be ran, False otherwise
+            enabled (bool): True if algorithm has to be run, False otherwise
+
+        Raises:
+            RuntimeError: invalid task specification
         """
         if task is None and not name:
             raise RuntimeError(
@@ -305,7 +311,9 @@ class Workflow(CWorkflow):
 
     def get_time_metrics(self) -> dict:
         """
-        Get metrics around workflow execution time. This includes the total execution time of the workflow, and for
+        Get metrics around workflow execution time.
+
+        This includes the total execution time of the workflow, and for
         each task, the execution time and the execution time from the start.
 
         Returns:
@@ -336,14 +344,19 @@ class Workflow(CWorkflow):
         Get specific output(s) defined by their types (:py:class:`~ikomia.core.PyCore.IODataType`) for the given task.
 
         Args:
-            task_obj (task_obj (:py:class:`~ikomia.core.CWorkflowTask` based object): task instance. See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
-            task_name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one. Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
+            task_obj (task_obj (:py:class:`~ikomia.core.CWorkflowTask` based object): task instance.
+                See also :py:meth:`~ikomia.dataprocess.workflow.add_task` and :py:meth:`~ikomia.dataprocess.workflow.find_task`.
+            task_name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one.
+                Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
             task_index (int): zero-based index of the wanted task. If -1, the function returns all candidates outputs.
             types (list of :py:class:`~ikomia.core.PyCore.IODataType`): output data types.
-            output_index (int): zero-based index of he wanted output.
+            output_index (int): zero-based index of the wanted output.
 
         Returns:
             :py:class:`~ikomia.dataprocess.pydataprocess.CWorkflowTaskIO` based object: task output of the given data types (can be a list).
+
+        Raises:
+            RuntimeError: invalid task or algorithm not found
         """
         if task_obj is None and not task_name:
             raise RuntimeError(
@@ -418,7 +431,9 @@ class Workflow(CWorkflow):
         private_hub: bool = False,
     ) -> CWorkflowTask:
         """
-        Add task identified by its unique name in the workflow. If the given task is not yet in the registry, it will be
+        Add task identified by its unique name in the workflow.
+
+        If the given task is not yet in the registry, it will be
         firstly downloaded and installed from Ikomia HUB. Task unique identifier can then be retrieved with
         :py:meth:`get_task_id`.
 
@@ -432,6 +447,9 @@ class Workflow(CWorkflow):
 
         Returns:
             :py:class:`~ikomia.core.pycore.CWorkflowTask` based object: task instance
+
+        Raises:
+            RuntimeError: invalid task or algorithm not functional
         """
         if task is None and not name:
             raise RuntimeError(
@@ -469,6 +487,9 @@ class Workflow(CWorkflow):
             task (:py:class:`~ikomia.core.pycore.CWorkflowTask`): task object instance
             name (str): algorithm name to be found. Multiple candidates may exist, so use task_index parameter to specify one. Method :py:meth:`~ikomia.dataprocess.workflow.find_task` is used to retrieve corresponding task(s).
             index (int): zero-based index of the wanted task.
+
+        Raises:
+            RuntimeError: invalid task or algorithm not found
         """
         if task is None and not name:
             raise RuntimeError(
@@ -512,14 +533,18 @@ class Workflow(CWorkflow):
         self, src: CWorkflowTask, target: CWorkflowTask, edges: list = None
     ):
         """
-        Connect two tasks of the workflow. Depending of the inputs/outputs configuration, multiple connections between
+        Connect two tasks of the workflow.
+
+        Depending on the inputs/outputs configuration, multiple connections between
         the two tasks can be set. A connection is a pair (ie tuple) composed by the output index of the source task
         and the input index of the target task.
 
         Args:
             src (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): source task or None (connect to root)
             target (:py:class:`~ikomia.core.pycore.CWorkflowTask` based object): target task
-            edges (list of pair): connections. If empty list is passed, auto-connection is enabled so that the system will try to find the best connections automatically with respect to inputs and outputs data types.
+            edges (list of pair): connections.
+                If empty list is passed, auto-connection is enabled so that the system will try to find
+                the best connections automatically with respect to inputs and outputs data types.
         """
         if src.uuid == self.root_uuid:
             src_id = self.get_root_id()
@@ -536,7 +561,9 @@ class Workflow(CWorkflow):
 
     def run(self):
         """
-        Start workflow execution on global input. Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived
+        Start workflow execution on global input.
+
+        Each :py:class:`~ikomia.core.pycore.CWorkflowTask` object or derived
         must reimplement the *run()* function that will be called in the right order by the workflow. Please note that
         global inputs should be set before calling this function (see
         :py:meth:`~ikomia.dataprocess.pydataprocess.CWorkflow.set_input`,
@@ -565,8 +592,9 @@ class Workflow(CWorkflow):
         self, array: np.ndarray = None, path: str = "", url: str = "", folder: str = ""
     ):
         """
-        Convenient function to run the workflow on common inputs. For more advanced use, please consult
-        :py:class:`~ikomia.dataprocess.workflow.Workflow`.
+        Convenient function to run the workflow on common inputs.
+
+        For more advanced use, please consult :py:class:`~ikomia.dataprocess.workflow.Workflow`.
         See also :py:func:`~ikomia.dataprocess.workflow.Workflow.set_image_input`
         and :py:func:`~ikomia.dataprocess.workflow.Workflow.set_directory_input`
 
@@ -575,6 +603,9 @@ class Workflow(CWorkflow):
             path (str): path to image (valid formats are those managed by OpenCV)
             url (str): URL to image file (valid formats are those managed by OpenCV)
             folder (str): image folder
+
+        Raises:
+            RuntimeError: invalid input or run failed
         """
         if not self._check_run_input(array, path, url, folder):
             raise RuntimeError(
@@ -600,7 +631,7 @@ class Workflow(CWorkflow):
 
     def load(self, path: str):
         """
-        Load the worflow file at the given path. The function will try to install algorithms if they are not available.
+        Load the workflow file at the given path. The function will try to install algorithms if they are not available.
 
         Args:
             path (str): full path to the workflow definition file to load.
@@ -609,7 +640,7 @@ class Workflow(CWorkflow):
             super().load(path)
         except RuntimeError:
             # Some algorithms are missing, try to install it from HUB
-            prepare_runtime_env(path)
+            self.prepare_runtime_env(path)
             super().load(path)
 
         # Update map task -> id
@@ -846,114 +877,31 @@ class Workflow(CWorkflow):
                     )
                     self.add_output(description, task_id, output_info["index"])
 
+    @staticmethod
+    def prepare_runtime_env(workflow_path: str):
+        """
+        Install all algorithms needed to execute the workflow stored at the given path.
 
-def create(name: str = "untitled"):
-    """
-    Create new empty workflow.
-    See also :py:meth:`~ikomia.dataprocess.workflow.Workflow.add_task`,
-    :py:meth:`~ikomia.dataprocess.workflow.Workflow.connect_tasks` and
-    :py:meth:`~ikomia.dataprocess.workflow.Workflow.run`.
+        If algorithms are not locally installed, the function will try to install them
+        from Ikomia HUB (public and private if authenticated).
 
-    Args:
-        name (str): workflow name.
+        Args:
+            workflow_path (str): path to workflow definition file (.json)
 
-    Returns:
-        Workflow: workflow instance
-    """
-    return Workflow(name, ik_registry)
+        Raises:
+            RuntimeError: workflow runtime initialization failed
+        """
+        tasks = Workflow.get_required_tasks(workflow_path)
+        available_tasks = ik_registry.get_algorithms()
+        private_hub = bool(auth.ik_api_session.is_authenticated())
 
-
-def load(path: str) -> Workflow:
-    """
-    Load Ikomia workflow from the given path.
-
-    Args:
-        path (str)
-
-    Returns:
-        :py:class:`~ikomia.dataprocess.workflow.Workflow`: loaded workflow.
-    """
-    wf = Workflow("untitled", ik_registry)
-    wf.load(path)
-    return wf
-
-
-def prepare_runtime_env(workflow_path: str):
-    """
-    Install all algorithms needed to execute the workflow stored at the given path.
-    If algorithms are not locally installed, the function will try to install them
-    from Ikomia HUB (public and private if authenticated).
-
-    Args:
-        workflow_path (str): path to workflow definition file (.json)
-    """
-    tasks = Workflow.get_required_tasks(workflow_path)
-    available_tasks = ik_registry.get_algorithms()
-    private_hub = bool(auth.ik_api_session.is_authenticated())
-
-    for t in tasks:
-        if t not in available_tasks:
-            try:
-                ik_registry.create_algorithm(
-                    name=t, public_hub=True, private_hub=private_hub
-                )
-            except Exception as e:
-                raise RuntimeError(
-                    f"Workflow preparation failed at algorithm {t} for the following reason: {e}"
-                ) from e
-
-
-def install_requirements(path: str) -> bool:
-    """
-    Install Python requirements from all algorithms of the workflow stored at the given path.
-    Algorithms must be installed locally before calling this function.
-
-    Args:
-        path (str): path to workflow definition file (.json)
-
-    Returns:
-        True if all installations succeeded else False
-    """
-    tasks = Workflow.get_required_tasks(path)
-    available_tasks = ik_registry.get_algorithms()
-    plugins_directory = ik_registry.get_plugins_directory()
-
-    for t in tasks:
-        if t not in available_tasks:
-            plugin_dir = os.path.join(plugins_directory, "Python", t)
-            if os.path.isdir(plugin_dir):
-                utils.plugintools.install_requirements(plugin_dir)
-            else:
-                msg = f"Requirements installation failed: algorithm folder {t} cannot be found."
-                logger.error(msg)
-                return False
-    return True
-
-
-def get_min_hardware_config(path: str) -> CHardwareConfig:
-    """
-    Get minimum hardware configuration for the given workflow file.
-    The configuration is determined from the minimum hardware configuration of workflow tasks.
-
-    Args:
-         path (str): path to workflow definition file (.json)
-
-    Returns:
-        :py:class:`~ikomia.dataprocess.pydataprocess.CHardwareConfig`: hardware configuration
-    """
-    prepare_runtime_env(path)
-    min_hw_config = CHardwareConfig()
-    task_names = Workflow.get_required_tasks(path)
-
-    for name in task_names:
-        info = ik_registry.get_algorithm_info(name)
-        min_hw_config.min_cpu = max(min_hw_config.min_cpu, info.hardware_config.min_cpu)
-        min_hw_config.min_ram = max(min_hw_config.min_ram, info.hardware_config.min_ram)
-        min_hw_config.gpu_required = (
-            min_hw_config.gpu_required or info.hardware_config.gpu_required
-        )
-        min_hw_config.min_vram = max(
-            min_hw_config.min_vram, info.hardware_config.min_vram
-        )
-
-    return min_hw_config
+        for t in tasks:
+            if t not in available_tasks:
+                try:
+                    ik_registry.create_algorithm(
+                        name=t, public_hub=True, private_hub=private_hub
+                    )
+                except Exception as e:
+                    raise RuntimeError(
+                        f"Workflow preparation failed at algorithm {t} for the following reason: {e}"
+                    ) from e
