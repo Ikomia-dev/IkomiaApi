@@ -15,6 +15,16 @@ logger = logging.getLogger(__name__)
 
 class LlmWorkflow(Workflow):
     """LLM-based workflow intended for serving through dedicated backend framework."""
+
+    _to_backend_keys = {
+        "vllm": {
+            "model_name": "model",
+        },
+        "sglang": {
+            "model_name": "model_path",
+        }
+    }
+
     def __init__(
         self,
         name: str = "Untitled",
@@ -44,7 +54,7 @@ class LlmWorkflow(Workflow):
             self._load_default_config()
 
         if model_name and self.config:
-            self.config["model_name"] = model_name
+            self.config[self._to_backend_keys[backend]["model_name"]] = model_name
 
     def load_config(self, path: Union[str, Path]):
         """
@@ -132,8 +142,9 @@ class LlmWorkflow(Workflow):
             "config_file": config_path.name,
         }
 
-        with open(path, "w", encoding="utf-8") as f, open(
-            config_path, "w", encoding="utf-8"
-        ) as fconfig:
+        with (
+            open(path, "w", encoding="utf-8") as f,
+            open(config_path, "w", encoding="utf-8") as fconfig
+        ):
             json.dump(wf_json, f)
             yaml.dump(self.config, fconfig)
