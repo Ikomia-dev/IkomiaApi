@@ -16,6 +16,7 @@ from ikomia.core import (
     auth,
     config,
 )
+from ikomia.core.enums import WorkflowType
 from ikomia.core.task import conform_parameters, get_output
 from ikomia.dataio import CDataImageIO, CDataVideoIO  # pylint: disable=E0611
 from ikomia.dataprocess import (
@@ -36,7 +37,7 @@ class Workflow(CWorkflow):
 
     Implement features to create, modify and run graph-based pipeline of
     :py:class:`~ikomia.core.pycore.CWorkflowTask` objects or derived. Workflows can be created from scratch
-    by using :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` to instanciate and connect task objects.
+    by using :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` to instantiate and connect task objects.
     Workflows can also be loaded from JSON file created with the interactive designer of Ikomia Studio.
     Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CWorkflow`.
     """
@@ -90,7 +91,7 @@ class Workflow(CWorkflow):
         Perform time-consuming initialization process for all tasks.
 
         This method gives you the flexibility to perform initialization steps like
-        models downloading, models loading or models compiling when it is best suited for your usecase.
+        models downloading, models loading or models compiling when it is best suited for your use case.
         Under the hood, it calls virtual method init_long_process() for all tasks.
         """
         tasks = self.get_tasks()
@@ -106,7 +107,7 @@ class Workflow(CWorkflow):
         datatype: IODataType = IODataType.IMAGE,
     ):
         """
-        Set image as global input of the workflow. Image can be specified by a Numpy array, a path or an URL thanks to
+        Set image as global input of the workflow. Image can be specified by a Numpy array, a path or a URL thanks to
         keyword arguments, you have to choose one of them.
 
         Args:
@@ -255,7 +256,7 @@ class Workflow(CWorkflow):
 
         Available parameters are those exposed when workflow is saved.
         Actually, an exposed parameter is bound to a task parameter within a workflow.
-        The aim is to be able to select meaningfull parameters with respect to the workflow objective.
+        The aim is to be able to select important parameters with respect to the workflow objective.
 
         Args:
             params (dict): key-value pairs
@@ -663,7 +664,7 @@ class Workflow(CWorkflow):
         Args:
             path (str): full path to the workflow definition file to save.
             exposed_params (dict): set the list of task parameters that has to be exposed at workflow level. The aim is
-                to be able to select meaningfull parameters with respect to the workflow objective.
+                to be able to select important parameters with respect to the workflow objective.
 
                 Example of the dict structure:
 
@@ -693,7 +694,7 @@ class Workflow(CWorkflow):
                 If you want to expose all parameters of a task, just pass an empty dict for the value of the
                 task name key.
             exposed_outputs (dict): set the list of outputs that has to be exposed at workflow level. The aim is
-                to be able to select meaningfull outputs with respect to the workflow objective.
+                to be able to select important outputs with respect to the workflow objective.
 
                 Example of the dict structure:
 
