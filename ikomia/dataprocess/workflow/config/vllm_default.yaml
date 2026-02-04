@@ -40,7 +40,7 @@ log_config_file: null  # Path to logging config JSON file for both vllm and uvic
 log_error_stack: false  # Log the stack trace of error responses
 lora_modules: null  # LoRA modules configurations
 max_log_len: null  # Max number of prompt characters or prompt ID numbers being printed in log
-middleware: "[]"  # Additional ASGI middleware to apply to the app
+middleware: []  # Additional ASGI middleware to apply to the app
 port: 8000  # Port number
 response_role: "assistant"  # The role name to return if `request.add_generation_prompt=true`
 return_tokens_as_token_ids: false
@@ -83,7 +83,7 @@ max_model_len: null  # Model context length (prompt and output)
 model: "Qwen/Qwen3-0.6B"  # Name or path of the Hugging Face model to use
 model_impl: "auto"  # Which implementation of the model to use ['auto', 'terratorch', 'transformers', 'vllm']
 override_attention_dtype: null  # Override dtype for attention
-override_generation_config: "{}"  # Overrides or sets generation config
+override_generation_config: {}  # Overrides or sets generation config
 pooler_config: null  # Pooler config which controls the behaviour of output pooling in pooling models
 quantization: null  # Method used to quantize the weights
 revision: null  # The specific model version to use
@@ -102,7 +102,7 @@ trust_remote_code: false  # Trust remote code (e.g., from HuggingFace) when down
 download_dir: null  # Directory to download and load the weights, default to the default cache directory of Hugging Face
 ignore_patterns: ['original/**/*']  # The list of patterns to ignore when loading the model
 load_format: "auto"  # The format of the model weights to load
-model_loader_extra_config: "{}"  # Extra config for model loader
+model_loader_extra_config: {}  # Extra config for model loader
 pt_load_map_location: "cpu"  # The map location for loading pytorch checkpoint
 safetensors_load_strategy: "lazy"  # Specifies the loading strategy for safetensors weights
 use_tqdm_on_load: true  # Whether to enable tqdm for showing progress bar when loading model weights
@@ -177,8 +177,8 @@ swap_space: 4  # Size of the CPU swap space per GPU (in GiB)
 disable_mm_preprocessor_cache: false
 enable_mm_embeds: false  # Enables passing multimodal embeddings
 interleave_mm_strings: false  # Enable fully interleaved support for multimodal prompts, while using --chat-template-content-format=string
-limit_mm_per_prompt: "{}"  # The maximum number of input items and options allowed per prompt for each modality
-media_io_kwargs: "{}"  # Additional args passed to process media inputs, keyed by modalities
+limit_mm_per_prompt: {}  # The maximum number of input items and options allowed per prompt for each modality
+media_io_kwargs: {}  # Additional args passed to process media inputs, keyed by modalities
 mm_encoder_attn_backend: null  # Optional override for the multi-modal encoder attention backend when using vision transformers
 mm_encoder_tp_mode: "weights"  # Indicates how to optimize multi-modal encoder inference using tensor parallelism (TP) {data,weights}
 mm_processor_cache_gb: 4  # The size (in GiB) of the multi-modal processor cache
@@ -233,7 +233,7 @@ max_cudagraph_capture_size: null  # The maximum cudagraph capture size
 # ============
 # VllmConfig
 # ============
-additional_config: "{}"  # Additional config for specified platform
+additional_config: {}  # Additional config for specified platform
 compilation_config: null  # `torch.compile` and cudagraph capture configuration for the model
 ec_transfer_config: null  # The configurations for distributed EC cache transfer
 kv_events_config: null  # The configurations for event publishing

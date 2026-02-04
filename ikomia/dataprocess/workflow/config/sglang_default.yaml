@@ -11,7 +11,7 @@ tokenizer_mode: auto  # Tokenizer mode. 'auto' will use the fast tokenizer if av
 tokenizer_worker_num: 1  # The worker num of the tokenizer manager.
 skip_tokenizer_init: false  # If set, skip init tokenizer and pass input_ids in generate request.
 load_format: auto  # The format of the model weights to load.
-model_loader_extra_config: "{}"  # Extra config for model loader.
+model_loader_extra_config: {}  # Extra config for model loader.
 trust_remote_code: false  # Whether to allow for custom models defined on the Hub in their own modeling files.
 context_length: null  # The model's maximum context length. Defaults to None (will use the value from the model's config.json instead).
 is_embedding: false  # Whether to use a CausalLM as an embedding model.
@@ -150,7 +150,7 @@ node_rank: 0  # Node rank.
 # ============================================
 # Model Override Args
 # ============================================
-json_model_override_args: "{}"  # JSON model override args.
+json_model_override_args: {}  # JSON model override args.
 preferred_sampling_params: null  # Preferred sampling params.
 
 # ============================================
