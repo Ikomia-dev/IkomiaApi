@@ -21,7 +21,7 @@ class LlmWorkflow(Workflow):
             "model_name": "model",
         },
         "sglang": {
-            "model_name": "model_path",
+            "model_name": "model",
         }
     }
 
