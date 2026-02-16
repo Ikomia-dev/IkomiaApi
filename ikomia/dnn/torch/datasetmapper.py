@@ -13,9 +13,9 @@
 # limitations under the License.
 
 """
-Module providing implementation of a PyTorch dataset mapper for
-Ikomia dataset structure. It converts the Ikomia dataset structure to a
-PyTorch compatible dataset so that it is possible to use Ikomia dataset
+Module providing implementation of a PyTorch dataset mapper for Ikomia dataset structure.
+
+It converts the Ikomia dataset structure to a PyTorch compatible dataset so that it is possible to use Ikomia dataset
 loaders with PyTorch Deep Learning models.
 """
 
@@ -33,9 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 class TorchDatasetMapper(Dataset):
-    """
-    Class derived from torch.utils.data.Dataset.
-    """
+    """Class derived from torch.utils.data.Dataset."""
 
     def __init__(self, ik_dataset: dict, has_bckgnd_class: bool, transforms):
         self.ik_dataset = ik_dataset

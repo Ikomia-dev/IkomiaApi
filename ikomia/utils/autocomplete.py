@@ -14,6 +14,7 @@
 
 """
 The module autocomplete provides auto-completion capabilities to Ikomia API.
+
 It generates automatically a Python module named ik.
 The aim is to help users to discover algorithm names and parameters.
 """
@@ -34,17 +35,15 @@ from ikomia.dataprocess.registry import ik_registry
 try:
     from ikomia.utils import ik
 
-    _ik_auto_complete = True
+    _IK_AUTO_COMPLETE = True
 except ImportError:
-    _ik_auto_complete = False
+    _IK_AUTO_COMPLETE = False
 
 logger = logging.getLogger(__name__)
 
 
 class AutoComplete:
-    """
-    Generation of auto-completion module.
-    """
+    """Generation of auto-completion module."""
 
     _online_sync_frequency = 14400  # 4 hours
 
@@ -142,6 +141,7 @@ class AutoComplete:
         ik_file_path = os.path.join(folder, "ik.py")
         with open(ik_file_path, "w+", encoding="utf-8") as f:
             # Imports
+            f.write("# pylint: skip-file\n")
             f.write("from ikomia.dataprocess.registry import ik_registry\n\n")
 
             # Class definitions from cache files
@@ -219,7 +219,7 @@ class AutoComplete:
         return local_folder_names, last_modified
 
     def _check_local_sync(self) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         # Get local algorithm names from plugin directories
@@ -251,7 +251,7 @@ class AutoComplete:
         return True
 
     def _check_online_sync(self) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         # Update every 4 hours because call to get_public_hub_algorithms() is time consuming
@@ -277,7 +277,7 @@ class AutoComplete:
             return False
 
     def _check_task_params(self, task: CWorkflowTask) -> bool:
-        if not _ik_auto_complete:
+        if not _IK_AUTO_COMPLETE:
             return False
 
         params = task.get_parameters()

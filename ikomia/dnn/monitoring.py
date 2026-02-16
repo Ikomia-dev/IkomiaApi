@@ -1,6 +1,4 @@
-"""
-The module monitoring provides helper functions to manage mlflow and tensorboard tracking servers.
-"""
+"""The module monitoring provides helper functions to manage mlflow and tensorboard tracking servers."""
 
 import logging
 import os
@@ -19,6 +17,7 @@ logger = logging.getLogger(__name__)
 def check_mlflow_server():
     """
     Start mlflow tracking server if it is not already started.
+
     Storage URIs are set according to Ikomia local configuration.
     """
     try:
@@ -86,6 +85,7 @@ def check_mlflow_server():
 def check_tensorboard_server():
     """
     Start tensorboard tracking server if it is not already started.
+
     Storage URIs are set according to Ikomia local configuration.
     """
     colab = is_colab()

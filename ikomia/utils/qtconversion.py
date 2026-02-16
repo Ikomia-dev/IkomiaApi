@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module dedicated to wrap widget instance from Qt-based Python frameworks to C++ Qt.
-"""
+"""Module dedicated to wrap widget instance from Qt-based Python frameworks to C++ Qt."""
 
 
 def PyQtToQt(pyqt_widget):
     """
-    Wraps PyQt widget instance to C++ Qt
+    Wrap PyQt widget instance to C++ Qt.
 
     Args:
         pyqt_widget (QWidget) : instance of the PyQt object

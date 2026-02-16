@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Internal use only
-"""
+"""Internal use only."""
 
 import importlib
 import json
@@ -333,6 +331,7 @@ def get_plugin_dependencies(plugin_folder: str) -> list:
 def install_requirements(directory: str):
     """
     Install Python dependencies for the given Ikomia Plugin.
+
     The function searches for requirements files and iterate over them in the lexicographic order.
 
     Args:
@@ -397,6 +396,9 @@ def import_plugin_module(directory: str, name: str):
     Args:
         directory (str): path to the plugin directory
         name (str): name of the plugin
+
+    Returns:
+        module instance
     """
     if is_module_imported(name):
         for _, _, files in os.walk(directory, topdown=True):
@@ -440,12 +442,16 @@ def unload_plugin_module(name: str):
 def conform_plugin_directory(directory: str, plugin: dict) -> str:
     """
     Conform plugin directory name to fit the Ikomia naming convention.
+
     This function must be call after downloading the plugin package from
     Ikomia HUB to ensure name validity.
 
     Args:
         directory (str): path to the plugin directory
         plugin (dict): plugin information retrieved from Ikomia HUB
+
+    Returns:
+        str: well-formed direction path
     """
     good_dir_name = directory
     base_name = os.path.basename(directory)

@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module dedicated to Deep Neural Network features.
-"""
+"""Module dedicated to Deep Neural Network features."""
 from ikomia.dnn.dataset import *
 from ikomia.dnn.datasetio import *
 from ikomia.dnn.dnntrain import *

@@ -13,6 +13,8 @@
 # limitations under the License.
 
 """
+Ikomia Python API.
+
 The ikomia module provides direct access to:
 - Global algorithms registry through ikomia.ik_registry
 - Authentication function
@@ -69,7 +71,9 @@ if not is_app_started() and config.main_cfg["registry"]["auto_completion"]:  # n
 
 def authenticate(token: str = None, username: str = None, password: str = None):
     """
-    Authentication to Ikomia Scale. Mandatory if user need access to private algorithms.
+    Authentication to Ikomia Scale.
+
+    Mandatory if user need access to private algorithms.
     If no credentials are provided, Ikomia API will try to load them from environment variables:
     IKOMIA_TOKEN or (IKOMIA_USER, IKOMIA_PWD).
 

@@ -28,16 +28,16 @@ logger = logging.getLogger(__name__)
 
 class TaskParam(CWorkflowTaskParam):
     """
-    Base class to manage task parameters. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
+    Base class to manage task parameters.
+
+    Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskParam`.
     It includes a dict structure to store parameter values.
 
     :ivar cfg: parameters dict
     """
 
     def __init__(self):
-        """
-        Constructor. Initialize an empty dict structure.
-        """
+        """Constructor. Initialize an empty dict structure."""
         CWorkflowTaskParam.__init__(self)
         self.cfg = {}
 
@@ -60,6 +60,9 @@ class TaskParam(CWorkflowTaskParam):
 
         Args:
             params (dict): parameters as key-value pairs
+
+        Raises:
+            NotImplementedError: method must be reimplemented
         """
         raise NotImplementedError
 
@@ -69,6 +72,7 @@ def create(
 ) -> CWorkflowTask:
     """
     Create task instance (ie algorithm) from the given name.
+
     See :py:class:`~ikomia.dataprocess.registry.IkomiaRegistry` for details.
 
     Args:
@@ -100,6 +104,9 @@ def get_output(
 
     Returns:
         instance or list of :py:class:`~ikomia.dataprocess.pydataprocess.CWorkflowTaskIO` based object: outputs
+
+    Raises:
+        RuntimeError: invalid task instance
     """
     if task_obj is None:
         raise RuntimeError("Cannot get outputs from None object.")
@@ -131,6 +138,9 @@ def conform_parameters(params: dict) -> dict:
 
     Returns:
         dict: conformed parameters with string values
+
+    Raises:
+        TypeError: parameter key must be a string
     """
     valid_params = {}
     for key in params:

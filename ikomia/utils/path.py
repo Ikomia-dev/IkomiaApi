@@ -1,3 +1,4 @@
+"""Module compiling path manipulation functions."""
 from pathlib import PureWindowsPath
 
 
