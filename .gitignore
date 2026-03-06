@@ -1,10 +1,10 @@
+ikomia/_version.py
 .idea
 .vscode
 ikomia.egg-info
 build
 Build
 dist
-version.py
 __pycache__
 ikomia/__pycache__
 ikomia/.idea
