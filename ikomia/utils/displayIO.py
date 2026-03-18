@@ -27,7 +27,6 @@ import cv2
 import matplotlib
 import numpy as np
 from matplotlib import patches
-from matplotlib.cbook import flatten
 from PIL import Image
 
 from ikomia.core import GraphicsItem, config  # pylint: disable=E0611
@@ -49,44 +48,84 @@ from ikomia.dataprocess import (
     PlotType,
 )
 
+
+
 # Matplotlib backend choice
-_backend_name = None
-_valid_backend = True
-
-try:
-    matplotlib.use("QtAgg")
-    import matplotlib.pyplot as plt
-
-    _backend_name = "QtAgg"
-except ImportError:
+def _check_qt_backend() -> str | None:
+    # Check for Qt6
     try:
-        matplotlib.use("GTK3Agg")
-        import matplotlib.pyplot as plt
-
-        _backend_name = "GTK3Agg"
+        import PyQt6
+        from PyQt6.QtWidgets import QApplication
+        return "QtAgg"
     except ImportError:
         try:
-            matplotlib.use("TkAgg")
-            import matplotlib.pyplot as plt
-
-            _backend_name = "TkAgg"
+            import PySide6
+            from PySide6.QtWidgets import QApplication
+            return "QtAgg"
         except ImportError:
-            try:
-                import matplotlib.pyplot as plt
+            pass
 
-                _backend_name = plt.get_backend()
-            except ImportError:
-                _valid_backend = False
+    # Check for Qt5
+    try:
+        import PyQt5
+        from PyQt5.QtWidgets import QApplication
+        return "Qt5Agg"
+    except ImportError:
+        try:
+            import PySide2
+            from PySide2.QtWidgets import QApplication
+            return "Qt5Agg"
+        except ImportError:
+            pass
+
+    return None
+
+
+def _check_gtk3_backend() -> str | None:
+    try:
+        import gi
+        gi.require_version("Gtk", "3.0")
+        return "GTK3Agg"
+    except (ImportError, ValueError):
+        return None
+
+
+def _check_tk_backend() -> str | None:
+    try:
+        import tkinter
+        return "TkAgg"
+    except ImportError:
+        return None
+
+
+def _get_backend() -> str | None:
+    backend = _check_qt_backend()
+    if backend is not None:
+        return backend
+
+    backend = _check_gtk3_backend()
+    if backend is not None:
+        return backend
+
+    return _check_tk_backend()
+
+
+_backend_name = _get_backend()
+if _backend_name:
+    matplotlib.use(_backend_name)
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    _backend_name = None
+
 
 logger = logging.getLogger(__name__)
 
 
 def _check_backend():
-    if not _valid_backend:
+    if not _backend_name:
         raise RuntimeError("No valid Matplotlib backend found.")
-
-    if plt.get_backend() != _backend_name:
-        matplotlib.use(_backend_name)
 
 
 def _to_plot_color(color: list) -> list:
@@ -94,74 +133,15 @@ def _to_plot_color(color: list) -> list:
     return plot_color
 
 
-@singledispatch
-def display(obj, title: str = "", fig=None, **kwargs):
-    """
-    Display function for various workflow components.
-
-    Args:
-        obj: object to display
-        title (str): title of the figure
-        fig: parent figure
-    """
-    raise NotImplementedError("Unsupported type")
+def _flatten(seq):
+    for item in seq:
+        if isinstance(item, (list, tuple, np.ndarray)):
+            yield from _flatten(item)
+        else:
+            yield item
 
 
-@display.register
-def _(obj: CImageIO, title: str = "", fig=None, **kwargs):
-    """
-    Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
-
-    Args:
-        obj (CImageIO): I/O instance
-        title (str): title of the figure
-        fig: parent figure
-    """
-    _check_backend()
-
-    if not obj.is_data_available():
-        return
-
-    if fig is not None:
-        child = True
-        ax = fig.subplots(1, 1)
-    else:
-        child = False
-        fig, ax = plt.subplots(1, 1)
-
-    ax.set_title(title)
-    ax.imshow(obj.get_image())
-    ax.axis("off")
-
-    if not child:
-        fig.tight_layout()
-        plt.show()
-
-
-@display.register
-def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
-    """
-    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`) in a Matplotlib figure.
-
-    Args:
-        obj (CGraphicsInput): I/O instance
-        title (str): title of the figure
-        fig: parent figure
-    """
-    _check_backend()
-
-    if not obj.is_data_available():
-        return
-
-    if fig is not None:
-        child = True
-        ax = fig.subplots(1, 1)
-    else:
-        child = False
-        fig, ax = plt.subplots(1, 1)
-
-    ax.set_title(title)
-    items = obj.get_items()
+def _draw_graphics_items(ax, items, **kwargs):
     x_min = y_min = sys.maxsize
     x_max = y_max = 0
 
@@ -177,166 +157,7 @@ def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
 
         if item_type == GraphicsItem.ELLIPSE:
             xc = item.x + item.width / 2
-            yc = item.x + item.height / 2
-            ellipse = patches.Ellipse(
-                xy=(xc, yc),
-                width=item.width,
-                height=item.height,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                facecolor=_to_plot_color(item.property.brush_color),
-                **kwargs,
-            )
-            ax.add_patch(ellipse)
-            update_min_max(item.x, item.y)
-            update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == GraphicsItem.POINT:
-            circle = patches.Circle(
-                xy=(item.point.x, item.point.y),
-                radius=item.property.size / 2,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                facecolor=_to_plot_color(item.property.brush_color),
-                **kwargs,
-            )
-            ax.add_patch(circle)
-            update_min_max(item.point.x, item.point.y)
-        elif item_type == GraphicsItem.RECTANGLE:
-            ellipse = patches.Rectangle(
-                xy=(item.x, item.y),
-                width=item.width,
-                height=item.height,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                facecolor=_to_plot_color(item.property.brush_color),
-                **kwargs,
-            )
-            ax.add_patch(ellipse)
-            update_min_max(item.x, item.y)
-            update_min_max(item.x + item.width, item.y + item.height)
-        elif item_type == GraphicsItem.POLYLINE:
-            pts = []
-            for pt in item.points:
-                pts.append((pt.x, pt.y))
-                update_min_max(pt.x, pt.y)
-
-            poly = patches.Polygon(
-                pts,
-                closed=False,
-                fill=False,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                **kwargs,
-            )
-            ax.add_patch(poly)
-        elif item_type == GraphicsItem.POLYGON:
-            pts = []
-            for pt in item.points:
-                pts.append((pt.x, pt.y))
-                update_min_max(pt.x, pt.y)
-
-            poly = patches.Polygon(
-                pts,
-                closed=True,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                facecolor=_to_plot_color(item.property.brush_color),
-                **kwargs,
-            )
-            ax.add_patch(poly)
-        elif item_type == GraphicsItem.COMPLEX_POLYGON:
-            pts = []
-            for pt in item.outer:
-                pts.append((pt.x, pt.y))
-                update_min_max(pt.x, pt.y)
-
-            outer = patches.Polygon(
-                pts,
-                closed=True,
-                edgecolor=_to_plot_color(item.property.pen_color),
-                facecolor=_to_plot_color(item.property.brush_color),
-                **kwargs,
-            )
-            ax.add_patch(outer)
-
-            for inner in item.inners:
-                pts = []
-                for pt in inner:
-                    pts.append((pt.x, pt.y))
-                    update_min_max(pt.x, pt.y)
-
-                inner = patches.Polygon(
-                    pts,
-                    closed=True,
-                    fill=False,
-                    edgecolor=_to_plot_color(item.property.pen_color),
-                    facecolor=_to_plot_color(item.property.brush_color),
-                    **kwargs,
-                )
-                ax.add_patch(inner)
-        elif item_type == GraphicsItem.TEXT:
-            ax.text(
-                item.x,
-                item.y,
-                item.text,
-                size=item.property.font_size,
-                color=_to_plot_color(item.property.color),
-            )
-            update_min_max(item.x, item.y)
-
-    if x_min == x_max:
-        x_min = 0
-        x_max = 2 * x_max
-
-    if y_min == y_max:
-        y_min = 0
-        y_max = 2 * y_max
-
-    ax.set_xlim(x_min, x_max)
-    ax.set_ylim(y_min, y_max)
-    ax.invert_yaxis()
-    plt.gca().set_aspect("equal", adjustable="box")
-
-    if not child:
-        fig.tight_layout()
-        plt.show()
-
-
-@display.register
-def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
-    """
-    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`) in a Matplotlib figure.
-
-    Args:
-        obj (CGraphicsOutput): I/O instance
-        title (str): title of the figure
-        fig: parent figure
-    """
-    _check_backend()
-
-    if not obj.is_data_available():
-        return
-
-    if fig is not None:
-        child = True
-        ax = fig.subplots(1, 1)
-    else:
-        child = False
-        fig, ax = plt.subplots(1, 1)
-
-    ax.set_title(title)
-    items = obj.get_items()
-    x_min = y_min = sys.maxsize
-    x_max = y_max = 0
-
-    def update_min_max(x, y):
-        nonlocal x_min, y_min, x_max, y_max
-        x_min = min(x_min, x)
-        y_min = min(y_min, y)
-        x_max = max(x_max, x)
-        y_max = max(y_max, y)
-
-    for item in items:
-        item_type = item.get_type()
-
-        if item_type == GraphicsItem.ELLIPSE:
-            xc = item.x + item.width / 2
-            yc = item.x + item.height / 2
+            yc = item.y + item.height / 2
             ellipse = patches.Ellipse(
                 xy=(xc, yc),
                 width=item.width,
@@ -419,7 +240,7 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                     pts.append((pt.x, pt.y))
                     update_min_max(pt.x, pt.y)
 
-                inner = patches.Polygon(
+                inner_poly = patches.Polygon(
                     pts,
                     closed=True,
                     fill=False,
@@ -427,7 +248,7 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
                     facecolor=_to_plot_color(item.property.brush_color),
                     **kwargs,
                 )
-                ax.add_patch(inner)
+                ax.add_patch(inner_poly)
         elif item_type == GraphicsItem.TEXT:
             ax.text(
                 item.x,
@@ -440,7 +261,7 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
 
     if x_min == x_max:
         x_min = 0
-        x_max = 2*x_max
+        x_max = 2 * x_max
 
     if y_min == y_max:
         y_min = 0
@@ -451,23 +272,146 @@ def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
     ax.invert_yaxis()
     plt.gca().set_aspect("equal", adjustable="box")
 
+
+def _display_qt_table(values, col_labels, row_labels, title):
+    """
+    Display a table in a scrollable Qt window.
+    """
+    try:
+        from PyQt6.QtWidgets import (QApplication, QTableWidget, QTableWidgetItem,
+                                   QVBoxLayout, QDialog, QHeaderView)
+    except ImportError:
+        try:
+            from PyQt5.QtWidgets import (QApplication, QTableWidget, QTableWidgetItem,
+                                       QVBoxLayout, QDialog, QHeaderView)
+        except ImportError:
+            return False
+
+    app = QApplication.instance()
+    if not app:
+        app = QApplication(sys.argv)
+
+    dialog = QDialog()
+    dialog.setWindowTitle(title)
+    layout = QVBoxLayout()
+    table = QTableWidget()
+
+    rows_count = len(values)
+    cols_count = len(col_labels)
+
+    table.setRowCount(rows_count)
+    table.setColumnCount(cols_count)
+    table.setHorizontalHeaderLabels(col_labels)
+    table.setVerticalHeaderLabels([str(r) for r in row_labels])
+
+    for i in range(rows_count):
+        for j in range(cols_count):
+            item = QTableWidgetItem(str(values[i][j]))
+            table.setItem(i, j, item)
+
+    table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+    layout.addWidget(table)
+    dialog.setLayout(layout)
+    dialog.resize(800, 600)
+    dialog.exec()
+    return True
+
+
+@singledispatch
+def display(obj, title: str = "", fig=None, **kwargs):
+    """
+    Display function for various workflow components.
+
+    Args:
+        obj: object to display
+        title (str): title of the figure
+        fig: parent figure
+    """
+    raise NotImplementedError("Unsupported type")
+
+
+@display.register
+def _(obj: CImageIO, title: str = "", fig=None, **kwargs):
+    """
+    Display image input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CImageIO`) in a Matplotlib figure.
+
+    Args:
+        obj (CImageIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
+    """
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        fig, ax = plt.subplots(1, 1)
+
+    ax.set_title(title)
+    ax.imshow(obj.get_image())
+    ax.axis("off")
+
+    if not child:
+        fig.tight_layout()
+        plt.show()
+
+
+def _display_graphics_io(obj, title: str = "", fig=None, **kwargs):
+    _check_backend()
+
+    if not obj.is_data_available():
+        return
+
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        fig, ax = plt.subplots(1, 1)
+
+    ax.set_title(title)
+    items = obj.get_items()
+    _draw_graphics_items(ax, items, **kwargs)
+
     if not child:
         fig.tight_layout()
         plt.show()
 
 
 @display.register
-def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
+def _(obj: CGraphicsInput, title: str = "", fig=None, **kwargs):
     """
-    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
-
-    Displayed as a table in a Matplotlib figure.
+    Display the scene of a graphics input (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsInput`)
+    in a Matplotlib figure.
 
     Args:
-        obj (CNumericIO): I/O instance
+        obj (CGraphicsInput): I/O instance
         title (str): title of the figure
         fig: parent figure
     """
+    _display_graphics_io(obj, title, fig, **kwargs)
+
+
+@display.register
+def _(obj: CGraphicsOutput, title: str = "", fig=None, **kwargs):
+    """
+    Display the scene of a graphics output (:py:class:`~ikomia.dataprocess.pydataprocess.CGraphicsOutput`)
+    in a Matplotlib figure.
+
+    Args:
+        obj (CGraphicsOutput): I/O instance
+        title (str): title of the figure
+        fig: parent figure
+    """
+    _display_graphics_io(obj, title, fig, **kwargs)
+
+
+def _display_numeric_io(obj, title: str = "", fig=None, **kwargs):
     _check_backend()
 
     if not obj.is_data_available():
@@ -484,11 +428,6 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
     out_type = obj.get_output_type()
 
     if out_type == NumericOutputType.TABLE:
-        if fig is None:
-            fig, ax = plt.subplots(1, 1)
-        else:
-            ax = fig.subplots(1, 1)
-
         cell_length_limit = 50
         rows_count = len(values[0])
         cols_count = len(values)
@@ -496,7 +435,7 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
         np_values = np_values.reshape((rows_count, cols_count))
 
         if len(labels) == 1:
-            row_labels = list(flatten(labels))
+            row_labels = list(_flatten(labels))
         else:
             row_labels = labels[0]
 
@@ -508,17 +447,29 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
             )
             row_labels[i] = label
 
-        col_width = [1 / (cols_count + 1)] * cols_count
+        # Try Qt first if no parent figure is provided
+        if fig is None:
+            if _display_qt_table(np_values, col_labels, row_labels, title):
+                return
+
+        if fig is None:
+            # Dynamic figure size calculation for Matplotlib fallback
+            width = min(20, max(10, cols_count * 1.5))
+            height = min(12, max(6, rows_count * 0.4))
+            fig, ax = plt.subplots(1, 1, figsize=(width, height))
+        else:
+            ax = fig.subplots(1, 1)
+
         table = ax.table(
             cellText=np_values,
             colLabels=col_labels,
             rowLabels=row_labels,
             cellLoc="left",
-            loc="upper right",
-            colWidths=col_width,
+            loc="center",
         )
         table.auto_set_font_size(False)
         table.set_fontsize(10)
+        table.auto_set_column_width(col=list(range(len(col_labels))))
         ax.axis("off")
 
     elif out_type == NumericOutputType.PLOT:
@@ -591,18 +542,23 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
                 else:
                     name = col_labels[i]
 
-                ax[i].set_title(name)
+                if len(values) == 1:
+                    ax_obj = ax
+                else:
+                    ax_obj = ax[i]
+
+                ax_obj.set_title(name)
 
                 if not has_x_values:
                     x = []
                     for j, _ in enumerate(values[i]):
                         x.append(j)
 
-                    ax[i].bar(x, values[i])
+                    ax_obj.bar(x, values[i])
                 elif i >= len(labels):
-                    ax[i].bar(labels[0], values[i])
+                    ax_obj.bar(labels[0], values[i])
                 else:
-                    ax[i].bar(labels[i], values[i])
+                    ax_obj.bar(labels[i], values[i])
         # PIE CHART
         elif plot_type == PlotType.PIE:
             if fig is None:
@@ -613,88 +569,50 @@ def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
             has_labels = len(labels) > 0
 
             for i, _ in enumerate(values):
-                if not has_labels or i >= len(labels):
-                    ax[i].pie(values[i], shadow=True)
+                if len(values) == 1:
+                    ax_obj = ax
                 else:
-                    ax[i].pie(x=values[i], labels=labels[i], shadow=True)
+                    ax_obj = ax[i]
+
+                if not has_labels or i >= len(labels):
+                    ax_obj.pie(values[i], shadow=True)
+                else:
+                    ax_obj.pie(x=values[i], labels=labels[i], shadow=True)
 
     fig.suptitle(title)
 
     if not child:
-        fig.tight_layout()
+        if out_type != NumericOutputType.TABLE:
+            fig.tight_layout()
         plt.show()
+
+
+@display.register
+def _(obj: CNumericIO, title: str = "", fig=None, **kwargs):
+    """
+    Display numeric values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
+    as a table in a Matplotlib figure.
+
+    Args:
+        obj (CNumericIO): I/O instance
+        title (str): title of the figure
+        fig: parent figure
+    """
+    _display_numeric_io(obj, title, fig, **kwargs)
 
 
 @display.register
 def _(obj: CDataStringIO, title: str = "", fig=None, **kwargs):
     """
-    Display string values input/output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`).
-
-    Displayed as a table in a Matplotlib figure.
+    Display string values input or output (:py:class:`~ikomia.dataprocess.pydataprocess.CNumericIO`)
+    as a table in a Matplotlib figure.
 
     Args:
         obj (CDataStringIO): I/O instance
         title (str): title of the figure
         fig: parent figure
     """
-    _check_backend()
-
-    if not obj.is_data_available():
-        return
-
-    if fig is None:
-        child = False
-    else:
-        child = True
-
-    labels = obj.get_all_label_list()
-    col_labels = obj.get_all_header_labels()
-    values = obj.get_all_value_list()
-    out_type = obj.get_output_type()
-
-    if out_type == NumericOutputType.TABLE:
-        if fig is None:
-            fig, ax = plt.subplots(1, 1)
-        else:
-            ax = fig.subplots(1, 1)
-
-        cell_length_limit = 50
-        rows_count = len(values[0])
-        cols_count = len(values)
-        np_values = np.asarray(values)
-        np_values = np_values.reshape((rows_count, cols_count))
-
-        if len(labels) == 1:
-            row_labels = list(flatten(labels))
-        else:
-            row_labels = labels[0]
-
-        for i, label in enumerate(row_labels):
-            label = (
-                (label[:cell_length_limit] + "..")
-                if len(label) > cell_length_limit
-                else label
-            )
-            row_labels[i] = label
-
-        col_width = [1 / (cols_count + 1)] * cols_count
-        table = ax.table(
-            cellText=np_values,
-            colLabels=col_labels,
-            rowLabels=row_labels,
-            cellLoc="left",
-            loc="upper right",
-            colWidths=col_width,
-        )
-        table.auto_set_font_size(False)
-        table.set_fontsize(10)
-        ax.axis("off")
-
-    fig.suptitle(title)
-
-    if not child:
-        fig.tight_layout()
-        plt.show()
+    _display_numeric_io(obj, title, fig, **kwargs)
 
 
 @display.register
@@ -714,17 +632,10 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
     if not obj.is_data_available():
         return
 
-    if fig is not None:
-        child = True
-        ax = fig.subplots(1, 1)
-    else:
-        child = False
-        fig, ax = plt.subplots(1, 1)
-
     measures = obj.get_measures()
     row_labels = list(range(len(measures)))
     col_labels = ["Graphics ID", "Label"]
-    max_value_length = 9
+    max_value_length = 20
 
     for blob_measures in measures:
         for measure in blob_measures:
@@ -734,11 +645,13 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
                 col_labels.append(measure_info.name)
 
     cols_count = len(col_labels)
-    values = [["No data" for _ in range(cols_count)] for _ in enumerate(measures)]
+    rows_count = len(measures)
+    values = [["No data" for _ in range(cols_count)] for _ in range(rows_count)]
 
-    if len(values) == 0:
+    if rows_count == 0:
         values = [["No data" for _ in range(cols_count)]]
         row_labels = ["No data"]
+        rows_count = 1
 
     for i, blob_measures in enumerate(measures):
         for measure in blob_measures:
@@ -769,23 +682,36 @@ def _(obj: CBlobMeasureIO, title: str = "", fig=None, **kwargs):
             except ValueError:
                 continue
 
-    col_width = [1 / (cols_count + 1)] * cols_count
+    # Try Qt first if no parent figure is provided
+    if fig is None:
+        if _display_qt_table(values, col_labels, row_labels, title):
+            return
+
+    if fig is not None:
+        child = True
+        ax = fig.subplots(1, 1)
+    else:
+        child = False
+        # Dynamic figure size calculation for Matplotlib fallback
+        width = min(20, max(10, cols_count * 1.5))
+        height = min(12, max(6, rows_count * 0.4))
+        fig, ax = plt.subplots(1, 1, figsize=(width, height))
+
     table = ax.table(
         cellText=values,
         colLabels=col_labels,
         rowLabels=row_labels,
         cellLoc="left",
-        loc="upper left",
-        colWidths=col_width,
+        loc="center",
     )
     table.auto_set_font_size(False)
     table.set_fontsize(10)
+    table.auto_set_column_width(col=list(range(len(col_labels))))
 
     ax.axis("off")
     fig.suptitle(title)
 
     if not child:
-        fig.tight_layout()
         plt.show()
 
 
@@ -977,8 +903,11 @@ def _display_pillow(image: np.ndarray, title: str = "", **kwargs):
 
 
 def _display_opencv(image: np.ndarray, title: str = "", **kwargs):
-    disp_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    cv2.imshow(title, disp_image)
+    try:
+        disp_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        cv2.imshow(title, disp_image)
 
-    if "wait_key" in kwargs:
-        cv2.waitKey(kwargs["wait_key"])
+        if "wait_key" in kwargs:
+            cv2.waitKey(kwargs["wait_key"])
+    except NameError:
+        logger.error("OpenCV is not available for display.")
