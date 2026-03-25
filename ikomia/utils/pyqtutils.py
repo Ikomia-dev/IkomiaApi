@@ -13,8 +13,9 @@
 # limitations under the License.
 
 """
-Module providing helper functions to design
-your own task widget. It uses the PyQt6 framework.
+Module providing helper functions to design your own task widget.
+
+It uses the PyQt6 framework.
 """
 
 from typing import Optional
@@ -38,9 +39,7 @@ from PyQt6.QtWidgets import (
 
 
 class BrowseFileWidget(QWidget):
-    """
-    Composite widget to handle file or folder selection.
-    """
+    """Composite widget to handle file or folder selection."""
 
     file_changed = pyqtSignal()
 
@@ -52,6 +51,16 @@ class BrowseFileWidget(QWidget):
         mode=QFileDialog.FileMode.ExistingFile,
         parent: Optional[QObject] = None,
     ):
+        """
+        Widget initialization.
+
+        Args:
+            path (str): default path
+            file_filter (str): file filter by extension
+            tooltip (str): information given while passing mouse over the button
+            mode: file or directory
+            parent: parent window
+        """
         QWidget.__init__(self, parent)
         self.path = path
         self.tooltip = tooltip
@@ -63,9 +72,7 @@ class BrowseFileWidget(QWidget):
         self.init_connections()
 
     def init_layout(self):
-        """
-        Set composite widget horizontal layout.
-        """
+        """Set composite widget horizontal layout."""
         self.qedit_file = QLineEdit(self.path)
         self.qbrowse_btn = QPushButton("...")
         self.qbrowse_btn.setToolTip(self.tooltip)
@@ -76,24 +83,18 @@ class BrowseFileWidget(QWidget):
         self.setLayout(qlayout)
 
     def init_connections(self):
-        """
-        Create connections.
-        """
+        """Create connections."""
         self.qbrowse_btn.clicked.connect(self.on_browse)
         self.qedit_file.editingFinished.connect(self.on_path_changed)
 
     def on_browse(self):
-        """
-        Slot triggered by button click.
-        """
+        """Slot triggered by button click."""
         self.path = self.show_select_file_dlg()
         self.qedit_file.setText(self.path)
         self.file_changed.emit()
 
     def on_path_changed(self):
-        """
-        Slot triggered when new path is selected.
-        """
+        """Slot triggered when new path is selected."""
         self.path = self.qedit_file.text()
 
     def show_select_file_dlg(self):
@@ -129,9 +130,7 @@ class BrowseFileWidget(QWidget):
         self.qedit_file.setText(path)
 
     def clear(self):
-        """
-        Clear current path.
-        """
+        """Clear current path."""
         self.path = ""
         self.qedit_file.clear()
 
@@ -217,8 +216,7 @@ def add_spin(
     step: int = 1,
 ) -> QSpinBox:
     """
-    Add a composite widget (label + edit box + spin box)
-    in the layout at the given row - **integer values**.
+    Add a composite widget (label + edit box + spin box) in the layout at the given row - **integer values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -252,8 +250,7 @@ def append_spin(
     step: int = 1,
 ) -> QSpinBox:
     """
-    Append a composite widget (label + edit box + spin box) in the layout -
-    **integer values**.
+    Append a composite widget (label + edit box + spin box) in the layout - **integer values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -281,8 +278,7 @@ def add_double_spin(
     decimals: int = 4,
 ) -> QDoubleSpinBox:
     """
-    Add a composite widget (label + edit box + spin box)
-    in the layout at the given row - **float values**.
+    Add a composite widget (label + edit box + spin box) in the layout at the given row - **float values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -319,8 +315,7 @@ def append_double_spin(
     decimals: int = 4,
 ) -> QDoubleSpinBox:
     """
-    Append a composite widget (label + edit box + spin box) in the layout -
-    **float values**.
+    Append a composite widget (label + edit box + spin box) in the layout - **float values**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -481,8 +476,7 @@ def add_browse_file(
     mode=QFileDialog.FileMode.ExistingFile,
 ) -> BrowseFileWidget:
     """
-    Add a composite widget (label + edit box + browse button)
-    in the layout at the given row - **file or folder**.
+    Add a composite widget (label + edit box + browse button) in the layout at the given row - **file or folder**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout
@@ -515,8 +509,7 @@ def append_browse_file(
     mode=QFileDialog.FileMode.ExistingFile,
 ) -> BrowseFileWidget:
     """
-    Append a composite widget (label + edit box + browse button) in the layout -
-    **file or folder**.
+    Append a composite widget (label + edit box + browse button) in the layout - **file or folder**.
 
     Args:
         grid_layout (QGridLayout): Qt grid layout

@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core.
-"""
+"""The module utils is mainly a Python binding of the corresponding C++ library from Ikomia Core."""
 try:
     # Valid for Ikomia Studio or Linux platform
     from ikomia.core.pycore import *

@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module dedicated to Deep Learning training.
-"""
+"""Module dedicated to Deep Learning training."""
 import logging
 from datetime import datetime
 from typing import Optional
@@ -31,6 +29,7 @@ logger = logging.getLogger(__name__)
 class TrainProcess(CDnnTrainTask):
     """
     Base class for task dedicated to Deep Learning training.
+
     It includes mlflow framework and Tensorboard and handle connections with them:
 
         - experiment creation
@@ -59,9 +58,7 @@ class TrainProcess(CDnnTrainTask):
 
     @staticmethod
     def _init_mlflow():
-        """
-        Internal use only
-        """
+        """Internal use only"""
         monitoring.check_mlflow_server()
         mlflow.set_tracking_uri(config.main_cfg["mlflow"]["tracking_uri"])
 
@@ -165,6 +162,7 @@ class TrainProcess(CDnnTrainTask):
     def log_artifact(self, file_path: str):
         """
         Log artifact to mlflow server.
+
         Artifact could be any file (model weights, configuration file...)
 
         Args:
@@ -176,6 +174,7 @@ class TrainProcess(CDnnTrainTask):
     def log_artifacts(self, folder_path: str):
         """
         Log artifacts to mlflow server.
+
         Artifacts could be any files stored in the same folder (model weights, configuration file...)
 
         Args:
@@ -185,14 +184,10 @@ class TrainProcess(CDnnTrainTask):
             mlflow.log_artifacts(folder_path)
 
     def end_task_run(self):
-        """
-        Finalize mlflow run.
-        """
+        """Finalize mlflow run."""
         super().end_task_run()
         mlflow.end_run()
 
     def stop(self):
-        """
-        Request training job to stop.
-        """
+        """Request training job to stop."""
         super().stop()

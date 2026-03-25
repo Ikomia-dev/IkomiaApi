@@ -1,6 +1,4 @@
-"""
-Main Ikomia logger.
-"""
+"""Main Ikomia logger."""
 
 import logging
 import sys

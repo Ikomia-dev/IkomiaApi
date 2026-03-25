@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Module providing dataset loaders from various source formats.
-"""
+"""Module providing dataset loaders from various source formats."""
 
 import json
 import logging
@@ -70,6 +68,7 @@ _image_extensions = [
 def load_via_dataset(path: str) -> dict:
     """
     Load VGG Image Annotator (VIA) dataset.
+
     VIA dataset is a single JSON file containing all information.
 
     Args:
@@ -164,13 +163,14 @@ def load_via_dataset(path: str) -> dict:
 def read_class_names(txt_path: str) -> list:
     """
     Helper function to parse text file and extract class names.
+
     The text file must be structured so that one line = one class name.
 
     Args:
         txt_path (str): path to the text file
 
     Returns:
-        str[]: list of class names
+        list: list of class names (str)
     """
     with open(txt_path, "rt", encoding="utf-8") as f:
         classes = f.read().rstrip("\n").split("\n")
@@ -181,6 +181,7 @@ def read_class_names(txt_path: str) -> list:
 def load_yolo_dataset(folder_path: str, class_path: str) -> dict:
     """
     Load YOLO dataset.
+
     YOLO dataset consists of a list of text files with
     the same name as the corresponding image. Each line
     represent a bounding box with the following information:
@@ -315,6 +316,7 @@ def load_coco_dataset(
 ) -> dict:
     """
     Load COCO dataset (2017 version).
+
     COCO dataset consists in a JSON file describing annotations
     and an image folder.
 
@@ -445,6 +447,7 @@ def load_pascalvoc_dataset(
 ) -> dict:
     """
     Load PASCAL-VOC dataset (version 2012).
+
     PASCAL-VOC dataset is structured in different folders:
 
         - image folder
@@ -543,6 +546,7 @@ def load_pascalvoc_dataset(
 def polygon_to_mask(polygons: list, width: int, height: int) -> np.ndarray:
     """
     Helper function to generate image mask from a list of polygons.
+
     The function assumes that each polygon is a list of xy coordinates.
 
     Args:

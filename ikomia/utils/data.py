@@ -12,20 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Internal use only
-"""
+"""Internal use only"""
 import os
 
 import numpy as np
 
 
 class NumpyImage:
-    """
-    Helper class to manage 2D image structure of Numpy .npz file.
-    """
+    """Helper class to manage 2D image structure of Numpy .npz file."""
 
     def __init__(self, path: str, key: str):
+        """
+        Numpy image initialization.
+
+        Args:
+            path (str): path to image file
+            key (str): key identifying image entry point in npz
+        """
         self.path = path
         self.data = None
         _, extension = os.path.splitext(path)
@@ -78,6 +81,9 @@ class NumpyImage:
 
         Returns:
             Numpy array: 2D image array
+
+        Raises:
+            ValueError: array format not supported
         """
         dim_count = len(self.data.shape)
         data = None

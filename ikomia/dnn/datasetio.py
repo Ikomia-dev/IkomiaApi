@@ -13,8 +13,8 @@
 # limitations under the License.
 
 """
-Module dedicated to provide default implementation of
-Ikomia Deep Learning dataset structure.
+Module dedicated to provide default implementation of Ikomia Deep Learning dataset structure.
+
 Derived from :py:class:`~ikomia.dataprocess.pydataprocess.CDatasetIO`.
 """
 
@@ -77,7 +77,7 @@ class IkDatasetIO(CDatasetIO):
 
     def __init__(self, dataset_format: str = "other"):
         """
-        Constructor
+        Constructor.
 
         Args:
             dataset_format (str): dataset source format.
@@ -156,14 +156,13 @@ class IkDatasetIO(CDatasetIO):
 
     def get_graphics_annotations(self, img_path: str) -> list:
         """
-        Return a list of Ikomia graphics items corresponding
-        to the annotations of a given image (bounding box, polygons).
+        Return a list of graphics items corresponding to the annotations of a given image (bounding box, polygons).
 
         Args:
             img_path (str): path of the image from which we want annotations
 
         Returns:
-            :py:class:`~ikomia.core.pycore.CGraphicsItem` list: graphics items
+            list: graphics items (:py:class:`~ikomia.core.pycore.CGraphicsItem`)
         """
         graphics = []
         if len(self.category_colors) == 0:
@@ -270,7 +269,7 @@ class IkDatasetIO(CDatasetIO):
         Check whether the dataset structure contains data.
 
         Returns:
-            boolean: True or False
+            bool: True or False
         """
         if "images" in self.data:
             return len(self.data["images"]) > 0
@@ -278,9 +277,7 @@ class IkDatasetIO(CDatasetIO):
         return False
 
     def clear_data(self):
-        """
-        Clear whole dataset structure
-        """
+        """Clear whole dataset structure."""
         self.data.clear()
 
     def _get_random_category_colors(self) -> dict:
@@ -323,6 +320,9 @@ class IkDatasetIO(CDatasetIO):
     def to_json(self, options: list = None) -> str:
         """
         Convert dataset i/o data to JSON formatted string.
+
+        Args:
+            options (list): not used
 
         Returns:
             str: JSON formatted string
