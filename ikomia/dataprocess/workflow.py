@@ -17,10 +17,12 @@ Module dedicated to workflow management. It implements the Workflow class that o
 based on a C++ implementation. You will be able to create, modify, load and run workflows composed by built-in
 Ikomia algorithms or any of those available in Ikomia HUB.
 """
+import contextlib
 import datetime
 import enum
 import logging
 import os
+import threading
 from typing import Optional, Union
 from urllib.parse import urlparse
 
@@ -560,6 +562,18 @@ class Workflow(CWorkflow):
             )
 
         logger.info("Workflow %s run successfully in %s ms.", self.name, total_time)
+
+    @contextlib.contextmanager
+    def run_in_thread(self):
+        """
+        Start workflow execution in a separate thread.
+        """
+        thread = threading.Thread(target=self.run)
+        thread.start()
+        try:
+            yield
+        finally:
+            thread.join()
 
     def run_on(
         self, array: np.ndarray = None, path: str = "", url: str = "", folder: str = ""
