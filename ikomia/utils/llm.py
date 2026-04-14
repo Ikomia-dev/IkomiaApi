@@ -290,7 +290,10 @@ class LlmToolkit:
             image = image.convert("RGBA" if "A" in image.getbands() else "RGB")
         buffer = BytesIO()
         image.save(buffer, format="PNG")
-        return LlmInputImageContent(image_url="data:image/png;base64," + b64encode(buffer.getvalue()).decode("ascii"))
+        return LlmInputImageContent(
+            image_url="data:image/png;base64,"
+            + b64encode(buffer.getvalue()).decode("ascii")
+        )
 
     @staticmethod
     def _default_format_output(
@@ -300,7 +303,7 @@ class LlmToolkit:
         Default formatter for tool output.
 
         Accepts strings, LlmInputTextContent, LlmInputImageContent, CImageIO, CWorkflowTaskIO, Image.Image
-        Other types will be JSON-serialized. 
+        Other types will be JSON-serialized.
         Also support list and tuple of those items.
 
         Args:
@@ -382,11 +385,11 @@ class LlmToolkit:
         return content
 
     @staticmethod
-    def _default_format_error(error: Exception) -> LlmInputTextContent:
+    def _default_format_error(error: Exception) -> list[LlmInputTextContent]:
         """
         Default formatter for tool error.
         """
-        return LlmInputTextContent(text=str(error))
+        return [LlmInputTextContent(text=str(error))]
 
     def tool(self, fn: Callable):
         """
@@ -444,7 +447,10 @@ class LlmToolkit:
         context: LlmContextIO,
         format_output: Callable[[Any], list[LlmInputTextContent | LlmInputImageContent]]
         | None = None,
-        format_error: Callable[[Exception], LlmInputTextContent] | None = None,
+        format_error: Callable[
+            [Exception], list[LlmInputTextContent | LlmInputImageContent]
+        ]
+        | None = None,
     ) -> LlmContextIO:
         """
         Execute the tools for the pending function calls.
@@ -453,7 +459,7 @@ class LlmToolkit:
             context (LlmContextIO): The context to execute the tools in.
             format_output (Callable[[Any], list[LlmInputTextContent | LlmInputImageContent]] | None):
                 Custom formatter for tool output (optional).
-            format_error (Callable[[Exception], LlmInputTextContent] | None):
+            format_error (Callable[[Exception], list[LlmInputTextContent | LlmInputImageContent]] | None):
                 Custom formatter in case of tool error (optional).
 
         Returns:
