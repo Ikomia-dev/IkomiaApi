@@ -122,3 +122,17 @@ class LlmStreamingResponseIO(TextStreamIO):
                         yield matched.from_dict(raw)
                     elif include_unknown_events:
                         yield LlmBaseEvent.from_dict(raw)
+
+    def stream_text(self, *, timeout: int = 60) -> Generator[str, None, None]:
+        """
+        Generator that yields output text deltas as they arrive.
+
+        Args:
+            timeout (int): Read timeout in seconds.
+
+        Yields:
+            str: The output text delta.
+        """
+        for event in self.stream_events(timeout=timeout):
+            if isinstance(event, LlmOutputTextDeltaEvent):
+                yield event.delta
