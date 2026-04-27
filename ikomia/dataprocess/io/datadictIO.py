@@ -17,13 +17,12 @@ Module providing Ikomia workflow I/O implementation for data stored as Python di
 """
 import json
 
-from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
+from ikomia.core import CWorkflowTaskIO, CWorkflowTaskIOFactory, IODataType  # pylint: disable=E0611
 
 
 class DataDictIO(CWorkflowTaskIO):
     """
     Class implementing Ikomia workflow input/output object where data is stored as generic Python dict.
-    Please note that such unformatted data are meant to be used as task output essentially.
     For complete compatibility with other API features, you must ensure that the dict content is fully
     JSON serializable. Inherit :py:class:`~ikomia.core.pycore.CWorkflowTaskIO`.
 
@@ -96,3 +95,11 @@ class DataDictIO(CWorkflowTaskIO):
             json_string (str): I/O data as JSON formatted string (from to_json() for example)
         """
         self.data = json.loads(json_string)
+
+
+class DataDictIOFactory(CWorkflowTaskIOFactory):
+    def get_valid_data_types(self) -> IODataType:
+        return [IODataType.DATA_DICT]
+
+    def create(self, data_type:IODataType) -> CWorkflowTaskIO:
+        return DataDictIO()

@@ -20,7 +20,7 @@ import queue
 import threading
 from typing import Generator
 
-from ikomia.core import CWorkflowTaskIO, IODataType  # pylint: disable=E0611
+from ikomia.core import CWorkflowTaskIO, CWorkflowTaskIOFactory, IODataType  # pylint: disable=E0611
 from ikomia.dataprocess.pydataprocess import CTextStreamIO
 
 logger = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ class TextStreamIO(CWorkflowTaskIO):
         """
         Initialize the TextStreamIO wrapper.
         """
-        CWorkflowTaskIO.__init__(self, IODataType.TEXT)
+        CWorkflowTaskIO.__init__(self, IODataType.TEXT_STREAM)
         self._cpp_io = CTextStreamIO()
         self._chunk_queue = queue.Queue()
         self._stop_event = threading.Event()
@@ -203,3 +203,11 @@ class TextStreamIO(CWorkflowTaskIO):
         """
         self._clear_queue()
         self._cpp_io.clear_data()
+
+
+class TextStreamIOFactory(CWorkflowTaskIOFactory):
+    def get_valid_data_types(self) -> IODataType:
+        return [IODataType.TEXT_STREAM]
+
+    def create(self, data_type:IODataType) -> CWorkflowTaskIO:
+        return TextStreamIO()

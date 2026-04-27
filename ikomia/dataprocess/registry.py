@@ -38,6 +38,7 @@ from ikomia.core import (
     config,
 )
 from ikomia.dataprocess import CIkomiaRegistry  # pylint: disable=E0611
+from ikomia.dataprocess import io
 from ikomia.utils import (
     ApiLanguage,
     PluginState,  # pylint: disable=E0611
@@ -66,12 +67,17 @@ class IkomiaRegistry(CIkomiaRegistry):
         self.public_online_algos = None
         self.private_online_algos = None
         self.callbacks = None
+        self._register_io()
 
         if not lazy_load:
             self.load_algorithms()
 
     def __repr__(self):
         return "IkomiaRegistry()"
+
+    def _register_io(self):
+        self.register_io(io.DataDictIOFactory())
+        self.register_io(io.TextStreamIOFactory())
 
     def register_event_callback(self, event: str, callback: Callable):
         """
