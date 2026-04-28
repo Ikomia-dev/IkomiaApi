@@ -598,8 +598,7 @@ class LlmAgentLoop:
         self._input_context = self.workflow.get_input(self.context_input_index)
         self._final_context = None
         self._turn_iterator = self._start_turn()
-
-        yield from self._turn_iterator
+        return self._turn_iterator
 
     def get_final_context(self) -> LlmContextIO:
         """
