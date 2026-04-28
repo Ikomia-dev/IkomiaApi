@@ -21,6 +21,7 @@ import json
 import re
 from base64 import b64encode
 from collections.abc import Generator
+from contextlib import AbstractContextManager
 from io import BytesIO
 from types import UnionType
 from typing import Any, Callable, Literal, Union, get_args, get_origin
@@ -518,7 +519,25 @@ class LlmAgentLoop:
 
         self._input_context: LlmContextIO = workflow.get_input(context_input_index)
         self._final_context: LlmContextIO | None = None
-        self._iterator = self._run()
+        self._thread_manager: AbstractContextManager | None = None
+        self._turn_iterator: (
+            Generator[tuple[CWorkflowTaskIO, ...], None, None] | None
+        ) = None
+
+    def _start_workflow_thread(self):
+        self._thread_manager = self.workflow.run_in_thread()
+        self._thread_manager.__enter__()
+
+    def wait_workflow_end(self):
+        """
+        Block until the current workflow execution ends.
+        """
+        if self._thread_manager is None:
+            return
+
+        thread_manager = self._thread_manager
+        self._thread_manager = None
+        thread_manager.__exit__(None, None, None)
 
     @staticmethod
     def _copy_context(context: LlmContextIO) -> LlmContextIO:
@@ -548,13 +567,16 @@ class LlmAgentLoop:
 
         return tuple(self.workflow.get_outputs())
 
-    def _run(self) -> Generator[tuple[CWorkflowTaskIO, ...], None, None]:
+    def _start_turn(self) -> Generator[tuple[CWorkflowTaskIO, ...], None, None]:
         has_tools = self.toolkit is not None
         is_agent_turn = True
 
         while is_agent_turn:
-            with self.workflow.run_in_thread():
+            try:
+                self._start_workflow_thread()
                 yield self._get_turn_outputs()
+            finally:
+                self.wait_workflow_end()
 
             turn_context = self._get_turn_context()
             has_generated_response_items = len(turn_context.get_response_items()) > 0
@@ -571,23 +593,24 @@ class LlmAgentLoop:
 
         self._final_context = self._copy_context(self._input_context)
 
-    def __iter__(self):
-        return self
-
-    def __next__(self) -> LlmContextIO:
-        return next(self._iterator)
-
     def turn(self):
         """
-        Reset the internal iterator to start a new loop execution.
+        Start a new agent turn.
         """
         self._input_context = self.workflow.get_input(self.context_input_index)
         self._final_context = None
-        self._iterator = self._run()
-        return self
+        self._turn_iterator = self._start_turn()
 
-    def result(self) -> LlmContextIO:
-        for _ in self._iterator:
+        yield from self._turn_iterator
+
+    def get_final_context(self) -> LlmContextIO:
+        """
+        Retrieve final context after the last turn.
+        """
+        if self._turn_iterator is None:
+            raise ValueError("No turn iterator started")
+
+        for _ in self._turn_iterator:
             pass
 
         if self._final_context is None:
