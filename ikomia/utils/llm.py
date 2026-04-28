@@ -476,9 +476,7 @@ class LlmToolkit:
                 continue
 
             try:
-                output = self.functions[function_call.name](
-                    **json.loads(function_call.arguments)
-                )
+                output = function(**json.loads(function_call.arguments))
                 context.add_item(
                     LlmFunctionCallOutput(
                         call_id=function_call.call_id,
