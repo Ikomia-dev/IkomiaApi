@@ -568,12 +568,25 @@ class Workflow(CWorkflow):
         """
         Start workflow execution in a separate thread.
         """
-        thread = threading.Thread(target=self.run)
+        thread_exc: Optional[BaseException] = None
+
+        def _run_workflow():
+            nonlocal thread_exc
+            try:
+                self.run()
+            except BaseException as exc:
+                thread_exc = exc
+
+        thread = threading.Thread(target=_run_workflow)
         thread.start()
         try:
             yield
         finally:
             thread.join()
+
+        # Re-raise the exception raised by the workflow execution (if any)
+        if thread_exc is not None:
+            raise thread_exc
 
     def run_on(
         self, array: np.ndarray = None, path: str = "", url: str = "", folder: str = ""
