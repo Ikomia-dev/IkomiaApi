@@ -38,9 +38,7 @@ class LlmContextIO(CWorkflowTaskIO):
     def __init__(self):
         """Initialize I/O with empty list of items."""
         # TODO: change to IODataType.LLM_CONTEXT or something like that
-        CWorkflowTaskIO.__init__(
-            self, IODataType.DATA_DICT
-        )
+        CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
         self._raw_items: list[dict[str, Any]] = []
         self._response_start_index = 0
 
@@ -58,7 +56,7 @@ class LlmContextIO(CWorkflowTaskIO):
         """
         return len(self._raw_items) > 0
 
-    def reset(self, context = None):
+    def reset(self, context=None):
         """
         Reset the context to the given context.
 
@@ -110,7 +108,9 @@ class LlmContextIO(CWorkflowTaskIO):
         self.add_item(item)
         return item
 
-    def _get_classes(self, custom_item_classes: Iterable[Type[LlmBaseItem]] | None = None) -> Iterable[Type[LlmBaseItem]]:
+    def _get_classes(
+        self, custom_item_classes: Iterable[Type[LlmBaseItem]] | None = None
+    ) -> Iterable[Type[LlmBaseItem]]:
         classes = (
             LlmSystemMessage,
             LlmUserMessage,
@@ -122,6 +122,25 @@ class LlmContextIO(CWorkflowTaskIO):
         if custom_item_classes:
             classes = (*custom_item_classes, *classes)
         return classes
+
+    def _build_items(
+        self,
+        raw_items: Iterable[dict[str, Any]],
+        *,
+        custom_item_classes: Iterable[Type[LlmBaseItem]] | None = None,
+        include_unknown_items: bool = True,
+    ) -> list[LlmBaseItem]:
+        classes = self._get_classes(custom_item_classes)
+
+        items: list[LlmBaseItem] = []
+        for raw in raw_items:
+            matched = next((cls for cls in classes if cls.matches_raw(raw)), None)
+            if matched is not None:
+                items.append(matched.from_dict(raw))
+            elif include_unknown_items:
+                items.append(LlmBaseItem.from_dict(raw))
+
+        return items
 
     def get_items(
         self,
@@ -139,19 +158,18 @@ class LlmContextIO(CWorkflowTaskIO):
         Returns:
             list[LlmBaseItem]: The list of items.
         """
-        classes = self._get_classes(custom_item_classes)
+        return self._build_items(
+            self._raw_items,
+            custom_item_classes=custom_item_classes,
+            include_unknown_items=include_unknown_items,
+        )
 
-        items: list[LlmBaseItem] = []
-        for raw in self._raw_items:
-            matched = next((cls for cls in classes if cls.matches_raw(raw)), None)
-            if matched is not None:
-                items.append(matched.from_dict(raw))
-            elif include_unknown_items:
-                items.append(LlmBaseItem.from_dict(raw))
-
-        return items
-
-    def get_response_items(self, *, custom_item_classes: Iterable[Type[LlmBaseItem]] | None = None, include_unknown_items: bool = True) -> list[LlmBaseItem]:
+    def get_response_items(
+        self,
+        *,
+        custom_item_classes: Iterable[Type[LlmBaseItem]] | None = None,
+        include_unknown_items: bool = True,
+    ) -> list[LlmBaseItem]:
         """
         Get response items from the context.
 
@@ -159,17 +177,11 @@ class LlmContextIO(CWorkflowTaskIO):
             custom_item_classes (Iterable[Type[LlmBaseItem]] | None): Additional item classes to attempt resolution against.
             include_unknown_items (bool): If False, unresolved base items are excluded.
         """
-        classes = self._get_classes(custom_item_classes)
-
-        items: list[LlmBaseItem] = []
-        for raw in self._raw_items[self._response_start_index:]:
-            matched = next((cls for cls in classes if cls.matches_raw(raw)), None)
-            if matched is not None:
-                items.append(matched.from_dict(raw))
-            elif include_unknown_items:
-                items.append(LlmBaseItem.from_dict(raw))
-
-        return items
+        return self._build_items(
+            self._raw_items[self._response_start_index :],
+            custom_item_classes=custom_item_classes,
+            include_unknown_items=include_unknown_items,
+        )
 
     def get_pending_function_calls(self) -> list[LlmFunctionCall]:
         """
@@ -212,7 +224,13 @@ class LlmContextIO(CWorkflowTaskIO):
         Args:
             json_string (str): The JSON string to set the internal items from.
         """
-        self._raw_items = json.loads(json_string)
+        raw_items = json.loads(json_string)
+        if not isinstance(raw_items, list) or not all(
+            isinstance(item, dict) for item in raw_items
+        ):
+            raise ValueError("LlmContextIO JSON must be an array of objects.")
+
+        self._raw_items = raw_items
 
     def save(self, path: str):
         """Save context items as a JSON file."""
