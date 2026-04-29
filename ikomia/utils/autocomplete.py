@@ -102,7 +102,7 @@ class AutoComplete:
                     # Compute _new_() parameters
                     param_var = re.sub(forbid_char, "", param_var)
                     param_value = str(parameters[param]).replace("\\", "/")
-                    function_params += f'{param_var}: str="{param_value}"'
+                    function_params += f"{param_var}: str={repr(param_value)}"
                     # Compute parameters dict
                     params_dict += f'            "{param}": {param_var},\n'
                     # Static class variable for names
