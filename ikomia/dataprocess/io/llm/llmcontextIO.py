@@ -18,7 +18,8 @@ import copy
 import json
 from typing import Any, Iterable, Type
 
-from ikomia.core import CWorkflowTaskIO, IODataType
+from ikomia.core import CWorkflowTaskIO
+from ikomia.dataprocess.io import LLM_CONTEXT
 from ikomia.dataprocess.io.llm.base import LlmBaseItem
 from ikomia.dataprocess.io.llm.items import (
     LlmAssistantMessage,
@@ -37,8 +38,7 @@ class LlmContextIO(CWorkflowTaskIO):
 
     def __init__(self):
         """Initialize I/O with empty list of items."""
-        # TODO: change to IODataType.LLM_CONTEXT or something like that
-        CWorkflowTaskIO.__init__(self, IODataType.DATA_DICT)
+        CWorkflowTaskIO.__init__(self, LLM_CONTEXT)
         self._raw_items: list[dict[str, Any]] = []
         self._response_start_index = 0
 

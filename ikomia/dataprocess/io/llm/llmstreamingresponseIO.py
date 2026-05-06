@@ -17,6 +17,7 @@
 import json
 from typing import Generator, Iterable, Type
 
+from ikomia.dataprocess.io import LLM_STREAMING_RESPONSE
 from ikomia.dataprocess.io.llm.base import LlmBaseEvent
 from ikomia.dataprocess.io.llm.stream import (
     LlmFunctionCallArgumentsDeltaEvent,
@@ -37,8 +38,7 @@ class LlmStreamingResponseIO(TextStreamIO):
     """
 
     def __init__(self):
-        super().__init__()
-        # TODO: change to IODataType.LLM_STREAMING_RESPONSE or something like that
+        super().__init__(data_type=LLM_STREAMING_RESPONSE)
         self._auto_sequence_number = 0
         self._next_item_idx = 0
 

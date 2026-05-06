@@ -39,11 +39,11 @@ class TextStreamIO(CWorkflowTaskIO):
     :ivar _cpp_io: the underlying C++ CTextStreamIO instance
     """
 
-    def __init__(self):
+    def __init__(self, data_type: IODataType = IODataType.TEXT_STREAM):
         """
         Initialize the TextStreamIO wrapper.
         """
-        CWorkflowTaskIO.__init__(self, IODataType.TEXT_STREAM)
+        CWorkflowTaskIO.__init__(self, data_type)
         self._cpp_io = CTextStreamIO()
         self._chunk_queue = queue.Queue()
         self._stop_event = threading.Event()
