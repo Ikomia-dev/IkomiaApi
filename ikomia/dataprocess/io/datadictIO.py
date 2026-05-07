@@ -17,7 +17,7 @@ Module providing Ikomia workflow I/O implementation for data stored as Python di
 """
 import json
 
-from ikomia.core import CWorkflowTaskIO, CWorkflowTaskIOFactory, IODataType  # pylint: disable=E0611
+from ikomia.core import CWorkflowTaskIO, CWorkflowTaskIOFactory, IODataType, IODataTypeEx  # pylint: disable=E0611
 
 
 class DataDictIO(CWorkflowTaskIO):
@@ -98,8 +98,8 @@ class DataDictIO(CWorkflowTaskIO):
 
 
 class DataDictIOFactory(CWorkflowTaskIOFactory):
-    def get_valid_data_types(self) -> IODataType:
+    def get_valid_data_types(self) -> list:
         return [IODataType.DATA_DICT]
 
-    def create(self, data_type:IODataType) -> CWorkflowTaskIO:
+    def create(self, data_type:IODataTypeEx) -> CWorkflowTaskIO:
         return DataDictIO()

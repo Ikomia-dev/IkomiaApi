@@ -1,7 +1,7 @@
 import os.path
 import logging
 import argparse
-from ikomia.utils import tests, ik
+from ikomia.utils import tests
 from ikomia import core, dataio, dataprocess
 from ikomia.core import task
 import cv2
@@ -419,43 +419,43 @@ def test_cpp_dnn_train_task():
 
 def test_task_parameters():
     logger.warning("===== Test: set task parameters =====")
-    algo = task.create(name=ik.ocv_box_filter().name)
+    algo = task.create(name="ocv_box_filter")
     params = algo.get_parameters()
     assert len(params) > 0
 
     logger.warning("----- Manually set some of the parameters from existing values")
     new_params = {
-        ik.ocv_box_filter.kSizeWidth: "31",
-        ik.ocv_box_filter.kSizeHeight: "33",
+        "kSizeWidth": "31",
+        "kSizeHeight": "33",
     }
     algo.set_parameters(new_params)
     logger.warning(algo.get_param_object())
     params = algo.get_parameters()
     assert len(params) > 0
-    assert params[ik.ocv_box_filter.kSizeWidth] == "31"
-    assert params[ik.ocv_box_filter.kSizeHeight] == "33"
+    assert params["kSizeWidth"] == "31"
+    assert params["kSizeHeight"] == "33"
 
     logger.warning("----- Manually set all parameters from dict")
     new_params = {
-        ik.ocv_box_filter.kSizeWidth: "29",
-        ik.ocv_box_filter.kSizeHeight: "29",
-        ik.ocv_box_filter.borderType: "4",
-        ik.ocv_box_filter.anchorX: "-1",
-        ik.ocv_box_filter.anchorY: "-1",
-        ik.ocv_box_filter.bNormalize: "1",
-        ik.ocv_box_filter.ddepth: "-1"
+        "kSizeWidth": "29",
+        "kSizeHeight": "29",
+        "borderType": "4",
+        "anchorX": "-1",
+        "anchorY": "-1",
+        "bNormalize": "1",
+        "ddepth": "-1"
     }
     algo.set_parameters(new_params)
     logger.warning(algo.get_param_object())
     params = algo.get_parameters()
     assert len(params) > 0
-    assert params[ik.ocv_box_filter.kSizeWidth] == "29"
-    assert params[ik.ocv_box_filter.kSizeHeight] == "29"
-    assert params[ik.ocv_box_filter.borderType] == "4"
-    assert params[ik.ocv_box_filter.anchorX] == "-1"
-    assert params[ik.ocv_box_filter.anchorY] == "-1"
-    assert params[ik.ocv_box_filter.bNormalize] == "1"
-    assert params[ik.ocv_box_filter.ddepth] == "-1"
+    assert params["kSizeWidth"] == "29"
+    assert params["kSizeHeight"] == "29"
+    assert params["borderType"] == "4"
+    assert params["anchorX"] == "-1"
+    assert params["anchorY"] == "-1"
+    assert params["bNormalize"] == "1"
+    assert params["ddepth"] == "-1"
 
 
 if __name__ == "__main__":

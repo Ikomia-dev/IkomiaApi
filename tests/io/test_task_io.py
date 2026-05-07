@@ -1,7 +1,6 @@
 import os
 import argparse
 import logging
-import threading
 import time
 import numpy as np
 from ikomia import core, dataio, dataprocess
