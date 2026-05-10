@@ -73,9 +73,7 @@ def test_cpp_workflow():
     # Get final tasks(leafs)
     msg = "Final tasks are: "
     final_tasks = wf.get_final_tasks()
-
-    for t in final_tasks:
-        msg += t.name + ","
+    msg += ",".join([t.name for t in final_tasks]) + ","
 
     logger.warning(msg)
 
