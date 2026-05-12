@@ -1,4 +1,4 @@
-LD_LIBRARY_PATH="/usr/local/lib:$(pwd)/../../IkomiaCore/Build/lib:$(pwd)/../../gmic/build:$(pwd)/../../qwt/build/lib"
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"/usr/local/lib:$(pwd)/../ikomia/lib:$(pwd)/../../IkomiaCore/Build/lib:$(pwd)/../../deps/gmic/build:$(pwd)/../../deps/qwt/build/lib"
 export LD_LIBRARY_PATH
 PYTHON=${PYTHON:-python}
 # Generate stubs for C++ libs
