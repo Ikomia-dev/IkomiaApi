@@ -13,7 +13,7 @@ pip install ikomia
 ```
 
 ```{warning}
-We only support Python 3.7, 3.8, 3.9 and 3.10 on Windows 10 and Linux.
+We only support Python 3.10 to 3.14 on Windows 10 and Linux.
 ```
 
 ## Pre-requisites

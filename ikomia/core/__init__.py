@@ -42,7 +42,9 @@ def _check_directories():
     os.makedirs(config.main_cfg["workflow"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["data"]["path"], exist_ok=True)
     os.makedirs(config.main_cfg["mlflow"]["artifact_uri"], exist_ok=True)
-    os.makedirs(config.main_cfg["mlflow"]["store_uri"], exist_ok=True)
+    # MLflow store_uri may be a database URI instead of a directory
+    if "://" not in config.main_cfg["mlflow"]["store_uri"]:
+        os.makedirs(config.main_cfg["mlflow"]["store_uri"], exist_ok=True)
     os.makedirs(config.main_cfg["tensorboard"]["log_uri"], exist_ok=True)
 
 
