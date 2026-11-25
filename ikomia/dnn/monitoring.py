@@ -5,7 +5,9 @@ The module monitoring provides helper functions to manage mlflow and tensorboard
 import logging
 import os
 import subprocess
-import sys
+import time
+from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 from requests.adapters import HTTPAdapter, Retry
@@ -14,6 +16,9 @@ from ikomia.core import config
 from ikomia.utils import is_colab
 
 logger = logging.getLogger(__name__)
+
+# Seconds to wait for a newly started MLflow server to become healthy
+MLFLOW_STARTUP_TIMEOUT = 30
 
 
 def check_mlflow_server():
@@ -30,15 +35,14 @@ def check_mlflow_server():
         )
     except Exception:
         # Start server if needed
-        # Follow file uri scheme: https://en.wikipedia.org/wiki/File_URI_scheme
-        if sys.platform == "win32":
-            store_uri = config.main_cfg["mlflow"]["store_uri"].replace("\\", "/")
-            artifact_uri = config.main_cfg["mlflow"]["artifact_uri"].replace("\\", "/")
-            store_uri = "file:///" + store_uri
-            artifact_uri = "file:///" + artifact_uri
-        else:
-            store_uri = "file:///" + config.main_cfg["mlflow"]["store_uri"]
-            artifact_uri = "file:///" + config.main_cfg["mlflow"]["artifact_uri"]
+        # Build RFC 8089 file URIs (file:///home/... or file:///C:/...). Python 3.14 urllib
+        # rejects the former "file:////home/..." form produced on POSIX.
+        store_uri = Path(config.main_cfg["mlflow"]["store_uri"]).resolve().as_uri()
+        artifact_uri = Path(config.main_cfg["mlflow"]["artifact_uri"]).resolve().as_uri()
+        # MLflow >= 3.14 refuses to start on a filesystem backend store unless explicitly allowed.
+        # Ignored by older versions.
+        env = os.environ.copy()
+        env.setdefault("MLFLOW_ALLOW_FILE_STORE", "true")
 
         logger.info("Starting MLflow server...")
         proc = subprocess.Popen(
@@ -51,14 +55,12 @@ def check_mlflow_server():
                 artifact_uri,
                 "--host",
                 "0.0.0.0",
-            ]
+                "--port",
+                str(urlparse(config.main_cfg["mlflow"]["tracking_uri"]).port or 5000),
+            ],
+            env=env,
         )
-        poll = proc.poll()
-        if poll is None:
-            logger.info(
-                "MLflow server started successfully at %s",
-                config.main_cfg["mlflow"]["tracking_uri"],
-            )
+        _wait_mlflow_server(proc, url)
 
     colab = is_colab()
     if colab:
@@ -81,6 +83,38 @@ def check_mlflow_server():
                 "MLflow dashboard won't be accessible. You need to install pyngrok before starting your "
                 "training workflow: !pip install pyngrok. You also need a free ngrok account at least."
             )
+
+
+def _wait_mlflow_server(proc: subprocess.Popen, health_url: str):
+    """
+    Internal use only. Wait until the freshly started MLflow server answers its health endpoint,
+    the process exits, or the timeout expires. Failures are logged, not raised.
+    """
+    tracking_uri = config.main_cfg["mlflow"]["tracking_uri"]
+    deadline = time.monotonic() + MLFLOW_STARTUP_TIMEOUT
+
+    while time.monotonic() < deadline:
+        return_code = proc.poll()
+        if return_code is not None:
+            logger.error(
+                "MLflow server failed to start (exit code %s), training metrics will not be logged. "
+                "See server output above for details.",
+                return_code,
+            )
+            return
+
+        try:
+            requests.get(health_url, timeout=2).raise_for_status()
+            logger.info("MLflow server started successfully at %s", tracking_uri)
+            return
+        except requests.RequestException:
+            time.sleep(0.5)
+
+    logger.error(
+        "MLflow server did not answer at %s within %d seconds, training metrics may not be logged.",
+        tracking_uri,
+        MLFLOW_STARTUP_TIMEOUT,
+    )
 
 
 def check_tensorboard_server():
