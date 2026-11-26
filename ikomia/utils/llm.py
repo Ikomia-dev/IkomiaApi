@@ -28,7 +28,7 @@ from typing import Any, Callable, Literal, Union, get_args, get_origin
 
 from PIL import Image
 
-from ikomia.core.pycore import CWorkflowTaskIO
+from ikomia.core import CWorkflowTaskIO  # pylint: disable=E0611
 from ikomia.dataprocess import CImageIO
 from ikomia.dataprocess.io.llm import (
     LlmContextIO,

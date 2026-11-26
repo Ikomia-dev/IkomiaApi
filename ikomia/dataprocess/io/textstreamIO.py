@@ -21,7 +21,7 @@ import threading
 from typing import Generator
 
 from ikomia.core import CWorkflowTaskIO, CWorkflowTaskIOFactory, IODataType  # pylint: disable=E0611
-from ikomia.dataprocess.pydataprocess import CTextStreamIO
+from ikomia.dataprocess import CTextStreamIO  # pylint: disable=E0611
 
 logger = logging.getLogger(__name__)
 
