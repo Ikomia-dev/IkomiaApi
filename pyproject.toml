@@ -55,11 +55,11 @@ where = ["."]
 include = ["ikomia*"]
 
 [tool.setuptools.package-data]
-ikomia = ["*.so", "*.pyd", "lib/**/*", "opencv/**/*.so"]
-"ikomia.core" = ["*.so", "*.pyd", "*.yaml"]
-"ikomia.dataio" = ["*.so", "*.pyd"]
-"ikomia.dataprocess" = ["*.so", "*.pyd"]
-"ikomia.utils" = ["*.so", "*.pyd"]
+ikomia = ["*.so", "lib/**/*", "opencv/**/*.so"]
+"ikomia.core" = ["*.so", "*.yaml"]
+"ikomia.dataio" = ["*.so"]
+"ikomia.dataprocess" = ["*.so"]
+"ikomia.utils" = ["*.so"]
 
 [tool.pytest.ini_options]
 log_cli = true
